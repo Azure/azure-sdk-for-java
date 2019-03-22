@@ -28,18 +28,20 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
     /**
      * Creates an instance that is able to authorize requests to Azure Application Configuration service.
      *
-     * @param connectionString connection string in the format "endpoint=_endpoint_;id=_id_;secret=_secret_"
+     * @param connectionString connection string in the format "endpoint={endpoint_value};id={id_value};secret={secret_value}"
      */
     public ConfigurationClientCredentials(String connectionString) throws InvalidKeyException, NoSuchAlgorithmException {
         credentials = new CredentialInformation(connectionString);
         headerProvider = new AuthorizationHeaderProvider(credentials);
     }
 
-    URL baseUri() { return this.credentials.baseUri; }
+    URL baseUri() {
+        return this.credentials.baseUri;
+    }
 
     @Override
     public Mono<String> authorizationHeaderValueAsync(HttpRequest request) {
-            return Mono.just(headerProvider.getAuthenticationHeaderValue(request));
+        return Mono.just(headerProvider.getAuthenticationHeaderValue(request));
     }
 
     private static class AuthorizationHeaderProvider {
@@ -60,9 +62,9 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
 
             final String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
             return String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s",
-                credentials.id(),
-                signedHeadersValue,
-                signature);
+                    credentials.id(),
+                    signedHeadersValue,
+                    signature);
         }
 
         private String getStringToSign(final HttpRequest request) {
@@ -73,8 +75,8 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
 
             final HttpHeaders httpHeaders = request.headers();
             final String signed = Arrays.stream(signedHeaders)
-                .map(httpHeaders::value)
-                .collect(Collectors.joining(";"));
+                    .map(httpHeaders::value)
+                    .collect(Collectors.joining(";"));
 
             // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
             // Signed headers: "host;x-ms-date;x-ms-content-sha256"
@@ -83,49 +85,55 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
     }
 
     private class CredentialInformation {
+        private static final String ENDPOINT = "endpoint=";
+        private static final String ID = "id=";
+        private static final String SECRET = "secret=";
+
         private URL baseUri;
         private String id;
         private byte[] secret;
 
-        URL baseUri() { return baseUri; }
+        URL baseUri() {
+            return baseUri;
+        }
 
-        String id() { return id; }
+        String id() {
+            return id;
+        }
 
-        byte[] secret() { return secret; }
+        byte[] secret() {
+            return secret;
+        }
 
         CredentialInformation(String connectionString) {
             if (connectionString == null || connectionString.isEmpty()) {
                 throw new IllegalArgumentException(connectionString);
             }
 
-            // Parse connection string
             String[] args = connectionString.split(";");
             if (args.length < 3) {
                 throw new IllegalArgumentException("invalid connection string segment count");
             }
 
-            String endpointString = "endpoint=";
-            String idString = "id=";
-            String secretString = "secret=";
-
             for (String arg : args) {
                 String segment = arg.trim();
-                try {
-                    if (segment.toLowerCase().startsWith(endpointString)) {
+                if (segment.toLowerCase().startsWith(ENDPOINT)) {
+                    try {
                         this.baseUri = new URL(segment.substring(segment.indexOf('=') + 1));
-                    } else if (segment.toLowerCase().startsWith(idString)) {
-                        this.id = segment.substring(segment.indexOf('=') + 1);
-                    } else if (segment.toLowerCase().startsWith(secretString)) {
-                        String secretBase64 = segment.substring(segment.indexOf('=') + 1);
-                        this.secret = Base64.getDecoder().decode(secretBase64);
+                    } catch (MalformedURLException ex) {
+                        throw new IllegalArgumentException(ex);
                     }
-                } catch (MalformedURLException ex) {
-                    throw new IllegalArgumentException(ex);
+                } else if (segment.toLowerCase().startsWith(ID)) {
+                    this.id = segment.substring(segment.indexOf('=') + 1);
+                } else if (segment.toLowerCase().startsWith(SECRET)) {
+                    String secretBase64 = segment.substring(segment.indexOf('=') + 1);
+                    this.secret = Base64.getDecoder().decode(secretBase64);
                 }
             }
 
             if (this.baseUri == null || this.id == null || this.secret == null) {
-                throw new IllegalArgumentException("Could not parse 'connectionString' value: " + connectionString);
+                throw new IllegalArgumentException("Could not parse 'connectionString'."
+                        + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
             }
         }
     }
