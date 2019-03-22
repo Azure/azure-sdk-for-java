@@ -28,6 +28,8 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +54,7 @@ public class ConfigurationClientTest {
     public TestName testName = new TestName();
 
     @Before
-    public void beforeTest() throws Exception {
+    public void beforeTest() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         final TestMode testMode = getTestMode();
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
