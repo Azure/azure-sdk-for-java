@@ -51,17 +51,17 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
         private final String[] signedHeaders = new String[]{HOST_HEADER, DATE_HEADER, CONTENT_HASH_HEADER};
         private final String signedHeadersValue = String.join(";", signedHeaders);
         private final CredentialInformation credentials;
+        private final Mac sha256HMAC;
 
-        AuthorizationHeaderProvider(CredentialInformation credentials) {
+        AuthorizationHeaderProvider(CredentialInformation credentials) throws NoSuchAlgorithmException, InvalidKeyException {
             this.credentials = credentials;
+
+            sha256HMAC = Mac.getInstance("HmacSHA256");
+            sha256HMAC.init(new SecretKeySpec(credentials.secret(), "HmacSHA256"));
         }
 
-        private String getAuthenticationHeaderValue(final HttpRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
+        private String getAuthenticationHeaderValue(final HttpRequest request) {
             final String stringToSign = getStringToSign(request);
-            final Mac sha256HMAC = Mac.getInstance("HmacSHA256");
-            final SecretKeySpec secretKey = new SecretKeySpec(credentials.secret(), "HmacSHA256");
-
-            sha256HMAC.init(secretKey);
 
             final String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
             return String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s",
