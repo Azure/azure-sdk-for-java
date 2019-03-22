@@ -208,12 +208,12 @@ public class ConfigurationClientTest {
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.get(key, "myLabel", null))
+        StepVerifier.create(client.get(key, "myLabel"))
                 .assertNext(response -> assertEquals(kv, response))
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.get(key, "myNonExistingLabel", null))
+        StepVerifier.create(client.get(key, "myNonExistingLabel"))
                 .expectErrorSatisfies(error -> {
                     Assert.assertTrue(error instanceof RestException);
                     Assert.assertEquals(404, ((RestException) error).response().statusCode());
@@ -221,6 +221,7 @@ public class ConfigurationClientTest {
                 .verify();
     }
 
+    @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
     @Test
     public void getWithEtag() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
@@ -231,14 +232,14 @@ public class ConfigurationClientTest {
         Assert.assertNotNull(block);
         assertEquals(expected, block);
 
-        String etag = block.body().etag();
-        StepVerifier.create(client.get(key, null, etag))
-                .expectErrorSatisfies(ex -> {
-                    Assert.assertTrue(ex instanceof RestException);
-                    // etag has not changed, so getting 304 NotModified code according to service spec
-                    Assert.assertTrue(ex.getMessage().contains("304"));
-                })
-                .verify();
+//        String etag = block.body().etag();
+//        StepVerifier.create(client.get(key, null, etag))
+//                .expectErrorSatisfies(ex -> {
+//                    Assert.assertTrue(ex instanceof RestException);
+//                    // etag has not changed, so getting 304 NotModified code according to service spec
+//                    Assert.assertTrue(ex.getMessage().contains("304"));
+//                })
+//                .verify();
 
         StepVerifier.create(client.set(newExpected))
                 .assertNext(response -> assertEquals(newExpected, response))
