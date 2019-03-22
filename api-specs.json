@@ -4,9 +4,9 @@
     "args": "--multiapi --fluent"
   },
   "applicationinsights/data-plane": {
-      "source": "specification/applicationinsights/data-plane/readme.md",
-      "args": "--payload-flattening-threshold=1"
-    },
+    "source": "specification/applicationinsights/data-plane/readme.md",
+    "args": "--payload-flattening-threshold=1"
+  },
   "appservice/resource-manager": {
     "source": "specification/web/resource-manager/readme.md",
     "args": "--multiapi --fluent",
@@ -104,6 +104,13 @@
     "source": "specification/notificationhubs/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "mariadb/resource-manager": {
+    "source": "specification/mariadb/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"MariaDB\""
+    }
+  },
   "marketplaceordering/resource-manager": {
     "source": "specification/marketplaceordering/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -151,8 +158,12 @@
     "args": "--multiapi --fluent",
     "fconfig": {
       "\"moduleName\"": "\"Redis\"",
-      "\"knownPlurals\"": ["\"redis\""],
-      "\"knownSingulars\"": ["\"redis\""]
+      "\"knownPlurals\"": [
+        "\"redis\""
+      ],
+      "\"knownSingulars\"": [
+        "\"redis\""
+      ]
     }
   },
   "resources/resource-manager": {
@@ -164,8 +175,12 @@
     "args": "--multiapi --fluent",
     "fconfig": {
       "\"moduleName\"": "\"SignalR\"",
-      "\"knownPlurals\"": ["\"signalr\""],
-      "\"knownSingulars\"": ["\"signalr\""]
+      "\"knownPlurals\"": [
+        "\"signalr\""
+      ],
+      "\"knownSingulars\"": [
+        "\"signalr\""
+      ]
     }
   },
   "sql/resource-manager": {
