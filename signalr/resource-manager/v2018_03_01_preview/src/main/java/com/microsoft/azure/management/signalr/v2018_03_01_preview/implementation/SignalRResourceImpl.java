@@ -8,69 +8,22 @@
 
 package com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation;
 
-import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRResource;
-import rx.Observable;
-import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRUpdateParameters;
-import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRCreateParameters;
+import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.ProvisioningState;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.ResourceSku;
-import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRCreateOrUpdateProperties;
-import rx.functions.Func1;
+import java.util.Map;
 
-class SignalRResourceImpl extends GroupableResourceCoreImpl<SignalRResource, SignalRResourceInner, SignalRResourceImpl, SignalRManager> implements SignalRResource, SignalRResource.Definition, SignalRResource.Update {
-    private SignalRCreateParameters createParameter;
-    private SignalRUpdateParameters updateParameter;
-    SignalRResourceImpl(String name, SignalRResourceInner inner, SignalRManager manager) {
-        super(name, inner, manager);
-        this.createParameter = new SignalRCreateParameters();
-        this.updateParameter = new SignalRUpdateParameters();
+class SignalRResourceImpl extends WrapperImpl<SignalRResourceInner> implements SignalRResource {
+    private final SignalRServiceManager manager;
+    SignalRResourceImpl(SignalRResourceInner inner, SignalRServiceManager manager) {
+        super(inner);
+        this.manager = manager;
     }
 
     @Override
-    public Observable<SignalRResource> createResourceAsync() {
-        SignalRsInner client = this.manager().inner().signalRs();
-        this.createParameter.withLocation(inner().location());
-        this.createParameter.withTags(inner().getTags());
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.createParameter)
-            .map(new Func1<SignalRResourceInner, SignalRResourceInner>() {
-               @Override
-               public SignalRResourceInner call(SignalRResourceInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
-            .map(innerToFluentMap(this));
-    }
-
-    @Override
-    public Observable<SignalRResource> updateResourceAsync() {
-        SignalRsInner client = this.manager().inner().signalRs();
-        return client.updateAsync(this.resourceGroupName(), this.name(), this.updateParameter)
-            .map(new Func1<SignalRResourceInner, SignalRResourceInner>() {
-               @Override
-               public SignalRResourceInner call(SignalRResourceInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
-            .map(innerToFluentMap(this));
-    }
-
-    @Override
-    protected Observable<SignalRResourceInner> getInnerAsync() {
-        SignalRsInner client = this.manager().inner().signalRs();
-        return client.getByResourceGroupAsync(this.resourceGroupName(), this.name());
-    }
-
-    @Override
-    public boolean isInCreateMode() {
-        return this.inner().id() == null;
-    }
-
-    private void resetCreateUpdateParameters() {
-        this.createParameter = new SignalRCreateParameters();
-        this.updateParameter = new SignalRUpdateParameters();
+    public SignalRServiceManager manager() {
+        return this.manager;
     }
 
     @Override
@@ -86,6 +39,21 @@ class SignalRResourceImpl extends GroupableResourceCoreImpl<SignalRResource, Sig
     @Override
     public String hostNamePrefix() {
         return this.inner().hostNamePrefix();
+    }
+
+    @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
+    public String location() {
+        return this.inner().location();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
@@ -109,23 +77,18 @@ class SignalRResourceImpl extends GroupableResourceCoreImpl<SignalRResource, Sig
     }
 
     @Override
-    public SignalRResourceImpl withProperties(SignalRCreateOrUpdateProperties properties) {
-        if (isInCreateMode()) {
-            this.createParameter.withProperties(properties);
-        } else {
-            this.updateParameter.withProperties(properties);
-        }
-        return this;
+    public Map<String, String> tags() {
+        return this.inner().getTags();
     }
 
     @Override
-    public SignalRResourceImpl withSku(ResourceSku sku) {
-        if (isInCreateMode()) {
-            this.createParameter.withSku(sku);
-        } else {
-            this.updateParameter.withSku(sku);
-        }
-        return this;
+    public String type() {
+        return this.inner().type();
+    }
+
+    @Override
+    public String version() {
+        return this.inner().version();
     }
 
 }

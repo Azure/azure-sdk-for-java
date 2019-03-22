@@ -27,7 +27,19 @@ public class SignalRKeysInner {
     private String secondaryKey;
 
     /**
-     * Get the primaryKey value.
+     * SignalR connection string constructed via the primaryKey.
+     */
+    @JsonProperty(value = "primaryConnectionString")
+    private String primaryConnectionString;
+
+    /**
+     * SignalR connection string constructed via the secondaryKey.
+     */
+    @JsonProperty(value = "secondaryConnectionString")
+    private String secondaryConnectionString;
+
+    /**
+     * Get the primary access key.
      *
      * @return the primaryKey value
      */
@@ -36,7 +48,7 @@ public class SignalRKeysInner {
     }
 
     /**
-     * Set the primaryKey value.
+     * Set the primary access key.
      *
      * @param primaryKey the primaryKey value to set
      * @return the SignalRKeysInner object itself.
@@ -47,7 +59,7 @@ public class SignalRKeysInner {
     }
 
     /**
-     * Get the secondaryKey value.
+     * Get the secondary access key.
      *
      * @return the secondaryKey value
      */
@@ -56,13 +68,53 @@ public class SignalRKeysInner {
     }
 
     /**
-     * Set the secondaryKey value.
+     * Set the secondary access key.
      *
      * @param secondaryKey the secondaryKey value to set
      * @return the SignalRKeysInner object itself.
      */
     public SignalRKeysInner withSecondaryKey(String secondaryKey) {
         this.secondaryKey = secondaryKey;
+        return this;
+    }
+
+    /**
+     * Get signalR connection string constructed via the primaryKey.
+     *
+     * @return the primaryConnectionString value
+     */
+    public String primaryConnectionString() {
+        return this.primaryConnectionString;
+    }
+
+    /**
+     * Set signalR connection string constructed via the primaryKey.
+     *
+     * @param primaryConnectionString the primaryConnectionString value to set
+     * @return the SignalRKeysInner object itself.
+     */
+    public SignalRKeysInner withPrimaryConnectionString(String primaryConnectionString) {
+        this.primaryConnectionString = primaryConnectionString;
+        return this;
+    }
+
+    /**
+     * Get signalR connection string constructed via the secondaryKey.
+     *
+     * @return the secondaryConnectionString value
+     */
+    public String secondaryConnectionString() {
+        return this.secondaryConnectionString;
+    }
+
+    /**
+     * Set signalR connection string constructed via the secondaryKey.
+     *
+     * @param secondaryConnectionString the secondaryConnectionString value to set
+     * @return the SignalRKeysInner object itself.
+     */
+    public SignalRKeysInner withSecondaryConnectionString(String secondaryConnectionString) {
+        this.secondaryConnectionString = secondaryConnectionString;
         return this;
     }
 
