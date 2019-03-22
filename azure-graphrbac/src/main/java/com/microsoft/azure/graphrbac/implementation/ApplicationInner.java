@@ -103,7 +103,7 @@ public class ApplicationInner extends DirectoryObjectInner {
     private List<String> identifierUris;
 
     /**
-     * urls with more informations of the application.
+     * URLs with more information about the application.
      */
     @JsonProperty(value = "informationalUrls")
     private InformationalUrl informationalUrls;
@@ -478,7 +478,7 @@ public class ApplicationInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get urls with more informations of the application.
+     * Get uRLs with more information about the application.
      *
      * @return the informationalUrls value
      */
@@ -487,7 +487,7 @@ public class ApplicationInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set urls with more informations of the application.
+     * Set uRLs with more information about the application.
      *
      * @param informationalUrls the informationalUrls value to set
      * @return the ApplicationInner object itself.
