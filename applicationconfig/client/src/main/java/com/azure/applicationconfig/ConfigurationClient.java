@@ -29,7 +29,6 @@ import reactor.util.annotation.NonNull;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
@@ -172,7 +171,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.getKeyValue(serviceEndpoint.toString(), key, label, null, null, null);
+        return service.getKeyValue(serviceEndpoint.toString(), key, label, null, null, null, null);
     }
 
     /**
@@ -348,7 +347,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return the observable to the Page&lt;ConfigurationSetting&gt; object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    private Flux<ConfigurationSetting> listKeyValues(@NonNull String nextPageLink) {
+    private Flux<ConfigurationSetting> listNextPage(@NonNull String nextPageLink) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValuesNext(serviceEndpoint.toString(), nextPageLink);
         return getPagedConfigurationSettings(result);
     }
@@ -382,7 +381,7 @@ public final class ConfigurationClient extends ServiceClient {
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
-        return Flux.fromIterable(page.items()).concatWith(listKeyValues(nextPageLink));
+        return Flux.fromIterable(page.items()).concatWith(listNextPage(nextPageLink));
     }
 
     /**
