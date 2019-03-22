@@ -2,7 +2,6 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.implementation.Page;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
