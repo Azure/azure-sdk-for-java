@@ -315,18 +315,18 @@ public final class ConfigurationClient extends ServiceClient {
             return new ConfigurationClient(configuration.serviceEndpoint(), pipeline);
         }
 
-        public ConfigurationClientBuilder withHttpLogLevel(HttpLogDetailLevel logLevel) {
+        public ConfigurationClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
             configuration.httpLogDetailLevel(logLevel);
             return this;
         }
 
-        public ConfigurationClientBuilder withPolicy(HttpPipelinePolicy policy) {
+        public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
             Objects.requireNonNull(policy);
             configuration.addPolicy(policy);
             return this;
         }
 
-        public ConfigurationClientBuilder withHttpClient(HttpClient client) {
+        public ConfigurationClientBuilder httpClient(HttpClient client) {
             Objects.requireNonNull(client);
             configuration.httpClient(client);
             return this;

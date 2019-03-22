@@ -38,7 +38,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Creates a policy that adds the required requests with Azure Application Configuration service.
+ * Creates a addPolicy that adds the required requests with Azure Application Configuration service.
  */
 final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
     private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";

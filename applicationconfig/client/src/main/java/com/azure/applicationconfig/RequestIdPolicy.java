@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 /**
- * Creates a policy which puts a UUID in the request header. Azure uses
+ * Creates a addPolicy which puts a UUID in the request header. Azure uses
  * the request id as the unique identifier for the request.
  * Also sets 'x-ms-return-client-request-id' header to tell server to return request id in the response.
  */

@@ -5,15 +5,12 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
-import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.rest.RestException;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
 import com.azure.common.http.HttpClient;
-import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.policy.HttpLogDetailLevel;
-import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.common.http.rest.RestResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.After;
@@ -67,8 +64,8 @@ public class ConfigurationClientTest {
             final String connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
 
             client = ConfigurationClient.builder(new ConfigurationClientCredentials(connectionString))
-                    .withHttpClient(interceptorManager.getPlaybackClient())
-                    .withHttpLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .build();
         } else {
             logger.info("RECORD MODE");
@@ -77,9 +74,9 @@ public class ConfigurationClientTest {
             Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
             client = ConfigurationClient.builder(new ConfigurationClientCredentials(connectionString))
-                    .withHttpClient(HttpClient.createDefault().wiretap(true))
-                    .withHttpLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .withPolicy(interceptorManager.getRecordPolicy())
+                    .httpClient(HttpClient.createDefault().wiretap(true))
+                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                    .addPolicy(interceptorManager.getRecordPolicy())
                     .build();
         }
 
