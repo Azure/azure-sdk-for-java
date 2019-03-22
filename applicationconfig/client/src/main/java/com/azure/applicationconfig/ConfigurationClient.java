@@ -266,9 +266,9 @@ public final class ConfigurationClient extends ServiceClient {
     public Flux<ConfigurationSetting> listKeyValues(KeyValueListFilter filter) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (filter != null) {
-            result = service.listKeyValues(serviceEndpoint, filter.key(), filter.label(), filter.fields(), filter.acceptDateTime(), filter.range());
+            result = service.listKeyValues(serviceEndpoint, filter.key(), filter.label(), filter.fields(), filter.acceptDateTime());
         } else {
-            result = service.listKeyValues(serviceEndpoint, null, null, null, null, null);
+            result = service.listKeyValues(serviceEndpoint, null, null, null, null);
         }
 
         return getPagedConfigurationSettings(result);

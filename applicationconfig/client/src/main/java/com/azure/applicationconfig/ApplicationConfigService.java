@@ -43,7 +43,7 @@ interface ApplicationConfigService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
     Mono<RestResponse<Page<ConfigurationSetting>>> listKeyValues(@HostParam("url") String url, @QueryParam("key") String key, @QueryParam("label") String label,
-                                                                 @QueryParam("$select") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
+                                                                 @QueryParam("$select") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime);
 
     @GET("{nextUrl}")
     @ExpectedResponses({200})
