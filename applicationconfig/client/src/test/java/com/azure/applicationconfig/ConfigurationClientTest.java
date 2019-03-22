@@ -164,6 +164,7 @@ public class ConfigurationClientTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 8);
         final Map<String, String> tags = new HashMap<>();
         tags.put("MyTag", "TagValue");
+        tags.put("AnotherTag", "AnotherTagValue");
         final ConfigurationSetting newConfigurationSetting = new ConfigurationSetting()
                 .withKey(key)
                 .withValue("myNewValue5")
