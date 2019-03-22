@@ -37,7 +37,7 @@ interface ApplicationConfigService {
     @PUT("kv/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<ConfigurationSetting>> setKey(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label, @BodyParam(ContentType.APPLICATION_JSON) KeyValueCreateUpdateParameters keyValueParameters,
+    Mono<RestResponse<ConfigurationSetting>> setKey(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label, @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
                                                     @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
     @GET("kv")

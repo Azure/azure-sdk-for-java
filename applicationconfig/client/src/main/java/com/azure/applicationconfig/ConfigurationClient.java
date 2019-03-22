@@ -78,12 +78,8 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<RestResponse<ConfigurationSetting>> add(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
-        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
-                .withValue(configurationSetting.value())
-                .withContentType(configurationSetting.contentType())
-                .withTags(configurationSetting.tags());
 
-        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, null, getETagValue(ETAG_ANY));
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), configurationSetting, null, getETagValue(ETAG_ANY));
     }
 
     /**
@@ -108,12 +104,8 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<RestResponse<ConfigurationSetting>> set(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
-        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
-                .withValue(configurationSetting.value())
-                .withContentType(configurationSetting.contentType())
-                .withTags(configurationSetting.tags());
 
-        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(configurationSetting.etag()), null);
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), configurationSetting, getETagValue(configurationSetting.etag()), null);
     }
 
     /**
@@ -133,14 +125,10 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<RestResponse<ConfigurationSetting>> update(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
-        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
-                .withValue(configurationSetting.value())
-                .withContentType(configurationSetting.contentType())
-                .withTags(configurationSetting.tags());
 
         String etag = configurationSetting.etag() == null ? ETAG_ANY : configurationSetting.etag();
 
-        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(etag), null);
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), configurationSetting, getETagValue(etag), null);
     }
 
     /**
