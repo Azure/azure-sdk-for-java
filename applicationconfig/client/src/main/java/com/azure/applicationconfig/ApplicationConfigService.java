@@ -48,7 +48,7 @@ interface ApplicationConfigService {
     @GET("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<Page<ConfigurationSetting>>> listKeyValuesNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
+    Mono<RestResponse<Page<ConfigurationSetting>>> listKeyValues(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
 
     @DELETE("kv/{key}")
     @ExpectedResponses({200, 204})

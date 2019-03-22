@@ -384,8 +384,8 @@ public final class ConfigurationClient extends ServiceClient {
      * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link ConfigurationSetting} from the next page of results.
      */
-    private Flux<ConfigurationSetting> listNextPage(@NonNull String nextPageLink) {
-        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValuesNext(serviceEndpoint, nextPageLink);
+    private Flux<ConfigurationSetting> listKeyValues(@NonNull String nextPageLink) {
+        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValues(serviceEndpoint, nextPageLink);
         return getPagedConfigurationSettings(result);
     }
 
