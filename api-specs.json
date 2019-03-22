@@ -58,6 +58,10 @@
     "source": "specification/dns/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "edgegateway/resource-manager": {
+    "source": "specification/edgegateway/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "eventgrid/resource-manager": {
     "source": "specification/eventgrid/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -98,6 +102,10 @@
   },
   "notificationhubs/resource-manager": {
     "source": "specification/notificationhubs/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "marketplaceordering/resource-manager": {
+    "source": "specification/marketplaceordering/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "mediaservices/resource-manager": {
