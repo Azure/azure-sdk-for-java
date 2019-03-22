@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -37,10 +38,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Creates a policy that authenticates requests with Azure Application Configuration service.
- * TODO (conniey): Can we make an AuthorizationPolicy to add to the pipeline?
+ * Creates a policy that adds the required requests with Azure Application Configuration service.
  */
-public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
+final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
     private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";
 
     static final String HOST_HEADER = "Host";
@@ -50,17 +50,7 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
     private static final String ACCEPT_HEADER = "Accept";
 
-    private final ConfigurationClientCredentials credentials;
     private final Logger logger = LoggerFactory.getLogger(ConfigurationCredentialsPolicy.class);
-
-    /**
-     * Initializes a new instance of ConfigurationCredentialsPolicy based on credentials.
-     *
-     * @param credentials for the Configuration Store in Azure
-     */
-    ConfigurationCredentialsPolicy(ConfigurationClientCredentials credentials) {
-        this.credentials = credentials;
-    }
 
     /**
      * Sign the request.
@@ -91,24 +81,20 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
                         return Mono.error(new NoSuchAlgorithmException("Unable to locate SHA-256 algorithm."));
                     }
 
-                    final Map<String, String> mapped = getDefaultHeaders(context.httpRequest().headers());
+                    final Map<String, String> mapped = getDefaultHeaders(context.httpRequest().url(), context.httpRequest().headers());
                     final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
 
                     mapped.put(CONTENT_HASH_HEADER, contentHash);
                     mapped.forEach((key, value) -> context.httpRequest().headers().set(key, value));
 
-                    return this.credentials.authorizationHeaderValueAsync(context.httpRequest());
-                })
-                .flatMap(authorizationValue -> {
-                    context.httpRequest().headers().set(AUTHORIZATION_HEADER, authorizationValue);
                     return next.process().doOnSuccess(this::logResponseDelegate);
                 });
     }
 
-    private Map<String, String> getDefaultHeaders(HttpHeaders currentHeaders) {
+    private Map<String, String> getDefaultHeaders(URL url, HttpHeaders currentHeaders) {
         final Map<String, String> mapped = new HashMap<>();
 
-        mapped.put(HOST_HEADER, credentials.baseUri().getHost());
+        mapped.put(HOST_HEADER, url.getHost());
         mapped.put(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
         mapped.put(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
 
