@@ -16,6 +16,7 @@ import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -69,7 +70,7 @@ final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
                     try {
                         return MessageDigest.getInstance("SHA-256");
                     } catch (NoSuchAlgorithmException e) {
-                        return null;
+                        throw Exceptions.propagate(e);
                     }
                 }, (messageDigest, byteBuffer) -> {
                         if (messageDigest != null) {
@@ -77,10 +78,6 @@ final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
                         }
                     })
                 .flatMap(messageDigest -> {
-                    if (messageDigest == null) {
-                        return Mono.error(new NoSuchAlgorithmException("Unable to locate SHA-256 algorithm."));
-                    }
-
                     final Map<String, String> mapped = getDefaultHeaders(context.httpRequest().url(), context.httpRequest().headers());
                     final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
 
