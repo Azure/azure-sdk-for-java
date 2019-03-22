@@ -9,10 +9,11 @@ import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
 import com.azure.common.ServiceClient;
-import com.azure.common.ServiceClientBuilder;
 import com.azure.common.configuration.ClientConfiguration;
+import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.policy.AsyncCredentialsPolicy;
+import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
 import com.azure.common.http.rest.RestResponse;
@@ -26,6 +27,7 @@ import reactor.util.annotation.NonNull;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
@@ -284,25 +286,45 @@ public final class ConfigurationClient extends ServiceClient {
         return getPagedConfigurationSettings(result);
     }
 
-    static class ConfigurationClientBuilder extends ServiceClientBuilder<ConfigurationClient> {
+    static class ConfigurationClientBuilder {
+        private final ClientConfiguration configuration;
+
         private ConfigurationClientBuilder(ClientConfiguration configuration) {
-            super(configuration);
+            this.configuration = configuration;
         }
 
-        @Override
-        protected ConfigurationClient onBuild(ClientConfiguration config) {
+        public ConfigurationClient build() {
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-            policies.add(new UserAgentPolicy(config.userAgent()));
+            policies.add(new UserAgentPolicy(configuration.userAgent()));
             policies.add(new RequestIdPolicy());
-            policies.add(config.retryPolicy());
-            policies.add(new ConfigurationCredentialsPolicy(config.getCredentials()));
-            policies.add(new AsyncCredentialsPolicy(config.getCredentials()));
-            HttpPipeline pipeline = config.getHttpClient() == null
+            policies.add(configuration.retryPolicy());
+            policies.add(new ConfigurationCredentialsPolicy());
+            policies.add(new AsyncCredentialsPolicy(configuration.getCredentials()));
+
+            HttpPipeline pipeline = configuration.getHttpClient() == null
                     ? new HttpPipeline(policies)
-                    : new HttpPipeline(config.getHttpClient(), policies);
-            return new ConfigurationClient(config.serviceEndpoint(), pipeline);
+                    : new HttpPipeline(configuration.getHttpClient(), policies);
+
+            return new ConfigurationClient(configuration.serviceEndpoint(), pipeline);
+        }
+
+        public ConfigurationClientBuilder withHttpLogLevel(HttpLogDetailLevel logLevel) {
+            configuration.withHttpLogLevel(logLevel);
+            return this;
+        }
+
+        public ConfigurationClientBuilder withPolicy(HttpPipelinePolicy policy) {
+            Objects.requireNonNull(policy);
+            configuration.addPolicy(policy);
+            return this;
+        }
+
+        public ConfigurationClientBuilder withHttpClient(HttpClient client) {
+            Objects.requireNonNull(client);
+            configuration.withHttpClient(client);
+            return this;
         }
     }
 
