@@ -57,9 +57,9 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     public static ConfigurationClientBuilder builder(ConfigurationClientCredentials credentials) {
-        ClientConfiguration configuration = getDefaultConfiguration(credentials)
-                .withUserAgent(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION))
-                .withServiceEndpoint(credentials.baseUri().toString());
+        ClientConfiguration configuration = new ClientConfiguration()
+                .userAgent(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION))
+                .serviceEndpoint(credentials.baseUri().toString());
 
         return new ConfigurationClientBuilder(configuration);
     }
@@ -304,19 +304,19 @@ public final class ConfigurationClient extends ServiceClient {
             policies.add(new ConfigurationCredentialsPolicy());
             policies.add(new AsyncCredentialsPolicy(configuration.getCredentials()));
 
-            configuration.getPolicies().forEach(policies::add);
+            policies.addAll(configuration.policies());
 
             policies.add(new HttpLoggingPolicy(configuration.httpLogDetailLevel()));
 
-            HttpPipeline pipeline = configuration.getHttpClient() == null
+            HttpPipeline pipeline = configuration.httpClient() == null
                     ? new HttpPipeline(policies)
-                    : new HttpPipeline(configuration.getHttpClient(), policies);
+                    : new HttpPipeline(configuration.httpClient(), policies);
 
             return new ConfigurationClient(configuration.serviceEndpoint(), pipeline);
         }
 
         public ConfigurationClientBuilder withHttpLogLevel(HttpLogDetailLevel logLevel) {
-            configuration.withHttpLogLevel(logLevel);
+            configuration.httpLogDetailLevel(logLevel);
             return this;
         }
 
@@ -328,7 +328,7 @@ public final class ConfigurationClient extends ServiceClient {
 
         public ConfigurationClientBuilder withHttpClient(HttpClient client) {
             Objects.requireNonNull(client);
-            configuration.withHttpClient(client);
+            configuration.httpClient(client);
             return this;
         }
     }
