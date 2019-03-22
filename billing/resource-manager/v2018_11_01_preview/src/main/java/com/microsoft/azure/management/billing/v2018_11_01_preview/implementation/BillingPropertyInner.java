@@ -47,8 +47,8 @@ public class BillingPropertyInner {
     /**
      * Billing profile name.
      */
-    @JsonProperty(value = "billingProflieName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProflieName;
+    @JsonProperty(value = "billingProfileName", access = JsonProperty.Access.WRITE_ONLY)
+    private String billingProfileName;
 
     /**
      * Invoice Section Id.
@@ -122,10 +122,10 @@ public class BillingPropertyInner {
     /**
      * Get billing profile name.
      *
-     * @return the billingProflieName value
+     * @return the billingProfileName value
      */
-    public String billingProflieName() {
-        return this.billingProflieName;
+    public String billingProfileName() {
+        return this.billingProfileName;
     }
 
     /**

@@ -66,8 +66,8 @@ public class Enrollment {
     /**
      * Enrollment billing cycle.
      */
-    @JsonProperty(value = "billingCylce", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingCylce;
+    @JsonProperty(value = "billingCycle", access = JsonProperty.Access.WRITE_ONLY)
+    private String billingCycle;
 
     /**
      * Get enrollment Start Date.
@@ -166,10 +166,10 @@ public class Enrollment {
     /**
      * Get enrollment billing cycle.
      *
-     * @return the billingCylce value
+     * @return the billingCycle value
      */
-    public String billingCylce() {
-        return this.billingCylce;
+    public String billingCycle() {
+        return this.billingCycle;
     }
 
 }

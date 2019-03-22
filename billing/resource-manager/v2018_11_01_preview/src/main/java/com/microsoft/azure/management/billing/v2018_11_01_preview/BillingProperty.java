@@ -33,9 +33,9 @@ public interface BillingProperty extends HasInner<BillingPropertyInner>, HasMana
     String billingProfileId();
 
     /**
-     * @return the billingProflieName value.
+     * @return the billingProfileName value.
      */
-    String billingProflieName();
+    String billingProfileName();
 
     /**
      * @return the billingTenantId value.

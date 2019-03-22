@@ -39,8 +39,8 @@ class BillingPropertyImpl extends WrapperImpl<BillingPropertyInner> implements B
     }
 
     @Override
-    public String billingProflieName() {
-        return this.inner().billingProflieName();
+    public String billingProfileName() {
+        return this.inner().billingProfileName();
     }
 
     @Override

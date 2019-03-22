@@ -518,16 +518,16 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The BillingAccountbillingPermissionsInner object to access its operations.
+     * The BillingAccountBillingPermissionsInner object to access its operations.
      */
-    private BillingAccountbillingPermissionsInner billingAccountbillingPermissions;
+    private BillingAccountBillingPermissionsInner billingAccountBillingPermissions;
 
     /**
-     * Gets the BillingAccountbillingPermissionsInner object to access its operations.
-     * @return the BillingAccountbillingPermissionsInner object.
+     * Gets the BillingAccountBillingPermissionsInner object to access its operations.
+     * @return the BillingAccountBillingPermissionsInner object.
      */
-    public BillingAccountbillingPermissionsInner billingAccountbillingPermissions() {
-        return this.billingAccountbillingPermissions;
+    public BillingAccountBillingPermissionsInner billingAccountBillingPermissions() {
+        return this.billingAccountBillingPermissions;
     }
 
     /**
@@ -544,94 +544,94 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The BillingProfilebillingPermissionsInner object to access its operations.
+     * The BillingProfileBillingPermissionsInner object to access its operations.
      */
-    private BillingProfilebillingPermissionsInner billingProfilebillingPermissions;
+    private BillingProfileBillingPermissionsInner billingProfileBillingPermissions;
 
     /**
-     * Gets the BillingProfilebillingPermissionsInner object to access its operations.
-     * @return the BillingProfilebillingPermissionsInner object.
+     * Gets the BillingProfileBillingPermissionsInner object to access its operations.
+     * @return the BillingProfileBillingPermissionsInner object.
      */
-    public BillingProfilebillingPermissionsInner billingProfilebillingPermissions() {
-        return this.billingProfilebillingPermissions;
+    public BillingProfileBillingPermissionsInner billingProfileBillingPermissions() {
+        return this.billingProfileBillingPermissions;
     }
 
     /**
-     * The BillingAccountbillingRoleDefinitionsInner object to access its operations.
+     * The BillingAccountBillingRoleDefinitionsInner object to access its operations.
      */
-    private BillingAccountbillingRoleDefinitionsInner billingAccountbillingRoleDefinitions;
+    private BillingAccountBillingRoleDefinitionsInner billingAccountBillingRoleDefinitions;
 
     /**
-     * Gets the BillingAccountbillingRoleDefinitionsInner object to access its operations.
-     * @return the BillingAccountbillingRoleDefinitionsInner object.
+     * Gets the BillingAccountBillingRoleDefinitionsInner object to access its operations.
+     * @return the BillingAccountBillingRoleDefinitionsInner object.
      */
-    public BillingAccountbillingRoleDefinitionsInner billingAccountbillingRoleDefinitions() {
-        return this.billingAccountbillingRoleDefinitions;
+    public BillingAccountBillingRoleDefinitionsInner billingAccountBillingRoleDefinitions() {
+        return this.billingAccountBillingRoleDefinitions;
     }
 
     /**
-     * The InvoiceSectionbillingRoleDefinitionsInner object to access its operations.
+     * The InvoiceSectionBillingRoleDefinitionsInner object to access its operations.
      */
-    private InvoiceSectionbillingRoleDefinitionsInner invoiceSectionbillingRoleDefinitions;
+    private InvoiceSectionBillingRoleDefinitionsInner invoiceSectionBillingRoleDefinitions;
 
     /**
-     * Gets the InvoiceSectionbillingRoleDefinitionsInner object to access its operations.
-     * @return the InvoiceSectionbillingRoleDefinitionsInner object.
+     * Gets the InvoiceSectionBillingRoleDefinitionsInner object to access its operations.
+     * @return the InvoiceSectionBillingRoleDefinitionsInner object.
      */
-    public InvoiceSectionbillingRoleDefinitionsInner invoiceSectionbillingRoleDefinitions() {
-        return this.invoiceSectionbillingRoleDefinitions;
+    public InvoiceSectionBillingRoleDefinitionsInner invoiceSectionBillingRoleDefinitions() {
+        return this.invoiceSectionBillingRoleDefinitions;
     }
 
     /**
-     * The BillingProfilebillingRoleDefinitionsInner object to access its operations.
+     * The BillingProfileBillingRoleDefinitionsInner object to access its operations.
      */
-    private BillingProfilebillingRoleDefinitionsInner billingProfilebillingRoleDefinitions;
+    private BillingProfileBillingRoleDefinitionsInner billingProfileBillingRoleDefinitions;
 
     /**
-     * Gets the BillingProfilebillingRoleDefinitionsInner object to access its operations.
-     * @return the BillingProfilebillingRoleDefinitionsInner object.
+     * Gets the BillingProfileBillingRoleDefinitionsInner object to access its operations.
+     * @return the BillingProfileBillingRoleDefinitionsInner object.
      */
-    public BillingProfilebillingRoleDefinitionsInner billingProfilebillingRoleDefinitions() {
-        return this.billingProfilebillingRoleDefinitions;
+    public BillingProfileBillingRoleDefinitionsInner billingProfileBillingRoleDefinitions() {
+        return this.billingProfileBillingRoleDefinitions;
     }
 
     /**
-     * The BillingAccountbillingRoleAssignmentsInner object to access its operations.
+     * The BillingAccountBillingRoleAssignmentsInner object to access its operations.
      */
-    private BillingAccountbillingRoleAssignmentsInner billingAccountbillingRoleAssignments;
+    private BillingAccountBillingRoleAssignmentsInner billingAccountBillingRoleAssignments;
 
     /**
-     * Gets the BillingAccountbillingRoleAssignmentsInner object to access its operations.
-     * @return the BillingAccountbillingRoleAssignmentsInner object.
+     * Gets the BillingAccountBillingRoleAssignmentsInner object to access its operations.
+     * @return the BillingAccountBillingRoleAssignmentsInner object.
      */
-    public BillingAccountbillingRoleAssignmentsInner billingAccountbillingRoleAssignments() {
-        return this.billingAccountbillingRoleAssignments;
+    public BillingAccountBillingRoleAssignmentsInner billingAccountBillingRoleAssignments() {
+        return this.billingAccountBillingRoleAssignments;
     }
 
     /**
-     * The InvoiceSectionbillingRoleAssignmentsInner object to access its operations.
+     * The InvoiceSectionBillingRoleAssignmentsInner object to access its operations.
      */
-    private InvoiceSectionbillingRoleAssignmentsInner invoiceSectionbillingRoleAssignments;
+    private InvoiceSectionBillingRoleAssignmentsInner invoiceSectionBillingRoleAssignments;
 
     /**
-     * Gets the InvoiceSectionbillingRoleAssignmentsInner object to access its operations.
-     * @return the InvoiceSectionbillingRoleAssignmentsInner object.
+     * Gets the InvoiceSectionBillingRoleAssignmentsInner object to access its operations.
+     * @return the InvoiceSectionBillingRoleAssignmentsInner object.
      */
-    public InvoiceSectionbillingRoleAssignmentsInner invoiceSectionbillingRoleAssignments() {
-        return this.invoiceSectionbillingRoleAssignments;
+    public InvoiceSectionBillingRoleAssignmentsInner invoiceSectionBillingRoleAssignments() {
+        return this.invoiceSectionBillingRoleAssignments;
     }
 
     /**
-     * The BillingProfilebillingRoleAssignmentsInner object to access its operations.
+     * The BillingProfileBillingRoleAssignmentsInner object to access its operations.
      */
-    private BillingProfilebillingRoleAssignmentsInner billingProfilebillingRoleAssignments;
+    private BillingProfileBillingRoleAssignmentsInner billingProfileBillingRoleAssignments;
 
     /**
-     * Gets the BillingProfilebillingRoleAssignmentsInner object to access its operations.
-     * @return the BillingProfilebillingRoleAssignmentsInner object.
+     * Gets the BillingProfileBillingRoleAssignmentsInner object to access its operations.
+     * @return the BillingProfileBillingRoleAssignmentsInner object.
      */
-    public BillingProfilebillingRoleAssignmentsInner billingProfilebillingRoleAssignments() {
-        return this.billingProfilebillingRoleAssignments;
+    public BillingProfileBillingRoleAssignmentsInner billingProfileBillingRoleAssignments() {
+        return this.billingProfileBillingRoleAssignments;
     }
 
     /**
@@ -697,15 +697,15 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.policys = new PolicysInner(restClient().retrofit(), this);
         this.billingPropertys = new BillingPropertysInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
-        this.billingAccountbillingPermissions = new BillingAccountbillingPermissionsInner(restClient().retrofit(), this);
+        this.billingAccountBillingPermissions = new BillingAccountBillingPermissionsInner(restClient().retrofit(), this);
         this.invoiceSectionsbillingPermissions = new InvoiceSectionsbillingPermissionsInner(restClient().retrofit(), this);
-        this.billingProfilebillingPermissions = new BillingProfilebillingPermissionsInner(restClient().retrofit(), this);
-        this.billingAccountbillingRoleDefinitions = new BillingAccountbillingRoleDefinitionsInner(restClient().retrofit(), this);
-        this.invoiceSectionbillingRoleDefinitions = new InvoiceSectionbillingRoleDefinitionsInner(restClient().retrofit(), this);
-        this.billingProfilebillingRoleDefinitions = new BillingProfilebillingRoleDefinitionsInner(restClient().retrofit(), this);
-        this.billingAccountbillingRoleAssignments = new BillingAccountbillingRoleAssignmentsInner(restClient().retrofit(), this);
-        this.invoiceSectionbillingRoleAssignments = new InvoiceSectionbillingRoleAssignmentsInner(restClient().retrofit(), this);
-        this.billingProfilebillingRoleAssignments = new BillingProfilebillingRoleAssignmentsInner(restClient().retrofit(), this);
+        this.billingProfileBillingPermissions = new BillingProfileBillingPermissionsInner(restClient().retrofit(), this);
+        this.billingAccountBillingRoleDefinitions = new BillingAccountBillingRoleDefinitionsInner(restClient().retrofit(), this);
+        this.invoiceSectionBillingRoleDefinitions = new InvoiceSectionBillingRoleDefinitionsInner(restClient().retrofit(), this);
+        this.billingProfileBillingRoleDefinitions = new BillingProfileBillingRoleDefinitionsInner(restClient().retrofit(), this);
+        this.billingAccountBillingRoleAssignments = new BillingAccountBillingRoleAssignmentsInner(restClient().retrofit(), this);
+        this.invoiceSectionBillingRoleAssignments = new InvoiceSectionBillingRoleAssignmentsInner(restClient().retrofit(), this);
+        this.billingProfileBillingRoleAssignments = new BillingProfileBillingRoleAssignmentsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }
