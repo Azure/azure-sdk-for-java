@@ -22,8 +22,9 @@ public class ResourceSku {
     private String name;
 
     /**
-     * The tier of this particular SKU. Optional. Possible values include:
-     * 'Free', 'Basic', 'Premium'.
+     * Optional tier of this particular SKU. `Basic` is deprecated, use
+     * `Standard` instead for Basic tier. Possible values include: 'Free',
+     * 'Basic', 'Standard', 'Premium'.
      */
     @JsonProperty(value = "tier")
     private SignalRSkuTier tier;
@@ -51,7 +52,7 @@ public class ResourceSku {
     private Integer capacity;
 
     /**
-     * Get the name value.
+     * Get the name of the SKU. This is typically a letter + number code, such as A0 or P3.  Required (if sku is specified).
      *
      * @return the name value
      */
@@ -60,7 +61,7 @@ public class ResourceSku {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the SKU. This is typically a letter + number code, such as A0 or P3.  Required (if sku is specified).
      *
      * @param name the name value to set
      * @return the ResourceSku object itself.
@@ -71,7 +72,7 @@ public class ResourceSku {
     }
 
     /**
-     * Get the tier value.
+     * Get optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead for Basic tier. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'.
      *
      * @return the tier value
      */
@@ -80,7 +81,7 @@ public class ResourceSku {
     }
 
     /**
-     * Set the tier value.
+     * Set optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead for Basic tier. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'.
      *
      * @param tier the tier value to set
      * @return the ResourceSku object itself.
@@ -91,7 +92,7 @@ public class ResourceSku {
     }
 
     /**
-     * Get the size value.
+     * Get optional, string. When the name field is the combination of tier and some other value, this would be the standalone code.
      *
      * @return the size value
      */
@@ -100,7 +101,7 @@ public class ResourceSku {
     }
 
     /**
-     * Set the size value.
+     * Set optional, string. When the name field is the combination of tier and some other value, this would be the standalone code.
      *
      * @param size the size value to set
      * @return the ResourceSku object itself.
@@ -111,7 +112,7 @@ public class ResourceSku {
     }
 
     /**
-     * Get the family value.
+     * Get optional, string. If the service has different generations of hardware, for the same SKU, then that can be captured here.
      *
      * @return the family value
      */
@@ -120,7 +121,7 @@ public class ResourceSku {
     }
 
     /**
-     * Set the family value.
+     * Set optional, string. If the service has different generations of hardware, for the same SKU, then that can be captured here.
      *
      * @param family the family value to set
      * @return the ResourceSku object itself.
@@ -131,7 +132,8 @@ public class ResourceSku {
     }
 
     /**
-     * Get the capacity value.
+     * Get optional, integer. If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not
+     possible for the resource this may be omitted.
      *
      * @return the capacity value
      */
@@ -140,7 +142,8 @@ public class ResourceSku {
     }
 
     /**
-     * Set the capacity value.
+     * Set optional, integer. If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not
+     possible for the resource this may be omitted.
      *
      * @param capacity the capacity value to set
      * @return the ResourceSku object itself.
