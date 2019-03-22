@@ -21,7 +21,7 @@ public class BillingRoleAssignmentPayload {
     private String principalId;
 
     /**
-     * The role defintion id.
+     * The role definition id.
      */
     @JsonProperty(value = "billingRoleDefinitionName", access = JsonProperty.Access.WRITE_ONLY)
     private String billingRoleDefinitionName;
@@ -36,7 +36,7 @@ public class BillingRoleAssignmentPayload {
     }
 
     /**
-     * Get the role defintion id.
+     * Get the role definition id.
      *
      * @return the billingRoleDefinitionName value
      */

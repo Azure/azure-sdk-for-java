@@ -48,7 +48,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
     private String principalId;
 
     /**
-     * The role defintion id.
+     * The role definition id.
      */
     @JsonProperty(value = "properties.roleDefinitionName", access = JsonProperty.Access.WRITE_ONLY)
     private String roleDefinitionName;
@@ -105,7 +105,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the role defintion id.
+     * Get the role definition id.
      *
      * @return the roleDefinitionName value
      */

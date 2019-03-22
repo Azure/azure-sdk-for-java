@@ -11,7 +11,7 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request parameters to update auto renew for support prouct.
+ * Request parameters to update auto renew for support product.
  */
 public class UpdateAutoRenewRequest {
     /**

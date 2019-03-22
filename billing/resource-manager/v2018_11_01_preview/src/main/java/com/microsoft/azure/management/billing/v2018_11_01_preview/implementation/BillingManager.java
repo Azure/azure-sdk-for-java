@@ -45,7 +45,7 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.Policys;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPropertys;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Operations;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountBillingPermissions;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsbillingPermissions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsBillingPermissions;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileBillingPermissions;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountBillingRoleDefinitions;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionBillingRoleDefinitions;
@@ -89,7 +89,7 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     private BillingPropertys billingPropertys;
     private Operations operations;
     private BillingAccountBillingPermissions billingAccountBillingPermissions;
-    private InvoiceSectionsbillingPermissions invoiceSectionsbillingPermissions;
+    private InvoiceSectionsBillingPermissions invoiceSectionsBillingPermissions;
     private BillingProfileBillingPermissions billingProfileBillingPermissions;
     private BillingAccountBillingRoleDefinitions billingAccountBillingRoleDefinitions;
     private InvoiceSectionBillingRoleDefinitions invoiceSectionBillingRoleDefinitions;
@@ -435,13 +435,13 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage InvoiceSectionsbillingPermissions.
+     * @return Entry point to manage InvoiceSectionsBillingPermissions.
      */
-    public InvoiceSectionsbillingPermissions invoiceSectionsbillingPermissions() {
-        if (this.invoiceSectionsbillingPermissions == null) {
-            this.invoiceSectionsbillingPermissions = new InvoiceSectionsbillingPermissionsImpl(this);
+    public InvoiceSectionsBillingPermissions invoiceSectionsBillingPermissions() {
+        if (this.invoiceSectionsBillingPermissions == null) {
+            this.invoiceSectionsBillingPermissions = new InvoiceSectionsBillingPermissionsImpl(this);
         }
-        return this.invoiceSectionsbillingPermissions;
+        return this.invoiceSectionsBillingPermissions;
     }
 
     /**

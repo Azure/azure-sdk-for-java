@@ -62,7 +62,7 @@ public class InvoicesInner {
      *
      * @param billingAccountName billing Account Id.
      * @param billingProfileName Billing Profile Id.
-     * @param invoiceName Invoide Id.
+     * @param invoiceName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -77,7 +77,7 @@ public class InvoicesInner {
      *
      * @param billingAccountName billing Account Id.
      * @param billingProfileName Billing Profile Id.
-     * @param invoiceName Invoide Id.
+     * @param invoiceName Invoice Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -91,7 +91,7 @@ public class InvoicesInner {
      *
      * @param billingAccountName billing Account Id.
      * @param billingProfileName Billing Profile Id.
-     * @param invoiceName Invoide Id.
+     * @param invoiceName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSummaryInner object
      */
@@ -109,7 +109,7 @@ public class InvoicesInner {
      *
      * @param billingAccountName billing Account Id.
      * @param billingProfileName Billing Profile Id.
-     * @param invoiceName Invoide Id.
+     * @param invoiceName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSummaryInner object
      */

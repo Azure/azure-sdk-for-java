@@ -71,7 +71,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -86,7 +86,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -100,7 +100,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object
      */
@@ -118,7 +118,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object
      */
@@ -161,7 +161,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -176,7 +176,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -190,7 +190,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object
      */
@@ -208,7 +208,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object
      */
@@ -247,7 +247,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param destinationInvoiceSectionName Destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -263,7 +263,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param destinationInvoiceSectionName Destination invoice section id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -278,7 +278,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param destinationInvoiceSectionName Destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object
@@ -297,7 +297,7 @@ public class ProductsInner {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param destinationInvoiceSectionName Destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object

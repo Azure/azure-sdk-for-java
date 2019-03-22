@@ -21,7 +21,7 @@ public interface Products extends HasInner<ProductsInner> {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -32,7 +32,7 @@ public interface Products extends HasInner<ProductsInner> {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

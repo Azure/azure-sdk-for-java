@@ -9,22 +9,21 @@
 package com.microsoft.azure.management.billing.v2018_11_01_preview;
 
 import rx.Observable;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.InvoicesInner;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.InvoiceSectionsBillingPermissionsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * Type representing Invoices.
+ * Type representing InvoiceSectionsBillingPermissions.
  */
-public interface Invoices extends HasInner<InvoicesInner> {
+public interface InvoiceSectionsBillingPermissions extends HasInner<InvoiceSectionsBillingPermissionsInner> {
     /**
-     * Get the invoice by id.
+     * Lists all billingPermissions for the caller has for a Invoice Section.
      *
      * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
-     * @param invoiceName Invoice Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSummary> getAsync(String billingAccountName, String billingProfileName, String invoiceName);
+    Observable<BillingPermissionsListResult> listAsync(String billingAccountName, String invoiceSectionName);
 
 }

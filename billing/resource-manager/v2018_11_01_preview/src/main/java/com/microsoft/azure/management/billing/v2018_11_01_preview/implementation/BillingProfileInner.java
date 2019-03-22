@@ -39,7 +39,7 @@ public class BillingProfileInner extends ProxyResource {
     private Address billingAddress;
 
     /**
-     * If the billing profile is opted in to recieve invoices via email.
+     * If the billing profile is opted in to receive invoices via email.
      */
     @JsonProperty(value = "properties.invoiceEmailOptIn", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean invoiceEmailOptIn;
@@ -135,7 +135,7 @@ public class BillingProfileInner extends ProxyResource {
     }
 
     /**
-     * Get if the billing profile is opted in to recieve invoices via email.
+     * Get if the billing profile is opted in to receive invoices via email.
      *
      * @return the invoiceEmailOptIn value
      */

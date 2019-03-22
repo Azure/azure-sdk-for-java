@@ -531,16 +531,16 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The InvoiceSectionsbillingPermissionsInner object to access its operations.
+     * The InvoiceSectionsBillingPermissionsInner object to access its operations.
      */
-    private InvoiceSectionsbillingPermissionsInner invoiceSectionsbillingPermissions;
+    private InvoiceSectionsBillingPermissionsInner invoiceSectionsBillingPermissions;
 
     /**
-     * Gets the InvoiceSectionsbillingPermissionsInner object to access its operations.
-     * @return the InvoiceSectionsbillingPermissionsInner object.
+     * Gets the InvoiceSectionsBillingPermissionsInner object to access its operations.
+     * @return the InvoiceSectionsBillingPermissionsInner object.
      */
-    public InvoiceSectionsbillingPermissionsInner invoiceSectionsbillingPermissions() {
-        return this.invoiceSectionsbillingPermissions;
+    public InvoiceSectionsBillingPermissionsInner invoiceSectionsBillingPermissions() {
+        return this.invoiceSectionsBillingPermissions;
     }
 
     /**
@@ -698,7 +698,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.billingPropertys = new BillingPropertysInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.billingAccountBillingPermissions = new BillingAccountBillingPermissionsInner(restClient().retrofit(), this);
-        this.invoiceSectionsbillingPermissions = new InvoiceSectionsbillingPermissionsInner(restClient().retrofit(), this);
+        this.invoiceSectionsBillingPermissions = new InvoiceSectionsBillingPermissionsInner(restClient().retrofit(), this);
         this.billingProfileBillingPermissions = new BillingProfileBillingPermissionsInner(restClient().retrofit(), this);
         this.billingAccountBillingRoleDefinitions = new BillingAccountBillingRoleDefinitionsInner(restClient().retrofit(), this);
         this.invoiceSectionBillingRoleDefinitions = new InvoiceSectionBillingRoleDefinitionsInner(restClient().retrofit(), this);
@@ -939,7 +939,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * Cancel product by product id.
      *
      * @param billingAccountName billing Account Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -953,7 +953,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * Cancel product by product id.
      *
      * @param billingAccountName billing Account Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -966,7 +966,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * Cancel product by product id.
      *
      * @param billingAccountName billing Account Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
@@ -983,7 +983,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * Cancel product by product id.
      *
      * @param billingAccountName billing Account Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
@@ -1018,7 +1018,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * Cancel product by product id.
      *
      * @param billingAccountName billing Account Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -1033,7 +1033,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * Cancel product by product id.
      *
      * @param billingAccountName billing Account Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1047,7 +1047,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * Cancel product by product id.
      *
      * @param billingAccountName billing Account Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
@@ -1065,7 +1065,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * Cancel product by product id.
      *
      * @param billingAccountName billing Account Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
@@ -1108,7 +1108,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1123,7 +1123,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1137,7 +1137,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
@@ -1155,7 +1155,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
@@ -1194,7 +1194,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -1210,7 +1210,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1225,7 +1225,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
@@ -1244,7 +1244,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoide Id.
+     * @param productName Invoice Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
