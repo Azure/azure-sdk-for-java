@@ -60,7 +60,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
 
             final String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
             return String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s",
-                credentials.credential(),
+                credentials.id(),
                 signedHeadersValue,
                 signature);
         }
@@ -84,12 +84,12 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
 
     private class CredentialInformation {
         private URL baseUri;
-        private String credential;
+        private String id;
         private byte[] secret;
 
         URL baseUri() { return baseUri; }
 
-        String credential() { return credential; }
+        String id() { return id; }
 
         byte[] secret() { return secret; }
 
@@ -114,7 +114,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
                     if (segment.toLowerCase().startsWith(endpointString)) {
                         this.baseUri = new URL(segment.substring(segment.indexOf('=') + 1));
                     } else if (segment.toLowerCase().startsWith(idString)) {
-                        this.credential = segment.substring(segment.indexOf('=') + 1);
+                        this.id = segment.substring(segment.indexOf('=') + 1);
                     } else if (segment.toLowerCase().startsWith(secretString)) {
                         String secretBase64 = segment.substring(segment.indexOf('=') + 1);
                         this.secret = Base64.getDecoder().decode(secretBase64);
@@ -124,7 +124,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
                 }
             }
 
-            if (this.baseUri == null || this.credential == null || this.secret == null) {
+            if (this.baseUri == null || this.id == null || this.secret == null) {
                 throw new IllegalArgumentException("Could not parse 'connectionString' value: " + connectionString);
             }
         }
