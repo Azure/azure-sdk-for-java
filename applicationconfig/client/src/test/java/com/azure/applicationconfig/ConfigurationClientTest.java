@@ -57,36 +57,32 @@ public class ConfigurationClientTest {
     @Before
     public void beforeTest() throws Exception {
         final TestMode testMode = getTestMode();
-        final String playbackUri = getPlaybackUri(testMode);
-        final HttpPipelinePolicy loggingPolicy = new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS);
-        final String connectionString;
-        final HttpPipeline pipeline;
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
 
         if (interceptorManager.isPlaybackMode()) {
             logger.info("PLAYBACK MODE");
 
-            connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
+            final String playbackUri = getPlaybackUri(testMode);
+            final String connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
 
-            List<HttpPipelinePolicy> policies = ConfigurationClient.getDefaultPolicies(connectionString);
-            policies.add(loggingPolicy);
-
-            pipeline = new HttpPipeline(interceptorManager.getPlaybackClient(), policies);
+            client = ConfigurationClient.builder(new ConfigurationClientCredentials(connectionString))
+                    .withHttpClient(interceptorManager.getPlaybackClient())
+                    .withHttpLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                    .build();
         } else {
             logger.info("RECORD MODE");
 
-            connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
+            final String connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
             Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
-            List<HttpPipelinePolicy> policies = ConfigurationClient.getDefaultPolicies(connectionString);
-            policies.add(interceptorManager.getRecordPolicy());
-            policies.add(loggingPolicy);
-
-            pipeline = new HttpPipeline(HttpClient.createDefault().wiretap(true), policies);
+            client = ConfigurationClient.builder(new ConfigurationClientCredentials(connectionString))
+                    .withHttpClient(HttpClient.createDefault().wiretap(true))
+                    .withHttpLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                    .withPolicy(interceptorManager.getRecordPolicy())
+                    .build();
         }
 
-        client = new ConfigurationClient(connectionString, pipeline);
         keyPrefix = SdkContext.randomResourceName("key", 8);
     }
 
