@@ -151,7 +151,7 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithNoEncryption {
             /**
              * Specifies noEncryption.
-             * @param noEncryption Configuations of NoEncryption
+             * @param noEncryption Configuration of NoEncryption
              * @return the next definition stage
              */
             WithCreate withNoEncryption(NoEncryption noEncryption);
@@ -229,7 +229,7 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithNoEncryption {
             /**
              * Specifies noEncryption.
-             * @param noEncryption Configuations of NoEncryption
+             * @param noEncryption Configuration of NoEncryption
              * @return the next update stage
              */
             Update withNoEncryption(NoEncryption noEncryption);

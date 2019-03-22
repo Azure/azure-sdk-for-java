@@ -23,14 +23,14 @@ public class BuiltInStandardEncoderPreset extends Preset {
      * The built-in preset to be used for encoding videos. Possible values
      * include: 'H264SingleBitrateSD', 'H264SingleBitrate720p',
      * 'H264SingleBitrate1080p', 'AdaptiveStreaming', 'AACGoodQualityAudio',
-     * 'H264MultipleBitrate1080p', 'H264MultipleBitrate720p',
-     * 'H264MultipleBitrateSD'.
+     * 'ContentAwareEncodingExperimental', 'H264MultipleBitrate1080p',
+     * 'H264MultipleBitrate720p', 'H264MultipleBitrateSD'.
      */
     @JsonProperty(value = "presetName", required = true)
     private EncoderNamedPreset presetName;
 
     /**
-     * Get the built-in preset to be used for encoding videos. Possible values include: 'H264SingleBitrateSD', 'H264SingleBitrate720p', 'H264SingleBitrate1080p', 'AdaptiveStreaming', 'AACGoodQualityAudio', 'H264MultipleBitrate1080p', 'H264MultipleBitrate720p', 'H264MultipleBitrateSD'.
+     * Get the built-in preset to be used for encoding videos. Possible values include: 'H264SingleBitrateSD', 'H264SingleBitrate720p', 'H264SingleBitrate1080p', 'AdaptiveStreaming', 'AACGoodQualityAudio', 'ContentAwareEncodingExperimental', 'H264MultipleBitrate1080p', 'H264MultipleBitrate720p', 'H264MultipleBitrateSD'.
      *
      * @return the presetName value
      */
@@ -39,7 +39,7 @@ public class BuiltInStandardEncoderPreset extends Preset {
     }
 
     /**
-     * Set the built-in preset to be used for encoding videos. Possible values include: 'H264SingleBitrateSD', 'H264SingleBitrate720p', 'H264SingleBitrate1080p', 'AdaptiveStreaming', 'AACGoodQualityAudio', 'H264MultipleBitrate1080p', 'H264MultipleBitrate720p', 'H264MultipleBitrateSD'.
+     * Set the built-in preset to be used for encoding videos. Possible values include: 'H264SingleBitrateSD', 'H264SingleBitrate720p', 'H264SingleBitrate1080p', 'AdaptiveStreaming', 'AACGoodQualityAudio', 'ContentAwareEncodingExperimental', 'H264MultipleBitrate1080p', 'H264MultipleBitrate720p', 'H264MultipleBitrateSD'.
      *
      * @param presetName the presetName value to set
      * @return the BuiltInStandardEncoderPreset object itself.
