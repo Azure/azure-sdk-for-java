@@ -85,7 +85,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return ConfigurationSetting that was created or updated
      * @throws com.azure.common.http.rest.RestException when a ConfigurationSetting with the same key and label exists.
      */
-    public Mono<RestResponse<ConfigurationSetting>> addKeyValue(ConfigurationSetting configurationSetting) {
+    public Mono<RestResponse<ConfigurationSetting>> add(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
         KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
                 .withValue(configurationSetting.value())
@@ -104,13 +104,18 @@ public final class ConfigurationClient extends ServiceClient {
      * updated.
      * </p>
      *
+     * <p>
+     * The label value for the ConfigurationSetting is optional. If not specified, the
+     * {@link ConfigurationSetting#NULL_LABEL} is used.
+     * </p>
+     *
      * @param configurationSetting The configuration setting to create or update.
      * @return ConfigurationSetting that was created or updated.
      * @throws com.azure.common.http.rest.RestException If the {@link ConfigurationSetting#etag()} was specified, is not
      *                                               {@link ConfigurationClient#ETAG_ANY}, and the current configuration
      *                                               value's etag does not match.
      */
-    public Mono<RestResponse<ConfigurationSetting>> setKeyValue(ConfigurationSetting configurationSetting) {
+    public Mono<RestResponse<ConfigurationSetting>> set(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
         KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
                 .withValue(configurationSetting.value())
@@ -119,7 +124,6 @@ public final class ConfigurationClient extends ServiceClient {
 
         return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(configurationSetting.etag()), null);
     }
-
 
     /**
      * Updates an existing configuration value in the service. The setting must already exist.
@@ -136,7 +140,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws com.azure.common.http.rest.RestException When a ConfigurationSetting with the same key and label does not
      *                                               exists or the configuration value is locked.
      */
-    public Mono<RestResponse<ConfigurationSetting>> updateKeyValue(ConfigurationSetting configurationSetting) {
+    public Mono<RestResponse<ConfigurationSetting>> update(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
         KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
                 .withValue(configurationSetting.value())
@@ -148,7 +152,6 @@ public final class ConfigurationClient extends ServiceClient {
         return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(etag), null);
     }
 
-
     /**
      * Gets a ConfigurationSetting that matches the {@param key} and {@param label}.
      *
@@ -157,35 +160,28 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@param key} and {@param label} does
      *                                               not exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> getKeyValue(String key) {
-        return getKeyValue(key, null, null);
+    public Mono<RestResponse<ConfigurationSetting>> get(String key) {
+        return get(key, null);
     }
 
     /**
-     * Gets the ConfigurationSetting given the {@param key}, optional {@param label} and optional {@param etag}.
-     *
-     * <p>
-     * Supplying {@param etag} will result in a ConfigurationSetting only being returned if the current etag is not the
-     * same value. This is to improve the client caching scenario, where they only want the configuration value if it
-     * has changed.
-     * </p>
+     * Gets the ConfigurationSetting given the {@param key}, optional {@param label}.
      *
      * @param key   The key being retrieved
      * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
-     * @param etag  Optional. If specified, will only get the ConfigurationSetting if the current etag does not match.
      * @return The configuration value in the service.
      * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@param key} and {@param label} does
      *                                               not exist. If {@param etag} was specified, returns status code of
      *                                               304 if the key has not been modified.
      */
-    public Mono<RestResponse<ConfigurationSetting>> getKeyValue(String key, String label, String etag) {
+    public Mono<RestResponse<ConfigurationSetting>> get(String key, String label) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.getKeyValue(baseUri.toString(), key, label, null, null, null, getETagValue(etag));
+        return service.getKeyValue(baseUri.toString(), key, label, null, null, null, null);
     }
 
     /**
@@ -194,12 +190,12 @@ public final class ConfigurationClient extends ServiceClient {
      * @param key The key to delete.
      * @return the deleted ConfigurationSetting or null if didn't exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> deleteKeyValue(String key) {
+    public Mono<RestResponse<ConfigurationSetting>> delete(String key) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         }
 
-        return deleteKeyValue(key, null, null);
+        return delete(key, null, null);
     }
 
     /**
@@ -211,7 +207,7 @@ public final class ConfigurationClient extends ServiceClient {
      *              changed the value yet.)
      * @return the deleted ConfigurationSetting or none if didn't exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> deleteKeyValue(String key, String label, String etag) {
+    public Mono<RestResponse<ConfigurationSetting>> delete(String key, String label, String etag) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
@@ -228,12 +224,12 @@ public final class ConfigurationClient extends ServiceClient {
      * @return ConfigurationSetting that was locked
      * @throws com.azure.common.http.rest.RestException with status code 404 if the {@param key} does not exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key) {
+    public Mono<RestResponse<ConfigurationSetting>> lock(String key) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         }
 
-        return lockKeyValue(key, null);
+        return lock(key, null);
     }
 
     /**
@@ -244,7 +240,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @param label  Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
      * @return ConfigurationSetting
      */
-    public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key, String label) {
+    public Mono<RestResponse<ConfigurationSetting>> lock(String key, String label) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
@@ -260,8 +256,8 @@ public final class ConfigurationClient extends ServiceClient {
      * @param key key name
      * @return ConfigurationSetting
      */
-    public Mono<RestResponse<ConfigurationSetting>> unlockKeyValue(String key) {
-        return unlockKeyValue(key, null);
+    public Mono<RestResponse<ConfigurationSetting>> unlock(String key) {
+        return unlock(key, null);
     }
 
     /**
@@ -273,7 +269,7 @@ public final class ConfigurationClient extends ServiceClient {
      *              be an explicit value and cannot contain wildcard characters.
      * @return ConfigurationSetting that was unlocked.
      */
-    public Mono<RestResponse<ConfigurationSetting>> unlockKeyValue(String key, String label) {
+    public Mono<RestResponse<ConfigurationSetting>> unlock(String key, String label) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
