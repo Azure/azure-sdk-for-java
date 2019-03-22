@@ -10,6 +10,7 @@ import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
 import com.azure.common.ServiceClient;
 import com.azure.common.configuration.ClientConfiguration;
+import com.azure.common.configuration.InvalidConfigurationException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.policy.AsyncCredentialsPolicy;
@@ -56,10 +57,9 @@ public final class ConfigurationClient extends ServiceClient {
         this.serviceEndpoint = serviceEndpoint;
     }
 
-    public static ConfigurationClientBuilder builder(ConfigurationClientCredentials credentials) {
+    public static ConfigurationClientBuilder builder() {
         ClientConfiguration configuration = new ClientConfiguration()
-                .userAgent(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION))
-                .serviceEndpoint(credentials.baseUri().toString());
+                .userAgent(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION));
 
         return new ConfigurationClientBuilder(configuration);
     }
@@ -287,7 +287,7 @@ public final class ConfigurationClient extends ServiceClient {
         return getPagedConfigurationSettings(result);
     }
 
-    static class ConfigurationClientBuilder {
+    static final class ConfigurationClientBuilder {
         private final ClientConfiguration configuration;
 
         private ConfigurationClientBuilder(ClientConfiguration configuration) {
@@ -295,6 +295,10 @@ public final class ConfigurationClient extends ServiceClient {
         }
 
         public ConfigurationClient build() {
+            if (configuration.credentials() == null) {
+                throw new InvalidConfigurationException("'credentials' is required.");
+            }
+
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -302,7 +306,7 @@ public final class ConfigurationClient extends ServiceClient {
             policies.add(new RequestIdPolicy());
             policies.add(configuration.retryPolicy());
             policies.add(new ConfigurationCredentialsPolicy());
-            policies.add(new AsyncCredentialsPolicy(configuration.getCredentials()));
+            policies.add(new AsyncCredentialsPolicy(configuration.credentials()));
 
             policies.addAll(configuration.policies());
 
@@ -315,19 +319,23 @@ public final class ConfigurationClient extends ServiceClient {
             return new ConfigurationClient(configuration.serviceEndpoint(), pipeline);
         }
 
+        public ConfigurationClientBuilder credentials(ConfigurationClientCredentials credentials) {
+            configuration.credentials(credentials);
+            configuration.serviceEndpoint(credentials.baseUri().toString());
+            return this;
+        }
+
         public ConfigurationClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
             configuration.httpLogDetailLevel(logLevel);
             return this;
         }
 
         public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
-            Objects.requireNonNull(policy);
             configuration.addPolicy(policy);
             return this;
         }
 
         public ConfigurationClientBuilder httpClient(HttpClient client) {
-            Objects.requireNonNull(client);
             configuration.httpClient(client);
             return this;
         }
