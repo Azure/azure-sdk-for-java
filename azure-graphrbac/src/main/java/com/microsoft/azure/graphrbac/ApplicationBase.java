@@ -78,7 +78,7 @@ public class ApplicationBase {
     private String homepage;
 
     /**
-     * urls with more informations of the application.
+     * URLs with more information about the application.
      */
     @JsonProperty(value = "informationalUrls")
     private InformationalUrl informationalUrls;
@@ -393,7 +393,7 @@ public class ApplicationBase {
     }
 
     /**
-     * Get urls with more informations of the application.
+     * Get uRLs with more information about the application.
      *
      * @return the informationalUrls value
      */
@@ -402,7 +402,7 @@ public class ApplicationBase {
     }
 
     /**
-     * Set urls with more informations of the application.
+     * Set uRLs with more information about the application.
      *
      * @param informationalUrls the informationalUrls value to set
      * @return the ApplicationBase object itself.
