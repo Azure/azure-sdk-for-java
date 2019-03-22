@@ -30,7 +30,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
      *
      * @param connectionString connection string in the format "endpoint=_endpoint_;id=_id_;secret=_secret_"
      */
-    public ConfigurationClientCredentials(String connectionString) {
+    public ConfigurationClientCredentials(String connectionString) throws InvalidKeyException, NoSuchAlgorithmException {
         credentials = new CredentialInformation(connectionString);
         headerProvider = new AuthorizationHeaderProvider(credentials);
     }
@@ -39,12 +39,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
 
     @Override
     public Mono<String> authorizationHeaderValueAsync(HttpRequest request) {
-        try {
-            String authorizationValue = headerProvider.getAuthenticationHeaderValue(request);
-            return Mono.just(authorizationValue);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            return Mono.error(e);
-        }
+            return Mono.just(headerProvider.getAuthenticationHeaderValue(request));
     }
 
     private static class AuthorizationHeaderProvider {
