@@ -341,21 +341,23 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Gets all ConfigurationSetting settings.
+     * Gets all ConfigurationSetting settings given the {@param nextPageLink} that was retrieved from a call to
+     * {@link ConfigurationClient#listKeyValues(KeyValueListFilter)} or {@link ConfigurationClient#listNextPage(String)}.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the Page&lt;ConfigurationSetting&gt; object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
+     * @return A stream of {@link ConfigurationSetting} from the next page of results.
      */
     private Flux<ConfigurationSetting> listNextPage(@NonNull String nextPageLink) {
-        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValuesNext(serviceEndpoint.toString(), nextPageLink);
+        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValuesNext(serviceEndpoint, nextPageLink);
         return getPagedConfigurationSettings(result);
     }
 
     /**
-     * Lists chronological/historical representation of ConfigurationSetting resource(s). Revisions eventually expire (default 30 days).
-     * For all operations key is optional parameter. If ommited it implies any key.
-     * For all operations label is optional parameter. If ommited it implies any label.
+     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions eventually
+     * expire (default 30 days).
+     *
+     * For all operations key is optional parameter. If omitted it implies any key.
+     * For all operations label is optional parameter. If omitted it implies any label.
      *
      * @param filter query options
      * @return Revisions of the ConfigurationSetting
@@ -363,9 +365,9 @@ public final class ConfigurationClient extends ServiceClient {
     public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionFilter filter) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (filter != null) {
-            result = service.listKeyValueRevisions(serviceEndpoint.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
+            result = service.listKeyValueRevisions(serviceEndpoint, filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
         } else {
-            result = service.listKeyValueRevisions(serviceEndpoint.toString(), null, null, null, null, null);
+            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
         }
 
         return getPagedConfigurationSettings(result);
