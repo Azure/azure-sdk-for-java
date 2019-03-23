@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Filtering options for Get- requests.
  */
-public abstract class KeyValueGenericFilter<T extends KeyValueGenericFilter> {
+public abstract class KeyValueGenericFilter<T> {
     private String label;
     private String fields;
     private String acceptDatetime;
