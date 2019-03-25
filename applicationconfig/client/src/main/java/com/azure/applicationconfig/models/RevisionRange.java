@@ -2,6 +2,9 @@
 // Licensed under the MIT License
 package com.azure.applicationconfig.models;
 
+/**
+ * A range of configuration setting revisions.
+ */
 public class RevisionRange {
     private final Integer start;
     private final Integer end;
