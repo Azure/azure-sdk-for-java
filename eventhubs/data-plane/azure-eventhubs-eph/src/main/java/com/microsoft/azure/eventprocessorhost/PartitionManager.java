@@ -271,7 +271,7 @@ class PartitionManager extends Closable {
                     throw new FinalException(LoggingUtils.wrapExceptionWithMessage(LoggingUtils.unwrapException(e, null), finalFailureMessage, action));
                 }
             }
-            return (e == null) ? r : null;
+            return r;
         }, this.hostContext.getExecutor());
 
         return retryChain;
