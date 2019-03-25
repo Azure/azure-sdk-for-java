@@ -3,8 +3,9 @@
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.applicationconfig.models.KeyValueListFilter;
-import com.azure.applicationconfig.models.RevisionFilter;
+import com.azure.applicationconfig.models.RequestOptions;
+import com.azure.applicationconfig.models.RevisionOptions;
+import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.rest.RestException;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
@@ -136,7 +137,7 @@ public class ConfigurationClientTest {
 
     private void cleanUpResources() {
         logger.info("Cleaning up created key values.");
-        client.listKeyValues(new KeyValueListFilter().withKey(keyPrefix + "*"))
+        client.listKeyValues(new RevisionOptions().key(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
@@ -273,12 +274,12 @@ public class ConfigurationClientTest {
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.listKeyValues(new KeyValueListFilter().withKey(key).withLabel(label)))
+        StepVerifier.create(client.listKeyValues(new RevisionOptions().key(key).label(label)))
                 .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.listKeyValues(new KeyValueListFilter().withKey(key)))
+        StepVerifier.create(client.listKeyValues(new RevisionOptions().key(key)))
                 .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
                 .expectComplete()
                 .verify();
@@ -305,7 +306,7 @@ public class ConfigurationClientTest {
                 .verifyComplete();
 
         // Get all revisions for a key
-        StepVerifier.create(client.listKeyValueRevisions(new RevisionFilter().withKey(keyPrefix + "*")))
+        StepVerifier.create(client.listKeyValueRevisions(new RevisionOptions().key(keyPrefix + "*")))
                 .assertNext(response -> {
                     assertEquals(keyName, response.key());
                     assertTrue(expected.remove(response.value()));
@@ -341,7 +342,7 @@ public class ConfigurationClientTest {
             results.add(client.set(setting).retryBackoff(2, Duration.ofSeconds(30)));
         }
 
-        KeyValueListFilter filter = new KeyValueListFilter().withLabel(label);
+        RequestOptions filter = new RequestOptions().label(label);
 
         Flux.merge(results).blockLast();
         StepVerifier.create(client.listKeyValues(filter))
@@ -383,7 +384,7 @@ public class ConfigurationClientTest {
     @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test
     public void deleteAllSettings() {
-        client.listKeyValues(new KeyValueListFilter().withKey("key*"))
+        client.listKeyValues(new RequestOptions().key("key*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
