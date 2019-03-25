@@ -6,7 +6,7 @@ import com.azure.applicationconfig.implementation.Page;
 import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.RequestOptions;
-import com.azure.applicationconfig.models.RevisionFilter;
+import com.azure.applicationconfig.models.RevisionOptions;
 import com.azure.applicationconfig.models.RevisionRange;
 import com.azure.common.ServiceClient;
 import com.azure.common.http.HttpClient;
@@ -409,7 +409,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @param options Optional. Options to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
      */
-    public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionFilter options) {
+    public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionOptions options) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (options != null) {
             String fields = getSelectQuery(options.fields());

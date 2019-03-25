@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.models;
 
-public class RevisionFilter extends RequestOptions {
+public class RevisionOptions extends RequestOptions {
     private RevisionRange range;
 
     /**
@@ -18,9 +18,9 @@ public class RevisionFilter extends RequestOptions {
      * the revisions will be returned.
      *
      * @param range The range of revisions for a ConfigurationSetting to fetch.
-     * @return The updated RevisionFilter object.
+     * @return The updated RevisionOptions object.
      */
-    public RevisionFilter range(RevisionRange range) {
+    public RevisionOptions range(RevisionRange range) {
 
         this.range = range;
         return this;
