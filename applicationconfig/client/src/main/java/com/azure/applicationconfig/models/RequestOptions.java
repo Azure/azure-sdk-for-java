@@ -28,7 +28,6 @@ public class RequestOptions {
      * select all {@link ConfigurationSetting#key()}s.
      */
     public RequestOptions() {
-        fields = EnumSet.of(ConfigurationSettingFields.DEFAULT);
         key = "*";
     }
 

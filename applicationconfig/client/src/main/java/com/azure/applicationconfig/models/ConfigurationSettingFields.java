@@ -7,10 +7,6 @@ package com.azure.applicationconfig.models;
  */
 public enum ConfigurationSettingFields {
     /**
-     * Returns the default {@link ConfigurationSetting} fields from the service.
-     */
-    DEFAULT,
-    /**
      * Populates the {@link ConfigurationSetting#key()} from the service.
      */
     KEY,
