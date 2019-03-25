@@ -447,7 +447,7 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     private static String getSelectQuery(EnumSet<ConfigurationSettingFields> set) {
-        if (set.isEmpty()) {
+        if (set == null || set.isEmpty()) {
             return null;
         }
 
