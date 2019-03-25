@@ -35,7 +35,7 @@ public interface HanaInstances extends SupportsGettingByResourceGroup<HanaInstan
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains the new Tags field
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

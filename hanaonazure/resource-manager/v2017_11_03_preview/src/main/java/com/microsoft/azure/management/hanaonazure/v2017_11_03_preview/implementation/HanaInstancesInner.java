@@ -773,7 +773,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains the new Tags field
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -787,7 +787,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains the new Tags field
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -801,7 +801,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains the new Tags field
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -819,7 +819,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains the new Tags field
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -849,7 +849,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains the new Tags field
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -863,7 +863,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains the new Tags field
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -877,7 +877,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains the new Tags field
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -895,7 +895,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains the new Tags field
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
