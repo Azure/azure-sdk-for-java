@@ -719,10 +719,8 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
                         if (!MessageSender.this.linkFirstOpen.isDone()) {
                             final Exception lastReportedError;
-                            final Sender link;
                             synchronized (MessageSender.this.errorConditionLock) {
                                 lastReportedError = MessageSender.this.lastKnownLinkError;
-                                link = MessageSender.this.sendLink;
                             }
 
                             final Exception operationTimedout = new TimeoutException(
