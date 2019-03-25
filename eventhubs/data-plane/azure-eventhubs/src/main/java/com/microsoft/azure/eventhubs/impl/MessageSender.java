@@ -667,7 +667,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
             @Override
             public void accept(ErrorCondition t, Exception u) {
                 if (t != null)
-                    MessageSender.this.onError((t != null && t.getCondition() != null) ? ExceptionUtil.toException(t) : null);
+                    MessageSender.this.onError(t.getCondition() != null ? ExceptionUtil.toException(t) : null);
                 else if (u != null)
                     MessageSender.this.onError(u);
             }
