@@ -11,35 +11,35 @@ package com.microsoft.azure.cognitiveservices.vision.customvision.training.model
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The BoundingBox model.
+ * Bounding box that defines a region of an image.
  */
 public class BoundingBox {
     /**
-     * The left property.
+     * Coordinate of the left boundary.
      */
-    @JsonProperty(value = "left")
+    @JsonProperty(value = "left", required = true)
     private double left;
 
     /**
-     * The top property.
+     * Coordinate of the top boundary.
      */
-    @JsonProperty(value = "top")
+    @JsonProperty(value = "top", required = true)
     private double top;
 
     /**
-     * The width property.
+     * Width.
      */
-    @JsonProperty(value = "width")
+    @JsonProperty(value = "width", required = true)
     private double width;
 
     /**
-     * The height property.
+     * Height.
      */
-    @JsonProperty(value = "height")
+    @JsonProperty(value = "height", required = true)
     private double height;
 
     /**
-     * Get the left value.
+     * Get coordinate of the left boundary.
      *
      * @return the left value
      */
@@ -48,7 +48,7 @@ public class BoundingBox {
     }
 
     /**
-     * Set the left value.
+     * Set coordinate of the left boundary.
      *
      * @param left the left value to set
      * @return the BoundingBox object itself.
@@ -59,7 +59,7 @@ public class BoundingBox {
     }
 
     /**
-     * Get the top value.
+     * Get coordinate of the top boundary.
      *
      * @return the top value
      */
@@ -68,7 +68,7 @@ public class BoundingBox {
     }
 
     /**
-     * Set the top value.
+     * Set coordinate of the top boundary.
      *
      * @param top the top value to set
      * @return the BoundingBox object itself.
@@ -79,7 +79,7 @@ public class BoundingBox {
     }
 
     /**
-     * Get the width value.
+     * Get width.
      *
      * @return the width value
      */
@@ -88,7 +88,7 @@ public class BoundingBox {
     }
 
     /**
-     * Set the width value.
+     * Set width.
      *
      * @param width the width value to set
      * @return the BoundingBox object itself.
@@ -99,7 +99,7 @@ public class BoundingBox {
     }
 
     /**
-     * Get the height value.
+     * Get height.
      *
      * @return the height value
      */
@@ -108,7 +108,7 @@ public class BoundingBox {
     }
 
     /**
-     * Set the height value.
+     * Set height.
      *
      * @param height the height value to set
      * @return the BoundingBox object itself.

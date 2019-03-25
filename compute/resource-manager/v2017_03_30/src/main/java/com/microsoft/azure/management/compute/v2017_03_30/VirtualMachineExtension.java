@@ -115,6 +115,9 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithVirtualMachine {
            /**
             * Specifies resourceGroupName, vmName.
+            * @param resourceGroupName The name of the resource group
+            * @param vmName The name of the virtual machine where the extension should be created or updated
+            * @return the next definition stage
             */
             WithLocation withExistingVirtualMachine(String resourceGroupName, String vmName);
         }
@@ -125,6 +128,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location Resource location
+            * @return the next definition stage
             */
             WithCreate withLocation(String location);
         }
@@ -135,6 +140,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithAutoUpgradeMinorVersion {
             /**
              * Specifies autoUpgradeMinorVersion.
+             * @param autoUpgradeMinorVersion Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true
+             * @return the next definition stage
              */
             WithCreate withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion);
         }
@@ -145,6 +152,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithForceUpdateTag {
             /**
              * Specifies forceUpdateTag.
+             * @param forceUpdateTag How the extension handler should be forced to update even if the extension configuration has not changed
+             * @return the next definition stage
              */
             WithCreate withForceUpdateTag(String forceUpdateTag);
         }
@@ -155,6 +164,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithInstanceView {
             /**
              * Specifies instanceView.
+             * @param instanceView The virtual machine extension instance view
+             * @return the next definition stage
              */
             WithCreate withInstanceView(VirtualMachineExtensionInstanceView instanceView);
         }
@@ -165,6 +176,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithProtectedSettings {
             /**
              * Specifies protectedSettings.
+             * @param protectedSettings The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all
+             * @return the next definition stage
              */
             WithCreate withProtectedSettings(Object protectedSettings);
         }
@@ -175,6 +188,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithPublisher {
             /**
              * Specifies publisher.
+             * @param publisher The name of the extension handler publisher
+             * @return the next definition stage
              */
             WithCreate withPublisher(String publisher);
         }
@@ -185,6 +200,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithSettings {
             /**
              * Specifies settings.
+             * @param settings Json formatted public settings for the extension
+             * @return the next definition stage
              */
             WithCreate withSettings(Object settings);
         }
@@ -195,6 +212,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -205,6 +224,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithTypeHandlerVersion {
             /**
              * Specifies typeHandlerVersion.
+             * @param typeHandlerVersion Specifies the version of the script handler
+             * @return the next definition stage
              */
             WithCreate withTypeHandlerVersion(String typeHandlerVersion);
         }
@@ -215,6 +236,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithVirtualMachineExtensionType {
             /**
              * Specifies virtualMachineExtensionType.
+             * @param virtualMachineExtensionType Specifies the type of the extension; an example is "CustomScriptExtension"
+             * @return the next definition stage
              */
             WithCreate withVirtualMachineExtensionType(String virtualMachineExtensionType);
         }
@@ -243,6 +266,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithAutoUpgradeMinorVersion {
             /**
              * Specifies autoUpgradeMinorVersion.
+             * @param autoUpgradeMinorVersion Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true
+             * @return the next update stage
              */
             Update withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion);
         }
@@ -253,6 +278,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithForceUpdateTag {
             /**
              * Specifies forceUpdateTag.
+             * @param forceUpdateTag How the extension handler should be forced to update even if the extension configuration has not changed
+             * @return the next update stage
              */
             Update withForceUpdateTag(String forceUpdateTag);
         }
@@ -263,6 +290,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithProtectedSettings {
             /**
              * Specifies protectedSettings.
+             * @param protectedSettings The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all
+             * @return the next update stage
              */
             Update withProtectedSettings(Object protectedSettings);
         }
@@ -273,6 +302,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithPublisher {
             /**
              * Specifies publisher.
+             * @param publisher The name of the extension handler publisher
+             * @return the next update stage
              */
             Update withPublisher(String publisher);
         }
@@ -283,6 +314,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithSettings {
             /**
              * Specifies settings.
+             * @param settings Json formatted public settings for the extension
+             * @return the next update stage
              */
             Update withSettings(Object settings);
         }
@@ -293,6 +326,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
@@ -303,6 +338,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithType {
             /**
              * Specifies type.
+             * @param type Specifies the type of the extension; an example is "CustomScriptExtension"
+             * @return the next update stage
              */
             Update withType(String type);
         }
@@ -313,6 +350,8 @@ public interface VirtualMachineExtension extends HasInner<VirtualMachineExtensio
         interface WithTypeHandlerVersion {
             /**
              * Specifies typeHandlerVersion.
+             * @param typeHandlerVersion Specifies the version of the script handler
+             * @return the next update stage
              */
             Update withTypeHandlerVersion(String typeHandlerVersion);
         }

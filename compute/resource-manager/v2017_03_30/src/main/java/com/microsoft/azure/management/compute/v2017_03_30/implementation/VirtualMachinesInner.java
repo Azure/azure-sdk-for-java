@@ -41,6 +41,10 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -71,6 +75,10 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.VirtualMachines getExtensions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions")
         Observable<Response<ResponseBody>> getExtensions(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("$expand") String expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.VirtualMachines listByLocation" })
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/virtualMachines")
+        Observable<Response<ResponseBody>> listByLocation(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.VirtualMachines capture" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/capture")
@@ -183,6 +191,10 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.VirtualMachines beginRunCommand" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommand")
         Observable<Response<ResponseBody>> beginRunCommand(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Body RunCommandInput parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.VirtualMachines listByLocationNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByLocationNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.VirtualMachines listByResourceGroupNext" })
         @GET
@@ -365,6 +377,121 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
     }
 
     /**
+     * Gets all the virtual machines under the specified subscription for the specified location.
+     *
+     * @param location The location for which virtual machines under the subscription are queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
+     */
+    public PagedList<VirtualMachineInner> listByLocation(final String location) {
+        ServiceResponse<Page<VirtualMachineInner>> response = listByLocationSinglePageAsync(location).toBlocking().single();
+        return new PagedList<VirtualMachineInner>(response.body()) {
+            @Override
+            public Page<VirtualMachineInner> nextPage(String nextPageLink) {
+                return listByLocationNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets all the virtual machines under the specified subscription for the specified location.
+     *
+     * @param location The location for which virtual machines under the subscription are queried.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<VirtualMachineInner>> listByLocationAsync(final String location, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByLocationSinglePageAsync(location),
+            new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(String nextPageLink) {
+                    return listByLocationNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all the virtual machines under the specified subscription for the specified location.
+     *
+     * @param location The location for which virtual machines under the subscription are queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<Page<VirtualMachineInner>> listByLocationAsync(final String location) {
+        return listByLocationWithServiceResponseAsync(location)
+            .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
+                @Override
+                public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets all the virtual machines under the specified subscription for the specified location.
+     *
+     * @param location The location for which virtual machines under the subscription are queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listByLocationWithServiceResponseAsync(final String location) {
+        return listByLocationSinglePageAsync(location)
+            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByLocationNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all the virtual machines under the specified subscription for the specified location.
+     *
+    ServiceResponse<PageImpl<VirtualMachineInner>> * @param location The location for which virtual machines under the subscription are queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listByLocationSinglePageAsync(final String location) {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByLocation(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<VirtualMachineInner>> result = listByLocationDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<VirtualMachineInner>> listByLocationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
      *
      * @param resourceGroupName The name of the resource group.
@@ -438,7 +565,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
         }
         Validator.validate(parameters);
         Observable<Response<ResponseBody>> observable = service.capture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<VirtualMachineCaptureResultInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<VirtualMachineCaptureResultInner>() { }.getType());
     }
 
     /**
@@ -1187,7 +1314,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.convertToManagedDisks(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1343,7 +1470,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.deallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1599,7 +1726,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
      *
-    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<VirtualMachineInner>> * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -1618,7 +1745,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listByResourceGroupDelegate(response);
+                        ServiceResponse<PageImpl<VirtualMachineInner>> result = listByResourceGroupDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1627,9 +1754,9 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             });
     }
 
-    private ServiceResponse<PageImpl1<VirtualMachineInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualMachineInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1725,7 +1852,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<VirtualMachineInner>> result = listDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1734,9 +1861,9 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             });
     }
 
-    private ServiceResponse<PageImpl1<VirtualMachineInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualMachineInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1811,7 +1938,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
                 @Override
                 public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<VirtualMachineSizeInner>> result = listAvailableSizesDelegate(response);
+                        ServiceResponse<PageImpl1<VirtualMachineSizeInner>> result = listAvailableSizesDelegate(response);
                         List<VirtualMachineSizeInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
@@ -1825,9 +1952,9 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             });
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineSizeInner>> listAvailableSizesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineSizeInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineSizeInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineSizeInner>> listAvailableSizesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineSizeInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineSizeInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1898,7 +2025,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.powerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -2054,7 +2181,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.restart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -2210,7 +2337,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.start(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -2366,7 +2493,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.redeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -2522,7 +2649,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.performMaintenance(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -2686,7 +2813,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
         }
         Validator.validate(parameters);
         Observable<Response<ResponseBody>> observable = service.runCommand(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<RunCommandResultInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<RunCommandResultInner>() { }.getType());
     }
 
     /**
@@ -2785,6 +2912,117 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
     }
 
     /**
+     * Gets all the virtual machines under the specified subscription for the specified location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
+     */
+    public PagedList<VirtualMachineInner> listByLocationNext(final String nextPageLink) {
+        ServiceResponse<Page<VirtualMachineInner>> response = listByLocationNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<VirtualMachineInner>(response.body()) {
+            @Override
+            public Page<VirtualMachineInner> nextPage(String nextPageLink) {
+                return listByLocationNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets all the virtual machines under the specified subscription for the specified location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<VirtualMachineInner>> listByLocationNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualMachineInner>> serviceFuture, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByLocationNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(String nextPageLink) {
+                    return listByLocationNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all the virtual machines under the specified subscription for the specified location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<Page<VirtualMachineInner>> listByLocationNextAsync(final String nextPageLink) {
+        return listByLocationNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
+                @Override
+                public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets all the virtual machines under the specified subscription for the specified location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listByLocationNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByLocationNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByLocationNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all the virtual machines under the specified subscription for the specified location.
+     *
+    ServiceResponse<PageImpl<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listByLocationNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByLocationNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<VirtualMachineInner>> result = listByLocationNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<VirtualMachineInner>> listByLocationNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -2865,7 +3103,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
      *
-    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -2879,7 +3117,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listByResourceGroupNextDelegate(response);
+                        ServiceResponse<PageImpl<VirtualMachineInner>> result = listByResourceGroupNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2888,9 +3126,9 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             });
     }
 
-    private ServiceResponse<PageImpl1<VirtualMachineInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualMachineInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2976,7 +3214,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
     /**
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
      *
-    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -2990,7 +3228,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listNextDelegate(response);
+                        ServiceResponse<PageImpl<VirtualMachineInner>> result = listNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2999,9 +3237,9 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             });
     }
 
-    private ServiceResponse<PageImpl1<VirtualMachineInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualMachineInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

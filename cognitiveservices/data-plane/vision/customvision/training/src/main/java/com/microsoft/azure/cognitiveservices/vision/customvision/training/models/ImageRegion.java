@@ -35,33 +35,33 @@ public class ImageRegion {
     private DateTime created;
 
     /**
-     * The tagId property.
+     * Id of the tag associated with this region.
      */
-    @JsonProperty(value = "tagId")
+    @JsonProperty(value = "tagId", required = true)
     private UUID tagId;
 
     /**
-     * The left property.
+     * Coordinate of the left boundary.
      */
-    @JsonProperty(value = "left")
+    @JsonProperty(value = "left", required = true)
     private double left;
 
     /**
-     * The top property.
+     * Coordinate of the top boundary.
      */
-    @JsonProperty(value = "top")
+    @JsonProperty(value = "top", required = true)
     private double top;
 
     /**
-     * The width property.
+     * Width.
      */
-    @JsonProperty(value = "width")
+    @JsonProperty(value = "width", required = true)
     private double width;
 
     /**
-     * The height property.
+     * Height.
      */
-    @JsonProperty(value = "height")
+    @JsonProperty(value = "height", required = true)
     private double height;
 
     /**
@@ -92,7 +92,7 @@ public class ImageRegion {
     }
 
     /**
-     * Get the tagId value.
+     * Get id of the tag associated with this region.
      *
      * @return the tagId value
      */
@@ -101,7 +101,7 @@ public class ImageRegion {
     }
 
     /**
-     * Set the tagId value.
+     * Set id of the tag associated with this region.
      *
      * @param tagId the tagId value to set
      * @return the ImageRegion object itself.
@@ -112,7 +112,7 @@ public class ImageRegion {
     }
 
     /**
-     * Get the left value.
+     * Get coordinate of the left boundary.
      *
      * @return the left value
      */
@@ -121,7 +121,7 @@ public class ImageRegion {
     }
 
     /**
-     * Set the left value.
+     * Set coordinate of the left boundary.
      *
      * @param left the left value to set
      * @return the ImageRegion object itself.
@@ -132,7 +132,7 @@ public class ImageRegion {
     }
 
     /**
-     * Get the top value.
+     * Get coordinate of the top boundary.
      *
      * @return the top value
      */
@@ -141,7 +141,7 @@ public class ImageRegion {
     }
 
     /**
-     * Set the top value.
+     * Set coordinate of the top boundary.
      *
      * @param top the top value to set
      * @return the ImageRegion object itself.
@@ -152,7 +152,7 @@ public class ImageRegion {
     }
 
     /**
-     * Get the width value.
+     * Get width.
      *
      * @return the width value
      */
@@ -161,7 +161,7 @@ public class ImageRegion {
     }
 
     /**
-     * Set the width value.
+     * Set width.
      *
      * @param width the width value to set
      * @return the ImageRegion object itself.
@@ -172,7 +172,7 @@ public class ImageRegion {
     }
 
     /**
-     * Get the height value.
+     * Get height.
      *
      * @return the height value
      */
@@ -181,7 +181,7 @@ public class ImageRegion {
     }
 
     /**
-     * Set the height value.
+     * Set height.
      *
      * @param height the height value to set
      * @return the ImageRegion object itself.

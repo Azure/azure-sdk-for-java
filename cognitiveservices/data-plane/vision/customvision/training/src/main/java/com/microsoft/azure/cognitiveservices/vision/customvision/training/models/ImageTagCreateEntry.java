@@ -12,23 +12,23 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ImageTagCreateEntry model.
+ * Entry associating a tag to an image.
  */
 public class ImageTagCreateEntry {
     /**
-     * The imageId property.
+     * Id of the image.
      */
     @JsonProperty(value = "imageId")
     private UUID imageId;
 
     /**
-     * The tagId property.
+     * Id of the tag.
      */
     @JsonProperty(value = "tagId")
     private UUID tagId;
 
     /**
-     * Get the imageId value.
+     * Get id of the image.
      *
      * @return the imageId value
      */
@@ -37,7 +37,7 @@ public class ImageTagCreateEntry {
     }
 
     /**
-     * Set the imageId value.
+     * Set id of the image.
      *
      * @param imageId the imageId value to set
      * @return the ImageTagCreateEntry object itself.
@@ -48,7 +48,7 @@ public class ImageTagCreateEntry {
     }
 
     /**
-     * Get the tagId value.
+     * Get id of the tag.
      *
      * @return the tagId value
      */
@@ -57,7 +57,7 @@ public class ImageTagCreateEntry {
     }
 
     /**
-     * Set the tagId value.
+     * Set id of the tag.
      *
      * @param tagId the tagId value to set
      * @return the ImageTagCreateEntry object itself.

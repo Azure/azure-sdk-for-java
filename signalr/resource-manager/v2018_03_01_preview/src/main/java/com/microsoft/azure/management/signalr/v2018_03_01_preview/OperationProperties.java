@@ -21,7 +21,7 @@ public class OperationProperties {
     private ServiceSpecification serviceSpecification;
 
     /**
-     * Get the serviceSpecification value.
+     * Get the service specifications.
      *
      * @return the serviceSpecification value
      */
@@ -30,7 +30,7 @@ public class OperationProperties {
     }
 
     /**
-     * Set the serviceSpecification value.
+     * Set the service specifications.
      *
      * @param serviceSpecification the serviceSpecification value to set
      * @return the OperationProperties object itself.

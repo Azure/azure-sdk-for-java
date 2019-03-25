@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for EncoderNamedPreset.
  */
 public enum EncoderNamedPreset {
-    /** Produces a set of GOP aligned MP4 files with H.264 video and stereo AAC audio. Auto-generates a bitrate ladder based on the input resolution and bitrate. The auto-generated preset will never exceed the input resolution and bitrate. For example, if the input is 720p at 3 Mbps, output will remain 720p at best, and will start at rates lower than 3 Mbps. The output will will have video and audio in separate MP4 files, which is optimal for adaptive streaming. */
+    /** Produces a set of GOP aligned MP4 files with H.264 video and stereo AAC audio. Auto-generates a bitrate ladder based on the input resolution and bitrate. The auto-generated preset will never exceed the input resolution and bitrate. For example, if the input is 720p at 3 Mbps, output will remain 720p at best, and will start at rates lower than 3 Mbps. The output will have video and audio in separate MP4 files, which is optimal for adaptive streaming. */
     ADAPTIVE_STREAMING("AdaptiveStreaming"),
 
     /** Produces a single MP4 file containing only stereo audio encoded at 192 kbps. */

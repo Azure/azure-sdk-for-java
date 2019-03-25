@@ -146,7 +146,7 @@ public class UsagesInner {
     /**
      * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
-    ServiceResponse<PageImpl1<UsageInner>> * @param location The location for which resource usage is queried.
+    ServiceResponse<PageImpl<UsageInner>> * @param location The location for which resource usage is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -165,7 +165,7 @@ public class UsagesInner {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<UsageInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<UsageInner>> result = listDelegate(response);
                         return Observable.just(new ServiceResponse<Page<UsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -174,9 +174,9 @@ public class UsagesInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<UsageInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<UsageInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<UsageInner>>() { }.getType())
+    private ServiceResponse<PageImpl<UsageInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<UsageInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -262,7 +262,7 @@ public class UsagesInner {
     /**
      * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
-    ServiceResponse<PageImpl1<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -276,7 +276,7 @@ public class UsagesInner {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<UsageInner>> result = listNextDelegate(response);
+                        ServiceResponse<PageImpl<UsageInner>> result = listNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<UsageInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -285,9 +285,9 @@ public class UsagesInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<UsageInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<UsageInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<UsageInner>>() { }.getType())
+    private ServiceResponse<PageImpl<UsageInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<UsageInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

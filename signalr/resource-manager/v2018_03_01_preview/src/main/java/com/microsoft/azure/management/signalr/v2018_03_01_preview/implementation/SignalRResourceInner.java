@@ -70,7 +70,14 @@ public class SignalRResourceInner extends Resource {
     private Integer serverPort;
 
     /**
-     * Get the sku value.
+     * Version of the SignalR resource. Probably you need the same or higher
+     * version of client SDKs.
+     */
+    @JsonProperty(value = "properties.version")
+    private String version;
+
+    /**
+     * Get sKU of the service.
      *
      * @return the sku value
      */
@@ -79,7 +86,7 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set sKU of the service.
      *
      * @param sku the sku value to set
      * @return the SignalRResourceInner object itself.
@@ -90,7 +97,8 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the hostNamePrefix value.
+     * Get prefix for the hostName of the SignalR service. Retained for future use.
+     The hostname will be of format: &amp;lt;hostNamePrefix&amp;gt;.service.signalr.net.
      *
      * @return the hostNamePrefix value
      */
@@ -99,7 +107,8 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the hostNamePrefix value.
+     * Set prefix for the hostName of the SignalR service. Retained for future use.
+     The hostname will be of format: &amp;lt;hostNamePrefix&amp;gt;.service.signalr.net.
      *
      * @param hostNamePrefix the hostNamePrefix value to set
      * @return the SignalRResourceInner object itself.
@@ -110,7 +119,7 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the resource. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'.
      *
      * @return the provisioningState value
      */
@@ -119,7 +128,7 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the externalIP value.
+     * Get the publicly accessible IP of the SignalR service.
      *
      * @return the externalIP value
      */
@@ -128,7 +137,7 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the hostName value.
+     * Get fQDN of the SignalR service instance. Format: xxx.service.signalr.net.
      *
      * @return the hostName value
      */
@@ -137,7 +146,7 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the publicPort value.
+     * Get the publicly accessibly port of the SignalR service which is designed for browser/client side usage.
      *
      * @return the publicPort value
      */
@@ -146,12 +155,32 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the serverPort value.
+     * Get the publicly accessibly port of the SignalR service which is designed for customer server side usage.
      *
      * @return the serverPort value
      */
     public Integer serverPort() {
         return this.serverPort;
+    }
+
+    /**
+     * Get version of the SignalR resource. Probably you need the same or higher version of client SDKs.
+     *
+     * @return the version value
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set version of the SignalR resource. Probably you need the same or higher version of client SDKs.
+     *
+     * @param version the version value to set
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withVersion(String version) {
+        this.version = version;
+        return this;
     }
 
 }

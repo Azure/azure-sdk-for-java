@@ -11,17 +11,17 @@ package com.microsoft.azure.cognitiveservices.vision.customvision.training.model
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ImageUrl model.
+ * Image url.
  */
 public class ImageUrl {
     /**
-     * The url property.
+     * Url of the image.
      */
-    @JsonProperty(value = "url")
+    @JsonProperty(value = "url", required = true)
     private String url;
 
     /**
-     * Get the url value.
+     * Get url of the image.
      *
      * @return the url value
      */
@@ -30,7 +30,7 @@ public class ImageUrl {
     }
 
     /**
-     * Set the url value.
+     * Set url of the image.
      *
      * @param url the url value to set
      * @return the ImageUrl object itself.

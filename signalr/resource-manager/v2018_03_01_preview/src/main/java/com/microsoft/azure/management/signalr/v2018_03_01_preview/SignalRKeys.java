@@ -10,17 +10,27 @@ package com.microsoft.azure.management.signalr.v2018_03_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.SignalRManager;
+import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.SignalRServiceManager;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.SignalRKeysInner;
 
 /**
  * Type representing SignalRKeys.
  */
-public interface SignalRKeys extends HasInner<SignalRKeysInner>, HasManager<SignalRManager> {
+public interface SignalRKeys extends HasInner<SignalRKeysInner>, HasManager<SignalRServiceManager> {
+    /**
+     * @return the primaryConnectionString value.
+     */
+    String primaryConnectionString();
+
     /**
      * @return the primaryKey value.
      */
     String primaryKey();
+
+    /**
+     * @return the secondaryConnectionString value.
+     */
+    String secondaryConnectionString();
 
     /**
      * @return the secondaryKey value.
