@@ -54,6 +54,7 @@ public class ClientConfiguration {
      *
      * @param credentials The credentials to use for authenticating HTTP requests.
      * @return The updated ClientConfiguration object.
+     * @throws NullPointerException if {@param credentials} is {@code null}.
      */
     public ClientConfiguration credentials(AsyncServiceClientCredentials credentials) {
         Objects.requireNonNull(credentials);
@@ -75,9 +76,16 @@ public class ClientConfiguration {
      *
      * @param userAgent The 'User-Agent' header value to send with requests.
      * @return The updated ClientConfiguration object.
+     * @throws NullPointerException if {@param userAgent} is {@code null}.
+     * @throws IllegalArgumentException if {@param userAgent} is an empty string.
      */
     public ClientConfiguration userAgent(String userAgent) {
         Objects.requireNonNull(userAgent);
+
+        if (userAgent.equals("")) {
+            throw new IllegalArgumentException("'userAgent' cannot be an empty string.");
+        }
+
         this.userAgent = userAgent;
         return this;
     }
@@ -96,6 +104,7 @@ public class ClientConfiguration {
      *
      * @param retryPolicy The retry policy for service requests.
      * @return The updated ClientConfiguration object.
+     * @throws NullPointerException if {@param retryPolicy} is {@code null}.
      */
     public ClientConfiguration retryPolicy(RetryPolicy retryPolicy) {
         Objects.requireNonNull(retryPolicy);
@@ -118,6 +127,7 @@ public class ClientConfiguration {
      *
      * @param policy The retry policy for service requests.
      * @return The updated ClientConfiguration object.
+     * @throws NullPointerException if {@param policy} is {@code null}.
      */
     public ClientConfiguration addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
@@ -139,6 +149,7 @@ public class ClientConfiguration {
      *
      * @param client The HTTP client to use for requests.
      * @return The updated ClientConfiguration object.
+     * @throws NullPointerException if {@param client} is {@code null}.
      */
     public ClientConfiguration httpClient(HttpClient client) {
         Objects.requireNonNull(client);
@@ -176,6 +187,7 @@ public class ClientConfiguration {
      *
      * @param loggerFactory The LoggerFactory to use for generating Loggers.
      * @return The updated ClientConfiguration object.
+     * @throws NullPointerException if {@param loggerFactory} is {@code null}.
      */
     public ClientConfiguration loggerFactory(ILoggerFactory loggerFactory) {
         Objects.requireNonNull(loggerFactory);
@@ -195,12 +207,14 @@ public class ClientConfiguration {
      *
      * @param serviceEndpoint The URL to the Azure service for making service calls.
      * @return The updated ClientConfiguration object.
+     * @throws NullPointerException if {@param serviceEndpoint} is {@code null}.
+     * @throws IllegalArgumentException if {@param serviceEndpoint} is an empty string.
      */
     public ClientConfiguration serviceEndpoint(String serviceEndpoint) {
         Objects.requireNonNull(serviceEndpoint);
 
         if (serviceEndpoint.equals("")) {
-            throw new IllegalArgumentException("'serviceEndpoint' cannot be empty.");
+            throw new IllegalArgumentException("'serviceEndpoint' cannot be an empty string.");
         }
 
         try {
