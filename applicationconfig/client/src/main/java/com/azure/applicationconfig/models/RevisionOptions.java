@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.models;
 
+import java.time.OffsetDateTime;
+import java.util.EnumSet;
+
 public class RevisionOptions extends RequestOptions {
     private RevisionRange range;
 
@@ -21,8 +24,40 @@ public class RevisionOptions extends RequestOptions {
      * @return The updated RevisionOptions object.
      */
     public RevisionOptions range(RevisionRange range) {
-
         this.range = range;
+        return this;
+    }
+
+    @Override
+    public RevisionOptions key(String key) {
+        super.key(key);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RevisionOptions acceptDatetime(OffsetDateTime datetime) {
+        super.acceptDatetime(datetime);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RevisionOptions fields(EnumSet<ConfigurationSettingFields> fields) {
+        super.fields(fields);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RevisionOptions label(String label) {
+        super.label(label);
         return this;
     }
 }
