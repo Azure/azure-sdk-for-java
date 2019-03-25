@@ -43,6 +43,8 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.Products;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsByBillingAccounts;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Policys;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPropertys;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.Transfers;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.RecipientTransfers;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Operations;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountBillingPermissions;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsBillingPermissions;
@@ -87,6 +89,8 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     private TransactionsByBillingAccounts transactionsByBillingAccounts;
     private Policys policys;
     private BillingPropertys billingPropertys;
+    private Transfers transfers;
+    private RecipientTransfers recipientTransfers;
     private Operations operations;
     private BillingAccountBillingPermissions billingAccountBillingPermissions;
     private InvoiceSectionsBillingPermissions invoiceSectionsBillingPermissions;
@@ -412,6 +416,26 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.billingPropertys = new BillingPropertysImpl(this);
         }
         return this.billingPropertys;
+    }
+
+    /**
+     * @return Entry point to manage Transfers.
+     */
+    public Transfers transfers() {
+        if (this.transfers == null) {
+            this.transfers = new TransfersImpl(this);
+        }
+        return this.transfers;
+    }
+
+    /**
+     * @return Entry point to manage RecipientTransfers.
+     */
+    public RecipientTransfers recipientTransfers() {
+        if (this.recipientTransfers == null) {
+            this.recipientTransfers = new RecipientTransfersImpl(this);
+        }
+        return this.recipientTransfers;
     }
 
     /**

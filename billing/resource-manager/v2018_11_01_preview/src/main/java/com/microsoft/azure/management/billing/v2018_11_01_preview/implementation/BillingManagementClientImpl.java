@@ -505,6 +505,32 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The TransfersInner object to access its operations.
+     */
+    private TransfersInner transfers;
+
+    /**
+     * Gets the TransfersInner object to access its operations.
+     * @return the TransfersInner object.
+     */
+    public TransfersInner transfers() {
+        return this.transfers;
+    }
+
+    /**
+     * The RecipientTransfersInner object to access its operations.
+     */
+    private RecipientTransfersInner recipientTransfers;
+
+    /**
+     * Gets the RecipientTransfersInner object to access its operations.
+     * @return the RecipientTransfersInner object.
+     */
+    public RecipientTransfersInner recipientTransfers() {
+        return this.recipientTransfers;
+    }
+
+    /**
      * The OperationsInner object to access its operations.
      */
     private OperationsInner operations;
@@ -696,6 +722,8 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.transactionsByBillingAccounts = new TransactionsByBillingAccountsInner(restClient().retrofit(), this);
         this.policys = new PolicysInner(restClient().retrofit(), this);
         this.billingPropertys = new BillingPropertysInner(restClient().retrofit(), this);
+        this.transfers = new TransfersInner(restClient().retrofit(), this);
+        this.recipientTransfers = new RecipientTransfersInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.billingAccountBillingPermissions = new BillingAccountBillingPermissionsInner(restClient().retrofit(), this);
         this.invoiceSectionsBillingPermissions = new InvoiceSectionsBillingPermissionsInner(restClient().retrofit(), this);
