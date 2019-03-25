@@ -5,8 +5,9 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.implementation.Page;
 import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.applicationconfig.models.KeyValueListFilter;
+import com.azure.applicationconfig.models.RequestOptions;
 import com.azure.applicationconfig.models.RevisionFilter;
+import com.azure.applicationconfig.models.RevisionRange;
 import com.azure.common.ServiceClient;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
@@ -26,8 +27,11 @@ import reactor.util.annotation.NonNull;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
@@ -258,15 +262,18 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Lists the ConfigurationSettings.
+     * Fetches the configuration settings that match the {@param options}. If {@code options} is {@code null}, then all the
+     * {@link ConfigurationSetting}s are fetched in their current state with default fields.
      *
-     * @param filter query options
-     * @return KeyValues
+     * @param options Optional. Options to filter configuration setting results from the service.
+     * @return A Flux of ConfigurationSettings that matches the {@param options}. If no options were provided, the Flux
+     * contains all of the current settings in the service.
      */
-    public Flux<ConfigurationSetting> listKeyValues(KeyValueListFilter filter) {
+    public Flux<ConfigurationSetting> listKeyValues(RequestOptions options) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
-        if (filter != null) {
-            result = service.listKeyValues(serviceEndpoint, filter.key(), filter.label(), filter.fields(), filter.acceptDateTime());
+        if (options != null) {
+            String fields = getSelectQuery(options.fields());
+            result = service.listKeyValues(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime());
         } else {
             result = service.listKeyValues(serviceEndpoint, null, null, null, null);
         }
@@ -390,19 +397,24 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions eventually
-     * expire (default 30 days).
+     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions expire after a
+     * period of time. (The default is 30 days.)
      *
-     * For all operations key is optional parameter. If omitted it implies any key.
-     * For all operations label is optional parameter. If omitted it implies any label.
+     * <p>
+     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting}s are fetched in their current
+     * state with default fields. Otherwise, the results returned match the parameters given in {@param options}.
+     * </p>
      *
-     * @param filter query options
+     *
+     * @param options Optional. Options to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
      */
-    public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionFilter filter) {
+    public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionFilter options) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
-        if (filter != null) {
-            result = service.listKeyValueRevisions(serviceEndpoint, filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
+        if (options != null) {
+            String fields = getSelectQuery(options.fields());
+            String range = getItemsRange(options.range());
+            result = service.listKeyValueRevisions(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime(), range);
         } else {
             result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
         }
@@ -431,5 +443,24 @@ public final class ConfigurationClient extends ServiceClient {
      */
     private static String getETagValue(String etag) {
         return etag == null ? "" : "\"" + etag + "\"";
+    }
+
+    private static <T extends Enum<T>> String getSelectQuery(EnumSet<T> set) {
+        if (set.isEmpty()) {
+            return null;
+        }
+
+        String result = set.stream().map(item -> item.toString().toLowerCase(Locale.US)).collect(Collectors.joining(","));
+        return result;
+    }
+
+    private static String getItemsRange(RevisionRange range) {
+        if (range == null) {
+            return null;
+        }
+
+        return range.end() == null
+            ? String.format("item=%d-", range.start())
+            : String.format("item=%d-%d", range.start(), range.end());
     }
 }
