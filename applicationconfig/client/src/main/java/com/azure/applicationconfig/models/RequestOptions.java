@@ -74,6 +74,17 @@ public class RequestOptions {
      * The label used to filter settings based on their {@link ConfigurationSetting#label()} in the service. If the
      * value is {@code null} or {@code ""}, all ConfigurationSettings will be returned regardless of their label.
      *
+     * <p>
+     * Examples:
+     * <ul>
+     *     <li>If {@code label = "*"}, all settings are returned.</li>
+     *     <li>If {@code label = "\0"}, settings with the default label, {@link ConfigurationSetting#NULL_LABEL} are returned.</li>
+     *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
+     *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
+     *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     * </ul>
+     * </p>
+     *
      * @return label The label used to filter GET requests from the service.
      */
     public String label() {
@@ -82,6 +93,17 @@ public class RequestOptions {
 
     /**
      * Sets the query to match {@link ConfigurationSetting#label()}s in the service.
+     *
+     * <p>
+     * Examples:
+     * <ul>
+     *     <li>If {@code label = "*"}, all settings are returned.</li>
+     *     <li>If {@code label = "\0"}, settings with the default label, {@link ConfigurationSetting#NULL_LABEL} are returned.</li>
+     *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
+     *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
+     *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     * </ul>
+     * </p>
      *
      * @param label The ConfigurationSetting label to match. If the provided value is {@code null} or {@code ""}, all
      *              ConfigurationSettings will be returned regardless of their label.
