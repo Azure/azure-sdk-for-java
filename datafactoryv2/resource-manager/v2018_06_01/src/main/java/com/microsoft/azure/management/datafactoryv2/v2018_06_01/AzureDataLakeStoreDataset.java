@@ -25,7 +25,7 @@ public class AzureDataLakeStoreDataset extends DatasetInner {
      * Path to the folder in the Azure Data Lake Store. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.folderPath", required = true)
+    @JsonProperty(value = "typeProperties.folderPath")
     private Object folderPath;
 
     /**
