@@ -43,10 +43,9 @@ public class IntegrationRuntimeSsisCatalogInfo {
      * The pricing tier for the catalog database. The valid values could be
      * found in
      * https://azure.microsoft.com/en-us/pricing/details/sql-database/.
-     * Possible values include: 'Basic', 'Standard', 'Premium', 'PremiumRS'.
      */
     @JsonProperty(value = "catalogPricingTier")
-    private IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier;
+    private String catalogPricingTier;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -129,21 +128,21 @@ public class IntegrationRuntimeSsisCatalogInfo {
     }
 
     /**
-     * Get the pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/. Possible values include: 'Basic', 'Standard', 'Premium', 'PremiumRS'.
+     * Get the pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/.
      *
      * @return the catalogPricingTier value
      */
-    public IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier() {
+    public String catalogPricingTier() {
         return this.catalogPricingTier;
     }
 
     /**
-     * Set the pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/. Possible values include: 'Basic', 'Standard', 'Premium', 'PremiumRS'.
+     * Set the pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/.
      *
      * @param catalogPricingTier the catalogPricingTier value to set
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */
-    public IntegrationRuntimeSsisCatalogInfo withCatalogPricingTier(IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier) {
+    public IntegrationRuntimeSsisCatalogInfo withCatalogPricingTier(String catalogPricingTier) {
         this.catalogPricingTier = catalogPricingTier;
         return this;
     }
