@@ -24,7 +24,7 @@ public class GroupRequest {
     private List<UUID> faceIds;
 
     /**
-     * Get the faceIds value.
+     * Get array of candidate faceId created by Face - Detect. The maximum is 1000 faces.
      *
      * @return the faceIds value
      */
@@ -33,7 +33,7 @@ public class GroupRequest {
     }
 
     /**
-     * Set the faceIds value.
+     * Set array of candidate faceId created by Face - Detect. The maximum is 1000 faces.
      *
      * @param faceIds the faceIds value to set
      * @return the GroupRequest object itself.

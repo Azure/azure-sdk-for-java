@@ -28,7 +28,7 @@ public class HairColor {
     private double confidence;
 
     /**
-     * Get the color value.
+     * Get name of the hair color. Possible values include: 'unknown', 'white', 'gray', 'blond', 'brown', 'red', 'black', 'other'.
      *
      * @return the color value
      */
@@ -37,7 +37,7 @@ public class HairColor {
     }
 
     /**
-     * Set the color value.
+     * Set name of the hair color. Possible values include: 'unknown', 'white', 'gray', 'blond', 'brown', 'red', 'black', 'other'.
      *
      * @param color the color value to set
      * @return the HairColor object itself.
@@ -48,7 +48,7 @@ public class HairColor {
     }
 
     /**
-     * Get the confidence value.
+     * Get confidence level of the color.
      *
      * @return the confidence value
      */
@@ -57,7 +57,7 @@ public class HairColor {
     }
 
     /**
-     * Set the confidence value.
+     * Set confidence level of the color.
      *
      * @param confidence the confidence value to set
      * @return the HairColor object itself.

@@ -19,26 +19,37 @@ public class TrainingStatus {
      * Training status: notstarted, running, succeeded, failed. If the training
      * process is waiting to perform, the status is notstarted. If the training
      * is ongoing, the status is running. Status succeed means this person
-     * group is ready for Face - Identify. Status failed is often caused by no
-     * person or no persisted face exist in the person group. Possible values
-     * include: 'nonstarted', 'running', 'succeeded', 'failed'.
+     * group or large person group is ready for Face - Identify, or this large
+     * face list is ready for Face - Find Similar. Status failed is often
+     * caused by no person or no persisted face exist in the person group or
+     * large person group, or no persisted face exist in the large face list.
+     * Possible values include: 'nonstarted', 'running', 'succeeded', 'failed'.
      */
     @JsonProperty(value = "status", required = true)
     private TrainingStatusType status;
 
     /**
-     * A combined UTC date and time string that describes person group created
-     * time.
+     * A combined UTC date and time string that describes the created time of
+     * the person group, large person group or large face list.
      */
     @JsonProperty(value = "createdDateTime", required = true)
     private DateTime created;
 
     /**
-     * Person group last modify time in the UTC, could be null value when the
-     * person group is not successfully trained.
+     * A combined UTC date and time string that describes the last modify time
+     * of the person group, large person group or large face list, could be
+     * null value when the group is not successfully trained.
      */
     @JsonProperty(value = "lastActionDateTime")
     private DateTime lastAction;
+
+    /**
+     * A combined UTC date and time string that describes the last successful
+     * training time of the person group, large person group or large face
+     * list.
+     */
+    @JsonProperty(value = "lastSuccessfulTrainingDateTime")
+    private DateTime lastSuccessfulTraining;
 
     /**
      * Show failure message when training failed (omitted when training
@@ -48,7 +59,7 @@ public class TrainingStatus {
     private String message;
 
     /**
-     * Get the status value.
+     * Get training status: notstarted, running, succeeded, failed. If the training process is waiting to perform, the status is notstarted. If the training is ongoing, the status is running. Status succeed means this person group or large person group is ready for Face - Identify, or this large face list is ready for Face - Find Similar. Status failed is often caused by no person or no persisted face exist in the person group or large person group, or no persisted face exist in the large face list. Possible values include: 'nonstarted', 'running', 'succeeded', 'failed'.
      *
      * @return the status value
      */
@@ -57,7 +68,7 @@ public class TrainingStatus {
     }
 
     /**
-     * Set the status value.
+     * Set training status: notstarted, running, succeeded, failed. If the training process is waiting to perform, the status is notstarted. If the training is ongoing, the status is running. Status succeed means this person group or large person group is ready for Face - Identify, or this large face list is ready for Face - Find Similar. Status failed is often caused by no person or no persisted face exist in the person group or large person group, or no persisted face exist in the large face list. Possible values include: 'nonstarted', 'running', 'succeeded', 'failed'.
      *
      * @param status the status value to set
      * @return the TrainingStatus object itself.
@@ -68,7 +79,7 @@ public class TrainingStatus {
     }
 
     /**
-     * Get the created value.
+     * Get a combined UTC date and time string that describes the created time of the person group, large person group or large face list.
      *
      * @return the created value
      */
@@ -77,7 +88,7 @@ public class TrainingStatus {
     }
 
     /**
-     * Set the created value.
+     * Set a combined UTC date and time string that describes the created time of the person group, large person group or large face list.
      *
      * @param created the created value to set
      * @return the TrainingStatus object itself.
@@ -88,7 +99,7 @@ public class TrainingStatus {
     }
 
     /**
-     * Get the lastAction value.
+     * Get a combined UTC date and time string that describes the last modify time of the person group, large person group or large face list, could be null value when the group is not successfully trained.
      *
      * @return the lastAction value
      */
@@ -97,7 +108,7 @@ public class TrainingStatus {
     }
 
     /**
-     * Set the lastAction value.
+     * Set a combined UTC date and time string that describes the last modify time of the person group, large person group or large face list, could be null value when the group is not successfully trained.
      *
      * @param lastAction the lastAction value to set
      * @return the TrainingStatus object itself.
@@ -108,7 +119,27 @@ public class TrainingStatus {
     }
 
     /**
-     * Get the message value.
+     * Get a combined UTC date and time string that describes the last successful training time of the person group, large person group or large face list.
+     *
+     * @return the lastSuccessfulTraining value
+     */
+    public DateTime lastSuccessfulTraining() {
+        return this.lastSuccessfulTraining;
+    }
+
+    /**
+     * Set a combined UTC date and time string that describes the last successful training time of the person group, large person group or large face list.
+     *
+     * @param lastSuccessfulTraining the lastSuccessfulTraining value to set
+     * @return the TrainingStatus object itself.
+     */
+    public TrainingStatus withLastSuccessfulTraining(DateTime lastSuccessfulTraining) {
+        this.lastSuccessfulTraining = lastSuccessfulTraining;
+        return this;
+    }
+
+    /**
+     * Get show failure message when training failed (omitted when training succeed).
      *
      * @return the message value
      */
@@ -117,7 +148,7 @@ public class TrainingStatus {
     }
 
     /**
-     * Set the message value.
+     * Set show failure message when training failed (omitted when training succeed).
      *
      * @param message the message value to set
      * @return the TrainingStatus object itself.

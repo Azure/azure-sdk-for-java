@@ -21,7 +21,7 @@ public class ImageUrl {
     private String url;
 
     /**
-     * Get the url value.
+     * Get publicly reachable URL of an image.
      *
      * @return the url value
      */
@@ -30,7 +30,7 @@ public class ImageUrl {
     }
 
     /**
-     * Set the url value.
+     * Set publicly reachable URL of an image.
      *
      * @param url the url value to set
      * @return the ImageUrl object itself.

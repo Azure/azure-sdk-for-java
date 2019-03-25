@@ -38,7 +38,7 @@ public class SimilarFace {
     private double confidence;
 
     /**
-     * Get the faceId value.
+     * Get faceId of candidate face when find by faceIds. faceId is created by Face - Detect and will expire 24 hours after the detection call.
      *
      * @return the faceId value
      */
@@ -47,7 +47,7 @@ public class SimilarFace {
     }
 
     /**
-     * Set the faceId value.
+     * Set faceId of candidate face when find by faceIds. faceId is created by Face - Detect and will expire 24 hours after the detection call.
      *
      * @param faceId the faceId value to set
      * @return the SimilarFace object itself.
@@ -58,7 +58,7 @@ public class SimilarFace {
     }
 
     /**
-     * Get the persistedFaceId value.
+     * Get persistedFaceId of candidate face when find by faceListId. persistedFaceId in face list is persisted and will not expire. As showed in below response.
      *
      * @return the persistedFaceId value
      */
@@ -67,7 +67,7 @@ public class SimilarFace {
     }
 
     /**
-     * Set the persistedFaceId value.
+     * Set persistedFaceId of candidate face when find by faceListId. persistedFaceId in face list is persisted and will not expire. As showed in below response.
      *
      * @param persistedFaceId the persistedFaceId value to set
      * @return the SimilarFace object itself.
@@ -78,7 +78,7 @@ public class SimilarFace {
     }
 
     /**
-     * Get the confidence value.
+     * Get similarity confidence of the candidate face. The higher confidence, the more similar. Range between [0,1].
      *
      * @return the confidence value
      */
@@ -87,7 +87,7 @@ public class SimilarFace {
     }
 
     /**
-     * Set the confidence value.
+     * Set similarity confidence of the candidate face. The higher confidence, the more similar. Range between [0,1].
      *
      * @param confidence the confidence value to set
      * @return the SimilarFace object itself.

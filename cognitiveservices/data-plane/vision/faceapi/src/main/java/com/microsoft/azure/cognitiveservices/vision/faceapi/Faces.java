@@ -8,18 +8,19 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.FindSimilarOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.IdentifyOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.DetectWithUrlOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.DetectWithStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.DetectedFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.FaceAttributeType;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.FindSimilarMatchMode;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.GroupResult;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.IdentifyResult;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.SimilarFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.VerifyResult;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -30,126 +31,126 @@ import rx.Observable;
  */
 public interface Faces {
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
      *
-     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this
-     *   faceId is not persisted and will expire 24 hours after the detection call.
-     * @param findSimilarOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;SimilarFace&gt; object if successful.
      */
-    
-    List<SimilarFace> findSimilar(UUID faceId, FindSimilarOptionalParameter findSimilarOptionalParameter);
+    List<SimilarFace> findSimilar(UUID faceId);
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
      *
-     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this
-     *   faceId is not persisted and will expire 24 hours after the detection call.
-     * @param findSimilarOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<SimilarFace>> findSimilarAsync(UUID faceId, final ServiceCallback<List<SimilarFace>> serviceCallback);
+
+    /**
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
+     *
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;SimilarFace&gt; object
      */
-    
-    Observable<List<SimilarFace>> findSimilarAsync(UUID faceId, FindSimilarOptionalParameter findSimilarOptionalParameter);
+    Observable<List<SimilarFace>> findSimilarAsync(UUID faceId);
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
      *
-     * @return the first stage of the findSimilar call
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SimilarFace&gt; object
      */
-    FacesFindSimilarDefinitionStages.WithFaceId findSimilar();
-
+    Observable<ServiceResponse<List<SimilarFace>>> findSimilarWithServiceResponseAsync(UUID faceId);
     /**
-     * Grouping of findSimilar definition stages.
-     */
-    interface FacesFindSimilarDefinitionStages {
-        /**
-         * The stage of the definition to be specify faceId.
-         */
-        interface WithFaceId {
-            /**
-             * FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this
-             *   faceId is not persisted and will expire 24 hours after the detection call.
-             *
-             * @return next definition stage
-             */
-            FacesFindSimilarDefinitionStages.WithExecute withFaceId(UUID faceId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list
-             *   contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and
-             *   faceIds should not be provided at the same time.
-             *
-             * @return next definition stage
-             */
-            FacesFindSimilarDefinitionStages.WithExecute withFaceListId(String faceListId);
-
-            /**
-             * An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours
-             *   after the detection call.
-             *
-             * @return next definition stage
-             */
-            FacesFindSimilarDefinitionStages.WithExecute withFaceIds(List<UUID> faceIds);
-
-            /**
-             * The number of top similar faces returned. The valid range is [1, 1000].
-             *
-             * @return next definition stage
-             */
-            FacesFindSimilarDefinitionStages.WithExecute withMaxNumOfCandidatesReturned(Integer maxNumOfCandidatesReturned);
-
-            /**
-             * Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson',
-             *   'matchFace'.
-             *
-             * @return next definition stage
-             */
-            FacesFindSimilarDefinitionStages.WithExecute withMode(FindSimilarMatchMode mode);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends FacesFindSimilarDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;SimilarFace&gt; object if successful.
-             */
-            List<SimilarFace> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;SimilarFace&gt; object
-             */
-            Observable<List<SimilarFace>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of findSimilar definition.
-     */
-    interface FacesFindSimilarDefinition extends
-        FacesFindSimilarDefinitionStages.WithFaceId,
-        FacesFindSimilarDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Divide candidate faces into groups based on face similarity.
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
      *
-     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces.
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
+     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param largeFaceListId An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
+     * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;SimilarFace&gt; object if successful.
+     */
+    List<SimilarFace> findSimilar(UUID faceId, String faceListId, String largeFaceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode);
+
+    /**
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
+     *
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
+     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param largeFaceListId An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
+     * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<SimilarFace>> findSimilarAsync(UUID faceId, String faceListId, String largeFaceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode, final ServiceCallback<List<SimilarFace>> serviceCallback);
+
+    /**
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
+     *
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
+     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param largeFaceListId An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
+     * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SimilarFace&gt; object
+     */
+    Observable<List<SimilarFace>> findSimilarAsync(UUID faceId, String faceListId, String largeFaceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode);
+
+    /**
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
+     *
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
+     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param largeFaceListId An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
+     * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SimilarFace&gt; object
+     */
+    Observable<ServiceResponse<List<SimilarFace>>> findSimilarWithServiceResponseAsync(UUID faceId, String faceListId, String largeFaceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode);
+
+    /**
+     * Divide candidate faces into groups based on face similarity.&lt;br /&gt;
+     * The output is one or more disjointed face groups and a messyGroup. A face group contains faces that have similar looking, often of the same person. Face groups are ranked by group size, i.e. number of faces. Notice that faces belonging to a same person might be split into several groups in the result.
+     * MessyGroup is a special face group containing faces that cannot find any similar counterpart face from original faces. The messyGroup will not appear in the result if all faces found their counterparts.
+     * Group API needs at least 2 candidate faces and 1000 at most. We suggest to try [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a) when you only have 2 candidate faces.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same.
+     *
+     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -158,134 +159,220 @@ public interface Faces {
     GroupResult group(List<UUID> faceIds);
 
     /**
-     * Divide candidate faces into groups based on face similarity.
+     * Divide candidate faces into groups based on face similarity.&lt;br /&gt;
+     * The output is one or more disjointed face groups and a messyGroup. A face group contains faces that have similar looking, often of the same person. Face groups are ranked by group size, i.e. number of faces. Notice that faces belonging to a same person might be split into several groups in the result.
+     * MessyGroup is a special face group containing faces that cannot find any similar counterpart face from original faces. The messyGroup will not appear in the result if all faces found their counterparts.
+     * Group API needs at least 2 candidate faces and 1000 at most. We suggest to try [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a) when you only have 2 candidate faces.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same.
      *
-     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces.
+     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<GroupResult> groupAsync(List<UUID> faceIds, final ServiceCallback<GroupResult> serviceCallback);
+
+    /**
+     * Divide candidate faces into groups based on face similarity.&lt;br /&gt;
+     * The output is one or more disjointed face groups and a messyGroup. A face group contains faces that have similar looking, often of the same person. Face groups are ranked by group size, i.e. number of faces. Notice that faces belonging to a same person might be split into several groups in the result.
+     * MessyGroup is a special face group containing faces that cannot find any similar counterpart face from original faces. The messyGroup will not appear in the result if all faces found their counterparts.
+     * Group API needs at least 2 candidate faces and 1000 at most. We suggest to try [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a) when you only have 2 candidate faces.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same.
+     *
+     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GroupResult object
      */
     Observable<GroupResult> groupAsync(List<UUID> faceIds);
 
+    /**
+     * Divide candidate faces into groups based on face similarity.&lt;br /&gt;
+     * The output is one or more disjointed face groups and a messyGroup. A face group contains faces that have similar looking, often of the same person. Face groups are ranked by group size, i.e. number of faces. Notice that faces belonging to a same person might be split into several groups in the result.
+     * MessyGroup is a special face group containing faces that cannot find any similar counterpart face from original faces. The messyGroup will not appear in the result if all faces found their counterparts.
+     * Group API needs at least 2 candidate faces and 1000 at most. We suggest to try [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a) when you only have 2 candidate faces.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same.
+     *
+     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the GroupResult object
+     */
+    Observable<ServiceResponse<GroupResult>> groupWithServiceResponseAsync(List<UUID> faceIds);
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create.
-     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently.
-     *   The valid number of faceIds is between [1, 10].
-     * @param identifyOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IdentifyResult&gt; object if successful.
      */
-    
-    List<IdentifyResult> identify(String personGroupId, List<UUID> faceIds, IdentifyOptionalParameter identifyOptionalParameter);
+    List<IdentifyResult> identify(List<UUID> faceIds);
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create.
-     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently.
-     *   The valid number of faceIds is between [1, 10].
-     * @param identifyOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<IdentifyResult>> identifyAsync(List<UUID> faceIds, final ServiceCallback<List<IdentifyResult>> serviceCallback);
+
+    /**
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
+     *
+     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IdentifyResult&gt; object
      */
-    
-    Observable<List<IdentifyResult>> identifyAsync(String personGroupId, List<UUID> faceIds, IdentifyOptionalParameter identifyOptionalParameter);
+    Observable<List<IdentifyResult>> identifyAsync(List<UUID> faceIds);
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
      *
-     * @return the first stage of the identify call
+     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;IdentifyResult&gt; object
      */
-    FacesIdentifyDefinitionStages.WithPersonGroupId identify();
+    Observable<ServiceResponse<List<IdentifyResult>>> identifyWithServiceResponseAsync(List<UUID> faceIds);
+    /**
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
+     *
+     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param personGroupId PersonGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
+     * @param confidenceThreshold Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;IdentifyResult&gt; object if successful.
+     */
+    List<IdentifyResult> identify(List<UUID> faceIds, String personGroupId, String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold);
 
     /**
-     * Grouping of identify definition stages.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
+     *
+     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param personGroupId PersonGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
+     * @param confidenceThreshold Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    interface FacesIdentifyDefinitionStages {
-        /**
-         * The stage of the definition to be specify personGroupId.
-         */
-        interface WithPersonGroupId {
-            /**
-             * PersonGroupId of the target person group, created by PersonGroups.Create.
-             *
-             * @return next definition stage
-             */
-            WithFaceIds withPersonGroupId(String personGroupId);
-        }
-        /**
-         * The stage of the definition to be specify faceIds.
-         */
-        interface WithFaceIds {
-            /**
-             * Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently.
-             *   The valid number of faceIds is between [1, 10].
-             *
-             * @return next definition stage
-             */
-            FacesIdentifyDefinitionStages.WithExecute withFaceIds(List<UUID> faceIds);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
-             *
-             * @return next definition stage
-             */
-            FacesIdentifyDefinitionStages.WithExecute withMaxNumOfCandidatesReturned(Integer maxNumOfCandidatesReturned);
-
-            /**
-             * Confidence threshold of identification, used to judge whether one face belong to one person. The range of
-             *   confidenceThreshold is [0, 1] (default specified by algorithm).
-             *
-             * @return next definition stage
-             */
-            FacesIdentifyDefinitionStages.WithExecute withConfidenceThreshold(Double confidenceThreshold);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends FacesIdentifyDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;IdentifyResult&gt; object if successful.
-             */
-            List<IdentifyResult> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;IdentifyResult&gt; object
-             */
-            Observable<List<IdentifyResult>> executeAsync();
-        }
-    }
+    ServiceFuture<List<IdentifyResult>> identifyAsync(List<UUID> faceIds, String personGroupId, String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold, final ServiceCallback<List<IdentifyResult>> serviceCallback);
 
     /**
-     * The entirety of identify definition.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
+     *
+     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param personGroupId PersonGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
+     * @param confidenceThreshold Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;IdentifyResult&gt; object
      */
-    interface FacesIdentifyDefinition extends
-        FacesIdentifyDefinitionStages.WithPersonGroupId,
-        FacesIdentifyDefinitionStages.WithFaceIds,
-        FacesIdentifyDefinitionStages.WithExecute {
-    }
+    Observable<List<IdentifyResult>> identifyAsync(List<UUID> faceIds, String personGroupId, String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold);
 
+    /**
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
+     *
+     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param personGroupId PersonGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
+     * @param confidenceThreshold Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;IdentifyResult&gt; object
+     */
+    Observable<ServiceResponse<List<IdentifyResult>>> identifyWithServiceResponseAsync(List<UUID> faceIds, String personGroupId, String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold);
 
     /**
      * Verify whether two faces belong to a same person or whether one face belongs to a person.
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * For the scenarios that are sensitive to accuracy please make your own judgment.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target face, person group or large person group.
      *
-     * @param faceId1 FaceId of the first face, comes from Face - Detect.
-     * @param faceId2 FaceId of the second face, comes from Face - Detect.
+     * @param faceId1 FaceId of the first face, comes from Face - Detect
+     * @param faceId2 FaceId of the second face, comes from Face - Detect
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -295,257 +382,407 @@ public interface Faces {
 
     /**
      * Verify whether two faces belong to a same person or whether one face belongs to a person.
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * For the scenarios that are sensitive to accuracy please make your own judgment.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target face, person group or large person group.
      *
-     * @param faceId1 FaceId of the first face, comes from Face - Detect.
-     * @param faceId2 FaceId of the second face, comes from Face - Detect.
+     * @param faceId1 FaceId of the first face, comes from Face - Detect
+     * @param faceId2 FaceId of the second face, comes from Face - Detect
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<VerifyResult> verifyFaceToFaceAsync(UUID faceId1, UUID faceId2, final ServiceCallback<VerifyResult> serviceCallback);
+
+    /**
+     * Verify whether two faces belong to a same person or whether one face belongs to a person.
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * For the scenarios that are sensitive to accuracy please make your own judgment.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target face, person group or large person group.
+     *
+     * @param faceId1 FaceId of the first face, comes from Face - Detect
+     * @param faceId2 FaceId of the second face, comes from Face - Detect
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VerifyResult object
      */
     Observable<VerifyResult> verifyFaceToFaceAsync(UUID faceId1, UUID faceId2);
 
+    /**
+     * Verify whether two faces belong to a same person or whether one face belongs to a person.
+     &lt;br/&gt;
+     Remarks:&lt;br /&gt;
+     * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * For the scenarios that are sensitive to accuracy please make your own judgment.
+     * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target face, person group or large person group.
+     *
+     * @param faceId1 FaceId of the first face, comes from Face - Detect
+     * @param faceId2 FaceId of the second face, comes from Face - Detect
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the VerifyResult object
+     */
+    Observable<ServiceResponse<VerifyResult>> verifyFaceToFaceWithServiceResponseAsync(UUID faceId1, UUID faceId2);
 
     /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and
-     *   attributes.
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
      *
-     * @param url Publicly reachable URL of an image.
-     * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param url Publicly reachable URL of an image
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    
-    List<DetectedFace> detectWithUrl(String url, DetectWithUrlOptionalParameter detectWithUrlOptionalParameter);
+    List<DetectedFace> detectWithUrl(String url);
 
     /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and
-     *   attributes.
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
      *
-     * @param url Publicly reachable URL of an image.
-     * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param url Publicly reachable URL of an image
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<DetectedFace>> detectWithUrlAsync(String url, final ServiceCallback<List<DetectedFace>> serviceCallback);
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
+     *
+     * @param url Publicly reachable URL of an image
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    
-    Observable<List<DetectedFace>> detectWithUrlAsync(String url, DetectWithUrlOptionalParameter detectWithUrlOptionalParameter);
+    Observable<List<DetectedFace>> detectWithUrlAsync(String url);
 
     /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and
-     *   attributes.
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
      *
-     * @return the first stage of the detectWithUrl call
+     * @param url Publicly reachable URL of an image
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    FacesDetectWithUrlDefinitionStages.WithUrl detectWithUrl();
+    Observable<ServiceResponse<List<DetectedFace>>> detectWithUrlWithServiceResponseAsync(String url);
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
+     *
+     * @param url Publicly reachable URL of an image
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;DetectedFace&gt; object if successful.
+     */
+    List<DetectedFace> detectWithUrl(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
     /**
-     * Grouping of detectWithUrl definition stages.
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
+     *
+     * @param url Publicly reachable URL of an image
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    interface FacesDetectWithUrlDefinitionStages {
-        /**
-         * The stage of the definition to be specify url.
-         */
-        interface WithUrl {
-            /**
-             * Publicly reachable URL of an image.
-             *
-             * @return next definition stage
-             */
-            FacesDetectWithUrlDefinitionStages.WithExecute withUrl(String url);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * A value indicating whether the operation should return faceIds of detected faces.
-             *
-             * @return next definition stage
-             */
-            FacesDetectWithUrlDefinitionStages.WithExecute withReturnFaceId(Boolean returnFaceId);
-
-            /**
-             * A value indicating whether the operation should return landmarks of the detected faces.
-             *
-             * @return next definition stage
-             */
-            FacesDetectWithUrlDefinitionStages.WithExecute withReturnFaceLandmarks(Boolean returnFaceLandmarks);
-
-            /**
-             * Analyze and return the one or more specified face attributes in the comma-separated string like
-             *   "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile,
-             *   facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and
-             *   time cost.
-             *
-             * @return next definition stage
-             */
-            FacesDetectWithUrlDefinitionStages.WithExecute withReturnFaceAttributes(List<FaceAttributeType> returnFaceAttributes);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends FacesDetectWithUrlDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;DetectedFace&gt; object if successful.
-             */
-            List<DetectedFace> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;DetectedFace&gt; object
-             */
-            Observable<List<DetectedFace>> executeAsync();
-        }
-    }
+    ServiceFuture<List<DetectedFace>> detectWithUrlAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel, final ServiceCallback<List<DetectedFace>> serviceCallback);
 
     /**
-     * The entirety of detectWithUrl definition.
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
+     *
+     * @param url Publicly reachable URL of an image
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    interface FacesDetectWithUrlDefinition extends
-        FacesDetectWithUrlDefinitionStages.WithUrl,
-        FacesDetectWithUrlDefinitionStages.WithExecute {
-    }
+    Observable<List<DetectedFace>> detectWithUrlAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
+     *
+     * @param url Publicly reachable URL of an image
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;DetectedFace&gt; object
+     */
+    Observable<ServiceResponse<List<DetectedFace>>> detectWithUrlWithServiceResponseAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
     /**
      * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
      *
-     * @param faceId FaceId the face, comes from Face - Detect.
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is
-      *  created in Person Groups.Create.
-     * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VerifyResult object if successful.
      */
-    VerifyResult verifyFaceToPerson(UUID faceId, String personGroupId, UUID personId);
+    VerifyResult verifyFaceToPerson(UUID faceId, UUID personId);
 
     /**
      * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
      *
-     * @param faceId FaceId the face, comes from Face - Detect.
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is
-      *  created in Person Groups.Create.
-     * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<VerifyResult> verifyFaceToPersonAsync(UUID faceId, UUID personId, final ServiceCallback<VerifyResult> serviceCallback);
+
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VerifyResult object
      */
-    Observable<VerifyResult> verifyFaceToPersonAsync(UUID faceId, String personGroupId, UUID personId);
-
+    Observable<VerifyResult> verifyFaceToPersonAsync(UUID faceId, UUID personId);
 
     /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and
-     *   attributes.
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the VerifyResult object
+     */
+    Observable<ServiceResponse<VerifyResult>> verifyFaceToPersonWithServiceResponseAsync(UUID faceId, UUID personId);
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the VerifyResult object if successful.
+     */
+    VerifyResult verifyFaceToPerson(UUID faceId, UUID personId, String personGroupId, String largePersonGroupId);
+
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<VerifyResult> verifyFaceToPersonAsync(UUID faceId, UUID personId, String personGroupId, String largePersonGroupId, final ServiceCallback<VerifyResult> serviceCallback);
+
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the VerifyResult object
+     */
+    Observable<VerifyResult> verifyFaceToPersonAsync(UUID faceId, UUID personId, String personGroupId, String largePersonGroupId);
+
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the VerifyResult object
+     */
+    Observable<ServiceResponse<VerifyResult>> verifyFaceToPersonWithServiceResponseAsync(UUID faceId, UUID personId, String personGroupId, String largePersonGroupId);
+
+    /**
+     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
      *
      * @param image An image stream.
-     * @param detectWithStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    
-    List<DetectedFace> detectWithStream(byte[] image, DetectWithStreamOptionalParameter detectWithStreamOptionalParameter);
+    List<DetectedFace> detectWithStream(byte[] image);
 
     /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and
-     *   attributes.
+     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
      *
      * @param image An image stream.
-     * @param detectWithStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<DetectedFace>> detectWithStreamAsync(byte[] image, final ServiceCallback<List<DetectedFace>> serviceCallback);
+
+    /**
+     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
+     *
+     * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    
-    Observable<List<DetectedFace>> detectWithStreamAsync(byte[] image, DetectWithStreamOptionalParameter detectWithStreamOptionalParameter);
+    Observable<List<DetectedFace>> detectWithStreamAsync(byte[] image);
 
     /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and
-     *   attributes.
+     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
      *
-     * @return the first stage of the detectWithStream call
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    FacesDetectWithStreamDefinitionStages.WithImage detectWithStream();
+    Observable<ServiceResponse<List<DetectedFace>>> detectWithStreamWithServiceResponseAsync(byte[] image);
+    /**
+     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
+     *
+     * @param image An image stream.
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;DetectedFace&gt; object if successful.
+     */
+    List<DetectedFace> detectWithStream(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
     /**
-     * Grouping of detectWithStream definition stages.
+     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
+     *
+     * @param image An image stream.
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    interface FacesDetectWithStreamDefinitionStages {
-        /**
-         * The stage of the definition to be specify image.
-         */
-        interface WithImage {
-            /**
-             * An image stream.
-             *
-             * @return next definition stage
-             */
-            FacesDetectWithStreamDefinitionStages.WithExecute withImage(byte[] image);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * A value indicating whether the operation should return faceIds of detected faces.
-             *
-             * @return next definition stage
-             */
-            FacesDetectWithStreamDefinitionStages.WithExecute withReturnFaceId(Boolean returnFaceId);
-
-            /**
-             * A value indicating whether the operation should return landmarks of the detected faces.
-             *
-             * @return next definition stage
-             */
-            FacesDetectWithStreamDefinitionStages.WithExecute withReturnFaceLandmarks(Boolean returnFaceLandmarks);
-
-            /**
-             * Analyze and return the one or more specified face attributes in the comma-separated string like
-             *   "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile,
-             *   facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and
-             *   time cost.
-             *
-             * @return next definition stage
-             */
-            FacesDetectWithStreamDefinitionStages.WithExecute withReturnFaceAttributes(List<FaceAttributeType> returnFaceAttributes);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends FacesDetectWithStreamDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;DetectedFace&gt; object if successful.
-             */
-            List<DetectedFace> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;DetectedFace&gt; object
-             */
-            Observable<List<DetectedFace>> executeAsync();
-        }
-    }
+    ServiceFuture<List<DetectedFace>> detectWithStreamAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel, final ServiceCallback<List<DetectedFace>> serviceCallback);
 
     /**
-     * The entirety of detectWithStream definition.
+     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
+     *
+     * @param image An image stream.
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    interface FacesDetectWithStreamDefinition extends
-        FacesDetectWithStreamDefinitionStages.WithImage,
-        FacesDetectWithStreamDefinitionStages.WithExecute {
-    }
+    Observable<List<DetectedFace>> detectWithStreamAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
+
+    /**
+     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
+     *
+     * @param image An image stream.
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;DetectedFace&gt; object
+     */
+    Observable<ServiceResponse<List<DetectedFace>>> detectWithStreamWithServiceResponseAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
 }
