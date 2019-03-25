@@ -18,12 +18,56 @@ import java.util.EnumSet;
  * Providing {@link RequestOptions#fields()} will populate only those {@link ConfigurationSetting} fields in the response.
  */
 public class RequestOptions {
+    private String key;
     private String label;
     private EnumSet<ConfigurationSettingFields> fields;
     private String acceptDatetime;
 
+    /**
+     * Creates request options that will populate {@link ConfigurationSetting} responses with default properties and
+     * select all {@link ConfigurationSetting#key()}s.
+     */
     public RequestOptions() {
         fields = EnumSet.of(ConfigurationSettingFields.DEFAULT);
+        key = "*";
+    }
+
+    /**
+     * Gets the expression to filter {@link ConfigurationSetting#key()} on for the request.
+     *
+     * <p>
+     * Examples:
+     * <ul>
+     *     <li>If key = "*", all settings are returned.</li>
+     *     <li>If key = "abc1234", settings with a key equal to "abc1234" are returned.</li>
+     *     <li>If key = "abc*", settings with a key starting with "abc" are returned.</li>
+     *     <li>If key = "*abc*", settings with a key containing "abc" are returned.</li>
+     * </ul>
+     * </p>
+     *
+     * @return The expression to filter ConfigurationSetting keys on.
+     */
+    public String key() { return key; }
+
+    /**
+     * Sets the expression to filter {@link ConfigurationSetting#key()} on for the request.
+     *
+     * <p>
+     * Examples:
+     * <ul>
+     *     <li>If {@code key = "*"}, all settings are returned.</li>
+     *     <li>If {@code key = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
+     *     <li>If {@code key = "abc*"}, settings with a key starting with "abc" are returned.</li>
+     *     <li>If {@code key = "*abc*"}, settings with a key containing "abc" are returned.</li>
+     * </ul>
+     * </p>
+     *
+     * @param key The expression to filter ConfigurationSetting keys on.
+     * @return The updated RequestOptions object
+     */
+    public RequestOptions key(String key) {
+        this.key = key;
+        return this;
     }
 
     /**
