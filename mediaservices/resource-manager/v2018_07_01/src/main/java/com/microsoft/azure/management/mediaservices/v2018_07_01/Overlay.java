@@ -31,7 +31,7 @@ public class Overlay {
      * a video file. See https://aka.ms/mesformats for the complete list of
      * supported audio and video file formats.
      */
-    @JsonProperty(value = "inputLabel")
+    @JsonProperty(value = "inputLabel", required = true)
     private String inputLabel;
 
     /**

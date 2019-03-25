@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for StorageAccountType.
  */
-public enum StorageAccountType {
-    /** The primary storage account for the Media Services account. */
-    PRIMARY("Primary"),
+public final class StorageAccountType extends ExpandableStringEnum<StorageAccountType> {
+    /** Static value Primary for StorageAccountType. */
+    public static final StorageAccountType PRIMARY = fromString("Primary");
 
-    /** A secondary storage account for the Media Services account. */
-    SECONDARY("Secondary");
+    /** Static value Secondary for StorageAccountType. */
+    public static final StorageAccountType SECONDARY = fromString("Secondary");
 
-    /** The actual serialized value for a StorageAccountType instance. */
-    private String value;
-
-    StorageAccountType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a StorageAccountType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding StorageAccountType
+     */
+    @JsonCreator
+    public static StorageAccountType fromString(String name) {
+        return fromString(name, StorageAccountType.class);
     }
 
     /**
-     * Parses a serialized value to a StorageAccountType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed StorageAccountType object, or null if unable to parse.
+     * @return known StorageAccountType values
      */
-    @JsonCreator
-    public static StorageAccountType fromString(String value) {
-        StorageAccountType[] items = StorageAccountType.values();
-        for (StorageAccountType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<StorageAccountType> values() {
+        return values(StorageAccountType.class);
     }
 }

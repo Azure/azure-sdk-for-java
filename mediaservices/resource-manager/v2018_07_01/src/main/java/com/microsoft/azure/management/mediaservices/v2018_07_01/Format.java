@@ -33,7 +33,7 @@ public class Format {
      * type of the audio/video codec. Any unsubstituted macros will be
      * collapsed and removed from the filename.
      */
-    @JsonProperty(value = "filenamePattern")
+    @JsonProperty(value = "filenamePattern", required = true)
     private String filenamePattern;
 
     /**

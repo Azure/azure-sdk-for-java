@@ -27,8 +27,8 @@ public class VideoLayer extends Layer {
      * The average bitrate in bits per second at which to encode the input
      * video when generating this layer. This is a required field.
      */
-    @JsonProperty(value = "bitrate")
-    private Integer bitrate;
+    @JsonProperty(value = "bitrate", required = true)
+    private int bitrate;
 
     /**
      * The maximum bitrate (in bits per second), at which the VBV buffer should
@@ -78,7 +78,7 @@ public class VideoLayer extends Layer {
      *
      * @return the bitrate value
      */
-    public Integer bitrate() {
+    public int bitrate() {
         return this.bitrate;
     }
 
@@ -88,7 +88,7 @@ public class VideoLayer extends Layer {
      * @param bitrate the bitrate value to set
      * @return the VideoLayer object itself.
      */
-    public VideoLayer withBitrate(Integer bitrate) {
+    public VideoLayer withBitrate(int bitrate) {
         this.bitrate = bitrate;
         return this;
     }

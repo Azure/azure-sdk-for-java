@@ -8,52 +8,40 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for EncryptionScheme.
  */
-public enum EncryptionScheme {
-    /** NoEncryption scheme. */
-    NO_ENCRYPTION("NoEncryption"),
+public final class EncryptionScheme extends ExpandableStringEnum<EncryptionScheme> {
+    /** Static value NoEncryption for EncryptionScheme. */
+    public static final EncryptionScheme NO_ENCRYPTION = fromString("NoEncryption");
 
-    /** EnvelopeEncryption scheme. */
-    ENVELOPE_ENCRYPTION("EnvelopeEncryption"),
+    /** Static value EnvelopeEncryption for EncryptionScheme. */
+    public static final EncryptionScheme ENVELOPE_ENCRYPTION = fromString("EnvelopeEncryption");
 
-    /** CommonEncryptionCenc scheme. */
-    COMMON_ENCRYPTION_CENC("CommonEncryptionCenc"),
+    /** Static value CommonEncryptionCenc for EncryptionScheme. */
+    public static final EncryptionScheme COMMON_ENCRYPTION_CENC = fromString("CommonEncryptionCenc");
 
-    /** CommonEncryptionCbcs scheme. */
-    COMMON_ENCRYPTION_CBCS("CommonEncryptionCbcs");
+    /** Static value CommonEncryptionCbcs for EncryptionScheme. */
+    public static final EncryptionScheme COMMON_ENCRYPTION_CBCS = fromString("CommonEncryptionCbcs");
 
-    /** The actual serialized value for a EncryptionScheme instance. */
-    private String value;
-
-    EncryptionScheme(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a EncryptionScheme from its string representation.
+     * @param name a name to look for
+     * @return the corresponding EncryptionScheme
+     */
+    @JsonCreator
+    public static EncryptionScheme fromString(String name) {
+        return fromString(name, EncryptionScheme.class);
     }
 
     /**
-     * Parses a serialized value to a EncryptionScheme instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed EncryptionScheme object, or null if unable to parse.
+     * @return known EncryptionScheme values
      */
-    @JsonCreator
-    public static EncryptionScheme fromString(String value) {
-        EncryptionScheme[] items = EncryptionScheme.values();
-        for (EncryptionScheme item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<EncryptionScheme> values() {
+        return values(EncryptionScheme.class);
     }
 }
