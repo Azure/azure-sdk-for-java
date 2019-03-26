@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.implementation.Page;
@@ -461,7 +462,7 @@ public final class ConfigurationClient extends ServiceClient {
         }
 
         return range.end() == null
-            ? String.format("item=%d-", range.start())
-            : String.format("item=%d-%d", range.start(), range.end());
+            ? String.format("items=%d-", range.start())
+            : String.format("items=%d-%d", range.start(), range.end());
     }
 }
