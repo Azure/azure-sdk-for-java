@@ -38,7 +38,15 @@ public class RevisionOptions extends RequestOptions {
     }
 
     /**
-     * {@inheritDoc}
+     * If set, then revisions of the {@link ConfigurationSetting} are returned up until that time.
+     *
+     * <p>
+     * For example, if an acceptDatetime of 'March 20, 2019 19:00:00 UTC' is set, then all the revisions for matching
+     * ConfigurationSettings are returned up until that date time.
+     * </p>
+     *
+     * @param datetime The value of the configuration setting at that given {@link OffsetDateTime}.
+     * @return The updated RevisionOptions object.
      */
     @Override
     public RevisionOptions acceptDatetime(OffsetDateTime datetime) {
