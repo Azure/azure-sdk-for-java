@@ -47,7 +47,7 @@ class Configuration {
      *
      * @return Gets the credentials that will be used by ServiceClient to authenticate with.
      */
-    public AsyncServiceClientCredentials credentials() {
+    AsyncServiceClientCredentials credentials() {
         return credentials;
     }
 
@@ -58,7 +58,7 @@ class Configuration {
      * @return The updated Configuration object.
      * @throws NullPointerException if {@param credentials} is {@code null}.
      */
-    public Configuration credentials(AsyncServiceClientCredentials credentials) {
+    Configuration credentials(AsyncServiceClientCredentials credentials) {
         Objects.requireNonNull(credentials);
         this.credentials = credentials;
         return this;
@@ -69,7 +69,7 @@ class Configuration {
      *
      * @return The user agent value currently sent with HTTP requests.
      */
-    public String userAgent() {
+    String userAgent() {
         return userAgent;
     }
 
@@ -81,7 +81,7 @@ class Configuration {
      * @throws NullPointerException if {@param userAgent} is {@code null}.
      * @throws IllegalArgumentException if {@param userAgent} is an empty string.
      */
-    public Configuration userAgent(String userAgent) {
+    Configuration userAgent(String userAgent) {
         Objects.requireNonNull(userAgent);
 
         if (userAgent.equals("")) {
@@ -97,7 +97,7 @@ class Configuration {
      *
      * @return The retry policy to use for service requests.
      */
-    public RetryPolicy retryPolicy() {
+    RetryPolicy retryPolicy() {
         return retryPolicy;
     }
 
@@ -108,7 +108,7 @@ class Configuration {
      * @return The updated Configuration object.
      * @throws NullPointerException if {@param retryPolicy} is {@code null}.
      */
-    public Configuration retryPolicy(RetryPolicy retryPolicy) {
+    Configuration retryPolicy(RetryPolicy retryPolicy) {
         Objects.requireNonNull(retryPolicy);
         this.retryPolicy = retryPolicy;
         return this;
@@ -119,7 +119,7 @@ class Configuration {
      *
      * @return The policies to execute for each service request.
      */
-    public List<HttpPipelinePolicy> policies() {
+    List<HttpPipelinePolicy> policies() {
         return policies;
     }
 
@@ -131,7 +131,7 @@ class Configuration {
      * @return The updated Configuration object.
      * @throws NullPointerException if {@param policy} is {@code null}.
      */
-    public Configuration addPolicy(HttpPipelinePolicy policy) {
+    Configuration addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
         this.policies.add(policy);
         return this;
@@ -142,7 +142,7 @@ class Configuration {
      *
      * @return The client to send and receive HTTP requests and responses.
      */
-    public HttpClient httpClient() {
+    HttpClient httpClient() {
         return client;
     }
 
@@ -153,7 +153,7 @@ class Configuration {
      * @return The updated Configuration object.
      * @throws NullPointerException if {@param client} is {@code null}.
      */
-    public Configuration httpClient(HttpClient client) {
+    Configuration httpClient(HttpClient client) {
         Objects.requireNonNull(client);
         this.client = client;
         return this;
@@ -164,7 +164,7 @@ class Configuration {
      *
      * @return The log level for logging HTTP requests and responses.
      */
-    public HttpLogDetailLevel httpLogDetailLevel() { return httpLogDetailLevel; }
+    HttpLogDetailLevel httpLogDetailLevel() { return httpLogDetailLevel; }
 
     /**
      * Sets the logging level for HTTP requests and responses.
@@ -172,7 +172,7 @@ class Configuration {
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
      * @return The updated Configuration object.
      */
-    public Configuration httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+    Configuration httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.httpLogDetailLevel = logLevel;
         return this;
     }
@@ -182,7 +182,7 @@ class Configuration {
      *
      * @return The factory used to generate {@link org.slf4j.Logger} instances.
      */
-    public ILoggerFactory loggerFactory() { return loggerFactory; }
+    ILoggerFactory loggerFactory() { return loggerFactory; }
 
     /**
      * Factory used for generating {@link org.slf4j.Logger} instances for SDK logging.
@@ -191,7 +191,7 @@ class Configuration {
      * @return The updated Configuration object.
      * @throws NullPointerException if {@param loggerFactory} is {@code null}.
      */
-    public Configuration loggerFactory(ILoggerFactory loggerFactory) {
+    Configuration loggerFactory(ILoggerFactory loggerFactory) {
         Objects.requireNonNull(loggerFactory);
         this.loggerFactory = loggerFactory;
         return this;
@@ -202,7 +202,7 @@ class Configuration {
      *
      * @return A URL pointing to the service's endpoint.
      */
-    public URL serviceEndpoint() { return serviceEndpoint; }
+    URL serviceEndpoint() { return serviceEndpoint; }
 
     /**
      * Sets the endpoint used when making service calls.
@@ -212,7 +212,7 @@ class Configuration {
      * @throws NullPointerException if {@param serviceEndpoint} is {@code null}.
      * @throws IllegalArgumentException if {@param serviceEndpoint} is an empty string.
      */
-    public Configuration serviceEndpoint(String serviceEndpoint) {
+    Configuration serviceEndpoint(String serviceEndpoint) {
         Objects.requireNonNull(serviceEndpoint);
 
         if (serviceEndpoint.equals("")) {
