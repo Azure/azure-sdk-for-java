@@ -6,6 +6,7 @@ import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.ConfigurationSettingField;
 import com.azure.applicationconfig.models.RequestOptions;
 import com.azure.applicationconfig.models.RevisionOptions;
+import com.azure.applicationconfig.models.RevisionRange;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.rest.RestException;
 import com.microsoft.azure.core.InterceptorManager;
@@ -352,35 +353,92 @@ public class ConfigurationClientTest {
      * Verifies that we can get all of the revisions for this ConfigurationSetting.
      */
     @Test
-    public void listRevisions() {
+    public void listAllRevisions() {
         final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().withKey(keyName).withValue("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().withKey(keyName).withValue("anotherValue");
-        final HashSet<String> expected = new HashSet<>();
-        expected.add(original.value());
-        expected.add(updated.value());
+        final ConfigurationSetting updated2 = new ConfigurationSetting().withKey(keyName).withValue("anotherValue2");
 
-        // Create two different revisions of the same key.
+        // Create 3 revisions of the same key.
         StepVerifier.create(client.set(original))
                 .assertNext(response -> assertConfigurationEquals(original, response))
                 .verifyComplete();
         StepVerifier.create(client.set(updated))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .verifyComplete();
-
-        // Get all revisions for a key
-        StepVerifier.create(client.listKeyValueRevisions(new RevisionOptions().key(keyPrefix + "*")))
-                .assertNext(response -> {
-                    assertEquals(keyName, response.key());
-                    assertTrue(expected.remove(response.value()));
-                })
-                .assertNext(response -> {
-                    assertEquals(keyName, response.key());
-                    assertTrue(expected.remove(response.value()));
-                })
+        StepVerifier.create(client.set(updated2))
+                .assertNext(response -> assertConfigurationEquals(updated2, response))
                 .verifyComplete();
 
-        assertTrue(expected.isEmpty());
+        // Get all revisions for a key, they are listed in descending order.
+        StepVerifier.create(client.listKeyValueRevisions(new RevisionOptions().key(keyName)))
+                .assertNext(response -> {
+                    assertEquals(keyName, response.key());
+                    assertEquals(updated2.value(), response.value());
+                })
+                .assertNext(response -> {
+                    assertEquals(keyName, response.key());
+                    assertEquals(updated.value(), response.value());
+                })
+                .assertNext(response -> {
+                    assertEquals(keyName, response.key());
+                    assertEquals(original.value(), response.value());
+                })
+                .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can get a subset of the revisions
+     */
+    @Test
+    public void listRevisionsSubset() {
+        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final ConfigurationSetting original = new ConfigurationSetting().withKey(keyName).withValue("myValue");
+        final ConfigurationSetting updated = new ConfigurationSetting().withKey(keyName).withValue("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().withKey(keyName).withValue("anotherValueIUpdated");
+
+        StepVerifier.create(client.set(original))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
+        StepVerifier.create(client.set(updated))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
+        StepVerifier.create(client.set(updated2))
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
+
+        // Get a subset of revisions, the first revision and the original value.
+        final RevisionOptions revisions = new RevisionOptions().key(keyName).range(new RevisionRange(1));
+        StepVerifier.create(client.listKeyValueRevisions(revisions))
+            .assertNext(response -> {
+                assertEquals(keyName, response.key());
+                assertEquals(updated.value(), response.value());
+            })
+            .assertNext(response -> {
+                assertEquals(keyName, response.key());
+                assertEquals(original.value(), response.value());
+            })
+            .verifyComplete();
+
+        // Get a subset of revisions, the current value and the first revision.
+        StepVerifier.create(client.listKeyValueRevisions(new RevisionOptions().key(keyName).range(new RevisionRange(0, 1))))
+            .assertNext(response -> {
+                assertEquals(keyName, response.key());
+                assertEquals(updated2.value(), response.value());
+            })
+            .assertNext(response -> {
+                assertEquals(keyName, response.key());
+                assertEquals(updated.value(), response.value());
+            })
+            .verifyComplete();
+
+        // Gets an error because there is no 3rd revision.
+        final RevisionOptions revisions2 = new RevisionOptions().key(keyName).range(new RevisionRange(2, 3));
+        StepVerifier.create(client.listKeyValueRevisions(revisions2))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof RestException);
+                assertTrue(error.getMessage().contains("416"));
+            }).verify();
     }
 
     /**
@@ -413,6 +471,7 @@ public class ConfigurationClientTest {
                 .expectComplete()
                 .verify();
     }
+
 
     /**
      * Verifies the conditional "GET" scenario where the setting has yet to be updated, resulting in a 304. This GET
