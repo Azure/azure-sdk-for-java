@@ -15,6 +15,7 @@ import com.azure.common.http.policy.AsyncCredentialsPolicy;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
 import com.azure.common.http.rest.RestResponse;
 import com.azure.common.implementation.RestProxy;
@@ -27,6 +28,7 @@ import reactor.util.annotation.NonNull;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
@@ -54,11 +56,12 @@ public final class ConfigurationClient extends ServiceClient {
         this.serviceEndpoint = serviceEndpoint.toString();
     }
 
+    /**
+     * Creates a builder that can configure options for the ConfigurationClient before creating an instance of it.
+     * @return A new ConfigurationClientBuilder to create a ConfiguratoinClient from.
+     */
     public static ConfigurationClientBuilder builder() {
-        Configuration configuration = new Configuration()
-                .userAgent(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION));
-
-        return new ConfigurationClientBuilder(configuration);
+        return new ConfigurationClientBuilder();
     }
 
     /**
@@ -285,55 +288,101 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     public static final class ConfigurationClientBuilder {
-        private final Configuration configuration;
+        private final List<HttpPipelinePolicy> policies;
+        private ConfigurationClientCredentials credentials;
+        private HttpClient httpClient;
+        private HttpLogDetailLevel httpLogDetailLevel;
+        private RetryPolicy retryPolicy;
+        private String userAgent;
 
-        private ConfigurationClientBuilder(Configuration configuration) {
-            this.configuration = configuration;
+        private ConfigurationClientBuilder() {
+            userAgent = String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION);
+            retryPolicy = new RetryPolicy();
+            httpLogDetailLevel = HttpLogDetailLevel.NONE;
+            policies = new ArrayList<>();
         }
 
+        /**
+         * Creates a {@link ConfigurationClient} based on options set in the ConfigurationClientBuilder.
+         *
+         * Every time {@code build()} is called, a new instance of {@link ConfigurationClient} is created.
+         *
+         * @return A ConfigurationClient with the options set from the builder.
+         * @throws IllegalStateException If {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials)}
+         * has not been set.
+         */
         public ConfigurationClient build() {
-            if (configuration.credentials() == null) {
+            if (credentials == null) {
                 throw new IllegalStateException("'credentials' is required.");
             }
 
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-            policies.add(new UserAgentPolicy(configuration.userAgent()));
+            policies.add(new UserAgentPolicy(userAgent));
             policies.add(new RequestIdPolicy());
-            policies.add(configuration.retryPolicy());
+            policies.add(retryPolicy);
             policies.add(new ConfigurationCredentialsPolicy());
-            policies.add(new AsyncCredentialsPolicy(configuration.credentials()));
+            policies.add(new AsyncCredentialsPolicy(credentials));
 
-            policies.addAll(configuration.policies());
+            policies.addAll(this.policies);
 
-            policies.add(new HttpLoggingPolicy(configuration.httpLogDetailLevel()));
+            policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-            HttpPipeline pipeline = configuration.httpClient() == null
+            HttpPipeline pipeline = httpClient == null
                     ? new HttpPipeline(policies)
-                    : new HttpPipeline(configuration.httpClient(), policies);
+                    : new HttpPipeline(httpClient, policies);
 
-            return new ConfigurationClient(configuration.serviceEndpoint(), pipeline);
+            return new ConfigurationClient(credentials.baseUri(), pipeline);
         }
 
+        /**
+         * Sets the credentials to use when authenticating HTTP requests.
+         *
+         * @param credentials The credentials to use for authenticating HTTP requests.
+         * @return The updated ConfigurationClientBuilder object.
+         * @throws NullPointerException if {@param credentials} is {@code null}.
+         */
         public ConfigurationClientBuilder credentials(ConfigurationClientCredentials credentials) {
-            configuration.credentials(credentials);
-            configuration.serviceEndpoint(credentials.baseUri().toString());
+            Objects.requireNonNull(credentials);
+            this.credentials = credentials;
             return this;
         }
 
+        /**
+         * Sets the logging level for HTTP requests and responses.
+         *
+         * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
+         * @return The updated ConfigurationClientBuilder object.
+         */
         public ConfigurationClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-            configuration.httpLogDetailLevel(logLevel);
+            httpLogDetailLevel = logLevel;
             return this;
         }
 
+        /**
+         * Adds a policy to the set of existing policies that are executed after
+         * {@link com.azure.applicationconfig.ConfigurationClient} required policies.
+         *
+         * @param policy The retry policy for service requests.
+         * @return The updated ConfigurationClientBuilder object.
+         * @throws NullPointerException if {@param policy} is {@code null}.
+         */
         public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
-            configuration.addPolicy(policy);
+            Objects.requireNonNull(policy);
+            policies.add(policy);
             return this;
         }
 
+        /**
+         * Sets the HTTP client to use for sending and receiving requests to and from the service.
+         *
+         * @param client The HTTP client to use for requests.
+         * @return The updated ConfigurationClientBuilder object.
+         * @throws NullPointerException if {@param client} is {@code null}.
+         */
         public ConfigurationClientBuilder httpClient(HttpClient client) {
-            configuration.httpClient(client);
+            this.httpClient = client;
             return this;
         }
     }
