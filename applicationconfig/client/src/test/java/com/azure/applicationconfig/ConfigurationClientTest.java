@@ -33,6 +33,8 @@ import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.temporal.TemporalAdjuster;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -349,6 +351,39 @@ public class ConfigurationClientTest {
             .verifyComplete();
     }
 
+    @Test
+    public void listSettingsAcceptDateTime() {
+        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final ConfigurationSetting original = new ConfigurationSetting().withKey(keyName).withValue("myValue");
+        final ConfigurationSetting updated = new ConfigurationSetting().withKey(keyName).withValue("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().withKey(keyName).withValue("anotherValue2");
+
+        // Create 3 revisions of the same key.
+        StepVerifier.create(client.set(original).delayElement(Duration.ofSeconds(5)))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
+        StepVerifier.create(client.set(updated).delayElement(Duration.ofSeconds(5)))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
+        StepVerifier.create(client.set(updated2))
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
+
+        // Gets all versions of this value.
+        List<ConfigurationSetting> revisions = client.listKeyValueRevisions(new RevisionOptions().key(keyName)).collectList().block();
+
+        assertNotNull(revisions);
+        assertEquals(3, revisions.size());
+
+        // We want to fetch all the revisions that existed up and including when the first revision was created.
+        // Revisions are returned in descending order from creation date.
+        RevisionOptions options = new RevisionOptions().key(keyName).acceptDatetime(revisions.get(1).lastModified());
+        StepVerifier.create(client.listKeyValueRevisions(options))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
+    }
+
     /**
      * Verifies that we can get all of the revisions for this ConfigurationSetting.
      */
@@ -372,18 +407,9 @@ public class ConfigurationClientTest {
 
         // Get all revisions for a key, they are listed in descending order.
         StepVerifier.create(client.listKeyValueRevisions(new RevisionOptions().key(keyName)))
-                .assertNext(response -> {
-                    assertEquals(keyName, response.key());
-                    assertEquals(updated2.value(), response.value());
-                })
-                .assertNext(response -> {
-                    assertEquals(keyName, response.key());
-                    assertEquals(updated.value(), response.value());
-                })
-                .assertNext(response -> {
-                    assertEquals(keyName, response.key());
-                    assertEquals(original.value(), response.value());
-                })
+                .assertNext(response -> assertConfigurationEquals(updated2, response))
+                .assertNext(response -> assertConfigurationEquals(updated, response))
+                .assertNext(response -> assertConfigurationEquals(original, response))
                 .verifyComplete();
     }
 
