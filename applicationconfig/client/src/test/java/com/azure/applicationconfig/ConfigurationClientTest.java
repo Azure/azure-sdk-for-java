@@ -293,8 +293,8 @@ public class ConfigurationClientTest {
      */
     @Test
     public void listSettingsSelectFields() {
-        final String label = "my-first";
-        final String label2 = "my-second";
+        final String label = "my-first-mylabel";
+        final String label2 = "my-second-mylabel";
         final int numberToCreate = 8;
         final Map<String, String> tags = new HashMap<>();
         tags.put("tag1", "value1");
@@ -302,12 +302,12 @@ public class ConfigurationClientTest {
 
         final EnumSet<ConfigurationSettingField> fields = EnumSet.of(ConfigurationSettingField.KEY, ConfigurationSettingField.ETAG, ConfigurationSettingField.CONTENT_TYPE, ConfigurationSettingField.TAGS);
         final RequestOptions secondLabelOptions = new RequestOptions()
-            .label("*-second")
-            .key(keyPrefix + "-*")
+            .label("*-second*")
+            .key(keyPrefix + "-fetch-*")
             .fields(fields);
         final List<ConfigurationSetting> settings = IntStream.range(0, numberToCreate)
             .mapToObj(value -> {
-                String key = value % 2 == 0  ? Integer.toString(value) : keyPrefix + "-" + value;
+                String key = value % 2 == 0  ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
                 String lbl = value / 4 == 0 ? label : label2;
                 return new ConfigurationSetting().withKey(key).withValue("myValue2").withLabel(lbl).withTags(tags);
             })
@@ -471,7 +471,6 @@ public class ConfigurationClientTest {
                 .expectComplete()
                 .verify();
     }
-
 
     /**
      * Verifies the conditional "GET" scenario where the setting has yet to be updated, resulting in a 304. This GET
