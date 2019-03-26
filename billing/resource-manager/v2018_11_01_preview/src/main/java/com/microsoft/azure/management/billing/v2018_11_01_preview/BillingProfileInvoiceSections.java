@@ -20,11 +20,10 @@ public interface BillingProfileInvoiceSections extends HasInner<BillingProfileIn
      * Elevates the caller's access to match their billing profile access.
      *
      * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable elevateAsync(String billingAccountName, String billingProfileName, String invoiceSectionName);
+    Completable elevateAsync(String billingAccountName, String invoiceSectionName);
 
 }

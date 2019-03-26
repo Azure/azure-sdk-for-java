@@ -26,9 +26,9 @@ class BillingProfileInvoiceSectionsImpl extends WrapperImpl<BillingProfileInvoic
     }
 
     @Override
-    public Completable elevateAsync(String billingAccountName, String billingProfileName, String invoiceSectionName) {
+    public Completable elevateAsync(String billingAccountName, String invoiceSectionName) {
         BillingProfileInvoiceSectionsInner client = this.inner();
-        return client.elevateAsync(billingAccountName, billingProfileName, invoiceSectionName).toCompletable();
+        return client.elevateAsync(billingAccountName, invoiceSectionName).toCompletable();
     }
 
 }

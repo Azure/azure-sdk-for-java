@@ -51,8 +51,8 @@ public class BillingProfileInvoiceSectionsInner {
      */
     interface BillingProfileInvoiceSectionsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileInvoiceSections elevate" })
-        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/elevate")
-        Observable<Response<ResponseBody>> elevate(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Path("invoiceSectionName") String invoiceSectionName, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/elevate")
+        Observable<Response<ResponseBody>> elevate(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -60,41 +60,38 @@ public class BillingProfileInvoiceSectionsInner {
      * Elevates the caller's access to match their billing profile access.
      *
      * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void elevate(String billingAccountName, String billingProfileName, String invoiceSectionName) {
-        elevateWithServiceResponseAsync(billingAccountName, billingProfileName, invoiceSectionName).toBlocking().single().body();
+    public void elevate(String billingAccountName, String invoiceSectionName) {
+        elevateWithServiceResponseAsync(billingAccountName, invoiceSectionName).toBlocking().single().body();
     }
 
     /**
      * Elevates the caller's access to match their billing profile access.
      *
      * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> elevateAsync(String billingAccountName, String billingProfileName, String invoiceSectionName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(elevateWithServiceResponseAsync(billingAccountName, billingProfileName, invoiceSectionName), serviceCallback);
+    public ServiceFuture<Void> elevateAsync(String billingAccountName, String invoiceSectionName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(elevateWithServiceResponseAsync(billingAccountName, invoiceSectionName), serviceCallback);
     }
 
     /**
      * Elevates the caller's access to match their billing profile access.
      *
      * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> elevateAsync(String billingAccountName, String billingProfileName, String invoiceSectionName) {
-        return elevateWithServiceResponseAsync(billingAccountName, billingProfileName, invoiceSectionName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> elevateAsync(String billingAccountName, String invoiceSectionName) {
+        return elevateWithServiceResponseAsync(billingAccountName, invoiceSectionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -106,22 +103,18 @@ public class BillingProfileInvoiceSectionsInner {
      * Elevates the caller's access to match their billing profile access.
      *
      * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> elevateWithServiceResponseAsync(String billingAccountName, String billingProfileName, String invoiceSectionName) {
+    public Observable<ServiceResponse<Void>> elevateWithServiceResponseAsync(String billingAccountName, String invoiceSectionName) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
-        }
-        if (billingProfileName == null) {
-            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
         }
         if (invoiceSectionName == null) {
             throw new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null.");
         }
-        return service.elevate(billingAccountName, billingProfileName, invoiceSectionName, this.client.acceptLanguage(), this.client.userAgent())
+        return service.elevate(billingAccountName, invoiceSectionName, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
