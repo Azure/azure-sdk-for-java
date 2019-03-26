@@ -33,7 +33,7 @@ public class TransferDetailsInner {
     private DateTime expirationTime;
 
     /**
-     * Target invoice setion Id.
+     * Target invoice section Id.
      */
     @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceSectionId;
@@ -101,7 +101,7 @@ public class TransferDetailsInner {
     }
 
     /**
-     * Get target invoice setion Id.
+     * Get target invoice section Id.
      *
      * @return the invoiceSectionId value
      */
