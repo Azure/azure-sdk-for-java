@@ -6,7 +6,7 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.implementation.Page;
 import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.applicationconfig.models.ConfigurationSettingField;
+import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.RequestOptions;
 import com.azure.applicationconfig.models.RevisionOptions;
 import com.azure.applicationconfig.models.RevisionRange;
@@ -448,7 +448,7 @@ public final class ConfigurationClient extends ServiceClient {
         return etag == null ? "" : "\"" + etag + "\"";
     }
 
-    private static String getSelectQuery(EnumSet<ConfigurationSettingField> set) {
+    private static String getSelectQuery(EnumSet<SettingFields> set) {
         if (set == null || set.isEmpty()) {
             return null;
         }

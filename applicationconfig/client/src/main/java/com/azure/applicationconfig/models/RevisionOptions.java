@@ -58,7 +58,7 @@ public class RevisionOptions extends RequestOptions {
      * {@inheritDoc}
      */
     @Override
-    public RevisionOptions fields(EnumSet<ConfigurationSettingField> fields) {
+    public RevisionOptions fields(EnumSet<SettingFields> fields) {
         super.fields(fields);
         return this;
     }

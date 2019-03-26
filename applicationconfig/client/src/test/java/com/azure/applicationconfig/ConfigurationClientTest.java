@@ -3,7 +3,7 @@
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.applicationconfig.models.ConfigurationSettingField;
+import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.RequestOptions;
 import com.azure.applicationconfig.models.RevisionOptions;
 import com.azure.applicationconfig.models.RevisionRange;
@@ -33,12 +33,9 @@ import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.temporal.TemporalAdjuster;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -302,7 +299,7 @@ public class ConfigurationClientTest {
         tags.put("tag1", "value1");
         tags.put("tag2", "value2");
 
-        final EnumSet<ConfigurationSettingField> fields = EnumSet.of(ConfigurationSettingField.KEY, ConfigurationSettingField.ETAG, ConfigurationSettingField.CONTENT_TYPE, ConfigurationSettingField.TAGS);
+        final EnumSet<SettingFields> fields = EnumSet.of(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
         final RequestOptions secondLabelOptions = new RequestOptions()
             .label("*-second*")
             .key(keyPrefix + "-fetch-*")

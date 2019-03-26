@@ -21,7 +21,7 @@ import java.util.EnumSet;
 public class RequestOptions {
     private String key;
     private String label;
-    private EnumSet<ConfigurationSettingField> fields;
+    private EnumSet<SettingFields> fields;
     private String acceptDatetime;
 
     /**
@@ -145,7 +145,7 @@ public class RequestOptions {
      *
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
-    public EnumSet<ConfigurationSettingField> fields() {
+    public EnumSet<SettingFields> fields() {
         return fields;
     }
 
@@ -156,7 +156,7 @@ public class RequestOptions {
      *               ConfigurationSettings with a default set of properties.
      * @return The updated RequestOptions object.
      */
-    public RequestOptions fields(EnumSet<ConfigurationSettingField> fields) {
+    public RequestOptions fields(EnumSet<SettingFields> fields) {
         this.fields = fields;
         return this;
     }

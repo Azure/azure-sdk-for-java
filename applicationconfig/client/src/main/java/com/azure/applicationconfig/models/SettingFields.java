@@ -5,7 +5,7 @@ package com.azure.applicationconfig.models;
 /**
  * Fields in {@link ConfigurationSetting} that can be returned from GET queries.
  */
-public enum ConfigurationSettingField {
+public enum SettingFields {
     /**
      * Populates the {@link ConfigurationSetting#key()} from the service.
      */
