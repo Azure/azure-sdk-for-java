@@ -5,7 +5,7 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.implementation.Page;
 import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.applicationconfig.models.ConfigurationSettingFields;
+import com.azure.applicationconfig.models.ConfigurationSettingField;
 import com.azure.applicationconfig.models.RequestOptions;
 import com.azure.applicationconfig.models.RevisionOptions;
 import com.azure.applicationconfig.models.RevisionRange;
@@ -446,13 +446,13 @@ public final class ConfigurationClient extends ServiceClient {
         return etag == null ? "" : "\"" + etag + "\"";
     }
 
-    private static String getSelectQuery(EnumSet<ConfigurationSettingFields> set) {
+    private static String getSelectQuery(EnumSet<ConfigurationSettingField> set) {
         if (set == null || set.isEmpty()) {
             return null;
         }
 
-        String result = set.stream().map(item -> item.toString().toLowerCase(Locale.US)).collect(Collectors.joining(","));
-        return result;
+        return set.stream().map(item -> item.toString().toLowerCase(Locale.US))
+            .collect(Collectors.joining(","));
     }
 
     private static String getItemsRange(RevisionRange range) {
