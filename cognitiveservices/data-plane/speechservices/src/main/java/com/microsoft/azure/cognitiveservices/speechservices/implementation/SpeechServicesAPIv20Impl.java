@@ -59,12 +59,10 @@ import com.microsoft.azure.cognitiveservices.speechservices.models.GetLanguageGe
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetModelHeaders;
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetModelsHeaders;
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetSupportedLocalesForDatasetsHeaders;
-import com.microsoft.azure.cognitiveservices.speechservices.models.GetSupportedLocalesForDatasetsOKResponse;
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetSupportedLocalesForEndpointsHeaders;
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetSupportedLocalesForLanguageGenerationEndpointsHeaders;
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetSupportedLocalesForLanguageGenerationModelsHeaders;
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetSupportedLocalesForModelsHeaders;
-import com.microsoft.azure.cognitiveservices.speechservices.models.GetSupportedLocalesForModelsOKResponse;
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetSupportedLocalesForTranscriptionsHeaders;
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetSupportedLocalesForVoiceDatasetsHeaders;
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetSupportedLocalesForVoiceEndpointsHeaders;
@@ -78,6 +76,7 @@ import com.microsoft.azure.cognitiveservices.speechservices.models.GetVoiceModel
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetVoiceModelsHeaders;
 import com.microsoft.azure.cognitiveservices.speechservices.models.GetVoiceTestHeaders;
 import com.microsoft.azure.cognitiveservices.speechservices.models.HealthStatusResponse;
+import com.microsoft.azure.cognitiveservices.speechservices.models.IReadOnlyDictionary2;
 import com.microsoft.azure.cognitiveservices.speechservices.models.Model;
 import com.microsoft.azure.cognitiveservices.speechservices.models.ModelDefinition;
 import com.microsoft.azure.cognitiveservices.speechservices.models.ModelUpdate;
@@ -1299,7 +1298,7 @@ public class SpeechServicesAPIv20Impl extends AzureServiceClient implements Spee
 
     private ServiceResponseWithHeaders<Object, GetSupportedLocalesForDatasetsHeaders> getSupportedLocalesForDatasetsDelegate(Response<ResponseBody> response) throws CloudException, IOException {
         return this.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<GetSupportedLocalesForDatasetsOKResponse>() { }.getType())
+                .register(200, new TypeToken<IReadOnlyDictionary2>() { }.getType())
                 .register(401, new TypeToken<ErrorContent>() { }.getType())
                 .register(403, new TypeToken<ErrorContent>() { }.getType())
                 .register(429, new TypeToken<ErrorContent>() { }.getType())
@@ -2820,7 +2819,7 @@ public class SpeechServicesAPIv20Impl extends AzureServiceClient implements Spee
 
     private ServiceResponseWithHeaders<Object, GetSupportedLocalesForModelsHeaders> getSupportedLocalesForModelsDelegate(Response<ResponseBody> response) throws CloudException, IOException {
         return this.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<GetSupportedLocalesForModelsOKResponse>() { }.getType())
+                .register(200, new TypeToken<IReadOnlyDictionary2>() { }.getType())
                 .register(401, new TypeToken<ErrorContent>() { }.getType())
                 .register(403, new TypeToken<ErrorContent>() { }.getType())
                 .register(429, new TypeToken<ErrorContent>() { }.getType())
