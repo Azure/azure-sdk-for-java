@@ -31,14 +31,16 @@ public class ValidationActivity extends ControlActivity {
 
     /**
      * A delay in seconds between validation attempts. If no value is
-     * specified, 10 seconds will be used as the default.
+     * specified, 10 seconds will be used as the default. Type: integer (or
+     * Expression with resultType integer).
      */
     @JsonProperty(value = "typeProperties.sleep")
     private Object sleep;
 
     /**
      * Can be used if dataset points to a file. The file must be greater than
-     * or equal in size to the value specified.
+     * or equal in size to the value specified. Type: integer (or Expression
+     * with resultType integer).
      */
     @JsonProperty(value = "typeProperties.minimumSize")
     private Object minimumSize;
@@ -46,6 +48,7 @@ public class ValidationActivity extends ControlActivity {
     /**
      * Can be used if dataset points to a folder. If set to true, the folder
      * must have at least one file. If set to false, the folder must be empty.
+     * Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.childItems")
     private Object childItems;
@@ -77,7 +80,7 @@ public class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Get a delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the default.
+     * Get a delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the default. Type: integer (or Expression with resultType integer).
      *
      * @return the sleep value
      */
@@ -86,7 +89,7 @@ public class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Set a delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the default.
+     * Set a delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the default. Type: integer (or Expression with resultType integer).
      *
      * @param sleep the sleep value to set
      * @return the ValidationActivity object itself.
@@ -97,7 +100,7 @@ public class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Get can be used if dataset points to a file. The file must be greater than or equal in size to the value specified.
+     * Get can be used if dataset points to a file. The file must be greater than or equal in size to the value specified. Type: integer (or Expression with resultType integer).
      *
      * @return the minimumSize value
      */
@@ -106,7 +109,7 @@ public class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Set can be used if dataset points to a file. The file must be greater than or equal in size to the value specified.
+     * Set can be used if dataset points to a file. The file must be greater than or equal in size to the value specified. Type: integer (or Expression with resultType integer).
      *
      * @param minimumSize the minimumSize value to set
      * @return the ValidationActivity object itself.
@@ -117,7 +120,7 @@ public class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Get can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to false, the folder must be empty.
+     * Get can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      *
      * @return the childItems value
      */
@@ -126,7 +129,7 @@ public class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Set can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to false, the folder must be empty.
+     * Set can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      *
      * @param childItems the childItems value to set
      * @return the ValidationActivity object itself.
