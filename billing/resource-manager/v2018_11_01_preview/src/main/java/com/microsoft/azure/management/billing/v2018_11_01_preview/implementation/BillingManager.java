@@ -24,6 +24,7 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfile
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsByBillingAccountNames;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsByBillingProfileNames;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsWithCreateSubscriptionPermissions;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.DepartmentsByBillingAccountNames;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Departments;
@@ -43,6 +44,7 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.Products;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsByBillingAccounts;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Policys;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPropertys;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileInvoiceSections;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Transfers;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.RecipientTransfers;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Operations;
@@ -70,6 +72,7 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     private BillingProfiles billingProfiles;
     private InvoiceSectionsByBillingAccountNames invoiceSectionsByBillingAccountNames;
     private InvoiceSections invoiceSections;
+    private InvoiceSectionsByBillingProfileNames invoiceSectionsByBillingProfileNames;
     private InvoiceSectionsWithCreateSubscriptionPermissions invoiceSectionsWithCreateSubscriptionPermissions;
     private DepartmentsByBillingAccountNames departmentsByBillingAccountNames;
     private Departments departments;
@@ -89,6 +92,7 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     private TransactionsByBillingAccounts transactionsByBillingAccounts;
     private Policys policys;
     private BillingPropertys billingPropertys;
+    private BillingProfileInvoiceSections billingProfileInvoiceSections;
     private Transfers transfers;
     private RecipientTransfers recipientTransfers;
     private Operations operations;
@@ -226,6 +230,16 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.invoiceSections = new InvoiceSectionsImpl(this);
         }
         return this.invoiceSections;
+    }
+
+    /**
+     * @return Entry point to manage InvoiceSectionsByBillingProfileNames.
+     */
+    public InvoiceSectionsByBillingProfileNames invoiceSectionsByBillingProfileNames() {
+        if (this.invoiceSectionsByBillingProfileNames == null) {
+            this.invoiceSectionsByBillingProfileNames = new InvoiceSectionsByBillingProfileNamesImpl(this);
+        }
+        return this.invoiceSectionsByBillingProfileNames;
     }
 
     /**
@@ -416,6 +430,16 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.billingPropertys = new BillingPropertysImpl(this);
         }
         return this.billingPropertys;
+    }
+
+    /**
+     * @return Entry point to manage BillingProfileInvoiceSections.
+     */
+    public BillingProfileInvoiceSections billingProfileInvoiceSections() {
+        if (this.billingProfileInvoiceSections == null) {
+            this.billingProfileInvoiceSections = new BillingProfileInvoiceSectionsImpl(this);
+        }
+        return this.billingProfileInvoiceSections;
     }
 
     /**

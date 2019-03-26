@@ -258,6 +258,19 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The InvoiceSectionsByBillingProfileNamesInner object to access its operations.
+     */
+    private InvoiceSectionsByBillingProfileNamesInner invoiceSectionsByBillingProfileNames;
+
+    /**
+     * Gets the InvoiceSectionsByBillingProfileNamesInner object to access its operations.
+     * @return the InvoiceSectionsByBillingProfileNamesInner object.
+     */
+    public InvoiceSectionsByBillingProfileNamesInner invoiceSectionsByBillingProfileNames() {
+        return this.invoiceSectionsByBillingProfileNames;
+    }
+
+    /**
      * The InvoiceSectionsWithCreateSubscriptionPermissionsInner object to access its operations.
      */
     private InvoiceSectionsWithCreateSubscriptionPermissionsInner invoiceSectionsWithCreateSubscriptionPermissions;
@@ -505,6 +518,19 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The BillingProfileInvoiceSectionsInner object to access its operations.
+     */
+    private BillingProfileInvoiceSectionsInner billingProfileInvoiceSections;
+
+    /**
+     * Gets the BillingProfileInvoiceSectionsInner object to access its operations.
+     * @return the BillingProfileInvoiceSectionsInner object.
+     */
+    public BillingProfileInvoiceSectionsInner billingProfileInvoiceSections() {
+        return this.billingProfileInvoiceSections;
+    }
+
+    /**
      * The TransfersInner object to access its operations.
      */
     private TransfersInner transfers;
@@ -703,6 +729,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.billingProfiles = new BillingProfilesInner(restClient().retrofit(), this);
         this.invoiceSectionsByBillingAccountNames = new InvoiceSectionsByBillingAccountNamesInner(restClient().retrofit(), this);
         this.invoiceSections = new InvoiceSectionsInner(restClient().retrofit(), this);
+        this.invoiceSectionsByBillingProfileNames = new InvoiceSectionsByBillingProfileNamesInner(restClient().retrofit(), this);
         this.invoiceSectionsWithCreateSubscriptionPermissions = new InvoiceSectionsWithCreateSubscriptionPermissionsInner(restClient().retrofit(), this);
         this.departmentsByBillingAccountNames = new DepartmentsByBillingAccountNamesInner(restClient().retrofit(), this);
         this.departments = new DepartmentsInner(restClient().retrofit(), this);
@@ -722,6 +749,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.transactionsByBillingAccounts = new TransactionsByBillingAccountsInner(restClient().retrofit(), this);
         this.policys = new PolicysInner(restClient().retrofit(), this);
         this.billingPropertys = new BillingPropertysInner(restClient().retrofit(), this);
+        this.billingProfileInvoiceSections = new BillingProfileInvoiceSectionsInner(restClient().retrofit(), this);
         this.transfers = new TransfersInner(restClient().retrofit(), this);
         this.recipientTransfers = new RecipientTransfersInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
