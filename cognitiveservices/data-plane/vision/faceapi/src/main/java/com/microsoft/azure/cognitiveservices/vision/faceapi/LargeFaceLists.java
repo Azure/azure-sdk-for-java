@@ -423,7 +423,7 @@ public interface LargeFaceLists {
      To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
      * Large face lists are stored in alphabetical order of largeFaceListId.
      * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 large person lists: "list1", ..., "list5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
@@ -442,7 +442,7 @@ public interface LargeFaceLists {
      To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
      * Large face lists are stored in alphabetical order of largeFaceListId.
      * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 large person lists: "list1", ..., "list5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
@@ -460,7 +460,7 @@ public interface LargeFaceLists {
      To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
      * Large face lists are stored in alphabetical order of largeFaceListId.
      * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 large person lists: "list1", ..., "list5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
@@ -477,7 +477,7 @@ public interface LargeFaceLists {
      To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
      * Large face lists are stored in alphabetical order of largeFaceListId.
      * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 large person lists: "list1", ..., "list5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
@@ -493,7 +493,7 @@ public interface LargeFaceLists {
      To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
      * Large face lists are stored in alphabetical order of largeFaceListId.
      * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 large person lists: "list1", ..., "list5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
@@ -513,7 +513,7 @@ public interface LargeFaceLists {
      To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
      * Large face lists are stored in alphabetical order of largeFaceListId.
      * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 large person lists: "list1", ..., "list5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
@@ -532,7 +532,7 @@ public interface LargeFaceLists {
      To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
      * Large face lists are stored in alphabetical order of largeFaceListId.
      * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 large person lists: "list1", ..., "list5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
@@ -550,7 +550,7 @@ public interface LargeFaceLists {
      To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
      * Large face lists are stored in alphabetical order of largeFaceListId.
      * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 large person lists: "list1", ..., "list5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
