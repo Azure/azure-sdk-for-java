@@ -36,7 +36,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
     }
 
     URL baseUri() {
-        return this.credentials.baseUri;
+        return this.credentials.baseUri();
     }
 
     @Override
