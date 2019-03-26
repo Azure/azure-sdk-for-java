@@ -18,6 +18,7 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.Operations;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.Monitors;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -27,6 +28,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class HanaOnAzureManager extends ManagerCore<HanaOnAzureManager, HanaManagementClientImpl> {
     private Operations operations;
     private HanaInstances hanaInstances;
+    private Monitors monitors;
     /**
     * Get a Configurable instance that can be used to create HanaOnAzureManager with optional configuration.
     *
@@ -92,6 +94,16 @@ public final class HanaOnAzureManager extends ManagerCore<HanaOnAzureManager, Ha
             this.hanaInstances = new HanaInstancesImpl(this);
         }
         return this.hanaInstances;
+    }
+
+    /**
+     * @return Entry point to manage Monitors.
+     */
+    public Monitors monitors() {
+        if (this.monitors == null) {
+            this.monitors = new MonitorsImpl(this);
+        }
+        return this.monitors;
     }
 
     /**

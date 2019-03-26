@@ -30,15 +30,4 @@ public interface HanaInstances extends SupportsGettingByResourceGroup<HanaInstan
      */
     Completable restartAsync(String resourceGroupName, String hanaInstanceName);
 
-    /**
-     * The operation to monitor a SAP HANA instance.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param monitoringParameter Request body that only contains monitoring attributes
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable monitoringAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter);
-
 }
