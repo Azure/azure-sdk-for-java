@@ -3,6 +3,7 @@
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.models.ConfigurationSetting;
+import com.azure.applicationconfig.models.ConfigurationSettingField;
 import com.azure.applicationconfig.models.RequestOptions;
 import com.azure.applicationconfig.models.RevisionOptions;
 import com.azure.common.http.policy.HttpPipelinePolicy;
@@ -32,6 +33,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -259,8 +261,8 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Verifies that a ConfigurationSetting can be added with a label, and that we can fetch that ConfigurationSetting from the service when
-     * filtering by either its label or just its key.
+     * Verifies that a ConfigurationSetting can be added with a label, and that we can fetch that ConfigurationSetting
+     * from the service when filtering by either its label or just its key.
      */
     @Test
     public void listWithKeyAndLabel() {
@@ -283,6 +285,67 @@ public class ConfigurationClientTest {
                 .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
                 .expectComplete()
                 .verify();
+    }
+
+    /**
+     * Verifies that we can select filter results by key, label, and select fields using RequestOptions.
+     */
+    @Test
+    public void listSettingsSelectFields() {
+        final String label = "my-first";
+        final String label2 = "my-second";
+        final int numberToCreate = 8;
+        final Map<String, String> tags = new HashMap<>();
+        tags.put("tag1", "value1");
+        tags.put("tag2", "value2");
+
+        final EnumSet<ConfigurationSettingField> fields = EnumSet.of(ConfigurationSettingField.KEY, ConfigurationSettingField.ETAG, ConfigurationSettingField.CONTENT_TYPE, ConfigurationSettingField.TAGS);
+        final RequestOptions secondLabelOptions = new RequestOptions()
+            .label("*-second")
+            .key(keyPrefix + "-*")
+            .fields(fields);
+        final List<ConfigurationSetting> settings = IntStream.range(0, numberToCreate)
+            .mapToObj(value -> {
+                String key = value % 2 == 0  ? Integer.toString(value) : keyPrefix + "-" + value;
+                String lbl = value / 4 == 0 ? label : label2;
+                return new ConfigurationSetting().withKey(key).withValue("myValue2").withLabel(lbl).withTags(tags);
+            })
+            .collect(Collectors.toList());
+
+        final List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
+        for (ConfigurationSetting setting : settings) {
+            results.add(client.set(setting));
+        }
+
+        // Waiting for all the settings to be added.
+        Flux.merge(results).blockLast();
+
+        StepVerifier.create(client.listKeyValues(secondLabelOptions))
+            .assertNext(setting -> {
+                // These are the fields we chose in our filter.
+                assertNotNull(setting.etag());
+                assertNotNull(setting.key());
+                assertTrue(setting.key().contains(keyPrefix));
+                assertNotNull(setting.tags());
+                assertEquals(tags.size(), setting.tags().size());
+
+                assertNull(setting.lastModified());
+                assertNull(setting.contentType());
+                assertNull(setting.label());
+            })
+            .assertNext(setting -> {
+                // These are the fields we chose in our filter.
+                assertNotNull(setting.etag());
+                assertNotNull(setting.key());
+                assertTrue(setting.key().contains(keyPrefix));
+                assertNotNull(setting.tags());
+                assertEquals(tags.size(), setting.tags().size());
+
+                assertNull(setting.lastModified());
+                assertNull(setting.contentType());
+                assertNull(setting.label());
+            })
+            .verifyComplete();
     }
 
     /**
