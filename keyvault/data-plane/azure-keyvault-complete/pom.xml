@@ -16,8 +16,8 @@ the MIT License. See License.txt in the project root for license information. --
   <version>1.2.1</version>
   <packaging>pom</packaging>
 
-  <name>Microsoft Azure Key Vault SDK Complete</name>
-  <description>This encapsulate all modules of the Microsoft Azure Key Vault SDK.</description>
+  <name>Microsoft Azure Key Vault client library - Complete</name>
+  <description>This encapsulate all modules of the Microsoft Azure Key Vault client library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>

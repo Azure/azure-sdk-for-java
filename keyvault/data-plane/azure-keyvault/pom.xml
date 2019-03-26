@@ -15,8 +15,8 @@ the MIT License. See License.txt in the project root for license information. --
 	<version>1.2.1</version>
 	<packaging>jar</packaging>
 
-	<name>Microsoft Azure SDK for Key Vault</name>
-	<description>This package contains Microsoft Azure Key Vault SDK.</description>
+	<name>Microsoft Azure client library for Key Vault</name>
+	<description>This package contains the Microsoft Azure Key Vault client library.</description>
 	<url>https://github.com/Azure/azure-sdk-for-java</url>
 
 	<distributionManagement>
@@ -38,20 +38,20 @@ the MIT License. See License.txt in the project root for license information. --
     <!-- COMPILE DEPENDENCIES -->
     <!-- Microsoft Azure KeyVault SDK Dependencies -->
     <dependency>
-		<groupId>com.microsoft.azure</groupId>
-		<artifactId>azure-keyvault-cryptography</artifactId>
-	</dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-keyvault-cryptography</artifactId>
+    </dependency>
 
-	<dependency>
-		<groupId>com.microsoft.azure</groupId>
-		<artifactId>azure-keyvault-webkey</artifactId>
-	</dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-keyvault-webkey</artifactId>
+    </dependency>
     
     <!-- Other Microsoft Azure Dependencies -->
     <dependency>
-		<groupId>com.microsoft.azure</groupId>
-		<artifactId>azure-client-runtime</artifactId>
-	</dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-runtime</artifactId>
+    </dependency>
     
     <!-- Other Microsoft Dependencies -->
     <dependency>
@@ -68,10 +68,10 @@ the MIT License. See License.txt in the project root for license information. --
     </dependency>
 
     <dependency>
-	  <groupId>com.microsoft.azure</groupId>
-	  <artifactId>azure-mgmt-graph-rbac</artifactId>
-	  <scope>test</scope>
-	</dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-graph-rbac</artifactId>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -80,29 +80,29 @@ the MIT License. See License.txt in the project root for license information. --
     </dependency>
 
     <dependency>
-	  <groupId>com.microsoft.azure</groupId>
-	  <artifactId>azure-mgmt-keyvault</artifactId>
-	  <scope>test</scope>
-	  <exclusions>
-		<exclusion>
-			<groupId>com.microsoft.azure</groupId>
-			<artifactId>azure-keyvault</artifactId>
-		</exclusion>
-	  </exclusions>
-	</dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-keyvault</artifactId>
+      <scope>test</scope>
+      <exclusions>
+      <exclusion>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-keyvault</artifactId>
+      </exclusion>
+      </exclusions>
+    </dependency>
 
     <dependency>
-	  <groupId>com.microsoft.azure</groupId>
-	  <artifactId>azure-mgmt-resources</artifactId>
-	  <type>test-jar</type>
-	  <scope>test</scope>
-	</dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-resources</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
-	  <groupId>com.microsoft.azure</groupId>
-	  <artifactId>adal4j</artifactId>
-	  <scope>test</scope>
-	</dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>adal4j</artifactId>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -112,17 +112,17 @@ the MIT License. See License.txt in the project root for license information. --
     
     <!-- Other Dependencies -->
 
-	<dependency>
-		<groupId>com.microsoft.azure</groupId>
-		<artifactId>azure-client-authentication</artifactId>
-        <scope>test</scope>
-	</dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-authentication</artifactId>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
-		<groupId>junit</groupId>
-		<artifactId>junit</artifactId>
-		<scope>test</scope>
-	</dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
 
 	</dependencies>
 

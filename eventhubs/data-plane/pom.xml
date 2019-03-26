@@ -10,8 +10,8 @@
   <packaging>pom</packaging>
   <version>2.0.0</version>
 
-  <name>Microsoft Azure Event Hubs SDK Parent</name>
-  <description>Java libraries for talking to Windows Azure Event Hubs</description>
+  <name>Microsoft Azure Event Hubs Client Library Parent</name>
+  <description>Java client library for talking to Windows Azure Event Hubs</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <parent>

@@ -103,12 +103,13 @@
     <!-- Dependency Versions -->
     <jackson.version>2.9.6</jackson.version>
     <azure-client-runtime.version>1.6.4</azure-client-runtime.version>
-    <client-runtime.version>1.6.1</client-runtime.version>
+    <client-runtime.version>1.6.5</client-runtime.version>
     <commons-codec.version>1.10</commons-codec.version>
     <spotbugs.version>3.1.11</spotbugs.version>
     <proton-j-version>0.31.0</proton-j-version>
     <qpid-proton-j-extensions-version>1.1.0</qpid-proton-j-extensions-version>
     <log4j-api.version>2.11.1</log4j-api.version>
+    <azure-annotations.version>1.8.0</azure-annotations.version>
 
     <!-- Test Dependency Versions -->
     <adal4j.version>1.4.0</adal4j.version>
@@ -141,6 +142,7 @@
     <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
     <commons-io.version>2.4</commons-io.version>
     <checkstyle.version>8.18</checkstyle.version>
+    <mockito.version>1.10.19</mockito.version>
   </properties>
 
   <dependencyManagement>
@@ -164,6 +166,12 @@
         <groupId>com.microsoft.rest</groupId>
         <artifactId>client-runtime</artifactId>
         <version>${client-runtime.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-annotations</artifactId>
+        <version>${azure-annotations.version}</version>
       </dependency>
 
       <!-- Jackson Dependencies -->
@@ -266,6 +274,13 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
         <scope>test</scope>
       </dependency>
 

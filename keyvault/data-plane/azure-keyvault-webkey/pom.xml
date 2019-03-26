@@ -14,8 +14,8 @@
     <version>1.2.1</version>
 	<packaging>jar</packaging>
 
-	<name>Microsoft Azure SDK for Key Vault WebKey</name>
-	<description>This package contains Microsoft Azure Key Vault WebKey library.</description>
+	<name>Microsoft Azure client library for Key Vault WebKey</name>
+	<description>This package contains the Microsoft Azure Key Vault WebKey client library.</description>
 	<url>https://github.com/Azure/azure-sdk-for-java</url>
 
 	<distributionManagement>

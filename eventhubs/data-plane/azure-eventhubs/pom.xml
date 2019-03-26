@@ -8,7 +8,7 @@
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs</artifactId>
 
-  <name>Microsoft Azure SDK for Event Hubs</name>
+  <name>Microsoft Azure client library for Event Hubs</name>
   <description>Libraries built on Microsoft Azure Event Hubs</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
