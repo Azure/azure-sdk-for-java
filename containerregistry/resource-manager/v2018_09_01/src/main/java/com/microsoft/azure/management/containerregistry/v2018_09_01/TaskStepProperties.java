@@ -38,6 +38,13 @@ public class TaskStepProperties {
     private String contextPath;
 
     /**
+     * The token (git PAT or SAS token of storage account blob) associated with
+     * the context for a step.
+     */
+    @JsonProperty(value = "contextAccessToken")
+    private String contextAccessToken;
+
+    /**
      * Get list of base image dependencies for a step.
      *
      * @return the baseImageDependencies value
@@ -63,6 +70,26 @@ public class TaskStepProperties {
      */
     public TaskStepProperties withContextPath(String contextPath) {
         this.contextPath = contextPath;
+        return this;
+    }
+
+    /**
+     * Get the token (git PAT or SAS token of storage account blob) associated with the context for a step.
+     *
+     * @return the contextAccessToken value
+     */
+    public String contextAccessToken() {
+        return this.contextAccessToken;
+    }
+
+    /**
+     * Set the token (git PAT or SAS token of storage account blob) associated with the context for a step.
+     *
+     * @param contextAccessToken the contextAccessToken value to set
+     * @return the TaskStepProperties object itself.
+     */
+    public TaskStepProperties withContextAccessToken(String contextAccessToken) {
+        this.contextAccessToken = contextAccessToken;
         return this;
     }
 
