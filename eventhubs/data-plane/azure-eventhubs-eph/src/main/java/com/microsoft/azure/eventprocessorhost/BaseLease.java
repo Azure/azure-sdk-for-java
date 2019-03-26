@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.eventprocessorhost;
 
@@ -21,7 +19,7 @@ package com.microsoft.azure.eventprocessorhost;
 public class BaseLease implements Comparable<BaseLease> {
     private final String partitionId;
     private String owner = "";
-	private transient boolean isOwned = false; // do not serialize
+    private transient boolean isOwned = false; // do not serialize
 
     /**
      * Do not use; added only for GSon deserializer
@@ -47,9 +45,9 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param isOwned True if the lease is owned, false if not.
      */
     public BaseLease(String partitionId, String owner, boolean isOwned) {
-    	this.partitionId = partitionId;
-    	this.owner = owner;
-    	this.isOwned = isOwned;
+        this.partitionId = partitionId;
+        this.owner = owner;
+        this.isOwned = isOwned;
     }
 
     /**
@@ -87,17 +85,17 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param newState true if the lease is owned, or false if it is not
      */
     public void setIsOwned(boolean newState) {
-    	this.isOwned = newState;
+        this.isOwned = newState;
     }
 
-	/**
-	 * Get the owned state of the lease.
-	 * 
-	 * @return true if the lease is owned, or false if it is not
-	 */
-	public boolean getIsOwned() {
-		return this.isOwned;
-	}
+    /**
+     * Get the owned state of the lease.
+     *
+     * @return true if the lease is owned, or false if it is not
+     */
+    public boolean getIsOwned() {
+        return this.isOwned;
+    }
     
     /**
      * Convenience function for comparing possibleOwner against this.owner
@@ -122,11 +120,11 @@ public class BaseLease implements Comparable<BaseLease> {
         return this.partitionId;
     }
     
-	// Compares by partition id
-	@Override
-	public int compareTo(BaseLease other) {
-		return this.partitionId.compareTo(other.getPartitionId());
-	}
+    // Compares by partition id
+    @Override
+    public int compareTo(BaseLease other) {
+        return this.partitionId.compareTo(other.getPartitionId());
+    }
 
     String getStateDebug() {
         return "N/A";

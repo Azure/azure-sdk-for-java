@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.extensions.appender;
 
 import org.apache.logging.log4j.core.Filter;
@@ -16,11 +15,13 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.apache.logging.log4j.core.util.StringEncoder;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.io.Serializable;
+
+import java.util.Locale;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Sends {@link LogEvent}'s to Microsoft Azure EventHubs.
@@ -76,7 +77,7 @@ public final class EventHubsAppender extends AbstractAppender {
             if (layout != null) {
                 serializedLogEvent = layout.toByteArray(logEvent);
             } else {
-                serializedLogEvent = StringEncoder.toBytes(logEvent.getMessage().getFormattedMessage(), StandardCharsets.UTF_8);
+                serializedLogEvent = StringEncoder.toBytes(logEvent.getMessage().getFormattedMessage(), UTF_8);
             }
 
             if (serializedLogEvent != null) {
@@ -116,8 +117,6 @@ public final class EventHubsAppender extends AbstractAppender {
             throw appenderLoggingException;
         }
     }
-
-    ;
 
     @Override
     public void start() {

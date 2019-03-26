@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.eventprocessorhost;
 
@@ -15,21 +13,21 @@ public class PartitionManagerOptions {
     /**
      * The default duration after which a partition lease will expire unless renewed.
      */
-    public final static int DefaultLeaseDurationInSeconds = 30;
+    public static final int DefaultLeaseDurationInSeconds = 30;
 
     /**
      * The default duration between lease renewals.
      */
-    public final static int DefaultLeaseRenewIntervalInSeconds = 10;
+    public static final int DefaultLeaseRenewIntervalInSeconds = 10;
 
     /**
      * The default timeout for checkpoint operations.
      */
-    public final static int DefaultCheckpointTimeoutInSeconds = 120;
+    public static final int DefaultCheckpointTimeoutInSeconds = 120;
 
-    public final static int DefaultStartupScanDelayInSeconds = 30;
-    public final static int DefaultFastScanIntervalInSeconds = 3;
-    public final static int DefaultSlowScanIntervalInSeconds = 5;
+    public static final int DefaultStartupScanDelayInSeconds = 30;
+    public static final int DefaultFastScanIntervalInSeconds = 3;
+    public static final int DefaultSlowScanIntervalInSeconds = 5;
 
     protected int leaseDurationInSeconds = PartitionManagerOptions.DefaultLeaseDurationInSeconds;
     protected int leaseRenewIntervalInSeconds = PartitionManagerOptions.DefaultLeaseRenewIntervalInSeconds;

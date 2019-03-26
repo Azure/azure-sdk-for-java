@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.EventData;
@@ -56,8 +55,8 @@ public class ReceivePump implements Runnable {
         } catch (final Exception exception) {
             if (TRACE_LOGGER.isErrorEnabled()) {
                 TRACE_LOGGER.error(
-                        String.format("Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) " +
-                                        "encountered unrecoverable error and exited with exception %s.",
+                        String.format("Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) "
+                                        + "encountered unrecoverable error and exited with exception %s.",
                                 this.eventHubName, this.consumerGroupName, this.receiver.getPartitionId(), exception.toString()));
             }
 
@@ -112,8 +111,8 @@ public class ReceivePump implements Runnable {
         this.isPumpHealthy = false;
         if (TRACE_LOGGER.isErrorEnabled()) {
             TRACE_LOGGER.error(
-                    String.format("Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) " +
-                                    "exiting after user-code exception %s",
+                    String.format("Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) "
+                                    + "exiting after user-code exception %s",
                             this.eventHubName, this.consumerGroupName, this.receiver.getPartitionId(), userCodeException.toString()));
         }
 
@@ -149,7 +148,7 @@ public class ReceivePump implements Runnable {
     public interface IPartitionReceiver {
         String getPartitionId();
 
-        CompletableFuture<Iterable<EventData>> receive(final int maxBatchSize);
+        CompletableFuture<Iterable<EventData>> receive(int maxBatchSize);
     }
 
     private final class ProcessAndReschedule implements BiFunction<Iterable<EventData>, Throwable, Void> {
@@ -161,8 +160,8 @@ public class ReceivePump implements Runnable {
 
             try {
                 // don't invoke user call back - if stop is already raised / pump is unhealthy
-                if (ReceivePump.this.shouldContinue() &&
-                        (receivedEvents != null
+                if (ReceivePump.this.shouldContinue()
+                        && (receivedEvents != null
                                 || (receivedEvents == null && ReceivePump.this.invokeOnTimeout))) {
                     ReceivePump.this.onReceiveHandler.onReceive(receivedEvents);
                 }

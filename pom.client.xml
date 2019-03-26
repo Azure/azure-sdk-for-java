@@ -101,15 +101,18 @@
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
 
     <!-- Dependency Versions -->
+    <azure-common.version>1.0.0-SNAPSHOT</azure-common.version>
+    <azure-common-auth.version>1.0.0-SNAPSHOT</azure-common-auth.version>
+
     <jackson.version>2.9.6</jackson.version>
     <azure-client-runtime.version>1.6.4</azure-client-runtime.version>
     <client-runtime.version>1.6.1</client-runtime.version>
     <commons-codec.version>1.10</commons-codec.version>
     <spotbugs.version>3.1.11</spotbugs.version>
     <slf4j-api.version>1.7.5</slf4j-api.version>
-
-    <azure-common.version>1.0.0-SNAPSHOT</azure-common.version>
-    <azure-common-auth.version>1.0.0-SNAPSHOT</azure-common-auth.version>
+    <proton-j-version>0.31.0</proton-j-version>
+    <qpid-proton-j-extensions-version>1.1.0</qpid-proton-j-extensions-version>
+    <log4j-api.version>2.11.1</log4j-api.version>
 
     <!-- Test Dependency Versions -->
     <adal4j.version>1.4.0</adal4j.version>
@@ -142,6 +145,7 @@
     <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
     <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
     <commons-io.version>2.4</commons-io.version>
+    <checkstyle.version>8.18</checkstyle.version>
   </properties>
 
   <dependencyManagement>
@@ -192,12 +196,31 @@
         <version>${jackson.version}</version>
       </dependency>
 
+      <!-- Proton J and Extension Dependencies -->
+      <dependency>
+        <groupId>org.apache.qpid</groupId>
+        <artifactId>proton-j</artifactId>
+        <version>${proton-j-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>qpid-proton-j-extensions</artifactId>
+        <version>${qpid-proton-j-extensions-version}</version>
+      </dependency>
+
       <!-- Other Dependencies -->
 
       <dependency>
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
         <version>${commons-codec.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>${log4j-api.version}</version>
       </dependency>
 
       <dependency>
@@ -260,7 +283,6 @@
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-storage</artifactId>
         <version>${azure-storage.version}</version>
-        <scope>test</scope>
       </dependency>
 
       <dependency>
@@ -291,6 +313,11 @@
             <groupId>com.azure</groupId>
             <artifactId>sdk-build-tools</artifactId>
             <version>${maven-build-tools.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>${checkstyle.version}</version>
           </dependency>
         </dependencies>
         <configuration>
@@ -428,6 +455,10 @@
               <group>
                 <title>Azure Key Vault</title>
                 <packages>com.microsoft.azure.keyvault*</packages>
+              </group>
+              <group>
+                <title>Azure Event Hubs</title>
+                <packages>com.microsoft.azure.eventhubs*:com.microsoft.azure.eventprocessorhost</packages>
               </group>
             </groups>
           </configuration>
@@ -846,6 +877,7 @@
   <modules>
     <module>./applicationconfig/client</module>
     <module>./batch/data-plane</module>
+    <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
   </modules>
 

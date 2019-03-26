@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
 import org.apache.qpid.proton.amqp.Symbol;
@@ -49,20 +48,20 @@ public final class AmqpConstants {
     public static final String AMQP_PROPERTY_REPLY_TO_GROUP_ID = "reply-to-group-id";
     @SuppressWarnings("serial")
     public static final Set<String> RESERVED_PROPERTY_NAMES = Collections.unmodifiableSet(new HashSet<String>() {{
-        add(AMQP_PROPERTY_MESSAGE_ID);
-        add(AMQP_PROPERTY_USER_ID);
-        add(AMQP_PROPERTY_TO);
-        add(AMQP_PROPERTY_SUBJECT);
-        add(AMQP_PROPERTY_REPLY_TO);
-        add(AMQP_PROPERTY_CORRELATION_ID);
-        add(AMQP_PROPERTY_CONTENT_TYPE);
-        add(AMQP_PROPERTY_CONTENT_ENCODING);
-        add(AMQP_PROPERTY_ABSOLUTE_EXPRITY_TIME);
-        add(AMQP_PROPERTY_CREATION_TIME);
-        add(AMQP_PROPERTY_GROUP_ID);
-        add(AMQP_PROPERTY_GROUP_SEQUENCE);
-        add(AMQP_PROPERTY_REPLY_TO_GROUP_ID);
-    }});
+            add(AMQP_PROPERTY_MESSAGE_ID);
+            add(AMQP_PROPERTY_USER_ID);
+            add(AMQP_PROPERTY_TO);
+            add(AMQP_PROPERTY_SUBJECT);
+            add(AMQP_PROPERTY_REPLY_TO);
+            add(AMQP_PROPERTY_CORRELATION_ID);
+            add(AMQP_PROPERTY_CONTENT_TYPE);
+            add(AMQP_PROPERTY_CONTENT_ENCODING);
+            add(AMQP_PROPERTY_ABSOLUTE_EXPRITY_TIME);
+            add(AMQP_PROPERTY_CREATION_TIME);
+            add(AMQP_PROPERTY_GROUP_ID);
+            add(AMQP_PROPERTY_GROUP_SEQUENCE);
+            add(AMQP_PROPERTY_REPLY_TO_GROUP_ID);
+            }});
     public static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
     public static final Symbol RECEIVER_IDENTIFIER_NAME = Symbol.valueOf(AmqpConstants.VENDOR + ":receiver-name");
     private AmqpConstants() {

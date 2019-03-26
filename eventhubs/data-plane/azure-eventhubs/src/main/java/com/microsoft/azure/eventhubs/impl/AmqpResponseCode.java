@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
 import java.util.HashMap;
@@ -26,7 +25,7 @@ public enum AmqpResponseCode {
 
     private final int value;
 
-    private AmqpResponseCode(final int value) {
+    AmqpResponseCode(final int value) {
         this.value = value;
     }
 

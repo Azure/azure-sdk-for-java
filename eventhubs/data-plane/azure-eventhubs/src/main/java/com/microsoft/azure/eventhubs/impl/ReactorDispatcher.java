@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
 import org.apache.qpid.proton.Proton;
@@ -87,7 +86,9 @@ public final class ReactorDispatcher {
 
     private void signalWorkQueue() throws IOException {
         try {
-            while (this.ioSignal.sink().write(ByteBuffer.allocate(1)) == 0) {
+            ByteBuffer oneByteBuffer = ByteBuffer.allocate(1);
+            while (this.ioSignal.sink().write(oneByteBuffer) == 0) {
+                oneByteBuffer = ByteBuffer.allocate(1);
             }
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
             TRACE_LOGGER.info("signalWorkQueue failed with an error", ignorePipeClosedDuringReactorShutdown);
@@ -99,7 +100,7 @@ public final class ReactorDispatcher {
         final BaseHandler timerCallback;
         final Reactor reactor;
 
-        public DelayHandler(final Reactor reactor, final int delay, final DispatchHandler timerCallback) {
+        DelayHandler(final Reactor reactor, final int delay, final DispatchHandler timerCallback) {
             this.delay = delay;
             this.timerCallback = timerCallback;
             this.reactor = reactor;
@@ -115,8 +116,10 @@ public final class ReactorDispatcher {
         @Override
         public void run(Selectable selectable) {
             try {
-                while (ioSignal.source().read(ByteBuffer.allocate(1024)) > 0) {
+                ByteBuffer oneKbByteBuffer = ByteBuffer.allocate(1024);
+                while (ioSignal.source().read(oneKbByteBuffer) > 0) {
                     // read until the end of the stream
+                    oneKbByteBuffer = ByteBuffer.allocate(1024);
                 }
             } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
                 TRACE_LOGGER.info("ScheduleHandler.run() failed with an error", ignorePipeClosedDuringReactorShutdown);

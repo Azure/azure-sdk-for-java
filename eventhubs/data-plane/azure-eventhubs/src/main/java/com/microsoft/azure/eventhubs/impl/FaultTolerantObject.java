@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
 import java.io.IOException;
@@ -47,8 +46,8 @@ public class FaultTolerantObject<T extends IOObject> {
                 @Override
                 public void onEvent() {
                     if (!creatingNewInnerObject
-                            && (innerObject == null || innerObject.getState() == IOObject.IOObjectState.CLOSED ||
-                            innerObject.getState() == IOObject.IOObjectState.CLOSING)) {
+                            && (innerObject == null || innerObject.getState() == IOObject.IOObjectState.CLOSED
+                                || innerObject.getState() == IOObject.IOObjectState.CLOSING)) {
                         creatingNewInnerObject = true;
 
                         try {

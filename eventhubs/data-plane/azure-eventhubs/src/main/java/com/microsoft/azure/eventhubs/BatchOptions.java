@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.eventhubs;
 
@@ -58,7 +56,7 @@ public final class BatchOptions {
      */
     public Integer maxMessageSize = null;
 
-    public final BatchOptions with(Consumer<BatchOptions> builderFunction) {
+    public BatchOptions with(Consumer<BatchOptions> builderFunction) {
         builderFunction.accept(this);
         return this;
     }

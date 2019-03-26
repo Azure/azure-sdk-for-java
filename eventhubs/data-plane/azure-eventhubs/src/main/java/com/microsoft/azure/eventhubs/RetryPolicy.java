@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs;
 
 import com.microsoft.azure.eventhubs.impl.ClientConstants;
@@ -77,8 +76,8 @@ public abstract class RetryPolicy {
     public Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime) {
         int baseWaitTime = 0;
         synchronized (this.serverBusySync) {
-            if (lastException != null &&
-                    (lastException instanceof ServerBusyException || (lastException.getCause() != null && lastException.getCause() instanceof ServerBusyException))) {
+            if (lastException != null
+                    && (lastException instanceof ServerBusyException || (lastException.getCause() != null && lastException.getCause() instanceof ServerBusyException))) {
                 baseWaitTime += ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
             }
         }

@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
 import java.io.IOException;
@@ -13,7 +12,7 @@ final class Timer {
 
     final SchedulerProvider schedulerProvider;
 
-    public Timer(final SchedulerProvider schedulerProvider) {
+    Timer(final SchedulerProvider schedulerProvider) {
         this.schedulerProvider = schedulerProvider;
     }
 
@@ -32,12 +31,12 @@ final class Timer {
         return taskHandle;
     }
 
-    final static class ScheduledTask extends DispatchHandler {
+    static final class ScheduledTask extends DispatchHandler {
 
         final CompletableFuture<?> scheduledFuture;
         final Runnable runnable;
 
-        public ScheduledTask(final Runnable runnable) {
+        ScheduledTask(final Runnable runnable) {
             this.runnable = runnable;
             this.scheduledFuture = new CompletableFuture<>();
         }

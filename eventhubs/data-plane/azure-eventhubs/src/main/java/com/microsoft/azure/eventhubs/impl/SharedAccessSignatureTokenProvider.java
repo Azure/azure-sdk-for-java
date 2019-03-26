@@ -1,20 +1,20 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Locale;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class SharedAccessSignatureTokenProvider {
     final String keyName;
@@ -57,7 +57,7 @@ public class SharedAccessSignatureTokenProvider {
             throw new IllegalArgumentException("tokenTimeToLive has to positive and in the order-of seconds");
         }
 
-        final String utf8Encoding = StandardCharsets.UTF_8.name();
+        final String utf8Encoding = UTF_8.name();
         String expiresOn = Long.toString(Instant.now().getEpochSecond() + tokenTimeToLive.getSeconds());
         String audienceUri = URLEncoder.encode(resource, utf8Encoding);
         String secretToSign = audienceUri + "\n" + expiresOn;

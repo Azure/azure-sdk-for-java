@@ -1,0 +1,12 @@
+{
+  "clientId": "sample-clientid",
+  "clientSecret": "sample-clientsecret",
+  "subscriptionId": "sample-subscription",
+  "tenantId": "sample-tenant",
+  "activeDirectoryEndpointUrl": "https://samplead.com/",
+  "resourceManagerEndpointUrl": "https://samplearm.com/",
+  "activeDirectoryGraphResourceId": "https://samplegraph.net/",
+  "sqlManagementEndpointUrl": "https://samplesql.net:8443/",
+  "galleryEndpointUrl": "https://samplegallery.com/",
+  "managementEndpointUrl": "https://samplemanagement.net/"
+}

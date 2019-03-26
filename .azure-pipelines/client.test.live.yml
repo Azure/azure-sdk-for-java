@@ -7,6 +7,8 @@ jobs:
           pomFilePath: './batch/data-plane/pom.xml'
         AzureKeyVault:
           pomFilePath: './keyvault/data-plane/pom.xml'
+        AzureEventHubs:
+          pomFilePath: './eventhubs/data-plane/pom.xml'
 
     pool:
       vmImage: 'vs2017-win2016'
@@ -33,6 +35,7 @@ jobs:
           STORAGE_ACCOUNT_KEY: $(java-batch-test-storage-account-key)
           STORAGE_ACCOUNT_NAME: $(java-batch-test-storage-account-name)
           AZURE_BATCH_ENDPOINT: https://servbatch.centralus.batch.azure.com
+          AZURE_EVENTHUBS_CONNECTION_STRING: ${java-event-hubs-test-connection-string}
 
       - task: PublishTestResults@2
         condition: succeededOrFailed()

@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.EventData;
@@ -30,11 +29,11 @@ final class EventDataBatchImpl implements EventDataBatch {
         this.eventBytes = new byte[maxMessageSize];
     }
 
-    public final int getSize() {
+    public int getSize() {
         return events.size();
     }
 
-    public final boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException {
+    public boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException {
 
         if (eventData == null) {
             throw new IllegalArgumentException("eventData cannot be null");

@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.eventprocessorhost;
 
@@ -24,5 +22,5 @@ public interface IEventProcessorFactory<T extends IEventProcessor> {
      * @throws Exception to indicate failure.
      * @return The event processor object.
      */
-    public T createEventProcessor(PartitionContext context) throws Exception;
+    T createEventProcessor(PartitionContext context) throws Exception;
 }

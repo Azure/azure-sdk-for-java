@@ -1,10 +1,13 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.BatchOptions;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventDataBatch;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.PartitionSender;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
@@ -26,7 +29,7 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
         this.factory = factory;
     }
 
-    static CompletableFuture<PartitionSender> Create(final MessagingFactory factory,
+    static CompletableFuture<PartitionSender> create(final MessagingFactory factory,
                                                      final String eventHubName,
                                                      final String partitionId,
                                                      final ScheduledExecutorService executor) throws EventHubException {
@@ -55,8 +58,8 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
 
     public EventDataBatch createBatch(BatchOptions options) {
         if (!StringUtil.isNullOrEmpty(options.partitionKey)) {
-            throw new IllegalArgumentException("A partition key cannot be set when using PartitionSenderImpl. If you'd like to " +
-                    "continue using PartitionSenderImpl with EventDataBatches, then please do not set a partition key in your BatchOptions.");
+            throw new IllegalArgumentException("A partition key cannot be set when using PartitionSenderImpl. If you'd like to "
+                    + "continue using PartitionSenderImpl with EventDataBatches, then please do not set a partition key in your BatchOptions.");
         }
 
         int maxSize = this.internalSender.getMaxMessageSize();
@@ -66,18 +69,18 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
         }
 
         if (options.maxMessageSize > maxSize) {
-            throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of " +
-                    options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
+            throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of "
+                    + options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
         }
 
         return new EventDataBatchImpl(options.maxMessageSize, null);
     }
 
-    public final CompletableFuture<Void> send(EventData data) {
+    public CompletableFuture<Void> send(EventData data) {
         return this.internalSender.send(((EventDataImpl) data).toAmqpMessage());
     }
 
-    public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) {
+    public CompletableFuture<Void> send(Iterable<EventData> eventDatas) {
         if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0)) {
             throw new IllegalArgumentException("EventData batch cannot be empty.");
         }
@@ -85,14 +88,14 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
         return this.internalSender.send(EventDataUtil.toAmqpMessages(eventDatas));
     }
 
-    public final CompletableFuture<Void> send(EventDataBatch eventDatas) {
+    public CompletableFuture<Void> send(EventDataBatch eventDatas) {
         if (eventDatas == null || Integer.compare(eventDatas.getSize(), 0) == 0) {
             throw new IllegalArgumentException("EventDataBatch cannot be empty.");
         }
 
         if (!StringUtil.isNullOrEmpty(((EventDataBatchImpl) eventDatas).getPartitionKey())) {
-            throw new IllegalArgumentException("A partition key cannot be set when using PartitionSenderImpl. If you'd like to " +
-                    "continue using PartitionSenderImpl with EventDataBatches, then please do not set a partition key in your BatchOptions");
+            throw new IllegalArgumentException("A partition key cannot be set when using PartitionSenderImpl. If you'd like to "
+                    + "continue using PartitionSenderImpl with EventDataBatches, then please do not set a partition key in your BatchOptions");
         }
 
         return this.internalSender.send(EventDataUtil.toAmqpMessages(((EventDataBatchImpl) eventDatas).getInternalIterable()));

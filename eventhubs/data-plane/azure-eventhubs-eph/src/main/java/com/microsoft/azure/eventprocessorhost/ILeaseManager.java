@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.eventprocessorhost;
 
@@ -27,7 +25,7 @@ public interface ILeaseManager {
      *
      * @return Duration of a lease before it expires unless renewed, specified in milliseconds.
      */
-    public int getLeaseDurationInMilliseconds();
+    int getLeaseDurationInMilliseconds();
 
     /**
      * Does the lease store exist?
@@ -37,21 +35,21 @@ public interface ILeaseManager {
      *
      * @return CompletableFuture {@literal ->} true if it exists, false if not
      */
-    public CompletableFuture<Boolean> leaseStoreExists();
+    CompletableFuture<Boolean> leaseStoreExists();
 
     /**
      * Create the lease store if it does not exist, do nothing if it does exist.
      *
      * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
-    public CompletableFuture<Void> createLeaseStoreIfNotExists();
+    CompletableFuture<Void> createLeaseStoreIfNotExists();
 
     /**
      * Deletes the lease store.
      *
      * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
-    public CompletableFuture<Void> deleteLeaseStore();
+    CompletableFuture<Void> deleteLeaseStore();
 
     /**
      * Returns the lease info for the given partition..
@@ -59,7 +57,7 @@ public interface ILeaseManager {
      * @param partitionId  Get the lease info for this partition.
      * @return CompletableFuture {@literal ->} Lease, completes exceptionally on error.
      */
-    public CompletableFuture<CompleteLease> getLease(String partitionId);
+    CompletableFuture<CompleteLease> getLease(String partitionId);
 
     /**
      * Returns lightweight BaseLease for all leases, which includes name of owning host and whether lease
@@ -69,7 +67,7 @@ public interface ILeaseManager {
      * 
      * @return CompletableFuture {@literal ->} list of BaseLease, completes exceptionally on error.
      */
-    public CompletableFuture<List<BaseLease>> getAllLeases();
+    CompletableFuture<List<BaseLease>> getAllLeases();
     
 
     /**
@@ -79,7 +77,7 @@ public interface ILeaseManager {
      * @param partitionIds ids of partitions to create lease info for
      * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error
      */
-    public CompletableFuture<Void> createAllLeasesIfNotExists(List<String> partitionIds);
+    CompletableFuture<Void> createAllLeasesIfNotExists(List<String> partitionIds);
 
     /**
      * Delete the lease info for a partition from the store. If there is no stored lease for the given partition,
@@ -88,7 +86,7 @@ public interface ILeaseManager {
      * @param lease the currently existing lease info for the partition
      * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
-    public CompletableFuture<Void> deleteLease(CompleteLease lease);
+    CompletableFuture<Void> deleteLease(CompleteLease lease);
 
     /**
      * Acquire the lease on the desired partition for this EventProcessorHost.
@@ -105,7 +103,7 @@ public interface ILeaseManager {
      * @param lease Lease info for the desired partition
      * @return CompletableFuture {@literal ->} true if the lease was acquired, false if not, completes exceptionally on error.
      */
-    public CompletableFuture<Boolean> acquireLease(CompleteLease lease);
+    CompletableFuture<Boolean> acquireLease(CompleteLease lease);
 
     /**
      * Renew a lease currently held by this host instance.
@@ -118,7 +116,7 @@ public interface ILeaseManager {
      * @param lease Lease to be renewed
      * @return true if the lease was renewed, false as described above, completes exceptionally on error.
      */
-    public CompletableFuture<Boolean> renewLease(CompleteLease lease);
+    CompletableFuture<Boolean> renewLease(CompleteLease lease);
 
     /**
      * Give up a lease currently held by this host.
@@ -129,7 +127,7 @@ public interface ILeaseManager {
      * @param lease Lease to be given up
      * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
-    public CompletableFuture<Void> releaseLease(CompleteLease lease);
+    CompletableFuture<Void> releaseLease(CompleteLease lease);
 
     /**
      * Update the store with the information in the provided lease.
@@ -141,5 +139,5 @@ public interface ILeaseManager {
      * @param lease New lease info to be stored
      * @return true if the update was successful, false if lease was lost and could not be updated, completes exceptionally on error.
      */
-    public CompletableFuture<Boolean> updateLease(CompleteLease lease);
+    CompletableFuture<Boolean> updateLease(CompleteLease lease);
 }

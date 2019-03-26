@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs;
 
 import com.microsoft.azure.eventhubs.impl.EventHubClientImpl;
@@ -10,7 +9,6 @@ import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
@@ -127,9 +125,9 @@ public interface EventHubClient {
      * Send {@link EventData} to EventHub. The sent {@link EventData} will land on any arbitrarily chosen EventHubs partition.
      * <p>There are 3 ways to send to EventHubs, each exposed as a method (along with its sendBatch overload):
      * <ul>
-     * <li>	{@link #send(EventData)}, {@link #send(Iterable)}, or {@link #send(EventDataBatch)}
-     * <li>	{@link #send(EventData, String)} or {@link #send(Iterable, String)}
-     * <li>	{@link PartitionSender#send(EventData)}, {@link PartitionSender#send(Iterable)}, or {@link PartitionSender#send(EventDataBatch)}
+     * <li> {@link #send(EventData)}, {@link #send(Iterable)}, or {@link #send(EventDataBatch)}
+     * <li> {@link #send(EventData, String)} or {@link #send(Iterable, String)}
+     * <li> {@link PartitionSender#send(EventData)}, {@link PartitionSender#send(Iterable)}, or {@link PartitionSender#send(EventDataBatch)}
      * </ul>
      * <p>Use this method to Send, if:
      * <pre>
@@ -148,7 +146,7 @@ public interface EventHubClient {
      * @see #send(EventData, String)
      * @see PartitionSender#send(EventData)
      */
-    CompletableFuture<Void> send(final EventData data);
+    CompletableFuture<Void> send(EventData data);
 
     /**
      * Synchronous version of {@link #send(Iterable)}.
@@ -169,8 +167,8 @@ public interface EventHubClient {
      * Use this overload versus {@link #send(EventData)}, if you need to send a batch of {@link EventData}.
      * <p> Sending a batch of {@link EventData}'s is useful in the following cases:
      * <pre>
-     * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
-     * ii.	Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
+     * i.   Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
+     * ii.  Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
      * </pre>
      * <p>
      * Sample code (sample uses sync version of the api but concept are identical):
@@ -201,7 +199,7 @@ public interface EventHubClient {
      * @see #send(EventData, String)
      * @see PartitionSender#send(EventData)
      */
-    CompletableFuture<Void> send(final Iterable<EventData> eventDatas);
+    CompletableFuture<Void> send(Iterable<EventData> eventDatas);
 
     /**
      * Synchronous version of {@link #send(EventDataBatch)}.
@@ -223,7 +221,7 @@ public interface EventHubClient {
      * @see #send(Iterable)
      * @see EventDataBatch
      */
-    CompletableFuture<Void> send(final EventDataBatch eventDatas);
+    CompletableFuture<Void> send(EventDataBatch eventDatas);
 
     /**
      * Synchronous version of {@link #send(EventData, String)}.
@@ -263,7 +261,7 @@ public interface EventHubClient {
      * @see #send(EventData)
      * @see PartitionSender#send(EventData)
      */
-    CompletableFuture<Void> send(final EventData eventData, final String partitionKey);
+    CompletableFuture<Void> send(EventData eventData, String partitionKey);
 
     /**
      * Synchronous version of {@link #send(Iterable, String)}.
@@ -284,8 +282,8 @@ public interface EventHubClient {
      * <p>There are 3 ways to send to EventHubs, to understand this particular type of Send refer to the overload {@link #send(EventData, String)}, which is the same type of Send and is used to send single {@link EventData}.
      * <p>Sending a batch of {@link EventData}'s is useful in the following cases:
      * <pre>
-     * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs service.
-     * ii.	Send multiple events in One Transaction. This is the reason why all events sent in a batch needs to have same partitionKey (so that they are sent to one partition only).
+     * i.   Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs service.
+     * ii.  Send multiple events in One Transaction. This is the reason why all events sent in a batch needs to have same partitionKey (so that they are sent to one partition only).
      * </pre>
      *
      * @param eventDatas   the batch of events to send to EventHub
@@ -294,7 +292,7 @@ public interface EventHubClient {
      * @see #send(EventData)
      * @see PartitionSender#send(EventData)
      */
-    CompletableFuture<Void> send(final Iterable<EventData> eventDatas, final String partitionKey);
+    CompletableFuture<Void> send(Iterable<EventData> eventDatas, String partitionKey);
 
     /**
      * Synchronous version of {@link #createPartitionSender(String)}.
@@ -322,7 +320,7 @@ public interface EventHubClient {
      * @throws EventHubException if Service Bus service encountered problems during connection creation.
      * @see PartitionSender
      */
-    CompletableFuture<PartitionSender> createPartitionSender(final String partitionId) throws EventHubException;
+    CompletableFuture<PartitionSender> createPartitionSender(String partitionId) throws EventHubException;
 
     /**
      * Synchronous version of {@link #createReceiver(String, String, EventPosition)}.
@@ -348,7 +346,7 @@ public interface EventHubClient {
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      * @see PartitionReceiver
      */
-    CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition) throws EventHubException;
+    CompletableFuture<PartitionReceiver> createReceiver(String consumerGroupName, String partitionId, EventPosition eventPosition) throws EventHubException;
 
     /**
      * Synchronous version of {@link #createReceiver(String, String, EventPosition)}.
@@ -376,7 +374,7 @@ public interface EventHubClient {
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      * @see PartitionReceiver
      */
-    CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final ReceiverOptions receiverOptions) throws EventHubException;
+    CompletableFuture<PartitionReceiver> createReceiver(String consumerGroupName, String partitionId, EventPosition eventPosition, ReceiverOptions receiverOptions) throws EventHubException;
 
     /**
      * Synchronous version of {@link #createEpochReceiver(String, String, EventPosition, long)}.
@@ -412,7 +410,7 @@ public interface EventHubClient {
      * @see PartitionReceiver
      * @see ReceiverDisconnectedException
      */
-    CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch) throws EventHubException;
+    CompletableFuture<PartitionReceiver> createEpochReceiver(String consumerGroupName, String partitionId, EventPosition eventPosition, long epoch) throws EventHubException;
 
     /**
      * Synchronous version of {@link #createEpochReceiver(String, String, EventPosition, long)}.
@@ -450,7 +448,7 @@ public interface EventHubClient {
      * @see PartitionReceiver
      * @see ReceiverDisconnectedException
      */
-    CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch, final ReceiverOptions receiverOptions) throws EventHubException;
+    CompletableFuture<PartitionReceiver> createEpochReceiver(String consumerGroupName, String partitionId, EventPosition eventPosition, long epoch, ReceiverOptions receiverOptions) throws EventHubException;
 
     /**
      * Retrieves general information about an event hub (see {@link EventHubRuntimeInformation} for details).

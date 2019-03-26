@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.eventprocessorhost;
 
@@ -26,8 +24,8 @@ public final class LoggingUtils {
     static Throwable unwrapException(Throwable wrapped, StringBuilder outAction) {
         Throwable unwrapped = wrapped;
 
-        while ((unwrapped instanceof ExecutionException) || (unwrapped instanceof CompletionException) ||
-                (unwrapped instanceof ExceptionWithAction)) {
+        while ((unwrapped instanceof ExecutionException) || (unwrapped instanceof CompletionException)
+                || (unwrapped instanceof ExceptionWithAction)) {
             if ((unwrapped instanceof ExceptionWithAction) && (outAction != null)) {
                 // Save the action string from an ExceptionWithAction, if desired.
                 outAction.append(((ExceptionWithAction) unwrapped).getAction());

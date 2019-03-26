@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.eventprocessorhost;
 
@@ -33,7 +31,7 @@ public interface IEventProcessor {
      * @param context Information about the partition that this event processor will process events from.
      * @throws Exception to indicate failure.
      */
-    public void onOpen(PartitionContext context) throws Exception;
+    void onOpen(PartitionContext context) throws Exception;
 
     /**
      * Called by processor host to indicate that the event processor is being stopped.
@@ -45,7 +43,7 @@ public interface IEventProcessor {
      * @param reason  Reason why the event processor is being stopped.
      * @throws Exception to indicate failure.
      */
-    public void onClose(PartitionContext context, CloseReason reason) throws Exception;
+    void onClose(PartitionContext context, CloseReason reason) throws Exception;
 
     /**
      * Called by the processor host when a batch of events has arrived.
@@ -60,7 +58,7 @@ public interface IEventProcessor {
      * @param events  The events to be processed. May be empty.
      * @throws Exception to indicate failure.
      */
-    public void onEvents(PartitionContext context, Iterable<EventData> events) throws Exception;
+    void onEvents(PartitionContext context, Iterable<EventData> events) throws Exception;
 
     /**
      * Called when the underlying client experiences an error while receiving. EventProcessorHost will take
@@ -70,5 +68,5 @@ public interface IEventProcessor {
      * @param context Information about the partition.
      * @param error   The error that occured.
      */
-    public void onError(PartitionContext context, Throwable error);
+    void onError(PartitionContext context, Throwable error);
 }

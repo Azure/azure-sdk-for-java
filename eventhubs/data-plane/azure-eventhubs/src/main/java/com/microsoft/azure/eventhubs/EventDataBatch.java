@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs;
 
 /**
@@ -24,5 +23,5 @@ public interface EventDataBatch {
      * @return A boolean value indicating if the {@link EventData} addition to this batch/collection was successful or not.
      * @throws PayloadSizeExceededException when a single {@link EventData} instance exceeds maximum allowed size of the batch
      */
-    boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException;
+    boolean tryAdd(EventData eventData) throws PayloadSizeExceededException;
 }

@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs;
 
 import com.microsoft.azure.eventhubs.impl.MessagingFactory;
@@ -21,11 +20,11 @@ import java.util.regex.Pattern;
  * <p> Sample Code:
  * <pre>{@code
  *  // Construct a new connection string
- * 	ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder()
- * 	    .setNamespaceName("EventHubsNamespaceName")
- * 	    .setEventHubName("EventHubsEntityName")
- * 	    .setSasKeyName("SharedAccessSignatureKeyName")
- * 	    .setSasKey("SharedAccessSignatureKey")
+ *  ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder()
+ *      .setNamespaceName("EventHubsNamespaceName")
+ *      .setEventHubName("EventHubsEntityName")
+ *      .setSasKeyName("SharedAccessSignatureKeyName")
+ *      .setSasKey("SharedAccessSignatureKey")
  *
  *  string connString = connectionStringBuilder.build();
  *
@@ -48,27 +47,27 @@ import java.util.regex.Pattern;
  */
 public final class ConnectionStringBuilder {
 
-    final static String endpointFormat = "sb://%s.%s";
-    final static String hostnameFormat = "sb://%s";
-    final static String defaultDomainName = "servicebus.windows.net";
+    static final String END_POINT_FORMAT = "sb://%s.%s";
+    static final String HOST_NAME_FORMAT = "sb://%s";
+    static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net";
 
-    final static String HostnameConfigName = "Hostname";    // Hostname is a key that is used in IoTHub.
-    final static String EndpointConfigName = "Endpoint";    // Endpoint key is used in EventHubs. It's identical to Hostname in IoTHub.
-    final static String EntityPathConfigName = "EntityPath";
-    final static String OperationTimeoutConfigName = "OperationTimeout";
-    final static String KeyValueSeparator = "=";
-    final static String KeyValuePairDelimiter = ";";
-    final static String SharedAccessKeyNameConfigName = "SharedAccessKeyName";  // We use a (KeyName, Key) pair OR the SAS token - never both.
-    final static String SharedAccessKeyConfigName = "SharedAccessKey";
-    final static String SharedAccessSignatureConfigName = "SharedAccessSignature";
-    final static String TransportTypeConfigName = "TransportType";
+    static final String HOST_NAME_CONFIG_NAME = "Hostname";    // Hostname is a key that is used in IoTHub.
+    static final String ENDPOINT_CONFIG_NAME = "Endpoint";    // Endpoint key is used in EventHubs. It's identical to Hostname in IoTHub.
+    static final String ENTITY_PATH_CONFIG_NAME = "EntityPath";
+    static final String OPERATION_TIMEOUT_CONFIG_NAME = "OperationTimeout";
+    static final String KEY_VALUE_SEPARATOR = "=";
+    static final String KEY_VALUE_PAIR_DELIMITER = ";";
+    static final String SHARED_ACCESS_KEY_NANE_CONFIG_NAME = "SharedAccessKeyName";  // We use a (KeyName, Key) pair OR the SAS token - never both.
+    static final String SHARED_ACCESS_KEY_CONFIG_NAME = "SharedAccessKey";
+    static final String SHARED_ACCESS_SIGNATURE_CONFIG_NAME = "SharedAccessSignature";
+    static final String TRANSPORT_TYPE_CONFIG_NAME = "TransportType";
 
-    private static final String AllKeyEnumerateRegex = "(" + HostnameConfigName + "|" + EndpointConfigName + "|" + SharedAccessKeyNameConfigName
-            + "|" + SharedAccessKeyConfigName + "|" + SharedAccessSignatureConfigName + "|" + EntityPathConfigName + "|" + OperationTimeoutConfigName
-            + "|" + TransportTypeConfigName + ")";
+    private static final String ALL_KEY_ENUMERATE_REGEX = "(" + HOST_NAME_CONFIG_NAME + "|" + ENDPOINT_CONFIG_NAME + "|" + SHARED_ACCESS_KEY_NANE_CONFIG_NAME
+            + "|" + SHARED_ACCESS_KEY_CONFIG_NAME + "|" + SHARED_ACCESS_SIGNATURE_CONFIG_NAME + "|" + ENTITY_PATH_CONFIG_NAME + "|" + OPERATION_TIMEOUT_CONFIG_NAME
+            + "|" + TRANSPORT_TYPE_CONFIG_NAME + ")";
 
-    private static final String KeysWithDelimitersRegex = KeyValuePairDelimiter + AllKeyEnumerateRegex
-            + KeyValueSeparator;
+    private static final String KEYS_WITH_DELIMITERS_REGEX = KEY_VALUE_PAIR_DELIMITER + ALL_KEY_ENUMERATE_REGEX
+            + KEY_VALUE_SEPARATOR;
 
     private URI endpoint;
     private String eventHubName;
@@ -138,7 +137,7 @@ public final class ConnectionStringBuilder {
      */
     public ConnectionStringBuilder setEndpoint(String namespaceName, String domainName) {
         try {
-            this.endpoint = new URI(String.format(Locale.US, endpointFormat, namespaceName, domainName));
+            this.endpoint = new URI(String.format(Locale.US, END_POINT_FORMAT, namespaceName, domainName));
         } catch (URISyntaxException exception) {
             throw new IllegalConnectionStringFormatException(
                     String.format(Locale.US, "Invalid namespace name: %s", namespaceName),
@@ -155,7 +154,7 @@ public final class ConnectionStringBuilder {
      * @return the {@link ConnectionStringBuilder} being set.
      */
     public ConnectionStringBuilder setNamespaceName(String namespaceName) {
-        return this.setEndpoint(namespaceName, defaultDomainName);
+        return this.setEndpoint(namespaceName, DEFAULT_DOMAIN_NAME);
     }
 
     /**
@@ -289,38 +288,38 @@ public final class ConnectionStringBuilder {
     public String toString() {
         final StringBuilder connectionStringBuilder = new StringBuilder();
         if (this.endpoint != null) {
-            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EndpointConfigName, KeyValueSeparator,
-                    this.endpoint.toString(), KeyValuePairDelimiter));
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", ENDPOINT_CONFIG_NAME, KEY_VALUE_SEPARATOR,
+                    this.endpoint.toString(), KEY_VALUE_PAIR_DELIMITER));
         }
 
         if (!StringUtil.isNullOrWhiteSpace(this.eventHubName)) {
-            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EntityPathConfigName,
-                    KeyValueSeparator, this.eventHubName, KeyValuePairDelimiter));
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", ENTITY_PATH_CONFIG_NAME,
+                    KEY_VALUE_SEPARATOR, this.eventHubName, KEY_VALUE_PAIR_DELIMITER));
         }
 
         if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKeyName)) {
-            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SharedAccessKeyNameConfigName,
-                    KeyValueSeparator, this.sharedAccessKeyName, KeyValuePairDelimiter));
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SHARED_ACCESS_KEY_NANE_CONFIG_NAME,
+                    KEY_VALUE_SEPARATOR, this.sharedAccessKeyName, KEY_VALUE_PAIR_DELIMITER));
         }
 
         if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKey)) {
-            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SharedAccessKeyConfigName,
-                    KeyValueSeparator, this.sharedAccessKey, KeyValuePairDelimiter));
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SHARED_ACCESS_KEY_CONFIG_NAME,
+                    KEY_VALUE_SEPARATOR, this.sharedAccessKey, KEY_VALUE_PAIR_DELIMITER));
         }
 
         if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessSignature)) {
-            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SharedAccessSignatureConfigName,
-                    KeyValueSeparator, this.sharedAccessSignature, KeyValuePairDelimiter));
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SHARED_ACCESS_SIGNATURE_CONFIG_NAME,
+                    KEY_VALUE_SEPARATOR, this.sharedAccessSignature, KEY_VALUE_PAIR_DELIMITER));
         }
 
         if (this.operationTimeout != null) {
-            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", OperationTimeoutConfigName,
-                    KeyValueSeparator, this.operationTimeout.toString(), KeyValuePairDelimiter));
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", OPERATION_TIMEOUT_CONFIG_NAME,
+                    KEY_VALUE_SEPARATOR, this.operationTimeout.toString(), KEY_VALUE_PAIR_DELIMITER));
         }
 
         if (this.transportType != null) {
-            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", TransportTypeConfigName,
-                    KeyValueSeparator, this.transportType.toString(), KeyValuePairDelimiter));
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", TRANSPORT_TYPE_CONFIG_NAME,
+                    KEY_VALUE_SEPARATOR, this.transportType.toString(), KEY_VALUE_PAIR_DELIMITER));
         }
 
         connectionStringBuilder.deleteCharAt(connectionStringBuilder.length() - 1);
@@ -333,9 +332,9 @@ public final class ConnectionStringBuilder {
             throw new IllegalConnectionStringFormatException("connectionString cannot be empty");
         }
 
-        final String connection = KeyValuePairDelimiter + connectionString;
+        final String connection = KEY_VALUE_PAIR_DELIMITER + connectionString;
 
-        final Pattern keyValuePattern = Pattern.compile(KeysWithDelimitersRegex, Pattern.CASE_INSENSITIVE);
+        final Pattern keyValuePattern = Pattern.compile(KEYS_WITH_DELIMITERS_REGEX, Pattern.CASE_INSENSITIVE);
         final String[] values = keyValuePattern.split(connection);
         final Matcher keys = keyValuePattern.matcher(connection);
 
@@ -360,54 +359,54 @@ public final class ConnectionStringBuilder {
                         String.format(Locale.US, "Value for the connection string parameter name: %s, not found", key));
             }
 
-            if (key.equalsIgnoreCase(EndpointConfigName)) {
+            if (key.equalsIgnoreCase(ENDPOINT_CONFIG_NAME)) {
                 if (this.endpoint != null) {
                     // we have parsed the endpoint once, which means we have multiple config which is not allowed
                     throw new IllegalConnectionStringFormatException(
-                            String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", EndpointConfigName, HostnameConfigName));
+                            String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", ENDPOINT_CONFIG_NAME, HOST_NAME_CONFIG_NAME));
                 }
 
                 try {
                     this.endpoint = new URI(values[valueIndex]);
                 } catch (URISyntaxException exception) {
                     throw new IllegalConnectionStringFormatException(
-                            String.format(Locale.US, "%s should be in format scheme://fullyQualifiedServiceBusNamespaceEndpointName", EndpointConfigName),
+                            String.format(Locale.US, "%s should be in format scheme://fullyQualifiedServiceBusNamespaceEndpointName", ENDPOINT_CONFIG_NAME),
                             exception);
                 }
-            } else if (key.equalsIgnoreCase(HostnameConfigName)) {
+            } else if (key.equalsIgnoreCase(HOST_NAME_CONFIG_NAME)) {
                 if (this.endpoint != null) {
                     // we have parsed the endpoint once, which means we have multiple config which is not allowed
                     throw new IllegalConnectionStringFormatException(
-                            String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", EndpointConfigName, HostnameConfigName));
+                            String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", ENDPOINT_CONFIG_NAME, HOST_NAME_CONFIG_NAME));
                 }
 
                 try {
-                    this.endpoint = new URI(String.format(Locale.US, hostnameFormat, values[valueIndex]));
+                    this.endpoint = new URI(String.format(Locale.US, HOST_NAME_FORMAT, values[valueIndex]));
                 } catch (URISyntaxException exception) {
                     throw new IllegalConnectionStringFormatException(
-                            String.format(Locale.US, "%s should be a fully quantified host name address", HostnameConfigName),
+                            String.format(Locale.US, "%s should be a fully quantified host name address", HOST_NAME_CONFIG_NAME),
                             exception);
                 }
-            } else if (key.equalsIgnoreCase(SharedAccessKeyNameConfigName)) {
+            } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_NANE_CONFIG_NAME)) {
                 this.sharedAccessKeyName = values[valueIndex];
-            } else if (key.equalsIgnoreCase(SharedAccessKeyConfigName)) {
+            } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_CONFIG_NAME)) {
                 this.sharedAccessKey = values[valueIndex];
-            } else if (key.equalsIgnoreCase(SharedAccessSignatureConfigName)) {
+            } else if (key.equalsIgnoreCase(SHARED_ACCESS_SIGNATURE_CONFIG_NAME)) {
                 this.sharedAccessSignature = values[valueIndex];
-            } else if (key.equalsIgnoreCase(EntityPathConfigName)) {
+            } else if (key.equalsIgnoreCase(ENTITY_PATH_CONFIG_NAME)) {
                 this.eventHubName = values[valueIndex];
-            } else if (key.equalsIgnoreCase(OperationTimeoutConfigName)) {
+            } else if (key.equalsIgnoreCase(OPERATION_TIMEOUT_CONFIG_NAME)) {
                 try {
                     this.operationTimeout = Duration.parse(values[valueIndex]);
                 } catch (DateTimeParseException exception) {
                     throw new IllegalConnectionStringFormatException("Invalid value specified for property 'Duration' in the ConnectionString.", exception);
                 }
-            } else if (key.equalsIgnoreCase(TransportTypeConfigName)) {
+            } else if (key.equalsIgnoreCase(TRANSPORT_TYPE_CONFIG_NAME)) {
                 try {
                     this.transportType = TransportType.fromString(values[valueIndex]);
                 } catch (IllegalArgumentException exception) {
                     throw new IllegalConnectionStringFormatException(
-                            String.format("Invalid value specified for property '%s' in the ConnectionString.", TransportTypeConfigName),
+                            String.format("Invalid value specified for property '%s' in the ConnectionString.", TRANSPORT_TYPE_CONFIG_NAME),
                             exception);
                 }
             } else {

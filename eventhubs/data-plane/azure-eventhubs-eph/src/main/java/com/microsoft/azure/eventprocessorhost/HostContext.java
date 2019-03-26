@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.eventprocessorhost;
 
@@ -10,21 +8,21 @@ import com.microsoft.azure.eventhubs.RetryPolicy;
 import java.util.concurrent.ScheduledExecutorService;
 
 final class HostContext {
-    final private ScheduledExecutorService executor;
+    private final ScheduledExecutorService executor;
 
     // Ideally we wouldn't need the host, but there are certain things which can be dynamically changed
     // by the user via APIs on the host and which need to be exposed on the HostContext. Passing the
     // call through is easier and safer than trying to keep two copies in sync.
-    final private EventProcessorHost host;
-    final private String hostName;
+    private final EventProcessorHost host;
+    private final String hostName;
 
-    final private String eventHubPath;
-    final private String consumerGroupName;
-    final private String eventHubConnectionString;
-    final private RetryPolicy retryPolicy;
+    private final String eventHubPath;
+    private final String consumerGroupName;
+    private final String eventHubConnectionString;
+    private final RetryPolicy retryPolicy;
 
-    final private ILeaseManager leaseManager;
-    final private ICheckpointManager checkpointManager;
+    private final ILeaseManager leaseManager;
+    private final ICheckpointManager checkpointManager;
 
     // Cannot be final because it is not available at HostContext construction time.
     private EventProcessorOptions eventProcessorOptions = null;

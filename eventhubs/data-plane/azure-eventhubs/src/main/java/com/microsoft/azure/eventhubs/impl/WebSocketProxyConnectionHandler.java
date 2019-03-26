@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
@@ -28,6 +27,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketProxyConnectionHandler.class);
@@ -64,7 +65,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         transport.addTransportLayer(proxy);
 
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info("addProxyHandshake: hostname[" + hostName +"]");
+            TRACE_LOGGER.info("addProxyHandshake: hostname[" + hostName + "]");
         }
     }
 
@@ -96,7 +97,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         int port;
         try {
             port = Integer.parseInt(hostNameParts[1]);
-        } catch (NumberFormatException ignore){
+        } catch (NumberFormatException ignore) {
             return;
         }
 
@@ -147,7 +148,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         final String usernamePasswordPair = proxyUserName + ":" + proxyPassword;
         proxyAuthorizationHeader.put(
                 "Proxy-Authorization",
-                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes()));
+                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes(UTF_8)));
         return proxyAuthorizationHeader;
     }
 

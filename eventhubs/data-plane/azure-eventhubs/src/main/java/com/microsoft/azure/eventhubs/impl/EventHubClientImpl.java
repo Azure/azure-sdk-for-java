@@ -1,10 +1,22 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.BatchOptions;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventDataBatch;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.OperationCancelledException;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.PartitionRuntimeInformation;
+import com.microsoft.azure.eventhubs.PartitionSender;
+import com.microsoft.azure.eventhubs.ReceiverOptions;
+import com.microsoft.azure.eventhubs.RetryPolicy;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -45,7 +57,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     public static CompletableFuture<EventHubClient> create(
-            final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
+        final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
             throws EventHubException, IOException {
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr, executor);
@@ -65,28 +77,28 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         return eventHubName;
     }
 
-    public final EventDataBatch createBatch(BatchOptions options) throws EventHubException {
+    public EventDataBatch createBatch(BatchOptions options) throws EventHubException {
 
         return ExceptionUtil.sync(() -> {
-                    int maxSize = this.createInternalSender().thenApplyAsync(
-                            (aVoid) -> this.sender.getMaxMessageSize(),
-                            this.executor).get();
-                    if (options.maxMessageSize == null) {
-                        return new EventDataBatchImpl(maxSize, options.partitionKey);
-                    }
-
-                    if (options.maxMessageSize > maxSize) {
-                        throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of " +
-                                options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
-                    }
-
-                    return new EventDataBatchImpl(options.maxMessageSize, options.partitionKey);
+                int maxSize = this.createInternalSender().thenApplyAsync(
+                    (aVoid) -> this.sender.getMaxMessageSize(),
+                    this.executor).get();
+                if (options.maxMessageSize == null) {
+                    return new EventDataBatchImpl(maxSize, options.partitionKey);
                 }
+
+                if (options.maxMessageSize > maxSize) {
+                    throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of "
+                            + options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
+                }
+
+                return new EventDataBatchImpl(options.maxMessageSize, options.partitionKey);
+            }
         );
     }
 
     @Override
-    public final CompletableFuture<Void> send(final EventData data) {
+    public CompletableFuture<Void> send(final EventData data) {
         if (data == null) {
             throw new IllegalArgumentException("EventData cannot be empty.");
         }
@@ -100,7 +112,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     @Override
-    public final CompletableFuture<Void> send(final Iterable<EventData> eventDatas) {
+    public CompletableFuture<Void> send(final Iterable<EventData> eventDatas) {
         if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0)) {
             throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
         }
@@ -114,19 +126,19 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     @Override
-    public final CompletableFuture<Void> send(final EventDataBatch eventDatas) {
+    public CompletableFuture<Void> send(final EventDataBatch eventDatas) {
         if (eventDatas == null || Integer.compare(eventDatas.getSize(), 0) == 0) {
             throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
         }
 
         final EventDataBatchImpl eventDataBatch = (EventDataBatchImpl) eventDatas;
-        return eventDataBatch.getPartitionKey() != null ?
-                this.send(eventDataBatch.getInternalIterable(), eventDataBatch.getPartitionKey()) :
-                this.send(eventDataBatch.getInternalIterable());
+        return eventDataBatch.getPartitionKey() != null
+                ? this.send(eventDataBatch.getInternalIterable(), eventDataBatch.getPartitionKey())
+                : this.send(eventDataBatch.getInternalIterable());
     }
 
     @Override
-    public final CompletableFuture<Void> send(final EventData eventData, final String partitionKey) {
+    public CompletableFuture<Void> send(final EventData eventData, final String partitionKey) {
         if (eventData == null) {
             throw new IllegalArgumentException("EventData cannot be null.");
         }
@@ -144,7 +156,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     @Override
-    public final CompletableFuture<Void> send(final Iterable<EventData> eventDatas, final String partitionKey) {
+    public CompletableFuture<Void> send(final Iterable<EventData> eventDatas, final String partitionKey) {
         if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0)) {
             throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
         }
@@ -167,31 +179,31 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     @Override
-    public final CompletableFuture<PartitionSender> createPartitionSender(final String partitionId)
+    public CompletableFuture<PartitionSender> createPartitionSender(final String partitionId)
             throws EventHubException {
-        return PartitionSenderImpl.Create(this.underlyingFactory, this.eventHubName, partitionId, this.executor);
+        return PartitionSenderImpl.create(this.underlyingFactory, this.eventHubName, partitionId, this.executor);
     }
 
     @Override
-    public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition)
+    public CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition)
             throws EventHubException {
         return this.createReceiver(consumerGroupName, partitionId, eventPosition, null);
     }
 
     @Override
-    public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final ReceiverOptions receiverOptions)
+    public CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final ReceiverOptions receiverOptions)
             throws EventHubException {
         return PartitionReceiverImpl.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, eventPosition, PartitionReceiverImpl.NULL_EPOCH, false, receiverOptions, this.executor);
     }
 
     @Override
-    public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch)
+    public CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch)
             throws EventHubException {
         return this.createEpochReceiver(consumerGroupName, partitionId, eventPosition, epoch, null);
     }
 
     @Override
-    public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch, final ReceiverOptions receiverOptions)
+    public CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch, final ReceiverOptions receiverOptions)
             throws EventHubException {
         return PartitionReceiverImpl.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, eventPosition, epoch, true, receiverOptions, this.executor);
     }
@@ -202,11 +214,11 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
             synchronized (this.senderCreateSync) {
                 final CompletableFuture<Void> internalSenderClose = this.sender != null
                         ? this.sender.close().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
-                    @Override
-                    public CompletableFuture<Void> apply(Void voidArg) {
-                        return EventHubClientImpl.this.underlyingFactory.close();
-                    }
-                }, this.executor)
+                                @Override
+                                public CompletableFuture<Void> apply(Void voidArg) {
+                                    return EventHubClientImpl.this.underlyingFactory.close();
+                                }
+                            }, this.executor)
                         : this.underlyingFactory.close();
 
                 return internalSenderClose;

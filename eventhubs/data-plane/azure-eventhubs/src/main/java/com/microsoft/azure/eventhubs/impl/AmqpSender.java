@@ -1,13 +1,12 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
 import org.apache.qpid.proton.engine.Delivery;
 
 public interface AmqpSender extends AmqpLink {
-    void onFlow(final int creditIssued);
+    void onFlow(int creditIssued);
 
-    void onSendComplete(final Delivery delivery);
+    void onSendComplete(Delivery delivery);
 }

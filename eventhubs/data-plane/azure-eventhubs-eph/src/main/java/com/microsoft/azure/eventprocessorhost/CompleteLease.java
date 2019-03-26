@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.eventprocessorhost;
 
@@ -24,7 +22,7 @@ public class CompleteLease extends BaseLease {
      * Do not use; added only for GSon deserializer
      */
     protected CompleteLease() {
-    	super();
+        super();
     }
 
     /**
@@ -33,7 +31,7 @@ public class CompleteLease extends BaseLease {
      * @param partitionId Partition id for this lease.
      */
     public CompleteLease(String partitionId) {
-    	super(partitionId);
+        super(partitionId);
     }
 
     /**

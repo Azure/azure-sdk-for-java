@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs;
 
 /**
@@ -26,12 +25,12 @@ public interface PartitionReceiveHandler {
      * @param events the list of fetched events from the corresponding PartitionReceiver.
      * @see PartitionReceiver#receive
      */
-    void onReceive(final Iterable<EventData> events);
+    void onReceive(Iterable<EventData> events);
 
     /**
      * Implement this method to Listen to errors which lead to Closure of the {@link PartitionReceiveHandler} pump.
      *
      * @param error fatal error encountered while running the {@link PartitionReceiveHandler} pump
      */
-    void onError(final Throwable error);
+    void onError(Throwable error);
 }

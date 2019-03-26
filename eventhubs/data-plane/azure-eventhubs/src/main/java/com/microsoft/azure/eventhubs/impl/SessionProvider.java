@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.impl;
 
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -12,7 +11,7 @@ import java.util.function.Consumer;
 
 public interface SessionProvider {
     Session getSession(
-            final String path,
-            final Consumer<Session> onSessionOpen,
-            final BiConsumer<ErrorCondition, Exception> onSessionOpenError);
+            String path,
+            Consumer<Session> onSessionOpen,
+            BiConsumer<ErrorCondition, Exception> onSessionOpenError);
 }
