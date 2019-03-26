@@ -62,7 +62,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr, executor);
 
-        return MessagingFactory.createFromConnectionString(connectionString.toString(), retryPolicy, executor)
+        return MessagingFactory.createFromConnectionString(connectionString, retryPolicy, executor)
                 .thenApplyAsync(new Function<MessagingFactory, EventHubClient>() {
                     @Override
                     public EventHubClient apply(MessagingFactory factory) {
