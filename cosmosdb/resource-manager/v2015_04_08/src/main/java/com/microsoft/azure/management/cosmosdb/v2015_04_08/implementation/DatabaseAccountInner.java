@@ -114,6 +114,12 @@ public class DatabaseAccountInner extends Resource {
     private List<VirtualNetworkRule> virtualNetworkRules;
 
     /**
+     * Enables the account to write in multiple locations.
+     */
+    @JsonProperty(value = "properties.enableMultipleWriteLocations")
+    private Boolean enableMultipleWriteLocations;
+
+    /**
      * Get indicates the type of database account. This can only be set at database account creation. Possible values include: 'GlobalDocumentDB', 'MongoDB', 'Parse'.
      *
      * @return the kind value
@@ -315,6 +321,26 @@ public class DatabaseAccountInner extends Resource {
      */
     public DatabaseAccountInner withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
         this.virtualNetworkRules = virtualNetworkRules;
+        return this;
+    }
+
+    /**
+     * Get enables the account to write in multiple locations.
+     *
+     * @return the enableMultipleWriteLocations value
+     */
+    public Boolean enableMultipleWriteLocations() {
+        return this.enableMultipleWriteLocations;
+    }
+
+    /**
+     * Set enables the account to write in multiple locations.
+     *
+     * @param enableMultipleWriteLocations the enableMultipleWriteLocations value to set
+     * @return the DatabaseAccountInner object itself.
+     */
+    public DatabaseAccountInner withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
+        this.enableMultipleWriteLocations = enableMultipleWriteLocations;
         return this;
     }
 

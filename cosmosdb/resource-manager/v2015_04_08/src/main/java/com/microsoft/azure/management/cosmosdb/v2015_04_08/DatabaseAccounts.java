@@ -22,6 +22,7 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetric;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountUsage;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetricDefinition;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerResource;
 
 /**
  * Type representing DatabaseAccounts.
@@ -118,7 +119,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable checkNameExistsAsync(String accountName);
+    Observable<Boolean> checkNameExistsAsync(String accountName);
 
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
@@ -142,7 +143,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
     Observable<DatabaseAccountUsage> listUsagesAsync(String resourceGroupName, String accountName);
 
     /**
-     * Retrieves metric defintions for the given database account.
+     * Retrieves metric definitions for the given database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -150,5 +151,95 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @return the observable for the request
      */
     Observable<DatabaseAccountMetricDefinition> listMetricDefinitionsAsync(String resourceGroupName, String accountName);
+
+    /**
+     * Lists the SQL databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlDatabaseResource> listSqlDatabasesAsync(String resourceGroupName, String accountName);
+
+    /**
+     * Creates an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param createSqlDatabaseParameters The parameters to provide for the current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlDatabaseResource> createSqlDatabaseAsync(String resourceGroupName, String accountName, SqlDatabaseCreateUpdateParameters createSqlDatabaseParameters);
+
+    /**
+     * Gets the SQL databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlDatabaseResource> getSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid);
+
+    /**
+     * Gets the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlContainerResource> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid);
+
+    /**
+     * Lists the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlContainerResource> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid);
+
+    /**
+     * Creates an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlContainerResource> createSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, SqlContainerCreateUpdateParameters createSqlContainerParameters);
 
 }
