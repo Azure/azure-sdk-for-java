@@ -10,7 +10,6 @@ package com.microsoft.azure.management.iotcentral.v2018_09_01.implementation;
 
 import com.microsoft.azure.arm.collection.InnerSupportsGet;
 import com.microsoft.azure.arm.collection.InnerSupportsDelete;
-import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -46,7 +45,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Apps.
  */
-public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelete<Void>, InnerSupportsListing<AppInner> {
+public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private AppsService service;
     /** The service client containing this operation class. */
@@ -96,9 +95,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/IoTApps/{resourceName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps list" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listBySubscription" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/IoTApps")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listBySubscription(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/IoTApps")
@@ -112,9 +111,13 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/checkSubdomainAvailability")
         Observable<Response<ResponseBody>> checkSubdomainAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body OperationInputs operationInputs, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listNext" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps templates" })
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/appTemplates")
+        Observable<Response<ResponseBody>> templates(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listBySubscriptionNext" })
         @GET
-        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listBySubscriptionNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listByResourceGroupNext" })
         @GET
@@ -716,12 +719,12 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppInner&gt; object if successful.
      */
-    public PagedList<AppInner> list() {
-        ServiceResponse<Page<AppInner>> response = listSinglePageAsync().toBlocking().single();
+    public PagedList<AppInner> listBySubscription() {
+        ServiceResponse<Page<AppInner>> response = listBySubscriptionSinglePageAsync().toBlocking().single();
         return new PagedList<AppInner>(response.body()) {
             @Override
             public Page<AppInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listBySubscriptionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -733,13 +736,13 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AppInner>> listAsync(final ListOperationCallback<AppInner> serviceCallback) {
+    public ServiceFuture<List<AppInner>> listBySubscriptionAsync(final ListOperationCallback<AppInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(),
+            listBySubscriptionSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<AppInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listBySubscriptionNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -751,8 +754,8 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppInner&gt; object
      */
-    public Observable<Page<AppInner>> listAsync() {
-        return listWithServiceResponseAsync()
+    public Observable<Page<AppInner>> listBySubscriptionAsync() {
+        return listBySubscriptionWithServiceResponseAsync()
             .map(new Func1<ServiceResponse<Page<AppInner>>, Page<AppInner>>() {
                 @Override
                 public Page<AppInner> call(ServiceResponse<Page<AppInner>> response) {
@@ -767,8 +770,8 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AppInner>>> listWithServiceResponseAsync() {
-        return listSinglePageAsync()
+    public Observable<ServiceResponse<Page<AppInner>>> listBySubscriptionWithServiceResponseAsync() {
+        return listBySubscriptionSinglePageAsync()
             .concatMap(new Func1<ServiceResponse<Page<AppInner>>, Observable<ServiceResponse<Page<AppInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppInner>>> call(ServiceResponse<Page<AppInner>> page) {
@@ -776,7 +779,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listBySubscriptionNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -787,19 +790,19 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<AppInner>>> listSinglePageAsync() {
+    public Observable<ServiceResponse<Page<AppInner>>> listBySubscriptionSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listBySubscription(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<AppInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<AppInner>> result = listBySubscriptionDelegate(response);
                         return Observable.just(new ServiceResponse<Page<AppInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -808,7 +811,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppInner>> listDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<AppInner>> listBySubscriptionDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppInner>>() { }.getType())
                 .registerError(ErrorDetailsException.class)
@@ -1091,6 +1094,78 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     }
 
     /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppTemplatesInner object if successful.
+     */
+    public AppTemplatesInner templates() {
+        return templatesWithServiceResponseAsync().toBlocking().single().body();
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AppTemplatesInner> templatesAsync(final ServiceCallback<AppTemplatesInner> serviceCallback) {
+        return ServiceFuture.fromResponse(templatesWithServiceResponseAsync(), serviceCallback);
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppTemplatesInner object
+     */
+    public Observable<AppTemplatesInner> templatesAsync() {
+        return templatesWithServiceResponseAsync().map(new Func1<ServiceResponse<AppTemplatesInner>, AppTemplatesInner>() {
+            @Override
+            public AppTemplatesInner call(ServiceResponse<AppTemplatesInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppTemplatesInner object
+     */
+    public Observable<ServiceResponse<AppTemplatesInner>> templatesWithServiceResponseAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.templates(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppTemplatesInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AppTemplatesInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AppTemplatesInner> clientResponse = templatesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AppTemplatesInner> templatesDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppTemplatesInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AppTemplatesInner>() { }.getType())
+                .registerError(ErrorDetailsException.class)
+                .build(response);
+    }
+
+    /**
      * Get all IoT Central Applications in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -1099,12 +1174,12 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppInner&gt; object if successful.
      */
-    public PagedList<AppInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<AppInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<AppInner> listBySubscriptionNext(final String nextPageLink) {
+        ServiceResponse<Page<AppInner>> response = listBySubscriptionNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<AppInner>(response.body()) {
             @Override
             public Page<AppInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listBySubscriptionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1118,13 +1193,13 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AppInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<AppInner>> serviceFuture, final ListOperationCallback<AppInner> serviceCallback) {
+    public ServiceFuture<List<AppInner>> listBySubscriptionNextAsync(final String nextPageLink, final ServiceFuture<List<AppInner>> serviceFuture, final ListOperationCallback<AppInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listNextSinglePageAsync(nextPageLink),
+            listBySubscriptionNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<AppInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listBySubscriptionNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -1137,8 +1212,8 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppInner&gt; object
      */
-    public Observable<Page<AppInner>> listNextAsync(final String nextPageLink) {
-        return listNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<AppInner>> listBySubscriptionNextAsync(final String nextPageLink) {
+        return listBySubscriptionNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<AppInner>>, Page<AppInner>>() {
                 @Override
                 public Page<AppInner> call(ServiceResponse<Page<AppInner>> response) {
@@ -1154,8 +1229,8 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AppInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AppInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
-        return listNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<AppInner>>> listBySubscriptionNextWithServiceResponseAsync(final String nextPageLink) {
+        return listBySubscriptionNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<AppInner>>, Observable<ServiceResponse<Page<AppInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppInner>>> call(ServiceResponse<Page<AppInner>> page) {
@@ -1163,7 +1238,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listBySubscriptionNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1175,17 +1250,17 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AppInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<AppInner>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<AppInner>>> listBySubscriptionNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listBySubscriptionNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AppInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<AppInner>> result = listNextDelegate(response);
+                        ServiceResponse<PageImpl<AppInner>> result = listBySubscriptionNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<AppInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1194,7 +1269,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<AppInner>> listBySubscriptionNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppInner>>() { }.getType())
                 .registerError(ErrorDetailsException.class)
