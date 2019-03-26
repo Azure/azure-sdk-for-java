@@ -9,7 +9,6 @@ import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
 import com.azure.common.ServiceClient;
-import com.azure.common.configuration.ClientConfiguration;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.policy.AsyncCredentialsPolicy;
@@ -56,7 +55,7 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     public static ConfigurationClientBuilder builder() {
-        ClientConfiguration configuration = new ClientConfiguration()
+        Configuration configuration = new Configuration()
                 .userAgent(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION));
 
         return new ConfigurationClientBuilder(configuration);
@@ -286,9 +285,9 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     public static final class ConfigurationClientBuilder {
-        private final ClientConfiguration configuration;
+        private final Configuration configuration;
 
-        private ConfigurationClientBuilder(ClientConfiguration configuration) {
+        private ConfigurationClientBuilder(Configuration configuration) {
             this.configuration = configuration;
         }
 

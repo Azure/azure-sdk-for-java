@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.common.configuration;
+package com.azure.applicationconfig;
 
 import com.azure.common.credentials.AsyncServiceClientCredentials;
 import com.azure.common.http.HttpClient;
@@ -17,10 +17,12 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Client configuration settings common to Azure {@link com.azure.common.ServiceClient}. Settings such as
- * {@link HttpClient}, retry policy, service endpoint, etc. can be set here.
+ * Client configuration settings common to Azure {@link com.azure.applicationconfig.ConfigurationClient}. Settings such
+ * as {@link HttpClient}, retry policy, service endpoint, etc. can be set here.
+ *
+ * package-private class because this is not needed by SDK consumers.
  */
-public class ClientConfiguration {
+class Configuration {
     private HttpClient client;
     private AsyncServiceClientCredentials credentials;
     private String userAgent;
@@ -33,7 +35,7 @@ public class ClientConfiguration {
     /**
      * Gets the default configuration settings
      */
-    public ClientConfiguration() {
+     Configuration() {
         this.retryPolicy = new RetryPolicy();
         this.policies = new ArrayList<>();
         this.httpLogDetailLevel = HttpLogDetailLevel.NONE;
@@ -53,10 +55,10 @@ public class ClientConfiguration {
      * Sets the credentials to use when authenticating HTTP requests.
      *
      * @param credentials The credentials to use for authenticating HTTP requests.
-     * @return The updated ClientConfiguration object.
+     * @return The updated Configuration object.
      * @throws NullPointerException if {@param credentials} is {@code null}.
      */
-    public ClientConfiguration credentials(AsyncServiceClientCredentials credentials) {
+    public Configuration credentials(AsyncServiceClientCredentials credentials) {
         Objects.requireNonNull(credentials);
         this.credentials = credentials;
         return this;
@@ -75,11 +77,11 @@ public class ClientConfiguration {
      * Sets the new 'User-Agent' value to send with HTTP requests.
      *
      * @param userAgent The 'User-Agent' header value to send with requests.
-     * @return The updated ClientConfiguration object.
+     * @return The updated Configuration object.
      * @throws NullPointerException if {@param userAgent} is {@code null}.
      * @throws IllegalArgumentException if {@param userAgent} is an empty string.
      */
-    public ClientConfiguration userAgent(String userAgent) {
+    public Configuration userAgent(String userAgent) {
         Objects.requireNonNull(userAgent);
 
         if (userAgent.equals("")) {
@@ -103,10 +105,10 @@ public class ClientConfiguration {
      * Sets a new retry policy to use for service requests.
      *
      * @param retryPolicy The retry policy for service requests.
-     * @return The updated ClientConfiguration object.
+     * @return The updated Configuration object.
      * @throws NullPointerException if {@param retryPolicy} is {@code null}.
      */
-    public ClientConfiguration retryPolicy(RetryPolicy retryPolicy) {
+    public Configuration retryPolicy(RetryPolicy retryPolicy) {
         Objects.requireNonNull(retryPolicy);
         this.retryPolicy = retryPolicy;
         return this;
@@ -126,10 +128,10 @@ public class ClientConfiguration {
      * required policies.
      *
      * @param policy The retry policy for service requests.
-     * @return The updated ClientConfiguration object.
+     * @return The updated Configuration object.
      * @throws NullPointerException if {@param policy} is {@code null}.
      */
-    public ClientConfiguration addPolicy(HttpPipelinePolicy policy) {
+    public Configuration addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
         this.policies.add(policy);
         return this;
@@ -148,10 +150,10 @@ public class ClientConfiguration {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return The updated ClientConfiguration object.
+     * @return The updated Configuration object.
      * @throws NullPointerException if {@param client} is {@code null}.
      */
-    public ClientConfiguration httpClient(HttpClient client) {
+    public Configuration httpClient(HttpClient client) {
         Objects.requireNonNull(client);
         this.client = client;
         return this;
@@ -168,9 +170,9 @@ public class ClientConfiguration {
      * Sets the logging level for HTTP requests and responses.
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return The updated ClientConfiguration object.
+     * @return The updated Configuration object.
      */
-    public ClientConfiguration httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+    public Configuration httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.httpLogDetailLevel = logLevel;
         return this;
     }
@@ -186,10 +188,10 @@ public class ClientConfiguration {
      * Factory used for generating {@link org.slf4j.Logger} instances for SDK logging.
      *
      * @param loggerFactory The LoggerFactory to use for generating Loggers.
-     * @return The updated ClientConfiguration object.
+     * @return The updated Configuration object.
      * @throws NullPointerException if {@param loggerFactory} is {@code null}.
      */
-    public ClientConfiguration loggerFactory(ILoggerFactory loggerFactory) {
+    public Configuration loggerFactory(ILoggerFactory loggerFactory) {
         Objects.requireNonNull(loggerFactory);
         this.loggerFactory = loggerFactory;
         return this;
@@ -206,11 +208,11 @@ public class ClientConfiguration {
      * Sets the endpoint used when making service calls.
      *
      * @param serviceEndpoint The URL to the Azure service for making service calls.
-     * @return The updated ClientConfiguration object.
+     * @return The updated Configuration object.
      * @throws NullPointerException if {@param serviceEndpoint} is {@code null}.
      * @throws IllegalArgumentException if {@param serviceEndpoint} is an empty string.
      */
-    public ClientConfiguration serviceEndpoint(String serviceEndpoint) {
+    public Configuration serviceEndpoint(String serviceEndpoint) {
         Objects.requireNonNull(serviceEndpoint);
 
         if (serviceEndpoint.equals("")) {
