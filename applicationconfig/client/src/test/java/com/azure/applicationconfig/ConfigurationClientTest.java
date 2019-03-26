@@ -389,7 +389,7 @@ public class ConfigurationClientTest {
      * Verifies that we can get all of the revisions for this ConfigurationSetting.
      */
     @Test
-    public void listAllRevisions() {
+    public void listRevisions() {
         final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().withKey(keyName).withValue("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().withKey(keyName).withValue("anotherValue");
