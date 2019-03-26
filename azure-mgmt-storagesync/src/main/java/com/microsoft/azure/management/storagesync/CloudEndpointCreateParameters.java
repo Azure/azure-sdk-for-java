@@ -24,7 +24,7 @@ public class CloudEndpointCreateParameters extends ProxyResource {
     private String storageAccountResourceId;
 
     /**
-     * Storage Account Share name.
+     * Azure file share name.
      */
     @JsonProperty(value = "properties.azureFileShareName")
     private String azureFileShareName;
@@ -56,7 +56,7 @@ public class CloudEndpointCreateParameters extends ProxyResource {
     }
 
     /**
-     * Get storage Account Share name.
+     * Get azure file share name.
      *
      * @return the azureFileShareName value
      */
@@ -65,7 +65,7 @@ public class CloudEndpointCreateParameters extends ProxyResource {
     }
 
     /**
-     * Set storage Account Share name.
+     * Set azure file share name.
      *
      * @param azureFileShareName the azureFileShareName value to set
      * @return the CloudEndpointCreateParameters object itself.
