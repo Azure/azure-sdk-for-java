@@ -1,0 +1,15 @@
+2.0.0-beta4 (2018-08-06)
+- Added HttpRequest request() property to RestResponse
+- Added isProxyHTTPS() property to HttpClientConfiguration
+
+2.0.0-beta3 (2018-06-26)
+- Added FlowableUtil.ensureLength() operator to better handle cases where the request body had an unexpected size
+
+2.0.0-beta2 (2018-04-23)
+- Major refinements to HTTP content streaming, in large part thanks to contributions by [David Moten](https://github.com/davidmoten).
+- Removed Joda Time in favor of Java 8 DateTime classes
+- NettyClient.Factory now accepts a Netty Bootstrap object allowing for more user configuration of channel attributes, such as the receive buffer size and low/high write watermarks. Currently, specifying an EventLoopGroup or `Class<? extends Channel>` is not supported.
+- Various other minor improvements
+
+2.0.0-beta1 (2018-03-08)
+- First beta featuring Netty and RxJava 2.

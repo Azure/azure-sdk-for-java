@@ -428,7 +428,7 @@
               </group>
               <group>
                 <title>Azure Event Hubs</title>
-                <packages>com.microsoft.azure.eventhubs*</packages>
+                <packages>com.microsoft.azure.eventhubs*:com.microsoft.azure.eventprocessorhost</packages>
               </group>
             </groups>
           </configuration>

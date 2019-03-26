@@ -1,0 +1,5 @@
+com.microsoft.azure.v3,autorest-clientruntime-for-java,2.0.0,2.0.1-SNAPSHOT
+com.microsoft.rest.v3,client-runtime,2.0.0,2.0.1-SNAPSHOT
+com.microsoft.azure.v3,azure-client-runtime,2.0.0-beta5,2.0.1-SNAPSHOT
+com.microsoft.azure.v3,azure-client-authentication,2.0.0-beta5,2.0.1-SNAPSHOT
+com.microsoft.azure.v3,autorest-build-tools,2.0.0-beta5,2.0.1-SNAPSHOT

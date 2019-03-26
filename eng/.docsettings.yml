@@ -40,6 +40,10 @@ known_presence_issues:
   - ['keyvault/data-plane/azure-keyvault-extensions', '#2847']
   - ['keyvault/data-plane/azure-keyvault-webkey', '#2847']
   - ['mediaservices/data-plane', '#2847']
+  - ['common/build-tools', '#2847']
+  - ['common/azure-common', '#2847']
+  - ['common/azure-common-auth', '#2847']
+  - ['common/azure-common-mgmt', '#2847']
 known_content_issues:
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['README.md', '#3113']
@@ -53,3 +57,4 @@ known_content_issues:
   - ['loganalytics/data-plane/README.md', '#3113']
   - ['storage/data-plane/README.md', '#3113']
   - ['storage/data-plane/swagger/README.md', '#3113']
+  - ['common/README.md', '#3113']
