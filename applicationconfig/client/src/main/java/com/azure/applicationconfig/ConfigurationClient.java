@@ -10,7 +10,6 @@ import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
 import com.azure.common.ServiceClient;
 import com.azure.common.configuration.ClientConfiguration;
-import com.azure.common.configuration.InvalidConfigurationException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.policy.AsyncCredentialsPolicy;
@@ -286,7 +285,7 @@ public final class ConfigurationClient extends ServiceClient {
         return getPagedConfigurationSettings(result);
     }
 
-    static final class ConfigurationClientBuilder {
+    public static final class ConfigurationClientBuilder {
         private final ClientConfiguration configuration;
 
         private ConfigurationClientBuilder(ClientConfiguration configuration) {
@@ -295,7 +294,7 @@ public final class ConfigurationClient extends ServiceClient {
 
         public ConfigurationClient build() {
             if (configuration.credentials() == null) {
-                throw new InvalidConfigurationException("'credentials' is required.");
+                throw new IllegalStateException("'credentials' is required.");
             }
 
             // Closest to API goes first, closest to wire goes last.
