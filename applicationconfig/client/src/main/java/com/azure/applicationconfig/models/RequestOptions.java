@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.applicationconfig.models;
 
 import java.time.OffsetDateTime;
@@ -46,7 +47,9 @@ public class RequestOptions {
      *
      * @return The expression to filter ConfigurationSetting keys on.
      */
-    public String key() { return key; }
+    public String key() {
+        return key;
+    }
 
     /**
      * Sets the expression to filter {@link ConfigurationSetting#key()} on for the request.

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.applicationconfig.models;
 
 import java.time.OffsetDateTime;
@@ -14,7 +15,9 @@ public class RevisionOptions extends RequestOptions {
      *
      * @return The range of revisions for a ConfigurationSetting to fetch.
      */
-    public RevisionRange range() { return this.range; }
+    public RevisionRange range() {
+        return this.range;
+    }
 
     /**
      * Sets the range of {@link ConfigurationSetting} revisions to fetch from the service. If none is specified, all of
