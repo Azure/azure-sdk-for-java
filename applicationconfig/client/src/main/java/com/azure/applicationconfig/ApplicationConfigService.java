@@ -73,7 +73,7 @@ interface ApplicationConfigService {
                                                             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
     @GET("revisions")
-    @ExpectedResponses({200})
+    @ExpectedResponses({200, 206})
     @UnexpectedResponseExceptionType(RestException.class)
     Mono<RestResponse<Page<ConfigurationSetting>>> listKeyValueRevisions(@HostParam("url") String url,
                                                                          @QueryParam("key") String key, @QueryParam("label") String label, @QueryParam("$select") String fields,
