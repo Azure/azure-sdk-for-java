@@ -33,10 +33,11 @@ public class MonitoringDetails {
     private String hanaInstanceNum;
 
     /**
-     * Flag to specify the use of MDC(Multi Database Containers).
+     * Either single or multiple depending on the use of MDC(Multiple Database
+     * Containers). Possible values include: 'single', 'multiple'.
      */
-    @JsonProperty(value = "hanaMdc")
-    private Boolean hanaMdc;
+    @JsonProperty(value = "dbContainer")
+    private HanaDatabaseContainersEnum dbContainer;
 
     /**
      * Name of the database itself.  It only needs to be specified if using
@@ -118,22 +119,22 @@ public class MonitoringDetails {
     }
 
     /**
-     * Get flag to specify the use of MDC(Multi Database Containers).
+     * Get either single or multiple depending on the use of MDC(Multiple Database Containers). Possible values include: 'single', 'multiple'.
      *
-     * @return the hanaMdc value
+     * @return the dbContainer value
      */
-    public Boolean hanaMdc() {
-        return this.hanaMdc;
+    public HanaDatabaseContainersEnum dbContainer() {
+        return this.dbContainer;
     }
 
     /**
-     * Set flag to specify the use of MDC(Multi Database Containers).
+     * Set either single or multiple depending on the use of MDC(Multiple Database Containers). Possible values include: 'single', 'multiple'.
      *
-     * @param hanaMdc the hanaMdc value to set
+     * @param dbContainer the dbContainer value to set
      * @return the MonitoringDetails object itself.
      */
-    public MonitoringDetails withHanaMdc(Boolean hanaMdc) {
-        this.hanaMdc = hanaMdc;
+    public MonitoringDetails withDbContainer(HanaDatabaseContainersEnum dbContainer) {
+        this.dbContainer = dbContainer;
         return this;
     }
 
