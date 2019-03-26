@@ -7,11 +7,11 @@
  * def
  */
 
-package com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementation;
+package com.microsoft.azure.management.hdinsight.v2015_03_01_preview.implementation;
 
 import com.microsoft.azure.arm.resources.collection.implementation.GroupableResourcesCoreImpl;
-import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Clusters;
-import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Cluster;
+import com.microsoft.azure.management.hdinsight.v2015_03_01_preview.Clusters;
+import com.microsoft.azure.management.hdinsight.v2015_03_01_preview.Cluster;
 import rx.Observable;
 import rx.Completable;
 import java.util.ArrayList;
@@ -22,10 +22,10 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.GatewaySettings;
-import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterDiskEncryptionParameters;
-import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.UpdateGatewaySettingsParameters;
-import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ExecuteScriptActionParameters;
+import com.microsoft.azure.management.hdinsight.v2015_03_01_preview.GatewaySettings;
+import com.microsoft.azure.management.hdinsight.v2015_03_01_preview.ClusterDiskEncryptionParameters;
+import com.microsoft.azure.management.hdinsight.v2015_03_01_preview.UpdateGatewaySettingsParameters;
+import com.microsoft.azure.management.hdinsight.v2015_03_01_preview.ExecuteScriptActionParameters;
 
 class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, ClusterInner, ClustersInner, HDInsightManager>  implements Clusters {
     protected ClustersImpl(HDInsightManager manager) {
