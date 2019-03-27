@@ -34,7 +34,7 @@ public class RiskyIPBlobUriInner {
     private String resultSasUri;
 
     /**
-     * Time at which the the new Risky IP report was requested.
+     * Time at which the new Risky IP report was requested.
      */
     @JsonProperty(value = "blobCreateDateTime")
     private DateTime blobCreateDateTime;
@@ -113,7 +113,7 @@ public class RiskyIPBlobUriInner {
     }
 
     /**
-     * Get time at which the the new Risky IP report was requested.
+     * Get time at which the new Risky IP report was requested.
      *
      * @return the blobCreateDateTime value
      */
@@ -122,7 +122,7 @@ public class RiskyIPBlobUriInner {
     }
 
     /**
-     * Set time at which the the new Risky IP report was requested.
+     * Set time at which the new Risky IP report was requested.
      *
      * @param blobCreateDateTime the blobCreateDateTime value to set
      * @return the RiskyIPBlobUriInner object itself.
