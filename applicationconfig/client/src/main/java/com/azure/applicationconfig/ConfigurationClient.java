@@ -52,7 +52,7 @@ public final class ConfigurationClient extends ServiceClient {
      * service requests
      *
      * @param serviceEndpoint URL for the Application configuration service.
-     * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
+     * @param pipeline        HttpPipeline that the HTTP requests and responses flow through.
      */
     private ConfigurationClient(URL serviceEndpoint, HttpPipeline pipeline) {
         super(pipeline);
@@ -63,6 +63,7 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Creates a builder that can configure options for the ConfigurationClient before creating an instance of it.
+     *
      * @return A new Builder to create a ConfigurationClient from.
      */
     public static Builder builder() {
@@ -75,16 +76,17 @@ public final class ConfigurationClient extends ServiceClient {
      * <p>
      * The label value for the ConfigurationSetting is optional. If not specified, the
      * {@link ConfigurationSetting#NULL_LABEL} is used.
-     * </p>
      *
-     * @param configurationSetting The key, value, and label to setSetting.
-     * @return ConfigurationSetting that was created or updated
-     * @throws com.azure.common.http.rest.RestException when a ConfigurationSetting with the same key and label exists.
+     * @param setting The setting to add to the configuration service.
+     * @return ConfigurationSetting that was created or updated.
+     * @throws NullPointerException                     If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException                 If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}.
+     * @throws com.azure.common.http.rest.RestException If a ConfigurationSetting with the same key and label exists.
      */
-    public Mono<RestResponse<ConfigurationSetting>> addSetting(ConfigurationSetting configurationSetting) {
-        Validator.validate(configurationSetting);
+    public Mono<RestResponse<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
+        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
 
-        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), configurationSetting, null, getETagValue(ETAG_ANY));
+        return service.setKey(serviceEndpoint, result.key(), result.label(), result, null, getETagValue(ETAG_ANY));
     }
 
     /**
@@ -94,23 +96,23 @@ public final class ConfigurationClient extends ServiceClient {
      * If {@link ConfigurationSetting#etag()} is specified, the configuration value is updated if the current setting's
      * etag matches. If the etag's value is equal to {@link ConfigurationClient#ETAG_ANY}, the setting will always be
      * updated.
-     * </p>
      *
      * <p>
-     * The label value for the ConfigurationSetting is optional. If not specified, the
+     * The label value for the ConfigurationSetting is optional. If not specified,
      * {@link ConfigurationSetting#NULL_LABEL} is used.
-     * </p>
      *
-     * @param configurationSetting The configuration setting to create or updateSetting.
+     * @param setting The configuration setting to create or updateSetting.
      * @return ConfigurationSetting that was created or updated.
+     * @throws NullPointerException                     If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException                 If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}.
      * @throws com.azure.common.http.rest.RestException If the {@link ConfigurationSetting#etag()} was specified, is not
-     *                                               {@link ConfigurationClient#ETAG_ANY}, and the current configuration
-     *                                               value's etag does not match.
+     *                                                  {@link ConfigurationClient#ETAG_ANY}, and the current configuration
+     *                                                  value's etag does not match.
      */
-    public Mono<RestResponse<ConfigurationSetting>> setSetting(ConfigurationSetting configurationSetting) {
-        Validator.validate(configurationSetting);
+    public Mono<RestResponse<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
+        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
 
-        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), configurationSetting, getETagValue(configurationSetting.etag()), null);
+        return service.setKey(serviceEndpoint, result.key(), result.label(), result, getETagValue(result.etag()), null);
     }
 
     /**
@@ -119,148 +121,135 @@ public final class ConfigurationClient extends ServiceClient {
      * <p>
      * The label value for the ConfigurationSetting is optional. If not specified, the
      * {@link ConfigurationSetting#NULL_LABEL} is used.
-     * </p>
      *
+     * <p>
      * If the {@link ConfigurationSetting#etag()} is specified, the configuration value is only updated if it matches.
      *
-     * @param configurationSetting The key, value, and optional label to setSetting.
+     * @param setting The setting to add or update in the service.
      * @return ConfigurationSetting that was updated.
-     * @throws com.azure.common.http.rest.RestException When a ConfigurationSetting with the same key and label does not
-     *                                               exists or the configuration value is locked.
+     * @throws NullPointerException                     If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException                 If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}
+     * @throws com.azure.common.http.rest.RestException If a ConfigurationSetting with the same key and label does not
+     *                                                  exist or the configuration value is locked.
      */
-    public Mono<RestResponse<ConfigurationSetting>> updateSetting(ConfigurationSetting configurationSetting) {
-        Validator.validate(configurationSetting);
+    public Mono<RestResponse<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
+        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
+        String etag = result.etag() == null ? ETAG_ANY : result.etag();
 
-        String etag = configurationSetting.etag() == null ? ETAG_ANY : configurationSetting.etag();
-
-        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), configurationSetting, getETagValue(etag), null);
+        return service.setKey(serviceEndpoint, result.key(), result.label(), result, getETagValue(etag), null);
     }
 
     /**
-     * Gets a ConfigurationSetting that matches the {@code key} and {@code label}.
+     * Gets a ConfigurationSetting that matches the {@code key}.
      *
-     * @param key The key being retrieved
-     * @return The configuration value in the service.
+     * @param key The for the setting to retrieve.
+     * @return The configuration setting in the service.
+     * @throws IllegalArgumentException                 If {@code key} is {@code null} or {@code ""}
      * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
-     *                                               not exist.
+     *                                                  not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> getSetting(String key) {
-        return getSetting(key, null);
+        return getSetting(new ConfigurationSetting().key(key));
     }
 
     /**
      * Gets the ConfigurationSetting given the {@code key}, optional {@code label}.
      *
-     * @param key   The key being retrieved
-     * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
+     * @param setting The setting to retrieve based on its key and optional label combination.
      * @return The configuration value in the service.
+     * @throws NullPointerException                     If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException                 If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}
      * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
-     *                                               not exist. If {@code etag} was specified, returns status code of
-     *                                               304 if the key has not been modified.
+     *                                                  not exist. If {@code etag} was specified, returns status code of
+     *                                                  304 if the key has not been modified.
      */
-    public Mono<RestResponse<ConfigurationSetting>> getSetting(String key, String label) {
-        if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
-        } else if (label == null) {
-            label = ConfigurationSetting.NULL_LABEL;
-        }
+    public Mono<RestResponse<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
+        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
 
-        return service.getKeyValue(serviceEndpoint, key, label, null, null, null, null);
+        return service.getKeyValue(serviceEndpoint, result.key(), result.label(), null, null, null, null);
     }
 
     /**
-     * Deletes the ConfigurationSetting.
+     * Deletes the ConfigurationSetting with a matching {@code key}.
      *
-     * @param key The key to deleteSetting.
-     * @return the deleted ConfigurationSetting or null if didn't exist.
+     * @param key The key of the setting to delete.
+     * @return The deleted ConfigurationSetting or null if it didn't exist.
+     * @throws IllegalArgumentException If {@code key} is {@code null} or {@code ""}
      */
     public Mono<RestResponse<ConfigurationSetting>> deleteSetting(String key) {
-        if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
-        }
-
-        return deleteSetting(key, null, null);
+        return deleteSetting(new ConfigurationSetting().key(key));
     }
 
     /**
-     * Deletes the ConfigurationSetting.
+     * Deletes the {@link ConfigurationSetting} by finding a setting with a matching key and label. If the
+     * {@link ConfigurationSetting#etag()} is specified, the setting is <b>only</b> deleted if the etag matches the
+     * current etag; this means that no one has updated the ConfigurationSetting yet.
      *
-     * @param key   key of the keyValue to deleteSetting
-     * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
-     * @param etag  Optional. If specified, will only deleteSetting the key if its current etag matches. (ie. No one has
-     *              changed the value yet.)
-     * @return the deleted ConfigurationSetting or none if didn't exist.
+     * @param setting The ConfigurationSetting to delete.
+     * @return The deleted ConfigurationSetting or {@link null} if didn't exist.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}
+     * @throws NullPointerException     When {@code setting} is {@code null}.
      */
-    public Mono<RestResponse<ConfigurationSetting>> deleteSetting(String key, String label, String etag) {
-        if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
-        } else if (label == null) {
-            label = ConfigurationSetting.NULL_LABEL;
-        }
+    public Mono<RestResponse<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
+        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
 
-        return service.delete(serviceEndpoint, key, label, getETagValue(etag), null);
+        return service.delete(serviceEndpoint, result.key(), result.label(), getETagValue(result.etag()), null);
     }
 
     /**
-     * Places a lockSetting on ConfigurationSetting.
+     * Places a lock on the ConfigurationSetting so that its contents cannot be changed.
      *
-     * @param key The key to lockSetting.
-     * @return ConfigurationSetting that was locked
+     * @param key The key of the ConfigurationSetting.
+     * @return ConfigurationSetting that was locked.
+     * @throws IllegalArgumentException                 If {@code key} is {@code null} or {@code ""}
      * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> lockSetting(String key) {
-        if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
-        }
-
-        return lockSetting(key, null);
+        return lockSetting(new ConfigurationSetting().key(key));
     }
 
     /**
-     * Places a lockSetting on ConfigurationSetting. If present, label must be explicit label value (not a wildcard).
-     * For all operations it's an optional parameter. If omitted it implies null label.
+     * Places a lock on the provided ConfigurationSetting so that its contents cannot be changed. Label is optional. If
+     * present, label must be explicit label value (not a wildcard). If not present, the default label,
+     * {@link ConfigurationSetting#NULL_LABEL} is used.
      *
-     * @param key    key name
-     * @param label  Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
-     * @return ConfigurationSetting
+     * @param setting The ConfigurationSetting to lock.
+     * @return ConfigurationSetting that was locked.
+     * @throws IllegalArgumentException                 If {@code key} is {@code null} or {@code ""}
+     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> lockSetting(String key, String label) {
-        if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
-        } else if (label == null) {
-            label = ConfigurationSetting.NULL_LABEL;
-        }
+    public Mono<RestResponse<ConfigurationSetting>> lockSetting(ConfigurationSetting setting) {
+        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
 
-        return service.lockKeyValue(serviceEndpoint, key, label, null, null);
+        return service.lockKeyValue(serviceEndpoint, result.key(), result.label(), null, null);
     }
 
     /**
-     * Unlocks ConfigurationSetting.
+     * Unlocks a ConfigurationSetting with the given key.
      *
-     * @param key key name
-     * @return ConfigurationSetting
+     * @param key The key of the setting to unlock.
+     * @return The ConfigurationSetting that was unlocked.
+     * @throws IllegalArgumentException                 If {@code key} is {@code null} or {@code ""}
+     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> unlockSetting(String key) {
-        return unlockSetting(key, null);
+        return unlockSetting(new ConfigurationSetting().key(key));
     }
 
     /**
-     * Unlocks a ConfigurationSetting with a matching {@code key}, optional {@code label}. If present, {@code label}
-     * must be explicit label value (not a wildcard).
+     * Unlocks a ConfigurationSetting with a matching {@code key} and optional {@code label}. If present, {@code label}
+     * must be explicit label value (not a wildcard). Otherwise, the default label,
+     * {@link ConfigurationSetting#NULL_LABEL} is used.
      *
-     * @param key   key name
-     * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used. If specified, it must
-     *              be an explicit value and cannot contain wildcard characters.
-     * @return ConfigurationSetting that was unlocked.
+     * @param setting The configuration setting to unlock.
+     * @return The ConfigurationSetting that was unlocked.
+     * @throws IllegalArgumentException                 If {@code key} is {@code null} or {@code ""}
+     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> unlockSetting(String key, String label) {
-        if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
-        } else if (label == null) {
-            label = ConfigurationSetting.NULL_LABEL;
-        }
+    public Mono<RestResponse<ConfigurationSetting>> unlockSetting(ConfigurationSetting setting) {
+        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
 
-        return service.unlockKeyValue(serviceEndpoint, key, label, null, null);
+        return service.unlockKeyValue(serviceEndpoint, result.key(), result.label(), null, null);
     }
 
     /**
@@ -286,7 +275,7 @@ public final class ConfigurationClient extends ServiceClient {
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided in
      * descending order from their last_modified date.
-     *
+     * <p>
      * Revisions expire after a period of time. (The default is 30 days.)
      *
      * <p>
@@ -330,12 +319,12 @@ public final class ConfigurationClient extends ServiceClient {
 
         /**
          * Creates a {@link ConfigurationClient} based on options setSetting in the Builder.
-         *
+         * <p>
          * Every time {@code build()} is called, a new instance of {@link ConfigurationClient} is created.
          *
          * @return A ConfigurationClient with the options setSetting from the builder.
          * @throws IllegalStateException If {@link Builder#credentials(ConfigurationClientCredentials)}
-         * has not been setSetting.
+         *                               has not been setSetting.
          */
         public ConfigurationClient build() {
             if (credentials == null) {
@@ -427,7 +416,7 @@ public final class ConfigurationClient extends ServiceClient {
 
     private Flux<ConfigurationSetting> getPagedConfigurationSettings(Mono<RestResponse<Page<ConfigurationSetting>>> response) {
         return response.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-            .concatMap(this::extractAndFetchConfigurationSettings);
+                .concatMap(this::extractAndFetchConfigurationSettings);
     }
 
     private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(RestPagedResponseImpl<ConfigurationSetting> page) {
@@ -454,7 +443,7 @@ public final class ConfigurationClient extends ServiceClient {
         }
 
         return set.stream().map(item -> item.toString().toLowerCase(Locale.US))
-            .collect(Collectors.joining(","));
+                .collect(Collectors.joining(","));
     }
 
     private static String getItemsRange(RevisionRange range) {
@@ -463,7 +452,21 @@ public final class ConfigurationClient extends ServiceClient {
         }
 
         return range.end() == null
-            ? String.format("items=%d-", range.start())
-            : String.format("items=%d-%d", range.start(), range.end());
+                ? String.format("items=%d-", range.start())
+                : String.format("items=%d-%d", range.start(), range.end());
+    }
+
+    private static ConfigurationSetting validateSettingAndSetDefaultLabel(ConfigurationSetting setting) {
+        Objects.requireNonNull(setting);
+
+        if (setting.key() == null || setting.key().isEmpty()) {
+            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
+        }
+
+        if (setting.label() == null) {
+            setting.label(ConfigurationSetting.NULL_LABEL);
+        }
+
+        return setting;
     }
 }
