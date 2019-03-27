@@ -155,13 +155,13 @@ public class ConfigurationClientTest {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
                     if (configurationSetting.isLocked()) {
-                        return client.unlockSetting(configurationSetting.key(), configurationSetting.label()).flatMap(response -> {
+                        return client.unlockSetting(configurationSetting).flatMap(response -> {
                             ConfigurationSetting kv = response.body();
-                            return client.deleteSetting(kv.key(), kv.label(), null)
+                            return client.deleteSetting(kv)
                                     .retryBackoff(3, Duration.ofSeconds(10));
                         });
                     } else {
-                        return client.deleteSetting(configurationSetting.key(), configurationSetting.label(), null)
+                        return client.deleteSetting(configurationSetting)
                                 .retryBackoff(3, Duration.ofSeconds(10));
                     }
                 })
@@ -851,12 +851,12 @@ public class ConfigurationClientTest {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
                     if (configurationSetting.isLocked()) {
-                        return client.unlockSetting(configurationSetting.key(), configurationSetting.label()).flatMap(response -> {
+                        return client.unlockSetting(configurationSetting).flatMap(response -> {
                             ConfigurationSetting kv = response.body();
                             return client.deleteSetting(kv.key(), kv.label(), null);
                         });
                     } else {
-                        return client.deleteSetting(configurationSetting.key(), configurationSetting.label(), null);
+                        return client.deleteSetting(configurationSetting);
                     }
                 }).blockLast();
     }
