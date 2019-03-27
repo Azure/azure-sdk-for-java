@@ -1,12 +1,17 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
+<<<<<<< HEAD
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-1?label=listed-label",
+=======
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-0?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -26,11 +31,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-0?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxNzQ=;sn=174174",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "263ce0ba-3715-48f7-9c7e-bc3601d51741",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"2yV5Bek8jaCzM0fMNM2sVSVkj44\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "263ce0ba-3715-48f7-9c7e-bc3601d51741",
+      "Body" : "{\"etag\":\"2yV5Bek8jaCzM0fMNM2sVSVkj44\",\"key\":\"key67597-0\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "d61f2624-83f8-4c8c-821d-c2fd48964936"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-1?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -50,11 +77,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-2?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxNzU=;sn=174175",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "99047363-c657-45b8-9d5d-ce9f83fd0a69",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"XMpY4E3H238klKUDFOSzWHB5E9D\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "99047363-c657-45b8-9d5d-ce9f83fd0a69",
+      "Body" : "{\"etag\":\"XMpY4E3H238klKUDFOSzWHB5E9D\",\"key\":\"key67597-1\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "0c2c9c27-25c3-4443-8d61-79d5ab2ecc03"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-19?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -74,11 +123,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-20?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxNzc=;sn=174177",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "406c275e-0d7a-492e-9f6e-73f60a132447",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"WRaVte2qT6Je2XDoe6QHSvGzvpG\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "406c275e-0d7a-492e-9f6e-73f60a132447",
+      "Body" : "{\"etag\":\"WRaVte2qT6Je2XDoe6QHSvGzvpG\",\"key\":\"key67597-19\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "7d912f55-4095-4f0a-ae0c-e2722ce4953b"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-2?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -98,11 +169,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-25?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxNzY=;sn=174176",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "31822643-3e88-4ed4-91c1-80af5485105a",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"db8kFMMVC0mUrLAnlQaH6gC9gQ4\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "31822643-3e88-4ed4-91c1-80af5485105a",
+      "Body" : "{\"etag\":\"db8kFMMVC0mUrLAnlQaH6gC9gQ4\",\"key\":\"key67597-2\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "a56bdde7-3320-4cb6-80fb-5bd1317e419b"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-5?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -122,11 +215,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-5?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxNzg=;sn=174178",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "a29dad2f-2f3b-4196-a875-0534526b8f6c",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"4HgqJDl2clj5px7TKTtIuj41QmF\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "a29dad2f-2f3b-4196-a875-0534526b8f6c",
+      "Body" : "{\"etag\":\"4HgqJDl2clj5px7TKTtIuj41QmF\",\"key\":\"key67597-5\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "2ad0dc64-fa3f-4c82-9730-06a978ecf209"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-9?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -146,11 +261,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-3?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxODA=;sn=174180",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "dcf5309f-56ad-41cc-a53c-2e85c1605f68",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"DSO7kNNnBVI7buC6lGthfCw4GFW\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "dcf5309f-56ad-41cc-a53c-2e85c1605f68",
+      "Body" : "{\"etag\":\"DSO7kNNnBVI7buC6lGthfCw4GFW\",\"key\":\"key67597-9\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "d5eff85a-0002-49e7-9008-fda43b8db472"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-6?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -170,11 +307,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-7?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxNzk=;sn=174179",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "4f5bd0f1-2d57-4560-be64-e5c0f67c1714",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"1Ldtv2yYjpE4WjwsW6UD3NFRK7w\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "4f5bd0f1-2d57-4560-be64-e5c0f67c1714",
+      "Body" : "{\"etag\":\"1Ldtv2yYjpE4WjwsW6UD3NFRK7w\",\"key\":\"key67597-6\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "a073c4f7-5d46-4488-b128-92315cc04745"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-24?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -194,11 +353,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-8?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxODI=;sn=174182",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "4d2f8af5-ef01-494e-901b-c20f1cd4ab0e",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"3K1Jb5rla0jOdnMREe6cI2glDMt\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "4d2f8af5-ef01-494e-901b-c20f1cd4ab0e",
+      "Body" : "{\"etag\":\"3K1Jb5rla0jOdnMREe6cI2glDMt\",\"key\":\"key67597-24\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "40866578-2eed-4153-93d5-a9333c0dd6e2"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-13?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -218,11 +399,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-14?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxODE=;sn=174181",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "667288f0-f852-4dfb-bb1f-dcb10a088d5f",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"nKzrrscFbBLhi40ZC6WRvqvff5z\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "667288f0-f852-4dfb-bb1f-dcb10a088d5f",
+      "Body" : "{\"etag\":\"nKzrrscFbBLhi40ZC6WRvqvff5z\",\"key\":\"key67597-13\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "54959f1b-a13d-4d85-8e50-d1bb2fcca7c4"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-3?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -242,11 +445,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-11?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxODM=;sn=174183",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "399cccce-8dd3-40cf-a305-c7eb9b603cee",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"dr6VKH9HUOz1REsTU4NBfKckPSE\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "399cccce-8dd3-40cf-a305-c7eb9b603cee",
+      "Body" : "{\"etag\":\"dr6VKH9HUOz1REsTU4NBfKckPSE\",\"key\":\"key67597-3\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "842f0979-9a49-4333-a1cc-6734b2536037"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-7?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -266,11 +491,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-4?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxODQ=;sn=174184",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "ee9c9495-8584-404f-ae74-0b4ccb3027b3",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"SBVSZG4cEznbX7fZX36H5ggvzsQ\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "ee9c9495-8584-404f-ae74-0b4ccb3027b3",
+      "Body" : "{\"etag\":\"SBVSZG4cEznbX7fZX36H5ggvzsQ\",\"key\":\"key67597-7\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "2e39cba2-8aa0-4de5-b086-2bc16f2666c5"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-10?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -290,11 +537,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-13?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxODU=;sn=174185",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "984eaf77-c7dc-4ea5-8c41-a8cefc0f0581",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"NqZjJLpDANSDz4s65iLT4c5UMuE\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "984eaf77-c7dc-4ea5-8c41-a8cefc0f0581",
+      "Body" : "{\"etag\":\"NqZjJLpDANSDz4s65iLT4c5UMuE\",\"key\":\"key67597-10\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "a44acb23-fe2e-45a8-b54b-1fdd53408767"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-20?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -314,11 +583,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-12?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxODc=;sn=174187",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "29a6d64c-9576-4572-86c7-3b04f4f4b48e",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"E2lIjvUz1ASDU9TRsrhB2E6FgoJ\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "29a6d64c-9576-4572-86c7-3b04f4f4b48e",
+      "Body" : "{\"etag\":\"E2lIjvUz1ASDU9TRsrhB2E6FgoJ\",\"key\":\"key67597-20\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "bab253cb-e438-4487-bf44-887144a3f7fa"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-11?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -338,11 +629,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-9?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxODY=;sn=174186",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "f34e4362-c6be-4d86-80ec-bd8c0035c8d1",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"31Hq6OQs5iKdZFkAT11xy7SkX3N\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "f34e4362-c6be-4d86-80ec-bd8c0035c8d1",
+      "Body" : "{\"etag\":\"31Hq6OQs5iKdZFkAT11xy7SkX3N\",\"key\":\"key67597-11\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "7444f0c1-e43e-465a-9357-149734471d6a"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-21?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -362,11 +675,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-6?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxODk=;sn=174189",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "15a8d550-99a5-44f5-ae29-0fce4fbbdb9d",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"IDSkzd68sIJIgBX4uh6WDrMgE8D\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "15a8d550-99a5-44f5-ae29-0fce4fbbdb9d",
+      "Body" : "{\"etag\":\"IDSkzd68sIJIgBX4uh6WDrMgE8D\",\"key\":\"key67597-21\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "c41aa395-645e-417f-951c-61faadb2cf3a"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-28?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -386,11 +721,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-29?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxOTA=;sn=174190",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "33e07776-3cb9-49b1-a7e5-c60ecf8a8dc6",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"NLf6kDo8CUlyDjtbHrJ2NQyyMiU\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "33e07776-3cb9-49b1-a7e5-c60ecf8a8dc6",
+      "Body" : "{\"etag\":\"NLf6kDo8CUlyDjtbHrJ2NQyyMiU\",\"key\":\"key67597-28\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "7e891899-4702-448f-a423-9c38f4e42e08"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-40?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -410,11 +767,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-30?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxODg=;sn=174188",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "3887728b-26ca-42e3-ba98-731052b29ccb",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"eIa5H0mEm1FUWeMR48m5Oi7io71\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "3887728b-26ca-42e3-ba98-731052b29ccb",
+      "Body" : "{\"etag\":\"eIa5H0mEm1FUWeMR48m5Oi7io71\",\"key\":\"key67597-40\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "1353027c-9102-49d6-a36b-098e30516286"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-23?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -434,11 +813,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-15?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxOTI=;sn=174192",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "a64c9a51-e378-4564-957a-2081593211b5",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"azwpjDgJPp39zaaOVplLR5xypBE\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "a64c9a51-e378-4564-957a-2081593211b5",
+      "Body" : "{\"etag\":\"azwpjDgJPp39zaaOVplLR5xypBE\",\"key\":\"key67597-23\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "983a7dd3-fcf1-405e-a2db-5c9efa666073"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-17?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -458,11 +859,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-10?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxOTM=;sn=174193",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "3e9b6191-79fd-42e3-914d-f982f8a9f2bc",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"tgwqXG7RMJJ0E0uQZ0NJ5EgNfX6\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "3e9b6191-79fd-42e3-914d-f982f8a9f2bc",
+      "Body" : "{\"etag\":\"tgwqXG7RMJJ0E0uQZ0NJ5EgNfX6\",\"key\":\"key67597-17\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "58388d0a-5b27-49e2-ac2b-09298e4b3c8e"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-43?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -482,11 +905,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-28?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxOTU=;sn=174195",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "8064ded7-deaf-497c-8972-cd856581ab14",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"6nG4gAzuUhZr4jvZ73Ky5XIqNbB\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "8064ded7-deaf-497c-8972-cd856581ab14",
+      "Body" : "{\"etag\":\"6nG4gAzuUhZr4jvZ73Ky5XIqNbB\",\"key\":\"key67597-43\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "10e7f22c-3bd2-4e2b-8648-97e6d1e5db46"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-4?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -506,11 +951,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-16?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxOTE=;sn=174191",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "aba5374a-aa2d-4851-a9e5-bc895406d459",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"7HUwUU1laWeNu92WX3vxiB0HYZZ\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "aba5374a-aa2d-4851-a9e5-bc895406d459",
+      "Body" : "{\"etag\":\"7HUwUU1laWeNu92WX3vxiB0HYZZ\",\"key\":\"key67597-4\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "48912dc4-a6e7-47c3-ad2e-437dcdf4d7ab"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-8?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -530,11 +997,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-37?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxOTQ=;sn=174194",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "b49a427e-8c38-4f6e-af06-6049f063f1eb",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"AVPUqQFE9Qp1FEif3zJ6llwO8tW\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "b49a427e-8c38-4f6e-af06-6049f063f1eb",
+      "Body" : "{\"etag\":\"AVPUqQFE9Qp1FEif3zJ6llwO8tW\",\"key\":\"key67597-8\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "d57c921f-00bd-4814-9978-a782b9a15293"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-22?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -554,11 +1043,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-24?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxOTY=;sn=174196",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "fabcdf41-e129-4d5e-83b8-426dde1eeda1",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"suWc5Zp7uZXVlYeOgdkanLiAmxq\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "fabcdf41-e129-4d5e-83b8-426dde1eeda1",
+      "Body" : "{\"etag\":\"suWc5Zp7uZXVlYeOgdkanLiAmxq\",\"key\":\"key67597-22\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "07ff2a35-4dea-4e35-a620-300462fe9308"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-47?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -578,11 +1089,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-41?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxOTk=;sn=174199",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "721151bb-edf7-4492-9043-7dab402a8072",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"DaPz1rEws5YyyesapW9yi9fziBZ\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "721151bb-edf7-4492-9043-7dab402a8072",
+      "Body" : "{\"etag\":\"DaPz1rEws5YyyesapW9yi9fziBZ\",\"key\":\"key67597-47\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "8df3f971-8bb4-4853-8e4c-18a12a065c1f"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-15?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -602,11 +1135,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-23?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxOTg=;sn=174198",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "37d7a7db-8009-4fa3-afbd-5bc3dfdd7464",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"Ai7tPF4V0B1t0EomhJVTUznkiY1\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "37d7a7db-8009-4fa3-afbd-5bc3dfdd7464",
+      "Body" : "{\"etag\":\"Ai7tPF4V0B1t0EomhJVTUznkiY1\",\"key\":\"key67597-15\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "d941cc19-8d52-4985-b0ad-99033a9a337c"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-44?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -626,11 +1181,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-21?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMDA=;sn=174200",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "59c3f5e3-db7b-4420-9317-03c9ef79f6fd",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"wuBWbuzMNcbkVtDEBj7pVjo1RMk\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "59c3f5e3-db7b-4420-9317-03c9ef79f6fd",
+      "Body" : "{\"etag\":\"wuBWbuzMNcbkVtDEBj7pVjo1RMk\",\"key\":\"key67597-44\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "4a578358-e756-4b20-b420-b5eda2e41481"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-41?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -650,11 +1227,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-22?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQxOTc=;sn=174197",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "bac48801-17b2-425d-8820-60ffa9a92264",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"FQ6VUy3A3HSqDuJdJ4EoZSByeJe\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "bac48801-17b2-425d-8820-60ffa9a92264",
+      "Body" : "{\"etag\":\"FQ6VUy3A3HSqDuJdJ4EoZSByeJe\",\"key\":\"key67597-41\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "97775e7e-02a6-4554-8af3-04fbb280491e"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-45?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -674,11 +1273,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-18?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMDE=;sn=174201",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "566e4921-59ec-4959-b2ee-65bf1bdbbe53",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"eW0h425J0rSopwlV7IGUthax0Y4\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "566e4921-59ec-4959-b2ee-65bf1bdbbe53",
+      "Body" : "{\"etag\":\"eW0h425J0rSopwlV7IGUthax0Y4\",\"key\":\"key67597-45\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "589673d2-c136-4bca-ab69-56bc8805b358"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-26?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -698,11 +1319,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-19?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMDQ=;sn=174204",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "c0275ae6-f62c-4886-a95d-942b153c2a5c",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"64LYskRhYBoXnVvv4Kq6x8MCq7a\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "c0275ae6-f62c-4886-a95d-942b153c2a5c",
+      "Body" : "{\"etag\":\"64LYskRhYBoXnVvv4Kq6x8MCq7a\",\"key\":\"key67597-26\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "4435e0b9-ea4d-4ca4-bfa7-75d58737043b"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-12?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -722,11 +1365,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-17?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMDM=;sn=174203",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "a701251a-ecf0-4815-b8e3-44e6d89c2e51",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"MVAY5fAgwhrptuCGPyjkIEba5Hc\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "a701251a-ecf0-4815-b8e3-44e6d89c2e51",
+      "Body" : "{\"etag\":\"MVAY5fAgwhrptuCGPyjkIEba5Hc\",\"key\":\"key67597-12\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "c4612e65-7b17-4f53-8173-2de3a15fd049"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-16?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -746,11 +1411,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-45?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMDI=;sn=174202",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "fafbda56-5a51-43ff-9cb8-f83c95cf0382",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"IdzYW6Z1eQcRFzJw0BFFRI3HiNU\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "fafbda56-5a51-43ff-9cb8-f83c95cf0382",
+      "Body" : "{\"etag\":\"IdzYW6Z1eQcRFzJw0BFFRI3HiNU\",\"key\":\"key67597-16\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "ca4bd691-bbd4-4959-84dd-7f4276cb84c1"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-25?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -770,11 +1457,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-40?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMDY=;sn=174206",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "2b8d70cf-48d3-4b6e-ba91-85ef7f14dc55",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"5j0oZytS68vlrsgTNolUclbucbF\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "2b8d70cf-48d3-4b6e-ba91-85ef7f14dc55",
+      "Body" : "{\"etag\":\"5j0oZytS68vlrsgTNolUclbucbF\",\"key\":\"key67597-25\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "f85ceed9-8c16-42c3-b1fa-28ec4292b7d1"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-42?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -794,11 +1503,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-38?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMDU=;sn=174205",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "1be7ed81-f5ab-4b97-bb84-014b24bc0a55",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"WXXfzQQHlSYPWKufJilwZwNueBM\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "1be7ed81-f5ab-4b97-bb84-014b24bc0a55",
+      "Body" : "{\"etag\":\"WXXfzQQHlSYPWKufJilwZwNueBM\",\"key\":\"key67597-42\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "7c14df61-b893-4eed-ad13-31a1dc98ce45"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-14?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -818,11 +1549,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-26?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMDc=;sn=174207",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "65bbf122-358e-40c0-bde3-b0294b0700e9",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"1FhAucCYryl1Bk4D1bpRTwtoHf1\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "65bbf122-358e-40c0-bde3-b0294b0700e9",
+      "Body" : "{\"etag\":\"1FhAucCYryl1Bk4D1bpRTwtoHf1\",\"key\":\"key67597-14\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "c131a439-aa25-421f-a507-669a001bace0"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-38?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -842,11 +1595,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-33?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMDk=;sn=174209",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "d4dffd11-fe83-41f1-949e-236ef06e8a18",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"49xEIzWjJ2czfelIHlExjdqh0dW\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "d4dffd11-fe83-41f1-949e-236ef06e8a18",
+      "Body" : "{\"etag\":\"49xEIzWjJ2czfelIHlExjdqh0dW\",\"key\":\"key67597-38\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "e506c786-4803-4f32-9323-33b778129ca0"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-30?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -866,11 +1641,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-27?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMDg=;sn=174208",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "9f4faf64-80af-4abd-a194-d0a8ad008f44",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"4RsRplLwaVDK3vzVxVFjEQ8SQSu\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "9f4faf64-80af-4abd-a194-d0a8ad008f44",
+      "Body" : "{\"etag\":\"4RsRplLwaVDK3vzVxVFjEQ8SQSu\",\"key\":\"key67597-30\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "19d1a374-6af7-46df-a0dc-b831932ef916"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-27?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -890,11 +1687,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-31?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMTA=;sn=174210",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "734bdd75-9155-41c4-881d-3229b27184a6",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"jg2vnZQrxgPlrQjO8VOPUbG1B9V\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "734bdd75-9155-41c4-881d-3229b27184a6",
+      "Body" : "{\"etag\":\"jg2vnZQrxgPlrQjO8VOPUbG1B9V\",\"key\":\"key67597-27\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "82d368be-51ce-4386-87e0-7a97094efd61"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-18?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -914,11 +1733,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-34?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMTI=;sn=174212",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "55cf2f9a-ab43-4c3f-aea2-4b1c4be6f70a",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"JZo2UmyvU0aNGB37qrbNzoOoHAo\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "55cf2f9a-ab43-4c3f-aea2-4b1c4be6f70a",
+      "Body" : "{\"etag\":\"JZo2UmyvU0aNGB37qrbNzoOoHAo\",\"key\":\"key67597-18\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "d0c67ddd-0ef9-4324-af26-f04ed3041fb7"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-34?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -938,11 +1779,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-36?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMTE=;sn=174211",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "4a1ad160-16ae-4747-8316-0fb26e5d1722",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"RbMBvUZtRb3EY2dvH756wrMufnM\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "4a1ad160-16ae-4747-8316-0fb26e5d1722",
+      "Body" : "{\"etag\":\"RbMBvUZtRb3EY2dvH756wrMufnM\",\"key\":\"key67597-34\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "00c59a01-57dc-4873-a71a-e9f3190bf1d0"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-36?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -962,11 +1825,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-49?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMTM=;sn=174213",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "34b5a27f-b5a4-49e6-8a87-9d12737e618b",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"K88BKYMaxbL6JEdCsCponOMZ400\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "34b5a27f-b5a4-49e6-8a87-9d12737e618b",
+      "Body" : "{\"etag\":\"K88BKYMaxbL6JEdCsCponOMZ400\",\"key\":\"key67597-36\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "6ee3d7fa-6dba-475c-9808-391790f2c2bf"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-32?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -986,11 +1871,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-32?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMTU=;sn=174215",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "2fadb0c1-e889-4d95-8bcf-3fed4c9d60b0",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"4kZhqa56DYbYRgMJNmBbIjV72Lt\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "2fadb0c1-e889-4d95-8bcf-3fed4c9d60b0",
+      "Body" : "{\"etag\":\"4kZhqa56DYbYRgMJNmBbIjV72Lt\",\"key\":\"key67597-32\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "555a7643-7bdb-434a-bb1e-0bde12aa78ba"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-29?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1010,11 +1917,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-35?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMTQ=;sn=174214",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "4fefdac2-32b9-41d9-abb4-c1960258fc42",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"JzJJLYe7lkiCPoUXkhHSIeT6Bea\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "4fefdac2-32b9-41d9-abb4-c1960258fc42",
+      "Body" : "{\"etag\":\"JzJJLYe7lkiCPoUXkhHSIeT6Bea\",\"key\":\"key67597-29\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "f7ca9552-497d-4561-b4e7-50da157b312d"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-33?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1034,11 +1963,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-42?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMTY=;sn=174216",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "2843cd49-7ffc-41ac-b820-620b44781074",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"0IIRxYFhgEHBsTn186rD1DbYRJA\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "2843cd49-7ffc-41ac-b820-620b44781074",
+      "Body" : "{\"etag\":\"0IIRxYFhgEHBsTn186rD1DbYRJA\",\"key\":\"key67597-33\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "d46c9dc0-7d52-4cd1-99c3-969c7e971c8e"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-31?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1058,11 +2009,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-47?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMTc=;sn=174217",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "08c2629b-a137-48ae-b343-cb4aa5eb8793",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"cJ3YUXHs10tpjYm2XULDdU7gZor\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "08c2629b-a137-48ae-b343-cb4aa5eb8793",
+      "Body" : "{\"etag\":\"cJ3YUXHs10tpjYm2XULDdU7gZor\",\"key\":\"key67597-31\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "e96539b1-4233-4681-9c33-8dd0761d9d53"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-48?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1082,11 +2055,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-43?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMTg=;sn=174218",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "bf87e15d-83e4-43be-8d3f-3baadc9fe43a",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"DDUGMQZQ5EBYuWppdQyPPPaunAN\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "bf87e15d-83e4-43be-8d3f-3baadc9fe43a",
+      "Body" : "{\"etag\":\"DDUGMQZQ5EBYuWppdQyPPPaunAN\",\"key\":\"key67597-48\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "29b27b5d-0a97-4e41-8686-f5e1aa696cad"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-37?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1106,11 +2101,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-44?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMTk=;sn=174219",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "19b0cbfd-442b-4397-8fab-56e18499826b",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"8ORXGCBlVr99oET4Cm73R27hS4b\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "19b0cbfd-442b-4397-8fab-56e18499826b",
+      "Body" : "{\"etag\":\"8ORXGCBlVr99oET4Cm73R27hS4b\",\"key\":\"key67597-37\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "0cf5fc14-bdd3-4b18-9e4f-9b8eba295cc5"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-49?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1130,11 +2147,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-46?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjA=;sn=174220",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "ef78c3ed-a198-43b0-9e27-c5e1e9a02bb4",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"wnTJQM0L36VIFMFfRjMdC51wFY3\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "ef78c3ed-a198-43b0-9e27-c5e1e9a02bb4",
+      "Body" : "{\"etag\":\"wnTJQM0L36VIFMFfRjMdC51wFY3\",\"key\":\"key67597-49\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "74ee3ac1-c481-47c0-b5b7-da5813d52468"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-39?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1154,11 +2193,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-48?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjE=;sn=174221",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "eac60fed-462a-498c-afe8-5e762ad497ee",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"W4XBYZPI1VnW9FpxACpsjZHA6RQ\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "eac60fed-462a-498c-afe8-5e762ad497ee",
+      "Body" : "{\"etag\":\"W4XBYZPI1VnW9FpxACpsjZHA6RQ\",\"key\":\"key67597-39\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "9c533ec8-e594-4ec0-91b4-c677737e697e"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-35?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1178,11 +2239,33 @@
   }, {
     "Method" : "PUT",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-39?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjI=;sn=174222",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "2f118e3e-64df-47a8-9d65-6b5ec9d0a14d",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"5FC4dmWT4ArIlQhFpGecDolIBRm\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "2f118e3e-64df-47a8-9d65-6b5ec9d0a14d",
+      "Body" : "{\"etag\":\"5FC4dmWT4ArIlQhFpGecDolIBRm\",\"key\":\"key67597-35\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "f536cfa4-2383-4291-ba6f-ad1df43f253b"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-46?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1202,11 +2285,33 @@
   }, {
     "Method" : "GET",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv?key=%2a&label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjM=;sn=174223",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "ece98ce2-a910-4c33-a273-309599d90696",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"PheeR4oKpZgqN6FwJ8diJvv65Zh\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "ece98ce2-a910-4c33-a273-309599d90696",
+      "Body" : "{\"etag\":\"PheeR4oKpZgqN6FwJ8diJvv65Zh\",\"key\":\"key67597-46\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "44286749-1731-4a91-b234-2c63b59cc6a7"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1224,11 +2329,31 @@
   }, {
     "Method" : "GET",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv?key=key80710%2a",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjM=;sn=174223",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "12e371c1-0bf9-42a4-a57f-2b1be915f028",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8",
+      "x-ms-request-id" : "12e371c1-0bf9-42a4-a57f-2b1be915f028",
+      "Body" : "{\"items\":[{\"etag\":\"2yV5Bek8jaCzM0fMNM2sVSVkj44\",\"key\":\"key67597-0\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"XMpY4E3H238klKUDFOSzWHB5E9D\",\"key\":\"key67597-1\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"NqZjJLpDANSDz4s65iLT4c5UMuE\",\"key\":\"key67597-10\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"31Hq6OQs5iKdZFkAT11xy7SkX3N\",\"key\":\"key67597-11\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"MVAY5fAgwhrptuCGPyjkIEba5Hc\",\"key\":\"key67597-12\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"nKzrrscFbBLhi40ZC6WRvqvff5z\",\"key\":\"key67597-13\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"1FhAucCYryl1Bk4D1bpRTwtoHf1\",\"key\":\"key67597-14\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"Ai7tPF4V0B1t0EomhJVTUznkiY1\",\"key\":\"key67597-15\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"IdzYW6Z1eQcRFzJw0BFFRI3HiNU\",\"key\":\"key67597-16\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"tgwqXG7RMJJ0E0uQZ0NJ5EgNfX6\",\"key\":\"key67597-17\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"JZo2UmyvU0aNGB37qrbNzoOoHAo\",\"key\":\"key67597-18\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"WRaVte2qT6Je2XDoe6QHSvGzvpG\",\"key\":\"key67597-19\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"db8kFMMVC0mUrLAnlQaH6gC9gQ4\",\"key\":\"key67597-2\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"E2lIjvUz1ASDU9TRsrhB2E6FgoJ\",\"key\":\"key67597-20\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"IDSkzd68sIJIgBX4uh6WDrMgE8D\",\"key\":\"key67597-21\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"suWc5Zp7uZXVlYeOgdkanLiAmxq\",\"key\":\"key67597-22\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"azwpjDgJPp39zaaOVplLR5xypBE\",\"key\":\"key67597-23\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"3K1Jb5rla0jOdnMREe6cI2glDMt\",\"key\":\"key67597-24\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"5j0oZytS68vlrsgTNolUclbucbF\",\"key\":\"key67597-25\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"64LYskRhYBoXnVvv4Kq6x8MCq7a\",\"key\":\"key67597-26\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"jg2vnZQrxgPlrQjO8VOPUbG1B9V\",\"key\":\"key67597-27\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"NLf6kDo8CUlyDjtbHrJ2NQyyMiU\",\"key\":\"key67597-28\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"JzJJLYe7lkiCPoUXkhHSIeT6Bea\",\"key\":\"key67597-29\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"dr6VKH9HUOz1REsTU4NBfKckPSE\",\"key\":\"key67597-3\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"4RsRplLwaVDK3vzVxVFjEQ8SQSu\",\"key\":\"key67597-30\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"cJ3YUXHs10tpjYm2XULDdU7gZor\",\"key\":\"key67597-31\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"4kZhqa56DYbYRgMJNmBbIjV72Lt\",\"key\":\"key67597-32\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"0IIRxYFhgEHBsTn186rD1DbYRJA\",\"key\":\"key67597-33\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"RbMBvUZtRb3EY2dvH756wrMufnM\",\"key\":\"key67597-34\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"5FC4dmWT4ArIlQhFpGecDolIBRm\",\"key\":\"key67597-35\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"K88BKYMaxbL6JEdCsCponOMZ400\",\"key\":\"key67597-36\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"8ORXGCBlVr99oET4Cm73R27hS4b\",\"key\":\"key67597-37\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"49xEIzWjJ2czfelIHlExjdqh0dW\",\"key\":\"key67597-38\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"W4XBYZPI1VnW9FpxACpsjZHA6RQ\",\"key\":\"key67597-39\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"7HUwUU1laWeNu92WX3vxiB0HYZZ\",\"key\":\"key67597-4\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"eIa5H0mEm1FUWeMR48m5Oi7io71\",\"key\":\"key67597-40\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"FQ6VUy3A3HSqDuJdJ4EoZSByeJe\",\"key\":\"key67597-41\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"WXXfzQQHlSYPWKufJilwZwNueBM\",\"key\":\"key67597-42\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"6nG4gAzuUhZr4jvZ73Ky5XIqNbB\",\"key\":\"key67597-43\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"wuBWbuzMNcbkVtDEBj7pVjo1RMk\",\"key\":\"key67597-44\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"eW0h425J0rSopwlV7IGUthax0Y4\",\"key\":\"key67597-45\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"PheeR4oKpZgqN6FwJ8diJvv65Zh\",\"key\":\"key67597-46\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"DaPz1rEws5YyyesapW9yi9fziBZ\",\"key\":\"key67597-47\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"DDUGMQZQ5EBYuWppdQyPPPaunAN\",\"key\":\"key67597-48\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"wnTJQM0L36VIFMFfRjMdC51wFY3\",\"key\":\"key67597-49\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"4HgqJDl2clj5px7TKTtIuj41QmF\",\"key\":\"key67597-5\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"1Ldtv2yYjpE4WjwsW6UD3NFRK7w\",\"key\":\"key67597-6\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"SBVSZG4cEznbX7fZX36H5ggvzsQ\",\"key\":\"key67597-7\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"AVPUqQFE9Qp1FEif3zJ6llwO8tW\",\"key\":\"key67597-8\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"DSO7kNNnBVI7buC6lGthfCw4GFW\",\"key\":\"key67597-9\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}]}",
+      "x-ms-client-request-id" : "58c57b96-89cb-446a-86af-cd34e207f815"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?key=key67597%2a",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1246,11 +2371,31 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-0?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjM=;sn=174223",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "6d36a347-7e89-45f9-a399-9ed56ae6ef0d",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8",
+      "x-ms-request-id" : "6d36a347-7e89-45f9-a399-9ed56ae6ef0d",
+      "Body" : "{\"items\":[{\"etag\":\"2yV5Bek8jaCzM0fMNM2sVSVkj44\",\"key\":\"key67597-0\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"XMpY4E3H238klKUDFOSzWHB5E9D\",\"key\":\"key67597-1\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"NqZjJLpDANSDz4s65iLT4c5UMuE\",\"key\":\"key67597-10\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"31Hq6OQs5iKdZFkAT11xy7SkX3N\",\"key\":\"key67597-11\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"MVAY5fAgwhrptuCGPyjkIEba5Hc\",\"key\":\"key67597-12\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"nKzrrscFbBLhi40ZC6WRvqvff5z\",\"key\":\"key67597-13\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"1FhAucCYryl1Bk4D1bpRTwtoHf1\",\"key\":\"key67597-14\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"Ai7tPF4V0B1t0EomhJVTUznkiY1\",\"key\":\"key67597-15\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"IdzYW6Z1eQcRFzJw0BFFRI3HiNU\",\"key\":\"key67597-16\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"tgwqXG7RMJJ0E0uQZ0NJ5EgNfX6\",\"key\":\"key67597-17\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"JZo2UmyvU0aNGB37qrbNzoOoHAo\",\"key\":\"key67597-18\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"WRaVte2qT6Je2XDoe6QHSvGzvpG\",\"key\":\"key67597-19\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"db8kFMMVC0mUrLAnlQaH6gC9gQ4\",\"key\":\"key67597-2\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"E2lIjvUz1ASDU9TRsrhB2E6FgoJ\",\"key\":\"key67597-20\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"IDSkzd68sIJIgBX4uh6WDrMgE8D\",\"key\":\"key67597-21\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"suWc5Zp7uZXVlYeOgdkanLiAmxq\",\"key\":\"key67597-22\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"azwpjDgJPp39zaaOVplLR5xypBE\",\"key\":\"key67597-23\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"3K1Jb5rla0jOdnMREe6cI2glDMt\",\"key\":\"key67597-24\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"5j0oZytS68vlrsgTNolUclbucbF\",\"key\":\"key67597-25\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"64LYskRhYBoXnVvv4Kq6x8MCq7a\",\"key\":\"key67597-26\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"jg2vnZQrxgPlrQjO8VOPUbG1B9V\",\"key\":\"key67597-27\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"NLf6kDo8CUlyDjtbHrJ2NQyyMiU\",\"key\":\"key67597-28\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"JzJJLYe7lkiCPoUXkhHSIeT6Bea\",\"key\":\"key67597-29\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"dr6VKH9HUOz1REsTU4NBfKckPSE\",\"key\":\"key67597-3\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"4RsRplLwaVDK3vzVxVFjEQ8SQSu\",\"key\":\"key67597-30\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"cJ3YUXHs10tpjYm2XULDdU7gZor\",\"key\":\"key67597-31\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"4kZhqa56DYbYRgMJNmBbIjV72Lt\",\"key\":\"key67597-32\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"0IIRxYFhgEHBsTn186rD1DbYRJA\",\"key\":\"key67597-33\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"RbMBvUZtRb3EY2dvH756wrMufnM\",\"key\":\"key67597-34\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"5FC4dmWT4ArIlQhFpGecDolIBRm\",\"key\":\"key67597-35\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"K88BKYMaxbL6JEdCsCponOMZ400\",\"key\":\"key67597-36\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"8ORXGCBlVr99oET4Cm73R27hS4b\",\"key\":\"key67597-37\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"49xEIzWjJ2czfelIHlExjdqh0dW\",\"key\":\"key67597-38\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"W4XBYZPI1VnW9FpxACpsjZHA6RQ\",\"key\":\"key67597-39\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"7HUwUU1laWeNu92WX3vxiB0HYZZ\",\"key\":\"key67597-4\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"eIa5H0mEm1FUWeMR48m5Oi7io71\",\"key\":\"key67597-40\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"FQ6VUy3A3HSqDuJdJ4EoZSByeJe\",\"key\":\"key67597-41\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"WXXfzQQHlSYPWKufJilwZwNueBM\",\"key\":\"key67597-42\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"6nG4gAzuUhZr4jvZ73Ky5XIqNbB\",\"key\":\"key67597-43\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"wuBWbuzMNcbkVtDEBj7pVjo1RMk\",\"key\":\"key67597-44\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"eW0h425J0rSopwlV7IGUthax0Y4\",\"key\":\"key67597-45\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"PheeR4oKpZgqN6FwJ8diJvv65Zh\",\"key\":\"key67597-46\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"DaPz1rEws5YyyesapW9yi9fziBZ\",\"key\":\"key67597-47\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"DDUGMQZQ5EBYuWppdQyPPPaunAN\",\"key\":\"key67597-48\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"wnTJQM0L36VIFMFfRjMdC51wFY3\",\"key\":\"key67597-49\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"4HgqJDl2clj5px7TKTtIuj41QmF\",\"key\":\"key67597-5\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"1Ldtv2yYjpE4WjwsW6UD3NFRK7w\",\"key\":\"key67597-6\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"SBVSZG4cEznbX7fZX36H5ggvzsQ\",\"key\":\"key67597-7\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"AVPUqQFE9Qp1FEif3zJ6llwO8tW\",\"key\":\"key67597-8\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"},{\"etag\":\"DSO7kNNnBVI7buC6lGthfCw4GFW\",\"key\":\"key67597-9\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}]}",
+      "x-ms-client-request-id" : "5f49c20e-4cf2-4a1e-afb2-992cb56e9510"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-1?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1270,11 +2415,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-12?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjU=;sn=174225",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "9012ebdf-98f3-448a-9fd6-952c2b90b1c9",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"XMpY4E3H238klKUDFOSzWHB5E9D\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "9012ebdf-98f3-448a-9fd6-952c2b90b1c9",
+      "Body" : "{\"etag\":\"XMpY4E3H238klKUDFOSzWHB5E9D\",\"key\":\"key67597-1\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "2f4842c6-9dcd-4866-95c1-20e039afa264"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-10?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1294,11 +2461,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-13?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjY=;sn=174226",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "ebf6f4bd-844b-43f8-ba9a-2ef439dd629a",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"NqZjJLpDANSDz4s65iLT4c5UMuE\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "ebf6f4bd-844b-43f8-ba9a-2ef439dd629a",
+      "Body" : "{\"etag\":\"NqZjJLpDANSDz4s65iLT4c5UMuE\",\"key\":\"key67597-10\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "1a77d4b1-7e13-43cb-9c52-4102c9263023"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-0?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1318,11 +2507,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-15?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjQ=;sn=174224",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "e18fd6bb-a7ba-49a5-bf05-55b4a454ad61",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"2yV5Bek8jaCzM0fMNM2sVSVkj44\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "e18fd6bb-a7ba-49a5-bf05-55b4a454ad61",
+      "Body" : "{\"etag\":\"2yV5Bek8jaCzM0fMNM2sVSVkj44\",\"key\":\"key67597-0\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "14194942-7d86-4d61-af73-7225c8b78c81"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-23?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1342,11 +2553,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-2?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjk=;sn=174229",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "efdbb92d-fdb9-4682-8127-099a45d144ff",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"azwpjDgJPp39zaaOVplLR5xypBE\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "efdbb92d-fdb9-4682-8127-099a45d144ff",
+      "Body" : "{\"etag\":\"azwpjDgJPp39zaaOVplLR5xypBE\",\"key\":\"key67597-23\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "0f4e075e-79e8-490a-93e2-4653e034dccf"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-20?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1366,11 +2599,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-20?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjg=;sn=174228",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "7eca000d-cb0c-40d2-8069-57106b4d9be7",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"E2lIjvUz1ASDU9TRsrhB2E6FgoJ\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "7eca000d-cb0c-40d2-8069-57106b4d9be7",
+      "Body" : "{\"etag\":\"E2lIjvUz1ASDU9TRsrhB2E6FgoJ\",\"key\":\"key67597-20\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "3d09d2cf-9d8e-482f-bf55-9eed62920d6c"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-14?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1390,11 +2645,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-28?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMjc=;sn=174227",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "b8ac50d5-985f-4ccc-a271-13e8fefe6012",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"1FhAucCYryl1Bk4D1bpRTwtoHf1\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "b8ac50d5-985f-4ccc-a271-13e8fefe6012",
+      "Body" : "{\"etag\":\"1FhAucCYryl1Bk4D1bpRTwtoHf1\",\"key\":\"key67597-14\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "0a2a0ed7-fd59-47bb-bfa8-da00f6adf66f"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-2?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1414,11 +2691,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-4?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMzA=;sn=174230",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "171aa30b-0f26-4ebc-9acc-55fb74f88271",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"db8kFMMVC0mUrLAnlQaH6gC9gQ4\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "171aa30b-0f26-4ebc-9acc-55fb74f88271",
+      "Body" : "{\"etag\":\"db8kFMMVC0mUrLAnlQaH6gC9gQ4\",\"key\":\"key67597-2\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "494ac59d-a86a-4b70-8e4f-c5daf7d765d8"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-29?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1438,11 +2737,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-36?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMzE=;sn=174231",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "576ee624-7747-421f-a906-076efff1120e",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"JzJJLYe7lkiCPoUXkhHSIeT6Bea\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "576ee624-7747-421f-a906-076efff1120e",
+      "Body" : "{\"etag\":\"JzJJLYe7lkiCPoUXkhHSIeT6Bea\",\"key\":\"key67597-29\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "d4e77d7e-29e9-41c2-b4e7-11c0bb6cfab0"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-24?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1462,11 +2783,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-45?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMzI=;sn=174232",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "7968a2e9-d3d7-4884-9831-98d227f9e0f6",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"3K1Jb5rla0jOdnMREe6cI2glDMt\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "7968a2e9-d3d7-4884-9831-98d227f9e0f6",
+      "Body" : "{\"etag\":\"3K1Jb5rla0jOdnMREe6cI2glDMt\",\"key\":\"key67597-24\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "9702b7fc-3a8a-4d85-82f5-7b7685037a9e"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-43?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1486,11 +2829,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-39?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMzM=;sn=174233",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "aad2fdba-b83f-4399-abb7-8481e3e4e2db",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"6nG4gAzuUhZr4jvZ73Ky5XIqNbB\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "aad2fdba-b83f-4399-abb7-8481e3e4e2db",
+      "Body" : "{\"etag\":\"6nG4gAzuUhZr4jvZ73Ky5XIqNbB\",\"key\":\"key67597-43\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "5c2ff68e-3857-459b-875a-e4ee952844a8"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-11?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1576,11 +2941,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-10?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMzQ=;sn=174234",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "ee566af8-3485-4c73-bbaf-619c61d9de9a",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"31Hq6OQs5iKdZFkAT11xy7SkX3N\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "ee566af8-3485-4c73-bbaf-619c61d9de9a",
+      "Body" : "{\"etag\":\"31Hq6OQs5iKdZFkAT11xy7SkX3N\",\"key\":\"key67597-11\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "8caf5d4b-76bb-45e1-9a5f-4873d3fa87c8"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-13?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1600,11 +2987,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-1?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMzU=;sn=174235",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "9a36e550-5bca-4059-9dd3-5aa42f139859",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"nKzrrscFbBLhi40ZC6WRvqvff5z\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "9a36e550-5bca-4059-9dd3-5aa42f139859",
+      "Body" : "{\"etag\":\"nKzrrscFbBLhi40ZC6WRvqvff5z\",\"key\":\"key67597-13\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "d22b22eb-b4f3-4423-9cd5-ec7da6a5b1ae"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-18?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1624,11 +3033,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-11?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMzY=;sn=174236",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "dec126e7-0cfb-409b-9f85-1a48249bf19b",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"JZo2UmyvU0aNGB37qrbNzoOoHAo\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "dec126e7-0cfb-409b-9f85-1a48249bf19b",
+      "Body" : "{\"etag\":\"JZo2UmyvU0aNGB37qrbNzoOoHAo\",\"key\":\"key67597-18\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "4184b5da-a0e2-4cff-8be3-485a599113cf"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-21?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1648,11 +3079,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-3?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMzc=;sn=174237",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "8e572b9e-dee2-4c0d-83c5-6da24b65c3f0",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"IDSkzd68sIJIgBX4uh6WDrMgE8D\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "8e572b9e-dee2-4c0d-83c5-6da24b65c3f0",
+      "Body" : "{\"etag\":\"IDSkzd68sIJIgBX4uh6WDrMgE8D\",\"key\":\"key67597-21\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "69826363-4566-4f31-aafa-fd88bfedf9ef"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-17?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1672,11 +3125,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-16?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMzg=;sn=174238",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "b594cc3f-0c56-4fec-ba21-6b4752d6a058",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"tgwqXG7RMJJ0E0uQZ0NJ5EgNfX6\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "b594cc3f-0c56-4fec-ba21-6b4752d6a058",
+      "Body" : "{\"etag\":\"tgwqXG7RMJJ0E0uQZ0NJ5EgNfX6\",\"key\":\"key67597-17\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "c5e0d4d2-4aea-4a94-bd04-42c237cc95c4"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-19?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1696,11 +3171,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-19?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyMzk=;sn=174239",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "3ddd9077-8a66-4fdb-b114-53ca3fffb781",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"WRaVte2qT6Je2XDoe6QHSvGzvpG\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "3ddd9077-8a66-4fdb-b114-53ca3fffb781",
+      "Body" : "{\"etag\":\"WRaVte2qT6Je2XDoe6QHSvGzvpG\",\"key\":\"key67597-19\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "c544c2c2-f36a-4c5e-a875-9f904174a558"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-12?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1720,11 +3217,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-21?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNDI=;sn=174242",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "3a13fdb4-5643-4dbb-af7a-91a7beaa2722",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"MVAY5fAgwhrptuCGPyjkIEba5Hc\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "3a13fdb4-5643-4dbb-af7a-91a7beaa2722",
+      "Body" : "{\"etag\":\"MVAY5fAgwhrptuCGPyjkIEba5Hc\",\"key\":\"key67597-12\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "e6452850-b516-44f1-a43a-d34a36760ed0"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-32?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1744,11 +3263,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-32?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNDE=;sn=174241",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "8cd212e2-468f-448f-8f2c-0a393cd2f763",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"4kZhqa56DYbYRgMJNmBbIjV72Lt\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "8cd212e2-468f-448f-8f2c-0a393cd2f763",
+      "Body" : "{\"etag\":\"4kZhqa56DYbYRgMJNmBbIjV72Lt\",\"key\":\"key67597-32\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "d7b13e43-1464-4095-ac1d-dd4c0ba74152"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-15?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1768,11 +3309,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-22?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNDA=;sn=174240",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "533d020e-65f8-4b57-9ad6-2a7d0d17888a",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"Ai7tPF4V0B1t0EomhJVTUznkiY1\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "533d020e-65f8-4b57-9ad6-2a7d0d17888a",
+      "Body" : "{\"etag\":\"Ai7tPF4V0B1t0EomhJVTUznkiY1\",\"key\":\"key67597-15\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "de8aba98-a3dc-4b99-9282-0c33e30e87ce"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-31?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1792,11 +3355,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-29?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNDM=;sn=174243",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "896c3140-e5dc-4f76-8794-de2971659311",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"cJ3YUXHs10tpjYm2XULDdU7gZor\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "896c3140-e5dc-4f76-8794-de2971659311",
+      "Body" : "{\"etag\":\"cJ3YUXHs10tpjYm2XULDdU7gZor\",\"key\":\"key67597-31\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "aa8f67c3-3a4e-44a2-8126-930aeb74938e"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-16?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1816,11 +3401,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-25?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNDU=;sn=174245",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "121b80bf-6d76-482b-89ea-6407dcd6e744",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"IdzYW6Z1eQcRFzJw0BFFRI3HiNU\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "121b80bf-6d76-482b-89ea-6407dcd6e744",
+      "Body" : "{\"etag\":\"IdzYW6Z1eQcRFzJw0BFFRI3HiNU\",\"key\":\"key67597-16\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "5a888d6a-dc2b-4796-8da9-4791c82a1190"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-28?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1840,11 +3447,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-17?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNDQ=;sn=174244",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "d9b000d6-42a6-4c69-911b-36592f76c793",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"NLf6kDo8CUlyDjtbHrJ2NQyyMiU\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "d9b000d6-42a6-4c69-911b-36592f76c793",
+      "Body" : "{\"etag\":\"NLf6kDo8CUlyDjtbHrJ2NQyyMiU\",\"key\":\"key67597-28\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "183adc5d-35b9-4bec-b31c-bbef1c22c557"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-25?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1864,11 +3493,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-48?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNDY=;sn=174246",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "bb9ec72a-193f-40c8-9f35-26948ce32f65",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"5j0oZytS68vlrsgTNolUclbucbF\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "bb9ec72a-193f-40c8-9f35-26948ce32f65",
+      "Body" : "{\"etag\":\"5j0oZytS68vlrsgTNolUclbucbF\",\"key\":\"key67597-25\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "eff6fe24-69da-4f59-910c-0a37f1c6a345"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-4?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1888,11 +3539,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-26?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNDc=;sn=174247",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "61e0c218-16fd-4d8d-aa68-b49cd7a06368",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"7HUwUU1laWeNu92WX3vxiB0HYZZ\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "61e0c218-16fd-4d8d-aa68-b49cd7a06368",
+      "Body" : "{\"etag\":\"7HUwUU1laWeNu92WX3vxiB0HYZZ\",\"key\":\"key67597-4\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "76cf6079-1c28-48cc-a2da-99189fa659d9"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-33?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1912,11 +3585,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-24?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNDg=;sn=174248",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "3f1203a6-e94c-4eec-866d-a09219606242",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"0IIRxYFhgEHBsTn186rD1DbYRJA\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "3f1203a6-e94c-4eec-866d-a09219606242",
+      "Body" : "{\"etag\":\"0IIRxYFhgEHBsTn186rD1DbYRJA\",\"key\":\"key67597-33\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "3b262701-df1e-4c35-acf3-22a0a9451a88"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-22?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1936,11 +3631,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-49?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNDk=;sn=174249",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "e49f73d6-e51e-447f-9a28-649f29e88389",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"suWc5Zp7uZXVlYeOgdkanLiAmxq\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "e49f73d6-e51e-447f-9a28-649f29e88389",
+      "Body" : "{\"etag\":\"suWc5Zp7uZXVlYeOgdkanLiAmxq\",\"key\":\"key67597-22\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "384953cd-4678-4555-95ff-46713935cb28"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-38?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1960,11 +3677,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-33?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNTA=;sn=174250",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "839b54f7-faae-423d-b038-c423bd736350",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"49xEIzWjJ2czfelIHlExjdqh0dW\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "839b54f7-faae-423d-b038-c423bd736350",
+      "Body" : "{\"etag\":\"49xEIzWjJ2czfelIHlExjdqh0dW\",\"key\":\"key67597-38\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "0c9085d6-4405-433c-9d74-09731488a1cf"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-37?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -1984,11 +3723,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-14?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNTE=;sn=174251",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "2c541825-ea9a-4184-a8f5-a0289143e459",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"8ORXGCBlVr99oET4Cm73R27hS4b\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "2c541825-ea9a-4184-a8f5-a0289143e459",
+      "Body" : "{\"etag\":\"8ORXGCBlVr99oET4Cm73R27hS4b\",\"key\":\"key67597-37\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "e2958e7b-0621-467c-8e63-1a1a7e3b09c6"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-30?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2008,11 +3769,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-18?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNTI=;sn=174252",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "0dacdc49-7751-40cb-ac8d-c7baf628a7ee",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"4RsRplLwaVDK3vzVxVFjEQ8SQSu\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "0dacdc49-7751-40cb-ac8d-c7baf628a7ee",
+      "Body" : "{\"etag\":\"4RsRplLwaVDK3vzVxVFjEQ8SQSu\",\"key\":\"key67597-30\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "0107fced-2a18-4f8a-a9df-c1e3100cf0b4"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-34?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2032,11 +3815,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-41?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNTQ=;sn=174254",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "e12c7c1b-fc1d-4819-a3bb-25d719422d06",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"RbMBvUZtRb3EY2dvH756wrMufnM\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "e12c7c1b-fc1d-4819-a3bb-25d719422d06",
+      "Body" : "{\"etag\":\"RbMBvUZtRb3EY2dvH756wrMufnM\",\"key\":\"key67597-34\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "2ef1a2af-78be-4257-8c67-91cb14444902"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-41?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2056,11 +3861,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-44?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNTc=;sn=174257",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "ffa5c973-906c-427e-9e2b-f73177cfb771",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"FQ6VUy3A3HSqDuJdJ4EoZSByeJe\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "ffa5c973-906c-427e-9e2b-f73177cfb771",
+      "Body" : "{\"etag\":\"FQ6VUy3A3HSqDuJdJ4EoZSByeJe\",\"key\":\"key67597-41\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "ebffb9bf-904f-4df5-831d-9ea16211ca9a"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-27?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2080,11 +3907,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-27?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNTM=;sn=174253",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "671b8ccf-f151-4856-a0cc-64cd858486b4",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"jg2vnZQrxgPlrQjO8VOPUbG1B9V\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "671b8ccf-f151-4856-a0cc-64cd858486b4",
+      "Body" : "{\"etag\":\"jg2vnZQrxgPlrQjO8VOPUbG1B9V\",\"key\":\"key67597-27\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "8b486474-b99c-4084-b569-f43b3b4686ae"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-45?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2104,11 +3953,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-31?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNTg=;sn=174258",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "bb138891-e3be-47a2-8408-ea4d0d1cf2dd",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"eW0h425J0rSopwlV7IGUthax0Y4\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "bb138891-e3be-47a2-8408-ea4d0d1cf2dd",
+      "Body" : "{\"etag\":\"eW0h425J0rSopwlV7IGUthax0Y4\",\"key\":\"key67597-45\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "11decf49-e427-4f8a-aaf7-a351074fcd47"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-3?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2128,11 +3999,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-37?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNTU=;sn=174255",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "eb33098c-549c-4222-9fdb-78b6f5bfc51f",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"dr6VKH9HUOz1REsTU4NBfKckPSE\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "eb33098c-549c-4222-9fdb-78b6f5bfc51f",
+      "Body" : "{\"etag\":\"dr6VKH9HUOz1REsTU4NBfKckPSE\",\"key\":\"key67597-3\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "2cef45eb-c77c-4a28-8d72-3f9328e30957"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-44?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2152,11 +4045,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-23?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNjA=;sn=174260",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "9fc7f8c9-1c45-48bb-938d-f2a925ded241",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"wuBWbuzMNcbkVtDEBj7pVjo1RMk\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "9fc7f8c9-1c45-48bb-938d-f2a925ded241",
+      "Body" : "{\"etag\":\"wuBWbuzMNcbkVtDEBj7pVjo1RMk\",\"key\":\"key67597-44\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "e3c6801b-bc8f-4c09-86d3-490031696666"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-36?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2176,11 +4091,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-9?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNTk=;sn=174259",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "325e7636-64d7-44f7-bc0f-165571ce9955",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"K88BKYMaxbL6JEdCsCponOMZ400\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "325e7636-64d7-44f7-bc0f-165571ce9955",
+      "Body" : "{\"etag\":\"K88BKYMaxbL6JEdCsCponOMZ400\",\"key\":\"key67597-36\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "80aaa265-9bd7-417e-aecf-495170188f0f"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-40?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2200,11 +4137,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-35?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNjI=;sn=174262",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "0c2c4a4a-698e-4267-b544-fd04713de545",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"eIa5H0mEm1FUWeMR48m5Oi7io71\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "0c2c4a4a-698e-4267-b544-fd04713de545",
+      "Body" : "{\"etag\":\"eIa5H0mEm1FUWeMR48m5Oi7io71\",\"key\":\"key67597-40\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "af17b233-0262-4d4c-abeb-a8ba3813ab02"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-26?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2224,11 +4183,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-38?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNTY=;sn=174256",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "0c1fd339-5ee1-4fa7-8c1d-2cec4bf90f6b",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"64LYskRhYBoXnVvv4Kq6x8MCq7a\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "0c1fd339-5ee1-4fa7-8c1d-2cec4bf90f6b",
+      "Body" : "{\"etag\":\"64LYskRhYBoXnVvv4Kq6x8MCq7a\",\"key\":\"key67597-26\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "3f2eeee5-54ce-428f-84ac-86435fb1de2f"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-39?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2248,11 +4229,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-8?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNjE=;sn=174261",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "74fc37ae-847d-436a-8a6a-3a2306065f53",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"W4XBYZPI1VnW9FpxACpsjZHA6RQ\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "74fc37ae-847d-436a-8a6a-3a2306065f53",
+      "Body" : "{\"etag\":\"W4XBYZPI1VnW9FpxACpsjZHA6RQ\",\"key\":\"key67597-39\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "fc6b52af-ad60-48bf-ab6c-708adb41b634"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-46?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2272,11 +4275,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-34?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNjU=;sn=174265",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "4f5eb62d-f41d-4cab-b280-06614b7f97bf",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"PheeR4oKpZgqN6FwJ8diJvv65Zh\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "4f5eb62d-f41d-4cab-b280-06614b7f97bf",
+      "Body" : "{\"etag\":\"PheeR4oKpZgqN6FwJ8diJvv65Zh\",\"key\":\"key67597-46\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "42553cbf-f345-4076-acae-789704bcb3a4"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-35?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2296,11 +4321,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-47?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNjM=;sn=174263",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "47ea24b0-15ed-458e-aaca-9eba96e7c1a5",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"5FC4dmWT4ArIlQhFpGecDolIBRm\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "47ea24b0-15ed-458e-aaca-9eba96e7c1a5",
+      "Body" : "{\"etag\":\"5FC4dmWT4ArIlQhFpGecDolIBRm\",\"key\":\"key67597-35\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "7c7738e3-982b-4a97-b04c-7036fcb16463"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-42?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2320,11 +4367,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-30?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNjY=;sn=174266",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "af9ba32a-bdbf-4942-ad49-6290b8d21885",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"WXXfzQQHlSYPWKufJilwZwNueBM\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "af9ba32a-bdbf-4942-ad49-6290b8d21885",
+      "Body" : "{\"etag\":\"WXXfzQQHlSYPWKufJilwZwNueBM\",\"key\":\"key67597-42\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "6c51e2b4-813c-4279-ade5-88d53f3b6c6f"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-8?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2344,11 +4413,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-40?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNjQ=;sn=174264",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "53a6a86c-971d-4c18-b0a6-fc7561a8b3fc",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"AVPUqQFE9Qp1FEif3zJ6llwO8tW\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "53a6a86c-971d-4c18-b0a6-fc7561a8b3fc",
+      "Body" : "{\"etag\":\"AVPUqQFE9Qp1FEif3zJ6llwO8tW\",\"key\":\"key67597-8\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "478150dd-ad8c-4386-8a2c-c206017d4e66"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-7?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2368,11 +4459,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-43?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNjg=;sn=174268",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "4981a9dc-e69b-473e-b95f-c2a66b392d01",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"SBVSZG4cEznbX7fZX36H5ggvzsQ\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "4981a9dc-e69b-473e-b95f-c2a66b392d01",
+      "Body" : "{\"etag\":\"SBVSZG4cEznbX7fZX36H5ggvzsQ\",\"key\":\"key67597-7\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "f923a478-6c22-4104-828a-a156e9eb32c6"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-47?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2392,11 +4505,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-46?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNjk=;sn=174269",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "54ba995d-e411-40a7-ad78-10584f025bf7",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"DaPz1rEws5YyyesapW9yi9fziBZ\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "54ba995d-e411-40a7-ad78-10584f025bf7",
+      "Body" : "{\"etag\":\"DaPz1rEws5YyyesapW9yi9fziBZ\",\"key\":\"key67597-47\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "aeffce4d-a483-4d94-99d7-e7301d9e63e1"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-5?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2416,11 +4551,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-5?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNjc=;sn=174267",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "d6de3e8e-498d-4af7-995b-2ba6b242d785",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"4HgqJDl2clj5px7TKTtIuj41QmF\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "d6de3e8e-498d-4af7-995b-2ba6b242d785",
+      "Body" : "{\"etag\":\"4HgqJDl2clj5px7TKTtIuj41QmF\",\"key\":\"key67597-5\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "41b31672-d6f2-4a85-a229-ab0e6f7d8df9"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-49?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:28 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2440,11 +4597,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-42?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNzA=;sn=174270",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "c8466aba-091c-4627-9d7a-45186f275564",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"wnTJQM0L36VIFMFfRjMdC51wFY3\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "c8466aba-091c-4627-9d7a-45186f275564",
+      "Body" : "{\"etag\":\"wnTJQM0L36VIFMFfRjMdC51wFY3\",\"key\":\"key67597-49\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "51feb8ae-711d-4ade-872c-dae975e09c86"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-48?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT) Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
+      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:39 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2464,11 +4643,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-39?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNzE=;sn=174271",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "8741f4be-961f-47d7-8014-d3452940a15d",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"DDUGMQZQ5EBYuWppdQyPPPaunAN\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "8741f4be-961f-47d7-8014-d3452940a15d",
+      "Body" : "{\"etag\":\"DDUGMQZQ5EBYuWppdQyPPPaunAN\",\"key\":\"key67597-48\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "d4a60647-fe0c-4d5c-9666-4d7bd0133a6a"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-9?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT) Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
+      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:43 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2488,11 +4689,33 @@
   }, {
     "Method" : "DELETE",
     "Uri" : "https://azconfig-conniey.azconfig.io/kv/key80710-6?label=listed-label",
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNzI=;sn=174272",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "a0f7030b-2b05-4449-acbb-3904a29b9ac3",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"DSO7kNNnBVI7buC6lGthfCw4GFW\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "a0f7030b-2b05-4449-acbb-3904a29b9ac3",
+      "Body" : "{\"etag\":\"DSO7kNNnBVI7buC6lGthfCw4GFW\",\"key\":\"key67597-9\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "1524d5c6-a1aa-422a-991b-b22372f871f6"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key67597-6?label=listed-label",
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT) Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
+      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
+<<<<<<< HEAD
       "date" : "Tue, 26 Mar 2019 19:59:43 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
@@ -2511,4 +4734,24 @@
     }
   } ],
   "variables" : [ "key80710" ]
+=======
+      "date" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzQyNzM=;sn=174273",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "b021ca50-dcea-4316-a972-59cddd4cb856",
+      "last-modified" : "Wed, 27 Mar 2019 18:38:16 GMT",
+      "etag" : "\"1Ldtv2yYjpE4WjwsW6UD3NFRK7w\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "b021ca50-dcea-4316-a972-59cddd4cb856",
+      "Body" : "{\"etag\":\"1Ldtv2yYjpE4WjwsW6UD3NFRK7w\",\"key\":\"key67597-6\",\"label\":\"listed-label\",\"content_type\":null,\"value\":\"myValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-27T18:38:16+00:00\"}",
+      "x-ms-client-request-id" : "86b05eb3-5ef8-4210-9d4a-4cccf5942664"
+    }
+  } ],
+  "variables" : [ "key67597", "857942f9" ]
+>>>>>>> 342031b70a... Added unit tests to cover a wider portion of the API
 }
