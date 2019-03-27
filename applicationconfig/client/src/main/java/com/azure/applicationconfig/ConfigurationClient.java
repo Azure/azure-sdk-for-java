@@ -43,7 +43,7 @@ public final class ConfigurationClient extends ServiceClient {
     private final ApplicationConfigService service;
 
     /**
-     * Creates a ConfigurationClient that uses {@param credentials} to authorize with Azure and {@param pipeline} to
+     * Creates a ConfigurationClient that uses {@code credentials} to authorize with Azure and {@code pipeline} to
      * service requests
      *
      * @param serviceEndpoint URL for the Application configuration service.
@@ -58,7 +58,7 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Creates a builder that can configure options for the ConfigurationClient before creating an instance of it.
-     * @return A new ConfigurationClientBuilder to create a ConfiguratoinClient from.
+     * @return A new ConfigurationClientBuilder to create a ConfigurationClient from.
      */
     public static ConfigurationClientBuilder builder() {
         return new ConfigurationClientBuilder();
@@ -144,11 +144,11 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Gets a ConfigurationSetting that matches the {@param key} and {@param label}.
+     * Gets a ConfigurationSetting that matches the {@code key} and {@code label}.
      *
      * @param key The key being retrieved
      * @return The configuration value in the service.
-     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@param key} and {@param label} does
+     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
      *                                               not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> get(String key) {
@@ -156,13 +156,13 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Gets the ConfigurationSetting given the {@param key}, optional {@param label}.
+     * Gets the ConfigurationSetting given the {@code key}, optional {@code label}.
      *
      * @param key   The key being retrieved
      * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
      * @return The configuration value in the service.
-     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@param key} and {@param label} does
-     *                                               not exist. If {@param etag} was specified, returns status code of
+     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
+     *                                               not exist. If {@code etag} was specified, returns status code of
      *                                               304 if the key has not been modified.
      */
     public Mono<RestResponse<ConfigurationSetting>> get(String key, String label) {
@@ -213,7 +213,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param key The key to lock.
      * @return ConfigurationSetting that was locked
-     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@param key} does not exist.
+     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> lock(String key) {
         if (key == null || key.isEmpty()) {
@@ -252,7 +252,7 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Unlocks a ConfigurationSetting with a matching {@param key}, optional {@param label}. If present, {@param label}
+     * Unlocks a ConfigurationSetting with a matching {@code key}, optional {@code label}. If present, {@code label}
      * must be explicit label value (not a wildcard).
      *
      * @param key   key name
@@ -341,7 +341,7 @@ public final class ConfigurationClient extends ServiceClient {
          *
          * @param credentials The credentials to use for authenticating HTTP requests.
          * @return The updated ConfigurationClientBuilder object.
-         * @throws NullPointerException if {@param credentials} is {@code null}.
+         * @throws NullPointerException if {@code credentials} is {@code null}.
          */
         public ConfigurationClientBuilder credentials(ConfigurationClientCredentials credentials) {
             Objects.requireNonNull(credentials);
@@ -366,7 +366,7 @@ public final class ConfigurationClient extends ServiceClient {
          *
          * @param policy The retry policy for service requests.
          * @return The updated ConfigurationClientBuilder object.
-         * @throws NullPointerException if {@param policy} is {@code null}.
+         * @throws NullPointerException if {@code policy} is {@code null}.
          */
         public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
             Objects.requireNonNull(policy);
@@ -379,7 +379,7 @@ public final class ConfigurationClient extends ServiceClient {
          *
          * @param client The HTTP client to use for requests.
          * @return The updated ConfigurationClientBuilder object.
-         * @throws NullPointerException if {@param client} is {@code null}.
+         * @throws NullPointerException if {@code client} is {@code null}.
          */
         public ConfigurationClientBuilder httpClient(HttpClient client) {
             this.httpClient = client;
@@ -388,7 +388,7 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Gets all ConfigurationSetting settings given the {@param nextPageLink} that was retrieved from a call to
+     * Gets all ConfigurationSetting settings given the {@code nextPageLink} that was retrieved from a call to
      * {@link ConfigurationClient#listKeyValues(KeyValueListFilter)} or {@link ConfigurationClient#listNextPage(String)}.
      *
      * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
