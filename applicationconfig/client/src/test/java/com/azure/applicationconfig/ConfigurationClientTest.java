@@ -853,7 +853,7 @@ public class ConfigurationClientTest {
                     if (configurationSetting.isLocked()) {
                         return client.unlockSetting(configurationSetting).flatMap(response -> {
                             ConfigurationSetting kv = response.body();
-                            return client.deleteSetting(kv.key(), kv.label(), null);
+                            return client.deleteSetting(kv.key());
                         });
                     } else {
                         return client.deleteSetting(configurationSetting);
