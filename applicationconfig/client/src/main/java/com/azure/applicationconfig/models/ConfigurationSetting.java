@@ -54,7 +54,7 @@ public class ConfigurationSetting {
      * @param key key name
      * @return ConfigurationSetting object itself
      */
-    public ConfigurationSetting withKey(String key) {
+    public ConfigurationSetting key(String key) {
         this.key = key;
         return this;
     }
@@ -71,7 +71,7 @@ public class ConfigurationSetting {
      * @param label label
      * @return ConfigurationSetting object itself
      */
-    public ConfigurationSetting withLabel(String label) {
+    public ConfigurationSetting label(String label) {
         this.label = label;
         return this;
     }
@@ -88,7 +88,7 @@ public class ConfigurationSetting {
      * @param value value
      * @return ConfigurationSetting object itself
      */
-    public ConfigurationSetting withValue(String value) {
+    public ConfigurationSetting value(String value) {
         this.value = value;
         return this;
     }
@@ -105,7 +105,7 @@ public class ConfigurationSetting {
      * @param contentType content type
      * @return ConfigurationSetting object itself
      */
-    public ConfigurationSetting withContentType(String contentType) {
+    public ConfigurationSetting contentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -118,16 +118,6 @@ public class ConfigurationSetting {
     }
 
     /**
-     * Sets the etag.
-     * @param etag etag
-     * @return ConfigurationSetting object itself
-     */
-    public ConfigurationSetting withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * @return the time when last modified
      */
     public OffsetDateTime lastModified() {
@@ -135,30 +125,10 @@ public class ConfigurationSetting {
     }
 
     /**
-     * Sets when ConfigurationSetting was last modified.
-     * @param lastModified lastModified
-     * @return ConfigurationSetting object itself
-     */
-    public ConfigurationSetting withLastModified(OffsetDateTime lastModified) {
-        this.lastModified = lastModified;
-        return this;
-    }
-
-    /**
      * @return true if locked; false otherwise
      */
     public boolean isLocked() {
         return locked;
-    }
-
-    /**
-     * Sets if ConfigurationSetting is locked.
-     * @param locked locked flag
-     * @return ConfigurationSetting object itself
-     */
-    public ConfigurationSetting withLocked(boolean locked) {
-        this.locked = locked;
-        return this;
     }
 
     /**

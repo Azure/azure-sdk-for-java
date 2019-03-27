@@ -177,7 +177,15 @@ public class ConfigurationClientTest {
     public void addSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
+        final Map<String, String> tags = new HashMap<>();
+        tags.put("MyTag", "TagValue");
+        tags.put("AnotherTag", "AnotherTagValue");
+
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting()
+            .withKey(key)
+            .withValue("myNewValue")
+            .withTags(tags)
+            .contentType("text");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.addSetting(expected))
@@ -545,7 +553,7 @@ public class ConfigurationClientTest {
         final String value = "myValue";
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName("lbl", 8);
-        final ConfigurationSetting expected = new ConfigurationSetting().withKey(key).withValue(value).withLabel(label);
+        final ConfigurationSetting expected = new ConfigurationSetting().key(key).value(value).label(label);
 
         StepVerifier.create(client.setSetting(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
@@ -581,7 +589,7 @@ public class ConfigurationClientTest {
             .mapToObj(value -> {
                 String key = value % 2 == 0  ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
                 String lbl = value / 4 == 0 ? label : label2;
-                return new ConfigurationSetting().withKey(key).withValue("myValue2").withLabel(lbl).withTags(tags);
+                return new ConfigurationSetting().key(key).value("myValue2").label(lbl).withTags(tags);
             })
             .collect(Collectors.toList());
 
@@ -627,9 +635,9 @@ public class ConfigurationClientTest {
     @Test
     public void listSettingsAcceptDateTime() {
         final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting original = new ConfigurationSetting().withKey(keyName).withValue("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting().withKey(keyName).withValue("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting().withKey(keyName).withValue("anotherValue2");
+        final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
+        final ConfigurationSetting updated = new ConfigurationSetting().key(keyName).value("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().key(keyName).value("anotherValue2");
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original).delayElement(Duration.ofSeconds(2)))
@@ -661,9 +669,9 @@ public class ConfigurationClientTest {
     @Test
     public void listRevisions() {
         final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting original = new ConfigurationSetting().withKey(keyName).withValue("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting().withKey(keyName).withValue("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting().withKey(keyName).withValue("anotherValue2");
+        final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
+        final ConfigurationSetting updated = new ConfigurationSetting().key(keyName).value("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().key(keyName).value("anotherValue2");
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original))
@@ -690,9 +698,9 @@ public class ConfigurationClientTest {
     @Test
     public void listRevisionsRange() {
         final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting original = new ConfigurationSetting().withKey(keyName).withValue("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting().withKey(keyName).withValue("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting().withKey(keyName).withValue("anotherValueIUpdated");
+        final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
+        final ConfigurationSetting updated = new ConfigurationSetting().key(keyName).value("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().key(keyName).value("anotherValueIUpdated");
 
         StepVerifier.create(client.setSetting(original))
             .assertNext(response -> assertConfigurationEquals(original, response))
@@ -744,9 +752,9 @@ public class ConfigurationClientTest {
     @Test
     public void listRevisionsAcceptDateTime() {
         final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting original = new ConfigurationSetting().withKey(keyName).withValue("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting().withKey(keyName).withValue("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting().withKey(keyName).withValue("anotherValue2");
+        final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
+        final ConfigurationSetting updated = new ConfigurationSetting().key(keyName).value("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().key(keyName).value("anotherValue2");
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original).delayElement(Duration.ofSeconds(2)))
@@ -786,9 +794,9 @@ public class ConfigurationClientTest {
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
                 .mapToObj(value -> new ConfigurationSetting()
-                        .withKey(keyPrefix + "-" + value)
-                        .withValue("myValue")
-                        .withLabel(label))
+                        .key(keyPrefix + "-" + value)
+                        .value("myValue")
+                        .label(label))
                 .collect(Collectors.toList());
 
         List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
@@ -813,8 +821,8 @@ public class ConfigurationClientTest {
     @Test
     public void getSettingWhenValueNotUpdated() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting expected = new ConfigurationSetting().withKey(key).withValue("myValue");
-        final ConfigurationSetting newExpected = new ConfigurationSetting().withKey(key).withValue("myNewValue");
+        final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
+        final ConfigurationSetting newExpected = new ConfigurationSetting().key(key).value("myNewValue");
         final RestResponse<ConfigurationSetting> block = client.addSetting(expected).single().block();
 
         assertNotNull(block);
