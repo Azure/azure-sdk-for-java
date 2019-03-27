@@ -18,7 +18,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class SendLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SendLinkHandler.class);
     private final AmqpSender msgSender;
-    private AtomicBoolean isFirstFlow ;
+    private AtomicBoolean isFirstFlow;
 
     public SendLinkHandler(final AmqpSender sender) {
         super(sender);
