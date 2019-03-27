@@ -1,13 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.implementation.Page;
 import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
-import com.azure.applicationconfig.models.KeyValueListFilter;
-import com.azure.applicationconfig.models.RevisionFilter;
+import com.azure.applicationconfig.models.SettingFields;
+import com.azure.applicationconfig.models.RequestOptions;
+import com.azure.applicationconfig.models.RevisionOptions;
+import com.azure.applicationconfig.models.RevisionRange;
 import com.azure.common.ServiceClient;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
@@ -27,8 +29,11 @@ import reactor.util.annotation.NonNull;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
@@ -78,12 +83,8 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<RestResponse<ConfigurationSetting>> add(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
-        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
-                .withValue(configurationSetting.value())
-                .withContentType(configurationSetting.contentType())
-                .withTags(configurationSetting.tags());
 
-        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, null, getETagValue(ETAG_ANY));
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), configurationSetting, null, getETagValue(ETAG_ANY));
     }
 
     /**
@@ -108,12 +109,8 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<RestResponse<ConfigurationSetting>> set(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
-        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
-                .withValue(configurationSetting.value())
-                .withContentType(configurationSetting.contentType())
-                .withTags(configurationSetting.tags());
 
-        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(configurationSetting.etag()), null);
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), configurationSetting, getETagValue(configurationSetting.etag()), null);
     }
 
     /**
@@ -133,14 +130,10 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<RestResponse<ConfigurationSetting>> update(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
-        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
-                .withValue(configurationSetting.value())
-                .withContentType(configurationSetting.contentType())
-                .withTags(configurationSetting.tags());
 
         String etag = configurationSetting.etag() == null ? ETAG_ANY : configurationSetting.etag();
 
-        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(etag), null);
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), configurationSetting, getETagValue(etag), null);
     }
 
     /**
@@ -271,17 +264,47 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Lists the ConfigurationSettings.
+     * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all the
+     * {@link ConfigurationSetting}s are fetched in their current state with default fields.
      *
-     * @param filter query options
-     * @return KeyValues
+     * @param options Optional. Options to filter configuration setting results from the service.
+     * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
+     * contains all of the current settings in the service.
      */
-    public Flux<ConfigurationSetting> listKeyValues(KeyValueListFilter filter) {
+    public Flux<ConfigurationSetting> listKeyValues(RequestOptions options) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
-        if (filter != null) {
-            result = service.listKeyValues(serviceEndpoint, filter.key(), filter.label(), filter.fields(), filter.acceptDateTime(), filter.range());
+        if (options != null) {
+            String fields = getSelectQuery(options.fields());
+            result = service.listKeyValues(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime());
         } else {
-            result = service.listKeyValues(serviceEndpoint, null, null, null, null, null);
+            result = service.listKeyValues(serviceEndpoint, null, null, null, null);
+        }
+
+        return getPagedConfigurationSettings(result);
+    }
+
+    /**
+     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided in
+     * descending order from their last_modified date.
+     *
+     * Revisions expire after a period of time. (The default is 30 days.)
+     *
+     * <p>
+     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting}s are fetched in their current
+     * state with default fields. Otherwise, the results returned match the parameters given in {@code options}.
+     * </p>
+     *
+     * @param options Optional. Options to filter configuration setting revisions from the service.
+     * @return Revisions of the ConfigurationSetting
+     */
+    public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionOptions options) {
+        Mono<RestResponse<Page<ConfigurationSetting>>> result;
+        if (options != null) {
+            String fields = getSelectQuery(options.fields());
+            String range = getItemsRange(options.range());
+            result = service.listKeyValueRevisions(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime(), range);
+        } else {
+            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
         }
 
         return getPagedConfigurationSettings(result);
@@ -392,34 +415,13 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Gets all ConfigurationSetting settings given the {@code nextPageLink} that was retrieved from a call to
-     * {@link ConfigurationClient#listKeyValues(KeyValueListFilter)} or {@link ConfigurationClient#listNextPage(String)}.
+     * {@link ConfigurationClient#listKeyValues(RequestOptions)} or {@link ConfigurationClient#listKeyValues(String)}.
      *
      * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link ConfigurationSetting} from the next page of results.
      */
-    private Flux<ConfigurationSetting> listNextPage(@NonNull String nextPageLink) {
-        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValuesNext(serviceEndpoint, nextPageLink);
-        return getPagedConfigurationSettings(result);
-    }
-
-    /**
-     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions eventually
-     * expire (default 30 days).
-     *
-     * For all operations key is optional parameter. If omitted it implies any key.
-     * For all operations label is optional parameter. If omitted it implies any label.
-     *
-     * @param filter query options
-     * @return Revisions of the ConfigurationSetting
-     */
-    public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionFilter filter) {
-        Mono<RestResponse<Page<ConfigurationSetting>>> result;
-        if (filter != null) {
-            result = service.listKeyValueRevisions(serviceEndpoint, filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
-        } else {
-            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
-        }
-
+    private Flux<ConfigurationSetting> listKeyValues(@NonNull String nextPageLink) {
+        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValues(serviceEndpoint, nextPageLink);
         return getPagedConfigurationSettings(result);
     }
 
@@ -433,7 +435,7 @@ public final class ConfigurationClient extends ServiceClient {
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
-        return Flux.fromIterable(page.items()).concatWith(listNextPage(nextPageLink));
+        return Flux.fromIterable(page.items()).concatWith(listKeyValues(nextPageLink));
     }
 
     /**
@@ -444,5 +446,24 @@ public final class ConfigurationClient extends ServiceClient {
      */
     private static String getETagValue(String etag) {
         return etag == null ? "" : "\"" + etag + "\"";
+    }
+
+    private static String getSelectQuery(EnumSet<SettingFields> set) {
+        if (set == null || set.isEmpty()) {
+            return null;
+        }
+
+        return set.stream().map(item -> item.toString().toLowerCase(Locale.US))
+            .collect(Collectors.joining(","));
+    }
+
+    private static String getItemsRange(RevisionRange range) {
+        if (range == null) {
+            return null;
+        }
+
+        return range.end() == null
+            ? String.format("items=%d-", range.start())
+            : String.format("items=%d-%d", range.start(), range.end());
     }
 }
