@@ -102,7 +102,11 @@ public final class ExceptionUtil {
             ((EventHubException) exception).setContext(errorContext);
         }
 
+        if (exception == null) {
+            return;
+        }
         future.completeExceptionally(exception);
+
     }
 
     // not a specific message related error
