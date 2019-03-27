@@ -19,34 +19,34 @@ public class LeaseContainerRequest {
      * Possible values include: 'Acquire', 'Renew', 'Change', 'Release',
      * 'Break'.
      */
-    @JsonProperty(value = "Action", required = true)
+    @JsonProperty(value = "action", required = true)
     private String action;
 
     /**
      * Identifies the lease. Can be specified in any valid GUID string format.
      */
-    @JsonProperty(value = "LeaseId")
+    @JsonProperty(value = "leaseId")
     private String leaseId;
 
     /**
      * Optional. For a break action, proposed duration the lease should
      * continue before it is broken, in seconds, between 0 and 60.
      */
-    @JsonProperty(value = "BreakPeriod")
+    @JsonProperty(value = "breakPeriod")
     private Integer breakPeriod;
 
     /**
      * Required for acquire. Specifies the duration of the lease, in seconds,
      * or negative one (-1) for a lease that never expires.
      */
-    @JsonProperty(value = "LeaseDuration")
+    @JsonProperty(value = "leaseDuration")
     private Integer leaseDuration;
 
     /**
      * Optional for acquire, required for change. Proposed lease ID, in a GUID
      * string format.
      */
-    @JsonProperty(value = "ProposedLeaseId")
+    @JsonProperty(value = "proposedLeaseId")
     private String proposedLeaseId;
 
     /**

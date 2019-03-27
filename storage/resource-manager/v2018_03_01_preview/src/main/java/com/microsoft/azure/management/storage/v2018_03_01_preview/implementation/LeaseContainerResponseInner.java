@@ -18,13 +18,13 @@ public class LeaseContainerResponseInner {
      * Returned unique lease ID that must be included with any request to
      * delete the container, or to renew, change, or release the lease.
      */
-    @JsonProperty(value = "LeaseId")
+    @JsonProperty(value = "leaseId")
     private String leaseId;
 
     /**
      * Approximate time remaining in the lease period, in seconds.
      */
-    @JsonProperty(value = "LeaseTimeSeconds")
+    @JsonProperty(value = "leaseTimeSeconds")
     private String leaseTimeSeconds;
 
     /**
