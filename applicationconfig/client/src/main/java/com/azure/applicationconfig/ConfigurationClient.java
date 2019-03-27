@@ -264,11 +264,11 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Fetches the configuration settings that match the {@param options}. If {@code options} is {@code null}, then all the
+     * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all the
      * {@link ConfigurationSetting}s are fetched in their current state with default fields.
      *
      * @param options Optional. Options to filter configuration setting results from the service.
-     * @return A Flux of ConfigurationSettings that matches the {@param options}. If no options were provided, the Flux
+     * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
     public Flux<ConfigurationSetting> listKeyValues(RequestOptions options) {
@@ -406,7 +406,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * <p>
      * If {@code options} is {@code null}, then all the {@link ConfigurationSetting}s are fetched in their current
-     * state with default fields. Otherwise, the results returned match the parameters given in {@param options}.
+     * state with default fields. Otherwise, the results returned match the parameters given in {@code options}.
      * </p>
      *
      * @param options Optional. Options to filter configuration setting revisions from the service.

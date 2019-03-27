@@ -11,7 +11,7 @@ public class RevisionRange {
     private final Integer end;
 
     /**
-     * Creates a range of revisions starting from {@param start} onwards.
+     * Creates a range of revisions starting from {@code start} onwards.
      *
      * @param start The revision number to start fetching data from.
      * @throws IllegalArgumentException If {@code start} is less than 0.
@@ -26,8 +26,8 @@ public class RevisionRange {
     }
 
     /**
-     * Creates a range of revisions to fetch {@link ConfigurationSetting}s starting from {@param start} until
-     * {@param end}.
+     * Creates a range of revisions to fetch {@link ConfigurationSetting}s starting from {@code start} until
+     * {@code end}.
      *
      * @param start The revision number to start fetching {@link ConfigurationSetting} changes.
      * @param end   The revision number to stop fetching {@link ConfigurationSetting} changes.
