@@ -5,15 +5,12 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
-import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.rest.RestException;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
 import com.azure.common.http.HttpClient;
-import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.policy.HttpLogDetailLevel;
-import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.common.http.rest.RestResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.After;
@@ -31,6 +28,8 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,38 +54,36 @@ public class ConfigurationClientTest {
     public TestName testName = new TestName();
 
     @Before
-    public void beforeTest() throws Exception {
+    public void beforeTest() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         final TestMode testMode = getTestMode();
-        final String playbackUri = getPlaybackUri(testMode);
-        final HttpPipelinePolicy loggingPolicy = new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS);
-        final String connectionString;
-        final HttpPipeline pipeline;
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
 
         if (interceptorManager.isPlaybackMode()) {
             logger.info("PLAYBACK MODE");
 
-            connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
+            final String playbackUri = getPlaybackUri(testMode);
+            final String connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
 
-            List<HttpPipelinePolicy> policies = ConfigurationClient.getDefaultPolicies(connectionString);
-            policies.add(loggingPolicy);
-
-            pipeline = new HttpPipeline(interceptorManager.getPlaybackClient(), policies);
+            client = ConfigurationClient.builder()
+                    .credentials(new ConfigurationClientCredentials(connectionString))
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                    .build();
         } else {
             logger.info("RECORD MODE");
 
-            connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
+            final String connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
             Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
-            List<HttpPipelinePolicy> policies = ConfigurationClient.getDefaultPolicies(connectionString);
-            policies.add(interceptorManager.getRecordPolicy());
-            policies.add(loggingPolicy);
-
-            pipeline = new HttpPipeline(HttpClient.createDefault().wiretap(true), policies);
+            client = ConfigurationClient.builder()
+                    .credentials(new ConfigurationClientCredentials(connectionString))
+                    .httpClient(HttpClient.createDefault().wiretap(true))
+                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .build();
         }
 
-        client = new ConfigurationClient(connectionString, pipeline);
         keyPrefix = SdkContext.randomResourceName("key", 8);
     }
 

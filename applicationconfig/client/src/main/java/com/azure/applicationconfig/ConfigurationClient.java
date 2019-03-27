@@ -9,7 +9,11 @@ import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
 import com.azure.common.ServiceClient;
+import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
+import com.azure.common.http.policy.AsyncCredentialsPolicy;
+import com.azure.common.http.policy.HttpLogDetailLevel;
+import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
@@ -24,6 +28,7 @@ import reactor.util.annotation.NonNull;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
@@ -34,43 +39,29 @@ public final class ConfigurationClient extends ServiceClient {
     static final String SDK_NAME = "Azure-Configuration";
     static final String SDK_VERSION = "1.0.0-SNAPSHOT";
 
-    private final URL baseUri;
+    private final String serviceEndpoint;
     private final ApplicationConfigService service;
 
     /**
-     * Create a new instance of ConfigurationClient that uses connectionString for authentication.
+     * Creates a ConfigurationClient that uses {@code credentials} to authorize with Azure and {@code pipeline} to
+     * service requests
      *
-     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
+     * @param serviceEndpoint URL for the Application configuration service.
+     * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
-    public ConfigurationClient(String connectionString) {
-        super(new HttpPipeline(getDefaultPolicies(connectionString)));
-
-        this.service = RestProxy.create(ApplicationConfigService.class, this);
-        this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
-    }
-
-    public ConfigurationClient(String connectionString, HttpPipeline pipeline) {
+    private ConfigurationClient(URL serviceEndpoint, HttpPipeline pipeline) {
         super(pipeline);
 
         this.service = RestProxy.create(ApplicationConfigService.class, this);
-        this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
+        this.serviceEndpoint = serviceEndpoint.toString();
     }
 
     /**
-     * Gets the default pipeline policies.
-     * TODO (conniey): This is going to change when we move to a builder pattern.
+     * Creates a builder that can configure options for the ConfigurationClient before creating an instance of it.
+     * @return A new Builder to create a ConfigurationClient from.
      */
-    public static List<HttpPipelinePolicy> getDefaultPolicies(String connectionString) {
-        final ApplicationConfigCredentials credentials = new ApplicationConfigCredentials(connectionString);
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
-        policies.add(new RequestIdPolicy());
-        policies.add(new RetryPolicy());
-        policies.add(new ConfigurationCredentialsPolicy(credentials));
-
-        return policies;
+    public static Builder builder() {
+        return new Builder();
     }
 
     /**
@@ -92,7 +83,7 @@ public final class ConfigurationClient extends ServiceClient {
                 .withContentType(configurationSetting.contentType())
                 .withTags(configurationSetting.tags());
 
-        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, null, getETagValue(ETAG_ANY));
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, null, getETagValue(ETAG_ANY));
     }
 
     /**
@@ -122,7 +113,7 @@ public final class ConfigurationClient extends ServiceClient {
                 .withContentType(configurationSetting.contentType())
                 .withTags(configurationSetting.tags());
 
-        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(configurationSetting.etag()), null);
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(configurationSetting.etag()), null);
     }
 
     /**
@@ -149,15 +140,15 @@ public final class ConfigurationClient extends ServiceClient {
 
         String etag = configurationSetting.etag() == null ? ETAG_ANY : configurationSetting.etag();
 
-        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(etag), null);
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(etag), null);
     }
 
     /**
-     * Gets a ConfigurationSetting that matches the {@param key} and {@param label}.
+     * Gets a ConfigurationSetting that matches the {@code key} and {@code label}.
      *
      * @param key The key being retrieved
      * @return The configuration value in the service.
-     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@param key} and {@param label} does
+     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
      *                                               not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> get(String key) {
@@ -165,13 +156,13 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Gets the ConfigurationSetting given the {@param key}, optional {@param label}.
+     * Gets the ConfigurationSetting given the {@code key}, optional {@code label}.
      *
      * @param key   The key being retrieved
      * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
      * @return The configuration value in the service.
-     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@param key} and {@param label} does
-     *                                               not exist. If {@param etag} was specified, returns status code of
+     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
+     *                                               not exist. If {@code etag} was specified, returns status code of
      *                                               304 if the key has not been modified.
      */
     public Mono<RestResponse<ConfigurationSetting>> get(String key, String label) {
@@ -181,7 +172,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.getKeyValue(baseUri.toString(), key, label, null, null, null, null);
+        return service.getKeyValue(serviceEndpoint, key, label, null, null, null, null);
     }
 
     /**
@@ -214,7 +205,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.delete(baseUri.toString(), key, label, getETagValue(etag), null);
+        return service.delete(serviceEndpoint, key, label, getETagValue(etag), null);
     }
 
     /**
@@ -222,7 +213,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param key The key to lock.
      * @return ConfigurationSetting that was locked
-     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@param key} does not exist.
+     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> lock(String key) {
         if (key == null || key.isEmpty()) {
@@ -247,7 +238,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.lockKeyValue(baseUri.toString(), key, label, null, null);
+        return service.lockKeyValue(serviceEndpoint, key, label, null, null);
     }
 
     /**
@@ -261,7 +252,7 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Unlocks a ConfigurationSetting with a matching {@param key}, optional {@param label}. If present, {@param label}
+     * Unlocks a ConfigurationSetting with a matching {@code key}, optional {@code label}. If present, {@code label}
      * must be explicit label value (not a wildcard).
      *
      * @param key   key name
@@ -276,7 +267,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.unlockKeyValue(baseUri.toString(), key, label, null, null);
+        return service.unlockKeyValue(serviceEndpoint, key, label, null, null);
     }
 
     /**
@@ -288,30 +279,135 @@ public final class ConfigurationClient extends ServiceClient {
     public Flux<ConfigurationSetting> listKeyValues(KeyValueListFilter filter) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (filter != null) {
-            result = service.listKeyValues(baseUri.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDateTime(), filter.range());
+            result = service.listKeyValues(serviceEndpoint, filter.key(), filter.label(), filter.fields(), filter.acceptDateTime(), filter.range());
         } else {
-            result = service.listKeyValues(baseUri.toString(), null, null, null, null, null);
+            result = service.listKeyValues(serviceEndpoint, null, null, null, null, null);
         }
 
         return getPagedConfigurationSettings(result);
     }
 
     /**
-     * Gets all ConfigurationSetting settings.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the Page&lt;ConfigurationSetting&gt; object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * Provides configuration options for instances of {@link ConfigurationClient}.
      */
-    private Flux<ConfigurationSetting> listKeyValues(@NonNull String nextPageLink) {
-        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValuesNext(baseUri.toString(), nextPageLink);
+    public static final class Builder {
+        private final List<HttpPipelinePolicy> policies;
+        private ConfigurationClientCredentials credentials;
+        private HttpClient httpClient;
+        private HttpLogDetailLevel httpLogDetailLevel;
+        private RetryPolicy retryPolicy;
+        private String userAgent;
+
+        private Builder() {
+            userAgent = String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION);
+            retryPolicy = new RetryPolicy();
+            httpLogDetailLevel = HttpLogDetailLevel.NONE;
+            policies = new ArrayList<>();
+        }
+
+        /**
+         * Creates a {@link ConfigurationClient} based on options set in the Builder.
+         *
+         * Every time {@code build()} is called, a new instance of {@link ConfigurationClient} is created.
+         *
+         * @return A ConfigurationClient with the options set from the builder.
+         * @throws IllegalStateException If {@link Builder#credentials(ConfigurationClientCredentials)}
+         * has not been set.
+         */
+        public ConfigurationClient build() {
+            if (credentials == null) {
+                throw new IllegalStateException("'credentials' is required.");
+            }
+
+            // Closest to API goes first, closest to wire goes last.
+            final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+            policies.add(new UserAgentPolicy(userAgent));
+            policies.add(new RequestIdPolicy());
+            policies.add(retryPolicy);
+            policies.add(new ConfigurationCredentialsPolicy());
+            policies.add(new AsyncCredentialsPolicy(credentials));
+
+            policies.addAll(this.policies);
+
+            policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
+
+            HttpPipeline pipeline = httpClient == null
+                    ? new HttpPipeline(policies)
+                    : new HttpPipeline(httpClient, policies);
+
+            return new ConfigurationClient(credentials.baseUri(), pipeline);
+        }
+
+        /**
+         * Sets the credentials to use when authenticating HTTP requests.
+         *
+         * @param credentials The credentials to use for authenticating HTTP requests.
+         * @return The updated Builder object.
+         * @throws NullPointerException if {@code credentials} is {@code null}.
+         */
+        public Builder credentials(ConfigurationClientCredentials credentials) {
+            Objects.requireNonNull(credentials);
+            this.credentials = credentials;
+            return this;
+        }
+
+        /**
+         * Sets the logging level for HTTP requests and responses.
+         *
+         * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
+         * @return The updated Builder object.
+         */
+        public Builder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+            httpLogDetailLevel = logLevel;
+            return this;
+        }
+
+        /**
+         * Adds a policy to the set of existing policies that are executed after
+         * {@link com.azure.applicationconfig.ConfigurationClient} required policies.
+         *
+         * @param policy The retry policy for service requests.
+         * @return The updated Builder object.
+         * @throws NullPointerException if {@code policy} is {@code null}.
+         */
+        public Builder addPolicy(HttpPipelinePolicy policy) {
+            Objects.requireNonNull(policy);
+            policies.add(policy);
+            return this;
+        }
+
+        /**
+         * Sets the HTTP client to use for sending and receiving requests to and from the service.
+         *
+         * @param client The HTTP client to use for requests.
+         * @return The updated Builder object.
+         * @throws NullPointerException if {@code client} is {@code null}.
+         */
+        public Builder httpClient(HttpClient client) {
+            this.httpClient = client;
+            return this;
+        }
+    }
+
+    /**
+     * Gets all ConfigurationSetting settings given the {@code nextPageLink} that was retrieved from a call to
+     * {@link ConfigurationClient#listKeyValues(KeyValueListFilter)} or {@link ConfigurationClient#listNextPage(String)}.
+     *
+     * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
+     * @return A stream of {@link ConfigurationSetting} from the next page of results.
+     */
+    private Flux<ConfigurationSetting> listNextPage(@NonNull String nextPageLink) {
+        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValuesNext(serviceEndpoint, nextPageLink);
         return getPagedConfigurationSettings(result);
     }
 
     /**
-     * Lists chronological/historical representation of ConfigurationSetting resource(s). Revisions eventually expire (default 30 days).
-     * For all operations key is optional parameter. If ommited it implies any key.
-     * For all operations label is optional parameter. If ommited it implies any label.
+     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions eventually
+     * expire (default 30 days).
+     *
+     * For all operations key is optional parameter. If omitted it implies any key.
+     * For all operations label is optional parameter. If omitted it implies any label.
      *
      * @param filter query options
      * @return Revisions of the ConfigurationSetting
@@ -319,9 +415,9 @@ public final class ConfigurationClient extends ServiceClient {
     public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionFilter filter) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (filter != null) {
-            result = service.listKeyValueRevisions(baseUri.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
+            result = service.listKeyValueRevisions(serviceEndpoint, filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
         } else {
-            result = service.listKeyValueRevisions(baseUri.toString(), null, null, null, null, null);
+            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
         }
 
         return getPagedConfigurationSettings(result);
@@ -337,7 +433,7 @@ public final class ConfigurationClient extends ServiceClient {
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
-        return Flux.fromIterable(page.items()).concatWith(listKeyValues(nextPageLink));
+        return Flux.fromIterable(page.items()).concatWith(listNextPage(nextPageLink));
     }
 
     /**
