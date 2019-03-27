@@ -58,10 +58,10 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Creates a builder that can configure options for the ConfigurationClient before creating an instance of it.
-     * @return A new ConfigurationClientBuilder to create a ConfigurationClient from.
+     * @return A new Builder to create a ConfigurationClient from.
      */
-    public static ConfigurationClientBuilder builder() {
-        return new ConfigurationClientBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     /**
@@ -287,7 +287,10 @@ public final class ConfigurationClient extends ServiceClient {
         return getPagedConfigurationSettings(result);
     }
 
-    public static final class ConfigurationClientBuilder {
+    /**
+     * Provides configuration options for instances of {@link ConfigurationClient}.
+     */
+    public static final class Builder {
         private final List<HttpPipelinePolicy> policies;
         private ConfigurationClientCredentials credentials;
         private HttpClient httpClient;
@@ -295,7 +298,7 @@ public final class ConfigurationClient extends ServiceClient {
         private RetryPolicy retryPolicy;
         private String userAgent;
 
-        private ConfigurationClientBuilder() {
+        private Builder() {
             userAgent = String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION);
             retryPolicy = new RetryPolicy();
             httpLogDetailLevel = HttpLogDetailLevel.NONE;
@@ -303,12 +306,12 @@ public final class ConfigurationClient extends ServiceClient {
         }
 
         /**
-         * Creates a {@link ConfigurationClient} based on options set in the ConfigurationClientBuilder.
+         * Creates a {@link ConfigurationClient} based on options set in the Builder.
          *
          * Every time {@code build()} is called, a new instance of {@link ConfigurationClient} is created.
          *
          * @return A ConfigurationClient with the options set from the builder.
-         * @throws IllegalStateException If {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials)}
+         * @throws IllegalStateException If {@link Builder#credentials(ConfigurationClientCredentials)}
          * has not been set.
          */
         public ConfigurationClient build() {
@@ -340,10 +343,10 @@ public final class ConfigurationClient extends ServiceClient {
          * Sets the credentials to use when authenticating HTTP requests.
          *
          * @param credentials The credentials to use for authenticating HTTP requests.
-         * @return The updated ConfigurationClientBuilder object.
+         * @return The updated Builder object.
          * @throws NullPointerException if {@code credentials} is {@code null}.
          */
-        public ConfigurationClientBuilder credentials(ConfigurationClientCredentials credentials) {
+        public Builder credentials(ConfigurationClientCredentials credentials) {
             Objects.requireNonNull(credentials);
             this.credentials = credentials;
             return this;
@@ -353,9 +356,9 @@ public final class ConfigurationClient extends ServiceClient {
          * Sets the logging level for HTTP requests and responses.
          *
          * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-         * @return The updated ConfigurationClientBuilder object.
+         * @return The updated Builder object.
          */
-        public ConfigurationClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+        public Builder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
             httpLogDetailLevel = logLevel;
             return this;
         }
@@ -365,10 +368,10 @@ public final class ConfigurationClient extends ServiceClient {
          * {@link com.azure.applicationconfig.ConfigurationClient} required policies.
          *
          * @param policy The retry policy for service requests.
-         * @return The updated ConfigurationClientBuilder object.
+         * @return The updated Builder object.
          * @throws NullPointerException if {@code policy} is {@code null}.
          */
-        public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
+        public Builder addPolicy(HttpPipelinePolicy policy) {
             Objects.requireNonNull(policy);
             policies.add(policy);
             return this;
@@ -378,10 +381,10 @@ public final class ConfigurationClient extends ServiceClient {
          * Sets the HTTP client to use for sending and receiving requests to and from the service.
          *
          * @param client The HTTP client to use for requests.
-         * @return The updated ConfigurationClientBuilder object.
+         * @return The updated Builder object.
          * @throws NullPointerException if {@code client} is {@code null}.
          */
-        public ConfigurationClientBuilder httpClient(HttpClient client) {
+        public Builder httpClient(HttpClient client) {
             this.httpClient = client;
             return this;
         }
