@@ -77,36 +77,44 @@ public interface App extends HasInner<AppInner>, Resource, GroupableResourceCore
         interface WithSku {
            /**
             * Specifies sku.
-            */
+            * @param sku A valid instance SKU
+            * @return the next definition stage
+*/
             WithCreate withSku(AppSkuInfo sku);
         }
 
         /**
-         * The stage of the app update allowing to specify DisplayName.
+         * The stage of the app definition allowing to specify DisplayName.
          */
         interface WithDisplayName {
             /**
              * Specifies displayName.
+             * @param displayName The display name of the application
+             * @return the next definition stage
              */
             WithCreate withDisplayName(String displayName);
         }
 
         /**
-         * The stage of the app update allowing to specify Subdomain.
+         * The stage of the app definition allowing to specify Subdomain.
          */
         interface WithSubdomain {
             /**
              * Specifies subdomain.
+             * @param subdomain The subdomain of the application
+             * @return the next definition stage
              */
             WithCreate withSubdomain(String subdomain);
         }
 
         /**
-         * The stage of the app update allowing to specify Template.
+         * The stage of the app definition allowing to specify Template.
          */
         interface WithTemplate {
             /**
              * Specifies template.
+             * @param template The ID of the application template, which is a blueprint that defines the characteristics and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and allows the application to be defined from scratch
+             * @return the next definition stage
              */
             WithCreate withTemplate(String template);
         }
@@ -130,31 +138,37 @@ public interface App extends HasInner<AppInner>, Resource, GroupableResourceCore
      */
     interface UpdateStages {
         /**
-         * The stage of the app {0} allowing to specify DisplayName.
+         * The stage of the app update allowing to specify DisplayName.
          */
         interface WithDisplayName {
             /**
              * Specifies displayName.
+             * @param displayName The display name of the application
+             * @return the next update stage
              */
             Update withDisplayName(String displayName);
         }
 
         /**
-         * The stage of the app {0} allowing to specify Subdomain.
+         * The stage of the app update allowing to specify Subdomain.
          */
         interface WithSubdomain {
             /**
              * Specifies subdomain.
+             * @param subdomain The subdomain of the application
+             * @return the next update stage
              */
             Update withSubdomain(String subdomain);
         }
 
         /**
-         * The stage of the app {0} allowing to specify Template.
+         * The stage of the app update allowing to specify Template.
          */
         interface WithTemplate {
             /**
              * Specifies template.
+             * @param template The ID of the application template, which is a blueprint that defines the characteristics and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and allows the application to be defined from scratch
+             * @return the next update stage
              */
             Update withTemplate(String template);
         }
