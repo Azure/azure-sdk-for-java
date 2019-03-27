@@ -11,7 +11,7 @@ package com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementat
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The GatewaySettingsInner model.
+ * Gateway settings.
  */
 public class GatewaySettingsInner {
     /**

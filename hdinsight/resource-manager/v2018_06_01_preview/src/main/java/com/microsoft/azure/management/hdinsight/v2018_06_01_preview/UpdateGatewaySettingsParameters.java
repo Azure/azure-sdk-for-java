@@ -11,7 +11,7 @@ package com.microsoft.azure.management.hdinsight.v2018_06_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The UpdateGatewaySettingsParameters model.
+ * The update gateway settings request parameters.
  */
 public class UpdateGatewaySettingsParameters {
     /**
