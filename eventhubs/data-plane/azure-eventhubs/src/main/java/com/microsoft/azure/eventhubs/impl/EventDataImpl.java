@@ -270,4 +270,14 @@ public final class EventDataImpl implements EventData {
                 other.getSystemProperties().getSequenceNumber()
         );
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

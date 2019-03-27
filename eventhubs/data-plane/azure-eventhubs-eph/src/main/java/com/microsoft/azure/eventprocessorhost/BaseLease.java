@@ -126,6 +126,16 @@ public class BaseLease implements Comparable<BaseLease> {
         return this.partitionId.compareTo(other.getPartitionId());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
     String getStateDebug() {
         return "N/A";
     }
