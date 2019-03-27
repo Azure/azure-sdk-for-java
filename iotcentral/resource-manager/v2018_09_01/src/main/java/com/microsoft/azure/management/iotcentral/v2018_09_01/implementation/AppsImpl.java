@@ -23,6 +23,7 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.iotcentral.v2018_09_01.AppAvailabilityInfo;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.AppTemplatesResult;
 import com.microsoft.azure.management.iotcentral.v2018_09_01.OperationInputs;
 
 class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsInner, IoTCentralManager>  implements Apps {
@@ -101,13 +102,13 @@ class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsIn
     @Override
     public PagedList<App> list() {
         AppsInner client = this.inner();
-        return this.wrapList(client.list());
+        return this.wrapList(client.listBySubscription());
     }
 
     @Override
     public Observable<App> listAsync() {
         AppsInner client = this.inner();
-        return client.listAsync()
+        return client.listBySubscriptionAsync()
         .flatMapIterable(new Func1<Page<AppInner>, Iterable<AppInner>>() {
             @Override
             public Iterable<AppInner> call(Page<AppInner> page) {
@@ -147,6 +148,18 @@ class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsIn
             @Override
             public AppAvailabilityInfo call(AppAvailabilityInfoInner inner) {
                 return new AppAvailabilityInfoImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AppTemplatesResult> templatesAsync() {
+        AppsInner client = this.inner();
+        return client.templatesAsync()
+        .map(new Func1<AppTemplatesResultInner, AppTemplatesResult>() {
+            @Override
+            public AppTemplatesResult call(AppTemplatesResultInner inner) {
+                return new AppTemplatesResultImpl(inner, manager());
             }
         });
     }
