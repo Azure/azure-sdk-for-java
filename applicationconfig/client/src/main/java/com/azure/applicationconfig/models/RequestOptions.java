@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 
 /**
- * Represents a set of request options for querying App Configuration.
+ * Represents a setSetting of request options for querying App Configuration.
  *
  * <p>
  * Providing {@link RequestOptions#label()} will filter {@link ConfigurationSetting}s that match that label name in
@@ -120,16 +120,16 @@ public class RequestOptions {
      * {@link ConfigurationSetting}s at that point in time is returned based on the provided acceptDateTime.
      *
      * <p>
-     * If the value is not set, then the {@link ConfigurationSetting}s at their current state is returned.
+     * If the value is not setSetting, then the {@link ConfigurationSetting}s at their current state is returned.
      *
-     * @return Gets the currently set datetime in {@link DateTimeFormatter#RFC_1123_DATE_TIME} format.
+     * @return Gets the currently setSetting datetime in {@link DateTimeFormatter#RFC_1123_DATE_TIME} format.
      */
     public String acceptDateTime() {
         return this.acceptDatetime;
     }
 
     /**
-     * If set, then key values will be retrieved exactly as they existed at the provided time.
+     * If setSetting, then key values will be retrieved exactly as they existed at the provided time.
      *
      * @param datetime The value of the configuration setting at that given {@link OffsetDateTime}.
      * @return The updated RequestOptions object.
@@ -140,10 +140,10 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the fields on {@link ConfigurationSetting} to return from the GET request. If none are set, the service
-     * returns the ConfigurationSettings with a default set of properties populated.
+     * Gets the fields on {@link ConfigurationSetting} to return from the GET request. If none are setSetting, the service
+     * returns the ConfigurationSettings with a default setSetting of properties populated.
      *
-     * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
+     * @return The setSetting of {@link ConfigurationSetting} fields to return for a GET request.
      */
     public EnumSet<SettingFields> fields() {
         return fields;
@@ -152,8 +152,8 @@ public class RequestOptions {
     /**
      * Sets fields that will be returned in the response corresponding to properties in {@link ConfigurationSetting}.
      *
-     * @param fields the fields to select for the query response. If none are set, the service will return the
-     *               ConfigurationSettings with a default set of properties.
+     * @param fields the fields to select for the query response. If none are setSetting, the service will return the
+     *               ConfigurationSettings with a default setSetting of properties.
      * @return The updated RequestOptions object.
      */
     public RequestOptions fields(EnumSet<SettingFields> fields) {

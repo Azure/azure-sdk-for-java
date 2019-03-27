@@ -77,11 +77,11 @@ public final class ConfigurationClient extends ServiceClient {
      * {@link ConfigurationSetting#NULL_LABEL} is used.
      * </p>
      *
-     * @param configurationSetting The key, value, and label to set.
+     * @param configurationSetting The key, value, and label to setSetting.
      * @return ConfigurationSetting that was created or updated
      * @throws com.azure.common.http.rest.RestException when a ConfigurationSetting with the same key and label exists.
      */
-    public Mono<RestResponse<ConfigurationSetting>> add(ConfigurationSetting configurationSetting) {
+    public Mono<RestResponse<ConfigurationSetting>> addSetting(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
 
         return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), configurationSetting, null, getETagValue(ETAG_ANY));
@@ -101,13 +101,13 @@ public final class ConfigurationClient extends ServiceClient {
      * {@link ConfigurationSetting#NULL_LABEL} is used.
      * </p>
      *
-     * @param configurationSetting The configuration setting to create or update.
+     * @param configurationSetting The configuration setting to create or updateSetting.
      * @return ConfigurationSetting that was created or updated.
      * @throws com.azure.common.http.rest.RestException If the {@link ConfigurationSetting#etag()} was specified, is not
      *                                               {@link ConfigurationClient#ETAG_ANY}, and the current configuration
      *                                               value's etag does not match.
      */
-    public Mono<RestResponse<ConfigurationSetting>> set(ConfigurationSetting configurationSetting) {
+    public Mono<RestResponse<ConfigurationSetting>> setSetting(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
 
         return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), configurationSetting, getETagValue(configurationSetting.etag()), null);
@@ -123,12 +123,12 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * If the {@link ConfigurationSetting#etag()} is specified, the configuration value is only updated if it matches.
      *
-     * @param configurationSetting The key, value, and optional label to set.
+     * @param configurationSetting The key, value, and optional label to setSetting.
      * @return ConfigurationSetting that was updated.
      * @throws com.azure.common.http.rest.RestException When a ConfigurationSetting with the same key and label does not
      *                                               exists or the configuration value is locked.
      */
-    public Mono<RestResponse<ConfigurationSetting>> update(ConfigurationSetting configurationSetting) {
+    public Mono<RestResponse<ConfigurationSetting>> updateSetting(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
 
         String etag = configurationSetting.etag() == null ? ETAG_ANY : configurationSetting.etag();
@@ -144,8 +144,8 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
      *                                               not exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> get(String key) {
-        return get(key, null);
+    public Mono<RestResponse<ConfigurationSetting>> getSetting(String key) {
+        return getSetting(key, null);
     }
 
     /**
@@ -158,7 +158,7 @@ public final class ConfigurationClient extends ServiceClient {
      *                                               not exist. If {@code etag} was specified, returns status code of
      *                                               304 if the key has not been modified.
      */
-    public Mono<RestResponse<ConfigurationSetting>> get(String key, String label) {
+    public Mono<RestResponse<ConfigurationSetting>> getSetting(String key, String label) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
@@ -171,27 +171,27 @@ public final class ConfigurationClient extends ServiceClient {
     /**
      * Deletes the ConfigurationSetting.
      *
-     * @param key The key to delete.
+     * @param key The key to deleteSetting.
      * @return the deleted ConfigurationSetting or null if didn't exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> delete(String key) {
+    public Mono<RestResponse<ConfigurationSetting>> deleteSetting(String key) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         }
 
-        return delete(key, null, null);
+        return deleteSetting(key, null, null);
     }
 
     /**
      * Deletes the ConfigurationSetting.
      *
-     * @param key   key of the keyValue to delete
+     * @param key   key of the keyValue to deleteSetting
      * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
-     * @param etag  Optional. If specified, will only delete the key if its current etag matches. (ie. No one has
+     * @param etag  Optional. If specified, will only deleteSetting the key if its current etag matches. (ie. No one has
      *              changed the value yet.)
      * @return the deleted ConfigurationSetting or none if didn't exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> delete(String key, String label, String etag) {
+    public Mono<RestResponse<ConfigurationSetting>> deleteSetting(String key, String label, String etag) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
@@ -202,29 +202,29 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Places a lock on ConfigurationSetting.
+     * Places a lockSetting on ConfigurationSetting.
      *
-     * @param key The key to lock.
+     * @param key The key to lockSetting.
      * @return ConfigurationSetting that was locked
      * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> lock(String key) {
+    public Mono<RestResponse<ConfigurationSetting>> lockSetting(String key) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         }
 
-        return lock(key, null);
+        return lockSetting(key, null);
     }
 
     /**
-     * Places a lock on ConfigurationSetting. If present, label must be explicit label value (not a wildcard).
+     * Places a lockSetting on ConfigurationSetting. If present, label must be explicit label value (not a wildcard).
      * For all operations it's an optional parameter. If omitted it implies null label.
      *
      * @param key    key name
      * @param label  Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
      * @return ConfigurationSetting
      */
-    public Mono<RestResponse<ConfigurationSetting>> lock(String key, String label) {
+    public Mono<RestResponse<ConfigurationSetting>> lockSetting(String key, String label) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
@@ -240,8 +240,8 @@ public final class ConfigurationClient extends ServiceClient {
      * @param key key name
      * @return ConfigurationSetting
      */
-    public Mono<RestResponse<ConfigurationSetting>> unlock(String key) {
-        return unlock(key, null);
+    public Mono<RestResponse<ConfigurationSetting>> unlockSetting(String key) {
+        return unlockSetting(key, null);
     }
 
     /**
@@ -253,7 +253,7 @@ public final class ConfigurationClient extends ServiceClient {
      *              be an explicit value and cannot contain wildcard characters.
      * @return ConfigurationSetting that was unlocked.
      */
-    public Mono<RestResponse<ConfigurationSetting>> unlock(String key, String label) {
+    public Mono<RestResponse<ConfigurationSetting>> unlockSetting(String key, String label) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
@@ -271,7 +271,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
-    public Flux<ConfigurationSetting> listKeyValues(RequestOptions options) {
+    public Flux<ConfigurationSetting> listSettings(RequestOptions options) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (options != null) {
             String fields = getSelectQuery(options.fields());
@@ -297,7 +297,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @param options Optional. Options to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
      */
-    public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionOptions options) {
+    public Flux<ConfigurationSetting> listSettingRevisions(RevisionOptions options) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (options != null) {
             String fields = getSelectQuery(options.fields());
@@ -329,13 +329,13 @@ public final class ConfigurationClient extends ServiceClient {
         }
 
         /**
-         * Creates a {@link ConfigurationClient} based on options set in the Builder.
+         * Creates a {@link ConfigurationClient} based on options setSetting in the Builder.
          *
          * Every time {@code build()} is called, a new instance of {@link ConfigurationClient} is created.
          *
-         * @return A ConfigurationClient with the options set from the builder.
+         * @return A ConfigurationClient with the options setSetting from the builder.
          * @throws IllegalStateException If {@link Builder#credentials(ConfigurationClientCredentials)}
-         * has not been set.
+         * has not been setSetting.
          */
         public ConfigurationClient build() {
             if (credentials == null) {
@@ -387,7 +387,7 @@ public final class ConfigurationClient extends ServiceClient {
         }
 
         /**
-         * Adds a policy to the set of existing policies that are executed after
+         * Adds a policy to the setSetting of existing policies that are executed after
          * {@link com.azure.applicationconfig.ConfigurationClient} required policies.
          *
          * @param policy The retry policy for service requests.
@@ -415,12 +415,12 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Gets all ConfigurationSetting settings given the {@code nextPageLink} that was retrieved from a call to
-     * {@link ConfigurationClient#listKeyValues(RequestOptions)} or {@link ConfigurationClient#listKeyValues(String)}.
+     * {@link ConfigurationClient#listSettings(RequestOptions)} or a call from this method.
      *
      * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link ConfigurationSetting} from the next page of results.
      */
-    private Flux<ConfigurationSetting> listKeyValues(@NonNull String nextPageLink) {
+    private Flux<ConfigurationSetting> listSettings(@NonNull String nextPageLink) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValues(serviceEndpoint, nextPageLink);
         return getPagedConfigurationSettings(result);
     }
@@ -435,13 +435,13 @@ public final class ConfigurationClient extends ServiceClient {
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
-        return Flux.fromIterable(page.items()).concatWith(listKeyValues(nextPageLink));
+        return Flux.fromIterable(page.items()).concatWith(listSettings(nextPageLink));
     }
 
     /**
      * Azure Configuration service requires that the etag value is surrounded in quotation marks.
      *
-     * @param etag The etag to get the value for. If null is pass in, an empty string is returned.
+     * @param etag The etag to getSetting the value for. If null is pass in, an empty string is returned.
      * @return The etag surrounded by quotations. (ex. "etag")
      */
     private static String getETagValue(String etag) {

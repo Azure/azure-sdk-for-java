@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * An instance of this class defines a page of Azure App Configuration resources and a link to get the next page of
+ * An instance of this class defines a page of Azure App Configuration resources and a link to getSetting the next page of
  * resources, if any.
  *
  * @param <T> type of Azure App Configuration resource to deserialize.
