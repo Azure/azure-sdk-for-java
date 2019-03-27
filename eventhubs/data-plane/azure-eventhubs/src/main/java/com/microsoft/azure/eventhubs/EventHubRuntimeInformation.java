@@ -25,7 +25,7 @@ public final class EventHubRuntimeInformation {
         this.path = path;
         this.createdAt = createdAt;
         this.partitionCount = partitionCount;
-        this.partitionIds = partitionIds != null ? Arrays.copyOf(partitionIds, partitionIds.length) : null;
+        this.partitionIds = partitionIds != null ? Arrays.copyOf(partitionIds, partitionIds.length) : new String[0];
     }
 
     /**
@@ -61,6 +61,6 @@ public final class EventHubRuntimeInformation {
      * @return partition identifiers
      */
     public String[] getPartitionIds() {
-        return this.partitionIds != null ? Arrays.copyOf(this.partitionIds, this.partitionIds.length) : null;
+        return this.partitionIds != null ? Arrays.copyOf(this.partitionIds, this.partitionIds.length) : new String[0];
     }
 }
