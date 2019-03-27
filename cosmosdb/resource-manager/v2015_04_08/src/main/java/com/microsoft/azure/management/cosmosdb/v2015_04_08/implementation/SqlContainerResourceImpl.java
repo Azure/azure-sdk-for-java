@@ -12,6 +12,7 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerResource;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerCreateUpdateParameters;
+import java.util.Map;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.ConflictResolutionPolicy;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.IndexingPolicy;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.PartitionKey;

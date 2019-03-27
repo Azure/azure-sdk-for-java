@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -27,7 +28,7 @@ public class SqlDatabaseCreateUpdateParameters {
      * corresponds to the headers sent with the request.
      */
     @JsonProperty(value = "properties.options", required = true)
-    private CreateUpdateOptions options;
+    private Map<String, String> options;
 
     /**
      * Get the standard JSON format of a SQL database.
@@ -54,7 +55,7 @@ public class SqlDatabaseCreateUpdateParameters {
      *
      * @return the options value
      */
-    public CreateUpdateOptions options() {
+    public Map<String, String> options() {
         return this.options;
     }
 
@@ -64,7 +65,7 @@ public class SqlDatabaseCreateUpdateParameters {
      * @param options the options value to set
      * @return the SqlDatabaseCreateUpdateParameters object itself.
      */
-    public SqlDatabaseCreateUpdateParameters withOptions(CreateUpdateOptions options) {
+    public SqlDatabaseCreateUpdateParameters withOptions(Map<String, String> options) {
         this.options = options;
         return this;
     }

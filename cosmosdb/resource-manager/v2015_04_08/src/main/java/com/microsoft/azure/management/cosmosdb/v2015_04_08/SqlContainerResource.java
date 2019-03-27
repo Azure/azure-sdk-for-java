@@ -16,6 +16,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
+import java.util.Map;
 
 /**
  * Type representing SqlContainerResource.

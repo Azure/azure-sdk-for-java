@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class IncludedPaths {
     /**
      * The path for which the indexing behavior applies to. Index paths
-     * typically start with root and end with windcard (/path/*).
+     * typically start with root and end with wildcard (/path/*).
      */
     @JsonProperty(value = "path")
     private String path;
@@ -29,7 +29,7 @@ public class IncludedPaths {
     private List<Indexes> indexes;
 
     /**
-     * Get the path for which the indexing behavior applies to. Index paths typically start with root and end with windcard (/path/*).
+     * Get the path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*).
      *
      * @return the path value
      */
@@ -38,7 +38,7 @@ public class IncludedPaths {
     }
 
     /**
-     * Set the path for which the indexing behavior applies to. Index paths typically start with root and end with windcard (/path/*).
+     * Set the path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*).
      *
      * @param path the path value to set
      * @return the IncludedPaths object itself.

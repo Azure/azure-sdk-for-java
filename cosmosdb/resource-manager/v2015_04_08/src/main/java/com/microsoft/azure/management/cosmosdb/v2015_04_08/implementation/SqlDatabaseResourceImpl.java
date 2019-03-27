@@ -12,6 +12,7 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseResource;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseCreateUpdateParameters;
+import java.util.Map;
 import rx.functions.Func1;
 
 class SqlDatabaseResourceImpl extends CreatableUpdatableImpl<SqlDatabaseResource, SqlDatabaseResourceInner, SqlDatabaseResourceImpl> implements SqlDatabaseResource, SqlDatabaseResource.Update {

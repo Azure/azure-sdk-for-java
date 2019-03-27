@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PartitionKey {
     /**
      * List of paths using which data within the SQL container can be
-     * parititoned.
+     * partitioned.
      */
     @JsonProperty(value = "paths")
     private List<String> paths;
@@ -31,7 +31,7 @@ public class PartitionKey {
     private PartitionKind kind;
 
     /**
-     * Get list of paths using which data within the SQL container can be parititoned.
+     * Get list of paths using which data within the SQL container can be partitioned.
      *
      * @return the paths value
      */
@@ -40,7 +40,7 @@ public class PartitionKey {
     }
 
     /**
-     * Set list of paths using which data within the SQL container can be parititoned.
+     * Set list of paths using which data within the SQL container can be partitioned.
      *
      * @param paths the paths value to set
      * @return the PartitionKey object itself.
