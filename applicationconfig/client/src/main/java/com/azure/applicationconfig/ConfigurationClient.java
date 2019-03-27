@@ -284,6 +284,33 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
+     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided in
+     * descending order from their last_modified date.
+     *
+     * Revisions expire after a period of time. (The default is 30 days.)
+     *
+     * <p>
+     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting}s are fetched in their current
+     * state with default fields. Otherwise, the results returned match the parameters given in {@code options}.
+     * </p>
+     *
+     * @param options Optional. Options to filter configuration setting revisions from the service.
+     * @return Revisions of the ConfigurationSetting
+     */
+    public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionOptions options) {
+        Mono<RestResponse<Page<ConfigurationSetting>>> result;
+        if (options != null) {
+            String fields = getSelectQuery(options.fields());
+            String range = getItemsRange(options.range());
+            result = service.listKeyValueRevisions(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime(), range);
+        } else {
+            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
+        }
+
+        return getPagedConfigurationSettings(result);
+    }
+
+    /**
      * Provides configuration options for instances of {@link ConfigurationClient}.
      */
     public static final class Builder {
@@ -388,40 +415,13 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Gets all ConfigurationSetting settings given the {@code nextPageLink} that was retrieved from a call to
-     * {@link ConfigurationClient#listKeyValues(KeyValueListFilter)} or {@link ConfigurationClient#listNextPage(String)}.
+     * {@link ConfigurationClient#listKeyValues(RequestOptions)} or {@link ConfigurationClient#listKeyValues(String)}.
      *
      * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link ConfigurationSetting} from the next page of results.
      */
     private Flux<ConfigurationSetting> listKeyValues(@NonNull String nextPageLink) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValues(serviceEndpoint, nextPageLink);
-        return getPagedConfigurationSettings(result);
-    }
-
-    /**
-     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided in
-     * descending order from their last_modified date.
-     *
-     * Revisions expire after a period of time. (The default is 30 days.)
-     *
-     * <p>
-     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting}s are fetched in their current
-     * state with default fields. Otherwise, the results returned match the parameters given in {@code options}.
-     * </p>
-     *
-     * @param options Optional. Options to filter configuration setting revisions from the service.
-     * @return Revisions of the ConfigurationSetting
-     */
-    public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionOptions options) {
-        Mono<RestResponse<Page<ConfigurationSetting>>> result;
-        if (options != null) {
-            String fields = getSelectQuery(options.fields());
-            String range = getItemsRange(options.range());
-            result = service.listKeyValueRevisions(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime(), range);
-        } else {
-            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
-        }
-
         return getPagedConfigurationSettings(result);
     }
 
@@ -435,7 +435,7 @@ public final class ConfigurationClient extends ServiceClient {
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
-        return Flux.fromIterable(page.items()).concatWith(listNextPage(nextPageLink));
+        return Flux.fromIterable(page.items()).concatWith(listKeyValues(nextPageLink));
     }
 
     /**
