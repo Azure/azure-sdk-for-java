@@ -10,12 +10,15 @@ import java.util.EnumSet;
 /**
  * Represents a set of request options for querying App Configuration.
  *
+ * <p>
  * Providing {@link RequestOptions#label()} will filter {@link ConfigurationSetting}s that match that label name in
  * conjunction with the key that is passed in to the service request.
  *
+ * <p>
  * Providing {@link RequestOptions#acceptDateTime()} will return the representation of matching {@link ConfigurationSetting}
  * at that given {@link OffsetDateTime}.
  *
+ * <p>
  * Providing {@link RequestOptions#fields()} will populate only those {@link ConfigurationSetting} fields in the response.
  */
 public class RequestOptions {
@@ -43,7 +46,6 @@ public class RequestOptions {
      *     <li>If key = "abc*", settings with a key starting with "abc" are returned.</li>
      *     <li>If key = "*abc*", settings with a key containing "abc" are returned.</li>
      * </ul>
-     * </p>
      *
      * @return The expression to filter ConfigurationSetting keys on.
      */
@@ -62,7 +64,6 @@ public class RequestOptions {
      *     <li>If {@code key = "abc*"}, settings with a key starting with "abc" are returned.</li>
      *     <li>If {@code key = "*abc*"}, settings with a key containing "abc" are returned.</li>
      * </ul>
-     * </p>
      *
      * @param key The expression to filter ConfigurationSetting keys on.
      * @return The updated RequestOptions object
@@ -85,7 +86,6 @@ public class RequestOptions {
      *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
      *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
      * </ul>
-     * </p>
      *
      * @return label The label used to filter GET requests from the service.
      */
@@ -105,7 +105,6 @@ public class RequestOptions {
      *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
      *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
      * </ul>
-     * </p>
      *
      * @param label The ConfigurationSetting label to match. If the provided value is {@code null} or {@code ""}, all
      *              ConfigurationSettings will be returned regardless of their label.
@@ -120,6 +119,7 @@ public class RequestOptions {
      * Gets the date time for the request query. When the query is performed, the state of the
      * {@link ConfigurationSetting}s at that point in time is returned based on the provided acceptDateTime.
      *
+     * <p>
      * If the value is not set, then the {@link ConfigurationSetting}s at their current state is returned.
      *
      * @return Gets the currently set datetime in {@link DateTimeFormatter#RFC_1123_DATE_TIME} format.
