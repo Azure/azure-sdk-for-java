@@ -9,6 +9,7 @@ package com.azure.common.auth.credentials;
 import com.azure.common.AzureEnvironment;
 import com.azure.common.AzureEnvironment.Endpoint;
 import com.azure.common.credentials.AsyncServiceClientCredentials;
+import com.azure.common.http.HttpRequest;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -21,7 +22,7 @@ import java.util.Map;
  * Resource management.
  */
 public abstract class AzureTokenCredentials implements AsyncServiceClientCredentials {
-    private static final String SCHEME = "Beareer";
+    private static final String SCHEME = "Bearer ";
     private final AzureEnvironment environment;
     private final String domain;
     private String defaultSubscription;
@@ -87,8 +88,8 @@ public abstract class AzureTokenCredentials implements AsyncServiceClientCredent
     public abstract Mono<String> getToken(String resource);
 
     @Override
-    public Mono<String> authorizationHeaderValueAsync(String uri) {
-        return getTokenFromUri(uri).map(token -> "Bearer " + token);
+    public Mono<String> authorizationHeaderValueAsync(HttpRequest request) {
+        return getTokenFromUri(request.url().toString()).map(token -> SCHEME + token);
     }
 
     /**
