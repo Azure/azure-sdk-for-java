@@ -20,7 +20,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.FromDataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -50,7 +55,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+@RunWith(Theories.class)
 public class ConfigurationClientTest {
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
 
@@ -163,7 +170,6 @@ public class ConfigurationClientTest {
         logger.info("Finished cleaning up values.");
     }
 
-    
     /**
      * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label identifier.
      */
@@ -178,11 +184,11 @@ public class ConfigurationClientTest {
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
         };
-        
+
         testRunner.accept(newConfiguration);
         testRunner.accept(newConfiguration.withLabel(label));
     }
-    
+
     /**
      * Tests that a configuration cannot be added twice with the same key. THis should return a 412 error.
      */
@@ -191,16 +197,16 @@ public class ConfigurationClientTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
-        
+
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.add(expected).then(client.add(expected)))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
         };
-        
+
         testRunner.accept(newConfiguration);
         testRunner.accept(newConfiguration.withLabel(label));
     }
-    
+
     /**
      * Tests that we can lock and unlock a configuration.
      */
@@ -209,19 +215,19 @@ public class ConfigurationClientTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting lockableConfiguration = new ConfigurationSetting().withKey(key).withValue("myLockUnlockValue");
-        
+
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.add(expected))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
-            
+
             StepVerifier.create(client.lock(expected.key(), expected.label()))
                     .assertNext(response -> {
                         assertConfigurationEquals(expected, response);
                         assertTrue(response.body().isLocked());
                     })
                     .verifyComplete();
-            
+
             StepVerifier.create(client.unlock(expected.key(), expected.label()))
                     .assertNext(response -> {
                         assertConfigurationEquals(expected, response);
@@ -233,7 +239,7 @@ public class ConfigurationClientTest {
         testRunner.accept(lockableConfiguration);
         testRunner.accept(lockableConfiguration.withLabel(label));
     }
-    
+
     /**
      * Tests that attempt to lock or unlock a non-existent configuration fails, this results in a 404.
      */
@@ -242,19 +248,19 @@ public class ConfigurationClientTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting notFindableConfiguration = new ConfigurationSetting().withKey(key).withValue("myExpectedNotFound");
-        
+
         final Consumer<ConfigurationSetting> testRunner = (ConfigurationSetting expected) -> {
             StepVerifier.create(client.lock(expected.key(), expected.label()))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
-            
+
             StepVerifier.create(client.unlock(expected.key(), expected.label()))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
         };
-        
+
         testRunner.accept(notFindableConfiguration);
         testRunner.accept(notFindableConfiguration.withLabel(label));
     }
-    
+
     /**
      * Tests that a configuration is able to be added or updated with set.
      * When the configuration is locked updates cannot happen, this will result in a 409.
@@ -263,26 +269,26 @@ public class ConfigurationClientTest {
     public void setSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting setConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");        
+        final ConfigurationSetting setConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().withKey(key).withValue("myUpdatedValue");
-        
+
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (expected, update) -> {
             StepVerifier.create(client.set(expected))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
-            
+
             StepVerifier.create(client.lock(expected.key(), expected.label()).then(client.set(update)))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
-            
+
             StepVerifier.create(client.unlock(expected.key(), expected.label()).then(client.set(update)))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
         };
-        
+
         testRunner.accept(setConfiguration, updateConfiguration);
         testRunner.accept(setConfiguration.withLabel(label), updateConfiguration.withLabel(label));
     }
-    
+
     /**
      * Tests that when an etag is passed to set it will only set if the current representation of the setting has the etag.
      * If the set etag doesn't match anything the update won't happen, this will result in a 412. This will prevent set from doing an add as well.
@@ -293,29 +299,29 @@ public class ConfigurationClientTest {
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().withKey(key).withValue("myUpdateValue");
-        
+
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
             StepVerifier.create(client.set(initial.withEtag("badEtag")))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
-            
+
             final String etag = client.add(initial).block().body().etag();
-            
+
             StepVerifier.create(client.set(update.withEtag(etag)))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
-            
+
             StepVerifier.create(client.set(initial))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
-            
+
             StepVerifier.create(client.get(update.key(), update.label()))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
         };
-        
+
         testRunner.accept(newConfiguration, updateConfiguration);
         testRunner.accept(newConfiguration.withLabel(label), updateConfiguration.withLabel(label));
     }
-    
+
     /**
      * Tests that update cannot be done to a non-existent configuration, this will result in a 412.
      * Unlike set update isn't able to create the configuration.
@@ -325,18 +331,18 @@ public class ConfigurationClientTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting expectedFail = new ConfigurationSetting().withKey(key).withValue("myFailingUpdate");
-        
+
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.update(expected))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));    
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
         };
-        
+
         testRunner.accept(expectedFail);
         testRunner.accept(expectedFail.withLabel(label));
     }
 
     /**
-     * Tests that a configuration is able to be updated when it exists. 
+     * Tests that a configuration is able to be updated when it exists.
      * When the configuration is locked updates cannot happen, this will result in a 409.
      */
     @Test
@@ -345,24 +351,24 @@ public class ConfigurationClientTest {
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().withKey(key).withValue("myUpdatedValue");
-        
+
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
             StepVerifier.create(client.add(initial))
                     .assertNext(response -> assertConfigurationEquals(initial, response))
                     .verifyComplete();
-            
+
             StepVerifier.create(client.lock(initial.key(), initial.label()).then(client.update(update)))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
-            
+
             StepVerifier.create(client.unlock(initial.key(), initial.label()).then(client.update(update)))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
         };
-        
+
         testRunner.accept(newConfiguration, updateConfiguration);
         testRunner.accept(newConfiguration.withLabel(label), updateConfiguration.withLabel(label));
     }
-    
+
     /**
      * Tests that when an etag is passed to update it will only update if the current representation of the setting has the etag.
      * If the update etag doesn't match anything the update won't happen, this will result in a 412.
@@ -374,31 +380,31 @@ public class ConfigurationClientTest {
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().withKey(key).withValue("myUpdateValue");
         final ConfigurationSetting finalConfiguration = new ConfigurationSetting().withKey(key).withValue("myFinalValue");
-        
+
         updateSettingIfEtagHelper(newConfiguration, updateConfiguration, finalConfiguration);
         updateSettingIfEtagHelper(newConfiguration.withLabel(label), updateConfiguration.withLabel(label), finalConfiguration.withLabel(label));
     }
-    
+
     private void updateSettingIfEtagHelper(ConfigurationSetting initial, ConfigurationSetting update, ConfigurationSetting last) {
         final String initialEtag = client.add(initial).block().body().etag();
         final String updateEtag = client.update(update).block().body().etag();
-        
+
         StepVerifier.create(client.update(last.withEtag(initialEtag)))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
-        
+
         StepVerifier.create(client.get(update.key(), update.label()))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
-        
+
         StepVerifier.create(client.update(last.withEtag(updateEtag)))
                 .assertNext(response -> assertConfigurationEquals(last, response))
                 .verifyComplete();
-        
+
         StepVerifier.create(client.get(last.key(), last.label()))
                 .assertNext(response -> assertConfigurationEquals(last, response))
                 .verifyComplete();
     }
-    
+
     /**
      * Tests that a configuration is able to be retrieved when it exists, whether or not it is locked.
      */
@@ -406,17 +412,17 @@ public class ConfigurationClientTest {
     public void getSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
-        
+
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.add(expected).then(client.get(expected.key(), expected.label())))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
-            
+
             StepVerifier.create(client.lock(expected.key(), expected.label()).then(client.get(expected.key(), expected.label())))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
         };
-        
+
         testRunner.accept(newConfiguration);
         testRunner.accept(newConfiguration.withLabel("myLabel"));
     }
@@ -428,18 +434,18 @@ public class ConfigurationClientTest {
     public void getSettingNotFound() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().withKey(key).withValue("myNeverRetreivedValue");
-        
+
         StepVerifier.create(client.add(neverRetrievedConfiguration))
                 .assertNext(response -> assertConfigurationEquals(neverRetrievedConfiguration, response))
                 .verifyComplete();
-        
+
         StepVerifier.create(client.get("myNonExistentKey"))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
-        
+
         StepVerifier.create(client.get(key, "myNonExistentLabel"))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
     }
-    
+
     /**
      * Tests that configurations are able to be deleted when they exist.
      * When the configuration is locked deletes cannot happen, this will result in a 409.
@@ -450,27 +456,27 @@ public class ConfigurationClientTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting deletableConfiguration = new ConfigurationSetting().withKey(key).withValue("myValue");
-        
+
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.add(expected).then(client.get(expected.key(), expected.label())))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
-            
+
             StepVerifier.create(client.lock(expected.key(), expected.label()).then(client.delete(expected.key(), expected.label(), null)))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
-            
+
             StepVerifier.create(client.unlock(expected.key(), expected.label()).then(client.delete(expected.key(), expected.label(), null)))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
-                    
+
             StepVerifier.create(client.get(expected.key(), expected.label()))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
         };
-        
+
         testRunner.accept(deletableConfiguration);
         testRunner.accept(deletableConfiguration.withLabel(label));
     }
-    
+
     /**
      * Tests that attempting to delete a non-existent configuration will return a 204.
      */
@@ -478,24 +484,24 @@ public class ConfigurationClientTest {
     public void deleteSettingNotFound() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().withKey(key).withValue("myNeverDeletedValue");
-        
+
         StepVerifier.create(client.add(neverDeletedConfiguation))
                 .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguation, response))
                 .verifyComplete();
-        
+
         StepVerifier.create(client.delete("myNonExistentKey"))
                 .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
                 .verifyComplete();
-        
+
         StepVerifier.create(client.delete(neverDeletedConfiguation.key(), "myNonExistentLabel", null))
                 .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
                 .verifyComplete();
-        
+
         StepVerifier.create(client.get(neverDeletedConfiguation.key()))
                 .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguation, response))
                 .verifyComplete();
     }
-    
+
     /**
      * Tests that when an etag is passed to delete it will only delete if the current representation of the setting has the etag.
      * If the delete etag doesn't match anything the delete won't happen, this will result in a 412.
@@ -506,26 +512,26 @@ public class ConfigurationClientTest {
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().withKey(key).withValue("myUpdateValue");
-        
+
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
             final String initialEtag = client.add(initial).block().body().etag();
             final String updateEtag = client.update(update).block().body().etag();
-            
+
             StepVerifier.create(client.get(initial.key(), initial.label()))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
-            
+
             StepVerifier.create(client.delete(initial.key(), initial.label(), initialEtag))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
-            
+
             StepVerifier.create(client.delete(initial.key(), initial.label(), updateEtag))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
-            
+
             StepVerifier.create(client.get(initial.key(), initial.label()))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
         };
-        
+
         testRunner.accept(newConfiguration, updateConfiguration);
         testRunner.accept(newConfiguration.withLabel(label), updateConfiguration.withLabel(label));
     }
@@ -846,41 +852,37 @@ public class ConfigurationClientTest {
                     }
                 }).blockLast();
     }
-    
+
+    @DataPoints("invalidKeys")
+    public static String[] invalidKeys = new String[] { "", null };
+
     /**
      * Test the API will not make a get call without having a key passed, an IllegalArgumentException should be thrown.
      */
-    @Test
-    public void getSettingRequiresKey() {
-        assertRunnableThrowsArgumentException(() -> client.get(null));
-        assertRunnableThrowsArgumentException(() -> client.get(""));
+    @Theory
+    public void getSettingRequiresKey(@FromDataPoints("invalidKeys") String key) {
+        assertRunnableThrowsArgumentException(() -> client.get(key));
     }
-    
+
     /**
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
-    @Test
-    public void deleteSettingRequiresKey() {
-        assertRunnableThrowsArgumentException(() -> client.delete(null));
-        assertRunnableThrowsArgumentException(() -> client.delete(null, null, null));
-        assertRunnableThrowsArgumentException(() -> client.delete(""));
-        assertRunnableThrowsArgumentException(() -> client.delete("", null, null));
+    @Theory
+    public void deleteSettingRequiresKey(@FromDataPoints("invalidKeys") String key, String label, String etag) {
+        assertRunnableThrowsArgumentException(() -> client.delete(key));
+        assertRunnableThrowsArgumentException(() -> client.delete(key, label, etag));
     }
-    
+
     /**
      * Test the API will not make lock or unlock calls without having a key passed, an IllegalArgumentException should be thrown.
      */
-    @Test
-    public void lockAndUnlockRequiresKey() {
-        assertRunnableThrowsArgumentException(() -> client.lock(null));
-        assertRunnableThrowsArgumentException(() -> client.lock(null, null));
-        assertRunnableThrowsArgumentException(() -> client.lock(""));
-        assertRunnableThrowsArgumentException(() -> client.lock("", null));
-        
-        assertRunnableThrowsArgumentException(() -> client.unlock(null));
-        assertRunnableThrowsArgumentException(() -> client.unlock(null, null));
-        assertRunnableThrowsArgumentException(() -> client.unlock(""));
-        assertRunnableThrowsArgumentException(() -> client.unlock("", null));
+    @Theory
+    public void lockAndUnlockRequiresKey(@FromDataPoints("invalidKeys") String key, String label) {
+        assertRunnableThrowsArgumentException(() -> client.lock(key));
+        assertRunnableThrowsArgumentException(() -> client.lock(key, label));
+
+        assertRunnableThrowsArgumentException(() -> client.unlock(key));
+        assertRunnableThrowsArgumentException(() -> client.unlock(key, label));
     }
 
     /**
@@ -891,7 +893,7 @@ public class ConfigurationClientTest {
     private static void assertConfigurationEquals(ConfigurationSetting expected, RestResponse<ConfigurationSetting> response) {
         assertConfigurationEquals(expected, response, 200);
     }
-    
+
     /**
      * Helper method to verify that the RestResponse matches what was expected.
      * @param expected ConfigurationSetting expected to be returned by the service
@@ -907,8 +909,8 @@ public class ConfigurationClientTest {
 
     /**
      * Helper method to verify that the returned ConfigurationSetting matches what was expected.
-     * @param expected
-     * @param actual
+     * @param expected ConfigurationSetting expected to be returned by the service
+     * @param actual ConfigurationSetting contained in the RestResponse body
      */
     private static void assertConfigurationEquals(ConfigurationSetting expected, ConfigurationSetting actual) {
         if (expected == null) {
@@ -938,7 +940,7 @@ public class ConfigurationClientTest {
             });
         }
     }
-    
+
     /**
      * Helper method to verify the error was a RestException and it has a specific HTTP response code.
      * @param ex Expected error thrown during the test
@@ -948,7 +950,7 @@ public class ConfigurationClientTest {
         assertTrue(ex instanceof RestException);
         assertEquals(expectedStatusCode, ((RestException) ex).response().statusCode());
     }
-    
+
     /**
      * Helper method to verify that a command throws an IllegalArgumentException.
      * @param exceptionThrower Command that should throw the exception
@@ -956,8 +958,9 @@ public class ConfigurationClientTest {
     private static void assertRunnableThrowsArgumentException(Runnable exceptionThrower) {
         try {
             exceptionThrower.run();
-        } catch (Exception ex) {
-            assertTrue("IllegalArgumentException was expected", ex instanceof IllegalArgumentException);
+            fail();
+        } catch (IllegalArgumentException ex) {
+
         }
     }
 }
