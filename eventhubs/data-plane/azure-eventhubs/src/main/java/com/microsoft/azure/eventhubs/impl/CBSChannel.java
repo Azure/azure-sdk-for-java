@@ -14,15 +14,10 @@ import java.util.Map;
 final class CBSChannel {
 
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
-    final SessionProvider sessionProvider;
-    final AmqpConnection connectionEventDispatcher;
 
     CBSChannel(
             final SessionProvider sessionProvider,
             final AmqpConnection connection) {
-
-        this.sessionProvider = sessionProvider;
-        this.connectionEventDispatcher = connection;
 
         RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
@@ -46,37 +41,7 @@ final class CBSChannel {
         request.setApplicationProperties(applicationProperties);
         request.setBody(new AmqpValue(token));
 
-        this.innerChannel.runOnOpenedObject(dispatcher,
-                new OperationResult<RequestResponseChannel, Exception>() {
-                    @Override
-                    public void onComplete(final RequestResponseChannel result) {
-                        result.request(request,
-                                new OperationResult<Message, Exception>() {
-                                    @Override
-                                    public void onComplete(final Message response) {
-
-                                        final int statusCode = (int) response.getApplicationProperties().getValue().get(ClientConstants.PUT_TOKEN_STATUS_CODE);
-                                        final String statusDescription = (String) response.getApplicationProperties().getValue().get(ClientConstants.PUT_TOKEN_STATUS_DESCRIPTION);
-
-                                        if (statusCode == AmqpResponseCode.ACCEPTED.getValue() || statusCode == AmqpResponseCode.OK.getValue()) {
-                                            sendTokenCallback.onComplete(null);
-                                        } else {
-                                            this.onError(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(final Exception error) {
-                                        sendTokenCallback.onError(error);
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onError(Exception error) {
-                        sendTokenCallback.onError(error);
-                    }
-                });
+        this.innerChannel.runOnOpenedObject(dispatcher, new RequestResponseChannelOperationResult(request, sendTokenCallback));
     }
 
     public void close(
@@ -84,5 +49,51 @@ final class CBSChannel {
             final OperationResult<Void, Exception> closeCallback) {
 
         this.innerChannel.close(reactorDispatcher, closeCallback);
+    }
+
+    private static class RequestResponseChannelOperationResult implements OperationResult<RequestResponseChannel, Exception> {
+        Message requestMessage;
+        OperationResult<Void, Exception> sendTokenCallback;
+
+        RequestResponseChannelOperationResult(Message requestMessage, OperationResult<Void, Exception> sendTokenCallback) {
+            this.requestMessage = requestMessage;
+            this.sendTokenCallback = sendTokenCallback;
+        }
+
+        @Override
+        public void onComplete(final RequestResponseChannel result) {
+            result.request(requestMessage, new MessageOperationResult(sendTokenCallback));
+        }
+
+        @Override
+        public void onError(Exception error) {
+            sendTokenCallback.onError(error);
+        }
+    }
+
+    private static class MessageOperationResult implements OperationResult<Message, Exception> {
+        OperationResult<Void, Exception> sendTokenCallback;
+
+        MessageOperationResult(OperationResult<Void, Exception> sendTokenCallback) {
+            this.sendTokenCallback = sendTokenCallback;
+        }
+
+        @Override
+        public void onComplete(final Message response) {
+
+            final int statusCode = (int) response.getApplicationProperties().getValue().get(ClientConstants.PUT_TOKEN_STATUS_CODE);
+            final String statusDescription = (String) response.getApplicationProperties().getValue().get(ClientConstants.PUT_TOKEN_STATUS_DESCRIPTION);
+
+            if (statusCode == AmqpResponseCode.ACCEPTED.getValue() || statusCode == AmqpResponseCode.OK.getValue()) {
+                sendTokenCallback.onComplete(null);
+            } else {
+                this.onError(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
+            }
+        }
+
+        @Override
+        public void onError(final Exception error) {
+            sendTokenCallback.onError(error);
+        }
     }
 }
