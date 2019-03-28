@@ -88,6 +88,7 @@ public class FluxUtilTests {
         File file = new File("target/test3");
         FileOutputStream stream = new FileOutputStream(file);
         stream.write("hello there".getBytes(StandardCharsets.UTF_8));
+        stream.close();
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel)
                     .map(bb -> {
