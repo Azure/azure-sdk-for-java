@@ -34,9 +34,9 @@ public class WebHookActivity extends ControlActivity {
     private Object url;
 
     /**
-     * Specifies the timeout within which the webhook should be called back. If
-     * there is no value specified, it defaults to 10 minutes. Type: string.
-     * Pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The timeout within which the webhook should be called back. If there is
+     * no value specified, it defaults to 10 minutes. Type: string. Pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "typeProperties.timeout")
     private String timeout;
@@ -113,7 +113,7 @@ public class WebHookActivity extends ControlActivity {
     }
 
     /**
-     * Get specifies the timeout within which the webhook should be called back. If there is no value specified, it defaults to 10 minutes. Type: string. Pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Get the timeout within which the webhook should be called back. If there is no value specified, it defaults to 10 minutes. Type: string. Pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      *
      * @return the timeout value
      */
@@ -122,7 +122,7 @@ public class WebHookActivity extends ControlActivity {
     }
 
     /**
-     * Set specifies the timeout within which the webhook should be called back. If there is no value specified, it defaults to 10 minutes. Type: string. Pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Set the timeout within which the webhook should be called back. If there is no value specified, it defaults to 10 minutes. Type: string. Pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      *
      * @param timeout the timeout value to set
      * @return the WebHookActivity object itself.
