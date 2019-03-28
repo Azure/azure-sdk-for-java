@@ -67,6 +67,10 @@ public class InvoiceSectionsInner {
         @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections")
         Observable<Response<ResponseBody>> beginCreate(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Body InvoiceSectionProperties parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections listByBillingProfileName" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections")
+        Observable<Response<ResponseBody>> listByBillingProfileName(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections get" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}")
         Observable<Response<ResponseBody>> get(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -78,6 +82,10 @@ public class InvoiceSectionsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections beginUpdate" })
         @PUT("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}")
         Observable<Response<ResponseBody>> beginUpdate(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Query("api-version") String apiVersion, @Body InvoiceSectionInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections elevateToBillingProfile" })
+        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/elevate")
+        Observable<Response<ResponseBody>> elevateToBillingProfile(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -231,6 +239,89 @@ public class InvoiceSectionsInner {
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .buildWithHeaders(response, InvoiceSectionsCreateHeaders.class);
+    }
+
+    /**
+     * Lists all invoice sections under a billing profile for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the InvoiceSectionListResultInner object if successful.
+     */
+    public InvoiceSectionListResultInner listByBillingProfileName(String billingAccountName, String billingProfileName) {
+        return listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists all invoice sections under a billing profile for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<InvoiceSectionListResultInner> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName, final ServiceCallback<InvoiceSectionListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName), serviceCallback);
+    }
+
+    /**
+     * Lists all invoice sections under a billing profile for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InvoiceSectionListResultInner object
+     */
+    public Observable<InvoiceSectionListResultInner> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName) {
+        return listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName).map(new Func1<ServiceResponse<InvoiceSectionListResultInner>, InvoiceSectionListResultInner>() {
+            @Override
+            public InvoiceSectionListResultInner call(ServiceResponse<InvoiceSectionListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists all invoice sections under a billing profile for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InvoiceSectionListResultInner object
+     */
+    public Observable<ServiceResponse<InvoiceSectionListResultInner>> listByBillingProfileNameWithServiceResponseAsync(String billingAccountName, String billingProfileName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (billingProfileName == null) {
+            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByBillingProfileName(billingAccountName, billingProfileName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InvoiceSectionListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<InvoiceSectionListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<InvoiceSectionListResultInner> clientResponse = listByBillingProfileNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<InvoiceSectionListResultInner> listByBillingProfileNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<InvoiceSectionListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<InvoiceSectionListResultInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
     }
 
     /**
@@ -561,6 +652,85 @@ public class InvoiceSectionsInner {
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .buildWithHeaders(response, InvoiceSectionsUpdateHeaders.class);
+    }
+
+    /**
+     * Elevates the caller's access to match their billing profile access.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void elevateToBillingProfile(String billingAccountName, String invoiceSectionName) {
+        elevateToBillingProfileWithServiceResponseAsync(billingAccountName, invoiceSectionName).toBlocking().single().body();
+    }
+
+    /**
+     * Elevates the caller's access to match their billing profile access.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> elevateToBillingProfileAsync(String billingAccountName, String invoiceSectionName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(elevateToBillingProfileWithServiceResponseAsync(billingAccountName, invoiceSectionName), serviceCallback);
+    }
+
+    /**
+     * Elevates the caller's access to match their billing profile access.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> elevateToBillingProfileAsync(String billingAccountName, String invoiceSectionName) {
+        return elevateToBillingProfileWithServiceResponseAsync(billingAccountName, invoiceSectionName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Elevates the caller's access to match their billing profile access.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> elevateToBillingProfileWithServiceResponseAsync(String billingAccountName, String invoiceSectionName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (invoiceSectionName == null) {
+            throw new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null.");
+        }
+        return service.elevateToBillingProfile(billingAccountName, invoiceSectionName, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = elevateToBillingProfileDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> elevateToBillingProfileDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
     }
 
 }

@@ -11,7 +11,6 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.InvoiceSectionInner;
 import com.microsoft.azure.arm.model.Indexable;
-import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.resources.models.HasManager;
@@ -22,7 +21,7 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation
 /**
  * Type representing InvoiceSection.
  */
-public interface InvoiceSection extends HasInner<InvoiceSectionInner>, Indexable, Refreshable<InvoiceSection>, Updatable<InvoiceSection.Update>, HasManager<BillingManager> {
+public interface InvoiceSection extends HasInner<InvoiceSectionInner>, Indexable, Updatable<InvoiceSection.Update>, HasManager<BillingManager> {
     /**
      * @return the billingProfiles value.
      */
