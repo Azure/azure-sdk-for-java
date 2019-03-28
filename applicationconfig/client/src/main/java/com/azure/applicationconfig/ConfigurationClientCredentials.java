@@ -88,7 +88,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
         }
     }
 
-    private class CredentialInformation {
+    private static class CredentialInformation {
         private static final String ENDPOINT = "endpoint=";
         private static final String ID = "id=";
         private static final String SECRET = "secret=";
