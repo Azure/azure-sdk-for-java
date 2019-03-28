@@ -11,10 +11,9 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ErrorResponseException;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsByBillingAccountNameListHeaders;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponseWithHeaders;
+import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
@@ -80,7 +79,7 @@ public class InvoiceSectionsByBillingAccountNamesInner {
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<InvoiceSectionListResultInner> listAsync(String billingAccountName, final ServiceCallback<InvoiceSectionListResultInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(listWithServiceResponseAsync(billingAccountName), serviceCallback);
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(billingAccountName), serviceCallback);
     }
 
     /**
@@ -91,9 +90,9 @@ public class InvoiceSectionsByBillingAccountNamesInner {
      * @return the observable to the InvoiceSectionListResultInner object
      */
     public Observable<InvoiceSectionListResultInner> listAsync(String billingAccountName) {
-        return listWithServiceResponseAsync(billingAccountName).map(new Func1<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders>, InvoiceSectionListResultInner>() {
+        return listWithServiceResponseAsync(billingAccountName).map(new Func1<ServiceResponse<InvoiceSectionListResultInner>, InvoiceSectionListResultInner>() {
             @Override
-            public InvoiceSectionListResultInner call(ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders> response) {
+            public InvoiceSectionListResultInner call(ServiceResponse<InvoiceSectionListResultInner> response) {
                 return response.body();
             }
         });
@@ -106,7 +105,7 @@ public class InvoiceSectionsByBillingAccountNamesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
      */
-    public Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders>> listWithServiceResponseAsync(String billingAccountName) {
+    public Observable<ServiceResponse<InvoiceSectionListResultInner>> listWithServiceResponseAsync(String billingAccountName) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -115,11 +114,11 @@ public class InvoiceSectionsByBillingAccountNamesInner {
         }
         final String expand = null;
         return service.list(billingAccountName, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InvoiceSectionListResultInner>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<InvoiceSectionListResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders> clientResponse = listDelegate(response);
+                        ServiceResponse<InvoiceSectionListResultInner> clientResponse = listDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -152,7 +151,7 @@ public class InvoiceSectionsByBillingAccountNamesInner {
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<InvoiceSectionListResultInner> listAsync(String billingAccountName, String expand, final ServiceCallback<InvoiceSectionListResultInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(listWithServiceResponseAsync(billingAccountName, expand), serviceCallback);
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(billingAccountName, expand), serviceCallback);
     }
 
     /**
@@ -164,9 +163,9 @@ public class InvoiceSectionsByBillingAccountNamesInner {
      * @return the observable to the InvoiceSectionListResultInner object
      */
     public Observable<InvoiceSectionListResultInner> listAsync(String billingAccountName, String expand) {
-        return listWithServiceResponseAsync(billingAccountName, expand).map(new Func1<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders>, InvoiceSectionListResultInner>() {
+        return listWithServiceResponseAsync(billingAccountName, expand).map(new Func1<ServiceResponse<InvoiceSectionListResultInner>, InvoiceSectionListResultInner>() {
             @Override
-            public InvoiceSectionListResultInner call(ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders> response) {
+            public InvoiceSectionListResultInner call(ServiceResponse<InvoiceSectionListResultInner> response) {
                 return response.body();
             }
         });
@@ -180,7 +179,7 @@ public class InvoiceSectionsByBillingAccountNamesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
      */
-    public Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders>> listWithServiceResponseAsync(String billingAccountName, String expand) {
+    public Observable<ServiceResponse<InvoiceSectionListResultInner>> listWithServiceResponseAsync(String billingAccountName, String expand) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -188,11 +187,11 @@ public class InvoiceSectionsByBillingAccountNamesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(billingAccountName, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InvoiceSectionListResultInner>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<InvoiceSectionListResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders> clientResponse = listDelegate(response);
+                        ServiceResponse<InvoiceSectionListResultInner> clientResponse = listDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -201,12 +200,11 @@ public class InvoiceSectionsByBillingAccountNamesInner {
             });
     }
 
-    private ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsByBillingAccountNameListHeaders> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<InvoiceSectionListResultInner> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<InvoiceSectionListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<InvoiceSectionListResultInner>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
-                .buildWithHeaders(response, InvoiceSectionsByBillingAccountNameListHeaders.class);
+                .build(response);
     }
 
 }
