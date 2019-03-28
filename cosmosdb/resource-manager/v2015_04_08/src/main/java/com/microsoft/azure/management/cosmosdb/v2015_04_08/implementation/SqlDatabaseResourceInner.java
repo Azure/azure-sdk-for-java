@@ -10,13 +10,13 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.GenericResourceProperties;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * An Azure Cosmos DB SQL database.
  */
 @JsonFlatten
-public class SqlDatabaseResourceInner extends GenericResourceProperties {
+public class SqlDatabaseResourceInner extends ProxyResource {
     /**
      * Name of the Cosmos DB SQL database.
      */

@@ -13,13 +13,13 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.PartitionKey;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.ConflictResolutionPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.GenericResourceProperties;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * An Azure Cosmos DB SQL container.
  */
 @JsonFlatten
-public class SqlContainerResourceInner extends GenericResourceProperties {
+public class SqlContainerResourceInner extends ProxyResource {
     /**
      * Name of the Cosmos DB SQL container.
      */
