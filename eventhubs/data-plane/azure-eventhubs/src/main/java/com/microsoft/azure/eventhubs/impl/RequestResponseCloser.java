@@ -20,17 +20,25 @@ public class RequestResponseCloser implements Operation<Void> {
         if (channelToBeClosed == null) {
             closeOperationCallback.onComplete(null);
         } else {
-            channelToBeClosed.close(new OperationResult<Void, Exception>() {
-                @Override
-                public void onComplete(Void result) {
-                    closeOperationCallback.onComplete(result);
-                }
+            channelToBeClosed.close(new CloseOperationResult(closeOperationCallback));
+        }
+    }
 
-                @Override
-                public void onError(Exception error) {
-                    closeOperationCallback.onError(error);
-                }
-            });
+    private static class CloseOperationResult implements OperationResult<Void, Exception> {
+        OperationResult<Void, Exception> closeOperationCallback;
+
+        CloseOperationResult(OperationResult<Void, Exception> closeOperationCallback) {
+            this.closeOperationCallback = closeOperationCallback;
+        }
+
+        @Override
+        public void onComplete(Void result) {
+            closeOperationCallback.onComplete(result);
+        }
+
+        @Override
+        public void onError(Exception error) {
+            closeOperationCallback.onError(error);
         }
     }
 }

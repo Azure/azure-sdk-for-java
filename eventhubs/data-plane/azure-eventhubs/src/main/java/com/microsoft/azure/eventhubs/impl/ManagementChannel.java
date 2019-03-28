@@ -18,12 +18,8 @@ import com.microsoft.azure.eventhubs.TimeoutException;
 final class ManagementChannel {
 
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
-    final SessionProvider sessionProvider;
-    final AmqpConnection connectionEventDispatcher;
 
     ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection) {
-        this.sessionProvider = sessionProvider;
-        this.connectionEventDispatcher = connection;
 
         final RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
@@ -77,41 +73,7 @@ final class ManagementChannel {
         // if there isn't even 5 millis left - request will not make the round-trip
         // to the event hubs service. so don't schedule the request - let it timeout
         if (timeoutInMillis > ClientConstants.MGMT_CHANNEL_MIN_RETRY_IN_MILLIS) {
-            this.innerChannel.runOnOpenedObject(dispatcher,
-                    new OperationResult<RequestResponseChannel, Exception>() {
-                        @Override
-                        public void onComplete(final RequestResponseChannel result) {
-                            result.request(requestMessage,
-                                    new OperationResult<Message, Exception>() {
-                                        @Override
-                                        public void onComplete(final Message response) {
-                                            final int statusCode = (int) response.getApplicationProperties().getValue()
-                                                    .get(ClientConstants.PUT_TOKEN_STATUS_CODE);
-                                            final String statusDescription = (String) response.getApplicationProperties().getValue()
-                                                    .get(ClientConstants.PUT_TOKEN_STATUS_DESCRIPTION);
-
-                                            if (statusCode == AmqpResponseCode.ACCEPTED.getValue()
-                                                    || statusCode == AmqpResponseCode.OK.getValue()) {
-                                                if (response.getBody() != null) {
-                                                    resultFuture.complete((Map<String, Object>) ((AmqpValue) response.getBody()).getValue());
-                                                }
-                                            } else {
-                                                this.onError(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onError(final Exception error) {
-                                            resultFuture.completeExceptionally(error);
-                                        }
-                                    });
-                        }
-
-                        @Override
-                        public void onError(Exception error) {
-                            resultFuture.completeExceptionally(error);
-                        }
-                    });
+            this.innerChannel.runOnOpenedObject(dispatcher, new RequestResponseChannelOperationResult(requestMessage, resultFuture));
         }
 
         return resultFuture;
@@ -120,4 +82,57 @@ final class ManagementChannel {
     public void close(final ReactorDispatcher reactorDispatcher, final OperationResult<Void, Exception> closeCallback) {
         this.innerChannel.close(reactorDispatcher, closeCallback);
     }
+
+    private static class RequestResponseChannelOperationResult implements OperationResult<RequestResponseChannel, Exception> {
+        Message requestMessage;
+        CompletableFuture<Map<String, Object>> resultFuture;
+
+        RequestResponseChannelOperationResult(Message requestMessage, CompletableFuture<Map<String, Object>> resultFuture) {
+            this.requestMessage = requestMessage;
+            this.resultFuture = resultFuture;
+        }
+
+        @Override
+        public void onComplete(final RequestResponseChannel result) {
+            result.request(requestMessage, new MessageOperationResult(resultFuture));
+        }
+
+        @Override
+        public void onError(Exception error) {
+            resultFuture.completeExceptionally(error);
+        }
+    }
+
+    private static class MessageOperationResult implements OperationResult<Message, Exception> {
+
+        CompletableFuture<Map<String, Object>> resultFuture;
+
+        MessageOperationResult(CompletableFuture<Map<String, Object>> resultFuture) {
+            this.resultFuture = resultFuture;
+        }
+
+        @Override
+        public void onComplete(final Message response) {
+            final int statusCode = (int) response.getApplicationProperties().getValue()
+                .get(ClientConstants.PUT_TOKEN_STATUS_CODE);
+            final String statusDescription = (String) response.getApplicationProperties().getValue()
+                .get(ClientConstants.PUT_TOKEN_STATUS_DESCRIPTION);
+
+            if (statusCode == AmqpResponseCode.ACCEPTED.getValue()
+                || statusCode == AmqpResponseCode.OK.getValue()) {
+                if (response.getBody() != null) {
+                    resultFuture.complete((Map<String, Object>) ((AmqpValue) response.getBody()).getValue());
+                }
+            } else {
+                this.onError(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
+            }
+        }
+
+        @Override
+        public void onError(final Exception error) {
+            resultFuture.completeExceptionally(error);
+        }
+    }
+
+
 }
