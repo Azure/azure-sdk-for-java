@@ -11,8 +11,10 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections;
-import rx.Observable;
+import rx.Completable;
 import rx.functions.Func1;
+import rx.Observable;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionListResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSection;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionProperties;
 
@@ -33,15 +35,33 @@ class InvoiceSectionsImpl extends WrapperImpl<InvoiceSectionsInner> implements I
     }
 
     @Override
+    public Observable<InvoiceSectionListResult> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName) {
+        InvoiceSectionsInner client = this.inner();
+        return client.listByBillingProfileNameAsync(billingAccountName, billingProfileName)
+        .map(new Func1<InvoiceSectionListResultInner, InvoiceSectionListResult>() {
+            @Override
+            public InvoiceSectionListResult call(InvoiceSectionListResultInner inner) {
+                return new InvoiceSectionListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<InvoiceSection> getAsync(String billingAccountName, String invoiceSectionName) {
         InvoiceSectionsInner client = this.inner();
         return client.getAsync(billingAccountName, invoiceSectionName)
         .map(new Func1<InvoiceSectionInner, InvoiceSection>() {
             @Override
             public InvoiceSection call(InvoiceSectionInner inner) {
-                return wrapModel(inner);
+                return new InvoiceSectionImpl(inner, manager());
             }
-       });
+        });
+    }
+
+    @Override
+    public Completable elevateToBillingProfileAsync(String billingAccountName, String invoiceSectionName) {
+        InvoiceSectionsInner client = this.inner();
+        return client.elevateToBillingProfileAsync(billingAccountName, invoiceSectionName).toCompletable();
     }
 
     @Override
