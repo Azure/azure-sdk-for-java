@@ -33,7 +33,7 @@ public class ReplayableWorkItem<T> extends WorkItem<T> {
     }
 
     public byte[] getMessage() {
-        return this.amqpMessage != null ? Arrays.copyOf(this.amqpMessage, this.amqpMessage.length) : null;
+        return this.amqpMessage != null ? Arrays.copyOf(this.amqpMessage, this.amqpMessage.length) : new byte[0];
     }
 
     public void clearMessage() {
