@@ -298,7 +298,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
     private static class InMemoryLeaseStore {
         static final InMemoryLeaseStore SINGLETON = new InMemoryLeaseStore();
-        private static int leaseDurationInMilliseconds;
+        private volatile int leaseDurationInMilliseconds;
 
         private ConcurrentHashMap<String, InMemoryLease> inMemoryLeasesPrivate = null;
         private ConcurrentHashMap<String, Callable<?>> notifiers = new ConcurrentHashMap<String, Callable<?>>();
@@ -311,7 +311,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
             if (this.inMemoryLeasesPrivate == null) {
                 this.inMemoryLeasesPrivate = new ConcurrentHashMap<String, InMemoryLease>();
             }
-            InMemoryLeaseStore.leaseDurationInMilliseconds = leaseDurationInMilliseconds;
+            this.leaseDurationInMilliseconds = leaseDurationInMilliseconds;
         }
 
         synchronized void deleteMap() {
@@ -334,7 +334,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
             InMemoryLease leaseInStore = getLease(partitionId);
             if (leaseInStore.isExpiredSync() || (leaseInStore.getOwner() == null) || leaseInStore.getOwner().isEmpty()) {
                 leaseInStore.setOwner(newOwner);
-                leaseInStore.setExpirationTime(System.currentTimeMillis() + InMemoryLeaseStore.leaseDurationInMilliseconds);
+                leaseInStore.setExpirationTime(System.currentTimeMillis() + this.leaseDurationInMilliseconds);
             } else {
                 // Return null if it was already owned
                 leaseInStore = null;
@@ -349,6 +349,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
                 try {
                     notifier.call();
                 } catch (Exception e) {
+                    TRACE_LOGGER.warn("notifier call failed: " + e.getMessage());
                 }
             } else {
                 this.notifiers.put(partitionId, notifier);
@@ -362,6 +363,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
                 try {
                     notifier.call();
                 } catch (Exception e) {
+                    TRACE_LOGGER.warn("notifier call failed: " + e.getMessage());
                 }
             }
         }
