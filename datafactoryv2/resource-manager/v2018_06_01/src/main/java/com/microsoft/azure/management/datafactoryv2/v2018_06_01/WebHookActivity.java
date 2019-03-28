@@ -39,7 +39,7 @@ public class WebHookActivity extends ControlActivity {
      * Pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "typeProperties.timeout")
-    private Object timeout;
+    private String timeout;
 
     /**
      * Represents the headers that will be sent to the request. For example, to
@@ -117,7 +117,7 @@ public class WebHookActivity extends ControlActivity {
      *
      * @return the timeout value
      */
-    public Object timeout() {
+    public String timeout() {
         return this.timeout;
     }
 
@@ -127,7 +127,7 @@ public class WebHookActivity extends ControlActivity {
      * @param timeout the timeout value to set
      * @return the WebHookActivity object itself.
      */
-    public WebHookActivity withTimeout(Object timeout) {
+    public WebHookActivity withTimeout(String timeout) {
         this.timeout = timeout;
         return this;
     }
