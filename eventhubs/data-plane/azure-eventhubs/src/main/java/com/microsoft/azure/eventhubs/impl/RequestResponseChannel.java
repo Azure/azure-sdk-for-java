@@ -149,11 +149,13 @@ public class RequestResponseChannel implements IOObject {
 
         if (closeRefCount.decrementAndGet() <= 0)
             if (exception == null) {
-                onClose.onComplete(null);
+                if (onClose != null)
+                    onClose.onComplete(null);
                 if (onGraceFullClose != null)
                     onGraceFullClose.onComplete(null);
             } else {
-                onClose.onError(exception);
+                if (onClose != null)
+                    onClose.onError(exception);
                 if (onGraceFullClose != null)
                     onGraceFullClose.onError(exception);
             }
