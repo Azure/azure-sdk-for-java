@@ -31,7 +31,7 @@ public enum SettingFields {
      */
     LAST_MODIFIED,
     /**
-     * Populates the {@link ConfigurationSetting#isLocked()} ()} from the service.
+     * Populates the {@link ConfigurationSetting#isLocked()} from the service.
      */
     LOCKED,
     /**
