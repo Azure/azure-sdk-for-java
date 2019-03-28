@@ -120,16 +120,17 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
             }
 
             for (String arg : args) {
-                String segment = arg.trim();
-                if (segment.toLowerCase().startsWith(ENDPOINT)) {
+                String segment = arg.trim().toLowerCase(Locale.US);
+                String lowerCase = segment.toLowerCase(Locale.US);
+                if (lowerCase.startsWith(ENDPOINT)) {
                     try {
                         this.baseUri = new URL(segment.substring(ENDPOINT.length()));
                     } catch (MalformedURLException ex) {
                         throw new IllegalArgumentException(ex);
                     }
-                } else if (segment.toLowerCase().startsWith(ID)) {
+                } else if (lowerCase.startsWith(ID)) {
                     this.id = segment.substring(ID.length());
-                } else if (segment.toLowerCase().startsWith(SECRET)) {
+                } else if (lowerCase.startsWith(SECRET)) {
                     String secretBase64 = segment.substring(SECRET.length());
                     this.secret = Base64.getDecoder().decode(secretBase64);
                 }
