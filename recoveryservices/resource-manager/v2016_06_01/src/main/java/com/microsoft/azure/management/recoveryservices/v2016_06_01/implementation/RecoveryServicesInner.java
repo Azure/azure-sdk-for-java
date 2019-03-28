@@ -63,7 +63,7 @@ public class RecoveryServicesInner {
     /**
      * API to check for resource name availability.
      A name is available if no other resource exists that has the same SubscriptionId, Resource Name and Type
-     or if one or more such resources exist, each of these must be GCed and their time of deletion be more than 24 Hours Ago.
+     or if one or more such resources exist, each of these must be GC'd and their time of deletion be more than 24 Hours Ago.
      *
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param location Location of the resource
@@ -71,16 +71,16 @@ public class RecoveryServicesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ResourceNameAvailabilityResultResourceInner object if successful.
+     * @return the CheckNameAvailabilityResultResourceInner object if successful.
      */
-    public ResourceNameAvailabilityResultResourceInner checkNameAvailability(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
+    public CheckNameAvailabilityResultResourceInner checkNameAvailability(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
         return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, location, input).toBlocking().single().body();
     }
 
     /**
      * API to check for resource name availability.
      A name is available if no other resource exists that has the same SubscriptionId, Resource Name and Type
-     or if one or more such resources exist, each of these must be GCed and their time of deletion be more than 24 Hours Ago.
+     or if one or more such resources exist, each of these must be GC'd and their time of deletion be more than 24 Hours Ago.
      *
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param location Location of the resource
@@ -89,25 +89,25 @@ public class RecoveryServicesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ResourceNameAvailabilityResultResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input, final ServiceCallback<ResourceNameAvailabilityResultResourceInner> serviceCallback) {
+    public ServiceFuture<CheckNameAvailabilityResultResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input, final ServiceCallback<CheckNameAvailabilityResultResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, location, input), serviceCallback);
     }
 
     /**
      * API to check for resource name availability.
      A name is available if no other resource exists that has the same SubscriptionId, Resource Name and Type
-     or if one or more such resources exist, each of these must be GCed and their time of deletion be more than 24 Hours Ago.
+     or if one or more such resources exist, each of these must be GC'd and their time of deletion be more than 24 Hours Ago.
      *
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param location Location of the resource
      * @param input Contains information about Resource type and Resource name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ResourceNameAvailabilityResultResourceInner object
+     * @return the observable to the CheckNameAvailabilityResultResourceInner object
      */
-    public Observable<ResourceNameAvailabilityResultResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
-        return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, location, input).map(new Func1<ServiceResponse<ResourceNameAvailabilityResultResourceInner>, ResourceNameAvailabilityResultResourceInner>() {
+    public Observable<CheckNameAvailabilityResultResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
+        return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, location, input).map(new Func1<ServiceResponse<CheckNameAvailabilityResultResourceInner>, CheckNameAvailabilityResultResourceInner>() {
             @Override
-            public ResourceNameAvailabilityResultResourceInner call(ServiceResponse<ResourceNameAvailabilityResultResourceInner> response) {
+            public CheckNameAvailabilityResultResourceInner call(ServiceResponse<CheckNameAvailabilityResultResourceInner> response) {
                 return response.body();
             }
         });
@@ -116,15 +116,15 @@ public class RecoveryServicesInner {
     /**
      * API to check for resource name availability.
      A name is available if no other resource exists that has the same SubscriptionId, Resource Name and Type
-     or if one or more such resources exist, each of these must be GCed and their time of deletion be more than 24 Hours Ago.
+     or if one or more such resources exist, each of these must be GC'd and their time of deletion be more than 24 Hours Ago.
      *
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param location Location of the resource
      * @param input Contains information about Resource type and Resource name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ResourceNameAvailabilityResultResourceInner object
+     * @return the observable to the CheckNameAvailabilityResultResourceInner object
      */
-    public Observable<ServiceResponse<ResourceNameAvailabilityResultResourceInner>> checkNameAvailabilityWithServiceResponseAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
+    public Observable<ServiceResponse<CheckNameAvailabilityResultResourceInner>> checkNameAvailabilityWithServiceResponseAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -142,11 +142,11 @@ public class RecoveryServicesInner {
         }
         Validator.validate(input);
         return service.checkNameAvailability(this.client.subscriptionId(), resourceGroupName, location, this.client.apiVersion(), input, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ResourceNameAvailabilityResultResourceInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameAvailabilityResultResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ResourceNameAvailabilityResultResourceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<CheckNameAvailabilityResultResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ResourceNameAvailabilityResultResourceInner> clientResponse = checkNameAvailabilityDelegate(response);
+                        ServiceResponse<CheckNameAvailabilityResultResourceInner> clientResponse = checkNameAvailabilityDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -155,9 +155,9 @@ public class RecoveryServicesInner {
             });
     }
 
-    private ServiceResponse<ResourceNameAvailabilityResultResourceInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ResourceNameAvailabilityResultResourceInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ResourceNameAvailabilityResultResourceInner>() { }.getType())
+    private ServiceResponse<CheckNameAvailabilityResultResourceInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CheckNameAvailabilityResultResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CheckNameAvailabilityResultResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

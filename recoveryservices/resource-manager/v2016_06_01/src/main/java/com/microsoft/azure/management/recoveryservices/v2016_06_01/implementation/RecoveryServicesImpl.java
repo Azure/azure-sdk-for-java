@@ -13,7 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.RecoveryServices;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.management.recoveryservices.v2016_06_01.ResourceNameAvailabilityResultResource;
+import com.microsoft.azure.management.recoveryservices.v2016_06_01.CheckNameAvailabilityResultResource;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.ResourceNameAvailabilityParameters;
 
 class RecoveryServicesImpl extends WrapperImpl<RecoveryServicesInner> implements RecoveryServices {
@@ -29,13 +29,13 @@ class RecoveryServicesImpl extends WrapperImpl<RecoveryServicesInner> implements
     }
 
     @Override
-    public Observable<ResourceNameAvailabilityResultResource> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
+    public Observable<CheckNameAvailabilityResultResource> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
         RecoveryServicesInner client = this.inner();
         return client.checkNameAvailabilityAsync(resourceGroupName, location, input)
-        .map(new Func1<ResourceNameAvailabilityResultResourceInner, ResourceNameAvailabilityResultResource>() {
+        .map(new Func1<CheckNameAvailabilityResultResourceInner, CheckNameAvailabilityResultResource>() {
             @Override
-            public ResourceNameAvailabilityResultResource call(ResourceNameAvailabilityResultResourceInner inner) {
-                return new ResourceNameAvailabilityResultResourceImpl(inner, manager());
+            public CheckNameAvailabilityResultResource call(CheckNameAvailabilityResultResourceInner inner) {
+                return new CheckNameAvailabilityResultResourceImpl(inner, manager());
             }
         });
     }
