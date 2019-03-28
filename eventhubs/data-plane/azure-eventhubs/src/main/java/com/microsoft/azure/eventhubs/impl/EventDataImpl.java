@@ -134,7 +134,7 @@ public final class EventDataImpl implements EventData {
     public byte[] getBytes() {
 
         if (this.bodyData == null)
-            return null;
+            return new byte[0];
 
         return this.bodyData.getArray();
     }
