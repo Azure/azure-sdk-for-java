@@ -162,6 +162,7 @@ public class ConfigurationClientTest {
 
         logger.info("Finished cleaning up values.");
     }
+
     
     /**
      * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label identifier.
@@ -174,7 +175,7 @@ public class ConfigurationClientTest {
 
     	final Consumer<ConfigurationSetting> testRunner = (expected) -> {
     		StepVerifier.create(client.add(expected))
-    				.assertNext(response -> assertEquals(expected, response))
+    				.assertNext(response -> assertConfigurationEquals(expected, response))
     				.verifyComplete();
     	};
     	
@@ -211,19 +212,19 @@ public class ConfigurationClientTest {
         
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
         	StepVerifier.create(client.add(expected))
-			        .assertNext(response -> assertEquals(expected, response))
+			        .assertNext(response -> assertConfigurationEquals(expected, response))
 			        .verifyComplete();
 			
 			StepVerifier.create(client.lock(expected.key(), expected.label()))
 					.assertNext(response -> {
-						assertEquals(expected, response);
+						assertConfigurationEquals(expected, response);
 						assertTrue(response.body().isLocked());
 					})
 					.verifyComplete();
 			
 			StepVerifier.create(client.unlock(expected.key(), expected.label()))
 			        .assertNext(response -> {
-			        	assertEquals(expected, response);
+			        	assertConfigurationEquals(expected, response);
 			        	assertFalse(response.body().isLocked());
 			        })
 			        .verifyComplete();
@@ -267,14 +268,14 @@ public class ConfigurationClientTest {
     	
     	final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (expected, update) -> {
     		StepVerifier.create(client.set(expected))
-					.assertNext(response -> assertEquals(expected, response))
+					.assertNext(response -> assertConfigurationEquals(expected, response))
 					.verifyComplete();
 			
 			StepVerifier.create(client.lock(expected.key(), expected.label()).then(client.set(update)))
 					.verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
 			
 			StepVerifier.create(client.unlock(expected.key(), expected.label()).then(client.set(update)))
-					.assertNext(response -> assertEquals(update, response))
+					.assertNext(response -> assertConfigurationEquals(update, response))
 					.verifyComplete();
     	};
     	
@@ -300,14 +301,14 @@ public class ConfigurationClientTest {
 			final String etag = client.add(initial).block().body().etag();
 			
 			StepVerifier.create(client.set(update.withEtag(etag)))
-					.assertNext(response -> assertEquals(update, response))
+					.assertNext(response -> assertConfigurationEquals(update, response))
 					.verifyComplete();
 			
 			StepVerifier.create(client.set(initial))
 					.verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
 			
 			StepVerifier.create(client.get(update.key(), update.label()))
-					.assertNext(response -> assertEquals(update, response))
+					.assertNext(response -> assertConfigurationEquals(update, response))
 					.verifyComplete();
     	};
     	
@@ -347,14 +348,14 @@ public class ConfigurationClientTest {
     	
     	final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
     		StepVerifier.create(client.add(initial))
-					.assertNext(response -> assertEquals(initial, response))
+					.assertNext(response -> assertConfigurationEquals(initial, response))
 					.verifyComplete();
 			
 			StepVerifier.create(client.lock(initial.key(), initial.label()).then(client.update(update)))
 					.verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
 			
 			StepVerifier.create(client.unlock(initial.key(), initial.label()).then(client.update(update)))
-					.assertNext(response -> assertEquals(update, response))
+					.assertNext(response -> assertConfigurationEquals(update, response))
 					.verifyComplete();
     	};
     	
@@ -386,15 +387,15 @@ public class ConfigurationClientTest {
     			.verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
     	
     	StepVerifier.create(client.get(update.key(), update.label()))
-    			.assertNext(response -> assertEquals(update, response))
+    			.assertNext(response -> assertConfigurationEquals(update, response))
     			.verifyComplete();
     	
     	StepVerifier.create(client.update(last.withEtag(updateEtag)))
-    			.assertNext(response -> assertEquals(last, response))
+    			.assertNext(response -> assertConfigurationEquals(last, response))
     			.verifyComplete();
     	
     	StepVerifier.create(client.get(last.key(), last.label()))
-    			.assertNext(response -> assertEquals(last, response))
+    			.assertNext(response -> assertConfigurationEquals(last, response))
     			.verifyComplete();
     }
     
@@ -408,11 +409,11 @@ public class ConfigurationClientTest {
     	
     	final Consumer<ConfigurationSetting> testRunner = (expected) -> {
     		StepVerifier.create(client.add(expected).then(client.get(expected.key(), expected.label())))
-					.assertNext(response -> assertEquals(expected, response))
+					.assertNext(response -> assertConfigurationEquals(expected, response))
 					.verifyComplete();
 			
 			StepVerifier.create(client.lock(expected.key(), expected.label()).then(client.get(expected.key(), expected.label())))
-					.assertNext(response -> assertEquals(expected, response))
+					.assertNext(response -> assertConfigurationEquals(expected, response))
 					.verifyComplete();
     	};
     	
@@ -429,7 +430,7 @@ public class ConfigurationClientTest {
     	final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().withKey(key).withValue("myNeverRetreivedValue");
     	
     	StepVerifier.create(client.add(neverRetrievedConfiguration))
-    			.assertNext(response -> assertEquals(neverRetrievedConfiguration, response))
+    			.assertNext(response -> assertConfigurationEquals(neverRetrievedConfiguration, response))
     			.verifyComplete();
     	
     	StepVerifier.create(client.get("myNonExistentKey"))
@@ -452,14 +453,14 @@ public class ConfigurationClientTest {
     	
     	final Consumer<ConfigurationSetting> testRunner = (expected) -> {
     		StepVerifier.create(client.add(expected).then(client.get(expected.key(), expected.label())))
-					.assertNext(response -> assertEquals(expected, response))
+					.assertNext(response -> assertConfigurationEquals(expected, response))
 					.verifyComplete();
 			
 			StepVerifier.create(client.lock(expected.key(), expected.label()).then(client.delete(expected.key(), expected.label(), null)))
 					.verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
 			
 			StepVerifier.create(client.unlock(expected.key(), expected.label()).then(client.delete(expected.key(), expected.label(), null)))
-					.assertNext(response -> assertEquals(expected, response))
+					.assertNext(response -> assertConfigurationEquals(expected, response))
 					.verifyComplete();
 					
 			StepVerifier.create(client.get(expected.key(), expected.label()))
@@ -479,19 +480,19 @@ public class ConfigurationClientTest {
     	final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().withKey(key).withValue("myNeverDeletedValue");
     	
     	StepVerifier.create(client.add(neverDeletedConfiguation))
-    			.assertNext(response -> assertEquals(neverDeletedConfiguation, response))
+    			.assertNext(response -> assertConfigurationEquals(neverDeletedConfiguation, response))
     			.verifyComplete();
     	
     	StepVerifier.create(client.delete("myNonExistentKey"))
-    			.assertNext(response -> assertEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
+    			.assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
     			.verifyComplete();
     	
     	StepVerifier.create(client.delete(neverDeletedConfiguation.key(), "myNonExistentLabel", null))
-				.assertNext(response -> assertEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
+				.assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
 				.verifyComplete();
 		
 		StepVerifier.create(client.get(neverDeletedConfiguation.key()))
-				.assertNext(response -> assertEquals(neverDeletedConfiguation, response))
+				.assertNext(response -> assertConfigurationEquals(neverDeletedConfiguation, response))
 				.verifyComplete();
     }
     
@@ -511,14 +512,14 @@ public class ConfigurationClientTest {
     		final String updateEtag = client.update(update).block().body().etag();
     		
     		StepVerifier.create(client.get(initial.key(), initial.label()))
-    				.assertNext(response -> assertEquals(update, response))
+    				.assertNext(response -> assertConfigurationEquals(update, response))
     				.verifyComplete();
     		
     		StepVerifier.create(client.delete(initial.key(), initial.label(), initialEtag))
     				.verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
     		
     		StepVerifier.create(client.delete(initial.key(), initial.label(), updateEtag))
-    				.assertNext(response -> assertEquals(update, response))
+    				.assertNext(response -> assertConfigurationEquals(update, response))
     				.verifyComplete();
     		
     		StepVerifier.create(client.get(initial.key(), initial.label()))
@@ -880,15 +881,6 @@ public class ConfigurationClientTest {
     	assertRunnableThrowsArgumentException(() -> client.unlock(null, null));
     	assertRunnableThrowsArgumentException(() -> client.unlock(""));
     	assertRunnableThrowsArgumentException(() -> client.unlock("", null));
-    }
-    
-    private static void assertMapContainsLabel(HashMap<String, ConfigurationSetting> map, RestResponse<ConfigurationSetting> response) {
-        assertNotNull(response);
-        assertNotNull(response.body());
-
-        ConfigurationSetting fetched = map.getOrDefault(response.body().label(), null);
-        assertNotNull(fetched);
-        assertEquals(fetched, response);
     }
 
     /**
