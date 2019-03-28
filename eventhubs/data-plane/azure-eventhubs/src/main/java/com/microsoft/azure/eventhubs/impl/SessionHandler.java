@@ -161,11 +161,9 @@ public class SessionHandler extends BaseHandler {
 
     private class SessionTimeoutHandler extends DispatchHandler {
 
-        private final Session session;
         private final String entityName;
 
         SessionTimeoutHandler(final Session session, final String entityName) {
-            this.session = session;
             this.entityName = entityName;
         }
 
