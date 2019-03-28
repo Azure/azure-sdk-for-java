@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ProductDetails {
     /**
-     * Type of the prouct to be transferred. Possible values include:
+     * Type of the product to be transferred. Possible values include:
      * 'AzureSubscription', 'AzureReservation'.
      */
     @JsonProperty(value = "productType")
@@ -28,7 +28,7 @@ public class ProductDetails {
     private String productId;
 
     /**
-     * Get type of the prouct to be transferred. Possible values include: 'AzureSubscription', 'AzureReservation'.
+     * Get type of the product to be transferred. Possible values include: 'AzureSubscription', 'AzureReservation'.
      *
      * @return the productType value
      */
@@ -37,7 +37,7 @@ public class ProductDetails {
     }
 
     /**
-     * Set type of the prouct to be transferred. Possible values include: 'AzureSubscription', 'AzureReservation'.
+     * Set type of the product to be transferred. Possible values include: 'AzureSubscription', 'AzureReservation'.
      *
      * @param productType the productType value to set
      * @return the ProductDetails object itself.
