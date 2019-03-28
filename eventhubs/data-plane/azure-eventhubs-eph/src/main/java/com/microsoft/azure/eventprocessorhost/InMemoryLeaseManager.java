@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -406,12 +407,16 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
         @Override
         public boolean equals(Object o) {
-            return super.equals(o);
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+            InMemoryLease that = (InMemoryLease) o;
+            return expirationTimeMillis == that.expirationTimeMillis;
         }
 
         @Override
         public int hashCode() {
-            return super.hashCode();
+            return Objects.hash(super.hashCode(), expirationTimeMillis);
         }
     }
 }
