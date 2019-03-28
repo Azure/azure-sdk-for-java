@@ -71,9 +71,9 @@ public class RecoveryServicesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ResourceNameAvailabilityResponseResourceInner object if successful.
+     * @return the ResourceNameAvailabilityResultResourceInner object if successful.
      */
-    public ResourceNameAvailabilityResponseResourceInner checkNameAvailability(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
+    public ResourceNameAvailabilityResultResourceInner checkNameAvailability(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
         return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, location, input).toBlocking().single().body();
     }
 
@@ -89,7 +89,7 @@ public class RecoveryServicesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ResourceNameAvailabilityResponseResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input, final ServiceCallback<ResourceNameAvailabilityResponseResourceInner> serviceCallback) {
+    public ServiceFuture<ResourceNameAvailabilityResultResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input, final ServiceCallback<ResourceNameAvailabilityResultResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, location, input), serviceCallback);
     }
 
@@ -102,12 +102,12 @@ public class RecoveryServicesInner {
      * @param location Location of the resource
      * @param input Contains information about Resource type and Resource name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ResourceNameAvailabilityResponseResourceInner object
+     * @return the observable to the ResourceNameAvailabilityResultResourceInner object
      */
-    public Observable<ResourceNameAvailabilityResponseResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
-        return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, location, input).map(new Func1<ServiceResponse<ResourceNameAvailabilityResponseResourceInner>, ResourceNameAvailabilityResponseResourceInner>() {
+    public Observable<ResourceNameAvailabilityResultResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
+        return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, location, input).map(new Func1<ServiceResponse<ResourceNameAvailabilityResultResourceInner>, ResourceNameAvailabilityResultResourceInner>() {
             @Override
-            public ResourceNameAvailabilityResponseResourceInner call(ServiceResponse<ResourceNameAvailabilityResponseResourceInner> response) {
+            public ResourceNameAvailabilityResultResourceInner call(ServiceResponse<ResourceNameAvailabilityResultResourceInner> response) {
                 return response.body();
             }
         });
@@ -122,9 +122,9 @@ public class RecoveryServicesInner {
      * @param location Location of the resource
      * @param input Contains information about Resource type and Resource name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ResourceNameAvailabilityResponseResourceInner object
+     * @return the observable to the ResourceNameAvailabilityResultResourceInner object
      */
-    public Observable<ServiceResponse<ResourceNameAvailabilityResponseResourceInner>> checkNameAvailabilityWithServiceResponseAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
+    public Observable<ServiceResponse<ResourceNameAvailabilityResultResourceInner>> checkNameAvailabilityWithServiceResponseAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -142,11 +142,11 @@ public class RecoveryServicesInner {
         }
         Validator.validate(input);
         return service.checkNameAvailability(this.client.subscriptionId(), resourceGroupName, location, this.client.apiVersion(), input, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ResourceNameAvailabilityResponseResourceInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ResourceNameAvailabilityResultResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ResourceNameAvailabilityResponseResourceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ResourceNameAvailabilityResultResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ResourceNameAvailabilityResponseResourceInner> clientResponse = checkNameAvailabilityDelegate(response);
+                        ServiceResponse<ResourceNameAvailabilityResultResourceInner> clientResponse = checkNameAvailabilityDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -155,9 +155,9 @@ public class RecoveryServicesInner {
             });
     }
 
-    private ServiceResponse<ResourceNameAvailabilityResponseResourceInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ResourceNameAvailabilityResponseResourceInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ResourceNameAvailabilityResponseResourceInner>() { }.getType())
+    private ServiceResponse<ResourceNameAvailabilityResultResourceInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ResourceNameAvailabilityResultResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ResourceNameAvailabilityResultResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
