@@ -10,7 +10,7 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
  */
 public class AmqpException extends Exception {
     private static final long serialVersionUID = -750417419234273714L;
-    private ErrorCondition errorCondition;
+    private transient ErrorCondition errorCondition;
 
     public AmqpException(ErrorCondition errorCondition) {
         super(errorCondition.getDescription());
