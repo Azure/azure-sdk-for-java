@@ -10,6 +10,7 @@ import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.applicationconfig.models.RevisionOptions;
 import com.azure.applicationconfig.models.RevisionRange;
+import com.azure.applicationconfig.models.SettingFields;
 import com.azure.common.ServiceClient;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
