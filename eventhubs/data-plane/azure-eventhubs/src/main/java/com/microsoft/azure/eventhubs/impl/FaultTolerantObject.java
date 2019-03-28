@@ -51,7 +51,7 @@ public class FaultTolerantObject<T extends IOObject> {
                         creatingNewInnerObject = true;
 
                         try {
-                            openCallbacks.offer(openCallback);
+                            openCallbacks.add(openCallback);
                             openTask.run(new OperationResult<T, Exception>() {
                                 @Override
                                 public void onComplete(T result) {
@@ -76,7 +76,7 @@ public class FaultTolerantObject<T extends IOObject> {
                     } else if (innerObject != null && innerObject.getState() == IOObject.IOObjectState.OPENED) {
                         openCallback.onComplete(innerObject);
                     } else {
-                        openCallbacks.offer(openCallback);
+                        openCallbacks.add(openCallback);
                     }
                 }
             });
@@ -97,7 +97,7 @@ public class FaultTolerantObject<T extends IOObject> {
                         closeCallback.onComplete(null);
                     } else if (!closingInnerObject && (innerObject.getState() == IOObject.IOObjectState.OPENED || innerObject.getState() == IOObject.IOObjectState.OPENING)) {
                         closingInnerObject = true;
-                        closeCallbacks.offer(closeCallback);
+                        closeCallbacks.add(closeCallback);
                         closeTask.run(new OperationResult<Void, Exception>() {
                             @Override
                             public void onComplete(Void result) {
@@ -118,7 +118,7 @@ public class FaultTolerantObject<T extends IOObject> {
                             }
                         });
                     } else {
-                        closeCallbacks.offer(closeCallback);
+                        closeCallbacks.add(closeCallback);
                     }
                 }
             });
