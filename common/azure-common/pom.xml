@@ -134,7 +134,6 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>${jetty-maven-plugin.version}</version>
         <configuration>
           <httpConnector>
             <port>11081</port>
@@ -150,7 +149,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>${maven-exec.version}</version>
         <executions>
           <execution>
             <goals><goal>java</goal></goals>
