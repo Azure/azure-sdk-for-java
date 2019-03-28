@@ -102,15 +102,19 @@ final class AzureBlobLease extends CompleteLease {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) { return false; }
+        if (!super.equals(o)) {
+            return false;
+        }
         AzureBlobLease that = (AzureBlobLease) o;
-        return sequenceNumber == that.sequenceNumber &&
-            Objects.equals(blob, that.blob) &&
-            Objects.equals(options, that.options) &&
-            Objects.equals(offset, that.offset) &&
-            Objects.equals(token, that.token);
+        return sequenceNumber == that.sequenceNumber
+            && Objects.equals(blob, that.blob)
+            && Objects.equals(options, that.options)
+            && Objects.equals(offset, that.offset)
+            && Objects.equals(token, that.token);
     }
 
     @Override
