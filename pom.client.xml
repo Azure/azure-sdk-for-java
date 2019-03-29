@@ -510,7 +510,15 @@
               </group>
               <group>
                 <title>Azure Common</title>
-                <packages>com.microsoft.azure.common*</packages>
+                <packages>com.microsoft.azure.common.azure-common*</packages>
+              </group>
+              <group>
+                <title>Azure Common - Management</title>
+                <packages>com.microsoft.azure.common.azure-common-mgmt*</packages>
+              </group>
+              <group>
+                <title>Azure Common - Authentication</title>
+                <packages>com.microsoft.azure.common.azure-common-auth*</packages>
               </group>
             </groups>
           </configuration>

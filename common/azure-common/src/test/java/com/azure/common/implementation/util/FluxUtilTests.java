@@ -9,7 +9,6 @@ package com.azure.common.implementation.util;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.Exceptions;
@@ -22,8 +21,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -31,14 +28,6 @@ import java.security.NoSuchAlgorithmException;
 import static org.junit.Assert.*;
 
 public class FluxUtilTests {
-
-    @BeforeClass
-    public static void setUp() throws Exception {
-        File dir = new File("target");
-        if (!dir.exists()) {
-            Files.createDirectory(Paths.get("target"));
-        }
-    }
 
     @Test
     public void testCanReadSlice() throws IOException {
@@ -265,18 +254,12 @@ public class FluxUtilTests {
         return bytes;
     }
 
-    /**
-     * Helper class for creating file if not exists
-     *
-     * @param fileName
-     * @return File file
-     * @throws IOException
-     */
-    private File createFileIfNotExist(String fileName) throws IOException{
+    private File createFileIfNotExist(String fileName) throws IOException {
         File file = new File(fileName);
-        if (!file.exists()) {
-            file = Files.createFile(Paths.get(fileName)).toFile();
+        if (file.getParentFile() != null) {
+            file.getParentFile().mkdirs();
         }
+        file.createNewFile();
         return file;
     }
 

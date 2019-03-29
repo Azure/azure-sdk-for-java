@@ -125,12 +125,8 @@
   </dependencies>
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-      </plugin>
-
-      <!--The plugin may outdated with WireWork. TODO: Move to WireWork -->
+      <!--The plugin may outdated with WireWork. TODO: Move to WireWork.
+      Issue: https://github.com/Azure/azure-sdk-for-java/issues/3255-->
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
@@ -145,7 +141,8 @@
         </configuration>
       </plugin>
 
-      <!--The plugin may outdated with WireWork. TODO: Move to WireWork -->
+      <!--The plugin may outdated with WireWork. TODO: Move to WireWork.
+      Issue: https://github.com/Azure/azure-sdk-for-java/issues/3255-->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
