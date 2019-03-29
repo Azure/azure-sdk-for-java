@@ -137,6 +137,15 @@ If you would like to become an active contributor to this project please follow 
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+## Tested Operating Systems and Java Versions
+
+Currently the tests in this repository are running against:
+
+| Linux (Ubuntu 16.04) | MacOS 10.13 | Windows Server 2016 |
+|----------------------|-------------|---------------------|
+| **Java 8**           |      x      |          x          |
+| **Java LTS**         |      x      |          x          |
+
 ---
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
