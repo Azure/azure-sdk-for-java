@@ -1,5 +1,3 @@
-package com.azure.applicationconfig.hello_world;
-
 import com.azure.applicationconfig.ConfigurationClient;
 import com.azure.applicationconfig.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
@@ -8,6 +6,9 @@ import com.azure.common.http.rest.RestResponse;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Sample demonstrates how to add, get, and delete a configuration setting.
+ */
 public class HelloWorld {
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException {
         // Retrieve the connection string from the configuration store.
