@@ -33,7 +33,6 @@ class ApplicationInsightsComponentFavoriteImpl extends CreatableUpdatableImpl<Ap
         this.manager = manager;
         // Set resource name
         this.favoriteId = inner.name();
-        // resource ancestor names
         //
     }
 
@@ -62,7 +61,10 @@ class ApplicationInsightsComponentFavoriteImpl extends CreatableUpdatableImpl<Ap
     }
 
     @Override
-    public boolean isInCreateMode() { return false; }
+    public boolean isInCreateMode() {
+    // This is a create-only resource
+        return true;
+    }
 
 
     @Override
