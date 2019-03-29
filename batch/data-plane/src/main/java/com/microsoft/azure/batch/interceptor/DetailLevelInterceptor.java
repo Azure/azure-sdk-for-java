@@ -32,8 +32,7 @@ public class DetailLevelInterceptor extends RequestInterceptor {
                         if (selectMethod != null) {
                             selectMethod.invoke(request, detailLevel.selectClause());
                         }
-                    }
-                    catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
                         // Ignore exception
                     }
 
@@ -42,8 +41,7 @@ public class DetailLevelInterceptor extends RequestInterceptor {
                         if (filterMethod != null) {
                             filterMethod.invoke(request, detailLevel.filterClause());
                         }
-                    }
-                    catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
                         // Ignore exception
                     }
 
@@ -52,8 +50,7 @@ public class DetailLevelInterceptor extends RequestInterceptor {
                         if (expandMethod != null) {
                             expandMethod.invoke(request, detailLevel.expandClause());
                         }
-                    }
-                    catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
                         // Ignore exception
                     }
                 }

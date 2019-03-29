@@ -32,8 +32,7 @@ public class ClientRequestIdInterceptor extends RequestInterceptor {
                     if (returnClientRequestIdMethod != null) {
                         returnClientRequestIdMethod.invoke(request, true);
                     }
-                }
-                catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
                     // Ignore exception
                 }
             }

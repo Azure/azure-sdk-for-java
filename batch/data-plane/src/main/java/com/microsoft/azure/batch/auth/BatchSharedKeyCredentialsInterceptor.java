@@ -160,7 +160,7 @@ class BatchSharedKeyCredentialsInterceptor implements Interceptor {
                         .toLowerCase(Locale.US);
                 queryComponents.put(
                         key,
-                        key + ":" + URLDecoder.decode(pair.substring(idx + 1),"UTF-8"));
+                        key + ":" + URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
             }
 
             for (Map.Entry<String, String> entry : queryComponents.entrySet()) {

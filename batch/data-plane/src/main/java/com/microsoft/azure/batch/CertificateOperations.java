@@ -43,7 +43,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         parentBatchClient = batchClient;
 
         // inherit from instantiating parent
-        InternalHelper.InheritClientBehaviorsAndSetPublicProperty(this, inheritedBehaviors);
+        InternalHelper.inheritClientBehaviorsAndSetPublicProperty(this, inheritedBehaviors);
     }
 
     /**
@@ -76,7 +76,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         return hexify(digest);
     }
 
-    private static String hexify (byte bytes[]) {
+    private static String hexify(byte[] bytes) {
         char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
         StringBuilder buf = new StringBuilder(bytes.length * 2);
