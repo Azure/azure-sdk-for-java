@@ -141,10 +141,10 @@ If you would like to become an active contributor to this project please follow 
 
 Currently the tests in this repository are running against:
 
-| Linux (Ubuntu 16.04) | MacOS 10.13 | Windows Server 2016 |
-|----------------------|-------------|---------------------|
-| **Java 8**           |      x      |          x          |
-| **Java LTS**         |      x      |          x          |
+|                      | Linux (Ubuntu 16.04) | MacOS 10.13 | Windows Server 2016 |
+|----------------------|----------------------|-------------|---------------------|
+| **Java 8**           |  x                   |      x      |          x          |
+| **Java LTS**         |  x                   |      x      |          x          |
 
 ---
 
