@@ -303,6 +303,19 @@ public class MonitorManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The BaselinesInner object to access its operations.
+     */
+    private BaselinesInner baselines;
+
+    /**
+     * Gets the BaselinesInner object to access its operations.
+     * @return the BaselinesInner object.
+     */
+    public BaselinesInner baselines() {
+        return this.baselines;
+    }
+
+    /**
      * The MetricBaselinesInner object to access its operations.
      */
     private MetricBaselinesInner metricBaselines;
@@ -428,6 +441,7 @@ public class MonitorManagementClientImpl extends AzureServiceClient {
         this.tenantActivityLogs = new TenantActivityLogsInner(restClient().retrofit(), this);
         this.metricDefinitions = new MetricDefinitionsInner(restClient().retrofit(), this);
         this.metrics = new MetricsInner(restClient().retrofit(), this);
+        this.baselines = new BaselinesInner(restClient().retrofit(), this);
         this.metricBaselines = new MetricBaselinesInner(restClient().retrofit(), this);
         this.metricAlerts = new MetricAlertsInner(restClient().retrofit(), this);
         this.metricAlertsStatus = new MetricAlertsStatusInner(restClient().retrofit(), this);
