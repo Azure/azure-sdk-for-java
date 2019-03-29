@@ -14,7 +14,7 @@ import com.microsoft.azure.management.recoveryservices.v2016_06_01.RecoveryServi
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.CheckNameAvailabilityResultResource;
-import com.microsoft.azure.management.recoveryservices.v2016_06_01.ResourceNameAvailabilityParameters;
+import com.microsoft.azure.management.recoveryservices.v2016_06_01.CheckNameAvailabilityParameters;
 
 class RecoveryServicesImpl extends WrapperImpl<RecoveryServicesInner> implements RecoveryServices {
     private final RecoveryServicesManager manager;
@@ -29,7 +29,7 @@ class RecoveryServicesImpl extends WrapperImpl<RecoveryServicesInner> implements
     }
 
     @Override
-    public Observable<CheckNameAvailabilityResultResource> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
+    public Observable<CheckNameAvailabilityResultResource> checkNameAvailabilityAsync(String resourceGroupName, String location, CheckNameAvailabilityParameters input) {
         RecoveryServicesInner client = this.inner();
         return client.checkNameAvailabilityAsync(resourceGroupName, location, input)
         .map(new Func1<CheckNameAvailabilityResultResourceInner, CheckNameAvailabilityResultResource>() {

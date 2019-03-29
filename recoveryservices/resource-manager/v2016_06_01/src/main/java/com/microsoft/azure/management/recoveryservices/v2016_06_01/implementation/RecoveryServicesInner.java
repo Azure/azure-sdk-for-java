@@ -11,7 +11,7 @@ package com.microsoft.azure.management.recoveryservices.v2016_06_01.implementati
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.recoveryservices.v2016_06_01.ResourceNameAvailabilityParameters;
+import com.microsoft.azure.management.recoveryservices.v2016_06_01.CheckNameAvailabilityParameters;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -56,7 +56,7 @@ public class RecoveryServicesInner {
     interface RecoveryServicesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.recoveryservices.v2016_06_01.RecoveryServices checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/locations/{location}/checkNameAvailability")
-        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("location") String location, @Query("api-version") String apiVersion, @Body ResourceNameAvailabilityParameters input, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("location") String location, @Query("api-version") String apiVersion, @Body CheckNameAvailabilityParameters input, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -73,7 +73,7 @@ public class RecoveryServicesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CheckNameAvailabilityResultResourceInner object if successful.
      */
-    public CheckNameAvailabilityResultResourceInner checkNameAvailability(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
+    public CheckNameAvailabilityResultResourceInner checkNameAvailability(String resourceGroupName, String location, CheckNameAvailabilityParameters input) {
         return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, location, input).toBlocking().single().body();
     }
 
@@ -89,7 +89,7 @@ public class RecoveryServicesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<CheckNameAvailabilityResultResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input, final ServiceCallback<CheckNameAvailabilityResultResourceInner> serviceCallback) {
+    public ServiceFuture<CheckNameAvailabilityResultResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, CheckNameAvailabilityParameters input, final ServiceCallback<CheckNameAvailabilityResultResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, location, input), serviceCallback);
     }
 
@@ -104,7 +104,7 @@ public class RecoveryServicesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CheckNameAvailabilityResultResourceInner object
      */
-    public Observable<CheckNameAvailabilityResultResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
+    public Observable<CheckNameAvailabilityResultResourceInner> checkNameAvailabilityAsync(String resourceGroupName, String location, CheckNameAvailabilityParameters input) {
         return checkNameAvailabilityWithServiceResponseAsync(resourceGroupName, location, input).map(new Func1<ServiceResponse<CheckNameAvailabilityResultResourceInner>, CheckNameAvailabilityResultResourceInner>() {
             @Override
             public CheckNameAvailabilityResultResourceInner call(ServiceResponse<CheckNameAvailabilityResultResourceInner> response) {
@@ -124,7 +124,7 @@ public class RecoveryServicesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CheckNameAvailabilityResultResourceInner object
      */
-    public Observable<ServiceResponse<CheckNameAvailabilityResultResourceInner>> checkNameAvailabilityWithServiceResponseAsync(String resourceGroupName, String location, ResourceNameAvailabilityParameters input) {
+    public Observable<ServiceResponse<CheckNameAvailabilityResultResourceInner>> checkNameAvailabilityWithServiceResponseAsync(String resourceGroupName, String location, CheckNameAvailabilityParameters input) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
