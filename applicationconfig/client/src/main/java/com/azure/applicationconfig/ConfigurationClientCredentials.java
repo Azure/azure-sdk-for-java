@@ -120,8 +120,9 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
             }
 
             for (String arg : args) {
-                String segment = arg.trim().toLowerCase(Locale.US);
+                String segment = arg.trim();
                 String lowerCase = segment.toLowerCase(Locale.US);
+
                 if (lowerCase.startsWith(ENDPOINT)) {
                     try {
                         this.baseUri = new URL(segment.substring(ENDPOINT.length()));
