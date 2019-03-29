@@ -25,9 +25,9 @@ public interface RunOutput extends HasInner<RunOutputInner>, Indexable, Refresha
     String artifactId();
 
     /**
-     * @return the artifactLocation value.
+     * @return the artifactUri value.
      */
-    String artifactLocation();
+    String artifactUri();
 
     /**
      * @return the id value.
