@@ -1104,34 +1104,37 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     /**
      * Get a single application template.
      *
+     * @param applicationTemplateId The combination id of manifestId and manifestVersion of the IoT Central application template.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorDetailsException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppTemplateInner object if successful.
      */
-    public AppTemplateInner template() {
-        return templateWithServiceResponseAsync().toBlocking().single().body();
+    public AppTemplateInner template(String applicationTemplateId) {
+        return templateWithServiceResponseAsync(applicationTemplateId).toBlocking().single().body();
     }
 
     /**
      * Get a single application template.
      *
+     * @param applicationTemplateId The combination id of manifestId and manifestVersion of the IoT Central application template.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AppTemplateInner> templateAsync(final ServiceCallback<AppTemplateInner> serviceCallback) {
-        return ServiceFuture.fromResponse(templateWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<AppTemplateInner> templateAsync(String applicationTemplateId, final ServiceCallback<AppTemplateInner> serviceCallback) {
+        return ServiceFuture.fromResponse(templateWithServiceResponseAsync(applicationTemplateId), serviceCallback);
     }
 
     /**
      * Get a single application template.
      *
+     * @param applicationTemplateId The combination id of manifestId and manifestVersion of the IoT Central application template.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppTemplateInner object
      */
-    public Observable<AppTemplateInner> templateAsync() {
-        return templateWithServiceResponseAsync().map(new Func1<ServiceResponse<AppTemplateInner>, AppTemplateInner>() {
+    public Observable<AppTemplateInner> templateAsync(String applicationTemplateId) {
+        return templateWithServiceResponseAsync(applicationTemplateId).map(new Func1<ServiceResponse<AppTemplateInner>, AppTemplateInner>() {
             @Override
             public AppTemplateInner call(ServiceResponse<AppTemplateInner> response) {
                 return response.body();
@@ -1142,20 +1145,21 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     /**
      * Get a single application template.
      *
+     * @param applicationTemplateId The combination id of manifestId and manifestVersion of the IoT Central application template.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppTemplateInner object
      */
-    public Observable<ServiceResponse<AppTemplateInner>> templateWithServiceResponseAsync() {
+    public Observable<ServiceResponse<AppTemplateInner>> templateWithServiceResponseAsync(String applicationTemplateId) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.applicationTemplateId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.applicationTemplateId() is required and cannot be null.");
+        if (applicationTemplateId == null) {
+            throw new IllegalArgumentException("Parameter applicationTemplateId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.template(this.client.subscriptionId(), this.client.applicationTemplateId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.template(this.client.subscriptionId(), applicationTemplateId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppTemplateInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AppTemplateInner>> call(Response<ResponseBody> response) {

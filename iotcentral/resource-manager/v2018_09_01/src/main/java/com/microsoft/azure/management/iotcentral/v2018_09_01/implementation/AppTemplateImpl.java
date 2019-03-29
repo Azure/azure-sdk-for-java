@@ -14,6 +14,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 
 class AppTemplateImpl extends WrapperImpl<AppTemplateInner> implements AppTemplate {
+    private String applicationTemplateId;
     private final IoTCentralManager manager;
 
     AppTemplateImpl(AppTemplateInner inner,  IoTCentralManager manager) {

@@ -124,9 +124,9 @@ class AppsImpl extends WrapperImpl<AppsInner> implements Apps {
     }
 
     @Override
-    public Observable<AppTemplate> templateAsync() {
+    public Observable<AppTemplate> templateAsync(String applicationTemplateId) {
         AppsInner client = this.inner();
-        return client.templateAsync()
+        return client.templateAsync(applicationTemplateId)
         .map(new Func1<AppTemplateInner, AppTemplate>() {
             @Override
             public AppTemplate call(AppTemplateInner inner) {

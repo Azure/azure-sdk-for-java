@@ -72,10 +72,11 @@ public interface Apps {
     /**
      * Get a single application template.
      *
+     * @param applicationTemplateId The combination id of manifestId and manifestVersion of the IoT Central application template.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<AppTemplate> templateAsync();
+    Observable<AppTemplate> templateAsync(String applicationTemplateId);
 
     /**
      * Check if an IoT Central application name is available.
