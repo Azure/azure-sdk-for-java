@@ -21,7 +21,7 @@ public class SqlContainerCreateUpdateParameters {
      * The standard JSON format of a SQL container.
      */
     @JsonProperty(value = "properties.resource", required = true)
-    private SqlContainerCreateUpdateResource resource;
+    private SqlContainerResource resource;
 
     /**
      * A key-value pair of options to be applied for the request. This
@@ -35,7 +35,7 @@ public class SqlContainerCreateUpdateParameters {
      *
      * @return the resource value
      */
-    public SqlContainerCreateUpdateResource resource() {
+    public SqlContainerResource resource() {
         return this.resource;
     }
 
@@ -45,7 +45,7 @@ public class SqlContainerCreateUpdateParameters {
      * @param resource the resource value to set
      * @return the SqlContainerCreateUpdateParameters object itself.
      */
-    public SqlContainerCreateUpdateParameters withResource(SqlContainerCreateUpdateResource resource) {
+    public SqlContainerCreateUpdateParameters withResource(SqlContainerResource resource) {
         this.resource = resource;
         return this;
     }

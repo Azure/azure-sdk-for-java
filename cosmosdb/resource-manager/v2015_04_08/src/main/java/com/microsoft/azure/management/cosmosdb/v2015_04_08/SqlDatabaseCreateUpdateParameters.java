@@ -21,7 +21,7 @@ public class SqlDatabaseCreateUpdateParameters {
      * The standard JSON format of a SQL database.
      */
     @JsonProperty(value = "properties.resource", required = true)
-    private SqlDatabaseCreateUpdateResource resource;
+    private SqlDatabaseResource resource;
 
     /**
      * A key-value pair of options to be applied for the request. This
@@ -35,7 +35,7 @@ public class SqlDatabaseCreateUpdateParameters {
      *
      * @return the resource value
      */
-    public SqlDatabaseCreateUpdateResource resource() {
+    public SqlDatabaseResource resource() {
         return this.resource;
     }
 
@@ -45,7 +45,7 @@ public class SqlDatabaseCreateUpdateParameters {
      * @param resource the resource value to set
      * @return the SqlDatabaseCreateUpdateParameters object itself.
      */
-    public SqlDatabaseCreateUpdateParameters withResource(SqlDatabaseCreateUpdateResource resource) {
+    public SqlDatabaseCreateUpdateParameters withResource(SqlDatabaseResource resource) {
         this.resource = resource;
         return this;
     }

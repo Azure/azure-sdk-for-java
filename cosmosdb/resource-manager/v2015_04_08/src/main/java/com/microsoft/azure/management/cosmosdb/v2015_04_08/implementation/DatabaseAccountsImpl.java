@@ -31,9 +31,9 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.KeyKind;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetric;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountUsage;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetricDefinition;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseResource;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabase;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseCreateUpdateParameters;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerResource;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainer;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerCreateUpdateParameters;
 
 class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, DatabaseAccountImpl, DatabaseAccountInner, DatabaseAccountsInner, DocumentDBManager>  implements DatabaseAccounts {
@@ -220,15 +220,15 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return  new DatabaseAccountMetricDefinitionImpl(inner, manager());
     }
 
-    private SqlDatabaseResourceImpl wrapSqlDatabaseResourceModel(SqlDatabaseResourceInner inner) {
-        return  new SqlDatabaseResourceImpl(inner, manager());
+    private SqlDatabaseImpl wrapSqlDatabaseModel(SqlDatabaseInner inner) {
+        return  new SqlDatabaseImpl(inner, manager());
     }
 
-    private SqlContainerResourceImpl wrapSqlContainerResourceModel(SqlContainerResourceInner inner) {
-        return  new SqlContainerResourceImpl(inner, manager());
+    private SqlContainerImpl wrapSqlContainerModel(SqlContainerInner inner) {
+        return  new SqlContainerImpl(inner, manager());
     }
 
-    private Observable<SqlContainerResourceInner> getSqlContainerResourceInnerUsingDatabaseAccountsInnerAsync(String id) {
+    private Observable<SqlContainerInner> getSqlContainerInnerUsingDatabaseAccountsInnerAsync(String id) {
         String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
         String accountName = IdParsingUtils.getValueFromIdByName(id, "databaseAccounts");
         String databaseRid = IdParsingUtils.getValueFromIdByName(id, "databases");
@@ -310,43 +310,43 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<SqlDatabaseResource> listSqlDatabasesAsync(String resourceGroupName, String accountName) {
+    public Observable<SqlDatabase> listSqlDatabasesAsync(String resourceGroupName, String accountName) {
         DatabaseAccountsInner client = this.inner();
         return client.listSqlDatabasesAsync(resourceGroupName, accountName)
-        .flatMap(new Func1<List<SqlDatabaseResourceInner>, Observable<SqlDatabaseResourceInner>>() {
+        .flatMap(new Func1<List<SqlDatabaseInner>, Observable<SqlDatabaseInner>>() {
             @Override
-            public Observable<SqlDatabaseResourceInner> call(List<SqlDatabaseResourceInner> innerList) {
+            public Observable<SqlDatabaseInner> call(List<SqlDatabaseInner> innerList) {
                 return Observable.from(innerList);
             }
         })
-        .map(new Func1<SqlDatabaseResourceInner, SqlDatabaseResource>() {
+        .map(new Func1<SqlDatabaseInner, SqlDatabase>() {
             @Override
-            public SqlDatabaseResource call(SqlDatabaseResourceInner inner) {
-                return new SqlDatabaseResourceImpl(inner, manager());
+            public SqlDatabase call(SqlDatabaseInner inner) {
+                return new SqlDatabaseImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<SqlDatabaseResource> createSqlDatabaseAsync(String resourceGroupName, String accountName, SqlDatabaseCreateUpdateParameters createSqlDatabaseParameters) {
+    public Observable<SqlDatabase> createSqlDatabaseAsync(String resourceGroupName, String accountName, SqlDatabaseCreateUpdateParameters createSqlDatabaseParameters) {
         DatabaseAccountsInner client = this.inner();
         return client.createSqlDatabaseAsync(resourceGroupName, accountName, createSqlDatabaseParameters)
-        .map(new Func1<SqlDatabaseResourceInner, SqlDatabaseResource>() {
+        .map(new Func1<SqlDatabaseInner, SqlDatabase>() {
             @Override
-            public SqlDatabaseResource call(SqlDatabaseResourceInner inner) {
-                return new SqlDatabaseResourceImpl(inner, manager());
+            public SqlDatabase call(SqlDatabaseInner inner) {
+                return new SqlDatabaseImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<SqlDatabaseResource> getSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+    public Observable<SqlDatabase> getSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
         DatabaseAccountsInner client = this.inner();
         return client.getSqlDatabaseAsync(resourceGroupName, accountName, databaseRid)
-        .map(new Func1<SqlDatabaseResourceInner, SqlDatabaseResource>() {
+        .map(new Func1<SqlDatabaseInner, SqlDatabase>() {
             @Override
-            public SqlDatabaseResource call(SqlDatabaseResourceInner inner) {
-                return new SqlDatabaseResourceImpl(inner, manager());
+            public SqlDatabase call(SqlDatabaseInner inner) {
+                return new SqlDatabaseImpl(inner, manager());
             }
         });
     }
@@ -358,31 +358,31 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<SqlContainerResource> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+    public Observable<SqlContainer> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
         DatabaseAccountsInner client = this.inner();
         return client.getSqlContainerAsync(resourceGroupName, accountName, databaseRid, containerRid)
-        .map(new Func1<SqlContainerResourceInner, SqlContainerResource>() {
+        .map(new Func1<SqlContainerInner, SqlContainer>() {
             @Override
-            public SqlContainerResource call(SqlContainerResourceInner inner) {
-                return wrapSqlContainerResourceModel(inner);
+            public SqlContainer call(SqlContainerInner inner) {
+                return wrapSqlContainerModel(inner);
             }
        });
     }
 
     @Override
-    public Observable<SqlContainerResource> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
+    public Observable<SqlContainer> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
         DatabaseAccountsInner client = this.inner();
         return client.listSqlContainersAsync(resourceGroupName, accountName, databaseRid)
-        .flatMap(new Func1<List<SqlContainerResourceInner>, Observable<SqlContainerResourceInner>>() {
+        .flatMap(new Func1<List<SqlContainerInner>, Observable<SqlContainerInner>>() {
             @Override
-            public Observable<SqlContainerResourceInner> call(List<SqlContainerResourceInner> innerList) {
+            public Observable<SqlContainerInner> call(List<SqlContainerInner> innerList) {
                 return Observable.from(innerList);
             }
         })
-        .map(new Func1<SqlContainerResourceInner, SqlContainerResource>() {
+        .map(new Func1<SqlContainerInner, SqlContainer>() {
             @Override
-            public SqlContainerResource call(SqlContainerResourceInner inner) {
-                return wrapSqlContainerResourceModel(inner);
+            public SqlContainer call(SqlContainerInner inner) {
+                return wrapSqlContainerModel(inner);
             }
         });
     }
@@ -394,13 +394,13 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<SqlContainerResource> createSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, SqlContainerCreateUpdateParameters createSqlContainerParameters) {
+    public Observable<SqlContainer> createSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, SqlContainerCreateUpdateParameters createSqlContainerParameters) {
         DatabaseAccountsInner client = this.inner();
         return client.createSqlContainerAsync(resourceGroupName, accountName, databaseRid, createSqlContainerParameters)
-        .map(new Func1<SqlContainerResourceInner, SqlContainerResource>() {
+        .map(new Func1<SqlContainerInner, SqlContainer>() {
             @Override
-            public SqlContainerResource call(SqlContainerResourceInner inner) {
-                return new SqlContainerResourceImpl(inner, manager());
+            public SqlContainer call(SqlContainerInner inner) {
+                return new SqlContainerImpl(inner, manager());
             }
         });
     }

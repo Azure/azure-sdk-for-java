@@ -8,78 +8,36 @@
 
 package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
-import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.SqlDatabaseResourceInner;
-import com.microsoft.azure.arm.model.Indexable;
-import com.microsoft.azure.arm.model.Updatable;
-import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Type representing SqlDatabaseResource.
+ * Cosmos DB SQL database id object.
  */
-public interface SqlDatabaseResource extends HasInner<SqlDatabaseResourceInner>, Indexable, Updatable<SqlDatabaseResource.Update>, HasManager<DocumentDBManager> {
+public class SqlDatabaseResource {
     /**
-     * @return the _colls value.
+     * Name of the Cosmos DB SQL database.
      */
-    String _colls();
+    @JsonProperty(value = "id", required = true)
+    private String id;
 
     /**
-     * @return the _etag value.
+     * Get name of the Cosmos DB SQL database.
+     *
+     * @return the id value
      */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _self value.
-     */
-    String _self();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the _users value.
-     */
-    String _users();
-
-    /**
-     * @return the id value.
-     */
-    String id();
-
-    /**
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * @return the sqlDatabaseResourceId value.
-     */
-    String sqlDatabaseResourceId();
-
-    /**
-     * @return the type value.
-     */
-    String type();
-
-    /**
-     * The template for a SqlDatabaseResource update operation, containing all the settings that can be modified.
-     */
-    interface Update extends Appliable<SqlDatabaseResource> {
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Grouping of SqlDatabaseResource update stages.
+     * Set name of the Cosmos DB SQL database.
+     *
+     * @param id the id value to set
+     * @return the SqlDatabaseResource object itself.
      */
-    interface UpdateStages {
+    public SqlDatabaseResource withId(String id) {
+        this.id = id;
+        return this;
     }
+
 }

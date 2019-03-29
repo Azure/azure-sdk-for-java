@@ -8,109 +8,170 @@
 
 package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
-import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.SqlContainerResourceInner;
-import com.microsoft.azure.arm.model.Indexable;
-import com.microsoft.azure.arm.model.Refreshable;
-import com.microsoft.azure.arm.model.Updatable;
-import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Type representing SqlContainerResource.
+ * Cosmos DB SQL container resource object.
  */
-public interface SqlContainerResource extends HasInner<SqlContainerResourceInner>, Indexable, Refreshable<SqlContainerResource>, Updatable<SqlContainerResource.Update>, HasManager<DocumentDBManager> {
+public class SqlContainerResource {
     /**
-     * @return the _conflicts value.
+     * Name of the Cosmos DB SQL container.
      */
-    String _conflicts();
+    @JsonProperty(value = "id", required = true)
+    private String id;
 
     /**
-     * @return the _doc value.
+     * The configuration of the indexing policy. By default, the indexing is
+     * automatic for all document paths within the SQL container.
      */
-    String _doc();
+    @JsonProperty(value = "indexingPolicy")
+    private IndexingPolicy indexingPolicy;
 
     /**
-     * @return the _etag value.
+     * The configuration of the partition key to be used for partitioning data
+     * into multiple partitions.
      */
-    String _etag();
+    @JsonProperty(value = "partitionKey")
+    private PartitionKey partitionKey;
 
     /**
-     * @return the _rid value.
+     * Default time to live.
      */
-    String _rid();
+    @JsonProperty(value = "defaultTtl")
+    private Integer defaultTtl;
 
     /**
-     * @return the _self value.
+     * The unique key policy configuration for specifying uniqueness
+     * constraints on documents in the collection in the Azure Cosmos DB
+     * service.
      */
-    String _self();
+    @JsonProperty(value = "uniqueKeyPolicy")
+    private UniqueKeyPolicy uniqueKeyPolicy;
 
     /**
-     * @return the _sprocs value.
+     * The conflict resolution policy for the SQL container.
      */
-    String _sprocs();
+    @JsonProperty(value = "conflictResolutionPolicy")
+    private ConflictResolutionPolicy conflictResolutionPolicy;
 
     /**
-     * @return the _triggers value.
+     * Get name of the Cosmos DB SQL container.
+     *
+     * @return the id value
      */
-    String _triggers();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the _udfs value.
-     */
-    String _udfs();
-
-    /**
-     * @return the conflictResolutionPolicy value.
-     */
-    ConflictResolutionPolicy conflictResolutionPolicy();
-
-    /**
-     * @return the id value.
-     */
-    String id();
-
-    /**
-     * @return the indexingPolicy value.
-     */
-    IndexingPolicy indexingPolicy();
-
-    /**
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * @return the partitionKey value.
-     */
-    PartitionKey partitionKey();
-
-    /**
-     * @return the sqlContainerResourceId value.
-     */
-    String sqlContainerResourceId();
-
-    /**
-     * @return the type value.
-     */
-    String type();
-
-    /**
-     * The template for a SqlContainerResource update operation, containing all the settings that can be modified.
-     */
-    interface Update extends Appliable<SqlContainerResource> {
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Grouping of SqlContainerResource update stages.
+     * Set name of the Cosmos DB SQL container.
+     *
+     * @param id the id value to set
+     * @return the SqlContainerResource object itself.
      */
-    interface UpdateStages {
+    public SqlContainerResource withId(String id) {
+        this.id = id;
+        return this;
     }
+
+    /**
+     * Get the configuration of the indexing policy. By default, the indexing is automatic for all document paths within the SQL container.
+     *
+     * @return the indexingPolicy value
+     */
+    public IndexingPolicy indexingPolicy() {
+        return this.indexingPolicy;
+    }
+
+    /**
+     * Set the configuration of the indexing policy. By default, the indexing is automatic for all document paths within the SQL container.
+     *
+     * @param indexingPolicy the indexingPolicy value to set
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withIndexingPolicy(IndexingPolicy indexingPolicy) {
+        this.indexingPolicy = indexingPolicy;
+        return this;
+    }
+
+    /**
+     * Get the configuration of the partition key to be used for partitioning data into multiple partitions.
+     *
+     * @return the partitionKey value
+     */
+    public PartitionKey partitionKey() {
+        return this.partitionKey;
+    }
+
+    /**
+     * Set the configuration of the partition key to be used for partitioning data into multiple partitions.
+     *
+     * @param partitionKey the partitionKey value to set
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withPartitionKey(PartitionKey partitionKey) {
+        this.partitionKey = partitionKey;
+        return this;
+    }
+
+    /**
+     * Get default time to live.
+     *
+     * @return the defaultTtl value
+     */
+    public Integer defaultTtl() {
+        return this.defaultTtl;
+    }
+
+    /**
+     * Set default time to live.
+     *
+     * @param defaultTtl the defaultTtl value to set
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withDefaultTtl(Integer defaultTtl) {
+        this.defaultTtl = defaultTtl;
+        return this;
+    }
+
+    /**
+     * Get the unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos DB service.
+     *
+     * @return the uniqueKeyPolicy value
+     */
+    public UniqueKeyPolicy uniqueKeyPolicy() {
+        return this.uniqueKeyPolicy;
+    }
+
+    /**
+     * Set the unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos DB service.
+     *
+     * @param uniqueKeyPolicy the uniqueKeyPolicy value to set
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
+        this.uniqueKeyPolicy = uniqueKeyPolicy;
+        return this;
+    }
+
+    /**
+     * Get the conflict resolution policy for the SQL container.
+     *
+     * @return the conflictResolutionPolicy value
+     */
+    public ConflictResolutionPolicy conflictResolutionPolicy() {
+        return this.conflictResolutionPolicy;
+    }
+
+    /**
+     * Set the conflict resolution policy for the SQL container.
+     *
+     * @param conflictResolutionPolicy the conflictResolutionPolicy value to set
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withConflictResolutionPolicy(ConflictResolutionPolicy conflictResolutionPolicy) {
+        this.conflictResolutionPolicy = conflictResolutionPolicy;
+        return this;
+    }
+
 }
