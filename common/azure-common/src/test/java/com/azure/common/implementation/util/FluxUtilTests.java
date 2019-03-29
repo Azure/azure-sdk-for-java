@@ -9,6 +9,7 @@ package com.azure.common.implementation.util;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.Exceptions;
@@ -21,6 +22,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -29,12 +32,22 @@ import static org.junit.Assert.*;
 
 public class FluxUtilTests {
 
+    @BeforeClass
+    public static void setUp() throws Exception {
+        File dir = new File("target");
+        if (!dir.exists()) {
+            Files.createDirectory(Paths.get("target"));
+        }
+    }
+
     @Test
     public void testCanReadSlice() throws IOException {
-        File file = new File("target/test1");
+        File file = createFileIfNotExist("target/test1");
         FileOutputStream stream = new FileOutputStream(file);
         stream.write("hello there".getBytes(StandardCharsets.UTF_8));
-        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+        stream.close();
+
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath() , StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel, 1, 3)
                     .map(bb -> {
                         byte[] bt = toBytes(bb);
@@ -60,8 +73,8 @@ public class FluxUtilTests {
 
     @Test
     public void testCanReadEmptyFile() throws IOException {
-        File file = new File("target/test2");
-        file.createNewFile();
+        File file = createFileIfNotExist("target/test2");
+
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel, 1, 3)
                     .map(bb -> {
@@ -85,9 +98,10 @@ public class FluxUtilTests {
 
     @Test
     public void testAsynchronyShortInput() throws IOException {
-        File file = new File("target/test3");
+        File file = createFileIfNotExist("target/test3");
         FileOutputStream stream = new FileOutputStream(file);
         stream.write("hello there".getBytes(StandardCharsets.UTF_8));
+        stream.close();
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel)
                     .map(bb -> {
@@ -117,7 +131,7 @@ public class FluxUtilTests {
 
     @Test
     public void testAsynchronyLongInput() throws IOException, NoSuchAlgorithmException {
-        File file = new File("target/test4");
+        File file = createFileIfNotExist("target/test4");
         byte[] array = "1234567690".getBytes(StandardCharsets.UTF_8);
         MessageDigest digest = MessageDigest.getInstance("MD5");
         try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
@@ -249,6 +263,21 @@ public class FluxUtilTests {
         byte[] bytes = new byte[bb.readableBytes()];
         bb.readBytes(bytes);
         return bytes;
+    }
+
+    /**
+     * Helper class for creating file if not exists
+     *
+     * @param fileName
+     * @return File file
+     * @throws IOException
+     */
+    private File createFileIfNotExist(String fileName) throws IOException{
+        File file = new File(fileName);
+        if (!file.exists()) {
+            file = Files.createFile(Paths.get(fileName)).toFile();
+        }
+        return file;
     }
 
 }
