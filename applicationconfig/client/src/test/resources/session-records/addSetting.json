@@ -1,0 +1,122 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key40286717171",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2019 18:37:50 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzg2MjU=;sn=178625",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "dbcce82a-4fb3-4f66-9917-cf1f90e8bd4a",
+      "last-modified" : "Thu, 28 Mar 2019 18:37:50 GMT",
+      "etag" : "\"UoWvv5Ab5S5AinhK3lfhl3gBiKY\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "dbcce82a-4fb3-4f66-9917-cf1f90e8bd4a",
+      "Body" : "{\"etag\":\"UoWvv5Ab5S5AinhK3lfhl3gBiKY\",\"key\":\"key40286717171\",\"label\":null,\"content_type\":null,\"value\":\"myNewValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-28T18:37:50+00:00\"}",
+      "x-ms-client-request-id" : "2dcd2913-2575-4357-ac59-4596f7056fc0"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key40286717171?label=2d0d15ff824458",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2019 18:37:50 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzg2MjY=;sn=178626",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "cb53a4af-7dc1-4d4d-8d1e-d3c2a8b19393",
+      "last-modified" : "Thu, 28 Mar 2019 18:37:50 GMT",
+      "etag" : "\"1DaFFvU71Ym0OMynzppzlRhpYuf\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "cb53a4af-7dc1-4d4d-8d1e-d3c2a8b19393",
+      "Body" : "{\"etag\":\"1DaFFvU71Ym0OMynzppzlRhpYuf\",\"key\":\"key40286717171\",\"label\":\"2d0d15ff824458\",\"content_type\":null,\"value\":\"myNewValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-28T18:37:50+00:00\"}",
+      "x-ms-client-request-id" : "23a7523e-914f-4fe0-97aa-36a04b3f09d5"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?key=key40286%2a",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2019 18:37:50 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzg2MjY=;sn=178626",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "ed010f3c-5d28-4454-8c2d-b692402832f8",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8",
+      "x-ms-request-id" : "ed010f3c-5d28-4454-8c2d-b692402832f8",
+      "Body" : "{\"items\":[{\"etag\":\"UoWvv5Ab5S5AinhK3lfhl3gBiKY\",\"key\":\"key40286717171\",\"label\":null,\"content_type\":null,\"value\":\"myNewValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-28T18:37:50+00:00\"},{\"etag\":\"1DaFFvU71Ym0OMynzppzlRhpYuf\",\"key\":\"key40286717171\",\"label\":\"2d0d15ff824458\",\"content_type\":null,\"value\":\"myNewValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-28T18:37:50+00:00\"}]}",
+      "x-ms-client-request-id" : "02d60356-e6fd-4ca7-b35f-aae3e2a5b40c"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key40286717171?label=%00",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2019 18:37:50 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzg2Mjc=;sn=178627",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "dbb34f83-d12c-4341-b163-d2854207b4fc",
+      "last-modified" : "Thu, 28 Mar 2019 18:37:50 GMT",
+      "etag" : "\"UoWvv5Ab5S5AinhK3lfhl3gBiKY\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "dbb34f83-d12c-4341-b163-d2854207b4fc",
+      "Body" : "{\"etag\":\"UoWvv5Ab5S5AinhK3lfhl3gBiKY\",\"key\":\"key40286717171\",\"label\":null,\"content_type\":null,\"value\":\"myNewValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-28T18:37:50+00:00\"}",
+      "x-ms-client-request-id" : "e2166eb8-590c-4132-94b7-51ffcae89738"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/key40286717171?label=2d0d15ff824458",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2019 18:37:50 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MjotMSMxNzg2Mjg=;sn=178628",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "2a046595-4147-4ec7-9e50-be3fe1f1fd04",
+      "last-modified" : "Thu, 28 Mar 2019 18:37:50 GMT",
+      "etag" : "\"1DaFFvU71Ym0OMynzppzlRhpYuf\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "2a046595-4147-4ec7-9e50-be3fe1f1fd04",
+      "Body" : "{\"etag\":\"1DaFFvU71Ym0OMynzppzlRhpYuf\",\"key\":\"key40286717171\",\"label\":\"2d0d15ff824458\",\"content_type\":null,\"value\":\"myNewValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-28T18:37:50+00:00\"}",
+      "x-ms-client-request-id" : "e04a0614-f9bc-4afc-907a-2a42ae6105a4"
+    }
+  } ],
+  "variables" : [ "key40286", "2d0d15ff", "key40286717171", "2d0d15ff824458" ]
+}

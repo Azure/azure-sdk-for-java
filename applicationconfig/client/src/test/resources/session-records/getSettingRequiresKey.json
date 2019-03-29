@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?key=key78599%2a",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2019 18:37:49 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "29efa6b2-e447-44e7-9ce7-9c0f4103bbe7",
+      "Body" : "{\"items\":[]}",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-client-request-id" : "344b41d4-977e-49ae-ad01-19576ca9f9aa",
+      "x-ms-correlation-request-id" : "29efa6b2-e447-44e7-9ce7-9c0f4103bbe7"
+    }
+  } ],
+  "variables" : [ "key78599", "932e1024" ]
+}
