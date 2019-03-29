@@ -182,9 +182,9 @@ public class ConfigurationClientTest {
         tags.put("AnotherTag", "AnotherTagValue");
 
         final ConfigurationSetting newConfiguration = new ConfigurationSetting()
-            .withKey(key)
-            .withValue("myNewValue")
-            .withTags(tags)
+            .key(key)
+            .value("myNewValue")
+            .tags(tags)
             .contentType("text");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
@@ -194,7 +194,7 @@ public class ConfigurationClientTest {
         };
 
         testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.withLabel(label));
+        testRunner.accept(newConfiguration.label(label));
     }
 
     /**
@@ -204,7 +204,7 @@ public class ConfigurationClientTest {
     public void addExistingSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.addSetting(expected).then(client.addSetting(expected)))
@@ -212,7 +212,7 @@ public class ConfigurationClientTest {
         };
 
         testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.withLabel(label));
+        testRunner.accept(newConfiguration.label(label));
     }
 
     /**
@@ -222,7 +222,7 @@ public class ConfigurationClientTest {
     public void lockUnlockSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting lockableConfiguration = new ConfigurationSetting().withKey(key).withValue("myLockUnlockValue");
+        final ConfigurationSetting lockableConfiguration = new ConfigurationSetting().key(key).value("myLockUnlockValue");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.addSetting(expected))
@@ -245,7 +245,7 @@ public class ConfigurationClientTest {
         };
 
         testRunner.accept(lockableConfiguration);
-        testRunner.accept(lockableConfiguration.withLabel(label));
+        testRunner.accept(lockableConfiguration.label(label));
     }
 
     /**
@@ -255,7 +255,7 @@ public class ConfigurationClientTest {
     public void lockUnlockSettingNotFound() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting notFindableConfiguration = new ConfigurationSetting().withKey(key).withValue("myExpectedNotFound");
+        final ConfigurationSetting notFindableConfiguration = new ConfigurationSetting().key(key).value("myExpectedNotFound");
 
         final Consumer<ConfigurationSetting> testRunner = (ConfigurationSetting expected) -> {
             StepVerifier.create(client.lockSetting(expected.key(), expected.label()))
@@ -266,7 +266,7 @@ public class ConfigurationClientTest {
         };
 
         testRunner.accept(notFindableConfiguration);
-        testRunner.accept(notFindableConfiguration.withLabel(label));
+        testRunner.accept(notFindableConfiguration.label(label));
     }
 
     /**
@@ -277,8 +277,8 @@ public class ConfigurationClientTest {
     public void setSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting setConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().withKey(key).withValue("myUpdatedValue");
+        final ConfigurationSetting setConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
+        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdatedValue");
 
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (expected, update) -> {
             StepVerifier.create(client.setSetting(expected))
@@ -294,7 +294,7 @@ public class ConfigurationClientTest {
         };
 
         testRunner.accept(setConfiguration, updateConfiguration);
-        testRunner.accept(setConfiguration.withLabel(label), updateConfiguration.withLabel(label));
+        testRunner.accept(setConfiguration.label(label), updateConfiguration.label(label));
     }
 
     /**
@@ -305,8 +305,8 @@ public class ConfigurationClientTest {
     public void setSettingIfEtag() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().withKey(key).withValue("myUpdateValue");
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
+        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
 
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
             StepVerifier.create(client.setSetting(initial.withEtag("badEtag")))
@@ -327,7 +327,7 @@ public class ConfigurationClientTest {
         };
 
         testRunner.accept(newConfiguration, updateConfiguration);
-        testRunner.accept(newConfiguration.withLabel(label), updateConfiguration.withLabel(label));
+        testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
     }
 
     /**
@@ -338,7 +338,7 @@ public class ConfigurationClientTest {
     public void updateNoExistingSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting expectedFail = new ConfigurationSetting().withKey(key).withValue("myFailingUpdate");
+        final ConfigurationSetting expectedFail = new ConfigurationSetting().key(key).value("myFailingUpdate");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.updateSetting(expected))
@@ -346,7 +346,7 @@ public class ConfigurationClientTest {
         };
 
         testRunner.accept(expectedFail);
-        testRunner.accept(expectedFail.withLabel(label));
+        testRunner.accept(expectedFail.label(label));
     }
 
     /**
@@ -357,8 +357,8 @@ public class ConfigurationClientTest {
     public void updateSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().withKey(key).withValue("myUpdatedValue");
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
+        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdatedValue");
 
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
             StepVerifier.create(client.addSetting(initial))
@@ -374,7 +374,7 @@ public class ConfigurationClientTest {
         };
 
         testRunner.accept(newConfiguration, updateConfiguration);
-        testRunner.accept(newConfiguration.withLabel(label), updateConfiguration.withLabel(label));
+        testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
     }
 
     /**
@@ -385,12 +385,12 @@ public class ConfigurationClientTest {
     public void updateSettingIfEtag() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().withKey(key).withValue("myUpdateValue");
-        final ConfigurationSetting finalConfiguration = new ConfigurationSetting().withKey(key).withValue("myFinalValue");
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
+        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
+        final ConfigurationSetting finalConfiguration = new ConfigurationSetting().key(key).value("myFinalValue");
 
         updateSettingIfEtagHelper(newConfiguration, updateConfiguration, finalConfiguration);
-        updateSettingIfEtagHelper(newConfiguration.withLabel(label), updateConfiguration.withLabel(label), finalConfiguration.withLabel(label));
+        updateSettingIfEtagHelper(newConfiguration.label(label), updateConfiguration.label(label), finalConfiguration.label(label));
     }
 
     private void updateSettingIfEtagHelper(ConfigurationSetting initial, ConfigurationSetting update, ConfigurationSetting last) {
@@ -419,7 +419,7 @@ public class ConfigurationClientTest {
     @Test
     public void getSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected.key(), expected.label())))
@@ -432,7 +432,7 @@ public class ConfigurationClientTest {
         };
 
         testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.withLabel("myLabel"));
+        testRunner.accept(newConfiguration.label("myLabel"));
     }
 
     /**
@@ -441,7 +441,7 @@ public class ConfigurationClientTest {
     @Test
     public void getSettingNotFound() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().withKey(key).withValue("myNeverRetreivedValue");
+        final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().key(key).value("myNeverRetreivedValue");
 
         StepVerifier.create(client.addSetting(neverRetrievedConfiguration))
                 .assertNext(response -> assertConfigurationEquals(neverRetrievedConfiguration, response))
@@ -463,7 +463,7 @@ public class ConfigurationClientTest {
     public void deleteSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting deletableConfiguration = new ConfigurationSetting().withKey(key).withValue("myValue");
+        final ConfigurationSetting deletableConfiguration = new ConfigurationSetting().key(key).value("myValue");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected.key(), expected.label())))
@@ -482,7 +482,7 @@ public class ConfigurationClientTest {
         };
 
         testRunner.accept(deletableConfiguration);
-        testRunner.accept(deletableConfiguration.withLabel(label));
+        testRunner.accept(deletableConfiguration.label(label));
     }
 
     /**
@@ -491,7 +491,7 @@ public class ConfigurationClientTest {
     @Test
     public void deleteSettingNotFound() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().withKey(key).withValue("myNeverDeletedValue");
+        final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().key(key).value("myNeverDeletedValue");
 
         StepVerifier.create(client.addSetting(neverDeletedConfiguation))
                 .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguation, response))
@@ -518,8 +518,8 @@ public class ConfigurationClientTest {
     public void deleteSettingWithETag() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().withKey(key).withValue("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().withKey(key).withValue("myUpdateValue");
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
+        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
 
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
             final String initialEtag = client.addSetting(initial).block().body().etag();
@@ -541,7 +541,7 @@ public class ConfigurationClientTest {
         };
 
         testRunner.accept(newConfiguration, updateConfiguration);
-        testRunner.accept(newConfiguration.withLabel(label), updateConfiguration.withLabel(label));
+        testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
     }
 
     /**
@@ -589,7 +589,7 @@ public class ConfigurationClientTest {
             .mapToObj(value -> {
                 String key = value % 2 == 0  ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
                 String lbl = value / 4 == 0 ? label : label2;
-                return new ConfigurationSetting().key(key).value("myValue2").label(lbl).withTags(tags);
+                return new ConfigurationSetting().key(key).value("myValue2").label(lbl).tags(tags);
             })
             .collect(Collectors.toList());
 
