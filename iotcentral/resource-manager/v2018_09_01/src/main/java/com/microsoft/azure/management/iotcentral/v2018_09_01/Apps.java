@@ -8,20 +8,75 @@
 
 package com.microsoft.azure.management.iotcentral.v2018_09_01;
 
-import com.microsoft.azure.arm.collection.SupportsCreating;
-import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGroup;
-import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
-import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
-import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
-import com.microsoft.azure.arm.collection.SupportsListing;
-import com.microsoft.azure.management.iotcentral.v2018_09_01.implementation.AppsInner;
-import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.App;
+import rx.Completable;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.AppTemplate;
 
 /**
  * Type representing Apps.
  */
-public interface Apps extends SupportsCreating<App.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<App>, SupportsListingByResourceGroup<App>, SupportsListing<App>, HasInner<AppsInner> {
+public interface Apps {
+    /**
+     * Begins definition for a new IoTApp resource.
+     * @param name resource name.
+     * @return the first stage of the new IoTApp definition.
+     */
+    App.DefinitionStages.Blank defineIoTApp(String name);
+
+    /**
+     * Get the metadata of an IoT Central application.
+     *
+     * @param resourceGroupName resource group name
+     * @param name resource name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<App> getByResourceGroupAsync(String resourceGroupName, String name);
+
+    /**
+     * Get all the IoT Central Applications in a resource group.
+     *
+     * @param resourceGroupName resource group name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<App> listByResourceGroupAsync(String resourceGroupName);
+
+    /**
+     * Get all IoT Central Applications in a subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<App> listBySubscriptionAsync();
+
+    /**
+     * Delete an IoT Central application.
+     *
+     * @param resourceGroupName resource group name
+     * @param name resource name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String name);
+
+    /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AppTemplate> listTemplatesAsync();
+
+    /**
+     * Get a single application template.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AppTemplate> templateAsync();
+
     /**
      * Check if an IoT Central application name is available.
      *
@@ -39,13 +94,5 @@ public interface Apps extends SupportsCreating<App.DefinitionStages.Blank>, Supp
      * @return the observable for the request
      */
     Observable<AppAvailabilityInfo> checkSubdomainAvailabilityAsync(OperationInputs operationInputs);
-
-    /**
-     * Get all available application templates.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<AppTemplate> listTemplatesAsync();
 
 }

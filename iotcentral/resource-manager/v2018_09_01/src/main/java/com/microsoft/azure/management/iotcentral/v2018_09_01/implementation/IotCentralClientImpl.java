@@ -63,6 +63,29 @@ public class IotCentralClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
+    /** The combination id of manifestId and manifestVersion of the IoT Central application template. */
+    private String applicationTemplateId;
+
+    /**
+     * Gets The combination id of manifestId and manifestVersion of the IoT Central application template.
+     *
+     * @return the applicationTemplateId value.
+     */
+    public String applicationTemplateId() {
+        return this.applicationTemplateId;
+    }
+
+    /**
+     * Sets The combination id of manifestId and manifestVersion of the IoT Central application template.
+     *
+     * @param applicationTemplateId the applicationTemplateId value.
+     * @return the service client itself
+     */
+    public IotCentralClientImpl withApplicationTemplateId(String applicationTemplateId) {
+        this.applicationTemplateId = applicationTemplateId;
+        return this;
+    }
+
     /** The preferred language for the response. */
     private String acceptLanguage;
 
