@@ -143,7 +143,7 @@ public class ConfigurationSetting {
      * @param tags tags
      * @return ConfigurationSetting object itself
      */
-    public ConfigurationSetting withTags(Map<String, String> tags) {
+    public ConfigurationSetting tags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
