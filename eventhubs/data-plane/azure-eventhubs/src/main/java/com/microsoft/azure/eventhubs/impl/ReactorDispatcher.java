@@ -95,7 +95,7 @@ public final class ReactorDispatcher {
         }
     }
 
-    private final class DelayHandler extends BaseHandler {
+    private static final class DelayHandler extends BaseHandler {
         final int delay;
         final BaseHandler timerCallback;
         final Reactor reactor;

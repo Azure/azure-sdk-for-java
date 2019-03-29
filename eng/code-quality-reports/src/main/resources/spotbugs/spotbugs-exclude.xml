@@ -104,4 +104,54 @@
         <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
         <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
     </Match>
+
+    <!-- Public inner class already exists in the public API surface area even
+    though it should be static -->
+    <!--At EventProcessorOptions.java:[lines 234-237]-->
+    <Match>
+        <Class name="com.microsoft.azure.eventprocessorhost.EventProcessorOptions$EndOfStreamInitialPositionProvider"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>
+    </Match>
+
+    <!-- Public inner class already exists in the public API surface area even
+    though it should be static -->
+    <!--At EventProcessorOptions.java:[lines 222-225]-->
+    <Match>
+        <Class name="com.microsoft.azure.eventprocessorhost.EventProcessorOptions$StartOfStreamInitialPositionProvider"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>
+    </Match>
+
+    <!-- Public field already exists in the public API surface area even
+    though no writes were seen to this public field  -->
+    <!--At PartitionSenderImpl.java:[line 67]-->
+    <Match>
+        <Class name="com.microsoft.azure.eventhubs.BatchOptions"/>
+        <Field name="maxMessageSize"/>
+        <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
+    </Match>
+
+    <!-- Public field already exists in the public API surface area even
+    though no writes were seen to this public field -->
+    <!--At PartitionSenderImpl.java:[line 60]-->
+    <Match>
+        <Class name="com.microsoft.azure.eventhubs.BatchOptions"/>
+        <Field name="partitionKey"/>
+        <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
+    </Match>
+
+    <!-- Unchecked cast already exists in the public API surface area, they are logically right
+     so it can be ignored-->
+    <!--At AzureStorageCheckpointLeaseManager.java:[line 180,430,446,542,574]-->
+    <Match>
+        <Class name="com.microsoft.azure.eventprocessorhost.AzureStorageCheckpointLeaseManager"/>
+        <Bug pattern="BC_UNCONFIRMED_CAST"/>
+    </Match>
+
+    <!-- Unchecked cast already exists in the public API surface area, they are logically right
+    so it can be ignored-->
+    <!--At InMemoryLeaseManager.java:[line 148,155,209,241,268]-->
+    <Match>
+        <Class name="com.microsoft.azure.eventprocessorhost.InMemoryLeaseManager"/>
+        <Bug pattern="BC_UNCONFIRMED_CAST"/>
+    </Match>
 </FindBugsFilter>

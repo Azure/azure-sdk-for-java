@@ -3,6 +3,8 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import java.util.Objects;
+
 /**
  * BaseLease class is public so that advanced users can implement an ILeaseManager.
  * Unless you are implementing ILeaseManager you should not have to deal with objects
@@ -124,6 +126,19 @@ public class BaseLease implements Comparable<BaseLease> {
     @Override
     public int compareTo(BaseLease other) {
         return this.partitionId.compareTo(other.getPartitionId());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseLease baseLease = (BaseLease) o;
+        return Objects.equals(partitionId, baseLease.partitionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(partitionId);
     }
 
     String getStateDebug() {

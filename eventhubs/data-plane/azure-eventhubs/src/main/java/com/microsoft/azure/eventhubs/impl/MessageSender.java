@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.BufferOverflowException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -667,7 +668,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
             @Override
             public void accept(ErrorCondition t, Exception u) {
                 if (t != null)
-                    MessageSender.this.onError((t != null && t.getCondition() != null) ? ExceptionUtil.toException(t) : null);
+                    MessageSender.this.onError(t.getCondition() != null ? ExceptionUtil.toException(t) : null);
                 else if (u != null)
                     MessageSender.this.onError(u);
             }
@@ -719,10 +720,8 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
                         if (!MessageSender.this.linkFirstOpen.isDone()) {
                             final Exception lastReportedError;
-                            final Sender link;
                             synchronized (MessageSender.this.errorConditionLock) {
                                 lastReportedError = MessageSender.this.lastKnownLinkError;
-                                link = MessageSender.this.sendLink;
                             }
 
                             final Exception operationTimedout = new TimeoutException(
@@ -1001,7 +1000,10 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         }
     }
 
-    private static class DeliveryTagComparator implements Comparator<WeightedDeliveryTag> {
+    private static class DeliveryTagComparator implements Comparator<WeightedDeliveryTag>, Serializable {
+
+        private static final long serialVersionUID = -7057500582037295635L;
+
         @Override
         public int compare(WeightedDeliveryTag deliveryTag0, WeightedDeliveryTag deliveryTag1) {
             return deliveryTag1.getPriority() - deliveryTag0.getPriority();

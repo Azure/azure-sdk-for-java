@@ -61,6 +61,17 @@ public class SessionHandler extends BaseHandler {
                 }
             }
 
+            if (reactorHandler == null) {
+                this.onRemoteSessionOpenError.accept(
+                    null,
+                    new EventHubException(
+                        false,
+                        String.format("OnSessionLocalOpen entityName[%s], reactorHandler: NULL POINTER exception.")
+                    )
+                );
+                return;
+            }
+
             final ReactorDispatcher reactorDispatcher = reactorHandler.getReactorDispatcher();
             final Session session = e.getSession();
 

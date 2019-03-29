@@ -633,10 +633,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                         creatingLink = false;
 
                         if (!linkOpen.getWork().isDone()) {
-                            final Receiver link;
                             final Exception lastReportedLinkError;
                             synchronized (errorConditionLock) {
-                                link = MessageReceiver.this.receiveLink;
                                 lastReportedLinkError = MessageReceiver.this.lastKnownLinkError;
                             }
 

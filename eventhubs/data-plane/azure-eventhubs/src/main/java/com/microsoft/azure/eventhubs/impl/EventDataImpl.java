@@ -22,6 +22,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public final class EventDataImpl implements EventData {
     private static final long serialVersionUID = -5631628195600014255L;
@@ -269,5 +270,18 @@ public final class EventDataImpl implements EventData {
                 this.getSystemProperties().getSequenceNumber(),
                 other.getSystemProperties().getSequenceNumber()
         );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EventDataImpl eventData = (EventDataImpl) o;
+        return Objects.equals(systemProperties, eventData.systemProperties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(systemProperties);
     }
 }

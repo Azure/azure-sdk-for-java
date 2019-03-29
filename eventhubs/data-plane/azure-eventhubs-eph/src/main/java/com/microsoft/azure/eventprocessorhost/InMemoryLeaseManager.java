@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -402,6 +403,20 @@ public class InMemoryLeaseManager implements ILeaseManager {
             boolean hasExpired = (System.currentTimeMillis() >= this.expirationTimeMillis);
             TRACE_LOGGER.debug("isExpired(" + this.getPartitionId() + (hasExpired ? ") expired " : ") leased ") + (this.expirationTimeMillis - System.currentTimeMillis()));
             return hasExpired;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+            InMemoryLease that = (InMemoryLease) o;
+            return expirationTimeMillis == that.expirationTimeMillis;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(super.hashCode(), expirationTimeMillis);
         }
     }
 }
