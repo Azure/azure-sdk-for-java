@@ -22,7 +22,6 @@ import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
@@ -479,6 +478,32 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The TransactionsByBillingProfilesInner object to access its operations.
+     */
+    private TransactionsByBillingProfilesInner transactionsByBillingProfiles;
+
+    /**
+     * Gets the TransactionsByBillingProfilesInner object to access its operations.
+     * @return the TransactionsByBillingProfilesInner object.
+     */
+    public TransactionsByBillingProfilesInner transactionsByBillingProfiles() {
+        return this.transactionsByBillingProfiles;
+    }
+
+    /**
+     * The TransactionsByInvoiceSectionsInner object to access its operations.
+     */
+    private TransactionsByInvoiceSectionsInner transactionsByInvoiceSections;
+
+    /**
+     * Gets the TransactionsByInvoiceSectionsInner object to access its operations.
+     * @return the TransactionsByInvoiceSectionsInner object.
+     */
+    public TransactionsByInvoiceSectionsInner transactionsByInvoiceSections() {
+        return this.transactionsByInvoiceSections;
+    }
+
+    /**
      * The PolicysInner object to access its operations.
      */
     private PolicysInner policys;
@@ -720,6 +745,8 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.productsByInvoiceSections = new ProductsByInvoiceSectionsInner(restClient().retrofit(), this);
         this.products = new ProductsInner(restClient().retrofit(), this);
         this.transactionsByBillingAccounts = new TransactionsByBillingAccountsInner(restClient().retrofit(), this);
+        this.transactionsByBillingProfiles = new TransactionsByBillingProfilesInner(restClient().retrofit(), this);
+        this.transactionsByInvoiceSections = new TransactionsByInvoiceSectionsInner(restClient().retrofit(), this);
         this.policys = new PolicysInner(restClient().retrofit(), this);
         this.billingPropertys = new BillingPropertysInner(restClient().retrofit(), this);
         this.transfers = new TransfersInner(restClient().retrofit(), this);
@@ -757,10 +784,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * used by Retrofit to perform actually REST calls.
      */
     interface BillingManagementClientService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingManagementClient transactionsByBillingProfile" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/transactions")
-        Observable<Response<ResponseBody>> transactionsByBillingProfile(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingManagementClient updateAutoRenewForBillingAccount" })
         @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/updateAutoRenew")
         Observable<Response<ResponseBody>> updateAutoRenewForBillingAccount(@Path("billingAccountName") String billingAccountName, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UpdateAutoRenewRequest body, @Header("User-Agent") String userAgent);
@@ -769,198 +792,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/products/{productName}/updateAutoRenew")
         Observable<Response<ResponseBody>> updateAutoRenewForInvoiceSection(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UpdateAutoRenewRequest body, @Header("User-Agent") String userAgent);
 
-    }
-
-    /**
-     * Lists the transactions by billingProfileName for given start date and end date.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
-     * @param startDate Start date
-     * @param endDate End date
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TransactionsListResultInner object if successful.
-     */
-    public TransactionsListResultInner transactionsByBillingProfile(String billingAccountName, String billingProfileName, String startDate, String endDate) {
-        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate).toBlocking().single().body();
-    }
-
-    /**
-     * Lists the transactions by billingProfileName for given start date and end date.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
-     * @param startDate Start date
-     * @param endDate End date
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate), serviceCallback);
-    }
-
-    /**
-     * Lists the transactions by billingProfileName for given start date and end date.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
-     * @param startDate Start date
-     * @param endDate End date
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
-     */
-    public Observable<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountName, String billingProfileName, String startDate, String endDate) {
-        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
-            @Override
-            public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Lists the transactions by billingProfileName for given start date and end date.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
-     * @param startDate Start date
-     * @param endDate End date
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
-     */
-    public Observable<ServiceResponse<TransactionsListResultInner>> transactionsByBillingProfileWithServiceResponseAsync(String billingAccountName, String billingProfileName, String startDate, String endDate) {
-        if (billingAccountName == null) {
-            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
-        }
-        if (billingProfileName == null) {
-            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (startDate == null) {
-            throw new IllegalArgumentException("Parameter startDate is required and cannot be null.");
-        }
-        if (endDate == null) {
-            throw new IllegalArgumentException("Parameter endDate is required and cannot be null.");
-        }
-        final String filter = null;
-        return service.transactionsByBillingProfile(billingAccountName, billingProfileName, this.apiVersion(), startDate, endDate, filter, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
-                @Override
-                public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<TransactionsListResultInner> clientResponse = transactionsByBillingProfileDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Lists the transactions by billingProfileName for given start date and end date.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
-     * @param startDate Start date
-     * @param endDate End date
-     * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TransactionsListResultInner object if successful.
-     */
-    public TransactionsListResultInner transactionsByBillingProfile(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter) {
-        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate, filter).toBlocking().single().body();
-    }
-
-    /**
-     * Lists the transactions by billingProfileName for given start date and end date.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
-     * @param startDate Start date
-     * @param endDate End date
-     * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate, filter), serviceCallback);
-    }
-
-    /**
-     * Lists the transactions by billingProfileName for given start date and end date.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
-     * @param startDate Start date
-     * @param endDate End date
-     * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
-     */
-    public Observable<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter) {
-        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate, filter).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
-            @Override
-            public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Lists the transactions by billingProfileName for given start date and end date.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param billingProfileName Billing Profile Id.
-     * @param startDate Start date
-     * @param endDate End date
-     * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
-     */
-    public Observable<ServiceResponse<TransactionsListResultInner>> transactionsByBillingProfileWithServiceResponseAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter) {
-        if (billingAccountName == null) {
-            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
-        }
-        if (billingProfileName == null) {
-            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (startDate == null) {
-            throw new IllegalArgumentException("Parameter startDate is required and cannot be null.");
-        }
-        if (endDate == null) {
-            throw new IllegalArgumentException("Parameter endDate is required and cannot be null.");
-        }
-        return service.transactionsByBillingProfile(billingAccountName, billingProfileName, this.apiVersion(), startDate, endDate, filter, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
-                @Override
-                public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<TransactionsListResultInner> clientResponse = transactionsByBillingProfileDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<TransactionsListResultInner> transactionsByBillingProfileDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<TransactionsListResultInner, ErrorResponseException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<TransactionsListResultInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
     }
 
     /**
