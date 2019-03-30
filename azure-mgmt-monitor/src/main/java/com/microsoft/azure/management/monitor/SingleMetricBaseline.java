@@ -16,25 +16,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SingleMetricBaseline {
     /**
-     * the metric baseline Id.
+     * The metric baseline Id.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
-     * the resource type of the metric baseline resource.
+     * The resource type of the metric baseline resource.
      */
     @JsonProperty(value = "type", required = true)
     private String type;
 
     /**
-     * the name of the metric.
+     * The name of the metric.
      */
     @JsonProperty(value = "metricName", required = true)
     private String metricName;
 
     /**
-     * the baseline for each time series that was queried.
+     * The baseline for each time series that was queried.
      */
     @JsonProperty(value = "baselines", required = true)
     private List<TimeSeriesBaseline> baselines;

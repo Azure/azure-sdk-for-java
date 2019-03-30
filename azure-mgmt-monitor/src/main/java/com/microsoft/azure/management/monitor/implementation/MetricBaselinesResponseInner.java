@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.monitor.implementation;
 
 import org.joda.time.Period;
+import java.util.List;
 import com.microsoft.azure.management.monitor.SingleMetricBaseline;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -40,10 +41,10 @@ public class MetricBaselinesResponseInner {
     private String namespace;
 
     /**
-     * The baseline results of a single metric.
+     * The list of baseline results for each metric.
      */
     @JsonProperty(value = "value", required = true)
-    private SingleMetricBaseline value;
+    private List<SingleMetricBaseline> value;
 
     /**
      * Get the timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally requested.
@@ -106,21 +107,21 @@ public class MetricBaselinesResponseInner {
     }
 
     /**
-     * Get the baseline results of a single metric.
+     * Get the list of baseline results for each metric.
      *
      * @return the value value
      */
-    public SingleMetricBaseline value() {
+    public List<SingleMetricBaseline> value() {
         return this.value;
     }
 
     /**
-     * Set the baseline results of a single metric.
+     * Set the list of baseline results for each metric.
      *
      * @param value the value value to set
      * @return the MetricBaselinesResponseInner object itself.
      */
-    public MetricBaselinesResponseInner withValue(SingleMetricBaseline value) {
+    public MetricBaselinesResponseInner withValue(List<SingleMetricBaseline> value) {
         this.value = value;
         return this;
     }

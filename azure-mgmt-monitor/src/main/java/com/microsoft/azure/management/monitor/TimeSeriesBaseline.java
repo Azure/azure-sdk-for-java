@@ -14,7 +14,7 @@ import com.microsoft.azure.management.monitor.implementation.BaselineInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The time series baseline class.
+ * The baseline values for a single time series.
  */
 public class TimeSeriesBaseline {
     /**
@@ -24,25 +24,25 @@ public class TimeSeriesBaseline {
     private String aggregation;
 
     /**
-     * the dimensions of this time series.
+     * The dimensions of this time series.
      */
     @JsonProperty(value = "dimensions")
     private List<MetricSingleDimension> dimensions;
 
     /**
-     * the array of timestamps of the baselines.
+     * The list of timestamps of the baselines.
      */
     @JsonProperty(value = "timestamps", required = true)
     private List<DateTime> timestamps;
 
     /**
-     * the baseline values for each sensitivity.
+     * The baseline values for each sensitivity.
      */
     @JsonProperty(value = "data", required = true)
     private List<BaselineInner> data;
 
     /**
-     * the baseline metadata values.
+     * The baseline metadata values.
      */
     @JsonProperty(value = "metadata")
     private List<BaselineMetadata> metadata;
@@ -88,7 +88,7 @@ public class TimeSeriesBaseline {
     }
 
     /**
-     * Get the array of timestamps of the baselines.
+     * Get the list of timestamps of the baselines.
      *
      * @return the timestamps value
      */
@@ -97,7 +97,7 @@ public class TimeSeriesBaseline {
     }
 
     /**
-     * Set the array of timestamps of the baselines.
+     * Set the list of timestamps of the baselines.
      *
      * @param timestamps the timestamps value to set
      * @return the TimeSeriesBaseline object itself.

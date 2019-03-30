@@ -12,16 +12,20 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.monitor.ErrorResponseException;
 import com.microsoft.azure.management.monitor.ResultType;
+import com.microsoft.azure.management.monitor.TimeSeriesInformation;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import okhttp3.ResponseBody;
 import org.joda.time.Period;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
 import rx.functions.Func1;
@@ -54,78 +58,86 @@ public class MetricBaselinesInner {
      */
     interface MetricBaselinesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.MetricBaselines get" })
-        @GET("{resourceUri}/providers/microsoft.insights/metricBaselines")
-        Observable<Response<ResponseBody>> get(@Path(value = "resourceUri", encoded = true) String resourceUri, @Query("metricnames") String metricnames, @Query("metricnamespace") String metricnamespace, @Query("timespan") String timespan, @Query("interval") Period interval, @Query("aggregation") String aggregation, @Query("sensitivities") String sensitivities, @Query("$filter") String filter, @Query("resultType") ResultType resultType1, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("{resourceUri}/providers/microsoft.insights/baseline/{metricName}")
+        Observable<Response<ResponseBody>> get(@Path(value = "resourceUri", encoded = true) String resourceUri, @Path("metricName") String metricName, @Query("timespan") String timespan, @Query("interval") Period interval, @Query("aggregation") String aggregation, @Query("sensitivities") String sensitivities, @Query("resultType") ResultType resultType1, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.MetricBaselines calculateBaseline" })
+        @POST("{resourceUri}/providers/microsoft.insights/calculatebaseline")
+        Observable<Response<ResponseBody>> calculateBaseline(@Path(value = "resourceUri", encoded = true) String resourceUri, @Query("api-version") String apiVersion, @Body TimeSeriesInformation timeSeriesInformation, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * **Gets the metric baseline values**.
+     * **Gets the baseline values for a specific metric**.
      *
      * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MetricBaselinesResponseInner object if successful.
+     * @return the BaselineResponseInner object if successful.
      */
-    public MetricBaselinesResponseInner get(String resourceUri) {
-        return getWithServiceResponseAsync(resourceUri).toBlocking().single().body();
+    public BaselineResponseInner get(String resourceUri, String metricName) {
+        return getWithServiceResponseAsync(resourceUri, metricName).toBlocking().single().body();
     }
 
     /**
-     * **Gets the metric baseline values**.
+     * **Gets the baseline values for a specific metric**.
      *
      * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MetricBaselinesResponseInner> getAsync(String resourceUri, final ServiceCallback<MetricBaselinesResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceUri), serviceCallback);
+    public ServiceFuture<BaselineResponseInner> getAsync(String resourceUri, String metricName, final ServiceCallback<BaselineResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceUri, metricName), serviceCallback);
     }
 
     /**
-     * **Gets the metric baseline values**.
+     * **Gets the baseline values for a specific metric**.
      *
      * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MetricBaselinesResponseInner object
+     * @return the observable to the BaselineResponseInner object
      */
-    public Observable<MetricBaselinesResponseInner> getAsync(String resourceUri) {
-        return getWithServiceResponseAsync(resourceUri).map(new Func1<ServiceResponse<MetricBaselinesResponseInner>, MetricBaselinesResponseInner>() {
+    public Observable<BaselineResponseInner> getAsync(String resourceUri, String metricName) {
+        return getWithServiceResponseAsync(resourceUri, metricName).map(new Func1<ServiceResponse<BaselineResponseInner>, BaselineResponseInner>() {
             @Override
-            public MetricBaselinesResponseInner call(ServiceResponse<MetricBaselinesResponseInner> response) {
+            public BaselineResponseInner call(ServiceResponse<BaselineResponseInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * **Gets the metric baseline values**.
+     * **Gets the baseline values for a specific metric**.
      *
      * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MetricBaselinesResponseInner object
+     * @return the observable to the BaselineResponseInner object
      */
-    public Observable<ServiceResponse<MetricBaselinesResponseInner>> getWithServiceResponseAsync(String resourceUri) {
+    public Observable<ServiceResponse<BaselineResponseInner>> getWithServiceResponseAsync(String resourceUri, String metricName) {
         if (resourceUri == null) {
             throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
         }
-        final String apiVersion = "2019-03-01";
-        final String metricnames = null;
-        final String metricnamespace = null;
+        if (metricName == null) {
+            throw new IllegalArgumentException("Parameter metricName is required and cannot be null.");
+        }
+        final String apiVersion = "2017-11-01-preview";
         final String timespan = null;
         final Period interval = null;
         final String aggregation = null;
         final String sensitivities = null;
-        final String filter = null;
         final ResultType resultType = null;
-        return service.get(resourceUri, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MetricBaselinesResponseInner>>>() {
+        return service.get(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BaselineResponseInner>>>() {
                 @Override
-                public Observable<ServiceResponse<MetricBaselinesResponseInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<BaselineResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<MetricBaselinesResponseInner> clientResponse = getDelegate(response);
+                        ServiceResponse<BaselineResponseInner> clientResponse = getDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -135,96 +147,91 @@ public class MetricBaselinesInner {
     }
 
     /**
-     * **Gets the metric baseline values**.
+     * **Gets the baseline values for a specific metric**.
      *
      * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @param timespan The timespan of the query. It is a string with the following format 'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * @param aggregation The aggregation type of the metric to retrieve the baseline for.
      * @param sensitivities The list of sensitivities (comma separated) to retrieve.
-     * @param filter The **$filter** is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;- Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Allows retrieving only metadata of the baseline. On data request all information is retrieved. Possible values include: 'Data', 'Metadata'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MetricBaselinesResponseInner object if successful.
+     * @return the BaselineResponseInner object if successful.
      */
-    public MetricBaselinesResponseInner get(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType) {
-        return getWithServiceResponseAsync(resourceUri, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType).toBlocking().single().body();
+    public BaselineResponseInner get(String resourceUri, String metricName, String timespan, Period interval, String aggregation, String sensitivities, ResultType resultType) {
+        return getWithServiceResponseAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType).toBlocking().single().body();
     }
 
     /**
-     * **Gets the metric baseline values**.
+     * **Gets the baseline values for a specific metric**.
      *
      * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @param timespan The timespan of the query. It is a string with the following format 'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * @param aggregation The aggregation type of the metric to retrieve the baseline for.
      * @param sensitivities The list of sensitivities (comma separated) to retrieve.
-     * @param filter The **$filter** is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;- Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Allows retrieving only metadata of the baseline. On data request all information is retrieved. Possible values include: 'Data', 'Metadata'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MetricBaselinesResponseInner> getAsync(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType, final ServiceCallback<MetricBaselinesResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceUri, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType), serviceCallback);
+    public ServiceFuture<BaselineResponseInner> getAsync(String resourceUri, String metricName, String timespan, Period interval, String aggregation, String sensitivities, ResultType resultType, final ServiceCallback<BaselineResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType), serviceCallback);
     }
 
     /**
-     * **Gets the metric baseline values**.
+     * **Gets the baseline values for a specific metric**.
      *
      * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @param timespan The timespan of the query. It is a string with the following format 'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * @param aggregation The aggregation type of the metric to retrieve the baseline for.
      * @param sensitivities The list of sensitivities (comma separated) to retrieve.
-     * @param filter The **$filter** is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;- Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Allows retrieving only metadata of the baseline. On data request all information is retrieved. Possible values include: 'Data', 'Metadata'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MetricBaselinesResponseInner object
+     * @return the observable to the BaselineResponseInner object
      */
-    public Observable<MetricBaselinesResponseInner> getAsync(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType) {
-        return getWithServiceResponseAsync(resourceUri, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType).map(new Func1<ServiceResponse<MetricBaselinesResponseInner>, MetricBaselinesResponseInner>() {
+    public Observable<BaselineResponseInner> getAsync(String resourceUri, String metricName, String timespan, Period interval, String aggregation, String sensitivities, ResultType resultType) {
+        return getWithServiceResponseAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType).map(new Func1<ServiceResponse<BaselineResponseInner>, BaselineResponseInner>() {
             @Override
-            public MetricBaselinesResponseInner call(ServiceResponse<MetricBaselinesResponseInner> response) {
+            public BaselineResponseInner call(ServiceResponse<BaselineResponseInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * **Gets the metric baseline values**.
+     * **Gets the baseline values for a specific metric**.
      *
      * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @param timespan The timespan of the query. It is a string with the following format 'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * @param aggregation The aggregation type of the metric to retrieve the baseline for.
      * @param sensitivities The list of sensitivities (comma separated) to retrieve.
-     * @param filter The **$filter** is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;- Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Allows retrieving only metadata of the baseline. On data request all information is retrieved. Possible values include: 'Data', 'Metadata'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MetricBaselinesResponseInner object
+     * @return the observable to the BaselineResponseInner object
      */
-    public Observable<ServiceResponse<MetricBaselinesResponseInner>> getWithServiceResponseAsync(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType) {
+    public Observable<ServiceResponse<BaselineResponseInner>> getWithServiceResponseAsync(String resourceUri, String metricName, String timespan, Period interval, String aggregation, String sensitivities, ResultType resultType) {
         if (resourceUri == null) {
             throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
         }
-        final String apiVersion = "2019-03-01";
-        return service.get(resourceUri, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MetricBaselinesResponseInner>>>() {
+        if (metricName == null) {
+            throw new IllegalArgumentException("Parameter metricName is required and cannot be null.");
+        }
+        final String apiVersion = "2017-11-01-preview";
+        return service.get(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BaselineResponseInner>>>() {
                 @Override
-                public Observable<ServiceResponse<MetricBaselinesResponseInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<BaselineResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<MetricBaselinesResponseInner> clientResponse = getDelegate(response);
+                        ServiceResponse<BaselineResponseInner> clientResponse = getDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -233,9 +240,91 @@ public class MetricBaselinesInner {
             });
     }
 
-    private ServiceResponse<MetricBaselinesResponseInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MetricBaselinesResponseInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<MetricBaselinesResponseInner>() { }.getType())
+    private ServiceResponse<BaselineResponseInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BaselineResponseInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BaselineResponseInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * **Lists the baseline values for a resource**.
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
+     * @param timeSeriesInformation Information that need to be specified to calculate a baseline on a time series.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CalculateBaselineResponseInner object if successful.
+     */
+    public CalculateBaselineResponseInner calculateBaseline(String resourceUri, TimeSeriesInformation timeSeriesInformation) {
+        return calculateBaselineWithServiceResponseAsync(resourceUri, timeSeriesInformation).toBlocking().single().body();
+    }
+
+    /**
+     * **Lists the baseline values for a resource**.
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
+     * @param timeSeriesInformation Information that need to be specified to calculate a baseline on a time series.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CalculateBaselineResponseInner> calculateBaselineAsync(String resourceUri, TimeSeriesInformation timeSeriesInformation, final ServiceCallback<CalculateBaselineResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(calculateBaselineWithServiceResponseAsync(resourceUri, timeSeriesInformation), serviceCallback);
+    }
+
+    /**
+     * **Lists the baseline values for a resource**.
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
+     * @param timeSeriesInformation Information that need to be specified to calculate a baseline on a time series.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CalculateBaselineResponseInner object
+     */
+    public Observable<CalculateBaselineResponseInner> calculateBaselineAsync(String resourceUri, TimeSeriesInformation timeSeriesInformation) {
+        return calculateBaselineWithServiceResponseAsync(resourceUri, timeSeriesInformation).map(new Func1<ServiceResponse<CalculateBaselineResponseInner>, CalculateBaselineResponseInner>() {
+            @Override
+            public CalculateBaselineResponseInner call(ServiceResponse<CalculateBaselineResponseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * **Lists the baseline values for a resource**.
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure: subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For example: subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
+     * @param timeSeriesInformation Information that need to be specified to calculate a baseline on a time series.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CalculateBaselineResponseInner object
+     */
+    public Observable<ServiceResponse<CalculateBaselineResponseInner>> calculateBaselineWithServiceResponseAsync(String resourceUri, TimeSeriesInformation timeSeriesInformation) {
+        if (resourceUri == null) {
+            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
+        }
+        if (timeSeriesInformation == null) {
+            throw new IllegalArgumentException("Parameter timeSeriesInformation is required and cannot be null.");
+        }
+        Validator.validate(timeSeriesInformation);
+        final String apiVersion = "2017-11-01-preview";
+        return service.calculateBaseline(resourceUri, apiVersion, timeSeriesInformation, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CalculateBaselineResponseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CalculateBaselineResponseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CalculateBaselineResponseInner> clientResponse = calculateBaselineDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CalculateBaselineResponseInner> calculateBaselineDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CalculateBaselineResponseInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CalculateBaselineResponseInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
