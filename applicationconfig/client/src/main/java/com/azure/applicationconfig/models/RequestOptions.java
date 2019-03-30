@@ -81,7 +81,7 @@ public class RequestOptions {
      * Examples:
      * <ul>
      *     <li>If {@code label = "*"}, all settings are returned.</li>
-     *     <li>If {@code label = "\0"}, settings with the default label, {@link ConfigurationSetting#NULL_LABEL} are returned.</li>
+     *     <li>If {@code label = "\0"}, settings without any label are returned.</li>
      *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
      *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
      *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
@@ -100,7 +100,7 @@ public class RequestOptions {
      * Examples:
      * <ul>
      *     <li>If {@code label = "*"}, all settings are returned.</li>
-     *     <li>If {@code label = "\0"}, settings with the default label, {@link ConfigurationSetting#NULL_LABEL} are returned.</li>
+     *     <li>If {@code label = "\0"}, settings without any label are returned. (This is the default label.)</li>
      *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
      *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
      *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>

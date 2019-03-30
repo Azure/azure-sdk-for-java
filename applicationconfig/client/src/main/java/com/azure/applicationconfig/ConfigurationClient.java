@@ -21,7 +21,6 @@ import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
 import com.azure.common.http.rest.RestResponse;
 import com.azure.common.implementation.RestProxy;
-import com.azure.common.implementation.Validator;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -74,8 +73,7 @@ public final class ConfigurationClient extends ServiceClient {
      * Adds a configuration value in the service if that key and label does not exist.
      *
      * <p>
-     * The label value for the ConfigurationSetting is optional. If not specified, the
-     * {@link ConfigurationSetting#NULL_LABEL} is used.
+     * The label value for the ConfigurationSetting is optional.
      *
      * @param setting The setting to add to the configuration service.
      * @return ConfigurationSetting that was created or updated.
@@ -84,7 +82,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws com.azure.common.http.rest.RestException If a ConfigurationSetting with the same key and label exists.
      */
     public Mono<RestResponse<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
+        ConfigurationSetting result = validateSetting(setting);
 
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, null, getETagValue(ETAG_ANY));
     }
@@ -98,8 +96,7 @@ public final class ConfigurationClient extends ServiceClient {
      * updated.
      *
      * <p>
-     * The label value for the ConfigurationSetting is optional. If not specified,
-     * {@link ConfigurationSetting#NULL_LABEL} is used.
+     * The label value for the ConfigurationSetting is optional.
      *
      * @param setting The configuration setting to create or updateSetting.
      * @return ConfigurationSetting that was created or updated.
@@ -110,7 +107,7 @@ public final class ConfigurationClient extends ServiceClient {
      *                                                  value's etag does not match.
      */
     public Mono<RestResponse<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
+        ConfigurationSetting result = validateSetting(setting);
 
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, getETagValue(result.etag()), null);
     }
@@ -119,11 +116,10 @@ public final class ConfigurationClient extends ServiceClient {
      * Updates an existing configuration value in the service. The setting must already exist.
      *
      * <p>
-     * The label value for the ConfigurationSetting is optional. If not specified, the
-     * {@link ConfigurationSetting#NULL_LABEL} is used.
+     * The label value for the ConfigurationSetting is optional.
      *
      * <p>
-     * If the {@link ConfigurationSetting#etag()} is specified, the configuration value is only updated if it matches.
+     * If {@link ConfigurationSetting#etag()} is specified, the configuration value is only updated if it matches.
      *
      * @param setting The setting to add or update in the service.
      * @return ConfigurationSetting that was updated.
@@ -133,7 +129,7 @@ public final class ConfigurationClient extends ServiceClient {
      *                                                  exist or the configuration value is locked.
      */
     public Mono<RestResponse<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
+        ConfigurationSetting result = validateSetting(setting);
         String etag = result.etag() == null ? ETAG_ANY : result.etag();
 
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, getETagValue(etag), null);
@@ -164,7 +160,7 @@ public final class ConfigurationClient extends ServiceClient {
      *                                                  304 if the key has not been modified.
      */
     public Mono<RestResponse<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
+        ConfigurationSetting result = validateSetting(setting);
 
         return service.getKeyValue(serviceEndpoint, result.key(), result.label(), null, null, null, null);
     }
@@ -191,7 +187,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws NullPointerException     When {@code setting} is {@code null}.
      */
     public Mono<RestResponse<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
+        ConfigurationSetting result = validateSetting(setting);
 
         return service.delete(serviceEndpoint, result.key(), result.label(), getETagValue(result.etag()), null);
     }
@@ -210,8 +206,7 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Places a lock on the provided ConfigurationSetting so that its contents cannot be changed. Label is optional. If
-     * present, label must be explicit label value (not a wildcard). If not present, the default label,
-     * {@link ConfigurationSetting#NULL_LABEL} is used.
+     * present, label must be an explicit value (not a wildcard).
      *
      * @param setting The ConfigurationSetting to lock.
      * @return ConfigurationSetting that was locked.
@@ -219,7 +214,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> lockSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
+        ConfigurationSetting result = validateSetting(setting);
 
         return service.lockKeyValue(serviceEndpoint, result.key(), result.label(), null, null);
     }
@@ -238,8 +233,7 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Unlocks a ConfigurationSetting with a matching {@code key} and optional {@code label}. If present, {@code label}
-     * must be explicit label value (not a wildcard). Otherwise, the default label,
-     * {@link ConfigurationSetting#NULL_LABEL} is used.
+     * must be explicit label value (not a wildcard).
      *
      * @param setting The configuration setting to unlock.
      * @return The ConfigurationSetting that was unlocked.
@@ -247,7 +241,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> unlockSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSettingAndSetDefaultLabel(setting);
+        ConfigurationSetting result = validateSetting(setting);
 
         return service.unlockKeyValue(serviceEndpoint, result.key(), result.label(), null, null);
     }
@@ -456,15 +450,11 @@ public final class ConfigurationClient extends ServiceClient {
                 : String.format("items=%d-%d", range.start(), range.end());
     }
 
-    private static ConfigurationSetting validateSettingAndSetDefaultLabel(ConfigurationSetting setting) {
+    private static ConfigurationSetting validateSetting(ConfigurationSetting setting) {
         Objects.requireNonNull(setting);
 
         if (setting.key() == null || setting.key().isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
-        }
-
-        if (setting.label() == null) {
-            setting.label(ConfigurationSetting.NULL_LABEL);
         }
 
         return setting;

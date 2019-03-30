@@ -13,7 +13,8 @@ import java.util.Map;
  */
 public class ConfigurationSetting {
     /**
-     * The default label for configuration settings is the null label, "\0".
+     * The default label for configuration settings is the label, "\0".
+     * Users use this value when they want to explicitly reference a configuration setting that has no label.
      * This gets URL encoded as "%00".
      */
     public static final String NULL_LABEL = "\0";
