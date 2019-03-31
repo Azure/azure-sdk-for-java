@@ -6,13 +6,13 @@
 
 package com.azure.common.mgmt;
 
-import com.azure.common.http.rest.RestException;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpResponse;
 
 /**
  * Exception thrown for an invalid response with custom error information.
  */
-public final class CloudException extends RestException {
+public final class CloudException extends ServiceRequestException {
     /**
      * Initializes a new instance of the CloudException class.
      *
@@ -35,15 +35,15 @@ public final class CloudException extends RestException {
     }
 
     @Override
-    public CloudError body() {
-        return (CloudError) super.body();
+    public CloudError result() {
+        return (CloudError) super.result();
     }
 
     @Override
     public String toString() {
         String message = super.toString();
-        if (body() != null && body().message() != null) {
-            message = message + ": " + body().message();
+        if (result() != null && result().message() != null) {
+            message = message + ": " + result().message();
         }
         return message;
     }

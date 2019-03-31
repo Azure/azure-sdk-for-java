@@ -2,8 +2,8 @@ package com.azure.common.mgmt;
 
 import com.azure.common.implementation.exception.InvalidReturnTypeException;
 import com.azure.common.implementation.http.ContentType;
-import com.azure.common.http.rest.RestException;
-import com.azure.common.http.rest.RestResponseBase;
+import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
@@ -391,11 +391,11 @@ public abstract class AzureProxyToRestProxyTests {
             createService(Service9.class)
                     .putWithUnexpectedResponse("I'm the body!");
             fail("Expected RestException would be thrown.");
-        } catch (RestException e) {
-            assertNotNull(e.body());
-            assertTrue(e.body() instanceof LinkedHashMap);
+        } catch (ServiceRequestException e) {
+            assertNotNull(e.result());
+            assertTrue(e.result() instanceof LinkedHashMap);
 
-            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.body();
+            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.result();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
     }
@@ -407,8 +407,8 @@ public abstract class AzureProxyToRestProxyTests {
                     .putWithUnexpectedResponseAndExceptionType("I'm the body!");
             fail("Expected RestException would be thrown.");
         } catch (MyAzureException e) {
-            assertNotNull(e.body());
-            assertEquals("I'm the body!", e.body().data);
+            assertNotNull(e.result());
+            assertEquals("I'm the body!", e.result().data);
         } catch (Throwable e) {
             fail("Throwable of wrong type thrown.");
         }
@@ -418,7 +418,7 @@ public abstract class AzureProxyToRestProxyTests {
     private interface Service10 {
         @HEAD("anything")
         @ExpectedResponses({200})
-        RestResponseBase<Void, Void> restResponseHead();
+        ResponseBase<Void, Void> restResponseHead();
 
 
         @HEAD("anything")
@@ -427,7 +427,7 @@ public abstract class AzureProxyToRestProxyTests {
 
         @HEAD("anything")
         @ExpectedResponses({200})
-        Mono<RestResponseBase<Void, Void>> restResponseHeadAsync();
+        Mono<ResponseBase<Void, Void>> restResponseHeadAsync();
 
         @HEAD("anything")
         @ExpectedResponses({200})
@@ -436,9 +436,9 @@ public abstract class AzureProxyToRestProxyTests {
 
     @Test
     public void SyncRestResponseHeadRequest() {
-        RestResponseBase<?, ?> res = createService(Service10.class)
+        ResponseBase<?, ?> res = createService(Service10.class)
                 .restResponseHead();
-        assertNull(res.body());
+        assertNull(res.result());
     }
 
     @Test
@@ -449,11 +449,11 @@ public abstract class AzureProxyToRestProxyTests {
 
     @Test
     public void AsyncRestResponseHeadRequest() {
-        RestResponseBase<?, ?> res = createService(Service10.class)
+        ResponseBase<?, ?> res = createService(Service10.class)
                 .restResponseHeadAsync()
                 .block();
 
-        assertNull(res.body());
+        assertNull(res.result());
     }
 
     @Test
@@ -718,7 +718,7 @@ public abstract class AzureProxyToRestProxyTests {
                 .getStatus300WithExpectedResponse300();
     }
 
-    @Test(expected = RestException.class)
+    @Test(expected = ServiceRequestException.class)
     public void service18GetStatus400() {
         createService(Service18.class)
                 .getStatus400();
@@ -730,7 +730,7 @@ public abstract class AzureProxyToRestProxyTests {
                 .getStatus400WithExpectedResponse400();
     }
 
-    @Test(expected = RestException.class)
+    @Test(expected = ServiceRequestException.class)
     public void service18GetStatus500() {
         createService(Service18.class)
                 .getStatus500();

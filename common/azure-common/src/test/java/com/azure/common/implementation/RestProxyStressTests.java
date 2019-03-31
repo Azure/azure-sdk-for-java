@@ -7,7 +7,7 @@
 package com.azure.common.implementation;
 
 import com.azure.common.MockServer;
-import com.azure.common.http.rest.RestException;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
@@ -28,8 +28,8 @@ import com.azure.common.http.policy.AddDatePolicy;
 import com.azure.common.http.policy.AddHeadersPolicy;
 import com.azure.common.http.policy.HostPolicy;
 import com.azure.common.http.policy.HttpLogDetailLevel;
-import com.azure.common.http.rest.RestStreamResponse;
-import com.azure.common.http.rest.RestVoidResponse;
+import com.azure.common.http.rest.StreamResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.util.FlowableUtils;
 import com.azure.common.implementation.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
@@ -183,18 +183,18 @@ public class RestProxyStressTests {
     interface IOService {
         @ExpectedResponses({201})
         @PUT("/javasdktest/upload/100m-{id}.dat?{sas}")
-        Mono<RestVoidResponse> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuf> stream, @HeaderParam("content-length") long contentLength);
+        Mono<VoidResponse> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuf> stream, @HeaderParam("content-length") long contentLength);
 
         @GET("/javasdktest/upload/100m-{id}.dat?{sas}")
-        Mono<RestStreamResponse> download100M(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+        Mono<StreamResponse> download100M(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({201})
         @PUT("/testcontainer{id}?restype=container&{sas}")
-        Mono<RestVoidResponse> createContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+        Mono<VoidResponse> createContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({202})
         @DELETE("/testcontainer{id}?restype=container&{sas}")
-        Mono<RestVoidResponse> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+        Mono<VoidResponse> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
     }
 
     private static Path TEMP_FOLDER_PATH;
@@ -391,7 +391,7 @@ public class RestProxyStressTests {
                         Flux<ByteBuf> content;
                         try {
                             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-                            content = response.body()
+                            content = response.result()
                                     .doOnNext(buf -> messageDigest.update(buf.slice().nioBuffer()));
 
                             return content.last().doOnSuccess(b -> {
@@ -434,7 +434,7 @@ public class RestProxyStressTests {
                     Flux<ByteBuf> downloadContent = service.download100M(String.valueOf(id), sas)
                             // Ideally we would intercept this content to load an MD5 to check consistency between download and upload directly,
                             // but it's sufficient to demonstrate that no corruption occurred between preparation->upload->download->upload.
-                            .flatMapMany(RestStreamResponse::body)
+                            .flatMapMany(StreamResponse::result)
                             .map(reactorNettybb -> {
                                 //
                                 // This test 'downloadUploadStreamingTest' exercises piping scenario.
@@ -485,7 +485,7 @@ public class RestProxyStressTests {
         final Disposable d = Flux.range(0, NUM_FILES)
                 .flatMap(integer ->
                         service.download100M(String.valueOf(integer), sas)
-                                .flatMapMany(RestStreamResponse::body))
+                                .flatMapMany(StreamResponse::result))
                 .subscribe();
 
         Mono.delay(Duration.ofSeconds(10)).then(Mono.defer(() -> {
@@ -523,8 +523,8 @@ public class RestProxyStressTests {
                 .flatMap(integer ->
                         innerService.createContainer(integer.toString(), sas)
                                 .onErrorResume(throwable -> {
-                                    if (throwable instanceof RestException) {
-                                        RestException restException = (RestException) throwable;
+                                    if (throwable instanceof ServiceRequestException) {
+                                        ServiceRequestException restException = (ServiceRequestException) throwable;
                                         if ((restException.response().statusCode() == 409 || restException.response().statusCode() == 404)) {
                                             return Mono.empty();
                                         }

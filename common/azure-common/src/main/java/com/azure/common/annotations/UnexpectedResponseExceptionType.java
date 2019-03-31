@@ -6,7 +6,7 @@
 
 package com.azure.common.annotations;
 
-import com.azure.common.http.rest.RestException;
+import com.azure.common.exception.ServiceRequestException;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -29,9 +29,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(METHOD)
 public @interface UnexpectedResponseExceptionType {
     /**
-     * The type of RestException that should be thrown/returned when the API returns an unrecognized
+     * The type of ServiceRequestException that should be thrown/returned when the API returns an unrecognized
      * status code.
      * @return The type of RestException that should be thrown/returned.
      */
-    Class<? extends RestException> value();
+    Class<? extends ServiceRequestException> value();
 }
