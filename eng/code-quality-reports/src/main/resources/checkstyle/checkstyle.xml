@@ -243,5 +243,9 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
 
+        <!--Check for package naming and length limit-->
+        <module name="PackageName">
+            <property name="format" value="^(?=.{9,80}$)((com.microsoft.azure|com.azure)(\.[^A-Z_-]{1,20})*)+$"/>
+        </module>
     </module>
 </module>
