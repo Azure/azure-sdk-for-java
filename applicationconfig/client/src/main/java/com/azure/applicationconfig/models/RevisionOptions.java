@@ -6,7 +6,7 @@ package com.azure.applicationconfig.models;
 import java.time.OffsetDateTime;
 import java.util.EnumSet;
 
-public class RevisionOptions extends RequestOptions {
+public class RevisionOptions extends SettingSelector {
     private RevisionRange range;
 
     /**

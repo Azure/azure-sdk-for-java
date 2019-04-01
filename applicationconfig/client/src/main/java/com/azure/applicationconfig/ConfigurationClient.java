@@ -7,7 +7,7 @@ import com.azure.applicationconfig.implementation.Page;
 import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
-import com.azure.applicationconfig.models.RequestOptions;
+import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.applicationconfig.models.RevisionOptions;
 import com.azure.applicationconfig.models.RevisionRange;
 import com.azure.common.ServiceClient;
@@ -254,7 +254,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
-    public Flux<ConfigurationSetting> listSettings(RequestOptions options) {
+    public Flux<ConfigurationSetting> listSettings(SettingSelector options) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (options != null) {
             String fields = getSelectQuery(options.fields());
@@ -397,7 +397,7 @@ public final class ConfigurationClient extends ServiceClient {
 
     /*
      * Gets all ConfigurationSetting settings given the {@code nextPageLink} that was retrieved from a call to
-     * {@link ConfigurationClient#listSettings(RequestOptions)} or a call from this method.
+     * {@link ConfigurationClient#listSettings(SettingSelector)} or a call from this method.
      *
      * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link ConfigurationSetting} from the next page of results.

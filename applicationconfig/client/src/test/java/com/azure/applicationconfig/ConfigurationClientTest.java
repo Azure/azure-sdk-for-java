@@ -4,7 +4,7 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
-import com.azure.applicationconfig.models.RequestOptions;
+import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.applicationconfig.models.RevisionOptions;
 import com.azure.applicationconfig.models.RevisionRange;
 import com.azure.common.http.rest.RestException;
@@ -571,7 +571,7 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Verifies that we can select filter results by key, label, and select fields using RequestOptions.
+     * Verifies that we can select filter results by key, label, and select fields using SettingSelector.
      */
     @Test
     public void listSettingsSelectFields() {
@@ -583,7 +583,7 @@ public class ConfigurationClientTest {
         tags.put("tag2", "value2");
 
         final EnumSet<SettingFields> fields = EnumSet.of(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
-        final RequestOptions secondLabelOptions = new RequestOptions()
+        final SettingSelector secondLabelOptions = new SettingSelector()
             .label("*-second*")
             .key(keyPrefix + "-fetch-*")
             .fields(fields);
@@ -659,7 +659,7 @@ public class ConfigurationClientTest {
         assertEquals(3, revisions.size());
 
         // We want to fetch the configuration setting when we first updated its value.
-        RequestOptions options = new RequestOptions().key(keyName).acceptDatetime(revisions.get(1).lastModified());
+        SettingSelector options = new SettingSelector().key(keyName).acceptDatetime(revisions.get(1).lastModified());
         StepVerifier.create(client.listSettings(options))
             .assertNext(response -> assertConfigurationEquals(updated, response))
             .verifyComplete();
@@ -806,7 +806,7 @@ public class ConfigurationClientTest {
             results.add(client.setSetting(setting).retryBackoff(2, Duration.ofSeconds(30)));
         }
 
-        RequestOptions filter = new RequestOptions().label(label);
+        SettingSelector filter = new SettingSelector().label(label);
 
         Flux.merge(results).blockLast();
         StepVerifier.create(client.listSettings(filter))
@@ -839,7 +839,7 @@ public class ConfigurationClientTest {
     @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test
     public void deleteAllSettings() {
-        client.listSettings(new RequestOptions().key("*"))
+        client.listSettings(new SettingSelector().key("*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 

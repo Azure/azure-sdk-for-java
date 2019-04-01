@@ -8,30 +8,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 
 /**
- * Represents a set of request options for querying App Configuration.
+ * A set of options for selecting configuration settings from Application Configuration service.
  *
  * <p>
- * Providing {@link RequestOptions#label()} will filter {@link ConfigurationSetting}s that match that label name in
+ * Providing {@link SettingSelector#label()} will filter {@link ConfigurationSetting}s that match that label name in
  * conjunction with the key that is passed in to the service request.
  *
  * <p>
- * Providing {@link RequestOptions#acceptDateTime()} will return the representation of matching {@link ConfigurationSetting}
+ * Providing {@link SettingSelector#acceptDateTime()} will return the representation of matching {@link ConfigurationSetting}
  * at that given {@link OffsetDateTime}.
  *
  * <p>
- * Providing {@link RequestOptions#fields()} will populate only those {@link ConfigurationSetting} fields in the response.
+ * Providing {@link SettingSelector#fields()} will populate only those {@link ConfigurationSetting} fields in the response.
  */
-public class RequestOptions {
+public class SettingSelector {
     private String key;
     private String label;
     private EnumSet<SettingFields> fields;
     private String acceptDatetime;
 
     /**
-     * Creates request options that will populate {@link ConfigurationSetting} responses with default properties and
+     * Creates a setting selector that will populate {@link ConfigurationSetting} responses with default properties and
      * select all {@link ConfigurationSetting#key()}s.
      */
-    public RequestOptions() {
+    public SettingSelector() {
         key = "*";
     }
 
@@ -66,9 +66,9 @@ public class RequestOptions {
      * </ul>
      *
      * @param key The expression to filter ConfigurationSetting keys on.
-     * @return The updated RequestOptions object
+     * @return The updated SettingSelector object
      */
-    public RequestOptions key(String key) {
+    public SettingSelector key(String key) {
         this.key = key;
         return this;
     }
@@ -112,9 +112,9 @@ public class RequestOptions {
      *
      * @param label The ConfigurationSetting label to match. If the provided value is {@code null} or {@code ""}, all
      *              ConfigurationSettings will be returned regardless of their label.
-     * @return RequestOptions The updated RequestOptions object.
+     * @return SettingSelector The updated SettingSelector object.
      */
-    public RequestOptions label(String label) {
+    public SettingSelector label(String label) {
         this.label = label;
         return this;
     }
@@ -136,9 +136,9 @@ public class RequestOptions {
      * If set, then key values will be retrieved exactly as they existed at the provided time.
      *
      * @param datetime The value of the configuration setting at that given {@link OffsetDateTime}.
-     * @return The updated RequestOptions object.
+     * @return The updated SettingSelector object.
      */
-    public RequestOptions acceptDatetime(OffsetDateTime datetime) {
+    public SettingSelector acceptDatetime(OffsetDateTime datetime) {
         this.acceptDatetime = DateTimeFormatter.RFC_1123_DATE_TIME.toFormat().format(datetime);
         return this;
     }
@@ -158,9 +158,9 @@ public class RequestOptions {
      *
      * @param fields the fields to select for the query response. If none are set, the service will return the
      *               ConfigurationSettings with a default set of properties.
-     * @return The updated RequestOptions object.
+     * @return The updated SettingSelector object.
      */
-    public RequestOptions fields(EnumSet<SettingFields> fields) {
+    public SettingSelector fields(EnumSet<SettingFields> fields) {
         this.fields = fields;
         return this;
     }
