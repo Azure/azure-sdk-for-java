@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for
-// license information.
+// Licensed under the MIT License.
 /**
- * This package contains the classes for ConfigurationClient.
+ * This package contains the classes for creating a {@link com.azure.applicationconfig.ConfigurationClient} to perform
+ * operations on Azure Application Configuration service.
  */
 package com.azure.applicationconfig;
