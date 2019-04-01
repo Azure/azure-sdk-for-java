@@ -256,7 +256,7 @@ public class TaskOperations implements IInheritedBehaviors {
             } finally {
                 synchronized (lock) {
                     // Notify main thread that sub thread finished
-                    lock.notify();
+                    lock.notifyAll();
                 }
             }
         }
@@ -316,12 +316,12 @@ public class TaskOperations implements IInheritedBehaviors {
                     lock.wait();
 
                     List<Thread> finishedThreads = new ArrayList<>();
-                    for (Thread t : threads.keySet()) {
-                        if (t.getState() == Thread.State.TERMINATED) {
-                            finishedThreads.add(t);
+                    for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
+                        if (entry.getKey().getState() == Thread.State.TERMINATED) {
+                            finishedThreads.add(entry.getKey());
                             // If any exception is encountered, then stop immediately without waiting for
                             // remaining active threads.
-                            innerException = threads.get(t).getException();
+                            innerException = entry.getValue().getException();
                             if (innerException != null) {
                                 break;
                             }
@@ -347,8 +347,8 @@ public class TaskOperations implements IInheritedBehaviors {
 
         if (innerException == null) {
             // Check for errors in any of the threads.
-            for (Thread t : threads.keySet()) {
-                innerException = threads.get(t).getException();
+            for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
+                innerException = entry.getValue().getException();
                 if (innerException != null) {
                     break;
                 }
@@ -359,7 +359,7 @@ public class TaskOperations implements IInheritedBehaviors {
             // If an exception happened in any of the threads, throw it.
             if (innerException instanceof BatchErrorException) {
                 throw (BatchErrorException) innerException;
-            } else {
+            } else if (innerException instanceof  RuntimeException) {
                 // WorkingThread will only catch and store a BatchErrorException or a
                 // RuntimeException in its run() method.
                 // WorkingThread.getException() should therefore only return one of these two
