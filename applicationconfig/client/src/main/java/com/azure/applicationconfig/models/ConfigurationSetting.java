@@ -3,7 +3,6 @@
 package com.azure.applicationconfig.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import sun.security.krb5.Config;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
