@@ -684,7 +684,8 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Verifies that we can get all of the revisions for this ConfigurationSetting.
+     * Verifies that we can get all of the revisions for this ConfigurationSetting. Then verifies that we can select
+     * specific fields.
      */
     @Test
     public void listRevisions() {
@@ -692,6 +693,7 @@ public class ConfigurationClientTest {
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
+        final EnumSet<SettingFields> fields = EnumSet.of(SettingFields.KEY, SettingFields.ETAG);
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original))
@@ -710,6 +712,28 @@ public class ConfigurationClientTest {
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .assertNext(response -> assertConfigurationEquals(original, response))
                 .verifyComplete();
+
+        // Verifies that we can select specific fields.
+        StepVerifier.create(client.listSettingRevisions(new RevisionOptions().key(keyName).fields(fields)))
+            .assertNext(response -> {
+                assertEquals(updated2.key(), response.key());
+                assertNotNull(response.etag());
+                assertNull(response.value());
+                assertNull(response.lastModified());
+            })
+            .assertNext(response -> {
+                assertEquals(updated.key(), response.key());
+                assertNotNull(response.etag());
+                assertNull(response.value());
+                assertNull(response.lastModified());
+            })
+            .assertNext(response -> {
+                assertEquals(original.key(), response.key());
+                assertNotNull(response.etag());
+                assertNull(response.value());
+                assertNull(response.lastModified());
+            })
+            .verifyComplete();
     }
 
     /**
