@@ -298,8 +298,9 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Tests that when an etag is passed to set it will only set if the current representation of the setting has the etag.
-     * If the set etag doesn't match anything the update won't happen, this will result in a 412. This will prevent set from doing an add as well.
+     * Tests that when an etag is passed to set it will only set if the current representation of the setting has the
+     * etag. If the set etag doesn't match anything the update won't happen, this will result in a 412. This will
+     * prevent set from doing an add as well.
      */
     @Test
     public void setSettingIfEtag() {
@@ -309,19 +310,20 @@ public class ConfigurationClientTest {
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
 
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
-            StepVerifier.create(client.setSetting(initial.withEtag("badEtag")))
+            // This etag is not the correct format. It is not the correct hash that the service is expecting.
+            StepVerifier.create(client.setSetting(initial.etag("badEtag")))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
             final String etag = client.addSetting(initial).block().body().etag();
 
-            StepVerifier.create(client.setSetting(update.withEtag(etag)))
+            StepVerifier.create(client.setSetting(update.etag(etag)))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
 
             StepVerifier.create(client.setSetting(initial))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
-            StepVerifier.create(client.getSetting(update.key(), update.label()))
+            StepVerifier.create(client.getSetting(update))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
         };
@@ -397,20 +399,24 @@ public class ConfigurationClientTest {
         final String initialEtag = client.addSetting(initial).block().body().etag();
         final String updateEtag = client.updateSetting(update).block().body().etag();
 
-        StepVerifier.create(client.updateSetting(last.withEtag(initialEtag)))
+        // The setting does not exist in the service yet, so we cannot update it.
+        StepVerifier.create(client.updateSetting(last.etag(initialEtag)))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
-        StepVerifier.create(client.getSetting(update.key(), update.label()))
+        StepVerifier.create(client.getSetting(update))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
-        StepVerifier.create(client.updateSetting(last.withEtag(updateEtag)))
+        StepVerifier.create(client.updateSetting(last.etag(updateEtag)))
                 .assertNext(response -> assertConfigurationEquals(last, response))
                 .verifyComplete();
 
-        StepVerifier.create(client.getSetting(last.key(), last.label()))
+        StepVerifier.create(client.getSetting(last))
                 .assertNext(response -> assertConfigurationEquals(last, response))
                 .verifyComplete();
+
+        StepVerifier.create(client.updateSetting(initial.etag(updateEtag)))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
     }
 
     /**
