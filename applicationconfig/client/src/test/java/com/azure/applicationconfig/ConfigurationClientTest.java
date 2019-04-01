@@ -839,14 +839,14 @@ public class ConfigurationClientTest {
     @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test
     public void deleteAllSettings() {
-        client.listSettings(new RequestOptions().key("key*"))
+        client.listSettings(new RequestOptions().key("*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
                     if (configurationSetting.isLocked()) {
                         return client.unlockSetting(configurationSetting).flatMap(response -> {
                             ConfigurationSetting kv = response.body();
-                            return client.deleteSetting(kv.key());
+                            return client.deleteSetting(kv);
                         });
                     } else {
                         return client.deleteSetting(configurationSetting);
