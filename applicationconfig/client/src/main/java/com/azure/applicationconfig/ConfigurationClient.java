@@ -98,7 +98,7 @@ public final class ConfigurationClient extends ServiceClient {
      * <p>
      * The label value for the ConfigurationSetting is optional.
      *
-     * @param setting The configuration setting to create or updateSetting.
+     * @param setting The configuration setting to create or update.
      * @return ConfigurationSetting that was created or updated.
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or an empty string.
@@ -138,7 +138,7 @@ public final class ConfigurationClient extends ServiceClient {
     /**
      * Attempts to get a ConfigurationSetting that matches the {@code key}.
      *
-     * @param key The for the setting to retrieve.
+     * @param key The key of the setting to retrieve.
      * @return The configuration setting in the service.
      * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
      * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
@@ -177,7 +177,7 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Deletes the {@link ConfigurationSetting} by finding a setting with a matching key and label. If the
+     * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag. If the
      * {@link ConfigurationSetting#etag()} is specified, the setting is <b>only</b> deleted if the etag matches the
      * current etag; this means that no one has updated the ConfigurationSetting yet.
      *
