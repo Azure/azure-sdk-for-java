@@ -20,17 +20,17 @@ import java.util.concurrent.Executors;
 public class BatchApplicationTokenCredentials extends TokenCredentials implements BatchCredentials {
 
     /** The Active Directory application client id. */
-    final private String clientId;
+    private final String clientId;
     /** The tenant or domain containing the application. */
-    final private String domain;
+    private final String domain;
     /** The authentication secret for the application. */
-    final private String secret;
+    private final String secret;
     /** The user's Batch service endpoint */
-    final private String baseUrl;
+    private final String baseUrl;
     /** The Batch service auth endpoint */
-    final private String batchEndpoint;
+    private final String batchEndpoint;
     /** The Active Directory auth endpoint */
-    final private String authenticationEndpoint;
+    private final String authenticationEndpoint;
     /** The cached access token. */
     private AuthenticationResult authenticationResult;
 
@@ -98,8 +98,7 @@ public class BatchApplicationTokenCredentials extends TokenCredentials implement
      *
      * @return the Active Directory auth endpoint.
      */
-    public String authenticationEndpoint()
-    {
+    public String authenticationEndpoint() {
         return this.authenticationEndpoint;
     }
 
@@ -108,8 +107,7 @@ public class BatchApplicationTokenCredentials extends TokenCredentials implement
      *
      * @return the Batch service auth endpoint.
      */
-    public String batchEndpoint()
-    {
+    public String batchEndpoint() {
         return this.batchEndpoint;
     }
 
