@@ -74,14 +74,18 @@ public class RequestOptions {
     }
 
     /**
-     * The label used to filter settings based on their {@link ConfigurationSetting#label()} in the service. If the
-     * value is {@code null} or {@code ""}, all ConfigurationSettings will be returned regardless of their label.
+     * The label used to filter settings based on their {@link ConfigurationSetting#label()} in the service.
+     *
+     * If the value is {@code null} or an empty string, all ConfigurationSettings with
+     * {@link ConfigurationSetting#NO_LABEL} are returned.
      *
      * <p>
      * Examples:
      * <ul>
      *     <li>If {@code label = "*"}, all settings are returned.</li>
      *     <li>If {@code label = "\0"}, settings without any label are returned.</li>
+     *     <li>If {@code label = ""}, settings without any label are returned.</li>
+     *     <li>If {@code label = null}, settings without any label are returned.</li>
      *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
      *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
      *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
