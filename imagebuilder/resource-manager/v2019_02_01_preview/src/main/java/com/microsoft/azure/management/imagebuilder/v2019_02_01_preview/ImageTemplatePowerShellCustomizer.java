@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Runs the specified PowerShell on the VM (Windows). Corresponds to Packer
- * powershell provisioner.
+ * powershell provisioner. Exactly one of 'script' or 'inline' can be
+ * specified.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("PowerShell")
@@ -28,7 +29,13 @@ public class ImageTemplatePowerShellCustomizer extends ImageTemplateCustomizer {
     private String script;
 
     /**
-     * The validExitCodes property.
+     * Array of PowerShell commands to execute.
+     */
+    @JsonProperty(value = "inline")
+    private List<String> inline;
+
+    /**
+     * Valid exit codes for the PowerShell script. [Default: 0].
      */
     @JsonProperty(value = "validExitCodes")
     private List<Integer> validExitCodes;
@@ -54,7 +61,27 @@ public class ImageTemplatePowerShellCustomizer extends ImageTemplateCustomizer {
     }
 
     /**
-     * Get the validExitCodes value.
+     * Get array of PowerShell commands to execute.
+     *
+     * @return the inline value
+     */
+    public List<String> inline() {
+        return this.inline;
+    }
+
+    /**
+     * Set array of PowerShell commands to execute.
+     *
+     * @param inline the inline value to set
+     * @return the ImageTemplatePowerShellCustomizer object itself.
+     */
+    public ImageTemplatePowerShellCustomizer withInline(List<String> inline) {
+        this.inline = inline;
+        return this;
+    }
+
+    /**
+     * Get valid exit codes for the PowerShell script. [Default: 0].
      *
      * @return the validExitCodes value
      */
@@ -63,7 +90,7 @@ public class ImageTemplatePowerShellCustomizer extends ImageTemplateCustomizer {
     }
 
     /**
-     * Set the validExitCodes value.
+     * Set valid exit codes for the PowerShell script. [Default: 0].
      *
      * @param validExitCodes the validExitCodes value to set
      * @return the ImageTemplatePowerShellCustomizer object itself.

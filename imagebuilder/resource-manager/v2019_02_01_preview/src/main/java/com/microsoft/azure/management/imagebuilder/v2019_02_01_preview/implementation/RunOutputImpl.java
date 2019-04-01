@@ -46,8 +46,8 @@ class RunOutputImpl extends IndexableRefreshableWrapperImpl<RunOutput, RunOutput
     }
 
     @Override
-    public String artifactLocation() {
-        return this.inner().artifactLocation();
+    public String artifactUri() {
+        return this.inner().artifactUri();
     }
 
     @Override

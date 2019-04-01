@@ -24,10 +24,10 @@ public class RunOutputInner extends SubResource {
     private String artifactId;
 
     /**
-     * The URL location of the artifact.
+     * The location URI of the artifact.
      */
-    @JsonProperty(value = "properties.artifactLocation")
-    private String artifactLocation;
+    @JsonProperty(value = "properties.artifactUri")
+    private String artifactUri;
 
     /**
      * Provisioning state of the resource. Possible values include: 'Creating',
@@ -69,22 +69,22 @@ public class RunOutputInner extends SubResource {
     }
 
     /**
-     * Get the URL location of the artifact.
+     * Get the location URI of the artifact.
      *
-     * @return the artifactLocation value
+     * @return the artifactUri value
      */
-    public String artifactLocation() {
-        return this.artifactLocation;
+    public String artifactUri() {
+        return this.artifactUri;
     }
 
     /**
-     * Set the URL location of the artifact.
+     * Set the location URI of the artifact.
      *
-     * @param artifactLocation the artifactLocation value to set
+     * @param artifactUri the artifactUri value to set
      * @return the RunOutputInner object itself.
      */
-    public RunOutputInner withArtifactLocation(String artifactLocation) {
-        this.artifactLocation = artifactLocation;
+    public RunOutputInner withArtifactUri(String artifactUri) {
+        this.artifactUri = artifactUri;
         return this;
     }
 
