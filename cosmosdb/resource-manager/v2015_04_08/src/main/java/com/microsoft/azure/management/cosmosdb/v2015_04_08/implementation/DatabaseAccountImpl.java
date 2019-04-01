@@ -104,6 +104,11 @@ class DatabaseAccountImpl extends GroupableResourceCoreImpl<DatabaseAccount, Dat
     }
 
     @Override
+    public Boolean enableMultipleWriteLocations() {
+        return this.inner().enableMultipleWriteLocations();
+    }
+
+    @Override
     public List<FailoverPolicy> failoverPolicies() {
         return this.inner().failoverPolicies();
     }
@@ -164,6 +169,12 @@ class DatabaseAccountImpl extends GroupableResourceCoreImpl<DatabaseAccount, Dat
     @Override
     public DatabaseAccountImpl withEnableAutomaticFailover(Boolean enableAutomaticFailover) {
         this.createParameter.withEnableAutomaticFailover(enableAutomaticFailover);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountImpl withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
+        this.createParameter.withEnableMultipleWriteLocations(enableMultipleWriteLocations);
         return this;
     }
 

@@ -40,7 +40,7 @@ public class DatabaseAccountCreateUpdateParameters extends Resource {
     private List<Location> locations;
 
     /**
-     * The databaseAccountOfferType property.
+     * The offer type for the database.
      */
     @JsonProperty(value = "properties.databaseAccountOfferType", required = true)
     private String databaseAccountOfferType;
@@ -80,6 +80,12 @@ public class DatabaseAccountCreateUpdateParameters extends Resource {
      */
     @JsonProperty(value = "properties.virtualNetworkRules")
     private List<VirtualNetworkRule> virtualNetworkRules;
+
+    /**
+     * Enables the account to write in multiple locations.
+     */
+    @JsonProperty(value = "properties.enableMultipleWriteLocations")
+    private Boolean enableMultipleWriteLocations;
 
     /**
      * Creates an instance of DatabaseAccountCreateUpdateParameters class.
@@ -150,7 +156,7 @@ public class DatabaseAccountCreateUpdateParameters extends Resource {
     }
 
     /**
-     * Get the databaseAccountOfferType value.
+     * Get the offer type for the database.
      *
      * @return the databaseAccountOfferType value
      */
@@ -159,7 +165,7 @@ public class DatabaseAccountCreateUpdateParameters extends Resource {
     }
 
     /**
-     * Set the databaseAccountOfferType value.
+     * Set the offer type for the database.
      *
      * @param databaseAccountOfferType the databaseAccountOfferType value to set
      * @return the DatabaseAccountCreateUpdateParameters object itself.
@@ -266,6 +272,26 @@ public class DatabaseAccountCreateUpdateParameters extends Resource {
      */
     public DatabaseAccountCreateUpdateParameters withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
         this.virtualNetworkRules = virtualNetworkRules;
+        return this;
+    }
+
+    /**
+     * Get enables the account to write in multiple locations.
+     *
+     * @return the enableMultipleWriteLocations value
+     */
+    public Boolean enableMultipleWriteLocations() {
+        return this.enableMultipleWriteLocations;
+    }
+
+    /**
+     * Set enables the account to write in multiple locations.
+     *
+     * @param enableMultipleWriteLocations the enableMultipleWriteLocations value to set
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
+        this.enableMultipleWriteLocations = enableMultipleWriteLocations;
         return this;
     }
 
