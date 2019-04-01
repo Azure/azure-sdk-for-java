@@ -359,8 +359,20 @@ public class ConfigurationClientTest {
     public void updateSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdatedValue");
+        final Map<String, String> tags = new HashMap<>();
+        tags.put("first tag", "first value");
+        tags.put("second tag", "second value");
+        final ConfigurationSetting original = new ConfigurationSetting()
+            .key(key)
+            .value("myNewValue")
+            .tags(tags)
+            .contentType("json");
+
+        final Map<String, String> updatedTags = new HashMap<>(tags);
+        final ConfigurationSetting updated = new ConfigurationSetting(original)
+            .value("myUpdatedValue")
+            .tags(updatedTags)
+            .contentType("text");
 
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
             StepVerifier.create(client.addSetting(initial))
@@ -375,8 +387,8 @@ public class ConfigurationClientTest {
                     .verifyComplete();
         };
 
-        testRunner.accept(newConfiguration, updateConfiguration);
-        testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
+        testRunner.accept(original, updated);
+        testRunner.accept(original.label(label), updated.label(label));
     }
 
     /**
