@@ -51,7 +51,8 @@ public class ConfigurationSetting {
     }
 
     /**
-     * Sets the key.
+     * Sets the key of this configuration value. This is required.
+     *
      * @param key key name
      * @return ConfigurationSetting object itself
      */
@@ -61,16 +62,20 @@ public class ConfigurationSetting {
     }
 
     /**
-     * @return label
+     * Gets the label of this configuration setting.
+     *
+     * @return The label of this setting.
      */
     public String label() {
         return label;
     }
 
     /**
-     * Sets the label.
-     * @param label label
-     * @return ConfigurationSetting object itself
+     * Sets the label of this configuration setting. {@link ConfigurationSetting#NO_LABEL} is the default label used
+     * when this value is not set.
+     *
+     * @param label The label of this configuration setting.
+     * @return The updated ConfigurationSetting object.
      */
     public ConfigurationSetting label(String label) {
         this.label = label;
@@ -78,16 +83,19 @@ public class ConfigurationSetting {
     }
 
     /**
-     * @return key value
+     * Gets the value of this configuration setting.
+     *
+     * @return The value of this configuration setting.
      */
     public String value() {
         return value;
     }
 
     /**
-     * Sets the value.
-     * @param value value
-     * @return ConfigurationSetting object itself
+     * Sets the value of this setting.
+     *
+     * @param value The value to associate with this configuration setting.
+     * @return The updated ConfigurationSetting object
      */
     public ConfigurationSetting value(String value) {
         this.value = value;
@@ -95,16 +103,19 @@ public class ConfigurationSetting {
     }
 
     /**
-     * @return content type
+     * Gets the content type of this configuration setting. By default, this content type is null.
+     *
+     * @return The content type of this setting.
      */
     public String contentType() {
         return contentType;
     }
 
     /**
-     * Sets the content type.
-     * @param contentType content type
-     * @return ConfigurationSetting object itself
+     * Sets the content type. By default, the content type is null.
+     *
+     * @param contentType The content type of this configuration setting.
+     * @return The updated ConfigurationSetting object.
      */
     public ConfigurationSetting contentType(String contentType) {
         this.contentType = contentType;
@@ -112,37 +123,53 @@ public class ConfigurationSetting {
     }
 
     /**
-     * @return etag
+     * The etag for this configuration setting.
+     *
+     * <p>
+     * This is a <b>readonly</b> property. It is populated from responses from the Azure Application Configuration service.
+     *
+     * @return etag The etag for the setting.
      */
     public String etag() {
         return etag;
     }
 
     /**
-     * @return the time when last modified
+     * The time when the configuration setting was last modified.
+     *
+     * @return The time when the configuration was last modified.
      */
     public OffsetDateTime lastModified() {
         return lastModified;
     }
 
     /**
-     * @return true if locked; false otherwise
+     * Gets whether or not the configuration setting is locked. If the setting is locked, then no modifications can be
+     * made to this setting.
+     *
+     * <p>
+     * This is a <b>readonly</b> property. It is populated from responses from the Azure Application Configuration service.
+     *
+     * @return true if locked; false otherwise.
      */
     public boolean isLocked() {
         return locked;
     }
 
     /**
-     * @return tags
+     * Gets tags associated with this configuration setting.
+     *
+     * @return tags Gets tags for this configuration setting.
      */
     public Map<String, String> tags() {
         return tags;
     }
 
     /**
-     * Sets the tags.
-     * @param tags tags
-     * @return ConfigurationSetting object itself
+     * Sets the tags for this configuration setting.
+     *
+     * @param tags The tags to add to this configuration setting.
+     * @return The updated ConfigurationSetting object.
      */
     public ConfigurationSetting tags(Map<String, String> tags) {
         this.tags = tags;
