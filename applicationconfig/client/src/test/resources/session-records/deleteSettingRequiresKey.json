@@ -1,25 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?key=key61944%2a",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?key=key34431%2a",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2019 18:37:44 GMT",
+      "date" : "Mon, 01 Apr 2019 05:20:00 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
       "connection" : "keep-alive",
       "content-type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "e319a72a-4a5b-408c-8479-e959a6f3ce89",
+      "x-ms-request-id" : "b2569177-2701-4bb1-991c-24c7ac781065",
       "Body" : "{\"items\":[]}",
       "strict-transport-security" : "max-age=15724800; includeSubDomains;",
-      "x-ms-client-request-id" : "ab309722-9573-4d90-bc9f-8dd7cefd1087",
-      "x-ms-correlation-request-id" : "e319a72a-4a5b-408c-8479-e959a6f3ce89"
+      "x-ms-client-request-id" : "c6341d33-efb4-4f5f-b3df-719bc2b751f5",
+      "x-ms-correlation-request-id" : "b2569177-2701-4bb1-991c-24c7ac781065"
     }
   } ],
-  "variables" : [ "key61944", "01717b5f" ]
+  "variables" : [ "key34431", "53d482dd" ]
 }
