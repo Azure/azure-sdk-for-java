@@ -92,7 +92,7 @@ public class ConfigurationClientTest {
             logger.info("RECORD MODE");
 
             final String connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
-            Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be setSetting.");
+            Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
             client = ConfigurationClient.builder()
                     .credentials(new ConfigurationClientCredentials(connectionString))
@@ -137,7 +137,7 @@ public class ConfigurationClientTest {
                 throw e;
             }
         } else {
-            logger.info("Environment variable 'AZURE_TEST_MODE' has not been setSetting yet. Using 'Playback' mode.");
+            logger.info("Environment variable 'AZURE_TEST_MODE' has not been set yet. Using 'Playback' mode.");
             return TestMode.PLAYBACK;
         }
     }

@@ -51,7 +51,7 @@ public final class ConfigurationClient extends ServiceClient {
      * service requests
      *
      * @param serviceEndpoint URL for the Application configuration service.
-     * @param pipeline        HttpPipeline that the HTTP requests and responses flow through.
+     * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
     private ConfigurationClient(URL serviceEndpoint, HttpPipeline pipeline) {
         super(pipeline);
@@ -77,8 +77,8 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param setting The setting to add to the configuration service.
      * @return ConfigurationSetting that was created or updated.
-     * @throws NullPointerException                     If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException                 If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}.
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}.
      * @throws com.azure.common.http.rest.RestException If a ConfigurationSetting with the same key and label exists.
      */
     public Mono<RestResponse<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
@@ -100,11 +100,11 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param setting The configuration setting to create or updateSetting.
      * @return ConfigurationSetting that was created or updated.
-     * @throws NullPointerException                     If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException                 If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}.
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}.
      * @throws com.azure.common.http.rest.RestException If the {@link ConfigurationSetting#etag()} was specified, is not
-     *                                                  {@link ConfigurationClient#ETAG_ANY}, and the current configuration
-     *                                                  value's etag does not match.
+     * {@link ConfigurationClient#ETAG_ANY}, and the current configuration
+     * value's etag does not match.
      */
     public Mono<RestResponse<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
@@ -123,10 +123,10 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param setting The setting to add or update in the service.
      * @return ConfigurationSetting that was updated.
-     * @throws NullPointerException                     If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException                 If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}
      * @throws com.azure.common.http.rest.RestException If a ConfigurationSetting with the same key and label does not
-     *                                                  exist or the configuration value is locked.
+     * exist or the configuration value is locked.
      */
     public Mono<RestResponse<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
@@ -140,9 +140,9 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param key The for the setting to retrieve.
      * @return The configuration setting in the service.
-     * @throws IllegalArgumentException                 If {@code key} is {@code null} or {@code ""}
+     * @throws IllegalArgumentException If {@code key} is {@code null} or {@code ""}
      * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
-     *                                                  not exist.
+     * not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> getSetting(String key) {
         return getSetting(new ConfigurationSetting().key(key));
@@ -153,11 +153,11 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
      * @return The configuration value in the service.
-     * @throws NullPointerException                     If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException                 If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}
      * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
-     *                                                  not exist. If {@code etag} was specified, returns status code of
-     *                                                  304 if the key has not been modified.
+     * not exist. If {@code etag} was specified, returns status code of
+     * 304 if the key has not been modified.
      */
     public Mono<RestResponse<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
@@ -184,7 +184,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @param setting The ConfigurationSetting to delete.
      * @return The deleted ConfigurationSetting or {@link null} if didn't exist.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or {@code ""}
-     * @throws NullPointerException     When {@code setting} is {@code null}.
+     * @throws NullPointerException When {@code setting} is {@code null}.
      */
     public Mono<RestResponse<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
@@ -197,7 +197,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param key The key of the ConfigurationSetting.
      * @return ConfigurationSetting that was locked.
-     * @throws IllegalArgumentException                 If {@code key} is {@code null} or {@code ""}
+     * @throws IllegalArgumentException If {@code key} is {@code null} or {@code ""}
      * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> lockSetting(String key) {
@@ -210,7 +210,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param setting The ConfigurationSetting to lock.
      * @return ConfigurationSetting that was locked.
-     * @throws IllegalArgumentException                 If {@code key} is {@code null} or {@code ""}
+     * @throws IllegalArgumentException If {@code key} is {@code null} or {@code ""}
      * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> lockSetting(ConfigurationSetting setting) {
@@ -224,7 +224,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param key The key of the setting to unlock.
      * @return The ConfigurationSetting that was unlocked.
-     * @throws IllegalArgumentException                 If {@code key} is {@code null} or {@code ""}
+     * @throws IllegalArgumentException If {@code key} is {@code null} or {@code ""}
      * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> unlockSetting(String key) {
@@ -237,7 +237,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param setting The configuration setting to unlock.
      * @return The ConfigurationSetting that was unlocked.
-     * @throws IllegalArgumentException                 If {@code key} is {@code null} or {@code ""}
+     * @throws IllegalArgumentException If {@code key} is {@code null} or {@code ""}
      * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> unlockSetting(ConfigurationSetting setting) {
@@ -312,13 +312,12 @@ public final class ConfigurationClient extends ServiceClient {
         }
 
         /**
-         * Creates a {@link ConfigurationClient} based on options setSetting in the Builder.
+         * Creates a {@link ConfigurationClient} based on options set in the Builder.
          * <p>
          * Every time {@code build()} is called, a new instance of {@link ConfigurationClient} is created.
          *
-         * @return A ConfigurationClient with the options setSetting from the builder.
-         * @throws IllegalStateException If {@link Builder#credentials(ConfigurationClientCredentials)}
-         *                               has not been setSetting.
+         * @return A ConfigurationClient with the options set from the builder.
+         * @throws IllegalStateException If {@link Builder#credentials(ConfigurationClientCredentials)} has not been set.
          */
         public ConfigurationClient build() {
             if (credentials == null) {
@@ -339,8 +338,8 @@ public final class ConfigurationClient extends ServiceClient {
             policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
             HttpPipeline pipeline = httpClient == null
-                    ? new HttpPipeline(policies)
-                    : new HttpPipeline(httpClient, policies);
+                ? new HttpPipeline(policies)
+                : new HttpPipeline(httpClient, policies);
 
             return new ConfigurationClient(credentials.baseUri(), pipeline);
         }
@@ -370,7 +369,7 @@ public final class ConfigurationClient extends ServiceClient {
         }
 
         /**
-         * Adds a policy to the setSetting of existing policies that are executed after
+         * Adds a policy to the set of existing policies that are executed after
          * {@link com.azure.applicationconfig.ConfigurationClient} required policies.
          *
          * @param policy The retry policy for service requests.
@@ -410,7 +409,7 @@ public final class ConfigurationClient extends ServiceClient {
 
     private Flux<ConfigurationSetting> getPagedConfigurationSettings(Mono<RestResponse<Page<ConfigurationSetting>>> response) {
         return response.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-                .concatMap(this::extractAndFetchConfigurationSettings);
+            .concatMap(this::extractAndFetchConfigurationSettings);
     }
 
     private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(RestPagedResponseImpl<ConfigurationSetting> page) {
@@ -437,7 +436,7 @@ public final class ConfigurationClient extends ServiceClient {
         }
 
         return set.stream().map(item -> item.toString().toLowerCase(Locale.US))
-                .collect(Collectors.joining(","));
+            .collect(Collectors.joining(","));
     }
 
     private static String getItemsRange(RevisionRange range) {
@@ -446,8 +445,8 @@ public final class ConfigurationClient extends ServiceClient {
         }
 
         return range.end() == null
-                ? String.format("items=%d-", range.start())
-                : String.format("items=%d-%d", range.start(), range.end());
+            ? String.format("items=%d-", range.start())
+            : String.format("items=%d-%d", range.start(), range.end());
     }
 
     private static ConfigurationSetting validateSetting(ConfigurationSetting setting) {
