@@ -3,8 +3,10 @@
 package com.azure.applicationconfig.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import sun.security.krb5.Config;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -42,6 +44,32 @@ public class ConfigurationSetting {
 
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    /**
+     * Creates an instance of the configuration setting.
+     */
+    public ConfigurationSetting() {
+    }
+
+    /**
+     * Creates a configuration setting and sets the values from the passed in parameter to this setting.
+     *
+     * @param other The configuration setting to copy values from.
+     */
+    public ConfigurationSetting(ConfigurationSetting other) {
+        this.key(other.key)
+            .label(other.label)
+            .etag(other.etag)
+            .value(other.value)
+            .contentType(other.contentType);
+
+        if (other.tags() != null) {
+            other.tags(new HashMap<>(other.tags()));
+        }
+
+        this.locked = other.isLocked();
+        this.lastModified = other.lastModified();
+    }
 
     /**
      * @return key name
@@ -125,13 +153,21 @@ public class ConfigurationSetting {
     /**
      * The etag for this configuration setting.
      *
-     * <p>
-     * This is a <b>readonly</b> property. It is populated from responses from the Azure Application Configuration service.
-     *
      * @return etag The etag for the setting.
      */
     public String etag() {
         return etag;
+    }
+
+    /**
+     * Sets the etag for this configuration setting.
+     *
+     * @param etag The etag for the configuration setting.
+     * @return The updated ConfigurationSetting object.
+     */
+    public ConfigurationSetting etag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
