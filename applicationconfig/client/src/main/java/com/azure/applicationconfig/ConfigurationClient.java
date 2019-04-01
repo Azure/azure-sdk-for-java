@@ -395,7 +395,7 @@ public final class ConfigurationClient extends ServiceClient {
         }
     }
 
-    /**
+    /*
      * Gets all ConfigurationSetting settings given the {@code nextPageLink} that was retrieved from a call to
      * {@link ConfigurationClient#listSettings(RequestOptions)} or a call from this method.
      *
@@ -420,10 +420,10 @@ public final class ConfigurationClient extends ServiceClient {
         return Flux.fromIterable(page.items()).concatWith(listSettings(nextPageLink));
     }
 
-    /**
+    /*
      * Azure Configuration service requires that the etag value is surrounded in quotation marks.
      *
-     * @param etag The etag to getSetting the value for. If null is pass in, an empty string is returned.
+     * @param etag The etag to get the value for. If null is pass in, an empty string is returned.
      * @return The etag surrounded by quotations. (ex. "etag")
      */
     private static String getETagValue(String etag) {

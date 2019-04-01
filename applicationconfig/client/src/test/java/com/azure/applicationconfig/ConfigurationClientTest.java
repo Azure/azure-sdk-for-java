@@ -632,7 +632,7 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Verifies that we can getSetting a ConfigurationSetting at the provided accept datetime
+     * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
     @Test
     public void listSettingsAcceptDateTime() {
@@ -652,7 +652,7 @@ public class ConfigurationClientTest {
             .assertNext(response -> assertConfigurationEquals(updated2, response))
             .verifyComplete();
 
-        // Gets all versions of this value so we can getSetting the one we want at that particular date.
+        // Gets all versions of this value so we can get the one we want at that particular date.
         List<ConfigurationSetting> revisions = client.listSettingRevisions(new RevisionOptions().key(keyName)).collectList().block();
 
         assertNotNull(revisions);
@@ -666,7 +666,7 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Verifies that we can getSetting all of the revisions for this ConfigurationSetting.
+     * Verifies that we can get all of the revisions for this ConfigurationSetting.
      */
     @Test
     public void listRevisions() {
@@ -695,7 +695,7 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Verifies that we can getSetting a subset of the revisions using "Range" header
+     * Verifies that we can get a subset of the revisions using "Range" header
      */
     @Test
     public void listRevisionsRange() {
@@ -749,7 +749,7 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Verifies that we can getSetting a subset of revisions based on the "acceptDateTime"
+     * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
     @Test
     public void listRevisionsAcceptDateTime() {
