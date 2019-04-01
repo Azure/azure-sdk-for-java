@@ -17,7 +17,7 @@ public class ConfigurationSetting {
      * Users use this value when they want to explicitly reference a configuration setting that has no label.
      * This gets URL encoded as "%00".
      */
-    public static final String NULL_LABEL = "\0";
+    public static final String NO_LABEL = "\0";
 
     @JsonProperty(value = "key", required = true)
     private String key;

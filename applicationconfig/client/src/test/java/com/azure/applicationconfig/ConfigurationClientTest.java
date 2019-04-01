@@ -924,8 +924,8 @@ public class ConfigurationClientTest {
         assertNotNull(actual);
         assertEquals(expected.key(), actual.key());
 
-        // This is because we have the "null" label which is deciphered in the service as "\0".
-        if (ConfigurationSetting.NULL_LABEL.equals(expected.label())) {
+        // This is because we have the no label which is deciphered in the service as "\0".
+        if (ConfigurationSetting.NO_LABEL.equals(expected.label())) {
             assertNull(actual.label());
         } else {
             assertEquals(expected.label(), actual.label());
