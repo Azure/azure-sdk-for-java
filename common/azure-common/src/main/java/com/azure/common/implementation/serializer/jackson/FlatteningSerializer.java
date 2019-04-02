@@ -44,6 +44,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * {'properties' : { 'name' : 'my_name' }} in the serialized payload.
  */
 class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSerializer {
+
     /**
      * The default mapperAdapter for the current type.
      */

@@ -6,6 +6,7 @@
 
 package com.azure.common.implementation;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +104,6 @@ final class PercentEscaper {
         for (int i = 0; i < input.length(); i++) {
             ascii[i] = (byte) input.charAt(i);
         }
-        return new String(ascii);
+        return new String(ascii, StandardCharsets.UTF_8);
     }
 }
