@@ -834,13 +834,12 @@ public class ConfigurationClientTest {
      */
     @Test
     public void listRevisionsWithPagination() {
-        final String label = "listed-label";
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
             .mapToObj(value -> new ConfigurationSetting()
                 .key(keyPrefix)
                 .value("myValue" + value)
-                .label(label))
+                .label(labelPrefix))
             .collect(Collectors.toList());
 
         List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
@@ -848,7 +847,7 @@ public class ConfigurationClientTest {
             results.add(client.setSetting(setting).retryBackoff(2, Duration.ofSeconds(30)));
         }
 
-        RevisionOptions filter = new RevisionOptions().key(keyPrefix).label(label);
+        RevisionOptions filter = new RevisionOptions().key(keyPrefix).label(labelPrefix);
 
         Flux.merge(results).blockLast();
         StepVerifier.create(client.listSettingRevisions(filter))
@@ -864,13 +863,12 @@ public class ConfigurationClientTest {
      */
     @Test
     public void listSettingsWithPagination() {
-        final String label = "listed-label";
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
                 .mapToObj(value -> new ConfigurationSetting()
                         .key(keyPrefix + "-" + value)
                         .value("myValue")
-                        .label(label))
+                        .label(labelPrefix))
                 .collect(Collectors.toList());
 
         List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
@@ -878,7 +876,7 @@ public class ConfigurationClientTest {
             results.add(client.setSetting(setting).retryBackoff(2, Duration.ofSeconds(30)));
         }
 
-        SettingSelector filter = new SettingSelector().label(label);
+        SettingSelector filter = new SettingSelector().key(keyPrefix + "-*").label(labelPrefix);
 
         Flux.merge(results).blockLast();
         StepVerifier.create(client.listSettings(filter))
