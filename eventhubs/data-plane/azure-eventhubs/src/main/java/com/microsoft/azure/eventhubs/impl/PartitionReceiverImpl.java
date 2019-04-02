@@ -279,6 +279,6 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
 
         return this.receiverOptions != null && this.receiverOptions.getReceiverRuntimeMetricEnabled()
                 ? new Symbol[]{AmqpConstants.ENABLE_RECEIVER_RUNTIME_METRIC_NAME}
-                : new Symbol[0];
+                : null;
     }
 }
