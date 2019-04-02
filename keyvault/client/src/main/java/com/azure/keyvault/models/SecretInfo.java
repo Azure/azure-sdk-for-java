@@ -314,7 +314,7 @@ public class SecretInfo {
      * @param attributes the key value mapping of the Secret attributes
      */
     @JsonProperty("attributes")
-    private void unpackAttributes(Map<String,Object> attributes) {
+    private void unpackAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
         this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
         this.expires =  epochToOffsetDateTime(attributes.get("exp"));
@@ -329,9 +329,9 @@ public class SecretInfo {
 
     }
 
-    private OffsetDateTime epochToOffsetDateTime(Object epochValue){
-        if(epochValue != null){
-            Instant instant = Instant.ofEpochMilli(((Number)epochValue).longValue() * 1000L);
+    private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
+        if (epochValue != null) {
+            Instant instant = Instant.ofEpochMilli(((Number) epochValue).longValue() * 1000L);
             return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
         }
         return null;

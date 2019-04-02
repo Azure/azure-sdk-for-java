@@ -9,7 +9,8 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * A secret consisting of a value, id and its attributes.
+ *  Secret is the resource consisting of name, value, id and its other attributes inherited from {@link SecretInfo}.
+ *  It is managed by Secret Service.
  */
 public class Secret extends SecretInfo {
 
@@ -30,18 +31,18 @@ public class Secret extends SecretInfo {
     }
 
     /**
-     * Get the value value.
+     * Get the secret value.
      *
-     * @return the value value
+     * @return the secret value
      */
     public String value() {
         return this.value;
     }
 
     /**
-     * Set the value value.
+     * Set the secret value.
      *
-     * @param value the value value to set
+     * @param value the secret value to set
      * @return the Secret object itself.
      */
     public Secret withValue(String value) {
@@ -49,7 +50,12 @@ public class Secret extends SecretInfo {
         return this;
     }
 
-
+    /**
+     * Set the name value.
+     *
+     * @param name the name of the secret to be set.
+     * @return the Secret object itself.
+     */
     @Override
     public Secret withName(String name) {
         super.withName(name);
@@ -61,7 +67,7 @@ public class Secret extends SecretInfo {
      * Set the enabled value.
      *
      * @param enabled the enabled value to set
-     * @return the Attributes object itself.
+     * @return the Secret object itself.
      */
     @Override
     public Secret withEnabled(Boolean enabled) {
@@ -73,7 +79,7 @@ public class Secret extends SecretInfo {
      * Set the notBefore value.
      *
      * @param notBefore the notBefore value to set
-     * @return the Attributes object itself.
+     * @return the Secret object itself.
      */
     @Override
     public Secret withNotBefore(OffsetDateTime notBefore) {
@@ -84,8 +90,8 @@ public class Secret extends SecretInfo {
     /**
      * Set the expires value.
      *
-     * @param expires the expires value to set
-     * @return the Attributes object itself.
+     * @param expires the expiry time value to set
+     * @return the Secret object itself.
      */
     @Override
     public Secret withExpires(OffsetDateTime expires) {

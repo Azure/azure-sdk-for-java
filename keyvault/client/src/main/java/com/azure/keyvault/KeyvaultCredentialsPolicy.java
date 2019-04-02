@@ -4,7 +4,9 @@
 package com.azure.keyvault;
 
 import com.azure.common.credentials.ServiceClientCredentials;
-import com.azure.common.http.*;
+import com.azure.common.http.HttpPipelineCallContext;
+import com.azure.common.http.HttpResponse;
+import com.azure.common.http.HttpPipelineNextPolicy;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -25,7 +27,7 @@ final class KeyvaultCredentialsPolicy implements HttpPipelinePolicy {
 
 
     private final URL vaultUrl;
-    private final AuthorizationHeaderProvider provider;
+    private ServiceClientCredentials credentials;
     private final Logger logger = LoggerFactory.getLogger(KeyvaultCredentials.class);
 
 
@@ -37,7 +39,7 @@ final class KeyvaultCredentialsPolicy implements HttpPipelinePolicy {
      */
     KeyvaultCredentialsPolicy(ServiceClientCredentials credentials, String vaultUrl) {
         this.vaultUrl = validateURL(vaultUrl);
-        this.provider = new AuthorizationHeaderProvider(credentials);
+        this.credentials = credentials;
     }
 
     private URL validateURL(String vaultUrl) {
@@ -56,11 +58,11 @@ final class KeyvaultCredentialsPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final Map<String, String> mapped = getDefaultHeaders(context.httpRequest().headers());
+        final Map<String, String> mapped = getDefaultHeaders();
         mapped.forEach((key, value) -> context.httpRequest().headers().set(key, value));
 
         try {
-            String bearer = provider.getAuthenticationHeaderValue(context.httpRequest());
+            String bearer = getAuthenticationHeaderValue();
             context.httpRequest().headers().set(AUTHORIZATION_HEADER, bearer);
         } catch (IOException e) {
             Mono.error(e);
@@ -69,9 +71,8 @@ final class KeyvaultCredentialsPolicy implements HttpPipelinePolicy {
         return next.process().doOnSuccess(this::logResponseDelegate);
     }
 
-    private Map<String, String> getDefaultHeaders(HttpHeaders currentHeaders) {
+    private Map<String, String> getDefaultHeaders() {
         final Map<String, String> mapped = new HashMap<>();
-
         mapped.put(HOST_HEADER, vaultUrl.getHost());
         mapped.put(CONTENT_TYPE_HEADER, "application/json");
 
@@ -87,14 +88,8 @@ final class KeyvaultCredentialsPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private static class AuthorizationHeaderProvider {
-        private final ServiceClientCredentials credentials;
-        AuthorizationHeaderProvider(ServiceClientCredentials credentials) {
-            this.credentials = credentials;
-        }
-        private String getAuthenticationHeaderValue(final HttpRequest request) throws IOException {
-            return String.format("Bearer %s",
-                    credentials.authorizationHeaderValue("test"));
-        }
+    private String getAuthenticationHeaderValue() throws IOException {
+        return String.format("Bearer %s",
+                credentials.authorizationHeaderValue(vaultUrl.toString()));
     }
 }

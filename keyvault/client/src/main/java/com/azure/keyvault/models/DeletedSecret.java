@@ -42,7 +42,7 @@ public class DeletedSecret extends SecretInfo {
      * Set the recoveryId value.
      *
      * @param recoveryId the recoveryId value to set
-     * @return the DeletedSecretItem object itself.
+     * @return the DeletedSecret object itself.
      */
     public DeletedSecret withRecoveryId(String recoveryId) {
         this.recoveryId = recoveryId;

@@ -16,13 +16,8 @@ import com.azure.common.http.rest.RestResponse;
 import com.azure.common.implementation.RestProxy;
 import com.azure.keyvault.implementation.Page;
 import com.azure.keyvault.implementation.RestPagedResponseImpl;
-import com.azure.keyvault.models.DeletedSecret;
-import com.azure.keyvault.models.Secret;
-import com.azure.keyvault.models.SecretRequestAttributes;
-import com.azure.keyvault.models.SecretRequestOptions;
-import com.azure.keyvault.models.SecretBackup;
-import com.azure.keyvault.models.SecretInfo;
-import com.azure.keyvault.models.SecretRestoreRequestOptions;
+import com.azure.keyvault.models.*;
+import com.azure.keyvault.models.SecretRequestParameters;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,7 +26,6 @@ import reactor.util.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 public final class SecretClient extends ServiceClient {
     static final String SDK_NAME = "Azure-Keyvault";
@@ -99,7 +93,7 @@ public final class SecretClient extends ServiceClient {
                 throw new IllegalStateException("'credentials' is required.");
             }
 
-            if (vaultEndPoint == null){
+            if (vaultEndPoint == null) {
                 throw new IllegalStateException("'Vault's Endpoint Url' is required.");
             }
 
@@ -225,13 +219,13 @@ public final class SecretClient extends ServiceClient {
                                                 .withExpires(secret.expires())
                                                 .withNotBefore(secret.notBefore());
 
-        SecretRequestOptions parameters = new SecretRequestOptions()
+        SecretRequestParameters parameters = new SecretRequestParameters()
                                             .withValue(secret.value())
                                             .withTags(secret.tags())
                                             .withContentType(secret.contentType())
                                             .withSecretAttributes(secretRequestAttributes);
 
-        return service.setSecret(vaultEndPoint, secret.name(), API_VERSION,ACCEPT_LANGUAGE , parameters);
+        return service.setSecret(vaultEndPoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters);
     }
 
 
@@ -250,7 +244,7 @@ public final class SecretClient extends ServiceClient {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
         Objects.requireNonNull(value, "The Secret value cannot be null.");
 
-        SecretRequestOptions parameters = new SecretRequestOptions()
+        SecretRequestParameters parameters = new SecretRequestParameters()
                                             .withValue(value);
         return service.setSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters);
     }
@@ -297,7 +291,7 @@ public final class SecretClient extends ServiceClient {
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @return the Secret that was updated.
      */
-    public Mono<RestResponse<Secret>> updateSecretAsync(Secret secret) {
+    public Mono<RestResponse<SecretInfo>> updateSecretAsync(Secret secret) {
         Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
         Objects.requireNonNull(secret.name(), "The Secret name cannot be null.");
 
@@ -306,7 +300,7 @@ public final class SecretClient extends ServiceClient {
                 .withExpires(secret.expires())
                 .withNotBefore(secret.notBefore());
 
-        SecretRequestOptions parameters = new SecretRequestOptions()
+        SecretRequestParameters parameters = new SecretRequestParameters()
                 .withValue(secret.value())
                 .withTags(secret.tags())
                 .withContentType(secret.contentType())
@@ -403,7 +397,7 @@ public final class SecretClient extends ServiceClient {
     public Mono<RestResponse<Secret>> restoreSecretAsync(SecretBackup backup) {
         Objects.requireNonNull(backup, "The Secret backup parameter cannot be null.");
         Objects.requireNonNull(backup.value(), "The backup value cannot be null.");
-        SecretRestoreRequestOptions parameters = new SecretRestoreRequestOptions()
+        SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters()
                                                 .withSecretBackup(backup.value());
         return service.restoreSecret(vaultEndPoint, API_VERSION, ACCEPT_LANGUAGE, parameters);
     }
@@ -501,11 +495,25 @@ public final class SecretClient extends ServiceClient {
         return getPagedSecrets(result);
     }
 
+    /**
+     * Gets all Secret info given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretClient#listSecretsAsync()} or {@link SecretClient#listSecretsAsync(int)}.
+     *
+     * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
+     * @return A stream of {@link SecretInfo} from the next page of results.
+     */
     private Flux<SecretInfo> listSecretsNext(@NonNull String nextPageLink) {
         Mono<RestResponse<Page<SecretInfo>>> result = service.getSecrets(vaultEndPoint, nextPageLink, ACCEPT_LANGUAGE);
         return getPagedSecrets(result);
     }
 
+    /**
+     * Gets all Deleted Secrets given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretClient#listDeletedSecretsAsync()} or {@link SecretClient#listDeletedSecretsAsync(int)}.
+     *
+     * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
+     * @return A stream of {@link DeletedSecret} from the next page of results.
+     */
     private Flux<DeletedSecret> listDeletedSecretsNext(@NonNull String nextPageLink) {
         Mono<RestResponse<Page<DeletedSecret>>> result = service.getDeletedSecrets(vaultEndPoint, nextPageLink, ACCEPT_LANGUAGE);
         return getPagedDeletedSecrets(result);

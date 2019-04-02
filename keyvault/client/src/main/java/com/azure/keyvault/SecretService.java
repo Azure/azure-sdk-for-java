@@ -19,12 +19,8 @@ import com.azure.common.annotations.GET;
 import com.azure.common.http.rest.RestException;
 import com.azure.common.http.rest.RestResponse;
 import com.azure.keyvault.implementation.Page;
-import com.azure.keyvault.models.DeletedSecret;
-import com.azure.keyvault.models.Secret;
-import com.azure.keyvault.models.SecretBackup;
-import com.azure.keyvault.models.SecretRestoreRequestOptions;
-import com.azure.keyvault.models.SecretRequestOptions;
-import com.azure.keyvault.models.SecretInfo;
+import com.azure.keyvault.models.*;
+import com.azure.keyvault.models.SecretRequestParameters;
 import reactor.core.publisher.Mono;
 
 /**
@@ -43,7 +39,7 @@ interface SecretService {
                                          @PathParam("secret-name") String secretName,
                                          @QueryParam("api-version") String apiVersion,
                                          @HeaderParam("accept-language") String acceptLanguage,
-                                         @BodyParam("body") SecretRequestOptions parameters);
+                                         @BodyParam("body") SecretRequestParameters parameters);
 
     @GET("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
@@ -58,12 +54,12 @@ interface SecretService {
     @PATCH("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<Secret>> updateSecret(@HostParam("url") String url,
+    Mono<RestResponse<SecretInfo>> updateSecret(@HostParam("url") String url,
                                             @PathParam("secret-name") String secretName,
                                             @PathParam("secret-version") String secretVersion,
                                             @QueryParam("api-version") String apiVersion,
                                             @HeaderParam("accept-language") String acceptLanguage,
-                                            @BodyParam("body") SecretRequestOptions parameters);
+                                            @BodyParam("body") SecretRequestParameters parameters);
 
 
     @DELETE("secrets/{secret-name}")
@@ -118,7 +114,7 @@ interface SecretService {
     Mono<RestResponse<Secret>> restoreSecret(@HostParam("url") String url,
                                              @QueryParam("api-version") String apiVersion,
                                              @HeaderParam("accept-language") String acceptLanguage,
-                                             @BodyParam("application/json") SecretRestoreRequestOptions parameters);
+                                             @BodyParam("application/json") SecretRestoreRequestParameters parameters);
 
 
     @GET("secrets")

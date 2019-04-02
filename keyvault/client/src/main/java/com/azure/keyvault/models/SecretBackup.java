@@ -16,7 +16,7 @@ public class SecretBackup {
     /**
      * Get the secret backup value as byte array.
      *
-     * @return the value value
+     * @return the secret backup value
      */
     public byte[] value() {
         if (this.value == null) {
