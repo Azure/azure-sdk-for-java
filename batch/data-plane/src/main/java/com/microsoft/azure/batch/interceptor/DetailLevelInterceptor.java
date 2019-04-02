@@ -29,31 +29,22 @@ public class DetailLevelInterceptor extends RequestInterceptor {
                     Class<?> c = request.getClass();
                     try {
                         Method selectMethod = c.getMethod("withSelect", String.class);
-                        if (selectMethod != null) {
-                            selectMethod.invoke(request, detailLevel.selectClause());
-                        }
-                    }
-                    catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                        selectMethod.invoke(request, detailLevel.selectClause());
+                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
                         // Ignore exception
                     }
 
                     try {
                         Method filterMethod = c.getMethod("withFilter", String.class);
-                        if (filterMethod != null) {
-                            filterMethod.invoke(request, detailLevel.filterClause());
-                        }
-                    }
-                    catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                        filterMethod.invoke(request, detailLevel.filterClause());
+                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
                         // Ignore exception
                     }
 
                     try {
                         Method expandMethod = c.getMethod("withExpand", String.class);
-                        if (expandMethod != null) {
-                            expandMethod.invoke(request, detailLevel.expandClause());
-                        }
-                    }
-                    catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                        expandMethod.invoke(request, detailLevel.expandClause());
+                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
                         // Ignore exception
                     }
                 }
