@@ -51,32 +51,45 @@ public final class EventDataImpl implements EventData {
         }
 
         if (amqpMessage.getProperties() != null) {
-            if (amqpMessage.getMessageId() != null)
+            if (amqpMessage.getMessageId() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_MESSAGE_ID, amqpMessage.getMessageId());
-            if (amqpMessage.getUserId() != null)
+            }
+            if (amqpMessage.getUserId() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_USER_ID, amqpMessage.getUserId());
-            if (amqpMessage.getAddress() != null)
+            }
+            if (amqpMessage.getAddress() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_TO, amqpMessage.getAddress());
-            if (amqpMessage.getSubject() != null)
+            }
+            if (amqpMessage.getSubject() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_SUBJECT, amqpMessage.getSubject());
-            if (amqpMessage.getReplyTo() != null)
+            }
+            if (amqpMessage.getReplyTo() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_REPLY_TO, amqpMessage.getReplyTo());
-            if (amqpMessage.getCorrelationId() != null)
+            }
+            if (amqpMessage.getCorrelationId() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_CORRELATION_ID, amqpMessage.getCorrelationId());
-            if (amqpMessage.getContentType() != null)
+            }
+            if (amqpMessage.getContentType() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_CONTENT_TYPE, amqpMessage.getContentType());
-            if (amqpMessage.getContentEncoding() != null)
+            }
+            if (amqpMessage.getContentEncoding() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_CONTENT_ENCODING, amqpMessage.getContentEncoding());
-            if (amqpMessage.getProperties().getAbsoluteExpiryTime() != null)
+            }
+            if (amqpMessage.getProperties().getAbsoluteExpiryTime() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_ABSOLUTE_EXPRITY_TIME, amqpMessage.getExpiryTime());
-            if (amqpMessage.getProperties().getCreationTime() != null)
+            }
+            if (amqpMessage.getProperties().getCreationTime() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_CREATION_TIME, amqpMessage.getCreationTime());
-            if (amqpMessage.getGroupId() != null)
+            }
+            if (amqpMessage.getGroupId() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_GROUP_ID, amqpMessage.getGroupId());
-            if (amqpMessage.getProperties().getGroupSequence() != null)
+            }
+            if (amqpMessage.getProperties().getGroupSequence() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_GROUP_SEQUENCE, amqpMessage.getGroupSequence());
-            if (amqpMessage.getReplyToGroupId() != null)
+            }
+            if (amqpMessage.getReplyToGroupId() != null) {
                 receiveProperties.put(AmqpConstants.AMQP_PROPERTY_REPLY_TO_GROUP_ID, amqpMessage.getReplyToGroupId());
+            }
         }
 
         this.systemProperties = new SystemProperties(receiveProperties);
@@ -274,14 +287,18 @@ public final class EventDataImpl implements EventData {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof EventDataImpl)) {
+            return false;
+        }
         EventDataImpl eventData = (EventDataImpl) o;
-        return Objects.equals(systemProperties, eventData.systemProperties);
+        return Objects.equals(bodyData, eventData.bodyData);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(systemProperties);
+        return Objects.hash(bodyData);
     }
 }

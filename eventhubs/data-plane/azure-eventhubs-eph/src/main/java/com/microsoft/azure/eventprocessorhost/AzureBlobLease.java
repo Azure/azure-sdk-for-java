@@ -105,20 +105,18 @@ final class AzureBlobLease extends CompleteLease {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) { return false; }
+        if (!(o instanceof AzureBlobLease)) {
+            return false;
+        }
         if (!super.equals(o)) {
             return false;
         }
         AzureBlobLease that = (AzureBlobLease) o;
-        return sequenceNumber == that.sequenceNumber
-            && Objects.equals(blob, that.blob)
-            && Objects.equals(options, that.options)
-            && Objects.equals(offset, that.offset)
-            && Objects.equals(token, that.token);
+        return Objects.equals(blob, that.blob);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), blob, options, offset, sequenceNumber, token);
+        return Objects.hash(super.hashCode(), blob);
     }
 }

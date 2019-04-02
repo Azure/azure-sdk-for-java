@@ -130,8 +130,12 @@ public class BaseLease implements Comparable<BaseLease> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         BaseLease baseLease = (BaseLease) o;
         return Objects.equals(partitionId, baseLease.partitionId);
     }
