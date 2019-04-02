@@ -16,7 +16,7 @@ public class AzureException extends RuntimeException {
     /**
      * Initializes a new instance of the AzureException class.
      *
-     * @param message the exception message or the response content if a message is not available
+     * @param message the exception message.
      */
     public AzureException(String message) {
         super(message);
@@ -25,8 +25,8 @@ public class AzureException extends RuntimeException {
     /**
      * Initializes a new instance of the AzureException class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param cause the Throwable which caused the creation of this AzureException
+     * @param message the exception message.
+     * @param cause the Throwable which caused the creation of this AzureException.
      */
     public AzureException(String message, Throwable cause) {
         super(message, cause);
