@@ -69,9 +69,9 @@ public final class ExceptionUtil {
 
     static Exception amqpResponseCodeToException(final int statusCode, final String statusDescription) {
         final AmqpResponseCode amqpResponseCode = AmqpResponseCode.valueOf(statusCode);
-        if (amqpResponseCode == null)
+        if (amqpResponseCode == null) {
             return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
-
+        }
         switch (amqpResponseCode) {
             case BAD_REQUEST:
                 return new IllegalArgumentException(String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
