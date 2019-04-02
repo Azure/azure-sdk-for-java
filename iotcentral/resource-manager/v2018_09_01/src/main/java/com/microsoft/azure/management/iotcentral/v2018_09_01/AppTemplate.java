@@ -9,28 +9,19 @@
 package com.microsoft.azure.management.iotcentral.v2018_09_01;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.iotcentral.v2018_09_01.implementation.AppTemplateInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.iotcentral.v2018_09_01.implementation.IoTCentralManager;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.implementation.AppTemplateInner;
+import java.util.Map;
 
 /**
  * Type representing AppTemplate.
  */
 public interface AppTemplate extends HasInner<AppTemplateInner>, HasManager<IoTCentralManager> {
     /**
-     * @return the description value.
+     * @return the id value.
      */
-    String description();
-
-    /**
-     * @return the manifestId value.
-     */
-    String manifestId();
-
-    /**
-     * @return the manifestVersion value.
-     */
-    String manifestVersion();
+    String id();
 
     /**
      * @return the name value.
@@ -38,13 +29,13 @@ public interface AppTemplate extends HasInner<AppTemplateInner>, HasManager<IoTC
     String name();
 
     /**
-     * @return the order value.
+     * @return the properties value.
      */
-    Double order();
+    Map<String, String> properties();
 
     /**
-     * @return the title value.
+     * @return the type value.
      */
-    String title();
+    String type();
 
 }

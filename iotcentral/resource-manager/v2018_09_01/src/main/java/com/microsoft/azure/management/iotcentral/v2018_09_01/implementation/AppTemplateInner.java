@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.iotcentral.v2018_09_01.implementation;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,61 +16,40 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AppTemplateInner {
     /**
-     * The ID of the template.
+     * The application template identifier.
      */
-    @JsonProperty(value = "manifestId", access = JsonProperty.Access.WRITE_ONLY)
-    private String manifestId;
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
 
     /**
-     * The version of the template.
-     */
-    @JsonProperty(value = "manifestVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String manifestVersion;
-
-    /**
-     * The name of the template.
+     * The application template name.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * The title of the template.
+     * The extra template properties.
      */
-    @JsonProperty(value = "title", access = JsonProperty.Access.WRITE_ONLY)
-    private String title;
+    @JsonProperty(value = "properties")
+    private Map<String, String> properties;
 
     /**
-     * The order of the template in the templates list.
+     * the resource type.
      */
-    @JsonProperty(value = "order", access = JsonProperty.Access.WRITE_ONLY)
-    private Double order;
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private String type;
 
     /**
-     * The description of the template.
-     */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /**
-     * Get the ID of the template.
+     * Get the application template identifier.
      *
-     * @return the manifestId value
+     * @return the id value
      */
-    public String manifestId() {
-        return this.manifestId;
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the version of the template.
-     *
-     * @return the manifestVersion value
-     */
-    public String manifestVersion() {
-        return this.manifestVersion;
-    }
-
-    /**
-     * Get the name of the template.
+     * Get the application template name.
      *
      * @return the name value
      */
@@ -78,30 +58,32 @@ public class AppTemplateInner {
     }
 
     /**
-     * Get the title of the template.
+     * Get the extra template properties.
      *
-     * @return the title value
+     * @return the properties value
      */
-    public String title() {
-        return this.title;
+    public Map<String, String> properties() {
+        return this.properties;
     }
 
     /**
-     * Get the order of the template in the templates list.
+     * Set the extra template properties.
      *
-     * @return the order value
+     * @param properties the properties value to set
+     * @return the AppTemplateInner object itself.
      */
-    public Double order() {
-        return this.order;
+    public AppTemplateInner withProperties(Map<String, String> properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
-     * Get the description of the template.
+     * Get the resource type.
      *
-     * @return the description value
+     * @return the type value
      */
-    public String description() {
-        return this.description;
+    public String type() {
+        return this.type;
     }
 
 }
