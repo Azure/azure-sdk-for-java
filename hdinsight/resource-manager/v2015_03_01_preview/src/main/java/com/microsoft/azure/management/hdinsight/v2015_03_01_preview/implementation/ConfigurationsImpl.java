@@ -7,13 +7,13 @@
  * abc
  */
 
-package com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementation;
+package com.microsoft.azure.management.hdinsight.v2015_03_01_preview.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Configurations;
+import com.microsoft.azure.management.hdinsight.v2015_03_01_preview.Configurations;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterConfigurations;
+import com.microsoft.azure.management.hdinsight.v2015_03_01_preview.ClusterConfigurations;
 import rx.Completable;
 import java.util.Map;
 
