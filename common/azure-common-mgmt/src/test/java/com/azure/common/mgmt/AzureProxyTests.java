@@ -23,6 +23,7 @@ import com.azure.common.annotations.PathParam;
 import com.azure.common.annotations.ResumeOperation;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -387,6 +388,7 @@ public class AzureProxyTests {
     }
 
     @Test
+    @Ignore("Test does not run in a stable fashion across Windows, MacOS, and Linux")
     public void createAsyncWithAzureAsyncOperationAndPollsWithDelay() throws InterruptedException {
         final long delayInMilliseconds = 100;
         AzureProxy.setDefaultPollingDelayInMilliseconds(delayInMilliseconds);
