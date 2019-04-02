@@ -811,6 +811,7 @@
    <modules>
       <module>./batch/data-plane</module>
       <module>./keyvault/data-plane</module>
+      <module>./keyvault/client</module>
    </modules>
 
 </project>
