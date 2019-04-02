@@ -6,8 +6,7 @@ package com.microsoft.azure.batch;
 /**
  * Contains error codes specific to task failure information.
  */
-public final class TaskFailureInformationCodes
-{
+public final class TaskFailureInformationCodes {
     /**
      * An error occurred when trying to deploy a required application package.
      */
