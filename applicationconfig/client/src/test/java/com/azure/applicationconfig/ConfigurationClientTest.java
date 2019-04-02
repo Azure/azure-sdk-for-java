@@ -844,7 +844,7 @@ public class ConfigurationClientTest {
 
         List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setSetting(setting).retryBackoff(2, Duration.ofSeconds(30)));
+            results.add(client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)));
         }
 
         RevisionOptions filter = new RevisionOptions().key(keyPrefix).label(labelPrefix);
@@ -873,7 +873,7 @@ public class ConfigurationClientTest {
 
         List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setSetting(setting).retryBackoff(2, Duration.ofSeconds(30)));
+            results.add(client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)));
         }
 
         SettingSelector filter = new SettingSelector().key(keyPrefix + "-*").label(labelPrefix);
