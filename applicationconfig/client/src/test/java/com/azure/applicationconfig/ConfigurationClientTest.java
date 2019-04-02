@@ -827,6 +827,36 @@ public class ConfigurationClientTest {
     }
 
     /**
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
+     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     *
+     * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
+     */
+    @Test
+    public void listRevisionsWithPagination() {
+        final String label = "listed-label";
+        final int numberExpected = 50;
+        List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
+            .mapToObj(value -> new ConfigurationSetting()
+                .key(keyPrefix)
+                .value("myValue" + value)
+                .label(label))
+            .collect(Collectors.toList());
+
+        List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
+        for (ConfigurationSetting setting : settings) {
+            results.add(client.setSetting(setting).retryBackoff(2, Duration.ofSeconds(30)));
+        }
+
+        RevisionOptions filter = new RevisionOptions().key(keyPrefix).label(label);
+
+        Flux.merge(results).blockLast();
+        StepVerifier.create(client.listSettingRevisions(filter))
+            .expectNextCount(numberExpected)
+            .verifyComplete();
+    }
+
+    /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      *
