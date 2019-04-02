@@ -359,8 +359,20 @@ public class ConfigurationClientTest {
     public void updateSetting() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdatedValue");
+        final Map<String, String> tags = new HashMap<>();
+        tags.put("first tag", "first value");
+        tags.put("second tag", "second value");
+        final ConfigurationSetting original = new ConfigurationSetting()
+            .key(key)
+            .value("myNewValue")
+            .tags(tags)
+            .contentType("json");
+
+        final Map<String, String> updatedTags = new HashMap<>(tags);
+        final ConfigurationSetting updated = new ConfigurationSetting(original)
+            .value("myUpdatedValue")
+            .tags(updatedTags)
+            .contentType("text");
 
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
             StepVerifier.create(client.addSetting(initial))
@@ -375,8 +387,8 @@ public class ConfigurationClientTest {
                     .verifyComplete();
         };
 
-        testRunner.accept(newConfiguration, updateConfiguration);
-        testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
+        testRunner.accept(original, updated);
+        testRunner.accept(original.label(label), updated.label(label));
     }
 
     /**
@@ -672,7 +684,8 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Verifies that we can get all of the revisions for this ConfigurationSetting.
+     * Verifies that we can get all of the revisions for this ConfigurationSetting. Then verifies that we can select
+     * specific fields.
      */
     @Test
     public void listRevisions() {
@@ -680,6 +693,7 @@ public class ConfigurationClientTest {
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
+        final EnumSet<SettingFields> fields = EnumSet.of(SettingFields.KEY, SettingFields.ETAG);
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original))
@@ -698,6 +712,28 @@ public class ConfigurationClientTest {
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .assertNext(response -> assertConfigurationEquals(original, response))
                 .verifyComplete();
+
+        // Verifies that we can select specific fields.
+        StepVerifier.create(client.listSettingRevisions(new RevisionOptions().key(keyName).fields(fields)))
+            .assertNext(response -> {
+                assertEquals(updated2.key(), response.key());
+                assertNotNull(response.etag());
+                assertNull(response.value());
+                assertNull(response.lastModified());
+            })
+            .assertNext(response -> {
+                assertEquals(updated.key(), response.key());
+                assertNotNull(response.etag());
+                assertNull(response.value());
+                assertNull(response.lastModified());
+            })
+            .assertNext(response -> {
+                assertEquals(original.key(), response.key());
+                assertNotNull(response.etag());
+                assertNull(response.value());
+                assertNull(response.lastModified());
+            })
+            .verifyComplete();
     }
 
     /**
@@ -791,6 +827,34 @@ public class ConfigurationClientTest {
     }
 
     /**
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
+     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     *
+     * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
+     */
+    @Test
+    public void listRevisionsWithPagination() {
+        final int numberExpected = 50;
+        List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
+            .mapToObj(value -> new ConfigurationSetting()
+                .key(keyPrefix)
+                .value("myValue" + value)
+                .label(labelPrefix))
+            .collect(Collectors.toList());
+
+        List<ConfigurationSetting> results = new ArrayList<>();
+        for (ConfigurationSetting setting : settings) {
+            RestResponse<ConfigurationSetting> response = client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)).block();
+            results.add(response.body());
+        }
+
+        RevisionOptions filter = new RevisionOptions().key(keyPrefix).label(labelPrefix);
+        StepVerifier.create(client.listSettingRevisions(filter))
+            .expectNextCount(numberExpected)
+            .verifyComplete();
+    }
+
+    /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      *
@@ -798,21 +862,20 @@ public class ConfigurationClientTest {
      */
     @Test
     public void listSettingsWithPagination() {
-        final String label = "listed-label";
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
                 .mapToObj(value -> new ConfigurationSetting()
                         .key(keyPrefix + "-" + value)
                         .value("myValue")
-                        .label(label))
+                        .label(labelPrefix))
                 .collect(Collectors.toList());
 
         List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setSetting(setting).retryBackoff(2, Duration.ofSeconds(30)));
+            results.add(client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)));
         }
 
-        SettingSelector filter = new SettingSelector().label(label);
+        SettingSelector filter = new SettingSelector().key(keyPrefix + "-*").label(labelPrefix);
 
         Flux.merge(results).blockLast();
         StepVerifier.create(client.listSettings(filter))

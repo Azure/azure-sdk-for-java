@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.applicationconfig;
 
 import com.azure.common.credentials.AsyncServiceClientCredentials;
@@ -80,13 +82,13 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
                     .map(httpHeaders::value)
                     .collect(Collectors.joining(";"));
 
-            // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
+            // String-To-Sign=HTTP_METHOD + '%n' + path_and_query + '%n' + signed_headers_values
             // Signed headers: "host;x-ms-date;x-ms-content-sha256"
-            return String.format("%s\n%s\n%s", request.httpMethod().toString().toUpperCase(Locale.US), pathAndQuery, signed);
+            return String.format("%s%n%s%n%s", request.httpMethod().toString().toUpperCase(Locale.US), pathAndQuery, signed);
         }
     }
 
-    private class CredentialInformation {
+    private static class CredentialInformation {
         private static final String ENDPOINT = "endpoint=";
         private static final String ID = "id=";
         private static final String SECRET = "secret=";
@@ -119,15 +121,17 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
 
             for (String arg : args) {
                 String segment = arg.trim();
-                if (segment.toLowerCase().startsWith(ENDPOINT)) {
+                String lowerCase = segment.toLowerCase(Locale.US);
+
+                if (lowerCase.startsWith(ENDPOINT)) {
                     try {
                         this.baseUri = new URL(segment.substring(ENDPOINT.length()));
                     } catch (MalformedURLException ex) {
                         throw new IllegalArgumentException(ex);
                     }
-                } else if (segment.toLowerCase().startsWith(ID)) {
+                } else if (lowerCase.startsWith(ID)) {
                     this.id = segment.substring(ID.length());
-                } else if (segment.toLowerCase().startsWith(SECRET)) {
+                } else if (lowerCase.startsWith(SECRET)) {
                     String secretBase64 = segment.substring(SECRET.length());
                     this.secret = Base64.getDecoder().decode(secretBase64);
                 }

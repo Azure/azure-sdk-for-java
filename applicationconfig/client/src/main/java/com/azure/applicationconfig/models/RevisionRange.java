@@ -44,7 +44,11 @@ public class RevisionRange {
         this.end = end;
     }
 
-    public Integer start() { return start; }
+    public Integer start() {
+        return start;
+    }
 
-    public Integer end() { return end; }
+    public Integer end() {
+        return end;
+    }
 }
