@@ -118,6 +118,22 @@
         <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
     </Match>
 
+    <!-- Known issue in autorest where it will generate a variable with a value of null then use it in a not null check.
+    https://github.com/Azure/autorest.java/issues/328 -->
+    <Match>
+      <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
+      <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+    </Match>
+
+    <Match>
+      <Class name="com.microsoft.azure.batch.CreateTasksErrorException"/>
+      <Or>
+        <Field name="failureTaskList"/>
+        <Field name="pendingTaskList"/>
+      </Or>
+      <Bug pattern="SE_BAD_FIELD"/>
+    </Match>
+
     <!-- Methods in Common package return null instead of meaningful instances when resourses do not exist. Will address the bugs in Track Two.
     -->
     <Match>
@@ -136,19 +152,9 @@
       <Bug pattern="SE_NO_SERIALVERSIONID"/>
     </Match>
 
-    <!-- Known issue in autorest where it will generate a variable with a value of null then use it in a not null check.
-    https://github.com/Azure/autorest.java/issues/328 -->
+    <!-- The casting problems do not exist in Azure use cases-->
     <Match>
-        <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
-        <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
-    </Match>
-
-    <Match>
-        <Class name="com.microsoft.azure.batch.CreateTasksErrorException"/>
-        <Or>
-            <Field name="failureTaskList"/>
-            <Field name="pendingTaskList"/>
-        </Or>
-        <Bug pattern="SE_BAD_FIELD"/>
+      <Class name="com.azure.common.implementation.util.TypeUtil"/>
+      <Bug pattern="BC_UNCONFIRMED_CAST"/>
     </Match>
 </FindBugsFilter>

@@ -65,7 +65,6 @@ public final class TypeUtil {
      * @param type the input type
      * @return the raw class
      */
-    @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "All other types will cast to class if not ParameterizedType.")
     public static Class<?> getRawClass(Type type) {
         if (type instanceof ParameterizedType) {
             return (Class<?>) ((ParameterizedType) type).getRawType();
@@ -80,7 +79,6 @@ public final class TypeUtil {
      * @param type the input type
      * @return the direct super type
      */
-    @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "All other types will cast to class if not ParameterizedType.")
     public static Type getSuperType(Type type) {
         if (type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
