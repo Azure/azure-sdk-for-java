@@ -21,7 +21,7 @@ public class ApplicationOperations implements IInheritedBehaviors {
         parentBatchClient = batchClient;
 
         // inherit from instantiating parent
-        InternalHelper.InheritClientBehaviorsAndSetPublicProperty(this, customBehaviors);
+        InternalHelper.inheritClientBehaviorsAndSetPublicProperty(this, customBehaviors);
     }
 
     private Collection<BatchClientBehavior> customBehaviors;
