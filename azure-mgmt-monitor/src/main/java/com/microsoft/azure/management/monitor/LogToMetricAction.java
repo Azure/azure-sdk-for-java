@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.monitor;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,27 +20,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.LogToMetricAction")
 public class LogToMetricAction extends Action {
     /**
-     * Severity of the alert.
+     * Criteria of Metric.
      */
     @JsonProperty(value = "criteria", required = true)
-    private Criteria criteria;
+    private List<Criteria> criteria;
 
     /**
-     * Get severity of the alert.
+     * Get criteria of Metric.
      *
      * @return the criteria value
      */
-    public Criteria criteria() {
+    public List<Criteria> criteria() {
         return this.criteria;
     }
 
     /**
-     * Set severity of the alert.
+     * Set criteria of Metric.
      *
      * @param criteria the criteria value to set
      * @return the LogToMetricAction object itself.
      */
-    public LogToMetricAction withCriteria(Criteria criteria) {
+    public LogToMetricAction withCriteria(List<Criteria> criteria) {
         this.criteria = criteria;
         return this;
     }
