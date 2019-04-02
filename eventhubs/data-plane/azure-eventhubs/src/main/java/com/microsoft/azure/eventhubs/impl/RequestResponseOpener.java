@@ -28,15 +28,16 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
             this.sessionName,
             null,
             (error, exception) -> {
-                if (error != null)
+                if (error != null) {
                     operationCallback.onError(ExceptionUtil.toException(error));
-                else if (exception != null)
+                } else if (exception != null) {
                     operationCallback.onError(exception);
+                }
             });
 
-        if (session == null)
+        if (session == null) {
             return;
-
+        }
         final RequestResponseChannel requestResponseChannel = new RequestResponseChannel(
                 this.linkName,
                 this.endpointAddress,

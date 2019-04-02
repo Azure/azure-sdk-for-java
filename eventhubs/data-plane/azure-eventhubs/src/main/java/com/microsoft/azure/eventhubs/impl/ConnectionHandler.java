@@ -159,8 +159,9 @@ public class ConnectionHandler extends BaseHandler {
         }
 
         // if failure happened while establishing transport - nothing to free up.
-        if (connection.getRemoteState() != EndpointState.UNINITIALIZED)
+        if (connection.getRemoteState() != EndpointState.UNINITIALIZED) {
             connection.free();
+        }
     }
 
     @Override

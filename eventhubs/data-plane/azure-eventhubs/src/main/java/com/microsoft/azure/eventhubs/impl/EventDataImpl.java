@@ -146,8 +146,9 @@ public final class EventDataImpl implements EventData {
 
     public byte[] getBytes() {
 
-        if (this.bodyData == null)
+        if (this.bodyData == null) {
             return null;
+        }
 
         return this.bodyData.getArray();
     }
@@ -177,7 +178,7 @@ public final class EventDataImpl implements EventData {
             for (Map.Entry<String, Object> systemProperty : this.systemProperties.entrySet()) {
                 final String propertyName = systemProperty.getKey();
                 if (!EventDataUtil.RESERVED_SYSTEM_PROPERTIES.contains(propertyName)) {
-                    if (AmqpConstants.RESERVED_PROPERTY_NAMES.contains(propertyName))
+                    if (AmqpConstants.RESERVED_PROPERTY_NAMES.contains(propertyName)) {
                         switch (propertyName) {
                             case AmqpConstants.AMQP_PROPERTY_MESSAGE_ID:
                                 amqpMessage.setMessageId(systemProperty.getValue());
@@ -221,7 +222,7 @@ public final class EventDataImpl implements EventData {
                             default:
                                 throw new RuntimeException("unreachable");
                         }
-                    else {
+                    } else {
                         final MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null)
                                 ? new MessageAnnotations(new HashMap<>())
                                 : amqpMessage.getMessageAnnotations();
@@ -261,8 +262,9 @@ public final class EventDataImpl implements EventData {
         out.defaultWriteObject();
 
         out.writeInt(this.bodyData == null ? BODY_DATA_NULL : this.bodyData.getLength());
-        if (this.bodyData != null)
+        if (this.bodyData != null) {
             out.write(this.bodyData.getArray(), this.bodyData.getArrayOffset(), this.bodyData.getLength());
+        }
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {

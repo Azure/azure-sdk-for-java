@@ -130,7 +130,7 @@ public class RequestResponseChannel implements IOObject {
 
     private void onLinkOpenComplete(final Exception exception) {
 
-        if (openRefCount.decrementAndGet() <= 0 && onOpen != null)
+        if (openRefCount.decrementAndGet() <= 0 && onOpen != null) {
             if (exception == null && this.sendLink.getRemoteState() == EndpointState.ACTIVE && this.receiveLink.getRemoteState() == EndpointState.ACTIVE) {
                 onOpen.onComplete(null);
             } else {
@@ -138,11 +138,12 @@ public class RequestResponseChannel implements IOObject {
                     onOpen.onError(exception);
                 } else {
                     final ErrorCondition error = (this.sendLink.getRemoteCondition() != null && this.sendLink.getRemoteCondition().getCondition() != null)
-                            ? this.sendLink.getRemoteCondition()
-                            : this.receiveLink.getRemoteCondition();
+                        ? this.sendLink.getRemoteCondition()
+                        : this.receiveLink.getRemoteCondition();
                     onOpen.onError(ExceptionUtil.toException(error));
                 }
             }
+        }
     }
 
     private void onLinkCloseComplete(final Exception exception) {
@@ -271,9 +272,9 @@ public class RequestResponseChannel implements IOObject {
         }
 
         private void cancelPendingRequests(final Exception exception) {
-            for (OperationResult<Message, Exception> responseCallback : inflightRequests.values())
+            for (OperationResult<Message, Exception> responseCallback : inflightRequests.values()) {
                 responseCallback.onError(exception);
-
+            }
             inflightRequests.clear();
         }
     }

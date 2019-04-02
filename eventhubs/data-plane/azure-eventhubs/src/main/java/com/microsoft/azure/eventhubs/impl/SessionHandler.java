@@ -107,8 +107,9 @@ public class SessionHandler extends BaseHandler {
         }
 
         sessionCreated = true;
-        if (this.onRemoteSessionOpen != null)
+        if (this.onRemoteSessionOpen != null) {
             this.onRemoteSessionOpen.accept(session);
+        }
     }
 
     @Override
@@ -142,8 +143,9 @@ public class SessionHandler extends BaseHandler {
         }
 
         this.sessionOpenErrorDispatched = true;
-        if (!sessionCreated && this.onRemoteSessionOpenError != null)
+        if (!sessionCreated && this.onRemoteSessionOpenError != null) {
             this.onRemoteSessionOpenError.accept(condition, null);
+        }
     }
 
     @Override
