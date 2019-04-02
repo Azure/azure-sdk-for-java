@@ -54,9 +54,6 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
 
         this.eventHubName = connectionString.getEventHubName();
         this.senderCreateSync = new Object();
-        this.underlyingFactory = null;
-        this.sender = null;
-        this.timer = null;
     }
 
     public static CompletableFuture<EventHubClient> create(
