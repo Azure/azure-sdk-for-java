@@ -842,14 +842,13 @@ public class ConfigurationClientTest {
                 .label(labelPrefix))
             .collect(Collectors.toList());
 
-        List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
+        List<ConfigurationSetting> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)));
+            RestResponse<ConfigurationSetting> response = client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)).block();
+            results.add(response.body());
         }
 
         RevisionOptions filter = new RevisionOptions().key(keyPrefix).label(labelPrefix);
-
-        Flux.merge(results).blockLast();
         StepVerifier.create(client.listSettingRevisions(filter))
             .expectNextCount(numberExpected)
             .verifyComplete();
