@@ -142,7 +142,7 @@ public Mono<RestResponse<Secret>> getSecretAsync(String secretName, String versi
 Secret secret = secretClient.getSecretAsync("user1pass").block().body();
 
 // get a specific version of a secret
-Secret secret = secretClient.getSecretAsync("user1pass","6A385B124DEF4096AF1361A85B16C204").block().body();
+Secret secretWithVersion = secretClient.getSecretAsync("user1pass","6A385B124DEF4096AF1361A85B16C204").block().body();
 ~~~
 
 ### Replaces:
@@ -164,13 +164,12 @@ public Mono<RestResponse<SecretAttributes>> updateSecretAsync(SecretAttributes s
 ~~~
 #### Usage:
 ~~~ java
-// USAGE BELOW YET TO BE IMPLEMENTED AND TESTED 
 // Update the expiration of a secret
-Secret secret = secretClient.getSecretAsync("secretkey");
+Secret secret = secretClient.getSecretAsync("secretkey").block().body();
 
-secret.setNotBefore(new DateTime().withYear(2020).withMonthOfYear(1));
+secret.withNotBefore(OffsetDateTime.of(LocalDateTime.parse("2020-01-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),ZoneOffset.UTC));
 
-SecretAttributes updated = secretClient.updateSecretAsync(secret).block().body();
+SecretInfo updatedInfo = secretClient.updateSecretAsync(secret).block().body();
 ~~~
 ### Replaces:
 ~~~ java
@@ -197,13 +196,11 @@ public Flux<SecretAttributes> getSecretsAsync(int maxPageResults);
 ~~~
 #### Usage:
 ~~~ java
-// USAGE BELOW YET TO BE IMPLEMENTED AND TESTED 
 // enumerate all secrets in the vault using Flux subscribe - TO BE TESTED.
 secretClient.getSecretsAsync()
             .subscribe(secretAttr -> System.out.println(secretAttr.getId())); 
 
 
-// enumerate all secrets by page - TO BE TESTED
 int maxPageResults = 5;
 secretClient.getSecretsAsync(5)
             .subscribe(secretAttr -> System.out.println(secretAttr.getId())); 
@@ -253,7 +250,7 @@ public Mono<RestResponse> purgeDeletedSecretAsync(string name);
 #### Usage:
 ~~~ java
 
-// USAGE BELOW YET TO BE IMPLEMENTED AND TESTED 
+// USAGE BELOW YET TO BE IMPLEMENTED AND TESTED -- NEEDS TO BE UPDATED
 // delete a secret
 DeletedSecret deletedSecret =  secretClient.deleteSecretAsync("user1pass").block().body();
 
@@ -306,7 +303,7 @@ public Mono<RestResponse<Secret>> restoreSecretAsync(byte[] backup);
 ~~~
 #### Usage:
 ~~~ java
-// USAGE BELOW YET TO BE IMPLEMENTED AND TESTED 
+// USAGE BELOW YET TO BE IMPLEMENTED AND TESTED AND NEEDS TO BE UPDATED
 // backup the secret
  byte[] backupBytes = secretClient.backupSecretAsync("secretkey").block().body();
 
