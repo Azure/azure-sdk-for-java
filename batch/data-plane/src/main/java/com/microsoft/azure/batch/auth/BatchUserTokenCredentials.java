@@ -19,19 +19,19 @@ import java.util.concurrent.Executors;
 public class BatchUserTokenCredentials extends TokenCredentials implements BatchCredentials {
 
     /** The Active Directory application client id. */
-    final private String clientId;
+    private final String clientId;
     /** The tenant or domain containing the application. */
-    final private String domain;
+    private final String domain;
     /** The user name for the Organization Id account. */
-    final private String username;
+    private final String username;
     /** The password for the Organization Id account. */
-    final private String password;
+    private final String password;
     /** The user's Batch service endpoint */
-    final private String baseUrl;
+    private final String baseUrl;
     /** The Batch service auth endpoint */
-    final private String batchEndpoint;
+    private final String batchEndpoint;
     /** The Active Directory auth endpoint */
-    final private String authenticationEndpoint;
+    private final String authenticationEndpoint;
     /** The cached access token. */
     private AuthenticationResult authenticationResult;
 
@@ -104,15 +104,16 @@ public class BatchUserTokenCredentials extends TokenCredentials implements Batch
      *
      * @return the user name.
      */
-    public String username() { return username; }
+    public String username() {
+        return username;
+    }
 
     /**
      * Gets the Active Directory auth endpoint.
      *
      * @return the Active Directory auth endpoint.
      */
-    public String authenticationEndpoint()
-    {
+    public String authenticationEndpoint() {
         return this.authenticationEndpoint;
     }
 
@@ -121,8 +122,7 @@ public class BatchUserTokenCredentials extends TokenCredentials implements Batch
      *
      * @return the Batch service auth endpoint.
      */
-    public String batchEndpoint()
-    {
+    public String batchEndpoint() {
         return this.batchEndpoint;
     }
 
@@ -150,11 +150,11 @@ public class BatchUserTokenCredentials extends TokenCredentials implements Batch
         AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
         try {
             this.authenticationResult = context.acquireToken(
-                    this.batchEndpoint(),
-                    this.clientId(),
-                    this.username(),
-                    this.password,
-                    null).get();
+                this.batchEndpoint(),
+                this.clientId(),
+                this.username(),
+                this.password,
+                null).get();
             return this.authenticationResult;
         } catch (Exception e) {
             throw new IOException(e.getMessage(), e);
