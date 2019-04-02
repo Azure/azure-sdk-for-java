@@ -145,6 +145,12 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     }
 
     @Override
+    public ServerImpl withReplicationRole(String replicationRole) {
+        this.updateParameter.withReplicationRole(replicationRole);
+        return this;
+    }
+
+    @Override
     public ServerImpl withSslEnforcement(SslEnforcementEnum sslEnforcement) {
         this.updateParameter.withSslEnforcement(sslEnforcement);
         return this;
