@@ -4,7 +4,6 @@
 package com.microsoft.azure.eventhubs.impl;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 public class ReplayableWorkItem<T> extends WorkItem<T> {
@@ -33,7 +32,7 @@ public class ReplayableWorkItem<T> extends WorkItem<T> {
     }
 
     public byte[] getMessage() {
-        return this.amqpMessage != null ? Arrays.copyOf(this.amqpMessage, this.amqpMessage.length) : new byte[0];
+        return this.amqpMessage;
     }
 
     public void clearMessage() {
