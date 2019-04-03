@@ -2,7 +2,7 @@ package com.azure.common.implementation;
 
 import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.common.MyRestException;
-import com.azure.common.http.rest.RestException;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.ExpectedResponses;
 import com.azure.common.annotations.PATCH;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
@@ -44,7 +44,7 @@ public class SwaggerMethodParserTests {
         assertEquals("com.azure.common.implementation.SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
-        assertEquals(RestException.class, methodParser.exceptionType());
+        assertEquals(ServiceRequestException.class, methodParser.exceptionType());
         assertEquals(Object.class, methodParser.exceptionBodyType());
         assertEquals(false, methodParser.headers(null).iterator().hasNext());
         assertEquals("https", methodParser.scheme(null));
