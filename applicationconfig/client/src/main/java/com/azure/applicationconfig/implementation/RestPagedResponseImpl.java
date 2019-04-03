@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.implementation;
 
-import com.azure.common.http.rest.RestPagedResponse;
+import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpRequest;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @param <T> the type items in the page
  */
-public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
+public class RestPagedResponseImpl<T> implements PagedResponse<T> {
     /**
      * The link to the next page.
      */

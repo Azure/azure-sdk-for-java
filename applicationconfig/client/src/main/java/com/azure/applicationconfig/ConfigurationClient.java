@@ -9,6 +9,7 @@ import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.ServiceClient;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.policy.AsyncCredentialsPolicy;
@@ -17,7 +18,7 @@ import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
-import com.azure.common.http.rest.RestResponse;
+import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.RestProxy;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -77,9 +78,9 @@ public final class ConfigurationClient extends ServiceClient {
      * @return ConfigurationSetting that was created or updated.
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or an empty string.
-     * @throws com.azure.common.http.rest.RestException If a ConfigurationSetting with the same key and label exists.
+     * @throws ServiceRequestException If a ConfigurationSetting with the same key and label exists.
      */
-    public Mono<RestResponse<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
+    public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
 
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, null, getETagValue(ETAG_ANY));
@@ -100,11 +101,11 @@ public final class ConfigurationClient extends ServiceClient {
      * @return ConfigurationSetting that was created or updated.
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or an empty string.
-     * @throws com.azure.common.http.rest.RestException If the {@link ConfigurationSetting#etag()} was specified, is not
+     * @throws ServiceRequestException If the {@link ConfigurationSetting#etag()} was specified, is not
      * {@link ConfigurationClient#ETAG_ANY}, and the current configuration
      * value's etag does not match.
      */
-    public Mono<RestResponse<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
+    public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
 
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, getETagValue(result.etag()), null);
@@ -123,10 +124,10 @@ public final class ConfigurationClient extends ServiceClient {
      * @return ConfigurationSetting that was updated.
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or an empty string.
-     * @throws com.azure.common.http.rest.RestException If a ConfigurationSetting with the same key and label does not
+     * @throws ServiceRequestException If a ConfigurationSetting with the same key and label does not
      * exist or the configuration value is locked.
      */
-    public Mono<RestResponse<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
+    public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
         String etag = result.etag() == null ? ETAG_ANY : result.etag();
 
@@ -139,10 +140,10 @@ public final class ConfigurationClient extends ServiceClient {
      * @param key The key of the setting to retrieve.
      * @return The configuration setting in the service.
      * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
-     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
+     * @throws ServiceRequestException with status code of 404 if the {@code key} and {@code label} does
      * not exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> getSetting(String key) {
+    public Mono<Response<ConfigurationSetting>> getSetting(String key) {
         return getSetting(new ConfigurationSetting().key(key));
     }
 
@@ -153,11 +154,11 @@ public final class ConfigurationClient extends ServiceClient {
      * @return The configuration value in the service.
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or an empty string.
-     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@code key} and {@code label} does
+     * @throws ServiceRequestException with status code of 404 if the {@code key} and {@code label} does
      * not exist. If {@code etag} was specified, returns status code of
      * 304 if the key has not been modified.
      */
-    public Mono<RestResponse<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
+    public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
 
         return service.getKeyValue(serviceEndpoint, result.key(), result.label(), null, null, null, null);
@@ -170,7 +171,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return The deleted ConfigurationSetting or null if it didn't exist.
      * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
      */
-    public Mono<RestResponse<ConfigurationSetting>> deleteSetting(String key) {
+    public Mono<Response<ConfigurationSetting>> deleteSetting(String key) {
         return deleteSetting(new ConfigurationSetting().key(key));
     }
 
@@ -184,7 +185,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or an empty string.
      * @throws NullPointerException When {@code setting} is {@code null}.
      */
-    public Mono<RestResponse<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
+    public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
 
         return service.delete(serviceEndpoint, result.key(), result.label(), getETagValue(result.etag()), null);
@@ -196,9 +197,9 @@ public final class ConfigurationClient extends ServiceClient {
      * @param key The key of the ConfigurationSetting.
      * @return ConfigurationSetting that was locked.
      * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
-     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
+     * @throws ServiceRequestException with status code 404 if the {@code key} does not exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> lockSetting(String key) {
+    public Mono<Response<ConfigurationSetting>> lockSetting(String key) {
         return lockSetting(new ConfigurationSetting().key(key));
     }
 
@@ -209,9 +210,9 @@ public final class ConfigurationClient extends ServiceClient {
      * @param setting The ConfigurationSetting to lock.
      * @return ConfigurationSetting that was locked.
      * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
-     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
+     * @throws ServiceRequestException with status code 404 if the {@code key} does not exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> lockSetting(ConfigurationSetting setting) {
+    public Mono<Response<ConfigurationSetting>> lockSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
 
         return service.lockKeyValue(serviceEndpoint, result.key(), result.label(), null, null);
@@ -223,9 +224,9 @@ public final class ConfigurationClient extends ServiceClient {
      * @param key The key of the setting to unlock.
      * @return The ConfigurationSetting that was unlocked.
      * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
-     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
+     * @throws ServiceRequestException with status code 404 if the {@code key} does not exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> unlockSetting(String key) {
+    public Mono<Response<ConfigurationSetting>> unlockSetting(String key) {
         return unlockSetting(new ConfigurationSetting().key(key));
     }
 
@@ -236,9 +237,9 @@ public final class ConfigurationClient extends ServiceClient {
      * @param setting The configuration setting to unlock.
      * @return The ConfigurationSetting that was unlocked.
      * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
-     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@code key} does not exist.
+     * @throws ServiceRequestException with status code 404 if the {@code key} does not exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> unlockSetting(ConfigurationSetting setting) {
+    public Mono<Response<ConfigurationSetting>> unlockSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
 
         return service.unlockKeyValue(serviceEndpoint, result.key(), result.label(), null, null);
@@ -253,7 +254,7 @@ public final class ConfigurationClient extends ServiceClient {
      * contains all of the current settings in the service.
      */
     public Flux<ConfigurationSetting> listSettings(SettingSelector options) {
-        Mono<RestResponse<Page<ConfigurationSetting>>> result;
+        Mono<Response<Page<ConfigurationSetting>>> result;
         if (options != null) {
             String fields = getSelectQuery(options.fields());
             result = service.listKeyValues(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime());
@@ -279,7 +280,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return Revisions of the ConfigurationSetting
      */
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        Mono<RestResponse<Page<ConfigurationSetting>>> result;
+        Mono<Response<Page<ConfigurationSetting>>> result;
         if (selector != null) {
             String fields = getSelectQuery(selector.fields());
             result = service.listKeyValueRevisions(serviceEndpoint, selector.key(), selector.label(), fields, selector.acceptDateTime(), null);
@@ -400,12 +401,12 @@ public final class ConfigurationClient extends ServiceClient {
      * @return A stream of {@link ConfigurationSetting} from the next page of results.
      */
     private Flux<ConfigurationSetting> listSettings(@NonNull String nextPageLink) {
-        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValues(serviceEndpoint, nextPageLink);
+        Mono<Response<Page<ConfigurationSetting>>> result = service.listKeyValues(serviceEndpoint, nextPageLink);
         return getPagedConfigurationSettings(result);
     }
 
-    private Flux<ConfigurationSetting> getPagedConfigurationSettings(Mono<RestResponse<Page<ConfigurationSetting>>> response) {
-        return response.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
+    private Flux<ConfigurationSetting> getPagedConfigurationSettings(Mono<Response<Page<ConfigurationSetting>>> response) {
+        return response.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.value().items(), p.value().nextPageLink(), p.request(), p.headers(), p.statusCode())))
             .concatMap(this::extractAndFetchConfigurationSettings);
     }
 
