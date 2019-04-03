@@ -735,60 +735,6 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Verifies that we can get a subset of the revisions using "Range" header
-     */
-    @Test
-    public void listRevisionsRange() {
-        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValueIUpdated");
-
-        StepVerifier.create(client.setSetting(original))
-            .assertNext(response -> assertConfigurationEquals(original, response))
-            .verifyComplete();
-        StepVerifier.create(client.setSetting(updated))
-            .assertNext(response -> assertConfigurationEquals(updated, response))
-            .verifyComplete();
-        StepVerifier.create(client.setSetting(updated2))
-            .assertNext(response -> assertConfigurationEquals(updated2, response))
-            .verifyComplete();
-
-        // Get a subset of revisions, the first revision and the original value.
-        final RevisionOptions revisions = new RevisionOptions().key(keyName).range(new RevisionRange(1));
-        StepVerifier.create(client.listSettingRevisions(revisions))
-            .assertNext(response -> {
-                assertEquals(keyName, response.key());
-                assertEquals(updated.value(), response.value());
-            })
-            .assertNext(response -> {
-                assertEquals(keyName, response.key());
-                assertEquals(original.value(), response.value());
-            })
-            .verifyComplete();
-
-        // Get a subset of revisions, the current value and the first revision.
-        StepVerifier.create(client.listSettingRevisions(new RevisionOptions().key(keyName).range(new RevisionRange(0, 1))))
-            .assertNext(response -> {
-                assertEquals(keyName, response.key());
-                assertEquals(updated2.value(), response.value());
-            })
-            .assertNext(response -> {
-                assertEquals(keyName, response.key());
-                assertEquals(updated.value(), response.value());
-            })
-            .verifyComplete();
-
-        // Gets an error because there is no 3rd revision.
-        final RevisionOptions revisions2 = new RevisionOptions().key(keyName).range(new RevisionRange(2, 3));
-        StepVerifier.create(client.listSettingRevisions(revisions2))
-            .verifyErrorSatisfies(error -> {
-                assertTrue(error instanceof RestException);
-                assertTrue(error.getMessage().contains("416"));
-            });
-    }
-
-    /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
     @Test
