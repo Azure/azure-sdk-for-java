@@ -36,6 +36,10 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param partitionId Partition id for this lease.
      */
     public BaseLease(String partitionId) {
+        Objects.requireNonNull(partitionId);
+        if (partitionId.isEmpty()) {
+            throw new IllegalArgumentException("partitionId is Empty");
+        }
         this.partitionId = partitionId;
     }
     
@@ -47,6 +51,10 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param isOwned True if the lease is owned, false if not.
      */
     public BaseLease(String partitionId, String owner, boolean isOwned) {
+        Objects.requireNonNull(partitionId);
+        if (partitionId.isEmpty()) {
+            throw new IllegalArgumentException("partitionId is Empty");
+        }
         this.partitionId = partitionId;
         this.owner = owner;
         this.isOwned = isOwned;
@@ -58,6 +66,10 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param source BaseLease to clone.
      */
     public BaseLease(BaseLease source) {
+        Objects.requireNonNull(source.partitionId);
+        if (source.partitionId.isEmpty()) {
+            throw new IllegalArgumentException("partitionId is Empty");
+        }
         this.partitionId = source.partitionId;
         this.owner = source.owner;
         this.isOwned = source.isOwned;

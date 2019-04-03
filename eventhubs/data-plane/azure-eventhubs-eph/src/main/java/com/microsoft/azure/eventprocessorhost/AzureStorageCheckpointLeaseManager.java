@@ -326,7 +326,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                 HashMap<String, String> metadata = blob.getMetadata();
                 Path p = Paths.get(lbi.getUri().getPath());
                 Path pFileName = p.getFileName();
-                infos.add(new BaseLease(pFileName != null ? pFileName.toString() : null, metadata.get(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME),
+                String partitionId = pFileName != null ? pFileName.toString() : "";
+                infos.add(new BaseLease(partitionId, metadata.get(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME),
                         (bp.getLeaseState() == LeaseState.LEASED)));
             });
             future = CompletableFuture.completedFuture(infos);
