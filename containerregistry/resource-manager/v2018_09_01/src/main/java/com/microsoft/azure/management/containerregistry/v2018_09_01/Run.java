@@ -84,6 +84,11 @@ public interface Run extends HasInner<RunInner>, Indexable, Refreshable<Run>, Up
     ProvisioningState provisioningState();
 
     /**
+     * @return the runErrorMessage value.
+     */
+    String runErrorMessage();
+
+    /**
      * @return the runId value.
      */
     String runId();
