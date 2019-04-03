@@ -6,6 +6,7 @@ import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpPipelineCallContext;
 import com.azure.common.http.HttpPipelineNextPolicy;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,6 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Sample demonstrates how to add a custom policy into the HTTP pipeline.
+ */
 class PipelineSample {
     public static void main(String[] args)  throws NoSuchAlgorithmException, InvalidKeyException {
         // Retrieve the connection string from the configuration store.
@@ -25,10 +29,12 @@ class PipelineSample {
         final HttpMethodRequestTracker tracker = new HttpMethodRequestTracker();
 
         // Instantiate a client that will be used to call the service.
-        // We're adding in a method to track the type of HTTP method calls we make.
+        // We add in a policy to track the type of HTTP method calls we make.
+        // We also want to see the Header information of our HTTP requests, so we specify the detail level.
         final ConfigurationClient client = ConfigurationClient.builder()
                 .credentials(new ConfigurationClientCredentials(connectionString))
                 .addPolicy(new HttpMethodRequestTrackingPolicy(tracker))
+                .httpLogDetailLevel(HttpLogDetailLevel.HEADERS)
                 .build();
 
         // Adding a couple of settings and then fetching all the settings in our repository.
