@@ -10,7 +10,7 @@ package com.microsoft.azure.management.iotcentral.v2018_09_01.implementation;
 
 import com.microsoft.azure.management.iotcentral.v2018_09_01.AppTemplate;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import java.util.Map;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.AppTemplateProperties;
 
 class AppTemplateImpl extends WrapperImpl<AppTemplateInner> implements AppTemplate {
     private final IoTCentralManager manager;
@@ -35,7 +35,7 @@ class AppTemplateImpl extends WrapperImpl<AppTemplateInner> implements AppTempla
     }
 
     @Override
-    public Map<String, String> properties() {
+    public AppTemplateProperties properties() {
         return this.inner().properties();
     }
 

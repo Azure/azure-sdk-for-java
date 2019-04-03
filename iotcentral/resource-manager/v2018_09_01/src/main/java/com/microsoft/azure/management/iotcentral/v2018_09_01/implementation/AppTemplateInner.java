@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.management.iotcentral.v2018_09_01.implementation;
 
-import java.util.Map;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.AppTemplateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -28,10 +28,10 @@ public class AppTemplateInner {
     private String name;
 
     /**
-     * The extra template properties.
+     * The properties property.
      */
     @JsonProperty(value = "properties")
-    private Map<String, String> properties;
+    private AppTemplateProperties properties;
 
     /**
      * the resource type.
@@ -58,21 +58,21 @@ public class AppTemplateInner {
     }
 
     /**
-     * Get the extra template properties.
+     * Get the properties value.
      *
      * @return the properties value
      */
-    public Map<String, String> properties() {
+    public AppTemplateProperties properties() {
         return this.properties;
     }
 
     /**
-     * Set the extra template properties.
+     * Set the properties value.
      *
      * @param properties the properties value to set
      * @return the AppTemplateInner object itself.
      */
-    public AppTemplateInner withProperties(Map<String, String> properties) {
+    public AppTemplateInner withProperties(AppTemplateProperties properties) {
         this.properties = properties;
         return this;
     }
