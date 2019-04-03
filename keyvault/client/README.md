@@ -45,7 +45,7 @@ public class SecretClient extends ServiceClient
     public Flux<SecretInfo> getSecretsAsync();
     public Flux<SecretInfo> getSecretsAsync(int maxPageResults);
     
-    public Mono<RestResponse<SecretInfo>> updateSecretAsync(SecretAttributes secret);
+    public Mono<RestResponse<SecretInfo>> updateSecretAsync(SecretInfo secret);
 
     public Mono<RestResponse<Secret>> setSecretAsync(String name, String value);
     public Mono<RestResponse<Secret>> setSecretAsync(Secret secret);
@@ -55,7 +55,7 @@ public class SecretClient extends ServiceClient
     public Flux<DeletedSecret> getDeletedSecretsAsync();
     public Flux<DeletedSecret> getDeletedSecretsAsync(int maxPageResults);
     public Mono<RestResponse<Secret>> recoverDeletedSecretAsync(String name);
-    public Mono<RestResponse> purgeDeletedSecretAsync(String name);
+    public Mono<RestVoidResponse> purgeDeletedSecretAsync(String name);
 
     public Mono<RestResponse<SecretBackup>> backupSecretAsync(String name);
     public Mono<RestResponse<Secret>> restoreSecretAsync(SecretBackup backup);
@@ -91,7 +91,6 @@ public Mono<RestResponse<Secret>> setSecretAsync(Secret secret);
 ~~~
 #### Usage:
 ~~~ java
---- USAGE BELOW YET TO BE IMPLEMENTED AND TESTED ---
 SecretClient secretClient = SecretClient.builder()
                             .vaultEndPoint("https://myvault.vault.azure.net/")
                             .credentials(new KeyvaultCredentials())
@@ -137,7 +136,6 @@ public Mono<RestResponse<Secret>> getSecretAsync(String secretName, String versi
 
 #### Usage:
 ~~~ java
-// USAGE BELOW YET TO BE IMPLEMENTED AND TESTED
 // get the latest version of a secret
 Secret secret = secretClient.getSecretAsync("user1pass").block().body();
 
@@ -187,7 +185,7 @@ Observable<ServiceResponse<SecretBundle>> updateSecretWithServiceResponseAsync(S
 
 ## List Operations
 
-### getSecretsAsync, getSecretVersions
+### listSecretsAsync, listSecretVersionsAsync
 ~~~ java
 public Flux<SecretAttributes> getSecretVersionsAsync(String name);
 public Flux<SecretAttributes> getSecretVersionsAsync(String name, int maxPageResults);
@@ -197,17 +195,12 @@ public Flux<SecretAttributes> getSecretsAsync(int maxPageResults);
 #### Usage:
 ~~~ java
 // enumerate all secrets in the vault using Flux subscribe - TO BE TESTED.
-secretClient.getSecretsAsync()
-            .subscribe(secretAttr -> System.out.println(secretAttr.getId())); 
-
+secretClient.listSecretsAsync()
+	.subscribe(secretInfo -> System.out.println(secretInfo.id()));
 
 int maxPageResults = 5;
-secretClient.getSecretsAsync(5)
-            .subscribe(secretAttr -> System.out.println(secretAttr.getId())); 
-            
-//TO DO: Explore flatMap and collectList methods of Flux for enumeration purposes.
-
-
+secretClient.listSecretsAsync(5)
+	.subscribe(secretInfo -> System.out.println(secretInfo.id()));
 ~~~
 
 ### Replaces:
@@ -250,22 +243,33 @@ public Mono<RestResponse> purgeDeletedSecretAsync(string name);
 #### Usage:
 ~~~ java
 
-// USAGE BELOW YET TO BE IMPLEMENTED AND TESTED -- NEEDS TO BE UPDATED
-// delete a secret
+// Delete a secret
 DeletedSecret deletedSecret =  secretClient.deleteSecretAsync("user1pass").block().body();
 
-// get the details of a deleted secret
-deletedSecret = secretClient.getDeletedSecretAsync("user1pass").block().body();
+// Wait for few seconds.
+Thread.sleep(5000);
 
-// list all the deleted secrets
-secretClient.getDeletedSecretsAsync()
-            .subscribe(delSecret -> System.out.println(delSecret.getId())); 
+// Get the details of a deleted secret
+ deletedSecret = secretClient.getDeletedSecretAsync("user1pass").block().body();
 
-// recover a deleted secret
-Secret secret = secretClient.recoverDeletedSecretAsync("userpass1").block().body();
+// List all the deleted secrets
+secretClient.listDeletedSecretsAsync()
+	.subscribe(delSecret -> System.out.println(delSecret.id()));
 
-// purge a deleted secret
-secretClient.purgeDeletedSecretAsync("userpass1");
+// Recover a deleted secret
+Secret secret = secretClient.recoverDeletedSecretAsync("user1pass").block().body();
+
+// Wait for few seconds.
+Thread.sleep(5000);
+
+// Delete the secret again after recovering it.
+deletedSecret =  secretClient.deleteSecretAsync("user1pass").block().body();
+
+// Wait for few seconds.
+Thread.sleep(5000);
+
+// Purge the deleted secret -- permanenetly delete it.
+secretClient.purgeDeletedSecretAsync("user1pass").block();
 ~~~
 ### Replaces:
 ~~~ java
@@ -303,14 +307,17 @@ public Mono<RestResponse<Secret>> restoreSecretAsync(byte[] backup);
 ~~~
 #### Usage:
 ~~~ java
-// USAGE BELOW YET TO BE IMPLEMENTED AND TESTED AND NEEDS TO BE UPDATED
 // backup the secret
- byte[] backupBytes = secretClient.backupSecretAsync("secretkey").block().body();
+SecretBackup backup = secretClient.backupSecretAsync("secretkey").block().body();
 
-// TODO: Write Backed up secret to a file -- TO
+DeletedSecret deletedSecret =  secretClient.deleteSecretAsync("secretkey").block().body();
 
-// restore the secret from backup
-Secret restored = secretClient.restoreSecretAsync(backupBytes).block().body();
+Thread.sleep(30000);
+
+secretClient.purgeDeletedSecretAsync("secretkey").block();
+
+//restore the secret from backup
+Secret restored = secretClient.restoreSecretAsync(backup).block().body();
 ~~~
 ### Replaces:
 ~~~ java
