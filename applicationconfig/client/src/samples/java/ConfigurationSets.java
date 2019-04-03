@@ -19,7 +19,7 @@ import java.util.List;
  * Sample demonstrates how to use Azure Application Configuration to switch between "beta" and "production"
  * configuration sets.
  */
-class ConfigurationSets {
+public class ConfigurationSets {
     private static final String CONNECTION_STRING_KEY = "connection-string";
     private static final String KEY_VAULT_KEY = "key-vault";
     private static final String BETA = "beta";
@@ -27,7 +27,7 @@ class ConfigurationSets {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static void main() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
         // Retrieve the connection string from the configuration store.
         // You can get the string from your Azure portal.
         String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
