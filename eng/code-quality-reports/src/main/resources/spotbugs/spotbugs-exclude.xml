@@ -47,14 +47,6 @@
         <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
     </Match>
 
-    <!-- Public field already exists in the public API surface area even
-    though it should be final. -->
-    <Match>
-        <Class name="com.microsoft.azure.eventhubs.impl.EventHubClientImpl"/>
-        <Field name="USER_AGENT"/>
-        <Bug pattern="MS_SHOULD_BE_FINAL"/>
-    </Match>
-
     <!-- Public field already exists in the public API surface. -->
     <Match>
         <Class name="com.microsoft.azure.batch.auth.BatchUserTokenCredentials"/>
@@ -118,8 +110,118 @@
         <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
     </Match>
 
+    <!-- Public field already exists in the public API surface area even though no writes were seen to this public field.-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L50-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L57-->
+    <Match>
+        <Class name="~com.microsoft.azure.eventhubs.BatchOptions"/>
+        <Field name="~(maxMessageSize|partitionKey)"/>
+        <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
+    </Match>
+
+    <!-- Public method already exists in the public API surface area even though it has confusing name.-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessageReceiver.java#L247-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessageReceiver.java#L251-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/MessagingFactory.java#L146-->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.eventhubs\.impl\.(MessageReceiver|MessagingFactory)"/>
+        <Bug pattern="NM_CONFUSING"/>
+    </Match>
+
+    <!--Returning a new copy of the object is not necessary-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L27-->
+    <Match>
+        <class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
+        <Local name="partitionIds"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!--Returning a new copy of the object is not necessary-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L62-->
+    <Match>
+        <class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
+        <Method name="getPartitionIds"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+
+    <!-- Public field already exists in the public API surface area even though it should be final.-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventHubClientImpl.java#L41-->
+    <Match>
+        <Class name="com.microsoft.azure.eventhubs.impl.EventHubClientImpl"/>
+        <Field name="USER_AGENT"/>
+        <Bug pattern="MS_SHOULD_BE_FINAL,UWF_NULL_FIELD"/>
+    </Match>
+
+    <!--Values are initialized at runtime-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventHubClientImpl.java#L47-->
+    <Match>
+        <Class name="com.microsoft.azure.eventhubs.impl.EventHubClientImpl"/>
+        <Field name="~(sender|timer|underlyingFactory)"/>
+        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Match>
+
+    <!--Returning a new copy of the object is not necessary-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ReplayableWorkItem.java#L35-->
+    <Match>
+        <class name="com.microsoft.azure.eventhubs.impl.ReplayableWorkItem"/>
+        <Field name="amqpMessage"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+
+    <!--Return value is fine to not check, if add, it will be a redundant step-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/FaultTolerantObject.java#L79-->
+    <Match>
+        <class name="com.microsoft.azure.eventhubs.impl.FaultTolerantObject" />
+        <Method name="onEvent"/>
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+    </Match>
+
+    <!--Bytes array are designed to return null if it is null-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventDataImpl.java#L135-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/PartitionReceiverImpl.java#L278-->
+    <Match>
+        <class name="~(com\.microsoft\.azure\.eventhubs\.impl\.(EventDataImpl|PartitionReceiverImpl)"/>
+        <Method name="~(getBytes|getDesiredCapabilities)"/>
+        <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+    </Match>
+
+    <!--Unchecked cast already exists as inner class of a public class but they are logically correct so it can be ignored.-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/PartitionManager.java#L323-->
+    <Match>
+        <Class name="com.microsoft.azure.eventprocessorhost.PartitionManager$FinalException"/>
+        <Method name="getInner"/>
+        <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+    </Match>
+
+    <!--Even thought volatile reference to an array exists in protected API surface area,-->
+    <!--changing it will cause another public API surface to change-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/PartitionManager.java#L29-->
+    <Match>
+        <Class name="com.microsoft.azure.eventprocessorhost.PartitionManager"/>
+        <Field name="partitionIds"/>
+        <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY"/>
+    </Match>
+
+    <!-- Unchecked cast already exists in the public API surface area, they are logically right, so it can be ignored.-->
+    <!--At AzureStorageCheckpointLeaseManager.java:[line 180,430,446,542,574]-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/AzureStorageCheckpointLeaseManager.java#L180-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/InMemoryLeaseManager.java#L155  -->
+    <!--At InMemoryLeaseManager.java:[line 148,155,209,241,268]-->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.eventprocessorhost\.(AzureStorageCheckpointLeaseManager|InMemoryLeaseManager)"/>
+        <Bug pattern="BC_UNCONFIRMED_CAST"/>
+    </Match>
+
+    <!--Public inner class already exists in the public API surface area even though it should be static.-->
+    <!--At EventProcessorOptions.java:[lines 234-237]-->
+    <!--https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/EventProcessorOptions.java#L234-->
+    <Match>
+        <Class name="~com\.microsoft.azure\.eventprocessorhost\.EventProcessorOptions\$(EndOfStreamInitialPositionProvider|StartOfStreamInitialPositionProvider)"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>
+    </Match>
+
     <!-- Known issue in autorest where it will generate a variable with a value of null then use it in a not null check.
-    https://github.com/Azure/autorest.java/issues/328 -->
+      https://github.com/Azure/autorest.java/issues/328 -->
     <Match>
         <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
         <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
