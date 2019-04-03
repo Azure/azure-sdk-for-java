@@ -148,7 +148,7 @@ public class ConfigurationClientTest {
 
     private void cleanUpResources() {
         logger.info("Cleaning up created key values.");
-        client.listSettings(new RevisionOptions().key(keyPrefix + "*"))
+        client.listSettings(new SettingSelector().key(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
@@ -577,11 +577,11 @@ public class ConfigurationClientTest {
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
-        StepVerifier.create(client.listSettings(new RevisionOptions().key(key).label(label)))
+        StepVerifier.create(client.listSettings(new SettingSelector().key(key).label(label)))
                 .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
                 .verifyComplete();
 
-        StepVerifier.create(client.listSettings(new RevisionOptions().key(key)))
+        StepVerifier.create(client.listSettings(new SettingSelector().key(key)))
                 .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
                 .verifyComplete();
     }
@@ -669,7 +669,7 @@ public class ConfigurationClientTest {
             .verifyComplete();
 
         // Gets all versions of this value so we can get the one we want at that particular date.
-        List<ConfigurationSetting> revisions = client.listSettingRevisions(new RevisionOptions().key(keyName)).collectList().block();
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().key(keyName)).collectList().block();
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
@@ -705,14 +705,14 @@ public class ConfigurationClientTest {
                 .verifyComplete();
 
         // Get all revisions for a key, they are listed in descending order.
-        StepVerifier.create(client.listSettingRevisions(new RevisionOptions().key(keyName)))
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().key(keyName)))
                 .assertNext(response -> assertConfigurationEquals(updated2, response))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .assertNext(response -> assertConfigurationEquals(original, response))
                 .verifyComplete();
 
         // Verifies that we can select specific fields.
-        StepVerifier.create(client.listSettingRevisions(new RevisionOptions().key(keyName).fields(fields)))
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().key(keyName).fields(fields)))
             .assertNext(response -> {
                 assertEquals(updated2.key(), response.key());
                 assertNotNull(response.etag());
@@ -810,14 +810,14 @@ public class ConfigurationClientTest {
             .verifyComplete();
 
         // Gets all versions of this value.
-        List<ConfigurationSetting> revisions = client.listSettingRevisions(new RevisionOptions().key(keyName)).collectList().block();
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().key(keyName)).collectList().block();
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
 
         // We want to fetch all the revisions that existed up and including when the first revision was created.
         // Revisions are returned in descending order from creation date.
-        RevisionOptions options = new RevisionOptions().key(keyName).acceptDatetime(revisions.get(1).lastModified());
+        SettingSelector options = new SettingSelector().key(keyName).acceptDatetime(revisions.get(1).lastModified());
         StepVerifier.create(client.listSettingRevisions(options))
             .assertNext(response -> assertConfigurationEquals(updated, response))
             .assertNext(response -> assertConfigurationEquals(original, response))
@@ -840,13 +840,11 @@ public class ConfigurationClientTest {
                 .label(labelPrefix))
             .collect(Collectors.toList());
 
-        List<ConfigurationSetting> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            RestResponse<ConfigurationSetting> response = client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)).block();
-            results.add(response.body());
+            client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)).block();
         }
 
-        RevisionOptions filter = new RevisionOptions().key(keyPrefix).label(labelPrefix);
+        SettingSelector filter = new SettingSelector().key(keyPrefix).label(labelPrefix);
         StepVerifier.create(client.listSettingRevisions(filter))
             .expectNextCount(numberExpected)
             .verifyComplete();
