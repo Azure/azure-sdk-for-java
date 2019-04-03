@@ -44,7 +44,7 @@ public interface VaultCertificateResponse extends HasInner<VaultCertificateRespo
     /**
      * The entirety of the VaultCertificateResponse definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithVault, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithVault, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /**
@@ -63,8 +63,23 @@ public interface VaultCertificateResponse extends HasInner<VaultCertificateRespo
         interface WithVault {
            /**
             * Specifies resourceGroupName, vaultName.
+            * @param resourceGroupName The name of the resource group where the recovery services vault is present
+            * @param vaultName The name of the recovery services vault
+            * @return the next definition stage
             */
-            WithCreate withExistingVault(String resourceGroupName, String vaultName);
+            WithProperties withExistingVault(String resourceGroupName, String vaultName);
+        }
+
+        /**
+         * The stage of the vaultcertificateresponse definition allowing to specify Properties.
+         */
+        interface WithProperties {
+           /**
+            * Specifies properties.
+            * @param properties the properties parameter value
+            * @return the next definition stage
+            */
+            WithCreate withProperties(RawCertificateData properties);
         }
 
         /**
@@ -78,12 +93,24 @@ public interface VaultCertificateResponse extends HasInner<VaultCertificateRespo
     /**
      * The template for a VaultCertificateResponse update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<VaultCertificateResponse> {
+    interface Update extends Appliable<VaultCertificateResponse>, UpdateStages.WithProperties {
     }
 
     /**
      * Grouping of VaultCertificateResponse update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the vaultcertificateresponse update allowing to specify Properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies properties.
+             * @param properties the properties parameter value
+             * @return the next update stage
+             */
+            Update withProperties(RawCertificateData properties);
+        }
+
     }
 }
