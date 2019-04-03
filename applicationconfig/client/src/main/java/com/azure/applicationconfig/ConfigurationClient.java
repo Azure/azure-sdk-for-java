@@ -8,8 +8,6 @@ import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.applicationconfig.models.RevisionOptions;
-import com.azure.applicationconfig.models.RevisionRange;
 import com.azure.common.ServiceClient;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
@@ -277,15 +275,14 @@ public final class ConfigurationClient extends ServiceClient {
      * state with default fields. Otherwise, the results returned match the parameters given in {@code options}.
      * </p>
      *
-     * @param options Optional. Options to filter configuration setting revisions from the service.
+     * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
      */
-    public Flux<ConfigurationSetting> listSettingRevisions(RevisionOptions options) {
+    public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
-        if (options != null) {
-            String fields = getSelectQuery(options.fields());
-            String range = getItemsRange(options.range());
-            result = service.listKeyValueRevisions(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime(), range);
+        if (selector != null) {
+            String fields = getSelectQuery(selector.fields());
+            result = service.listKeyValueRevisions(serviceEndpoint, selector.key(), selector.label(), fields, selector.acceptDateTime(), null);
         } else {
             result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
         }
@@ -437,16 +434,6 @@ public final class ConfigurationClient extends ServiceClient {
 
         return set.stream().map(item -> item.toString().toLowerCase(Locale.US))
             .collect(Collectors.joining(","));
-    }
-
-    private static String getItemsRange(RevisionRange range) {
-        if (range == null) {
-            return null;
-        }
-
-        return range.end() == null
-            ? String.format("items=%d-", range.start())
-            : String.format("items=%d-%d", range.start(), range.end());
     }
 
     private static ConfigurationSetting validateSetting(ConfigurationSetting setting) {
