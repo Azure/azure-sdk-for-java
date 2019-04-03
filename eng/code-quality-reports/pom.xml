@@ -17,6 +17,9 @@
 
         <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
         <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
+
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <distributionManagement>
@@ -27,6 +30,24 @@
     </distributionManagement>
 
     <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>8.19</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4</artifactId>
+            <version>4.7.2</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

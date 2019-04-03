@@ -14,7 +14,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <property name="file" value="${samedir}/checkstyle-suppressions.xml"/>
         <property name="optional" value="true"/>
     </module>
-    
+
     <module name="Header">
         <property name="header" value="// Copyright (c) Microsoft Corporation. All rights reserved.\n// Licensed under the MIT License."/>
         <property name="fileExtensions" value="java"/>
@@ -243,5 +243,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
 
+        <!-- CUSTOM CHECKS -->
+        <module name="com.azure.customcheckstyles.ServiceClientSubclassCheck"/>
     </module>
 </module>
