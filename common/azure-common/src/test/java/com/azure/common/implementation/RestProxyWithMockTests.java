@@ -1,6 +1,6 @@
 package com.azure.common.implementation;
 
-import com.azure.common.http.rest.RestException;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.ExpectedResponses;
 import com.azure.common.annotations.GET;
 import com.azure.common.annotations.HeaderCollection;
@@ -14,8 +14,8 @@ import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.MockHttpClient;
 import com.azure.common.http.MockHttpResponse;
-import com.azure.common.http.rest.RestResponse;
-import com.azure.common.http.rest.RestResponseBase;
+import com.azure.common.http.rest.Response;
+import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.http.ProxyOptions;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
@@ -201,7 +201,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         try {
             service.get();
             fail();
-        } catch (RestException ex) {
+        } catch (ServiceRequestException ex) {
             assertContains(ex.getMessage(), "Status code 200");
             assertContains(ex.getMessage(), "\"BAD JSON\"");
         }
@@ -249,7 +249,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         try {
             service.get();
             fail();
-        } catch (RestException ex) {
+        } catch (ServiceRequestException ex) {
             assertContains(ex.getMessage(), "Status code 200");
             assertContains(ex.getMessage(), "\"BAD JSON\"");
         }
@@ -286,16 +286,16 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Host("https://www.example.com")
     interface ServiceHeaderCollections {
         @GET("url/path")
-        RestResponseBase<HeaderCollectionTypePublicFields,Void> publicFields();
+        ResponseBase<HeaderCollectionTypePublicFields,Void> publicFields();
 
         @GET("url/path")
-        RestResponseBase<HeaderCollectionTypeProtectedFields,Void> protectedFields();
+        ResponseBase<HeaderCollectionTypeProtectedFields,Void> protectedFields();
 
         @GET("url/path")
-        RestResponseBase<HeaderCollectionTypePrivateFields,Void> privateFields();
+        ResponseBase<HeaderCollectionTypePrivateFields,Void> privateFields();
 
         @GET("url/path")
-        RestResponseBase<HeaderCollectionTypePackagePrivateFields,Void> packagePrivateFields();
+        ResponseBase<HeaderCollectionTypePackagePrivateFields,Void> packagePrivateFields();
     }
 
     private static final HttpClient headerCollectionHttpClient = new MockHttpClient() {
@@ -315,7 +315,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         return createService(ServiceHeaderCollections.class, headerCollectionHttpClient);
     }
 
-    private static void assertHeaderCollectionsRawHeaders(RestResponse<Void> response) {
+    private static void assertHeaderCollectionsRawHeaders(Response<Void> response) {
         final HttpHeaders responseRawHeaders = response.headers();
         assertEquals("Phillip", responseRawHeaders.value("name"));
         assertEquals("1", responseRawHeaders.value("header-collection-prefix-one"));
@@ -338,7 +338,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     @Test
     public void serviceHeaderCollectionPublicFields() {
-        final RestResponseBase<HeaderCollectionTypePublicFields,Void> response = createHeaderCollectionsService()
+        final ResponseBase<HeaderCollectionTypePublicFields,Void> response = createHeaderCollectionsService()
             .publicFields();
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
@@ -351,7 +351,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     @Test
     public void serviceHeaderCollectionProtectedFields() {
-        final RestResponseBase<HeaderCollectionTypeProtectedFields,Void> response = createHeaderCollectionsService()
+        final ResponseBase<HeaderCollectionTypeProtectedFields,Void> response = createHeaderCollectionsService()
             .protectedFields();
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
@@ -364,7 +364,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     @Test
     public void serviceHeaderCollectionPrivateFields() {
-        final RestResponseBase<HeaderCollectionTypePrivateFields,Void> response = createHeaderCollectionsService()
+        final ResponseBase<HeaderCollectionTypePrivateFields,Void> response = createHeaderCollectionsService()
             .privateFields();
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
@@ -377,7 +377,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     @Test
     public void serviceHeaderCollectionPackagePrivateFields() {
-        final RestResponseBase<HeaderCollectionTypePackagePrivateFields,Void> response = createHeaderCollectionsService()
+        final ResponseBase<HeaderCollectionTypePackagePrivateFields,Void> response = createHeaderCollectionsService()
             .packagePrivateFields();
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);

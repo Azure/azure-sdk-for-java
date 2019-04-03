@@ -15,32 +15,32 @@ import java.io.Closeable;
 /**
  * REST response with a streaming content.
  */
-public final class RestStreamResponse extends SimpleRestResponse<Flux<ByteBuf>> implements Closeable {
+public final class StreamResponse extends SimpleResponse<Flux<ByteBuf>> implements Closeable {
     /**
-     * Creates RestStreamResponse.
+     * Creates StreamResponse.
      *
      * @param request the request which resulted in this response
      * @param statusCode the status code of the HTTP response
      * @param headers the headers of the HTTP response
-     * @param body the streaming body
+     * @param value the streaming value
      */
-    public RestStreamResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuf> body) {
-        super(request, statusCode, headers, body);
+    public StreamResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuf> value) {
+        super(request, statusCode, headers, value);
     }
 
     /**
      * @return the stream content
      */
     @Override
-    public Flux<ByteBuf> body() {
-        return super.body();
+    public Flux<ByteBuf> value() {
+        return super.value();
     }
 
     /**
-     * Disposes the connection associated with this RestStreamResponse.
+     * Disposes the connection associated with this StreamResponse.
      */
     @Override
     public void close() {
-        body().subscribe().dispose();
+        value().subscribe().dispose();
     }
 }

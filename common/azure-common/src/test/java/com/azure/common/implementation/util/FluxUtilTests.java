@@ -31,10 +31,12 @@ public class FluxUtilTests {
 
     @Test
     public void testCanReadSlice() throws IOException {
-        File file = new File("target/test1");
+        File file = createFileIfNotExist("target/test1");
         FileOutputStream stream = new FileOutputStream(file);
         stream.write("hello there".getBytes(StandardCharsets.UTF_8));
-        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+        stream.close();
+
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath() , StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel, 1, 3)
                     .map(bb -> {
                         byte[] bt = toBytes(bb);
@@ -60,8 +62,8 @@ public class FluxUtilTests {
 
     @Test
     public void testCanReadEmptyFile() throws IOException {
-        File file = new File("target/test2");
-        file.createNewFile();
+        File file = createFileIfNotExist("target/test2");
+
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel, 1, 3)
                     .map(bb -> {
@@ -85,9 +87,10 @@ public class FluxUtilTests {
 
     @Test
     public void testAsynchronyShortInput() throws IOException {
-        File file = new File("target/test3");
+        File file = createFileIfNotExist("target/test3");
         FileOutputStream stream = new FileOutputStream(file);
         stream.write("hello there".getBytes(StandardCharsets.UTF_8));
+        stream.close();
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel)
                     .map(bb -> {
@@ -117,7 +120,7 @@ public class FluxUtilTests {
 
     @Test
     public void testAsynchronyLongInput() throws IOException, NoSuchAlgorithmException {
-        File file = new File("target/test4");
+        File file = createFileIfNotExist("target/test4");
         byte[] array = "1234567690".getBytes(StandardCharsets.UTF_8);
         MessageDigest digest = MessageDigest.getInstance("MD5");
         try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
@@ -249,6 +252,15 @@ public class FluxUtilTests {
         byte[] bytes = new byte[bb.readableBytes()];
         bb.readBytes(bytes);
         return bytes;
+    }
+
+    private File createFileIfNotExist(String fileName) throws IOException {
+        File file = new File(fileName);
+        if (file.getParentFile() != null) {
+            file.getParentFile().mkdirs();
+        }
+        file.createNewFile();
+        return file;
     }
 
 }
