@@ -10,9 +10,12 @@ import com.azure.common.implementation.Base64Url;
 import com.azure.common.implementation.DateTimeRfc1123;
 import com.azure.common.entities.HttpBinJSON;
 import com.azure.common.implementation.util.FluxUtil;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -22,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
@@ -167,6 +171,14 @@ public class MockHttpClient implements HttpClient {
                     final int statusCode = Integer.valueOf(statusCodeString);
                     response = new MockHttpResponse(request, statusCode);
                 }
+            }
+            else if ("echo.org".equalsIgnoreCase(requestHost)) {
+                List<ByteBuffer> map = request.body()
+                    .map(ByteBuf::nioBuffer)
+                    .collect(Collectors.toList())
+                    .block();
+                byte[] bytes = Unpooled.wrappedBuffer(map.toArray(new ByteBuffer[0])).nioBuffer().array();
+                response = new MockHttpResponse(request, 200, new HttpHeaders(request.headers()), bytes);
             }
         }
         catch (Exception ex) {
