@@ -12,14 +12,14 @@ import com.azure.common.http.HttpRequest;
  * The response of a REST request.
  *
  * @param <H> The deserialized type of the response headers.
- * @param <T> The deserialized type of the response result, available from {@link #result()}.
+ * @param <T> The deserialized type of the response value, available from {@link #value()}.
  */
 public class ResponseBase<H, T> implements Response<T> {
     private final HttpRequest request;
     private final int statusCode;
     private final H deserializedHeaders;
     private final HttpHeaders headers;
-    private final T body;
+    private final T value;
 
     /**
      * Create ResponseBase.
@@ -28,14 +28,14 @@ public class ResponseBase<H, T> implements Response<T> {
      * @param statusCode the status code of the HTTP response
      * @param headers the headers of the HTTP response
      * @param deserializedHeaders the deserialized headers of the HTTP response
-     * @param body the deserialized result
+     * @param value the deserialized value
      */
-    public ResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, T body, H deserializedHeaders) {
+    public ResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, T value, H deserializedHeaders) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
         this.deserializedHeaders = deserializedHeaders;
-        this.body = body;
+        this.value = value;
     }
 
     /**
@@ -75,7 +75,7 @@ public class ResponseBase<H, T> implements Response<T> {
      * {@inheritDoc}
      */
     @Override
-    public T result() {
-        return body;
+    public T value() {
+        return value;
     }
 }

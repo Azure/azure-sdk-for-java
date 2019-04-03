@@ -157,10 +157,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         try {
-            final Method exceptionBodyMethod = exceptionType.getDeclaredMethod("result");
+            final Method exceptionBodyMethod = exceptionType.getDeclaredMethod("value");
             exceptionBodyType = exceptionBodyMethod.getReturnType();
         } catch (NoSuchMethodException e) {
-            // Should always have a result() method. Register Object as a fallback plan.
+            // Should always have a value() method. Register Object as a fallback plan.
             exceptionBodyType = Object.class;
         }
 
@@ -390,10 +390,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the type of result Object that a thrown RestException will contain if the HTTP response's
+     * Get the type of body Object that a thrown RestException will contain if the HTTP response's
      * status code is not one of the expected status codes.
      *
-     * @return the type of result Object that a thrown RestException will contain if the HTTP
+     * @return the type of body Object that a thrown RestException will contain if the HTTP
      * response's status code is not one of the expected status codes
      */
     @Override
@@ -402,9 +402,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the object to be used as the result of the HTTP request.
+     * Get the object to be used as the value of the HTTP request.
      *
-     * @param swaggerMethodArguments the method arguments to get the result object from
+     * @param swaggerMethodArguments the method arguments to get the value object from
      * @return the object that will be used as the body of the HTTP request
      */
     public Object body(Object[] swaggerMethodArguments) {

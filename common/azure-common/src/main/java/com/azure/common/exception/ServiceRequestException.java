@@ -18,9 +18,9 @@ public class ServiceRequestException extends AzureException {
     private HttpResponse response;
 
     /**
-     * The HTTP response result.
+     * The HTTP response value.
      */
-    private Object result;
+    private Object value;
 
     /**
      * Initializes a new instance of the ServiceRequestException class.
@@ -38,12 +38,12 @@ public class ServiceRequestException extends AzureException {
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
-     * @param result the deserialized response result
+     * @param value the deserialized response value
      */
-    public ServiceRequestException(String message, HttpResponse response, Object result) {
+    public ServiceRequestException(String message, HttpResponse response, Object value) {
         super(message);
         this.response = response;
-        this.result = result;
+        this.value = value;
     }
 
     /**
@@ -66,9 +66,9 @@ public class ServiceRequestException extends AzureException {
     }
 
     /**
-     * @return the HTTP response result
+     * @return the HTTP response value
      */
-    public Object result() {
-        return result;
+    public Object value() {
+        return value;
     }
 }

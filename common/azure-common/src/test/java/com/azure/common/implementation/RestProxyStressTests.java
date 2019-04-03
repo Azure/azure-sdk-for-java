@@ -391,7 +391,7 @@ public class RestProxyStressTests {
                         Flux<ByteBuf> content;
                         try {
                             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-                            content = response.result()
+                            content = response.value()
                                     .doOnNext(buf -> messageDigest.update(buf.slice().nioBuffer()));
 
                             return content.last().doOnSuccess(b -> {
@@ -434,7 +434,7 @@ public class RestProxyStressTests {
                     Flux<ByteBuf> downloadContent = service.download100M(String.valueOf(id), sas)
                             // Ideally we would intercept this content to load an MD5 to check consistency between download and upload directly,
                             // but it's sufficient to demonstrate that no corruption occurred between preparation->upload->download->upload.
-                            .flatMapMany(StreamResponse::result)
+                            .flatMapMany(StreamResponse::value)
                             .map(reactorNettybb -> {
                                 //
                                 // This test 'downloadUploadStreamingTest' exercises piping scenario.
@@ -485,7 +485,7 @@ public class RestProxyStressTests {
         final Disposable d = Flux.range(0, NUM_FILES)
                 .flatMap(integer ->
                         service.download100M(String.valueOf(integer), sas)
-                                .flatMapMany(StreamResponse::result))
+                                .flatMapMany(StreamResponse::value))
                 .subscribe();
 
         Mono.delay(Duration.ofSeconds(10)).then(Mono.defer(() -> {

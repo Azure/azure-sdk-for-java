@@ -17,7 +17,7 @@ public class SimpleResponse<T> implements Response<T> {
     private final HttpRequest request;
     private final int statusCode;
     private final HttpHeaders headers;
-    private final T result;
+    private final T value;
 
     /**
      * Creates a SimpleResponse.
@@ -25,13 +25,13 @@ public class SimpleResponse<T> implements Response<T> {
      * @param request the request which resulted in this response
      * @param statusCode the status code of the HTTP response
      * @param headers the headers of the HTTP response
-     * @param result the deserialized result
+     * @param value the deserialized value
      */
-    public SimpleResponse(HttpRequest request, int statusCode, HttpHeaders headers, T result) {
+    public SimpleResponse(HttpRequest request, int statusCode, HttpHeaders headers, T value) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
-        this.result = result;
+        this.value = value;
     }
 
     /**
@@ -59,10 +59,10 @@ public class SimpleResponse<T> implements Response<T> {
     }
 
     /**
-     * @return the deserialized result of the HTTP response.
+     * @return the deserialized value of the HTTP response.
      */
     @Override
-    public T result() {
-        return result;
+    public T value() {
+        return value;
     }
 }

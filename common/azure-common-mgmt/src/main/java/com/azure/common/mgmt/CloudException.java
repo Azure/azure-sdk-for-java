@@ -35,15 +35,15 @@ public final class CloudException extends ServiceRequestException {
     }
 
     @Override
-    public CloudError result() {
-        return (CloudError) super.result();
+    public CloudError value() {
+        return (CloudError) super.value();
     }
 
     @Override
     public String toString() {
         String message = super.toString();
-        if (result() != null && result().message() != null) {
-            message = message + ": " + result().message();
+        if (value() != null && value().message() != null) {
+            message = message + ": " + value().message();
         }
         return message;
     }

@@ -275,7 +275,7 @@ final class HttpResponseBodyDecoder {
                     result = wireResponseMap;
                 } else if (TypeUtil.isTypeOrSubTypeOf(resultType, ResponseBase.class)) {
                     ResponseBase<?, ?> restResponseBase = (ResponseBase<?, ?>) wireResponse;
-                    Object wireResponseBody = restResponseBase.result();
+                    Object wireResponseBody = restResponseBase.value();
 
                     // TODO: anuchan - RestProxy is always in charge of creating RestResponseBase--so this doesn't seem right
                     Object resultBody = convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
@@ -286,7 +286,7 @@ final class HttpResponseBodyDecoder {
                     }
                 } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Response.class)) {
                     Response<?> restResponse = (Response<?>) wireResponse;
-                    Object wireResponseBody = restResponse.result();
+                    Object wireResponseBody = restResponse.value();
 
                     // TODO: anuchan - RestProxy is always in charge of creating RestResponseBase--so this doesn't seem right
                     Object resultBody = convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
@@ -312,7 +312,7 @@ final class HttpResponseBodyDecoder {
      *               {@code Flux<Foo> getFoos(args);}
      *          where Foo is the REST API 'returned entity'.
      *
-     *      2. OR content (result) of {@link ResponseBase} emitted by the reactor publisher returned from proxy method
+     *      2. OR content (value) of {@link ResponseBase} emitted by the reactor publisher returned from proxy method
      *
      *          e.g. {@code Mono<RestResponseBase<headers, Foo>> getFoo(args);}
      *               {@code Flux<RestResponseBase<headers, Foo>> getFoos(args);}

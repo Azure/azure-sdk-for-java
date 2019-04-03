@@ -33,7 +33,7 @@ public interface PagedResponse<T> extends Response<List<T>>, Closeable {
      *
      * @return The items in the page.
      */
-    default List<T> result() {
+    default List<T> value() {
         return items();
     }
 }

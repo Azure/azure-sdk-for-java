@@ -10,7 +10,7 @@ public class MyRestException extends ServiceRequestException {
     }
 
     @Override
-    public HttpBinJSON result() {
-        return (HttpBinJSON) super.result();
+    public HttpBinJSON value() {
+        return (HttpBinJSON) super.value();
     }
 }

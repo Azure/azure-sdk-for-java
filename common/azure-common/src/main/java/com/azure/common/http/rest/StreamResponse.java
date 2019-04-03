@@ -22,18 +22,18 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuf>> implemen
      * @param request the request which resulted in this response
      * @param statusCode the status code of the HTTP response
      * @param headers the headers of the HTTP response
-     * @param result the streaming result
+     * @param value the streaming value
      */
-    public StreamResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuf> result) {
-        super(request, statusCode, headers, result);
+    public StreamResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuf> value) {
+        super(request, statusCode, headers, value);
     }
 
     /**
      * @return the stream content
      */
     @Override
-    public Flux<ByteBuf> result() {
-        return super.result();
+    public Flux<ByteBuf> value() {
+        return super.value();
     }
 
     /**
@@ -41,6 +41,6 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuf>> implemen
      */
     @Override
     public void close() {
-        result().subscribe().dispose();
+        value().subscribe().dispose();
     }
 }
