@@ -30,7 +30,7 @@ import com.azure.common.http.HttpMethod;
 import com.azure.common.http.rest.RestResponse;
 import com.azure.common.implementation.serializer.HttpResponseDecodeData;
 import com.azure.common.implementation.serializer.SerializerAdapter;
-import com.azure.common.implementation.util.CloneUtils;
+import com.azure.common.implementation.util.ImplUtils;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -224,7 +224,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     @Override
     public int[] expectedStatusCodes() {
-        return CloneUtils.clone(expectedStatusCodes);
+        return ImplUtils.clone(expectedStatusCodes);
     }
 
     /**

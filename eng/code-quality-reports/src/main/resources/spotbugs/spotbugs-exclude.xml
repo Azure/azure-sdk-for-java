@@ -137,14 +137,15 @@
     <!-- Methods in Common package return null instead of meaningful instances when resourses do not exist. Will address the bugs in Track Two.
     -->
     <Match>
-      <Class name="~com\.azure\.common\.implementation\.(Base64Url|serializer\.HttpResponseDecodeData|util\.CloneUtils)"/>
+      <Class name="~com\.azure\.common\.implementation\.(Base64Url|serializer\.HttpResponseDecodeData|util\.ImplUtils)"/>
       <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
     </Match>
-    <Match>
-      <Class name="com.azure.common.implementation.Base64Url"/>
-      <Bug pattern="NP_TOSTRING_COULD_RETURN_NULL"/>
-    </Match>
 
+    <!-- No need to implements cloneable. -->
+    <Match>
+      <Class name="com.azure.common.http.HttpPipelineNextPolicy"/>
+      <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+    </Match>
     <!-- There is no need to make serializer or deserializer classes serializable. Suppress bugs related to these classes.
     -->
     <Match>

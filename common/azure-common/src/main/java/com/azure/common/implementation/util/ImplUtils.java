@@ -9,14 +9,17 @@ package com.azure.common.implementation.util;
 /**
  *  The util class is a helper class for clone operation.
  */
+public class ImplUtils {
 
-public class CloneUtils {
+    private ImplUtils() {
+        // Exists only to defeat instantiation.
+    }
+
     /**
      * Creates a copy of the source bytes array.
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
-
     public static byte[] clone(byte[] source) {
         if (source == null) {
             return null;
@@ -31,7 +34,6 @@ public class CloneUtils {
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
-
     public static int[] clone(int[] source) {
         if (source == null) {
             return null;

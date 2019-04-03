@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 /**
  * A type that invokes next policy in the pipeline.
  */
-public class HttpPipelineNextPolicy implements Cloneable{
+public class HttpPipelineNextPolicy {
     private final HttpPipeline pipeline;
     private final HttpPipelineCallContext context;
     private int currentPolicyIndex;
@@ -50,13 +50,10 @@ public class HttpPipelineNextPolicy implements Cloneable{
         }
     }
 
+    @Override
     public HttpPipelineNextPolicy clone() {
-        try {
-            HttpPipelineNextPolicy cloned = (HttpPipelineNextPolicy) super.clone();
-            cloned.currentPolicyIndex = this.currentPolicyIndex;
-            return cloned;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+        HttpPipelineNextPolicy cloned = new HttpPipelineNextPolicy(this.pipeline, this.context);
+        cloned.currentPolicyIndex = this.currentPolicyIndex;
+        return cloned;
     }
 }

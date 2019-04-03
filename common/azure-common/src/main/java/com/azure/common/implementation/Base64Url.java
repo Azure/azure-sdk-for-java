@@ -7,7 +7,7 @@
 package com.azure.common.implementation;
 
 import com.azure.common.implementation.util.Base64Util;
-import com.azure.common.implementation.util.CloneUtils;
+import com.azure.common.implementation.util.ImplUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -85,7 +85,7 @@ public final class Base64Url {
      * @return The underlying encoded byte array.
      */
     public byte[] encodedBytes() {
-        return CloneUtils.clone(bytes);
+        return ImplUtils.clone(bytes);
     }
 
     /**
@@ -104,7 +104,7 @@ public final class Base64Url {
 
     @Override
     public String toString() {
-        return bytes == null ? null : new String(bytes, StandardCharsets.UTF_8);
+        return bytes == null ? "" : new String(bytes, StandardCharsets.UTF_8);
     }
 
     @Override
