@@ -271,6 +271,12 @@ public class SitePatchResource extends ProxyOnlyResource {
     private List<GeoDistribution> geoDistributions;
 
     /**
+     * The identity property.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /**
      * Get current state of the app.
      *
      * @return the state value
@@ -815,6 +821,26 @@ public class SitePatchResource extends ProxyOnlyResource {
      */
     public SitePatchResource withGeoDistributions(List<GeoDistribution> geoDistributions) {
         this.geoDistributions = geoDistributions;
+        return this;
+    }
+
+    /**
+     * Get the identity value.
+     *
+     * @return the identity value
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity value.
+     *
+     * @param identity the identity value to set
+     * @return the SitePatchResource object itself.
+     */
+    public SitePatchResource withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 

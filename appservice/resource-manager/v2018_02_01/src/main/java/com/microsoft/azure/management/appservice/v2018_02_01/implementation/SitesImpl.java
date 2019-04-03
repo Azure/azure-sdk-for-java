@@ -273,12 +273,6 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
     }
 
     @Override
-    public SitesImpl withIdentity(ManagedServiceIdentity identity) {
-        this.inner().withIdentity(identity);
-        return this;
-    }
-
-    @Override
     public SitesImpl withClientAffinityEnabled(Boolean clientAffinityEnabled) {
         if (isInCreateMode()) {
             this.inner().withClientAffinityEnabled(clientAffinityEnabled);
@@ -404,6 +398,16 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
             this.inner().withHyperV(hyperV);
         } else {
             this.updateParameter.withHyperV(hyperV);
+        }
+        return this;
+    }
+
+    @Override
+    public SitesImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.inner().withIdentity(identity);
+        } else {
+            this.updateParameter.withIdentity(identity);
         }
         return this;
     }
