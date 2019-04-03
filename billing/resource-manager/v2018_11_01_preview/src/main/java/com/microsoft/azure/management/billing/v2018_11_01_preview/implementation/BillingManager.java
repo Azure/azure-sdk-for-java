@@ -41,6 +41,8 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsByBill
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsByInvoiceSections;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Products;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsByBillingAccounts;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsByBillingProfiles;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsByInvoiceSections;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Policys;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPropertys;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Transfers;
@@ -87,6 +89,8 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     private ProductsByInvoiceSections productsByInvoiceSections;
     private Products products;
     private TransactionsByBillingAccounts transactionsByBillingAccounts;
+    private TransactionsByBillingProfiles transactionsByBillingProfiles;
+    private TransactionsByInvoiceSections transactionsByInvoiceSections;
     private Policys policys;
     private BillingPropertys billingPropertys;
     private Transfers transfers;
@@ -396,6 +400,26 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.transactionsByBillingAccounts = new TransactionsByBillingAccountsImpl(this);
         }
         return this.transactionsByBillingAccounts;
+    }
+
+    /**
+     * @return Entry point to manage TransactionsByBillingProfiles.
+     */
+    public TransactionsByBillingProfiles transactionsByBillingProfiles() {
+        if (this.transactionsByBillingProfiles == null) {
+            this.transactionsByBillingProfiles = new TransactionsByBillingProfilesImpl(this);
+        }
+        return this.transactionsByBillingProfiles;
+    }
+
+    /**
+     * @return Entry point to manage TransactionsByInvoiceSections.
+     */
+    public TransactionsByInvoiceSections transactionsByInvoiceSections() {
+        if (this.transactionsByInvoiceSections == null) {
+            this.transactionsByInvoiceSections = new TransactionsByInvoiceSectionsImpl(this);
+        }
+        return this.transactionsByInvoiceSections;
     }
 
     /**
