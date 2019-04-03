@@ -6,6 +6,8 @@
 
 package com.azure.common.implementation.serializer;
 
+import com.azure.common.http.rest.Page;
+import com.azure.common.http.rest.PagedResponseBase;
 import com.azure.common.implementation.Base64Url;
 import com.azure.common.implementation.DateTimeRfc1123;
 import com.azure.common.exception.ServiceRequestException;
@@ -148,25 +150,28 @@ final class HttpResponseBodyDecoder {
     /**
      * Deserialize the given string value representing content of a REST API response.
      *
+     * If the {@link ReturnValueWireType} is of type {@link Page}, then the returned object will be an instance of that
+     * {@param wireType}. Otherwise, the returned object is converted back to its {@param resultType}.
+     *
      * @param value the string value to deserialize
      * @param resultType the return type of the java proxy method
      * @param wireType value of optional {@link ReturnValueWireType} annotation present in java proxy method indicating
      *                 'entity type' (wireType) of REST API wire response body
      * @param encoding the encoding format of value
      * @return Deserialized object
-     * @throws IOException
+     * @throws IOException When the body cannot be deserialized
      */
     private static Object deserializeBody(String value, Type resultType, Type wireType, SerializerAdapter serializer, SerializerEncoding encoding) throws IOException {
-        final Object result;
-
         if (wireType == null) {
-            result = serializer.deserialize(value, resultType, encoding);
+            return serializer.deserialize(value, resultType, encoding);
+        } else if (TypeUtil.isTypeOrSubTypeOf(wireType, Page.class)) {
+            return deserializePage(value, resultType, wireType, serializer, encoding);
         } else {
             final Type wireResponseType = constructWireResponseType(resultType, wireType);
             final Object wireResponse = serializer.deserialize(value, wireResponseType, encoding);
-            result = convertToResultType(wireResponse, resultType, wireType);
+
+            return convertToResultType(wireResponse, resultType, wireType);
         }
-        return result;
     }
 
     /**
@@ -217,6 +222,31 @@ final class HttpResponseBodyDecoder {
             }
         }
         return wireResponseType;
+    }
+
+    /**
+     * Deserializes a response body as a Page<T> given that {@param wireType} is either:
+     * 1. A type that implements the interface
+     * 2. Is of {@link Page}
+     *
+     * @param value The string to deserialize
+     * @param resultType The type T, of the page contents.
+     * @param wireType The {@link Type} that either is, or implements {@link Page}
+     * @param serializer The serializer used to deserialize the value.
+     * @param encoding Encoding used to deserialize string
+     * @return An object representing an instance of {@param wireType}
+     * @throws IOException if the serializer is unable to deserialize the value.
+     */
+    private static Object deserializePage(String value, Type resultType, Type wireType, SerializerAdapter serializer, SerializerEncoding encoding) throws IOException {
+        final Type wireResponseType;
+
+        if (wireType != Page.class) {
+            wireResponseType = wireType;
+        } else {
+            wireResponseType = TypeUtil.createParameterizedType(ItemPage.class, resultType);
+        }
+
+        return serializer.deserialize(value, wireResponseType, encoding);
     }
 
     /**
@@ -273,6 +303,9 @@ final class HttpResponseBodyDecoder {
                     }
                     //
                     result = wireResponseMap;
+                } else if (TypeUtil.isTypeOrSubTypeOf(resultType, PagedResponseBase.class)) {
+                    PagedResponseBase<?, ?> restResponse = (PagedResponseBase<?, ?>) wireResponse;
+                    result = new PagedResponseBase<>(restResponse.request(), restResponse.statusCode(), restResponse.headers(), restResponse.items(), restResponse.nextLink(), restResponse.deserializedHeaders());
                 } else if (TypeUtil.isTypeOrSubTypeOf(resultType, ResponseBase.class)) {
                     ResponseBase<?, ?> restResponseBase = (ResponseBase<?, ?>) wireResponse;
                     Object wireResponseBody = restResponseBase.value();
