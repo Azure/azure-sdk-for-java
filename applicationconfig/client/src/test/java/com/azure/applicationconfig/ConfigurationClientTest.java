@@ -5,8 +5,6 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.applicationconfig.models.RevisionOptions;
-import com.azure.applicationconfig.models.RevisionRange;
 import com.azure.common.http.rest.RestException;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
