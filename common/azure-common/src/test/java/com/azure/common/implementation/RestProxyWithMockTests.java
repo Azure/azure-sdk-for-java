@@ -1,5 +1,7 @@
 package com.azure.common.implementation;
 
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.POST;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.ExpectedResponses;
 import com.azure.common.annotations.GET;
@@ -14,16 +16,23 @@ import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.MockHttpClient;
 import com.azure.common.http.MockHttpResponse;
+import com.azure.common.http.rest.Page;
+import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.http.ProxyOptions;
+import com.azure.common.implementation.http.ContentType;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -392,7 +401,6 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 
-
     private static abstract class SimpleMockHttpClient implements HttpClient {
 
         @Override
@@ -413,4 +421,182 @@ public class RestProxyWithMockTests extends RestProxyTests {
             throw new IllegalStateException("MockHttpClient.port not implemented.");
         }
     }
+
+
+    static class KeyValue {
+        @JsonProperty("key")
+        private int key;
+
+        @JsonProperty("value")
+        private String value;
+
+        KeyValue() { }
+        KeyValue(int key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        int key() {
+            return this.key;
+        }
+
+        String value() {
+            return this.value;
+        }
+    }
+
+    static class KeyValuePage implements Page<KeyValue> {
+        @JsonProperty()
+        private List<KeyValue> items;
+
+        @JsonProperty("nextLink")
+        private String nextLink;
+
+        KeyValuePage() {
+        }
+
+        KeyValuePage(List<KeyValue> items, String nextLink) {
+            this.items = items;
+            this.nextLink = nextLink;
+        }
+
+        @Override
+        public List<KeyValue> items() {
+            return items;
+        }
+
+        @Override
+        public String nextLink() {
+            return nextLink;
+        }
+    }
+
+    static class ConformingPage<T> implements Page<T> {
+        private List<T> items;
+        private String nextLink;
+
+        ConformingPage(List<T> items, String nextLink) {
+            this.items = items;
+            this.nextLink = nextLink;
+        }
+
+        @Override
+        public List<T> items() {
+            return items;
+        }
+
+        @Override
+        public String nextLink() {
+            return nextLink;
+        }
+    }
+
+    static class NonComformingPage<T> {
+        private List<T> badItems;
+        private String nextLink;
+
+        NonComformingPage(List<T> items, String nextLink) {
+            this.badItems = items;
+            this.nextLink = nextLink;
+        }
+
+        @JsonGetter()
+        public List<T> badItems() {
+            return badItems;
+        }
+
+        public String nextLink() {
+            return nextLink;
+        }
+    }
+
+    @Host("http://echo.org")
+    interface Service2 {
+        @POST("anything/json")
+        @ExpectedResponses({200})
+        @ReturnValueWireType(KeyValuePage.class)
+        PagedResponse<KeyValue> getPage(@BodyParam(ContentType.APPLICATION_JSON) Page<KeyValue> values);
+
+        @POST("anything/json")
+        @ExpectedResponses({200})
+        @ReturnValueWireType(Page.class)
+        Mono<PagedResponse<KeyValue>> getPageAsync(@BodyParam(ContentType.APPLICATION_JSON) Page<KeyValue> values);
+
+        @POST("anything/json")
+        @ExpectedResponses({200})
+        @ReturnValueWireType(Page.class)
+        Mono<PagedResponse<KeyValue>> getPageAsyncThrows(@BodyParam(ContentType.APPLICATION_JSON) NonComformingPage<KeyValue> values);
+    }
+
+    /**
+     * Verifies that we can get a RestPagedResponse when the user has implemented their own class from {@link Page}.
+     */
+    @Test
+    public void service2getPage() {
+        List<KeyValue> array = new ArrayList<>();
+        KeyValue key1 = new KeyValue(1, "Foo");
+        KeyValue key2 = new KeyValue(2, "Bar");
+        KeyValue key3 = new KeyValue(10, "Baz");
+
+        array.add(key1);
+        array.add(key2);
+        array.add(key3);
+        KeyValuePage page = new KeyValuePage(array, "SomeNextLink");
+
+        PagedResponse<KeyValue> response = createService(Service2.class).getPage(page);
+        assertNotNull(response);
+        assertEquals(array.size(), response.value().size());
+    }
+
+    /**
+     * Verifies that if we pass in a {@link ReturnValueWireType} of {@link Page}, the service can return a
+     * representation of that data.
+     */
+    @Test
+    public void service2getPageAsync() {
+        List<KeyValue> array = new ArrayList<>();
+        KeyValue key1 = new KeyValue(1, "Foo");
+        KeyValue key2 = new KeyValue(2, "Bar");
+        KeyValue key3 = new KeyValue(10, "Baz");
+
+        array.add(key1);
+        array.add(key2);
+        array.add(key3);
+        ConformingPage<KeyValue> page = new ConformingPage<>(array, "MyNextLink");
+
+        StepVerifier.create(createService(Service2.class).getPageAsync(page))
+            .assertNext(r -> {
+                assertEquals(page.nextLink, r.nextLink());
+
+                assertEquals(r.items().size(), 3);
+                for (KeyValue keyValue : r.value()) {
+                    assertTrue(array.removeIf(kv -> kv.key == keyValue.key && kv.value().equals(keyValue.value())));
+                }
+                assertTrue(array.isEmpty());
+            })
+            .verifyComplete();
+    }
+
+    /**
+     */
+    @Test
+    public void service2getPageThrowsError() {
+        List<KeyValue> array = new ArrayList<>();
+        KeyValue key1 = new KeyValue(1, "Foo");
+        KeyValue key2 = new KeyValue(2, "Bar");
+        KeyValue key3 = new KeyValue(10, "Baz");
+
+        array.add(key1);
+        array.add(key2);
+        array.add(key3);
+        NonComformingPage<KeyValue> page = new NonComformingPage<>(array, "A next link!");
+
+        StepVerifier.create(createService(Service2.class).getPageAsyncThrows(page))
+            .expectErrorMatches(error -> {
+                assertNotNull(error);
+                return true;
+            })
+            .verify();
+    }
+
 }
