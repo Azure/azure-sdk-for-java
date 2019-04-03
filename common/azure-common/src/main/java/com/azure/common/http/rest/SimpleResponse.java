@@ -9,37 +9,33 @@ import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpRequest;
 
 /**
- * The response of a REST request.
+ * REST response with a strongly-typed content specified.
  *
- * @param <H> The deserialized type of the response headers.
- * @param <T> The deserialized type of the response body.
+ * @param <T> The deserialized type of the response content.
  */
-public class RestResponseBase<H, T> implements RestResponse<T> {
+public class SimpleResponse<T> implements Response<T> {
     private final HttpRequest request;
     private final int statusCode;
-    private final H deserializedHeaders;
     private final HttpHeaders headers;
-    private final T body;
+    private final T value;
 
     /**
-     * Create RestResponseBase.
+     * Creates a SimpleResponse.
      *
      * @param request the request which resulted in this response
      * @param statusCode the status code of the HTTP response
      * @param headers the headers of the HTTP response
-     * @param deserializedHeaders the deserialized headers of the HTTP response
-     * @param body the deserialized body
+     * @param value the deserialized value
      */
-    public RestResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, T body, H deserializedHeaders) {
+    public SimpleResponse(HttpRequest request, int statusCode, HttpHeaders headers, T value) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
-        this.deserializedHeaders = deserializedHeaders;
-        this.body = body;
+        this.value = value;
     }
 
     /**
-     * @return the request which resulted in this RestResponseBase.
+     * @return the request which resulted in this RestResponse.
      */
     @Override
     public HttpRequest request() {
@@ -47,7 +43,7 @@ public class RestResponseBase<H, T> implements RestResponse<T> {
     }
 
     /**
-     * {@inheritDoc}
+     * @return the status code of the HTTP response.
      */
     @Override
     public int statusCode() {
@@ -63,19 +59,10 @@ public class RestResponseBase<H, T> implements RestResponse<T> {
     }
 
     /**
-     * Get the headers from the HTTP response, transformed into the header type H.
-     *
-     * @return an instance of header type H, containing the HTTP response headers.
-     */
-    public H deserializedHeaders() {
-        return deserializedHeaders;
-    }
-
-    /**
-     * {@inheritDoc}
+     * @return the deserialized value of the HTTP response.
      */
     @Override
-    public T body() {
-        return body;
+    public T value() {
+        return value;
     }
 }

@@ -6,7 +6,7 @@
 
 package com.azure.common.mgmt;
 
-import com.azure.common.http.rest.RestException;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.SwaggerMethodParser;
 import com.azure.common.http.ContextData;
@@ -173,7 +173,7 @@ abstract class PollStrategy {
             try {
                 final Object resultObject = restProxy.handleRestReturnType(new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser), methodParser, operationStatusResultType);
                 operationStatus = new OperationStatus<>(resultObject, status());
-            } catch (RestException e) {
+            } catch (ServiceRequestException e) {
                 operationStatus = new OperationStatus<>(e, OperationState.FAILED);
             }
         }
