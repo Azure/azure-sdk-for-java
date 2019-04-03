@@ -72,20 +72,19 @@ public class ConfigurationSets {
     }
 
     /*
-     * Adds the "" and CONNECTION_STRING_KEY configuration settings
+     * Adds the "connection-string" and "key-vault" configuration settings
      */
     private static Mono<Void> addConfigurations(ConfigurationClient client, String configurationSet,
                                                 String storageEndpoint, KeyVaultConfiguration keyVaultInfo, boolean lockSettings) throws JsonProcessingException {
-
+        ConfigurationSetting endpointSetting = new ConfigurationSetting()
+                .key(CONNECTION_STRING_KEY)
+                .label(configurationSet)
+                .value(storageEndpoint);
         ConfigurationSetting keyVaultSetting = new ConfigurationSetting()
                 .key(KEY_VAULT_KEY)
                 .label(configurationSet)
                 .value(mapper.writeValueAsString(keyVaultInfo))
                 .contentType("application/json");
-        ConfigurationSetting endpointSetting = new ConfigurationSetting()
-                .key(CONNECTION_STRING_KEY)
-                .label(configurationSet)
-                .value(storageEndpoint);
 
         return Flux.merge(client.addSetting(keyVaultSetting), client.addSetting(endpointSetting))
                 .flatMap(added -> lockSettings
