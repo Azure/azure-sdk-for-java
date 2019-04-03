@@ -564,7 +564,7 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
     /**
      * The template for a Slots update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Slots>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithClientCertExclusionPaths, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithGeoDistributions, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithHyperV, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithRedundancyMode, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
+    interface Update extends Appliable<Slots>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithClientCertExclusionPaths, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithGeoDistributions, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithHyperV, UpdateStages.WithIdentity, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithRedundancyMode, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
     }
 
     /**
@@ -727,6 +727,18 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
              * @return the next update stage
              */
             Update withHyperV(Boolean hyperV);
+        }
+
+        /**
+         * The stage of the slots update allowing to specify Identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies identity.
+             * @param identity the identity parameter value
+             * @return the next update stage
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
         }
 
         /**

@@ -339,12 +339,6 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     }
 
     @Override
-    public SlotsImpl withIdentity(ManagedServiceIdentity identity) {
-        this.inner().withIdentity(identity);
-        return this;
-    }
-
-    @Override
     public SlotsImpl withTags(Map<String, String> tags) {
         this.inner().withTags(tags);
         return this;
@@ -476,6 +470,16 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
             this.inner().withHyperV(hyperV);
         } else {
             this.updateParameter.withHyperV(hyperV);
+        }
+        return this;
+    }
+
+    @Override
+    public SlotsImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.inner().withIdentity(identity);
+        } else {
+            this.updateParameter.withIdentity(identity);
         }
         return this;
     }
