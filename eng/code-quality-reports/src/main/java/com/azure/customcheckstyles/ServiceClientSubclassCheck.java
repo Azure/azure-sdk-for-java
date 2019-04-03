@@ -7,8 +7,13 @@ import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
+import java.util.Optional;
+
 /**
+ * Used to check that descendants of ServiceClient follow a few rules
  *
+ * 1) They cannot have public or protected constructors
+ * 2) They must implement a public static builder method
  */
 public class ServiceClientSubclassCheck extends AbstractCheck {
     private static final String BUILDER_METHOD_NAME = "builder";
@@ -99,7 +104,11 @@ public class ServiceClientSubclassCheck extends AbstractCheck {
             return;
         }
 
-        if (CustomCheckUtils.hasAnyModifier(modifierNode, TokenTypes.LITERAL_PUBLIC, TokenTypes.LITERAL_PROTECTED)) {
+        Optional<DetailAST> disallowedModifierNode = TokenUtil.findFirstTokenByPredicate(modifierNode, (node) -> {
+            return node.getType() == TokenTypes.LITERAL_PUBLIC || node.getType() == TokenTypes.LITERAL_PROTECTED;
+        });
+
+        if (disallowedModifierNode.isPresent()) {
             log(constructorNode, CONSTRUCTOR_ERROR_MESSAGE);
         }
     }
@@ -119,7 +128,8 @@ public class ServiceClientSubclassCheck extends AbstractCheck {
             return false;
         }
 
-        if (CustomCheckUtils.hasAllModifiers(modifierNode, TokenTypes.LITERAL_STATIC, TokenTypes.LITERAL_PUBLIC)) {
+        if (modifierNode.findFirstToken(TokenTypes.LITERAL_STATIC) == null
+            || modifierNode.findFirstToken(TokenTypes.LITERAL_PUBLIC) == null) {
             return false;
         }
 

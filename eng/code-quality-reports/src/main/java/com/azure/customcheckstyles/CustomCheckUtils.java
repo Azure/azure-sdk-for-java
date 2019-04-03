@@ -35,34 +35,4 @@ final class CustomCheckUtils {
 
         return null;
     }
-
-    /**
-     * Checks that the modifier node contains all the passed modifiers
-     * @param modifierNode Node that contains modifiers
-     * @param requiredModifiers Modifiers that need to be contained in the modifier node
-     * @return True if the node contains all the modifiers, false otherwise
-     */
-    static boolean hasAllModifiers(DetailAST modifierNode, int... requiredModifiers) {
-        for (int requiredModifier : requiredModifiers) {
-            if (!hasModifier(modifierNode, requiredModifier)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    static boolean hasAnyModifier(DetailAST modifierNode, int... anyModifiers) {
-        for (int anyModifier : anyModifiers) {
-            if (hasModifier(modifierNode, anyModifier)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static boolean hasModifier(DetailAST modifierNode, int modifierType) {
-        return modifierNode.findFirstToken(modifierType) != null;
-    }
 }
