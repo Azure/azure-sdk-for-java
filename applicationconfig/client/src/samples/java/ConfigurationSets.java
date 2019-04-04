@@ -2,11 +2,9 @@ import com.azure.applicationconfig.ConfigurationClient;
 import com.azure.applicationconfig.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.annotations.Beta;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
+import models.KeyVaultConfiguration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -18,6 +16,11 @@ import java.util.List;
 /**
  * Sample demonstrates how to use Azure Application Configuration to switch between "beta" and "production"
  * configuration sets.
+ *
+ * <p>
+ * In the sample, the user stores a connection string to their storage resource and Key Vault connection information.
+ * The Key Vault connection information is serialized into a JSON string and read out from the service as a
+ * strongly-typed typed {@link KeyVaultConfiguration} object.
  */
 public class ConfigurationSets {
     private static final String CONNECTION_STRING_KEY = "connection-string";
@@ -37,13 +40,12 @@ public class ConfigurationSets {
                 .credentials(new ConfigurationClientCredentials(connectionString))
                 .build();
 
-        // Creating two sets of configuration, one for beta testing and one for production when we are ready to ship.
+        // In this sample, the user has two Key Vault instances, one for beta testing and another for production.
         KeyVaultConfiguration betaKeyVault = new KeyVaultConfiguration().endpointUri("https://beta-keyvault.vault.azure.net").secret("beta_secret");
         KeyVaultConfiguration productionKeyVault = new KeyVaultConfiguration().endpointUri("https://production-keyvault.vault.azure.net").secret("production_secret");
 
-        // Adding both of those configuration sets to Azure App Configuration.
+        // Adding one configuration set for beta testing and another for production to Azure App Configuration.
         addConfigurations(client, BETA, "https://beta-storage.core.windows.net", betaKeyVault, false).block();
-
         // For these production settings, we'll put a lock on them, so that they cannot be modified.
         addConfigurations(client, PRODUCTION, "https://production-storage.core.windows.net", productionKeyVault, true).block();
 
@@ -91,36 +93,5 @@ public class ConfigurationSets {
                         ? client.lockSetting(added.value())
                         : Flux.just(added))
                 .then();
-    }
-}
-
-class KeyVaultConfiguration {
-    @JsonProperty("endpointUri")
-    private String endpointUri;
-
-    @JsonProperty("secret")
-    private String secret;
-
-    String endpointUri() {
-        return endpointUri;
-    }
-
-    KeyVaultConfiguration endpointUri(String endpointUri) {
-        this.endpointUri = endpointUri;
-        return this;
-    }
-
-    String secret() {
-        return secret;
-    }
-
-    KeyVaultConfiguration secret(String secret) {
-        this.secret = secret;
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return "Endpoint: " + endpointUri() + ", Secret: " + secret();
     }
 }
