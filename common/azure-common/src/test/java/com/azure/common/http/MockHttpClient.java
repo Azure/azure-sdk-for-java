@@ -51,7 +51,7 @@ public class MockHttpClient implements HttpClient {
                 final String requestPathLower = requestPath.toLowerCase();
                 if (requestPathLower.equals("/anything") || requestPathLower.startsWith("/anything/")) {
                     if ("HEAD".equals(request.httpMethod())) {
-                        response = new MockHttpResponse(request, 200, "");
+                        response = new MockHttpResponse(request, 200, new byte[0]);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
                         json.url = request.url().toString()
@@ -173,12 +173,13 @@ public class MockHttpClient implements HttpClient {
                 }
             }
             else if ("echo.org".equalsIgnoreCase(requestHost)) {
-                List<ByteBuffer> map = request.body()
+                return request.body()
                     .map(ByteBuf::nioBuffer)
-                    .collect(Collectors.toList())
-                    .block();
-                byte[] bytes = Unpooled.wrappedBuffer(map.toArray(new ByteBuffer[0])).nioBuffer().array();
-                response = new MockHttpResponse(request, 200, new HttpHeaders(request.headers()), bytes);
+                    .collectList()
+                    .map(list ->  {
+                        byte[] bytes = Unpooled.wrappedBuffer(list.toArray(new ByteBuffer[0])).array();
+                        return new MockHttpResponse(request, 200, new HttpHeaders(request.headers()), bytes);
+                    });
             }
         }
         catch (Exception ex) {
