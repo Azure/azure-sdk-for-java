@@ -32,6 +32,9 @@ import java.util.Objects;
  * Creates a policy that authenticates requests with Azure Application Configuration service.
  *
  * package-private class as users do not need to see or modify which auth headers are added to requests.
+ *
+ * @see ConfigurationClient
+ * @see ConfigurationClientBuilder
  */
 final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
     private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";

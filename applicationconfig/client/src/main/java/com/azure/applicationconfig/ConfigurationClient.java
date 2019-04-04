@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
  *
  * @see ConfigurationClientBuilder
+ * @see ConfigurationClientCredentials
  */
 public final class ConfigurationClient extends ServiceClient {
     private static final String ETAG_ANY = "*";
@@ -139,7 +140,7 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Updates an existing configuration value in the service. The setting must already exist.
+     * Updates an existing configuration value in the service. The setting must already exist.a
      *
      * <p>
      * The label value for the ConfigurationSetting is optional.

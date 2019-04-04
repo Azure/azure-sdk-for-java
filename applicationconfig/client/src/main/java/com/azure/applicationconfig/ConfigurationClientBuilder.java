@@ -18,6 +18,9 @@ import java.util.Objects;
 
 /**
  * Provides configuration options for instances of {@link ConfigurationClient}.
+ *
+ * @see ConfigurationClient
+ * @see ConfigurationClientCredentials
  */
 public final class ConfigurationClientBuilder {
     //TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues/3141
