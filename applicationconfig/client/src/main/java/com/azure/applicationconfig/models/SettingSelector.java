@@ -145,7 +145,7 @@ public class SettingSelector {
 
     /**
      * Gets the fields on {@link ConfigurationSetting} to return from the GET request. If none are set, the service
-     * returns the ConfigurationSettings with a default set of properties populated.
+     * returns the ConfigurationSettings with all of their fields populated.
      *
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
@@ -157,16 +157,13 @@ public class SettingSelector {
 
     /**
      * Sets fields that will be returned in the response corresponding to properties in {@link ConfigurationSetting}.
+     * If none are set, the service returns ConfigurationSettings with all of their fields populated.
      *
      * @param fields the fields to select for the query response. If none are set, the service will return the
      *               ConfigurationSettings with a default set of properties.
      * @return The updated SettingSelector object.
      */
     public SettingSelector fields(SettingFields... fields) {
-        if (fields == null || fields.length == 0) {
-            return this;
-        }
-
         this.fields = fields;
         return this;
     }
