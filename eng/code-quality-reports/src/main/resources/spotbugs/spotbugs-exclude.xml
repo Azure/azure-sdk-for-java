@@ -221,7 +221,7 @@
     </Match>
 
     <!-- Known issue in autorest where it will generate a variable with a value of null then use it in a not null check.
-      https://github.com/Azure/autorest.java/issues/328 -->
+     https://github.com/Azure/autorest.java/issues/328 -->
     <Match>
         <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
         <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
