@@ -2,9 +2,6 @@ package com.azure.common.implementation.serializer;
 
 import com.azure.common.http.rest.Page;
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.List;
 
