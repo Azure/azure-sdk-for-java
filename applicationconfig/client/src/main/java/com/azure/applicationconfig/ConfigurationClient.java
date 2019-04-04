@@ -208,7 +208,7 @@ public final class ConfigurationClient extends ServiceClient {
      * current etag; this means that no one has updated the ConfigurationSetting yet.
      *
      * @param setting The ConfigurationSetting to delete.
-     * @return The deleted ConfigurationSetting or {@link null} if didn't exist.
+     * @return The deleted ConfigurationSetting or {@code null} if didn't exist.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
      * @throws NullPointerException When {@code setting} is {@code null}.
      */
