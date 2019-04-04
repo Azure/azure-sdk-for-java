@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.customcheckstyles;
 
 import com.azure.common.ServiceClient;
@@ -53,11 +56,14 @@ public class ServiceClientSubclassCheck extends AbstractCheck {
         }
 
         DetailAST objBlockNode = classDefNode.findFirstToken(TokenTypes.OBJBLOCK);
-        String fullClassName = getFullClassName(ast, classDefNode);
+        Optional<String> fullClassName = getFullClassName(ast, classDefNode);
+        if (!fullClassName.isPresent()) {
+            return;
+        }
 
         // Attempt to load the class and run the checks if it is a descendant of ServiceClient.
         try {
-            Class<?> classToCheck = this.getClassLoader().loadClass(fullClassName);
+            Class<?> classToCheck = this.getClassLoader().loadClass(fullClassName.get());
             Class<?> serviceClientClass = this.getClassLoader().loadClass(ServiceClient.class.getName());
 
             if (!serviceClientClass.isAssignableFrom(classToCheck)) {
@@ -77,21 +83,28 @@ public class ServiceClientSubclassCheck extends AbstractCheck {
      * Given the package node and the class definition node construct the full class name.
      * @param packageDefNode Node containing the package name
      * @param classDefNode Node containing the class definition
-     * @return Full class name, if the file isn't a class an empty string
+     * @return Full class name, if the file isn't a class an empty optional
      */
-    private String getFullClassName(DetailAST packageDefNode, DetailAST classDefNode) {
+    private Optional<String> getFullClassName(DetailAST packageDefNode, DetailAST classDefNode) {
         String packageName = FullIdent.createFullIdent(packageDefNode.findFirstToken(TokenTypes.DOT)).getText();
+
+        // If the package begins with com.microsoft.* it is still in track one and should skip this check.
+        if (packageName.startsWith("com.microsoft")) {
+            return Optional.empty();
+        }
+
         DetailAST classIdentifierNode = classDefNode.findFirstToken(TokenTypes.LITERAL_CLASS);
         DetailAST classNameNode = CustomCheckUtils.findNextSiblingOfType(classIdentifierNode, (node) -> node.getType() == TokenTypes.IDENT);
         if (classNameNode == null) {
             classNameNode = CustomCheckUtils.findPreviousSiblingOfType(classIdentifierNode, (node) -> node.getType() == TokenTypes.IDENT);
         }
 
+        // If the class name cannot be found we shouldn't attempt to run the check.
         if (classNameNode == null) {
-            return "";
+            return Optional.empty();
         }
 
-        return packageName + "." + classNameNode.getText();
+        return Optional.of(packageName + "." + classNameNode.getText());
     }
 
     /**
