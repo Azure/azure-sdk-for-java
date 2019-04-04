@@ -30,7 +30,8 @@ public class HelloWorld {
         Mono<Response<ConfigurationSetting>> setSetting = client.setSetting(settingToAdd);
 
         // Retrieve a stored setting by calling client.getSetting after setSetting completes.
-        // When we retrieve the value of that configuration
+        // When we retrieve the value of that configuration, we print it out and then delete it.
+        // .block() is used to prevent the program from quitting before it is complete.
         setSetting.then(client.getSetting(settingToAdd.key())).map(response -> {
             ConfigurationSetting setting = response.value();
             System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
