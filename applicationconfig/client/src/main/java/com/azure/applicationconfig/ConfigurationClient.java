@@ -67,13 +67,26 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
+     * Adds a configuration value in the service if that key does not exist.
+     *
+     * @param key The key for the configuration setting to add.
+     * @param value Optional. The value associated with this configuration setting key.
+     * @return ConfigurationSetting that was created.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
+     * @throws ServiceRequestException If a ConfigurationSetting with the same key exists.
+     */
+    public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
+        return addSetting(new ConfigurationSetting().key(key).value(value));
+    }
+
+    /**
      * Adds a configuration value in the service if that key and label does not exist.
      *
      * <p>
      * The label value for the ConfigurationSetting is optional.
      *
      * @param setting The setting to add to the configuration service.
-     * @return ConfigurationSetting that was created or updated.
+     * @return ConfigurationSetting that was created.
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
      * @throws ServiceRequestException If a ConfigurationSetting with the same key and label exists.
@@ -82,6 +95,18 @@ public final class ConfigurationClient extends ServiceClient {
         ConfigurationSetting result = validateSetting(setting);
 
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, null, getETagValue(ETAG_ANY));
+    }
+
+    /**
+     * Creates or updates a configuration value in the service with the given key.
+     *
+     * @param key The key for the configuration setting to create or update.
+     * @param value Optional. The value of this configuration setting.
+     * @return ConfigurationSetting that was created or updated.
+     * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
+     */
+    public Mono<Response<ConfigurationSetting>> setSetting(String key, String value) {
+        return setSetting(new ConfigurationSetting().key(key).value(value));
     }
 
     /**
@@ -106,6 +131,20 @@ public final class ConfigurationClient extends ServiceClient {
         ConfigurationSetting result = validateSetting(setting);
 
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, getETagValue(result.etag()), null);
+    }
+
+    /**
+     * Updates an existing configuration value in the service. The setting must already exist.
+     *
+     * @param key The key for the configuration setting to update.
+     * @param value Optional. The updated value of this configuration setting.
+     * @return ConfigurationSetting that was updated.
+     * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
+     * @throws ServiceRequestException If a ConfigurationSetting with the key does not exist or the configuration value
+     * is locked.
+     */
+    public Mono<Response<ConfigurationSetting>> updateSetting(String key, String value) {
+        return updateSetting(new ConfigurationSetting().key(key).value(value));
     }
 
     /**
