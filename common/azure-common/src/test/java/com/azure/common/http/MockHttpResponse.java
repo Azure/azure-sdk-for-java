@@ -38,10 +38,6 @@ public class MockHttpResponse extends HttpResponse {
         this(request, statusCode, new HttpHeaders(), new byte[0]);
     }
 
-    public MockHttpResponse(HttpRequest request, int statusCode, String string) {
-        this(request, statusCode, new HttpHeaders(), string == null ? new byte[0] : string.getBytes());
-    }
-
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
         this(request, statusCode, headers, new byte[0]);
     }
