@@ -24,7 +24,7 @@ import java.util.EnumSet;
 public class SettingSelector {
     private String key;
     private String label;
-    private EnumSet<SettingFields> fields;
+    private SettingFields[] fields;
     private String acceptDatetime;
 
     /**
@@ -149,7 +149,7 @@ public class SettingSelector {
      *
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
-    public EnumSet<SettingFields> fields() {
+    public SettingFields[] fields() {
         return fields;
     }
 
@@ -160,7 +160,7 @@ public class SettingSelector {
      *               ConfigurationSettings with a default set of properties.
      * @return The updated SettingSelector object.
      */
-    public SettingSelector fields(EnumSet<SettingFields> fields) {
+    public SettingSelector fields(SettingFields... fields) {
         this.fields = fields;
         return this;
     }

@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Objects;
@@ -294,12 +295,12 @@ public final class ConfigurationClient extends ServiceClient {
         return etag == null ? "" : "\"" + etag + "\"";
     }
 
-    private static String getSelectQuery(EnumSet<SettingFields> set) {
-        if (set == null || set.isEmpty()) {
+    private static String getSelectQuery(SettingFields[] set) {
+        if (set == null || set.length == 0) {
             return null;
         }
 
-        return set.stream().map(item -> item.toString().toLowerCase(Locale.US))
+        return Arrays.stream(set).map(item -> item.toString().toLowerCase(Locale.US))
             .collect(Collectors.joining(","));
     }
 
