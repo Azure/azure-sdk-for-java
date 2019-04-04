@@ -42,6 +42,10 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -132,10 +136,6 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_12_01.VirtualNetworkGateways generateVpnProfile" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/generatevpnprofile")
         Observable<Response<ResponseBody>> generateVpnProfile(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayName") String virtualNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Body VpnClientParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_12_01.VirtualNetworkGateways beginGenerateVpnProfile" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/generatevpnprofile")
-        Observable<Response<ResponseBody>> beginGenerateVpnProfile(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayName") String virtualNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Body VpnClientParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_12_01.VirtualNetworkGateways getVpnProfilePackageUrl" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/getvpnprofilepackageurl")
@@ -1681,7 +1681,7 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
         Validator.validate(parameters);
         final String apiVersion = "2018-12-01";
         Observable<Response<ResponseBody>> observable = service.generatevpnclientpackage(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<String>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<String>() { }.getType());
     }
 
     /**
@@ -1772,6 +1772,7 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
     private ServiceResponse<String> beginGeneratevpnclientpackageDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<String, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<String>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1788,7 +1789,7 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
      * @return the String object if successful.
      */
     public String generateVpnProfile(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        return generateVpnProfileWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters).toBlocking().last().body();
+        return generateVpnProfileWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1812,7 +1813,7 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
+     * @return the observable to the String object
      */
     public Observable<String> generateVpnProfileAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
         return generateVpnProfileWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters).map(new Func1<ServiceResponse<String>, String>() {
@@ -1830,7 +1831,7 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
+     * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> generateVpnProfileWithServiceResponseAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
         if (resourceGroupName == null) {
@@ -1847,87 +1848,12 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
         }
         Validator.validate(parameters);
         final String apiVersion = "2018-12-01";
-        Observable<Response<ResponseBody>> observable = service.generateVpnProfile(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<String>() { }.getType());
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for IKEV2 and radius based authentication.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the String object if successful.
-     */
-    public String beginGenerateVpnProfile(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        return beginGenerateVpnProfileWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters).toBlocking().single().body();
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for IKEV2 and radius based authentication.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<String> beginGenerateVpnProfileAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, final ServiceCallback<String> serviceCallback) {
-        return ServiceFuture.fromResponse(beginGenerateVpnProfileWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters), serviceCallback);
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for IKEV2 and radius based authentication.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<String> beginGenerateVpnProfileAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        return beginGenerateVpnProfileWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters).map(new Func1<ServiceResponse<String>, String>() {
-            @Override
-            public String call(ServiceResponse<String> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for IKEV2 and radius based authentication.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<ServiceResponse<String>> beginGenerateVpnProfileWithServiceResponseAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (virtualNetworkGatewayName == null) {
-            throw new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        final String apiVersion = "2018-12-01";
-        return service.beginGenerateVpnProfile(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.generateVpnProfile(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override
                 public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<String> clientResponse = beginGenerateVpnProfileDelegate(response);
+                        ServiceResponse<String> clientResponse = generateVpnProfileDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1936,7 +1862,7 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
             });
     }
 
-    private ServiceResponse<String> beginGenerateVpnProfileDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<String> generateVpnProfileDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<String, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<String>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
