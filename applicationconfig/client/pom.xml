@@ -55,12 +55,6 @@
           </execution>
         </executions>
       </plugin>
-
-      <!-- Allows the sample sources to be built during test-compile phase. -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-      </plugin>
     </plugins>
   </build>
 
