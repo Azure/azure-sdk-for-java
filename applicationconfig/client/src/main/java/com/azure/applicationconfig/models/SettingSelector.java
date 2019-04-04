@@ -10,15 +10,16 @@ import java.time.format.DateTimeFormatter;
  * A set of options for selecting configuration settings from Application Configuration service.
  *
  * <p>
- * Providing {@link SettingSelector#label()} will filter {@link ConfigurationSetting}s that match that label name in
- * conjunction with the key that is passed in to the service request.
+ * Providing {@link SettingSelector#label() label} will filter {@link ConfigurationSetting ConfigurationSettings} that
+ * match that label name in conjunction with the key that is passed in to the service request.
  *
  * <p>
- * Providing {@link SettingSelector#acceptDateTime()} will return the representation of matching {@link ConfigurationSetting}
- * at that given {@link OffsetDateTime}.
+ * Providing {@link SettingSelector#acceptDateTime() acceptDateTime} will return the representation of matching
+ * {@link ConfigurationSetting} at that given {@link OffsetDateTime}.
  *
  * <p>
- * Providing {@link SettingSelector#fields()} will populate only those {@link ConfigurationSetting} fields in the response.
+ * Providing {@link SettingSelector#fields() fields} will populate only those {@link ConfigurationSetting} fields in the
+ * response.
  */
 public class SettingSelector {
     private String key;
@@ -35,7 +36,7 @@ public class SettingSelector {
     }
 
     /**
-     * Gets the expression to filter {@link ConfigurationSetting#key()} on for the request.
+     * Gets the expression to filter {@link ConfigurationSetting#key() key} on for the request.
      *
      * <p>
      * Examples:
@@ -53,7 +54,7 @@ public class SettingSelector {
     }
 
     /**
-     * Sets the expression to filter {@link ConfigurationSetting#key()} on for the request.
+     * Sets the expression to filter {@link ConfigurationSetting#key() key} on for the request.
      *
      * <p>
      * Examples:
@@ -73,7 +74,7 @@ public class SettingSelector {
     }
 
     /**
-     * The label used to filter settings based on their {@link ConfigurationSetting#label()} in the service.
+     * The label used to filter settings based on their {@link ConfigurationSetting#label() label} in the service.
      *
      * If the value is {@code null} or an empty string, all ConfigurationSettings with
      * {@link ConfigurationSetting#NO_LABEL} are returned.
@@ -97,7 +98,7 @@ public class SettingSelector {
     }
 
     /**
-     * Sets the query to match {@link ConfigurationSetting#label()}s in the service.
+     * Sets the query to match {@link ConfigurationSetting#label() labels} in the service.
      *
      * <p>
      * Examples:
@@ -120,10 +121,10 @@ public class SettingSelector {
 
     /**
      * Gets the date time for the request query. When the query is performed, the state of the
-     * {@link ConfigurationSetting}s at that point in time is returned based on the provided acceptDateTime.
+     * {@link ConfigurationSetting ConfigurationSettings} at that point in time is returned based on the provided acceptDateTime.
      *
      * <p>
-     * If the value is not set, then the {@link ConfigurationSetting}s at their current state is returned.
+     * If the value is not set, then the {@link ConfigurationSetting ConfigurationSettings} at their current state is returned.
      *
      * @return Gets the currently set datetime in {@link DateTimeFormatter#RFC_1123_DATE_TIME} format.
      */
