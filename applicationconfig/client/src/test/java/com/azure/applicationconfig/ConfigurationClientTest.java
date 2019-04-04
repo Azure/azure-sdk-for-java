@@ -186,6 +186,22 @@ public class ConfigurationClientTest {
     }
 
     /**
+     * Tests that a configuration is able to be added with the convenience overload. And that if we try to add another
+     * one with the same key and value, it fails.
+     */
+    @Test
+    public void addSettingOverload() {
+        ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix).value("A Value");
+
+        StepVerifier.create(client.addSetting(setting.key(), setting.value()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.addSetting(setting.key(), setting.value()))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+    }
+
+    /**
      * Tests that a configuration cannot be added twice with the same key. THis should return a 412 error.
      */
     @Test
@@ -196,7 +212,7 @@ public class ConfigurationClientTest {
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.addSetting(expected).then(client.addSetting(expected)))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
         };
 
         testRunner.accept(newConfiguration);
@@ -222,6 +238,27 @@ public class ConfigurationClientTest {
 
         testRunner.accept(setConfiguration, updateConfiguration);
         testRunner.accept(setConfiguration.label(label), updateConfiguration.label(label));
+    }
+
+    /**
+     * Tests that a configuration is able to be added or updated with set with our convenience overload.
+     * When the configuration is locked updates cannot happen, this will result in a 409.
+     */
+    @Test
+    public void setSettingOverload() {
+        ConfigurationSetting expected = new ConfigurationSetting().key(keyPrefix).value("A Value");
+        ConfigurationSetting update = new ConfigurationSetting().key(keyPrefix).value("A New Value");
+
+        StepVerifier.create(client.setSetting(expected.key(), expected.value()))
+            .assertNext(response -> assertConfigurationEquals(expected, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.lockSetting(expected).then(client.setSetting(update)))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
+
+        StepVerifier.create(client.unlockSetting(expected).then(client.setSetting(update)))
+            .assertNext(response -> assertConfigurationEquals(update, response))
+            .verifyComplete();
     }
 
     /**
@@ -309,6 +346,27 @@ public class ConfigurationClientTest {
 
         testRunner.accept(original, updated);
         testRunner.accept(original.label(label), updated.label(label));
+    }
+
+    /**
+     * Tests that a configuration is able to be updated when it exists with the convenience overload.
+     * When the configuration is locked updates cannot happen, this will result in a 409.
+     */
+    @Test
+    public void updateSettingOverload() {
+        ConfigurationSetting original = new ConfigurationSetting().key(keyPrefix).value("A Value");
+        ConfigurationSetting updated = new ConfigurationSetting().key(keyPrefix).value("A New Value");
+
+        StepVerifier.create(client.addSetting(original.key(), original.value()))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.lockSetting(original.key()).then(client.updateSetting(updated.key(), updated.value())))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
+
+        StepVerifier.create(client.unlockSetting(original.key()).then(client.updateSetting(updated.key(), updated.value())))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
     }
 
     /**
