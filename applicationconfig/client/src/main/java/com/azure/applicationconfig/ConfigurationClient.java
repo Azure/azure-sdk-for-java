@@ -34,6 +34,8 @@ import java.util.stream.Collectors;
 
 /**
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
+ *
+ * @see ConfigurationClientBuilder
  */
 public final class ConfigurationClient extends ServiceClient {
     private static final String ETAG_ANY = "*";
@@ -58,7 +60,7 @@ public final class ConfigurationClient extends ServiceClient {
     /**
      * Creates a builder that can configure options for the ConfigurationClient before creating an instance of it.
      *
-     * @return A new Builder to create a ConfigurationClient from.
+     * @return A new ConfigurationClientBuilder to create a ConfigurationClient from.
      */
     public static ConfigurationClientBuilder builder() {
         return new ConfigurationClientBuilder();
@@ -73,7 +75,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @param setting The setting to add to the configuration service.
      * @return ConfigurationSetting that was created or updated.
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
      * @throws ServiceRequestException If a ConfigurationSetting with the same key and label exists.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
@@ -86,7 +88,7 @@ public final class ConfigurationClient extends ServiceClient {
      * Creates or updates a configuration value in the service.
      *
      * <p>
-     * If {@link ConfigurationSetting#etag()} is specified, the configuration value is updated if the current setting's
+     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current setting's
      * etag matches. If the etag's value is equal to {@link ConfigurationClient#ETAG_ANY}, the setting will always be
      * updated.
      *
@@ -96,10 +98,9 @@ public final class ConfigurationClient extends ServiceClient {
      * @param setting The configuration setting to create or update.
      * @return ConfigurationSetting that was created or updated.
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or an empty string.
-     * @throws ServiceRequestException If the {@link ConfigurationSetting#etag()} was specified, is not
-     * {@link ConfigurationClient#ETAG_ANY}, and the current configuration
-     * value's etag does not match.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
+     * @throws ServiceRequestException If the {@link ConfigurationSetting#etag() etag} was specified, is not
+     * {@link ConfigurationClient#ETAG_ANY}, and the current configuration value's etag does not match.
      */
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting);
@@ -114,12 +115,12 @@ public final class ConfigurationClient extends ServiceClient {
      * The label value for the ConfigurationSetting is optional.
      *
      * <p>
-     * If {@link ConfigurationSetting#etag()} is specified, the configuration value is only updated if it matches.
+     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is only updated if it matches.
      *
      * @param setting The setting to add or update in the service.
      * @return ConfigurationSetting that was updated.
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
      * @throws ServiceRequestException If a ConfigurationSetting with the same key and label does not
      * exist or the configuration value is locked.
      */
@@ -149,7 +150,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @param setting The setting to retrieve based on its key and optional label combination.
      * @return The configuration value in the service.
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
      * @throws ServiceRequestException with status code of 404 if the {@code key} and {@code label} does
      * not exist. If {@code etag} was specified, returns status code of
      * 304 if the key has not been modified.
@@ -173,12 +174,12 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag. If the
-     * {@link ConfigurationSetting#etag()} is specified, the setting is <b>only</b> deleted if the etag matches the
+     * {@link ConfigurationSetting#etag() etag} is specified, the setting is <b>only</b> deleted if the etag matches the
      * current etag; this means that no one has updated the ConfigurationSetting yet.
      *
      * @param setting The ConfigurationSetting to delete.
      * @return The deleted ConfigurationSetting or {@link null} if didn't exist.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key()} is {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
      * @throws NullPointerException When {@code setting} is {@code null}.
      */
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
@@ -189,7 +190,7 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all the
-     * {@link ConfigurationSetting}s are fetched in their current state with default fields.
+     * {@link ConfigurationSetting configuration settings} are fetched in their current state with default fields.
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
@@ -214,9 +215,9 @@ public final class ConfigurationClient extends ServiceClient {
      * Revisions expire after a period of time. (The default is 30 days.)
      *
      * <p>
-     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting}s are fetched in their current
-     * state with default fields. Otherwise, the results returned match the parameters given in {@code options}.
-     * </p>
+     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting configuration settings} are fetched
+     * in their current state with default fields. Otherwise, the results returned match the parameters given in
+     * {@code options}.
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
