@@ -35,7 +35,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
     /**
      * Creates an instance that is able to authorize requests to Azure Application Configuration service.
      *
-     * @param connectionString connection string in the format "endpoint={endpoint_value};id={id_value};secret={secret_value}"
+     * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};secret={secret_value}"
      * @throws NoSuchAlgorithmException When the HMAC-SHA256 MAC algorithm cannot be instantiated.
      * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.
      */

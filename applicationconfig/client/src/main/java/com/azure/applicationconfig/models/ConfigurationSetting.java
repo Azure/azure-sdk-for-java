@@ -71,17 +71,19 @@ public class ConfigurationSetting {
     }
 
     /**
-     * @return key name
+     * Gets the key name for this configuration setting.
+     *
+     * @return The key for this configuration setting.
      */
     public String key() {
         return key;
     }
 
     /**
-     * Sets the key of this configuration value. This is required.
+     * Sets the key of this configuration setting. This is required.
      *
-     * @param key key name
-     * @return ConfigurationSetting object itself
+     * @param key The name of the configuration key.
+     * @return ConfigurationSetting object itself.
      */
     public ConfigurationSetting key(String key) {
         this.key = key;
@@ -122,7 +124,7 @@ public class ConfigurationSetting {
      * Sets the value of this setting.
      *
      * @param value The value to associate with this configuration setting.
-     * @return The updated ConfigurationSetting object
+     * @return The updated ConfigurationSetting object.
      */
     public ConfigurationSetting value(String value) {
         this.value = value;
