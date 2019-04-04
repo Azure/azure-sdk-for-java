@@ -2,6 +2,7 @@ import com.azure.applicationconfig.ConfigurationClient;
 import com.azure.applicationconfig.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.common.http.rest.Response;
+import reactor.core.publisher.Mono;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -27,15 +28,15 @@ public class HelloWorld {
         // setSetting adds or updates a setting to Azure Application Configuration store.
         // Alternatively, you can call addSetting which only succeeds if the setting does not exist in the store. Or,
         // you can call updateSetting to update a setting that is already present in the store.
-        client.setSetting(settingToAdd).block();
+        Mono<Response<ConfigurationSetting>> setSetting = client.setSetting(settingToAdd);
 
-        // Retrieve a previously stored setting by calling getSetting.
-        Response<ConfigurationSetting> response = client.getSetting(theKey).block();
-        ConfigurationSetting setting = response.value();
+        // Retrieve a stored setting by calling client.getSetting after setSetting completes.
+        // When we retrieve the value of that configuration
+        setSetting.then(client.getSetting(theKey)).map(response -> {
+            ConfigurationSetting setting = response.value();
+            System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
 
-        System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
-
-        // Delete the setting when you don't need it anymore.
-        client.deleteSetting(theKey).block();
+            return client.deleteSetting(theKey);
+        }).block();
     }
 }
