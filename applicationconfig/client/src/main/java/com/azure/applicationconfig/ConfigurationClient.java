@@ -189,7 +189,7 @@ public final class ConfigurationClient extends ServiceClient {
      * 304 if the key has not been modified.
      */
     public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
+        ConfigurationSetting result = validateSetting(setting, false);
 
         return service.getKeyValue(serviceEndpoint, result.key(), result.label(), null, null, null, null);
     }
@@ -216,7 +216,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws NullPointerException When {@code setting} is {@code null}.
      */
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
+        ConfigurationSetting result = validateSetting(setting, false);
 
         return service.delete(serviceEndpoint, result.key(), result.label(), getETagValue(result.etag()), null);
     }
