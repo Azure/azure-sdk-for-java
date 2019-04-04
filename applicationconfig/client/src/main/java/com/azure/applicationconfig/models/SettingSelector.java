@@ -5,6 +5,7 @@ package com.azure.applicationconfig.models;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 /**
  * A set of options for selecting configuration settings from Application Configuration service.
@@ -150,7 +151,9 @@ public class SettingSelector {
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
     public SettingFields[] fields() {
-        return fields;
+        return fields == null
+            ? new SettingFields[0]
+            : Arrays.copyOf(fields, fields.length);
     }
 
     /**
@@ -161,6 +164,10 @@ public class SettingSelector {
      * @return The updated SettingSelector object.
      */
     public SettingSelector fields(SettingFields... fields) {
+        if (fields == null || fields.length == 0) {
+            return this;
+        }
+
         this.fields = fields;
         return this;
     }
