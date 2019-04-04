@@ -62,9 +62,9 @@ public final class ConfigurationClient extends ServiceClient {
      * Adds a configuration value in the service if that key does not exist.
      *
      * @param key The key for the configuration setting to add.
-     * @param value Optional. The value associated with this configuration setting key.
+     * @param value The value associated with this configuration setting key.
      * @return ConfigurationSetting that was created.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@code key} or {@code value} are {@code null} or an empty string.
      * @throws ServiceRequestException If a ConfigurationSetting with the same key exists.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
@@ -80,7 +80,8 @@ public final class ConfigurationClient extends ServiceClient {
      * @param setting The setting to add to the configuration service.
      * @return ConfigurationSetting that was created.
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or {@link ConfigurationSetting#value() value}
+     * are {@code null} or an empty string.
      * @throws ServiceRequestException If a ConfigurationSetting with the same key and label exists.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
@@ -93,9 +94,9 @@ public final class ConfigurationClient extends ServiceClient {
      * Creates or updates a configuration value in the service with the given key.
      *
      * @param key The key for the configuration setting to create or update.
-     * @param value Optional. The value of this configuration setting.
+     * @param value The value of this configuration setting.
      * @return ConfigurationSetting that was created or updated.
-     * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@code key} or {@code value} are {@code null} or an empty string.
      */
     public Mono<Response<ConfigurationSetting>> setSetting(String key, String value) {
         return setSetting(new ConfigurationSetting().key(key).value(value));
@@ -115,7 +116,8 @@ public final class ConfigurationClient extends ServiceClient {
      * @param setting The configuration setting to create or update.
      * @return ConfigurationSetting that was created or updated.
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or {@link ConfigurationSetting#value() value}
+     * are {@code null} or an empty string.
      * @throws ServiceRequestException If the {@link ConfigurationSetting#etag() etag} was specified, is not
      * {@link ConfigurationClient#ETAG_ANY}, and the current configuration value's etag does not match.
      */
@@ -129,9 +131,9 @@ public final class ConfigurationClient extends ServiceClient {
      * Updates an existing configuration value in the service with the given key. The setting must already exist.
      *
      * @param key The key for the configuration setting to update.
-     * @param value Optional. The updated value of this configuration setting.
+     * @param value The updated value of this configuration setting.
      * @return ConfigurationSetting that was updated.
-     * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@code key} or {@code value} are {@code null} or an empty string.
      * @throws ServiceRequestException If a ConfigurationSetting with the key does not exist or the configuration value
      * is locked.
      */
@@ -151,7 +153,8 @@ public final class ConfigurationClient extends ServiceClient {
      * @param setting The setting to add or update in the service.
      * @return ConfigurationSetting that was updated.
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or {@link ConfigurationSetting#value() value}
+     * are {@code null} or an empty string.
      * @throws ServiceRequestException If a ConfigurationSetting with the same key and label does not
      * exist or the configuration value is locked.
      */
