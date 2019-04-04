@@ -5,7 +5,6 @@ package com.azure.applicationconfig.models;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.EnumSet;
 
 /**
  * A set of options for selecting configuration settings from Application Configuration service.
