@@ -125,7 +125,7 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Updates an existing configuration value in the service. The setting must already exist.
+     * Updates an existing configuration value in the service with the given key. The setting must already exist.
      *
      * @param key The key for the configuration setting to update.
      * @param value Optional. The updated value of this configuration setting.
