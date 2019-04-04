@@ -40,6 +40,7 @@ import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -525,7 +526,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         @POST("anything/json")
         @ExpectedResponses({200})
         @ReturnValueWireType(Page.class)
-        Mono<PagedResponse<KeyValue>> getPageAsyncThrows(@BodyParam(ContentType.APPLICATION_JSON) NonComformingPage<KeyValue> values);
+        Mono<PagedResponse<KeyValue>> getPageAsyncSerializes(@BodyParam(ContentType.APPLICATION_JSON) NonComformingPage<KeyValue> values);
     }
 
     /**
@@ -577,10 +578,11 @@ public class RestProxyWithMockTests extends RestProxyTests {
             .verifyComplete();
     }
 
-    /**
+    /*
+     * Verifies that even though our
      */
     @Test
-    public void service2getPageThrowsError() {
+    public void service2getPageSerializes() {
         List<KeyValue> array = new ArrayList<>();
         KeyValue key1 = new KeyValue(1, "Foo");
         KeyValue key2 = new KeyValue(2, "Bar");
@@ -591,12 +593,12 @@ public class RestProxyWithMockTests extends RestProxyTests {
         array.add(key3);
         NonComformingPage<KeyValue> page = new NonComformingPage<>(array, "A next link!");
 
-        StepVerifier.create(createService(Service2.class).getPageAsyncThrows(page))
-            .expectErrorMatches(error -> {
-                assertNotNull(error);
-                return true;
+        StepVerifier.create(createService(Service2.class).getPageAsyncSerializes(page))
+            .assertNext(response -> {
+                assertEquals(page.nextLink(), response.nextLink());
+                assertNull(response.items());
             })
-            .verify();
+            .verifyComplete();
     }
 
 }
