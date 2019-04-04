@@ -686,6 +686,19 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The AgreementsInner object to access its operations.
+     */
+    private AgreementsInner agreements;
+
+    /**
+     * Gets the AgreementsInner object to access its operations.
+     * @return the AgreementsInner object.
+     */
+    public AgreementsInner agreements() {
+        return this.agreements;
+    }
+
+    /**
      * Initializes an instance of BillingManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -761,6 +774,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.billingAccountBillingRoleAssignments = new BillingAccountBillingRoleAssignmentsInner(restClient().retrofit(), this);
         this.invoiceSectionBillingRoleAssignments = new InvoiceSectionBillingRoleAssignmentsInner(restClient().retrofit(), this);
         this.billingProfileBillingRoleAssignments = new BillingProfileBillingRoleAssignmentsInner(restClient().retrofit(), this);
+        this.agreements = new AgreementsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }

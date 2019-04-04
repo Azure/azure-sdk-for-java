@@ -57,6 +57,7 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfile
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountBillingRoleAssignments;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionBillingRoleAssignments;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileBillingRoleAssignments;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.Agreements;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -105,6 +106,7 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     private BillingAccountBillingRoleAssignments billingAccountBillingRoleAssignments;
     private InvoiceSectionBillingRoleAssignments invoiceSectionBillingRoleAssignments;
     private BillingProfileBillingRoleAssignments billingProfileBillingRoleAssignments;
+    private Agreements agreements;
     /**
     * Get a Configurable instance that can be used to create BillingManager with optional configuration.
     *
@@ -560,6 +562,16 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.billingProfileBillingRoleAssignments = new BillingProfileBillingRoleAssignmentsImpl(this);
         }
         return this.billingProfileBillingRoleAssignments;
+    }
+
+    /**
+     * @return Entry point to manage Agreements.
+     */
+    public Agreements agreements() {
+        if (this.agreements == null) {
+            this.agreements = new AgreementsImpl(this);
+        }
+        return this.agreements;
     }
 
     /**
