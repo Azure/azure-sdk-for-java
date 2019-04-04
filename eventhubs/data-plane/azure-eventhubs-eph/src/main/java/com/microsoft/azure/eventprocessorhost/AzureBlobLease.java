@@ -8,8 +8,6 @@ import com.microsoft.azure.storage.blob.BlobProperties;
 import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
-import java.util.Objects;
-
 final class AzureBlobLease extends CompleteLease {
     private final transient CloudBlockBlob blob; // do not serialize
     private final transient BlobRequestOptions options; // do not serialize
@@ -98,25 +96,5 @@ final class AzureBlobLease extends CompleteLease {
             retval = "downloadAttributes on the blob caught " + e.toString();
         }
         return retval;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof AzureBlobLease)) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        AzureBlobLease that = (AzureBlobLease) o;
-        return Objects.equals(blob, that.blob);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), blob);
     }
 }

@@ -3,8 +3,6 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import java.util.Objects;
-
 /**
  * CompleteLease class is public so that advanced users can implement an ILeaseManager.
  * Unless you are implementing ILeaseManager you should not have to deal with objects
@@ -76,25 +74,5 @@ public class CompleteLease extends BaseLease {
     public long incrementEpoch() {
         this.epoch++;
         return this.epoch;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        CompleteLease that = (CompleteLease) o;
-        return epoch == that.epoch;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), epoch);
     }
 }
