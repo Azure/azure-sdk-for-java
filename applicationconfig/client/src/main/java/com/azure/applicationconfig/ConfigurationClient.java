@@ -85,13 +85,12 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws ServiceRequestException If a ConfigurationSetting with the same key and label exists.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
-
+        ConfigurationSetting result = validateSetting(setting, true);
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, null, getETagValue(ETAG_ANY));
     }
 
     /**
-     * Creates or updates a configuration value in the service with the given key.
+     * Creates or updates a configuration value in the service with the given key. Partial updates are not supported.
      *
      * @param key The key for the configuration setting to create or update.
      * @param value The value of this configuration setting.
@@ -103,15 +102,12 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Creates or updates a configuration value in the service.
+     * Creates or updates a configuration value in the service. Partial updates are not supported.
      *
      * <p>
      * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current setting's
      * etag matches. If the etag's value is equal to {@link ConfigurationClient#ETAG_ANY}, the setting will always be
      * updated.
-     *
-     * <p>
-     * The label value for the ConfigurationSetting is optional.
      *
      * @param setting The configuration setting to create or update.
      * @return ConfigurationSetting that was created or updated.
@@ -122,13 +118,16 @@ public final class ConfigurationClient extends ServiceClient {
      * {@link ConfigurationClient#ETAG_ANY}, and the current configuration value's etag does not match.
      */
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
+        ConfigurationSetting result = validateSetting(setting, true);
 
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, getETagValue(result.etag()), null);
     }
 
     /**
      * Updates an existing configuration value in the service with the given key. The setting must already exist.
+     *
+     * <p>
+     * Partial updates are not supported.
      *
      * @param key The key for the configuration setting to update.
      * @param value The updated value of this configuration setting.
@@ -142,10 +141,10 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Updates an existing configuration value in the service. The setting must already exist.a
+     * Updates an existing configuration value in the service. The setting must already exist.
      *
      * <p>
-     * The label value for the ConfigurationSetting is optional.
+     * Partial updates are not supported.
      *
      * <p>
      * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is only updated if it matches.
@@ -159,7 +158,7 @@ public final class ConfigurationClient extends ServiceClient {
      * exist or the configuration value is locked.
      */
     public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
+        ConfigurationSetting result = validateSetting(setting, true);
         String etag = result.etag() == null ? ETAG_ANY : result.etag();
 
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, getETagValue(etag), null);
@@ -306,11 +305,13 @@ public final class ConfigurationClient extends ServiceClient {
             .collect(Collectors.joining(","));
     }
 
-    private static ConfigurationSetting validateSetting(ConfigurationSetting setting) {
+    private static ConfigurationSetting validateSetting(ConfigurationSetting setting, boolean verifyValue) {
         Objects.requireNonNull(setting);
 
         if (setting.key() == null || setting.key().isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
+        } else if (setting.value() == null || setting.value().isEmpty()) {
+            throw new IllegalArgumentException("Parameter 'value' is required and cannot be null or empty");
         }
 
         return setting;
