@@ -46,7 +46,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <!-- IMPORT CHECKS -->
         <!-- See http://checkstyle.sf.net/config_import.html -->
         <module name="AvoidStarImport"/>
-        <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
+        <module name="IllegalImport">
+            <property name="regexp" value="true"/>
+            <property name="illegalPkgs" value="(com\.)?sun\.\w*"/>
+        </module>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
 
