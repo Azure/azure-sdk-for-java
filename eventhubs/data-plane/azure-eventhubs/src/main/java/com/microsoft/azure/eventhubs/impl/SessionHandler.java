@@ -69,6 +69,7 @@ public class SessionHandler extends BaseHandler {
                         String.format("OnSessionLocalOpen entityName[%s], reactorHandler: NULL POINTER exception.")
                     )
                 );
+                e.getSession().close();
                 return;
             }
 
