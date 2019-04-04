@@ -245,7 +245,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
         <!--Check for package naming and length limit-->
         <module name="PackageName">
-            <property name="format" value="^(?=.{9,80}$)((com.microsoft.azure|com.azure)(\.[^A-Z_-]{1,20})*)+$"/>
+            <property name="format" value="^(?=.{9,80}$)((com.microsoft.azure|com.azure)(\.[a-z]{1,20})*)+$"/>
         </module>
     </module>
 </module>
