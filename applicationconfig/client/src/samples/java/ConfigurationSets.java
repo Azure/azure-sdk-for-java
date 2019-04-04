@@ -66,7 +66,7 @@ public class ConfigurationSets {
         // Unlock the production settings and delete all settings afterwards.
         for (String set : new String[]{BETA, PRODUCTION}) {
             client.unlockSetting(new ConfigurationSetting().key(KEY_VAULT_KEY).label(set))
-                    .map(config -> client.deleteSetting(config.body()))
+                    .map(config -> client.deleteSetting(config.value()))
                     .block();
         }
     }
@@ -88,7 +88,7 @@ public class ConfigurationSets {
 
         return Flux.merge(client.addSetting(keyVaultSetting), client.addSetting(endpointSetting))
                 .flatMap(added -> lockSettings
-                        ? client.lockSetting(added.body())
+                        ? client.lockSetting(added.value())
                         : Flux.just(added))
                 .then();
     }

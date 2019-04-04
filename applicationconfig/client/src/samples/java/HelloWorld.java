@@ -1,7 +1,7 @@
 import com.azure.applicationconfig.ConfigurationClient;
 import com.azure.applicationconfig.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.common.http.rest.RestResponse;
+import com.azure.common.http.rest.Response;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -30,8 +30,8 @@ public class HelloWorld {
         client.setSetting(settingToAdd).block();
 
         // Retrieve a previously stored setting by calling getSetting.
-        RestResponse<ConfigurationSetting> response = client.getSetting(theKey).block();
-        ConfigurationSetting setting = response.body();
+        Response<ConfigurationSetting> response = client.getSetting(theKey).block();
+        ConfigurationSetting setting = response.value();
 
         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
 
