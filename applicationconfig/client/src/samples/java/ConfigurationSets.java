@@ -45,9 +45,13 @@ public class ConfigurationSets {
         KeyVaultConfiguration productionKeyVault = new KeyVaultConfiguration().endpointUri("https://production-keyvault.vault.azure.net").secret("production_secret");
 
         // Adding one configuration set for beta testing and another for production to Azure App Configuration.
-        addConfigurations(client, BETA, "https://beta-storage.core.windows.net", betaKeyVault, false).block();
-        // For these production settings, we'll put a lock on them, so that they cannot be modified.
-        addConfigurations(client, PRODUCTION, "https://production-storage.core.windows.net", productionKeyVault, true).block();
+        // For the production settings, we'll put a lock on them, so that they cannot be modified.
+        // blockLast() is added here to prevent execution before both sets of configuration values have been added to
+        // the service.
+        Flux.merge(
+            addConfigurations(client, BETA, "https://beta-storage.core.windows.net", betaKeyVault, false),
+            addConfigurations(client, PRODUCTION, "https://production-storage.core.windows.net", productionKeyVault, true)
+        ).blockLast();
 
         // For your services, you can select settings with "beta" or "production" label, depending on what you want your
         // services to communicate with.
