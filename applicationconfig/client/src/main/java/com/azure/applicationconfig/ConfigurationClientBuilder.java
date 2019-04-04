@@ -80,7 +80,7 @@ public final class ConfigurationClientBuilder {
      *
      * @param credentials The credentials to use for authenticating HTTP requests.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException if {@code credentials} is {@code null}.
+     * @throws NullPointerException If {@code credentials} is {@code null}.
      */
     public ConfigurationClientBuilder credentials(ConfigurationClientCredentials credentials) {
         Objects.requireNonNull(credentials);
@@ -105,7 +105,7 @@ public final class ConfigurationClientBuilder {
      *
      * @param policy The retry policy for service requests.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException if {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
@@ -118,7 +118,7 @@ public final class ConfigurationClientBuilder {
      *
      * @param client The HTTP client to use for requests.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException if {@code client} is {@code null}.
+     * @throws NullPointerException If {@code client} is {@code null}.
      */
     public ConfigurationClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
