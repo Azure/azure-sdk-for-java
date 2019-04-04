@@ -73,29 +73,21 @@ final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
                         }
                     })
                 .flatMap(messageDigest -> {
-                    final Map<String, String> mapped = getDefaultHeaders(context.httpRequest().url(), context.httpRequest().headers());
+                    final HttpHeaders headers = context.httpRequest().headers();
                     final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
 
-                    mapped.put(CONTENT_HASH_HEADER, contentHash);
-                    mapped.forEach((key, value) -> context.httpRequest().headers().set(key, value));
+                    headers.set(CONTENT_HASH_HEADER, contentHash);
+                    headers.set(HOST_HEADER, context.httpRequest().url().getHost());
+                    headers.set(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
+                    headers.set(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
+
+                    if (headers.value(DATE_HEADER) == null) {
+                        String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
+                        headers.set(DATE_HEADER, utcNow);
+                    }
 
                     return next.process().doOnSuccess(this::logResponseDelegate);
                 });
-    }
-
-    private Map<String, String> getDefaultHeaders(URL url, HttpHeaders currentHeaders) {
-        final Map<String, String> mapped = new HashMap<>();
-
-        mapped.put(HOST_HEADER, url.getHost());
-        mapped.put(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
-        mapped.put(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
-
-        if (currentHeaders.value(DATE_HEADER) == null) {
-            String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
-            mapped.put(DATE_HEADER, utcNow);
-        }
-
-        return mapped;
     }
 
     private ByteBuf getEmptyBuffer() {
