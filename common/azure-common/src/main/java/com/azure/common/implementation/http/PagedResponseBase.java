@@ -1,7 +1,9 @@
-package com.azure.common.http.rest;
+package com.azure.common.implementation.http;
 
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpRequest;
+import com.azure.common.http.rest.Page;
+import com.azure.common.http.rest.PagedResponse;
 
 import java.util.List;
 

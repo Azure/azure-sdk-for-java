@@ -12,7 +12,7 @@ import com.azure.common.annotations.ResumeOperation;
 import com.azure.common.credentials.ServiceClientCredentials;
 import com.azure.common.http.rest.Page;
 import com.azure.common.http.rest.PagedResponse;
-import com.azure.common.http.rest.PagedResponseBase;
+import com.azure.common.implementation.http.PagedResponseBase;
 import com.azure.common.implementation.http.ContentType;
 import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpHeader;

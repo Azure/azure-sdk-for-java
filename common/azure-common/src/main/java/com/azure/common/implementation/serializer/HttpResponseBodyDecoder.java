@@ -7,7 +7,7 @@
 package com.azure.common.implementation.serializer;
 
 import com.azure.common.http.rest.Page;
-import com.azure.common.http.rest.PagedResponseBase;
+import com.azure.common.implementation.http.PagedResponseBase;
 import com.azure.common.implementation.Base64Url;
 import com.azure.common.implementation.DateTimeRfc1123;
 import com.azure.common.exception.ServiceRequestException;
