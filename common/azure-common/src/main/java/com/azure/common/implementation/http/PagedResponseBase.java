@@ -7,6 +7,13 @@ import com.azure.common.http.rest.PagedResponse;
 
 import java.util.List;
 
+/**
+ * Represents an HTTP response that contains a list of items deserialized into a {@link Page}.
+ *
+ * @param <H> The HTTP response headers
+ * @param <T> The type of items contained in the {@link Page}
+ * @see com.azure.common.http.rest.PagedResponse
+ */
 public class PagedResponseBase<H, T> implements PagedResponse<T> {
     private final HttpRequest request;
     private final int statusCode;
