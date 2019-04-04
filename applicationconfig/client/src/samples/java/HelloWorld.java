@@ -22,8 +22,7 @@ public class HelloWorld {
             .build();
 
         // Create a setting to be stored by the configuration service.
-        String theKey = "hello";
-        ConfigurationSetting settingToAdd = new ConfigurationSetting().key(theKey).value("world");
+        ConfigurationSetting settingToAdd = new ConfigurationSetting().key("hello").value("world");
 
         // setSetting adds or updates a setting to Azure Application Configuration store.
         // Alternatively, you can call addSetting which only succeeds if the setting does not exist in the store. Or,
@@ -32,11 +31,11 @@ public class HelloWorld {
 
         // Retrieve a stored setting by calling client.getSetting after setSetting completes.
         // When we retrieve the value of that configuration
-        setSetting.then(client.getSetting(theKey)).map(response -> {
+        setSetting.then(client.getSetting(settingToAdd.key())).map(response -> {
             ConfigurationSetting setting = response.value();
             System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
 
-            return client.deleteSetting(theKey);
+            return client.deleteSetting(setting.key());
         }).block();
     }
 }
