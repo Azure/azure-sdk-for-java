@@ -134,13 +134,6 @@
       <Bug pattern="SE_BAD_FIELD"/>
     </Match>
 
-    <!-- Methods in Common package return null instead of meaningful instances when resourses do not exist. Will address the bugs in Track Two.
-    -->
-    <Match>
-      <Class name="~com\.azure\.common\.implementation\.(Base64Url|serializer\.HttpResponseDecodeData|util\.ImplUtils)"/>
-      <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-    </Match>
-
     <!-- No need to implements cloneable. -->
     <Match>
       <Class name="com.azure.common.http.HttpPipelineNextPolicy"/>

@@ -8,9 +8,9 @@ public class Base64UrlTests {
     @Test
     public void constructorWithNullBytes() {
         final Base64Url base64Url = new Base64Url((byte[])null);
-        assertNull(base64Url.encodedBytes());
-        assertNull(base64Url.decodedBytes());
-        assertEmpty(base64Url.toString());
+        assertEmptyByteArray(base64Url.encodedBytes());
+        assertEmptyByteArray(base64Url.decodedBytes());
+        assertEmptyString(base64Url.toString());
     }
 
     @Test
@@ -32,9 +32,9 @@ public class Base64UrlTests {
     @Test
     public void constructorWithNullString() {
         final Base64Url base64Url = new Base64Url((String)null);
-        assertNull(base64Url.encodedBytes());
-        assertNull(base64Url.decodedBytes());
-        assertEmpty(base64Url.toString());
+        assertEmptyByteArray(base64Url.encodedBytes());
+        assertEmptyByteArray(base64Url.decodedBytes());
+        assertEmptyString(base64Url.toString());
     }
 
     @Test
@@ -88,9 +88,9 @@ public class Base64UrlTests {
     @Test
     public void encodeWithNullBytes() {
         final Base64Url base64Url = Base64Url.encode(null);
-        assertNull(base64Url.encodedBytes());
-        assertNull(base64Url.decodedBytes());
-        assertEmpty(base64Url.toString());
+        assertEmptyByteArray(base64Url.encodedBytes());
+        assertEmptyByteArray(base64Url.decodedBytes());
+        assertEmptyString(base64Url.toString());
     }
 
     @Test
@@ -109,7 +109,11 @@ public class Base64UrlTests {
         assertEquals("AAECAwQFBgcICQ", base64Url.toString());
     }
 
-    public static void assertEmpty(String input) {
+    private static void assertEmptyString(String input) {
         assertEquals("", input);
+    }
+
+    private static void assertEmptyByteArray(byte[] input) {
+        assertEquals(0, input.length);
     }
 }

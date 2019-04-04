@@ -216,10 +216,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
     /**
      * Get the HTTP response status codes that are expected when a request is sent out for this
-     * Swagger method. If the returned int[] is null, then all status codes less than 400 are
+     * Swagger method. If the returned int[] is empty array, then all status codes less than 400 are
      * allowed.
      *
-     * @return the expected HTTP response status codes for this Swagger method or null if all status
+     * @return the expected HTTP response status codes for this Swagger method or zero length array if all status
      * codes less than 400 are allowed.
      */
     @Override

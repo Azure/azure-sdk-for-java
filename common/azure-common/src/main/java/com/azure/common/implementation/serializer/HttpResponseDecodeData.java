@@ -60,7 +60,7 @@ public interface HttpResponseDecodeData {
      * @return the expected HTTP response status codes
      */
     default int[] expectedStatusCodes() {
-         return null;
+         return new int[0];
     }
 
     /**
