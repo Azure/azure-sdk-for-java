@@ -310,7 +310,7 @@ public final class ConfigurationClient extends ServiceClient {
 
         if (setting.key() == null || setting.key().isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
-        } else if (setting.value() == null || setting.value().isEmpty()) {
+        } else if (verifyValue && (setting.value() == null || setting.value().isEmpty())) {
             throw new IllegalArgumentException("Parameter 'value' is required and cannot be null or empty");
         }
 
