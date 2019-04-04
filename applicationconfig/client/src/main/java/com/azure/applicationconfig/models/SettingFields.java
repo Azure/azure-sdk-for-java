@@ -4,6 +4,9 @@ package com.azure.applicationconfig.models;
 
 /**
  * Fields in {@link ConfigurationSetting} that can be returned from GET queries.
+ *
+ * @see SettingSelector
+ * @see com.azure.applicationconfig.ConfigurationClient
  */
 public enum SettingFields {
     /**

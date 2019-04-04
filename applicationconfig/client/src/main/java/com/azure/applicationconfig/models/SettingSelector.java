@@ -21,6 +21,8 @@ import java.util.Arrays;
  * <p>
  * Providing {@link SettingSelector#fields() fields} will populate only those {@link ConfigurationSetting} fields in the
  * response. By default, all of the fields are returned.
+ *
+ * @see com.azure.applicationconfig.ConfigurationClient
  */
 public class SettingSelector {
     private String key;

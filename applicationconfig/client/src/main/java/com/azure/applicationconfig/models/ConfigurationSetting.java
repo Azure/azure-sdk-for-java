@@ -9,8 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ConfigurationSetting is a resource identified by unique combination of key + label. Label can be null.
- * To explicitly reference null label use "\0" (url encoded as %00).
+ * ConfigurationSetting is a resource identified by unique combination of {@link ConfigurationSetting#key() key} and
+ * {@link ConfigurationSetting#label() label}. By default, the label is {@code null}. To explicitly reference the
+ * default label use {@link ConfigurationSetting#NO_LABEL}.
  */
 public class ConfigurationSetting {
     /**
