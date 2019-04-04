@@ -127,7 +127,7 @@ This project provides Java APIs for Azure Media Services, enabling you to share 
 
 This project provides Java APIs for [Azure Event Grid](https://azure.com/eventgrid), enabling you to build reactive programs and applications in the cloud:
 
-| [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/azure-eventgrid) | :arrow_down: Download | :pencil: Samples |[:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEventGrid) | [:book: Learn more...](https://azure.microsoft.com/services/event-grid/) |
+| [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/eventgrid) | :arrow_down: Download | :pencil: Samples |[:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEventGrid) | [:book: Learn more...](https://azure.microsoft.com/services/event-grid/) |
 | --- | --- | --- | --- | --- |
 
 ## Prerequisites
