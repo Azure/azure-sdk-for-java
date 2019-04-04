@@ -571,11 +571,10 @@ public class ConfigurationClientTest {
         tags.put("tag1", "value1");
         tags.put("tag2", "value2");
 
-        final EnumSet<SettingFields> fields = EnumSet.of(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
         final SettingSelector secondLabelOptions = new SettingSelector()
                 .label("*-second*")
                 .key(keyPrefix + "-fetch-*")
-                .fields(fields);
+                .fields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
         final List<ConfigurationSetting> settings = IntStream.range(0, numberToCreate)
                 .mapToObj(value -> {
                     String key = value % 2 == 0 ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
@@ -664,7 +663,6 @@ public class ConfigurationClientTest {
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
-        final EnumSet<SettingFields> fields = EnumSet.of(SettingFields.KEY, SettingFields.ETAG);
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original))
@@ -685,7 +683,7 @@ public class ConfigurationClientTest {
                 .verifyComplete();
 
         // Verifies that we can select specific fields.
-        StepVerifier.create(client.listSettingRevisions(new SettingSelector().key(keyName).fields(fields)))
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().key(keyName).fields(SettingFields.KEY, SettingFields.ETAG)))
                 .assertNext(response -> {
                     assertEquals(updated2.key(), response.key());
                     assertNotNull(response.etag());
