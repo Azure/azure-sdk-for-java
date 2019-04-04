@@ -19,24 +19,24 @@ import com.microsoft.azure.batch.protocol.models.FileProperties;
 import com.microsoft.azure.batch.protocol.models.NodeFile;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Performs file-related operations on an Azure Batch account.
  */
 public class FileOperations implements IInheritedBehaviors {
 
-    private Collection<BatchClientBehavior> _customBehaviors;
+    private Collection<BatchClientBehavior> customBehaviors;
 
-    private final BatchClient _parentBatchClient;
+    private final BatchClient parentBatchClient;
 
     FileOperations(BatchClient batchClient, Iterable<BatchClientBehavior> inheritedBehaviors) {
-        _parentBatchClient = batchClient;
+        parentBatchClient = batchClient;
 
         // inherit from instantiating parent
-        InternalHelper.InheritClientBehaviorsAndSetPublicProperty(this, inheritedBehaviors);
+        InternalHelper.inheritClientBehaviorsAndSetPublicProperty(this, inheritedBehaviors);
     }
 
     /**
@@ -46,7 +46,7 @@ public class FileOperations implements IInheritedBehaviors {
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
-        return _customBehaviors;
+        return customBehaviors;
     }
 
     /**
@@ -57,7 +57,7 @@ public class FileOperations implements IInheritedBehaviors {
      */
     @Override
     public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
-        _customBehaviors = behaviors;
+        customBehaviors = behaviors;
         return this;
     }
 
@@ -107,7 +107,7 @@ public class FileOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().files().listFromTask(jobId, taskId, recursive, options);
+        return this.parentBatchClient.protocolLayer().files().listFromTask(jobId, taskId, recursive, options);
     }
 
     /**
@@ -156,7 +156,7 @@ public class FileOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().files().listFromComputeNode(poolId, nodeId, recursive, options);
+        return this.parentBatchClient.protocolLayer().files().listFromComputeNode(poolId, nodeId, recursive, options);
     }
 
     /**
@@ -202,7 +202,7 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().files().deleteFromTask(jobId, taskId, fileName, recursive, options);
+        this.parentBatchClient.protocolLayer().files().deleteFromTask(jobId, taskId, fileName, recursive, options);
     }
 
     /**
@@ -248,7 +248,7 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().files().deleteFromComputeNode(poolId, nodeId, fileName, recursive, options);
+        this.parentBatchClient.protocolLayer().files().deleteFromComputeNode(poolId, nodeId, fileName, recursive, options);
     }
 
     /**
@@ -281,7 +281,7 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().files().getFromTask(jobId, taskId, fileName, options, outputStream);
+        this.parentBatchClient.protocolLayer().files().getFromTask(jobId, taskId, fileName, options, outputStream);
     }
 
     /**
@@ -314,7 +314,7 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().files().getFromComputeNode(poolId, nodeId, fileName, options, outputStream);
+        this.parentBatchClient.protocolLayer().files().getFromComputeNode(poolId, nodeId, fileName, options, outputStream);
     }
 
     /**
@@ -347,7 +347,7 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Void, FileGetPropertiesFromTaskHeaders> response = this._parentBatchClient.protocolLayer().files().
+        ServiceResponseWithHeaders<Void, FileGetPropertiesFromTaskHeaders> response = this.parentBatchClient.protocolLayer().files().
                 getPropertiesFromTaskWithServiceResponseAsync(jobId, taskId, fileName, options).toBlocking().single();
 
         return new FileProperties()
@@ -388,7 +388,7 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Void, FileGetPropertiesFromComputeNodeHeaders> response = this._parentBatchClient.protocolLayer().files().
+        ServiceResponseWithHeaders<Void, FileGetPropertiesFromComputeNodeHeaders> response = this.parentBatchClient.protocolLayer().files().
                 getPropertiesFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName, options).toBlocking().single();
 
         return new FileProperties()

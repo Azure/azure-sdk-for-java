@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.common.mgmt.http.MockAzureHttpClient;
 import com.azure.common.mgmt.http.MockAzureHttpResponse;
 import com.azure.common.implementation.OperationDescription;
-import com.azure.common.http.rest.RestException;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
@@ -23,6 +23,7 @@ import com.azure.common.annotations.PathParam;
 import com.azure.common.annotations.ResumeOperation;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -387,6 +388,7 @@ public class AzureProxyTests {
     }
 
     @Test
+    @Ignore("Test does not run in a stable fashion across Windows, MacOS, and Linux")
     public void createAsyncWithAzureAsyncOperationAndPollsWithDelay() throws InterruptedException {
         final long delayInMilliseconds = 100;
         AzureProxy.setDefaultPollingDelayInMilliseconds(delayInMilliseconds);
@@ -482,8 +484,8 @@ public class AzureProxyTests {
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) {
-                                assertEquals(RestException.class, throwable.getClass());
                                 assertEquals("Status code 294, (empty body)", throwable.getMessage());
+                                assertEquals(ServiceRequestException.class, throwable.getClass());
                             }
                         });
 
@@ -844,7 +846,7 @@ public class AzureProxyTests {
             service.deleteAsyncWithForbiddenResponse().block();
             fail("Expected RestException to be thrown.");
         }
-        catch (RestException e) {
+        catch (ServiceRequestException e) {
             assertEquals(403, e.response().statusCode());
             assertEquals("Status code 403, (empty body)", e.getMessage());
         }
