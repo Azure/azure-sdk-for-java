@@ -353,7 +353,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     public boolean isExpectedResponseStatusCode(int responseStatusCode, int[] additionalAllowedStatusCodes) {
         boolean result;
 
-        if (expectedStatusCodes == null) {
+        if (expectedStatusCodes == null || expectedStatusCodes.length == 0) {
             result = (responseStatusCode < 400);
         }
         else {

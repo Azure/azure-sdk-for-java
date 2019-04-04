@@ -30,20 +30,6 @@ public class ImplUtils {
     }
 
     /**
-     * Creates a copy of the source byte array.
-     * @param source Array to make copy of
-     * @return A copy of the array, or null if source was null.
-     */
-    public static byte[] cloneToNullWhenNotExist(byte[] source) {
-        if (source == null) {
-            return null;
-        }
-        byte[] copy = new byte[source.length];
-        System.arraycopy(source, 0, copy, 0, source.length);
-        return copy;
-    }
-
-    /**
      * Creates a copy of the source int array.
      * @param source Array to make copy of
      * @return A copy of the array, or zero length array if source was null.
@@ -51,20 +37,6 @@ public class ImplUtils {
     public static int[] clone(int[] source) {
         if (source == null) {
             return new int[0];
-        }
-        int[] copy = new int[source.length];
-        System.arraycopy(source, 0, copy, 0, source.length);
-        return copy;
-    }
-
-    /**
-     * Creates a copy of the source int array.
-     * @param source Array to make copy of
-     * @return A copy of the array, or null if source was null.
-     */
-    public static int[] cloneToNullWhenNotExist(int[] source) {
-        if (source == null) {
-            return null;
         }
         int[] copy = new int[source.length];
         System.arraycopy(source, 0, copy, 0, source.length);

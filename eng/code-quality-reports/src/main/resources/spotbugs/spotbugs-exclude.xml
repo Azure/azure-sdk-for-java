@@ -134,18 +134,12 @@
       <Bug pattern="SE_BAD_FIELD"/>
     </Match>
 
-    <!-- These two methods return null by design. Suppress the bug for the methods.  -->
-    <Match>
-      <Class name="com.azure.common.implementation.util.ImplUtils"/>
-      <Method name="cloneToNullWhenNotExist"/>
-      <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-    </Match>
-
     <!-- No need to implements cloneable. -->
     <Match>
       <Class name="com.azure.common.http.HttpPipelineNextPolicy"/>
       <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
     </Match>
+
     <!-- There is no need to make serializer or deserializer classes serializable. Suppress bugs related to these classes.
     -->
     <Match>
