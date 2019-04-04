@@ -23,6 +23,11 @@ import static com.azure.applicationconfig.ConfigurationCredentialsPolicy.CONTENT
 import static com.azure.applicationconfig.ConfigurationCredentialsPolicy.DATE_HEADER;
 import static com.azure.applicationconfig.ConfigurationCredentialsPolicy.HOST_HEADER;
 
+/**
+ * Credentials that authorizes requests to Azure Application Configuration.
+ *
+ * @see ConfigurationClientBuilder
+ */
 public class ConfigurationClientCredentials implements AsyncServiceClientCredentials {
     private final CredentialInformation credentials;
     private final AuthorizationHeaderProvider headerProvider;
