@@ -8,14 +8,20 @@
 
 package com.microsoft.azure.management.sql.v2014_04_01;
 
+import com.microsoft.azure.arm.collection.SupportsCreating;
+import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
+import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
+import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
+import com.microsoft.azure.arm.collection.SupportsListing;
 import com.microsoft.azure.management.sql.v2014_04_01.implementation.ServersInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing Servers.
  */
-public interface Servers extends HasInner<ServersInner> {
+public interface Servers extends SupportsCreating<Server.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Server>, SupportsListingByResourceGroup<Server>, SupportsListing<Server>, HasInner<ServersInner> {
     /**
      * Determines whether a resource can be created with the specified name.
      *

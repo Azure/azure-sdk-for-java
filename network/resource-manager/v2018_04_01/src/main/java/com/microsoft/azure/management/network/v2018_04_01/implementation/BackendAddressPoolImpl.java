@@ -25,6 +25,7 @@ class BackendAddressPoolImpl extends IndexableRefreshableWrapperImpl<BackendAddr
     BackendAddressPoolImpl(BackendAddressPoolInner inner,  NetworkManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.loadBalancerName = IdParsingUtils.getValueFromIdByName(inner.id(), "loadBalancers");
         this.backendAddressPoolName = IdParsingUtils.getValueFromIdByName(inner.id(), "backendAddressPools");

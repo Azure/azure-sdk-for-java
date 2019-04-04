@@ -28,7 +28,7 @@ public class PermissionInner {
     private List<String> notActions;
 
     /**
-     * Get the actions value.
+     * Get allowed actions.
      *
      * @return the actions value
      */
@@ -37,7 +37,7 @@ public class PermissionInner {
     }
 
     /**
-     * Set the actions value.
+     * Set allowed actions.
      *
      * @param actions the actions value to set
      * @return the PermissionInner object itself.
@@ -48,7 +48,7 @@ public class PermissionInner {
     }
 
     /**
-     * Get the notActions value.
+     * Get denied actions.
      *
      * @return the notActions value
      */
@@ -57,7 +57,7 @@ public class PermissionInner {
     }
 
     /**
-     * Set the notActions value.
+     * Set denied actions.
      *
      * @param notActions the notActions value to set
      * @return the PermissionInner object itself.

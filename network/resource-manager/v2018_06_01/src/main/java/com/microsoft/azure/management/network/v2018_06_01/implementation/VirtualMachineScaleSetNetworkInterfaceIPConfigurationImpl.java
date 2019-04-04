@@ -33,6 +33,7 @@ class VirtualMachineScaleSetNetworkInterfaceIPConfigurationImpl extends Indexabl
     VirtualMachineScaleSetNetworkInterfaceIPConfigurationImpl(NetworkInterfaceIPConfigurationInner inner,  NetworkManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.virtualMachineScaleSetName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualMachineScaleSets");
         this.virtualmachineIndex = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualMachines");

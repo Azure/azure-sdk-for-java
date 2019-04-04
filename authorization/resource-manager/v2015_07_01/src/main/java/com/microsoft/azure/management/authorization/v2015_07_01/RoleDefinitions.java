@@ -26,7 +26,7 @@ public interface RoleDefinitions extends SupportsCreating<RoleDefinition.Definit
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteAsync(String scope, String roleDefinitionId);
+    Observable<RoleDefinition> deleteAsync(String scope, String roleDefinitionId);
 
     /**
      * Get role definition by name (GUID).

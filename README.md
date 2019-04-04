@@ -1,8 +1,11 @@
-[![Build Status](https://travis-ci.org/Azure/azure-libraries-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-libraries-for-java)
-
 > :warning: *NOTE: The **Azure Libraries for Java** project (resource management APIs with fluent interface design pattern) has moved to http://github.com/azure/azure-libraries-for-java, so please log issues for that project in that new repository. This repository is now dedicated to other, auto-generated, non-management Azure SDKs only.*
 
 # Azure SDKs for Java
+
+| Component | Build Status |
+| --------- | ------------ |
+| Management Libraries | [![Build Status](https://travis-ci.org/Azure/azure-sdk-for-java.svg?branch=master)](https://travis-ci.org/Azure/azure-sdk-for-java) |
+| Client Libraries | [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/17?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=17)<br>[![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html)|
 
 :+1: [Try Azure for FREE](http://go.microsoft.com/fwlink/?LinkId=330212)
 
@@ -149,3 +152,6 @@ If you would like to become an active contributor to this project please follow 
 ---
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2FREADME.png)

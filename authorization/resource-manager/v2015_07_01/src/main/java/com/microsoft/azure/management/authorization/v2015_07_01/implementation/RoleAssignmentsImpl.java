@@ -11,11 +11,11 @@ package com.microsoft.azure.management.authorization.v2015_07_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignments;
-import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignment;
+import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignmentProperties;
 
 class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements RoleAssignments {
     private final AuthorizationManager manager;
@@ -51,7 +51,8 @@ class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements R
             public Iterable<RoleAssignmentInner> call(Page<RoleAssignmentInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
+        })
+        .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
             @Override
             public RoleAssignment call(RoleAssignmentInner inner) {
                 return new RoleAssignmentImpl(inner, manager());
@@ -60,9 +61,15 @@ class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements R
     }
 
     @Override
-    public Completable deleteAsync(String scope, String roleAssignmentName) {
+    public Observable<RoleAssignment> deleteAsync(String scope, String roleAssignmentName) {
         RoleAssignmentsInner client = this.inner();
-        return client.deleteAsync(scope, roleAssignmentName).toCompletable();
+        return client.deleteAsync(scope, roleAssignmentName)
+        .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
+            @Override
+            public RoleAssignment call(RoleAssignmentInner inner) {
+                return new RoleAssignmentImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -78,15 +85,21 @@ class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements R
     }
 
     @Override
-    public Completable deleteByIdAsync(String roleAssignmentId) {
+    public Observable<RoleAssignment> deleteByIdAsync(String roleAssignmentId) {
         RoleAssignmentsInner client = this.inner();
-        return client.deleteByIdAsync(roleAssignmentId).toCompletable();
+        return client.deleteByIdAsync(roleAssignmentId)
+        .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
+            @Override
+            public RoleAssignment call(RoleAssignmentInner inner) {
+                return new RoleAssignmentImpl(inner, manager());
+            }
+        });
     }
 
     @Override
-    public Observable<RoleAssignment> createByIdAsync(String roleAssignmentId) {
+    public Observable<RoleAssignment> createByIdAsync(String roleAssignmentId, RoleAssignmentProperties properties) {
         RoleAssignmentsInner client = this.inner();
-        return client.createByIdAsync(roleAssignmentId)
+        return client.createByIdAsync(roleAssignmentId, properties)
         .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
             @Override
             public RoleAssignment call(RoleAssignmentInner inner) {
@@ -116,7 +129,8 @@ class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements R
             public Iterable<RoleAssignmentInner> call(Page<RoleAssignmentInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
+        })
+        .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
             @Override
             public RoleAssignment call(RoleAssignmentInner inner) {
                 return new RoleAssignmentImpl(inner, manager());
@@ -133,7 +147,8 @@ class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements R
             public Iterable<RoleAssignmentInner> call(Page<RoleAssignmentInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
+        })
+        .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
             @Override
             public RoleAssignment call(RoleAssignmentInner inner) {
                 return new RoleAssignmentImpl(inner, manager());
@@ -150,7 +165,8 @@ class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements R
             public Iterable<RoleAssignmentInner> call(Page<RoleAssignmentInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
+        })
+        .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
             @Override
             public RoleAssignment call(RoleAssignmentInner inner) {
                 return new RoleAssignmentImpl(inner, manager());

@@ -13,6 +13,8 @@ import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.sql.v2014_04_01.implementation.DatabasesInner;
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.sql.v2014_04_01.DatabasisServerMetric;
+import com.microsoft.azure.management.sql.v2014_04_01.DatabasisServerMetricDefinition;
 
 /**
  * Type representing Databases.
@@ -147,5 +149,28 @@ public interface Databases extends SupportsCreating<Database.DefinitionStages.Bl
      * @return the observable for the request
      */
     Observable<ImportExportResponse> importMethodAsync(String resourceGroupName, String serverName, ImportRequest parameters);
+
+    /**
+     * Returns database metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<DatabasisServerMetric> listMetricsAsync(String resourceGroupName, String serverName, String databaseName, String filter);
+
+    /**
+     * Returns database metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<DatabasisServerMetricDefinition> listMetricDefinitionsAsync(String resourceGroupName, String serverName, String databaseName);
 
 }

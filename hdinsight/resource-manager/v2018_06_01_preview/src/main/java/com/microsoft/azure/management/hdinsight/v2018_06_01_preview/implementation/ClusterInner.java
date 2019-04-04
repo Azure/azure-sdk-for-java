@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementation;
 
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterGetProperties;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.SkipParentValidation;
 import com.microsoft.azure.Resource;
@@ -29,6 +30,12 @@ public class ClusterInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private ClusterGetProperties properties;
+
+    /**
+     * The identity of the cluster, if configured.
+     */
+    @JsonProperty(value = "identity")
+    private ClusterIdentity identity;
 
     /**
      * Get the ETag for the resource.
@@ -67,6 +74,26 @@ public class ClusterInner extends Resource {
      */
     public ClusterInner withProperties(ClusterGetProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the identity of the cluster, if configured.
+     *
+     * @return the identity value
+     */
+    public ClusterIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity of the cluster, if configured.
+     *
+     * @param identity the identity value to set
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withIdentity(ClusterIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
