@@ -24,7 +24,9 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import java.util.List;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayBackendHealth;
+import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayBackendHealthOnDemand;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayAvailableWafRuleSetsResult;
+import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayOnDemandProbe;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayAvailableSslOptions;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewaySslPredefinedPolicy;
 
@@ -150,6 +152,18 @@ class ApplicationGatewaysImpl extends GroupableResourcesCoreImpl<ApplicationGate
             @Override
             public ApplicationGatewayBackendHealth call(ApplicationGatewayBackendHealthInner inner) {
                 return new ApplicationGatewayBackendHealthImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ApplicationGatewayBackendHealthOnDemand> backendHealthOnDemandAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest) {
+        ApplicationGatewaysInner client = this.inner();
+        return client.backendHealthOnDemandAsync(resourceGroupName, applicationGatewayName, probeRequest)
+        .map(new Func1<ApplicationGatewayBackendHealthOnDemandInner, ApplicationGatewayBackendHealthOnDemand>() {
+            @Override
+            public ApplicationGatewayBackendHealthOnDemand call(ApplicationGatewayBackendHealthOnDemandInner inner) {
+                return new ApplicationGatewayBackendHealthOnDemandImpl(inner, manager());
             }
         });
     }

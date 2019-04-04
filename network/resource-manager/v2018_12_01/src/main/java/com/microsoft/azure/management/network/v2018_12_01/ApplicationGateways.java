@@ -54,6 +54,17 @@ public interface ApplicationGateways extends SupportsCreating<ApplicationGateway
     Observable<ApplicationGatewayBackendHealth> backendHealthAsync(String resourceGroupName, String applicationGatewayName);
 
     /**
+     * Gets the backend health for given combination of backend pool and http setting of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param probeRequest Request body for on-demand test probe operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ApplicationGatewayBackendHealthOnDemand> backendHealthOnDemandAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest);
+
+    /**
      * Lists all available server variables.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
