@@ -53,17 +53,20 @@ public class ConfigurationSets {
         // services to communicate with.
         // The sample below fetches all of the "beta" settings.
         SettingSelector selector = new SettingSelector().label(BETA);
-        List<ConfigurationSetting> settings = client.listSettings(selector).collectList().block();
 
-        for (ConfigurationSetting setting : settings) {
+        client.listSettings(selector).toStream().forEach(setting -> {
             System.out.println("Key: " + setting.key());
             if ("application/json".equals(setting.contentType())) {
-                KeyVaultConfiguration kv = mapper.readValue(setting.value(), KeyVaultConfiguration.class);
-                System.out.println("Value: " + kv.toString());
+                try {
+                    KeyVaultConfiguration kv = mapper.readValue(setting.value(), KeyVaultConfiguration.class);
+                    System.out.println("Value: " + kv.toString());
+                } catch (IOException e) {
+                    System.err.println(String.format("Could not deserialize %s%n%s", setting.value(), e.toString()));
+                }
             } else {
                 System.out.println("Value: " + setting.value());
             }
-        }
+        });
 
         // Unlock the production settings and delete all settings afterwards.
         for (String set : new String[]{BETA, PRODUCTION}) {
