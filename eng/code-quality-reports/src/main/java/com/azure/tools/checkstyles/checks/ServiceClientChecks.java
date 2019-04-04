@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.customcheckstyles;
+package com.azure.tools.checkstyles.checks;
 
 import com.azure.common.ServiceClient;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
@@ -13,12 +13,13 @@ import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 import java.util.Optional;
 
 /**
- * Used to check that descendants of ServiceClient follow a few rules
- *
- * 1) They cannot have public or protected constructors
- * 2) They must implement a public static builder method
+ * Verifies that subclasses of {@link ServiceClient} meet a set of guidelines.
+ * <ol>
+ *  <li>They cannot have public or protected constructors</li>
+ *  <li>They must implement a public static method named builder</li>
+ * </ol>
  */
-public class ServiceClientSubclassCheck extends AbstractCheck {
+public class ServiceClientChecks extends AbstractCheck {
     private static final String BUILDER_METHOD_NAME = "builder";
 
     private static final String CONSTRUCTOR_ERROR_MESSAGE = "Descendants of ServiceClient cannot have public or protected constructors.";

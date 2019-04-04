@@ -4,4 +4,4 @@
 /**
  * This package contains classes for custom Checkstyle checks.
  */
-package com.azure.customcheckstyles;
+package com.azure.tools.checkstyles.checks;

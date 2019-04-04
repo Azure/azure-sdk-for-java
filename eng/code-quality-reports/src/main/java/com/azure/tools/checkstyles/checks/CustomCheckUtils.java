@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.customcheckstyles;
+package com.azure.tools.checkstyles.checks;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
