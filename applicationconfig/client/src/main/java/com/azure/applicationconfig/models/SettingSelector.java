@@ -20,7 +20,7 @@ import java.util.Arrays;
  *
  * <p>
  * Providing {@link SettingSelector#fields() fields} will populate only those {@link ConfigurationSetting} fields in the
- * response.
+ * response. By default, all of the fields are returned.
  */
 public class SettingSelector {
     private String key;
@@ -29,11 +29,10 @@ public class SettingSelector {
     private String acceptDatetime;
 
     /**
-     * Creates a setting selector that will populate {@link ConfigurationSetting} responses with default properties and
-     * select all {@link ConfigurationSetting#key()}s.
+     * Creates a setting selector that will populate responses with all of the
+     * {@link ConfigurationSetting ConfigurationSetting's} properties and select all {@link ConfigurationSetting#key() keys}.
      */
     public SettingSelector() {
-        key = "*";
     }
 
     /**

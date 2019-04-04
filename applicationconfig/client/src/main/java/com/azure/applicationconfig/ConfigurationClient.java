@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Client that contains all the operations for KeyValues in Azure Configuration Store.
+ * Client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration Store.
  *
  * @see ConfigurationClientBuilder
  * @see ConfigurationClientCredentials
