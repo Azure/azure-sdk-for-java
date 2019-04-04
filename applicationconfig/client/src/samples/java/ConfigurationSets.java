@@ -73,6 +73,7 @@ public class ConfigurationSets {
         });
 
         // Unlock the production settings and delete all settings afterwards.
+        // Blocking so that the program does not exit before these tasks have completed.
         for (String set : new String[]{BETA, PRODUCTION}) {
             client.unlockSetting(new ConfigurationSetting().key(KEY_VAULT_KEY).label(set))
                     .map(config -> client.deleteSetting(config.value()))
