@@ -15,17 +15,19 @@ import com.azure.common.http.HttpResponse;
 import com.azure.common.http.ProxyOptions;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -34,6 +36,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
 
 public class InterceptorManager implements Closeable {
@@ -53,8 +57,8 @@ public class InterceptorManager implements Closeable {
         this.testMode = testMode;
 
         this.recordedData = testMode == TestMode.PLAYBACK
-                ? readDataFromFile()
-                : new RecordedData();
+            ? readDataFromFile()
+            : new RecordedData();
     }
 
     // factory method
@@ -134,7 +138,7 @@ public class InterceptorManager implements Closeable {
 
                     // Remove pre-added header if this is a waiting or redirection
                     if (body != null && body.contains("<Status>InProgress</Status>")
-                            || Integer.parseInt(networkCallRecord.Response.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
+                        || Integer.parseInt(networkCallRecord.Response.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
                         logger.info("Waiting for a response or redirection.");
                     } else {
                         synchronized (recordedData.getNetworkCallRecords()) {
@@ -226,7 +230,7 @@ public class InterceptorManager implements Closeable {
             }
 
             HttpResponse response = new MockHttpResponse(recordStatusCode, headers, bytes)
-                    .withRequest(request);
+                .withRequest(request);
             return Mono.just(response);
         }
     }
@@ -264,9 +268,11 @@ public class InterceptorManager implements Closeable {
             });
         } else {
             return response.bodyAsByteArray().map(bytes -> {
-                try {
-                    GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
-                    String content = IOUtils.toString(gis, StandardCharsets.UTF_8);
+                try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
+                     InputStreamReader inputStreamReader = new InputStreamReader(gis, StandardCharsets.UTF_8);
+                     BufferedReader reader = new BufferedReader(inputStreamReader)) {
+
+                    String content = reader.lines().collect(Collectors.joining());
                     responseData.remove("content-encoding");
                     responseData.put("content-length", Integer.toString(content.length()));
 
