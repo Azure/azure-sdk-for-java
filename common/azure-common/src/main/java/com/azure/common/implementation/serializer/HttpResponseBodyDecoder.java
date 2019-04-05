@@ -240,10 +240,11 @@ final class HttpResponseBodyDecoder {
     private static Object deserializePage(String value, Type resultType, Type wireType, SerializerAdapter serializer, SerializerEncoding encoding) throws IOException {
         final Type wireResponseType;
 
-        if (wireType != Page.class) {
-            wireResponseType = wireType;
-        } else {
+        if (wireType == Page.class) {
+            // If the type is the 'Page' interface [i.e. `@ReturnValueWireType(Page.class)`], we will use the 'ItemPage' class instead.
             wireResponseType = TypeUtil.createParameterizedType(ItemPage.class, resultType);
+        } else {
+            wireResponseType = wireType;
         }
 
         return serializer.deserialize(value, wireResponseType, encoding);
