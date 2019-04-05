@@ -40,7 +40,9 @@ public class ConfigurationSets {
                 .credentials(new ConfigurationClientCredentials(connectionString))
                 .build();
 
-        // In this sample, the user has two Key Vault instances, one for beta testing and another for production.
+        // In this sample, we are demonstrating how a user can store their configuration for Azure Key Vault in the Azure Application Configuration service. 
+        // Here we define two configuration settings we want to store, a setting for a beta endpoint for Key Vault, and a setting for a production endpoint for Key Vault.
+        // Note: Key Vault is not required for using Azure Configuration Service - this sample just uses Key Vault configuration settings for an example.
         KeyVaultConfiguration betaKeyVault = new KeyVaultConfiguration().endpointUri("https://beta-keyvault.vault.azure.net").secret("beta_secret");
         KeyVaultConfiguration productionKeyVault = new KeyVaultConfiguration().endpointUri("https://production-keyvault.vault.azure.net").secret("production_secret");
 
