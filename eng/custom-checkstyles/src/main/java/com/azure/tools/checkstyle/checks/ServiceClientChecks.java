@@ -26,6 +26,13 @@ public class ServiceClientChecks extends AbstractCheck {
     private static final String BUILDER_ERROR_MESSAGE = "Descendants of ServiceClient must have a static method named builder.";
 
     private static final int[] TOKENS = new int[] { TokenTypes.PACKAGE_DEF };
+    private final Class<?> serviceClientClass;
+
+    public ServiceClientChecks() throws ClassNotFoundException {
+        super();
+        this.serviceClientClass = this.getClassLoader().loadClass(ServiceClient.class.getName());
+    }
+
     @Override
     public int[] getDefaultTokens() {
         return getRequiredTokens();
@@ -66,9 +73,9 @@ public class ServiceClientChecks extends AbstractCheck {
         // Attempt to load the class and run the checks if it is a descendant of ServiceClient.
         try {
             Class<?> classToCheck = this.getClassLoader().loadClass(fullClassName.get());
-            Class<?> serviceClientClass = this.getClassLoader().loadClass(ServiceClient.class.getName());
+            //Class<?> serviceClientClass = this.getClassLoader().loadClass(ServiceClient.class.getName());
 
-            if (!serviceClientClass.isAssignableFrom(classToCheck)) {
+            if (!this.serviceClientClass.isAssignableFrom(classToCheck)) {
                 return;
             }
         } catch (ClassNotFoundException ex) {
