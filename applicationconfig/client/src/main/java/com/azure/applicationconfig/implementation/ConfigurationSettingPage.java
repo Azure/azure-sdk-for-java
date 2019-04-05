@@ -13,15 +13,9 @@ import java.util.List;
  * to get the next page of resources, if any.
  */
 public final class ConfigurationSettingPage implements Page<ConfigurationSetting> {
-    /**
-     * The link to the next page.
-     */
     @JsonProperty("@nextLink")
     private String nextLink;
 
-    /**
-     * The list of items.
-     */
     @JsonProperty("items")
     private List<ConfigurationSetting> items;
 
