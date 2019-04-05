@@ -13,11 +13,22 @@
     <artifactId>checks</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
+    <distributionManagement>
+        <site>
+            <id>azure-java-build-docs</id>
+            <url>${site.url}/site/${project.artifactId}</url>
+        </site>
+    </distributionManagement>
+
+    <scm>
+        <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    </scm>
+
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-
 
     <dependencies>
         <dependency>
