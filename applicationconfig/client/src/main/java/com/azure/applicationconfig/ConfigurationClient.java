@@ -129,7 +129,7 @@ public final class ConfigurationClient extends ServiceClient {
      * <p>
      * Partial updates are not supported.
      *
-     * @param key The key for the configuration setting to update.
+     * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
      * @return ConfigurationSetting that was updated.
      * @throws IllegalArgumentException If {@code key} or {@code value} are {@code null} or an empty string.
