@@ -140,6 +140,11 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
     }
 
     @Override
+    public String runErrorMessage() {
+        return this.inner().runErrorMessage();
+    }
+
+    @Override
     public String runId() {
         return this.inner().runId();
     }
