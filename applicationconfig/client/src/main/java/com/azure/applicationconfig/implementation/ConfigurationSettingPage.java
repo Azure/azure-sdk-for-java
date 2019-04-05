@@ -2,36 +2,37 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.implementation;
 
+import com.azure.applicationconfig.models.ConfigurationSetting;
+import com.azure.common.http.rest.Page;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 /**
- * An instance of this class defines a page of Azure App Configuration resources and a link to get the next page of
- * resources, if any.
- *
- * @param <T> type of Azure App Configuration resource to deserialize.
+ * An instance of this class defines a page of Azure App Configuration {@link ConfigurationSetting} resources and a link
+ * to get the next page of resources, if any.
  */
-public final class Page<T> {
+public final class ConfigurationSettingPage implements Page<ConfigurationSetting> {
     /**
      * The link to the next page.
      */
     @JsonProperty("@nextLink")
-    private String nextPageLink;
+    private String nextLink;
 
     /**
      * The list of items.
      */
-    @JsonProperty()
-    private List<T> items;
+    @JsonProperty("items")
+    private List<ConfigurationSetting> items;
 
     /**
      * Gets the link to the next page.
      *
      * @return the link to the next page.
      */
-    public String nextPageLink() {
-        return this.nextPageLink;
+    @Override
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
@@ -39,7 +40,8 @@ public final class Page<T> {
      *
      * @return the list of items in {@link List}.
      */
-    public List<T> items() {
+    @Override
+    public List<ConfigurationSetting> items() {
         return items;
     }
 }

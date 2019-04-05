@@ -4,7 +4,6 @@
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.implementation.Page;
-import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
