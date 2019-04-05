@@ -149,7 +149,6 @@
     <xml-maven-plugin.version>1.0</xml-maven-plugin.version>
     <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
     <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
-    <commons-io.version>2.4</commons-io.version>
     <checkstyle.version>8.18</checkstyle.version>
   </properties>
 
@@ -324,13 +323,6 @@
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-storage</artifactId>
         <version>${azure-storage.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>${commons-io.version}</version>
-        <scope>test</scope>
       </dependency>
 
       <dependency>
