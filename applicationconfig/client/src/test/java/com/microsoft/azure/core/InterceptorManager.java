@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.core;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.microsoft.azure.utils.SdkContext;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpHeaders;
@@ -14,6 +11,9 @@ import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.ProxyOptions;
 import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.microsoft.azure.utils.SdkContext;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.slf4j.Logger;
@@ -21,25 +21,19 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.net.URI;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
 
 public class InterceptorManager implements Closeable {
