@@ -492,6 +492,10 @@ public class RestProxyWithMockTests extends RestProxyTests {
         }
     }
 
+    /*
+     * Non-conforming page because it does not implement the Page interface and instead of a Page.items(), has
+     * badItems(), which would result in different JSON.
+     */
     static class NonComformingPage<T> {
         private List<T> badItems;
         private String nextLink;
