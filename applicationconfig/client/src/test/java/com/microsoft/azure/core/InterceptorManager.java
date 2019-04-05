@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,6 +44,7 @@ import java.util.zip.GZIPInputStream;
 
 public class InterceptorManager implements Closeable {
     private final static String RECORD_FOLDER = "session-records/";
+    private final static int DEFAULT_BUFFER_LENGTH = 1024;
 
     private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
     private final Map<String, String> textReplacementRules = new HashMap<>();
@@ -268,20 +271,30 @@ public class InterceptorManager implements Closeable {
             });
         } else {
             return response.bodyAsByteArray().map(bytes -> {
+                String content;
                 try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
-                     InputStreamReader inputStreamReader = new InputStreamReader(gis, StandardCharsets.UTF_8);
-                     BufferedReader reader = new BufferedReader(inputStreamReader)) {
+                     ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+                    byte[] buffer = new byte[DEFAULT_BUFFER_LENGTH];
+                    int position = 0;
+                    int bytesRead = gis.read(buffer, position, buffer.length);
 
-                    String content = reader.lines().collect(Collectors.joining());
-                    responseData.remove("content-encoding");
-                    responseData.put("content-length", Integer.toString(content.length()));
+                    while (bytesRead != -1) {
+                        output.write(buffer, 0, bytesRead);
+                        position += bytesRead;
+                        bytesRead = gis.read(buffer, position, buffer.length);
+                    }
 
-                    content = applyReplacementRule(content);
-                    responseData.put("body", content);
-                    return responseData;
+                    content = new String(output.toByteArray(), StandardCharsets.UTF_8);
                 } catch (IOException e) {
                     throw Exceptions.propagate(e);
                 }
+
+                responseData.remove("content-encoding");
+                responseData.put("content-length", Integer.toString(content.length()));
+
+                content = applyReplacementRule(content);
+                responseData.put("body", content);
+                return responseData;
             });
         }
     }
