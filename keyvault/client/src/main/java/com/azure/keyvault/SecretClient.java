@@ -18,7 +18,9 @@ import com.azure.common.http.rest.SimpleRestResponse;
 import com.azure.common.implementation.RestProxy;
 import com.azure.keyvault.implementation.Page;
 import com.azure.keyvault.implementation.RestPagedResponseImpl;
-import com.azure.keyvault.models.*;
+import com.azure.keyvault.models.DeletedSecret;
+import com.azure.keyvault.models.Secret;
+import com.azure.keyvault.models.SecretAttributes;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -89,11 +91,11 @@ public final class SecretClient extends ServiceClient {
          */
         public SecretClient build() {
             if (credentials == null) {
-                throw new IllegalStateException(KeyVaultErrorCodeStrings.CredentialsRequired);
+                throw new IllegalStateException(KeyVaultErrorCodeStrings.CREDENTIALS_REQUIRED);
             }
 
             if (vaultEndPoint == null) {
-                throw new IllegalStateException(KeyVaultErrorCodeStrings.VaultEndPointRequired);
+                throw new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
             }
 
             // Closest to API goes first, closest to wire goes last.
@@ -245,7 +247,7 @@ public final class SecretClient extends ServiceClient {
      */
     public Mono<RestResponse<Secret>> getSecretAsync(String name, String version) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        if(version == null){
+        if (version == null) {
             return service.getSecret(vaultEndPoint, name, "", API_VERSION, ACCEPT_LANGUAGE);
         } else {
             return service.getSecret(vaultEndPoint, name, version, API_VERSION, ACCEPT_LANGUAGE);
@@ -367,9 +369,9 @@ public final class SecretClient extends ServiceClient {
         return service.backupSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE)
                 .flatMap(new Function<RestResponse<SecretBackup>, Mono<? extends RestResponse<byte[]>>>() {
                     @Override
-                    public Mono<? extends RestResponse<byte[]>> apply(RestResponse<SecretBackup> base64URLRestResponse) {
-                         return Mono.just(new SimpleRestResponse<byte[]>(base64URLRestResponse.request(),
-                                base64URLRestResponse.statusCode(),base64URLRestResponse.headers(),base64URLRestResponse.body().value()));
+                   public Mono<? extends RestResponse<byte[]>> apply(RestResponse<SecretBackup> base64URLRestResponse) {
+                        return Mono.just(new SimpleRestResponse<byte[]>(base64URLRestResponse.request(),
+                            base64URLRestResponse.statusCode(), base64URLRestResponse.headers(), base64URLRestResponse.body().value()));
                     }
                 });
     }

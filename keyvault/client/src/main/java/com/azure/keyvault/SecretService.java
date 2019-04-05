@@ -20,7 +20,9 @@ import com.azure.common.http.rest.RestException;
 import com.azure.common.http.rest.RestResponse;
 import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.keyvault.implementation.Page;
-import com.azure.keyvault.models.*;
+import com.azure.keyvault.models.DeletedSecret;
+import com.azure.keyvault.models.Secret;
+import com.azure.keyvault.models.SecretAttributes;
 import reactor.core.publisher.Mono;
 
 /**
@@ -66,9 +68,9 @@ interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
     Mono<RestResponse<DeletedSecret>> deleteSecret(@HostParam("url") String url,
-                                            @PathParam("secret-name") String secretName,
-                                            @QueryParam("api-version") String apiVersion,
-                                            @HeaderParam("accept-language") String acceptLanguage);
+                                                   @PathParam("secret-name") String secretName,
+                                                   @QueryParam("api-version") String apiVersion,
+                                                   @HeaderParam("accept-language") String acceptLanguage);
 
 
     @GET("deletedsecrets/{secret-name}")

@@ -77,7 +77,7 @@ public class DeletedSecret extends SecretAttributes {
      * value of class variable scheduledPurgeDate.
      */
     @JsonProperty("scheduledPurgeDate")
-    private void unpackScheduledPurgeDate(Long scheduledPurgeDate){
+    private void unpackScheduledPurgeDate(Long scheduledPurgeDate) {
         this.scheduledPurgeDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(scheduledPurgeDate * 1000L), ZoneOffset.UTC);
     }
 
@@ -86,7 +86,7 @@ public class DeletedSecret extends SecretAttributes {
      * value of class variable deletedDate.
      */
     @JsonProperty("deletedDate")
-    private void deletedDate(Long deletedDate){
+    private void deletedDate(Long deletedDate) {
         this.deletedDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
     }
 

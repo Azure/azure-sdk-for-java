@@ -15,8 +15,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 final class KeyvaultCredentialsPolicy implements HttpPipelinePolicy {

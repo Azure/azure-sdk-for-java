@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.keyvault;
 
-import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretAttributes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,11 +19,11 @@ class SecretRequestAttributes {
      * from {@code secretAttributes}
      * @param secretAttributes the {@link SecretAttributes} object with populated attributes
      */
-    public SecretRequestAttributes(SecretAttributes secretAttributes){
-        if(secretAttributes.notBefore() != null) {
+    SecretRequestAttributes(SecretAttributes secretAttributes) {
+        if (secretAttributes.notBefore() != null) {
             this.notBefore = secretAttributes.notBefore().toEpochSecond();
         }
-        if(secretAttributes.expires() != null) {
+        if (secretAttributes.expires() != null) {
             this.expires = secretAttributes.expires().toEpochSecond();
         }
         this.enabled = secretAttributes.enabled();
