@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault.models;
+package com.azure.keyvault;
 
 import com.azure.common.implementation.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SecretBackup {
+class SecretBackup {
     /**
      * The backup blob containing the backed up secret.
      */

@@ -15,7 +15,7 @@ import java.util.UUID;
  * the request id as the unique identifier for the request.
  * Also sets 'x-ms-return-client-request-id' header to tell server to return request id in the response.
  */
-public class RequestIdPolicy implements HttpPipelinePolicy {
+class RequestIdPolicy implements HttpPipelinePolicy {
     private static final String REQUEST_ID_HEADER = "x-ms-client-request-id";
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
 

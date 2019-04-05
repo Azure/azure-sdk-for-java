@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.keyvault.models;
+package com.azure.keyvault;
 
+import com.azure.keyvault.models.Secret;
+import com.azure.keyvault.models.SecretAttributes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
@@ -11,7 +13,22 @@ import java.time.ZoneOffset;
 /**
  * The object attributes managed by the Secret service.
  */
-public class SecretRequestAttributes {
+class SecretRequestAttributes {
+
+    /**
+     * Creates an instance of SecretRequestAttributes. Reads secretAttributes.notBefore, secretAttributes.expires and secretAttributes.enabled fields
+     * from {@code secretAttributes}
+     * @param secretAttributes the {@link SecretAttributes} object with populated attributes
+     */
+    public SecretRequestAttributes(SecretAttributes secretAttributes){
+        if(secretAttributes.notBefore() != null) {
+            this.notBefore = secretAttributes.notBefore().toEpochSecond();
+        }
+        if(secretAttributes.expires() != null) {
+            this.expires = secretAttributes.expires().toEpochSecond();
+        }
+        this.enabled = secretAttributes.enabled();
+    }
 
     /**
      * The secret value.
@@ -70,7 +87,7 @@ public class SecretRequestAttributes {
      * @param enabled the enabled value to set
      * @return the Attributes object itself.
      */
-    public SecretRequestAttributes withEnabled(Boolean enabled) {
+    public SecretRequestAttributes enabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -93,7 +110,7 @@ public class SecretRequestAttributes {
      * @param notBefore the notBefore value to set
      * @return the Attributes object itself.
      */
-    public SecretRequestAttributes withNotBefore(OffsetDateTime notBefore) {
+    public SecretRequestAttributes notBefore(OffsetDateTime notBefore) {
         if (notBefore == null) {
             this.notBefore = null;
         } else {
@@ -120,7 +137,7 @@ public class SecretRequestAttributes {
      * @param expires the expires value to set
      * @return the Attributes object itself.
      */
-    public SecretRequestAttributes withExpires(OffsetDateTime expires) {
+    public SecretRequestAttributes expires(OffsetDateTime expires) {
         if (expires == null) {
             this.expires = null;
         } else {

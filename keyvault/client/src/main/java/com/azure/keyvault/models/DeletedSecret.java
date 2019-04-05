@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-public class DeletedSecret extends SecretInfo {
+public class DeletedSecret extends SecretAttributes {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted
@@ -20,14 +20,12 @@ public class DeletedSecret extends SecretInfo {
     /**
      * The time when the secret is scheduled to be purged, in UTC.
      */
-    @JsonProperty(value = "scheduledPurgeDate", access = JsonProperty.Access.WRITE_ONLY)
-    private Long scheduledPurgeDate;
+    private OffsetDateTime scheduledPurgeDate;
 
     /**
      * The time when the secret was deleted, in UTC.
      */
-    @JsonProperty(value = "deletedDate", access = JsonProperty.Access.WRITE_ONLY)
-    private Long deletedDate;
+    private OffsetDateTime deletedDate;
 
     /**
      * Get the recoveryId value.
@@ -44,7 +42,7 @@ public class DeletedSecret extends SecretInfo {
      * @param recoveryId the recoveryId value to set
      * @return the DeletedSecret object itself.
      */
-    public DeletedSecret withRecoveryId(String recoveryId) {
+    public DeletedSecret recoveryId(String recoveryId) {
         this.recoveryId = recoveryId;
         return this;
     }
@@ -59,7 +57,7 @@ public class DeletedSecret extends SecretInfo {
             return null;
         }
 
-        return OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.scheduledPurgeDate * 1000L), ZoneOffset.UTC);
+        return scheduledPurgeDate;
     }
 
     /**
@@ -71,7 +69,25 @@ public class DeletedSecret extends SecretInfo {
         if (this.deletedDate == null) {
             return null;
         }
-        return OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.deletedDate * 1000L), ZoneOffset.UTC);
+        return this.deletedDate;
+    }
+
+    /**
+     * Unpacks the scheduledPurageDate json response. Converts the {@link Long scheduledPurgeDate} epoch second value to OffsetDateTime and updates the
+     * value of class variable scheduledPurgeDate.
+     */
+    @JsonProperty("scheduledPurgeDate")
+    private void unpackScheduledPurgeDate(Long scheduledPurgeDate){
+        this.scheduledPurgeDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(scheduledPurgeDate * 1000L), ZoneOffset.UTC);
+    }
+
+    /**
+     * Unpacks the deletedDate json response. Converts the {@link Long deletedDate} epoch second value to OffsetDateTime and updates the
+     * value of class variable deletedDate.
+     */
+    @JsonProperty("deletedDate")
+    private void deletedDate(Long deletedDate){
+        this.deletedDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
     }
 
 }

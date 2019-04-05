@@ -24,12 +24,9 @@ final class KeyvaultCredentialsPolicy implements HttpPipelinePolicy {
     private static final String HOST_HEADER = "Host";
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
-
-
     private final URL vaultUrl;
     private ServiceClientCredentials credentials;
     private final Logger logger = LoggerFactory.getLogger(KeyvaultCredentials.class);
-
 
     /**
      * Creates a policy that authenticates requests with Azure Azure Keyvault service.
@@ -58,8 +55,8 @@ final class KeyvaultCredentialsPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final Map<String, String> mapped = getDefaultHeaders();
-        mapped.forEach((key, value) -> context.httpRequest().headers().set(key, value));
+        context.httpRequest().headers().set(HOST_HEADER, vaultUrl.getHost());
+        context.httpRequest().headers().set(CONTENT_TYPE_HEADER, "application/json");
 
         try {
             String bearer = getAuthenticationHeaderValue();
@@ -69,14 +66,6 @@ final class KeyvaultCredentialsPolicy implements HttpPipelinePolicy {
         }
 
         return next.process().doOnSuccess(this::logResponseDelegate);
-    }
-
-    private Map<String, String> getDefaultHeaders() {
-        final Map<String, String> mapped = new HashMap<>();
-        mapped.put(HOST_HEADER, vaultUrl.getHost());
-        mapped.put(CONTENT_TYPE_HEADER, "application/json");
-
-        return mapped;
     }
 
     private void logResponseDelegate(HttpResponse response) {

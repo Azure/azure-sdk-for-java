@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault.models;
+package com.azure.keyvault;
 
 import com.azure.common.implementation.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SecretRestoreRequestParameters {
+class SecretRestoreRequestParameters {
     /**
      * The backup blob associated with the secret.
      */
@@ -31,7 +31,7 @@ public class SecretRestoreRequestParameters {
      * @param secretBackup the secretBackup value to set
      * @return the SecretRestoreRequestParameters object itself.
      */
-    public SecretRestoreRequestParameters withSecretBackup(byte[] secretBackup) {
+    public SecretRestoreRequestParameters secretBackup(byte[] secretBackup) {
         if (secretBackup == null) {
             this.secretBackup = null;
         } else {

@@ -13,10 +13,10 @@ import java.time.ZoneOffset;
 import java.util.Map;
 
 /**
- * SecretInfo is the resource containing all the properties of the secret except its value.
+ * SecretAttributes is the resource containing all the properties of the secret except its value.
  * It is managed by the Secret Service.
  */
-public class SecretInfo {
+public class SecretAttributes {
 
     /**
      * The secret id.
@@ -56,7 +56,7 @@ public class SecretInfo {
     /**
      * The secret name.
      */
-    private String name;
+    protected String name;
 
     /**
      * Reflects the deletion recovery level currently in effect for secrets in
@@ -86,7 +86,7 @@ public class SecretInfo {
      * If this is a secret backing a KV certificate, then this field specifies
      * the corresponding key backing the KV certificate.
      */
-    @JsonProperty(value = "keyId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "kid", access = JsonProperty.Access.WRITE_ONLY)
     private String keyId;
 
     /**
@@ -95,13 +95,6 @@ public class SecretInfo {
      */
     @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean managed;
-
-
-
-    public SecretInfo withName(String name) {
-        this.name = name;
-        return this;
-    }
 
     /**
      * Get the secret name.
@@ -137,7 +130,7 @@ public class SecretInfo {
      * @param enabled the enabled value to set
      * @return the Attributes object itself.
      */
-    public SecretInfo withEnabled(Boolean enabled) {
+    public SecretAttributes enabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -157,7 +150,7 @@ public class SecretInfo {
      * @param notBefore the notBefore value to set
      * @return the Attributes object itself.
      */
-    public SecretInfo withNotBefore(OffsetDateTime notBefore) {
+    public SecretAttributes notBefore(OffsetDateTime notBefore) {
         this.notBefore = OffsetDateTime.ofInstant(notBefore.toInstant(), ZoneOffset.UTC);
         return this;
     }
@@ -180,7 +173,7 @@ public class SecretInfo {
      * @param expires the expires value to set
      * @return the Attributes object itself.
      */
-    public SecretInfo withExpires(OffsetDateTime expires) {
+    public SecretAttributes expires(OffsetDateTime expires) {
         this.expires = OffsetDateTime.ofInstant(expires.toInstant(), ZoneOffset.UTC);
         return this;
     }
@@ -218,8 +211,8 @@ public class SecretInfo {
      * @param id the id value to set
      * @return the Secret object itself.
      */
-    public SecretInfo withId(String id) {
-        this.id = id;
+    public SecretAttributes id(String id) {
+        unpackId(id);
         return this;
     }
 
@@ -238,7 +231,7 @@ public class SecretInfo {
      * @param contentType the contentType value to set
      * @return the Secret object itself.
      */
-    public SecretInfo withContentType(String contentType) {
+    public SecretAttributes contentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -258,7 +251,7 @@ public class SecretInfo {
      * @param tags the tags value to set
      * @return the Secret object itself.
      */
-    public SecretInfo withTags(Map<String, String> tags) {
+    public SecretAttributes tags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -308,7 +301,7 @@ public class SecretInfo {
     }
 
     /**
-     * Unpacks the attributes json response and updates the variables in the Secret Info object.
+     * Unpacks the attributes json response and updates the variables in the Secret Attributes object.
      * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
      * part of main json body and not attributes json body when the secret response comes from list Secrets operations.
      * @param attributes the key value mapping of the Secret attributes

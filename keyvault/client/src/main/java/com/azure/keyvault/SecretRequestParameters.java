@@ -1,18 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault.models;
+package com.azure.keyvault;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.OffsetDateTime;
 import java.util.Map;
 
 
 /**
  * Represents a set of request options used in REST requests intitiated by Secret service.
  */
-public class SecretRequestParameters {
+class SecretRequestParameters {
     /**
      * The value of the secret.
      */
@@ -52,7 +51,7 @@ public class SecretRequestParameters {
      * @param value the value value to set
      * @return the SecretRequestParameters object itself.
      */
-    public SecretRequestParameters withValue(String value) {
+    public SecretRequestParameters value(String value) {
         this.value = value;
         return this;
     }
@@ -72,7 +71,7 @@ public class SecretRequestParameters {
      * @param tags the tags value to set
      * @return the SecretRequestParameters object itself.
      */
-    public SecretRequestParameters withTags(Map<String, String> tags) {
+    public SecretRequestParameters tags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -92,7 +91,7 @@ public class SecretRequestParameters {
      * @param contentType the contentType value to set
      * @return the SecretRequestParameters object itself.
      */
-    public SecretRequestParameters withContentType(String contentType) {
+    public SecretRequestParameters contentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -112,7 +111,7 @@ public class SecretRequestParameters {
      * @param secretRequestAttributes the secretRequestAttributes to set
      * @return the SecretRequestParameters object itself.
      */
-    public SecretRequestParameters withSecretAttributes(SecretRequestAttributes secretRequestAttributes) {
+    public SecretRequestParameters secretAttributes(SecretRequestAttributes secretRequestAttributes) {
         this.secretRequestAttributes = secretRequestAttributes;
         return this;
     }

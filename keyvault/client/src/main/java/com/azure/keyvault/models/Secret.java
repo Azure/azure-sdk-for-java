@@ -9,10 +9,10 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- *  Secret is the resource consisting of name, value, id and its other attributes inherited from {@link SecretInfo}.
+ *  Secret is the resource consisting of name, value and its attributes inherited from {@link SecretAttributes}.
  *  It is managed by Secret Service.
  */
-public class Secret extends SecretInfo {
+public class Secret extends SecretAttributes {
 
     /**
      * The secret value.
@@ -20,13 +20,21 @@ public class Secret extends SecretInfo {
     @JsonProperty(value = "value")
     private String value;
 
-
+    /**
+     * Creates an empty instance of the Secret.
+     */
     public Secret() {
 
     }
 
-    public Secret(String secretName, String value) {
-        withName(secretName);
+    /**
+     * Creates a Secret with {@code name} and {@code value}.
+     *
+     * @param name The name of the secret.
+     * @param value The value of the secret.
+     */
+    public Secret(String name, String value) {
+        this.name = name;
         this.value = value;
     }
 
@@ -40,75 +48,54 @@ public class Secret extends SecretInfo {
     }
 
     /**
-     * Set the secret value.
-     *
-     * @param value the secret value to set
-     * @return the Secret object itself.
-     */
-    public Secret withValue(String value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
-     * Set the name value.
-     *
-     * @param name the name of the secret to be set.
-     * @return the Secret object itself.
-     */
-    @Override
-    public Secret withName(String name) {
-        super.withName(name);
-        return this;
-    }
-
-
-    /**
      * Set the enabled value.
      *
      * @param enabled the enabled value to set
      * @return the Secret object itself.
      */
     @Override
-    public Secret withEnabled(Boolean enabled) {
-        super.withEnabled(enabled);
+    public Secret enabled(Boolean enabled) {
+        super.enabled(enabled);
         return this;
     }
 
     /**
-     * Set the notBefore value.
+     * Set the {@link OffsetDateTime notBefore} value.
      *
      * @param notBefore the notBefore value to set
      * @return the Secret object itself.
      */
     @Override
-    public Secret withNotBefore(OffsetDateTime notBefore) {
-        super.withNotBefore(notBefore);
+    public Secret notBefore(OffsetDateTime notBefore) {
+        super.notBefore(notBefore);
         return this;
     }
 
     /**
-     * Set the expires value.
+     * Set the {@link OffsetDateTime expires} value.
      *
      * @param expires the expiry time value to set
      * @return the Secret object itself.
      */
     @Override
-    public Secret withExpires(OffsetDateTime expires) {
-        super.withExpires(expires);
+    public Secret expires(OffsetDateTime expires) {
+        super.expires(expires);
         return this;
     }
 
-
     /**
      * Set the id value.
+     *
+     *<p>
+     * The id value of a {@link Secret secret} follows the following format: http://myvault.azure.net/secrets/{secret-name}/{secret-version}.
+     *</p>
      *
      * @param id the id value to set
      * @return the Secret object itself.
      */
     @Override
-    public Secret withId(String id) {
-        super.withId(id);
+    public Secret id(String id) {
+        super.id(id);
         return this;
     }
 
@@ -119,8 +106,8 @@ public class Secret extends SecretInfo {
      * @return the Secret object itself.
      */
     @Override
-    public Secret withContentType(String contentType) {
-        super.withContentType(contentType);
+    public Secret contentType(String contentType) {
+        super.contentType(contentType);
         return this;
     }
 
@@ -131,8 +118,8 @@ public class Secret extends SecretInfo {
      * @return the Secret object itself.
      */
     @Override
-    public Secret withTags(Map<String, String> tags) {
-        super.withTags(tags);
+    public Secret tags(Map<String, String> tags) {
+        super.tags(tags);
         return this;
     }
 
