@@ -22,7 +22,7 @@ public interface PagedResponse<T> extends Response<List<T>>, Closeable {
     List<T> items();
 
     /**
-     * Get the link to retrieve RestPagedResponse containing next page.
+     * Get the link to retrieve PagedResponse containing next page.
      *
      * @return the next page link.
      */
