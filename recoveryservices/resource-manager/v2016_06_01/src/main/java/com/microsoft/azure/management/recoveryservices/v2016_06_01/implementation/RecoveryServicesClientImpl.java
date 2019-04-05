@@ -172,6 +172,19 @@ public class RecoveryServicesClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The RecoveryServicesInner object to access its operations.
+     */
+    private RecoveryServicesInner recoveryServices;
+
+    /**
+     * Gets the RecoveryServicesInner object to access its operations.
+     * @return the RecoveryServicesInner object.
+     */
+    public RecoveryServicesInner recoveryServices() {
+        return this.recoveryServices;
+    }
+
+    /**
      * The VaultsInner object to access its operations.
      */
     private VaultsInner vaults;
@@ -261,6 +274,7 @@ public class RecoveryServicesClientImpl extends AzureServiceClient {
         this.vaultCertificates = new VaultCertificatesInner(restClient().retrofit(), this);
         this.registeredIdentities = new RegisteredIdentitiesInner(restClient().retrofit(), this);
         this.replicationUsages = new ReplicationUsagesInner(restClient().retrofit(), this);
+        this.recoveryServices = new RecoveryServicesInner(restClient().retrofit(), this);
         this.vaults = new VaultsInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.vaultExtendedInfos = new VaultExtendedInfosInner(restClient().retrofit(), this);
@@ -275,6 +289,6 @@ public class RecoveryServicesClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "RecoveryServicesClient", "2016-06-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "RecoveryServicesClient", "2016-06-01");
     }
 }
