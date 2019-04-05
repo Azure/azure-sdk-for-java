@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.Period;
 import retrofit2.http.GET;
@@ -66,9 +67,9 @@ public class BaselinesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MetricBaselinesResponseInner object if successful.
+     * @return the List&lt;SingleMetricBaselineInner&gt; object if successful.
      */
-    public MetricBaselinesResponseInner list(String resourceUri) {
+    public List<SingleMetricBaselineInner> list(String resourceUri) {
         return listWithServiceResponseAsync(resourceUri).toBlocking().single().body();
     }
 
@@ -80,7 +81,7 @@ public class BaselinesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MetricBaselinesResponseInner> listAsync(String resourceUri, final ServiceCallback<MetricBaselinesResponseInner> serviceCallback) {
+    public ServiceFuture<List<SingleMetricBaselineInner>> listAsync(String resourceUri, final ServiceCallback<List<SingleMetricBaselineInner>> serviceCallback) {
         return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceUri), serviceCallback);
     }
 
@@ -89,12 +90,12 @@ public class BaselinesInner {
      *
      * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MetricBaselinesResponseInner object
+     * @return the observable to the List&lt;SingleMetricBaselineInner&gt; object
      */
-    public Observable<MetricBaselinesResponseInner> listAsync(String resourceUri) {
-        return listWithServiceResponseAsync(resourceUri).map(new Func1<ServiceResponse<MetricBaselinesResponseInner>, MetricBaselinesResponseInner>() {
+    public Observable<List<SingleMetricBaselineInner>> listAsync(String resourceUri) {
+        return listWithServiceResponseAsync(resourceUri).map(new Func1<ServiceResponse<List<SingleMetricBaselineInner>>, List<SingleMetricBaselineInner>>() {
             @Override
-            public MetricBaselinesResponseInner call(ServiceResponse<MetricBaselinesResponseInner> response) {
+            public List<SingleMetricBaselineInner> call(ServiceResponse<List<SingleMetricBaselineInner>> response) {
                 return response.body();
             }
         });
@@ -105,9 +106,9 @@ public class BaselinesInner {
      *
      * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MetricBaselinesResponseInner object
+     * @return the observable to the List&lt;SingleMetricBaselineInner&gt; object
      */
-    public Observable<ServiceResponse<MetricBaselinesResponseInner>> listWithServiceResponseAsync(String resourceUri) {
+    public Observable<ServiceResponse<List<SingleMetricBaselineInner>>> listWithServiceResponseAsync(String resourceUri) {
         if (resourceUri == null) {
             throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
         }
@@ -121,11 +122,16 @@ public class BaselinesInner {
         final String filter = null;
         final ResultType resultType = null;
         return service.list(resourceUri, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MetricBaselinesResponseInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SingleMetricBaselineInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<MetricBaselinesResponseInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<SingleMetricBaselineInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<MetricBaselinesResponseInner> clientResponse = listDelegate(response);
+                        ServiceResponse<PageImpl1<SingleMetricBaselineInner>> result = listDelegate(response);
+                        List<SingleMetricBaselineInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<SingleMetricBaselineInner>> clientResponse = new ServiceResponse<List<SingleMetricBaselineInner>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -149,9 +155,9 @@ public class BaselinesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MetricBaselinesResponseInner object if successful.
+     * @return the List&lt;SingleMetricBaselineInner&gt; object if successful.
      */
-    public MetricBaselinesResponseInner list(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType) {
+    public List<SingleMetricBaselineInner> list(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType) {
         return listWithServiceResponseAsync(resourceUri, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType).toBlocking().single().body();
     }
 
@@ -171,7 +177,7 @@ public class BaselinesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MetricBaselinesResponseInner> listAsync(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType, final ServiceCallback<MetricBaselinesResponseInner> serviceCallback) {
+    public ServiceFuture<List<SingleMetricBaselineInner>> listAsync(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType, final ServiceCallback<List<SingleMetricBaselineInner>> serviceCallback) {
         return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceUri, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType), serviceCallback);
     }
 
@@ -188,12 +194,12 @@ public class BaselinesInner {
      * @param filter The **$filter** is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;- Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Allows retrieving only metadata of the baseline. On data request all information is retrieved. Possible values include: 'Data', 'Metadata'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MetricBaselinesResponseInner object
+     * @return the observable to the List&lt;SingleMetricBaselineInner&gt; object
      */
-    public Observable<MetricBaselinesResponseInner> listAsync(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType) {
-        return listWithServiceResponseAsync(resourceUri, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType).map(new Func1<ServiceResponse<MetricBaselinesResponseInner>, MetricBaselinesResponseInner>() {
+    public Observable<List<SingleMetricBaselineInner>> listAsync(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType) {
+        return listWithServiceResponseAsync(resourceUri, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType).map(new Func1<ServiceResponse<List<SingleMetricBaselineInner>>, List<SingleMetricBaselineInner>>() {
             @Override
-            public MetricBaselinesResponseInner call(ServiceResponse<MetricBaselinesResponseInner> response) {
+            public List<SingleMetricBaselineInner> call(ServiceResponse<List<SingleMetricBaselineInner>> response) {
                 return response.body();
             }
         });
@@ -212,19 +218,24 @@ public class BaselinesInner {
      * @param filter The **$filter** is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;- Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Allows retrieving only metadata of the baseline. On data request all information is retrieved. Possible values include: 'Data', 'Metadata'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MetricBaselinesResponseInner object
+     * @return the observable to the List&lt;SingleMetricBaselineInner&gt; object
      */
-    public Observable<ServiceResponse<MetricBaselinesResponseInner>> listWithServiceResponseAsync(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType) {
+    public Observable<ServiceResponse<List<SingleMetricBaselineInner>>> listWithServiceResponseAsync(String resourceUri, String metricnames, String metricnamespace, String timespan, Period interval, String aggregation, String sensitivities, String filter, ResultType resultType) {
         if (resourceUri == null) {
             throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
         }
         final String apiVersion = "2019-03-01";
         return service.list(resourceUri, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MetricBaselinesResponseInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SingleMetricBaselineInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<MetricBaselinesResponseInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<SingleMetricBaselineInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<MetricBaselinesResponseInner> clientResponse = listDelegate(response);
+                        ServiceResponse<PageImpl1<SingleMetricBaselineInner>> result = listDelegate(response);
+                        List<SingleMetricBaselineInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<SingleMetricBaselineInner>> clientResponse = new ServiceResponse<List<SingleMetricBaselineInner>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -233,9 +244,9 @@ public class BaselinesInner {
             });
     }
 
-    private ServiceResponse<MetricBaselinesResponseInner> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MetricBaselinesResponseInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<MetricBaselinesResponseInner>() { }.getType())
+    private ServiceResponse<PageImpl1<SingleMetricBaselineInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<SingleMetricBaselineInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<SingleMetricBaselineInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

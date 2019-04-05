@@ -10,7 +10,6 @@ package com.microsoft.azure.management.monitor;
 
 import java.util.List;
 import org.joda.time.DateTime;
-import com.microsoft.azure.management.monitor.implementation.BaselineInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -39,7 +38,7 @@ public class TimeSeriesBaseline {
      * The baseline values for each sensitivity.
      */
     @JsonProperty(value = "data", required = true)
-    private List<BaselineInner> data;
+    private List<SingleBaseline> data;
 
     /**
      * The baseline metadata values.
@@ -112,7 +111,7 @@ public class TimeSeriesBaseline {
      *
      * @return the data value
      */
-    public List<BaselineInner> data() {
+    public List<SingleBaseline> data() {
         return this.data;
     }
 
@@ -122,7 +121,7 @@ public class TimeSeriesBaseline {
      * @param data the data value to set
      * @return the TimeSeriesBaseline object itself.
      */
-    public TimeSeriesBaseline withData(List<BaselineInner> data) {
+    public TimeSeriesBaseline withData(List<SingleBaseline> data) {
         this.data = data;
         return this;
     }
