@@ -137,9 +137,9 @@ If you would like to become an active contributor to this project please follow 
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-## Tested Operating Systems and Java Versions
+## Client Library Tested Operating Systems and Java Versions
 
-Currently the tests in this repository are running against:
+Currently the tests for client libraries in this repository are running against:
 
 |                      | Linux (Ubuntu 16.04) | MacOS 10.13 | Windows Server 2016 |
 |----------------------|----------------------|-------------|---------------------|
