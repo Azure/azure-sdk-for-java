@@ -4,6 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-client-sdk-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.client.xml</relativePath>
+    </parent>
+
     <groupId>com.azure</groupId>
     <artifactId>sdk-build-tools</artifactId>
     <name>Maven Build Tools</name>
@@ -33,14 +40,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-common</artifactId>
+            <groupId>com.azure.tools.checkstyle</groupId>
+            <artifactId>checks</artifactId>
             <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>8.18</version>
         </dependency>
     </dependencies>
 

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.tools.checkstyles.checks;
+package com.azure.tools.checkstyle.checks;
 
 import com.azure.common.ServiceClient;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
@@ -25,6 +25,7 @@ public class ServiceClientChecks extends AbstractCheck {
     private static final String CONSTRUCTOR_ERROR_MESSAGE = "Descendants of ServiceClient cannot have public or protected constructors.";
     private static final String BUILDER_ERROR_MESSAGE = "Descendants of ServiceClient must have a static method named builder.";
 
+    private static final int[] TOKENS = new int[] { TokenTypes.PACKAGE_DEF };
     @Override
     public int[] getDefaultTokens() {
         return getRequiredTokens();
@@ -42,7 +43,7 @@ public class ServiceClientChecks extends AbstractCheck {
      */
     @Override
     public int[] getRequiredTokens() {
-        return new int[] { TokenTypes.PACKAGE_DEF };
+        return TOKENS;
     }
 
     /**
@@ -51,7 +52,7 @@ public class ServiceClientChecks extends AbstractCheck {
      */
     @Override
     public void visitToken(DetailAST ast) {
-        DetailAST classDefNode = CustomCheckUtils.findNextSiblingOfType(ast, (node) -> node.getType() == TokenTypes.CLASS_DEF);
+        DetailAST classDefNode = CustomCheckUtils.findNextSiblingOfType(ast, node -> node.getType() == TokenTypes.CLASS_DEF);
         if (classDefNode == null) {
             return;
         }
@@ -95,9 +96,9 @@ public class ServiceClientChecks extends AbstractCheck {
         }
 
         DetailAST classIdentifierNode = classDefNode.findFirstToken(TokenTypes.LITERAL_CLASS);
-        DetailAST classNameNode = CustomCheckUtils.findNextSiblingOfType(classIdentifierNode, (node) -> node.getType() == TokenTypes.IDENT);
+        DetailAST classNameNode = CustomCheckUtils.findNextSiblingOfType(classIdentifierNode, node -> node.getType() == TokenTypes.IDENT);
         if (classNameNode == null) {
-            classNameNode = CustomCheckUtils.findPreviousSiblingOfType(classIdentifierNode, (node) -> node.getType() == TokenTypes.IDENT);
+            classNameNode = CustomCheckUtils.findPreviousSiblingOfType(classIdentifierNode, node -> node.getType() == TokenTypes.IDENT);
         }
 
         // If the class name cannot be found we shouldn't attempt to run the check.
@@ -118,7 +119,7 @@ public class ServiceClientChecks extends AbstractCheck {
             return;
         }
 
-        Optional<DetailAST> disallowedModifierNode = TokenUtil.findFirstTokenByPredicate(modifierNode, (node) -> {
+        Optional<DetailAST> disallowedModifierNode = TokenUtil.findFirstTokenByPredicate(modifierNode, node -> {
             return node.getType() == TokenTypes.LITERAL_PUBLIC || node.getType() == TokenTypes.LITERAL_PROTECTED;
         });
 

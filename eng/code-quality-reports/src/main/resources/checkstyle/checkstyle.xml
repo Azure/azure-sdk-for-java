@@ -251,6 +251,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
         1) They cannot have public or protected constructors
         2) They must implement a public static method named builder
         -->
-        <module name="com.azure.tools.checkstyles.checks.ServiceClientChecks"/>
+        <module name="com.azure.tools.checkstyle.checks.ServiceClientChecks"/>
     </module>
 </module>

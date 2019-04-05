@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.tools.checkstyles.checks;
+package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
@@ -30,7 +30,7 @@ final class CustomCheckUtils {
     }
 
     private static DetailAST findSiblingOfTypeHelper(DetailAST ast, Predicate<DetailAST> predicate, Function<DetailAST, DetailAST> function) {
-        for (DetailAST sibling = function.apply(ast); sibling != null; sibling = function.apply(sibling)){
+        for (DetailAST sibling = function.apply(ast); sibling != null; sibling = function.apply(sibling)) {
             if (predicate.test(sibling)) {
                 return sibling;
             }
