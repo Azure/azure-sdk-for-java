@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.iotcentral.v2018_09_01.implementation;
 
-import com.microsoft.azure.management.iotcentral.v2018_09_01.AppTemplateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,74 +15,93 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AppTemplateInner {
     /**
-     * The application template identifier.
+     * The ID of the template.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    @JsonProperty(value = "manifestId", access = JsonProperty.Access.WRITE_ONLY)
+    private String manifestId;
 
     /**
-     * The application template name.
+     * The version of the template.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
+    @JsonProperty(value = "manifestVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String manifestVersion;
 
     /**
-     * The properties property.
+     * The name of the template.
      */
-    @JsonProperty(value = "properties")
-    private AppTemplateProperties properties;
+    @JsonProperty(value = "appTemplateName", access = JsonProperty.Access.WRITE_ONLY)
+    private String appTemplateName;
 
     /**
-     * the resource type.
+     * The title of the template.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
+    @JsonProperty(value = "title", access = JsonProperty.Access.WRITE_ONLY)
+    private String title;
 
     /**
-     * Get the application template identifier.
+     * The order of the template in the templates list.
+     */
+    @JsonProperty(value = "order", access = JsonProperty.Access.WRITE_ONLY)
+    private Double order;
+
+    /**
+     * The description of the template.
+     */
+    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
+    private String description;
+
+    /**
+     * Get the ID of the template.
      *
-     * @return the id value
+     * @return the manifestId value
      */
-    public String id() {
-        return this.id;
+    public String manifestId() {
+        return this.manifestId;
     }
 
     /**
-     * Get the application template name.
+     * Get the version of the template.
      *
-     * @return the name value
+     * @return the manifestVersion value
      */
-    public String name() {
-        return this.name;
+    public String manifestVersion() {
+        return this.manifestVersion;
     }
 
     /**
-     * Get the properties value.
+     * Get the name of the template.
      *
-     * @return the properties value
+     * @return the appTemplateName value
      */
-    public AppTemplateProperties properties() {
-        return this.properties;
+    public String appTemplateName() {
+        return this.appTemplateName;
     }
 
     /**
-     * Set the properties value.
+     * Get the title of the template.
      *
-     * @param properties the properties value to set
-     * @return the AppTemplateInner object itself.
+     * @return the title value
      */
-    public AppTemplateInner withProperties(AppTemplateProperties properties) {
-        this.properties = properties;
-        return this;
+    public String title() {
+        return this.title;
     }
 
     /**
-     * Get the resource type.
+     * Get the order of the template in the templates list.
      *
-     * @return the type value
+     * @return the order value
      */
-    public String type() {
-        return this.type;
+    public Double order() {
+        return this.order;
+    }
+
+    /**
+     * Get the description of the template.
+     *
+     * @return the description value
+     */
+    public String description() {
+        return this.description;
     }
 
 }
