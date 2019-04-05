@@ -19,7 +19,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * 2. {@link com.azure.common.implementation.DateTimeRfc1123}
  * 3. {@link com.azure.common.implementation.UnixTime}
  * 4. {@link com.azure.common.http.rest.Page}
- * 5. {@link java.util.List}
+ * 5. {@link java.util.List List<T>} where T can be one of the four values above.
  */
 @Retention(RUNTIME)
 @Target(METHOD)
