@@ -82,9 +82,10 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
                     .map(httpHeaders::value)
                     .collect(Collectors.joining(";"));
 
-            // String-To-Sign=HTTP_METHOD + '%n' + path_and_query + '%n' + signed_headers_values
+            // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
             // Signed headers: "host;x-ms-date;x-ms-content-sha256"
-            return String.format("%s%n%s%n%s", request.httpMethod().toString().toUpperCase(Locale.US), pathAndQuery, signed);
+            // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
+            return request.httpMethod().toString().toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signed;
         }
     }
 
