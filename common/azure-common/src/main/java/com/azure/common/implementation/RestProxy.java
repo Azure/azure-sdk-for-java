@@ -408,7 +408,7 @@ public class RestProxy implements InvocationHandler {
             cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
 
             if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-                throw new RuntimeException("Unable to create RestPagedResponse<T>. Body must be of a type that implements: " + Page.class);
+                throw new RuntimeException("Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class);
             }
         }
 
