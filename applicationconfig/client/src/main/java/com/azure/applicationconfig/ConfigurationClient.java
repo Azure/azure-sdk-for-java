@@ -3,8 +3,6 @@
 
 package com.azure.applicationconfig;
 
-import com.azure.applicationconfig.implementation.Page;
-import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
@@ -18,6 +16,7 @@ import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
+import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.RestProxy;
 import org.reactivestreams.Publisher;
@@ -254,7 +253,7 @@ public final class ConfigurationClient extends ServiceClient {
      * contains all of the current settings in the service.
      */
     public Flux<ConfigurationSetting> listSettings(SettingSelector options) {
-        Mono<Response<Page<ConfigurationSetting>>> result;
+        Mono<PagedResponse<ConfigurationSetting>> result;
         if (options != null) {
             String fields = getSelectQuery(options.fields());
             result = service.listKeyValues(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime());
@@ -262,7 +261,7 @@ public final class ConfigurationClient extends ServiceClient {
             result = service.listKeyValues(serviceEndpoint, null, null, null, null);
         }
 
-        return getPagedConfigurationSettings(result);
+        return result.flatMapMany(this::extractAndFetchConfigurationSettings);
     }
 
     /**
@@ -280,7 +279,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return Revisions of the ConfigurationSetting
      */
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        Mono<Response<Page<ConfigurationSetting>>> result;
+        Mono<PagedResponse<ConfigurationSetting>> result;
         if (selector != null) {
             String fields = getSelectQuery(selector.fields());
             result = service.listKeyValueRevisions(serviceEndpoint, selector.key(), selector.label(), fields, selector.acceptDateTime(), null);
@@ -288,7 +287,7 @@ public final class ConfigurationClient extends ServiceClient {
             result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
         }
 
-        return getPagedConfigurationSettings(result);
+        return result.flatMapMany(this::extractAndFetchConfigurationSettings);
     }
 
     /**
@@ -401,16 +400,11 @@ public final class ConfigurationClient extends ServiceClient {
      * @return A stream of {@link ConfigurationSetting} from the next page of results.
      */
     private Flux<ConfigurationSetting> listSettings(@NonNull String nextPageLink) {
-        Mono<Response<Page<ConfigurationSetting>>> result = service.listKeyValues(serviceEndpoint, nextPageLink);
-        return getPagedConfigurationSettings(result);
+        Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink);
+        return result.flatMapMany(this::extractAndFetchConfigurationSettings);
     }
 
-    private Flux<ConfigurationSetting> getPagedConfigurationSettings(Mono<Response<Page<ConfigurationSetting>>> response) {
-        return response.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.value().items(), p.value().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-            .concatMap(this::extractAndFetchConfigurationSettings);
-    }
-
-    private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(RestPagedResponseImpl<ConfigurationSetting> page) {
+    private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(PagedResponse<ConfigurationSetting> page) {
         String nextPageLink = page.nextLink();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
