@@ -191,60 +191,6 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Places a lock on the ConfigurationSetting so that its contents cannot be changed.
-     *
-     * @param key The key of the ConfigurationSetting.
-     * @return ConfigurationSetting that was locked.
-     * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
-     * @throws ServiceRequestException with status code 404 if the {@code key} does not exist.
-     */
-    public Mono<Response<ConfigurationSetting>> lockSetting(String key) {
-        return lockSetting(new ConfigurationSetting().key(key));
-    }
-
-    /**
-     * Places a lock on the provided ConfigurationSetting so that its contents cannot be changed. Label is optional. If
-     * present, label must be an explicit value (not a wildcard).
-     *
-     * @param setting The ConfigurationSetting to lock.
-     * @return ConfigurationSetting that was locked.
-     * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
-     * @throws ServiceRequestException with status code 404 if the {@code key} does not exist.
-     */
-    public Mono<Response<ConfigurationSetting>> lockSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
-
-        return service.lockKeyValue(serviceEndpoint, result.key(), result.label(), null, null);
-    }
-
-    /**
-     * Unlocks a ConfigurationSetting with the given key.
-     *
-     * @param key The key of the setting to unlock.
-     * @return The ConfigurationSetting that was unlocked.
-     * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
-     * @throws ServiceRequestException with status code 404 if the {@code key} does not exist.
-     */
-    public Mono<Response<ConfigurationSetting>> unlockSetting(String key) {
-        return unlockSetting(new ConfigurationSetting().key(key));
-    }
-
-    /**
-     * Unlocks a ConfigurationSetting with a matching {@code key} and optional {@code label}. If present, {@code label}
-     * must be explicit label value (not a wildcard).
-     *
-     * @param setting The configuration setting to unlock.
-     * @return The ConfigurationSetting that was unlocked.
-     * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
-     * @throws ServiceRequestException with status code 404 if the {@code key} does not exist.
-     */
-    public Mono<Response<ConfigurationSetting>> unlockSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
-
-        return service.unlockKeyValue(serviceEndpoint, result.key(), result.label(), null, null);
-    }
-
-    /**
      * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all the
      * {@link ConfigurationSetting}s are fetched in their current state with default fields.
      *
