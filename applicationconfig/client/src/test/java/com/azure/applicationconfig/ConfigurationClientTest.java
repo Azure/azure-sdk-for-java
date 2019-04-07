@@ -151,17 +151,7 @@ public class ConfigurationClientTest {
         client.listSettings(new SettingSelector().key(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
-
-                    if (configurationSetting.isLocked()) {
-                        return client.unlockSetting(configurationSetting).flatMap(response -> {
-                            ConfigurationSetting kv = response.value();
-                            return client.deleteSetting(kv)
-                                    .retryBackoff(3, Duration.ofSeconds(10));
-                        });
-                    } else {
-                        return client.deleteSetting(configurationSetting)
-                                .retryBackoff(3, Duration.ofSeconds(10));
-                    }
+                    return client.deleteSetting(configurationSetting).retryBackoff(3, Duration.ofSeconds(10));
                 })
                 .blockLast();
 
@@ -214,60 +204,6 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Tests that we can lock and unlock a configuration.
-     */
-    @Test
-    public void lockUnlockSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting lockableConfiguration = new ConfigurationSetting().key(key).value("myLockUnlockValue");
-
-        final Consumer<ConfigurationSetting> testRunner = (expected) -> {
-            StepVerifier.create(client.addSetting(expected))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete();
-
-            StepVerifier.create(client.lockSetting(expected))
-                    .assertNext(response -> {
-                        assertConfigurationEquals(expected, response);
-                        assertTrue(response.value().isLocked());
-                    })
-                    .verifyComplete();
-
-            StepVerifier.create(client.unlockSetting(expected))
-                    .assertNext(response -> {
-                        assertConfigurationEquals(expected, response);
-                        assertFalse(response.value().isLocked());
-                    })
-                    .verifyComplete();
-        };
-
-        testRunner.accept(lockableConfiguration);
-        testRunner.accept(lockableConfiguration.label(label));
-    }
-
-    /**
-     * Tests that attempt to lock or unlock a non-existent configuration fails, this results in a 404.
-     */
-    @Test
-    public void lockUnlockSettingNotFound() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting notFindableConfiguration = new ConfigurationSetting().key(key).value("myExpectedNotFound");
-
-        final Consumer<ConfigurationSetting> testRunner = (ConfigurationSetting expected) -> {
-            StepVerifier.create(client.lockSetting(expected))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
-
-            StepVerifier.create(client.unlockSetting(expected))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
-        };
-
-        testRunner.accept(notFindableConfiguration);
-        testRunner.accept(notFindableConfiguration.label(label));
-    }
-
-    /**
      * Tests that a configuration is able to be added or updated with set.
      * When the configuration is locked updates cannot happen, this will result in a 409.
      */
@@ -281,13 +217,6 @@ public class ConfigurationClientTest {
         final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (expected, update) -> {
             StepVerifier.create(client.setSetting(expected))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete();
-
-            StepVerifier.create(client.lockSetting(expected).then(client.setSetting(update)))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
-
-            StepVerifier.create(client.unlockSetting(expected).then(client.setSetting(update)))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
         };
 
@@ -376,13 +305,6 @@ public class ConfigurationClientTest {
             StepVerifier.create(client.addSetting(initial))
                     .assertNext(response -> assertConfigurationEquals(initial, response))
                     .verifyComplete();
-
-            StepVerifier.create(client.lockSetting(initial).then(client.updateSetting(update)))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
-
-            StepVerifier.create(client.unlockSetting(initial).then(client.updateSetting(update)))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
-                    .verifyComplete();
         };
 
         testRunner.accept(original, updated);
@@ -442,7 +364,7 @@ public class ConfigurationClientTest {
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
 
-            StepVerifier.create(client.lockSetting(expected).then(client.getSetting(expected)))
+            StepVerifier.create(client.getSetting(expected).then(client.getSetting(expected)))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
         };
@@ -488,10 +410,7 @@ public class ConfigurationClientTest {
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
 
-            StepVerifier.create(client.lockSetting(expected).then(client.deleteSetting(expected)))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
-
-            StepVerifier.create(client.unlockSetting(expected).then(client.deleteSetting(expected)))
+            StepVerifier.create(client.deleteSetting(expected))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
 
@@ -851,15 +770,7 @@ public class ConfigurationClientTest {
         client.listSettings(new SettingSelector().key("*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
-
-                    if (configurationSetting.isLocked()) {
-                        return client.unlockSetting(configurationSetting).flatMap(response -> {
-                            ConfigurationSetting kv = response.value();
-                            return client.deleteSetting(kv);
-                        });
-                    } else {
-                        return client.deleteSetting(configurationSetting);
-                    }
+                    return client.deleteSetting(configurationSetting);
                 }).blockLast();
     }
 
@@ -881,20 +792,6 @@ public class ConfigurationClientTest {
     public void deleteSettingRequiresKey(@FromDataPoints("invalidKeys") String key, String label) {
         assertRunnableThrowsArgumentException(() -> client.deleteSetting(key));
         assertRunnableThrowsArgumentException(() -> client.deleteSetting(new ConfigurationSetting().key(key).label(label)));
-    }
-
-    /**
-     * Test the API will not make lock or unlock calls without having a key passed, an IllegalArgumentException should be thrown.
-     */
-    @Theory
-    public void lockAndUnlockRequiresKey(@FromDataPoints("invalidKeys") String key, String label) {
-        final ConfigurationSetting setting = new ConfigurationSetting().key(key).label(label);
-
-        assertRunnableThrowsArgumentException(() -> client.lockSetting(key));
-        assertRunnableThrowsArgumentException(() -> client.lockSetting(setting));
-
-        assertRunnableThrowsArgumentException(() -> client.unlockSetting(key));
-        assertRunnableThrowsArgumentException(() -> client.unlockSetting(setting));
     }
 
     /**
