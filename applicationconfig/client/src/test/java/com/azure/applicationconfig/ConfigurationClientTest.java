@@ -57,8 +57,6 @@ import static org.junit.Assert.fail;
 
 @RunWith(Theories.class)
 public class ConfigurationClientTest {
-    private static final String PLAYBACK_URI_BASE = "http://localhost:";
-
     private final Logger logger = LoggerFactory.getLogger(ConfigurationClientTest.class);
 
     private InterceptorManager interceptorManager;
@@ -78,8 +76,7 @@ public class ConfigurationClientTest {
         if (interceptorManager.isPlaybackMode()) {
             logger.info("PLAYBACK MODE");
 
-            final String playbackUri = getPlaybackUri(testMode);
-            final String connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
+            final String connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
 
             client = ConfigurationClient.builder()
                     .credentials(new ConfigurationClientCredentials(connectionString))
@@ -102,26 +99,6 @@ public class ConfigurationClientTest {
 
         keyPrefix = SdkContext.randomResourceName("key", 8);
         labelPrefix = SdkContext.randomResourceName("label", 8);
-    }
-
-    private static String getPlaybackUri(TestMode testMode) throws IOException {
-        if (testMode == TestMode.RECORD) {
-            Properties mavenProps = new Properties();
-
-            try (InputStream in = ConfigurationClientTest.class.getResourceAsStream("/maven.properties")) {
-                if (in == null) {
-                    throw new IOException(
-                            "The file \"maven.properties\" has not been generated yet. Please execute \"mvn compile\" to generate the file.");
-                }
-                mavenProps.load(in);
-            }
-
-            String port = mavenProps.getProperty("playbackServerPort");
-            // 11080 and 11081 needs to be in sync with values in jetty.xml file
-            return PLAYBACK_URI_BASE + port;
-        } else {
-            return PLAYBACK_URI_BASE + "1234";
-        }
     }
 
     private TestMode getTestMode() throws IllegalArgumentException {
