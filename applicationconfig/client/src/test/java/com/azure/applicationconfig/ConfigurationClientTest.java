@@ -363,10 +363,6 @@ public class ConfigurationClientTest {
             StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected)))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
-
-            StepVerifier.create(client.getSetting(expected).then(client.getSetting(expected)))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete();
         };
 
         testRunner.accept(newConfiguration);
@@ -396,8 +392,8 @@ public class ConfigurationClientTest {
 
     /**
      * Tests that configurations are able to be deleted when they exist.
-     * When the configuration is locked deletes cannot happen, this will result in a 409.
-     * After the configuration has been deleted attempting to get it will result in a 404, the same as if the configuration never existed.
+     * After the configuration has been deleted attempting to get it will result in a 404, the same as if the
+     * configuration never existed.
      */
     @Test
     public void deleteSetting() {
