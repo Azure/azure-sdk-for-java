@@ -31,6 +31,7 @@ import com.azure.common.http.HttpMethod;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.serializer.HttpResponseDecodeData;
 import com.azure.common.implementation.serializer.SerializerAdapter;
+import com.azure.common.implementation.util.ImplUtils;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -224,7 +225,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     @Override
     public int[] expectedStatusCodes() {
-        return expectedStatusCodes;
+        return ImplUtils.clone(expectedStatusCodes);
     }
 
     /**
@@ -527,8 +528,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     if (substitutionValue != null && !substitutionValue.isEmpty() && substitution.shouldEncode() && escaper != null) {
                         substitutionValue = escaper.escape(substitutionValue);
                     }
-
-                    result = result.replace("{" + substitution.urlParameterName() + "}", substitutionValue);
+                    if (substitutionValue != null) {
+                        result = result.replace("{" + substitution.urlParameterName() + "}", substitutionValue);
+                    }
                 }
             }
         }

@@ -12,8 +12,10 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -72,7 +74,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      * @return this HttpHeaders
      */
     public HttpHeaders set(String name, String value) {
-        final String headerKey = name.toLowerCase();
+        final String headerKey = name.toLowerCase(Locale.ROOT);
         if (value == null) {
             headers.remove(headerKey);
         }
@@ -107,7 +109,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     }
 
     private HttpHeader getHeader(String headerName) {
-        final String headerKey = headerName.toLowerCase();
+        final String headerKey = headerName.toLowerCase(Locale.ROOT);
         return headers.get(headerKey);
     }
 

@@ -72,6 +72,11 @@
             <artifactId>azure-eventhubs-extensions</artifactId>
             <version>${azure-eventhubs.version}</version>
         </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-common</artifactId>
+          <version>${azure-common.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -97,6 +102,7 @@
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
+                                <source>..\..\common\azure-common\src\main\java</source>
                             </sources>
                         </configuration>
                     </execution>
