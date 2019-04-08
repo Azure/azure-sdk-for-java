@@ -28,7 +28,7 @@ import java.util.Objects;
 /**
  * A policy that authenticates requests with Azure Application Configuration service.
  *
- * @see ConfigurationClient
+ * @see ConfigurationAsyncClient
  * @see ConfigurationClientBuilder
  */
 public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {

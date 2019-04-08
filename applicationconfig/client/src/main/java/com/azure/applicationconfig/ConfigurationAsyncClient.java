@@ -30,20 +30,20 @@ import java.util.stream.Collectors;
  * @see ConfigurationClientBuilder
  * @see ConfigurationClientCredentials
  */
-public final class ConfigurationClient extends ServiceClient {
+public final class ConfigurationAsyncClient extends ServiceClient {
     private static final String ETAG_ANY = "*";
 
     private final String serviceEndpoint;
     private final ConfigurationService service;
 
     /**
-     * Creates a ConfigurationClient that uses {@code credentials} to authorize with Azure and {@code pipeline} to
+     * Creates a ConfigurationAsyncClient that uses {@code credentials} to authorize with Azure and {@code pipeline} to
      * service requests
      *
      * @param serviceEndpoint URL for the Application configuration service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
-    ConfigurationClient(URL serviceEndpoint, HttpPipeline pipeline) {
+    ConfigurationAsyncClient(URL serviceEndpoint, HttpPipeline pipeline) {
         super(pipeline);
 
         this.service = RestProxy.create(ConfigurationService.class, this);
@@ -51,9 +51,9 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Creates a builder that can configure options for the ConfigurationClient before creating an instance of it.
+     * Creates a builder that can configure options for the ConfigurationAsyncClient before creating an instance of it.
      *
-     * @return A new ConfigurationClientBuilder to create a ConfigurationClient from.
+     * @return A new ConfigurationClientBuilder to create a ConfigurationAsyncClient from.
      */
     public static ConfigurationClientBuilder builder() {
         return new ConfigurationClientBuilder();
@@ -73,10 +73,8 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Adds a configuration value in the service if that key and label does not exist.
-     *
-     * <p>
-     * The label value for the ConfigurationSetting is optional.
+     * Adds a configuration value in the service if that key and label does not exist. The label value for the
+     * ConfigurationSetting is optional.
      *
      * @param setting The setting to add to the configuration service.
      * @return ConfigurationSetting that was created.
@@ -109,8 +107,8 @@ public final class ConfigurationClient extends ServiceClient {
      * Creates or updates a configuration value in the service. Partial updates are not supported.
      *
      * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current
-     * setting's etag matches. If the etag's value is equal to {@link ConfigurationClient#ETAG_ANY}, the setting will
-     * always be updated.
+     * setting's etag matches. If the etag's value is equal to {@link ConfigurationAsyncClient#ETAG_ANY}, the setting
+     * will always be updated.
      *
      * @param setting The configuration setting to create or update.
      * @return ConfigurationSetting that was created or updated.
@@ -118,7 +116,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or
      * {@link ConfigurationSetting#value() value} are {@code null} or an empty string.
      * @throws ServiceRequestException If the {@link ConfigurationSetting#etag() etag} was specified, is not
-     * {@link ConfigurationClient#ETAG_ANY}, and the current configuration value's etag does not match.
+     * {@link ConfigurationAsyncClient#ETAG_ANY}, and the current configuration value's etag does not match.
      */
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting, true);
@@ -269,7 +267,7 @@ public final class ConfigurationClient extends ServiceClient {
 
     /*
      * Gets all ConfigurationSetting settings given the {@code nextPageLink} that was retrieved from a call to
-     * {@link ConfigurationClient#listSettings(SettingSelector)} or a call from this method.
+     * {@link ConfigurationAsyncClient#listSettings(SettingSelector)} or a call from this method.
      *
      * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list
      * operations.

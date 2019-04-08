@@ -24,7 +24,7 @@ import com.azure.common.implementation.http.ContentType;
 import reactor.core.publisher.Mono;
 
 /**
- * The interface defining all the services for {@link ConfigurationClient} to be used
+ * The interface defining all the services for {@link ConfigurationAsyncClient} to be used
  * by the proxy service to perform REST calls.
  *
  * This is package-private so that these REST calls are transparent to the user.

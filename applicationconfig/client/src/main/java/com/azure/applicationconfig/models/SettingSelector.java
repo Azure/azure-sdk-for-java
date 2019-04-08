@@ -3,6 +3,8 @@
 
 package com.azure.applicationconfig.models;
 
+import com.azure.applicationconfig.ConfigurationAsyncClient;
+
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -26,7 +28,7 @@ import java.util.Arrays;
  *     </li>
  * </ul>
  *
- * @see com.azure.applicationconfig.ConfigurationClient
+ * @see ConfigurationAsyncClient
  */
 public class SettingSelector {
     private String key;

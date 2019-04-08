@@ -31,18 +31,15 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -56,11 +53,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 @RunWith(Theories.class)
-public class ConfigurationClientTest {
-    private final Logger logger = LoggerFactory.getLogger(ConfigurationClientTest.class);
+public class ConfigurationAsyncClientTest {
+    private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
 
     private InterceptorManager interceptorManager;
-    private ConfigurationClient client;
+    private ConfigurationAsyncClient client;
     private String keyPrefix;
     private String labelPrefix;
 
@@ -78,7 +75,7 @@ public class ConfigurationClientTest {
 
             final String connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
 
-            client = ConfigurationClient.builder()
+            client = ConfigurationAsyncClient.builder()
                     .credentials(new ConfigurationClientCredentials(connectionString))
                     .httpClient(interceptorManager.getPlaybackClient())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -89,7 +86,7 @@ public class ConfigurationClientTest {
             final String connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
             Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
-            client = ConfigurationClient.builder()
+            client = ConfigurationAsyncClient.builder()
                     .credentials(new ConfigurationClientCredentials(connectionString))
                     .httpClient(HttpClient.createDefault().wiretap(true))
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
