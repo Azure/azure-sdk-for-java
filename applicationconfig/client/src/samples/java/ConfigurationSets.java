@@ -35,7 +35,7 @@ public class ConfigurationSets {
         // You can get the string from your Azure portal.
         String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
 
-        // Instantiate a client that will be used to call the service.
+        // Instantiate a configuration client that will be used to call the configuration service.
         ConfigurationClient client = ConfigurationClient.builder()
                 .credentials(new ConfigurationClientCredentials(connectionString))
                 .build();
