@@ -46,9 +46,11 @@ public final class ConfigurationClientBuilder {
      * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code build()} is called,
      * a new instance of {@link ConfigurationClient} is created.
      *
-     * If {@link ConfigurationClientBuilder#pipeline(HttpPipeline) HTTP pipeline} is set, all other settings are
-     * ignored, aside from {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint}, to create the
-     * {@link ConfigurationClient}.
+     * <p>
+     * If {@link ConfigurationClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} are used to create the
+     * {@link ConfigurationClient client}. All other builder settings are ignored.
+     * </p>
      *
      * @return A ConfigurationClient with the options set from the builder.
      * @throws NullPointerException If {@code serviceEndpoint} has not been set. This setting is automatically set when
