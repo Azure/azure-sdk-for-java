@@ -26,10 +26,6 @@ import java.util.Objects;
  * @see ConfigurationClientCredentials
  */
 public final class ConfigurationClientBuilder {
-    //TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues/3141
-    static final String SDK_NAME = "Azure-Application-Configuration";
-    static final String SDK_VERSION = "1.0.0-SNAPSHOT";
-
     private final List<HttpPipelinePolicy> policies;
     private ConfigurationClientCredentials credentials;
     private URL serviceEndpoint;
@@ -40,7 +36,7 @@ public final class ConfigurationClientBuilder {
     private String userAgent;
 
     ConfigurationClientBuilder() {
-        userAgent = String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION);
+        userAgent = AzureConfiguration.getUserAgentHeader(AzureConfiguration.NAME, AzureConfiguration.VERSION);
         retryPolicy = new RetryPolicy();
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
