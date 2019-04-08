@@ -24,7 +24,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration Store.
+ * Client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
+ * Store.
  *
  * @see ConfigurationClientBuilder
  * @see ConfigurationClientCredentials
@@ -80,8 +81,8 @@ public final class ConfigurationClient extends ServiceClient {
      * @param setting The setting to add to the configuration service.
      * @return ConfigurationSetting that was created.
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or {@link ConfigurationSetting#value() value}
-     * are {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or
+     * {@link ConfigurationSetting#value() value} are {@code null} or an empty string.
      * @throws ServiceRequestException If a ConfigurationSetting with the same key and label exists.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
@@ -107,16 +108,15 @@ public final class ConfigurationClient extends ServiceClient {
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported.
      *
-     * <p>
-     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current setting's
-     * etag matches. If the etag's value is equal to {@link ConfigurationClient#ETAG_ANY}, the setting will always be
-     * updated.
+     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current
+     * setting's etag matches. If the etag's value is equal to {@link ConfigurationClient#ETAG_ANY}, the setting will
+     * always be updated.
      *
      * @param setting The configuration setting to create or update.
      * @return ConfigurationSetting that was created or updated.
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or {@link ConfigurationSetting#value() value}
-     * are {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or
+     * {@link ConfigurationSetting#value() value} are {@code null} or an empty string.
      * @throws ServiceRequestException If the {@link ConfigurationSetting#etag() etag} was specified, is not
      * {@link ConfigurationClient#ETAG_ANY}, and the current configuration value's etag does not match.
      */
@@ -155,8 +155,8 @@ public final class ConfigurationClient extends ServiceClient {
      * @param setting The setting to add or update in the service.
      * @return ConfigurationSetting that was updated.
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or {@link ConfigurationSetting#value() value}
-     * are {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or
+     * {@link ConfigurationSetting#value() value} are {@code null} or an empty string.
      * @throws ServiceRequestException If a ConfigurationSetting with the same key and label does not
      * exist or the configuration value is locked.
      */
@@ -271,7 +271,8 @@ public final class ConfigurationClient extends ServiceClient {
      * Gets all ConfigurationSetting settings given the {@code nextPageLink} that was retrieved from a call to
      * {@link ConfigurationClient#listSettings(SettingSelector)} or a call from this method.
      *
-     * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
+     * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list
+     * operations.
      * @return A stream of {@link ConfigurationSetting} from the next page of results.
      */
     private Flux<ConfigurationSetting> listSettings(@NonNull String nextPageLink) {
