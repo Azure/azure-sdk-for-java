@@ -26,7 +26,7 @@ import static com.azure.applicationconfig.ConfigurationCredentialsPolicy.HOST_HE
 /**
  * Credentials that authorizes requests to Azure Application Configuration.
  *
- * @see ConfigurationClientBuilder
+ * @see ConfigurationAsyncClientBuilder
  */
 public class ConfigurationClientCredentials implements AsyncServiceClientCredentials {
     private final CredentialInformation credentials;

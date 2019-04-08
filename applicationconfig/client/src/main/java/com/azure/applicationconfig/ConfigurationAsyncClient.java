@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * Client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
  * Store.
  *
- * @see ConfigurationClientBuilder
+ * @see ConfigurationAsyncClientBuilder
  * @see ConfigurationClientCredentials
  */
 public final class ConfigurationAsyncClient extends ServiceClient {
@@ -53,10 +53,10 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     /**
      * Creates a builder that can configure options for the ConfigurationAsyncClient before creating an instance of it.
      *
-     * @return A new ConfigurationClientBuilder to create a ConfigurationAsyncClient from.
+     * @return A new ConfigurationAsyncClientBuilder to create a ConfigurationAsyncClient from.
      */
-    public static ConfigurationClientBuilder builder() {
-        return new ConfigurationClientBuilder();
+    public static ConfigurationAsyncClientBuilder builder() {
+        return new ConfigurationAsyncClientBuilder();
     }
 
     /**

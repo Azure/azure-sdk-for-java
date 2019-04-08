@@ -29,7 +29,7 @@ import java.util.Objects;
  * A policy that authenticates requests with Azure Application Configuration service.
  *
  * @see ConfigurationAsyncClient
- * @see ConfigurationClientBuilder
+ * @see ConfigurationAsyncClientBuilder
  */
 public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
     private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";
