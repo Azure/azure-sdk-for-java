@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono;
  * This is package-private so that these REST calls are transparent to the user.
  */
 @Host("{url}")
-interface ApplicationConfigService {
+interface ConfigurationService {
     @GET("kv/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(ServiceRequestException.class)

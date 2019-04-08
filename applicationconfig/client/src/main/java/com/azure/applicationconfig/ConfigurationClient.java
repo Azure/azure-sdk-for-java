@@ -34,7 +34,7 @@ public final class ConfigurationClient extends ServiceClient {
     private static final String ETAG_ANY = "*";
 
     private final String serviceEndpoint;
-    private final ApplicationConfigService service;
+    private final ConfigurationService service;
 
     /**
      * Creates a ConfigurationClient that uses {@code credentials} to authorize with Azure and {@code pipeline} to
@@ -46,7 +46,7 @@ public final class ConfigurationClient extends ServiceClient {
     ConfigurationClient(URL serviceEndpoint, HttpPipeline pipeline) {
         super(pipeline);
 
-        this.service = RestProxy.create(ApplicationConfigService.class, this);
+        this.service = RestProxy.create(ConfigurationService.class, this);
         this.serviceEndpoint = serviceEndpoint.toString();
     }
 
