@@ -3,6 +3,7 @@
 
 package com.azure.applicationconfig;
 
+import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.policy.AsyncCredentialsPolicy;
@@ -12,6 +13,8 @@ import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,8 +32,10 @@ public final class ConfigurationClientBuilder {
 
     private final List<HttpPipelinePolicy> policies;
     private ConfigurationClientCredentials credentials;
+    private URL serviceEndpoint;
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
+    private HttpPipeline pipeline;
     private RetryPolicy retryPolicy;
     private String userAgent;
 
@@ -42,15 +47,27 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Creates a {@link ConfigurationClient} based on options set in the Builder.
+     * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code build()} is called,
+     * a new instance of {@link ConfigurationClient} is created.
      *
-     * <p>
-     * Every time {@code build()} is called, a new instance of {@link ConfigurationClient} is created.
+     * If {@link ConfigurationClientBuilder#pipeline(HttpPipeline) HTTP pipeline} is set, all other settings are
+     * ignored, aside from {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint}, to create the
+     * {@link ConfigurationClient}.
      *
      * @return A ConfigurationClient with the options set from the builder.
-     * @throws IllegalStateException If {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials)} has not been set.
+     * @throws NullPointerException If {@code serviceEndpoint} has not been set. This setting is automatically set when
+     * {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials) credentials} are set through the
+     * builder. Or can be set explicitly by calling {@link ConfigurationClientBuilder#serviceEndpoint(String)}.
+     * @throws IllegalStateException If {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials)}
+     * has not been set.
      */
     public ConfigurationClient build() {
+        Objects.requireNonNull(serviceEndpoint);
+
+        if (pipeline != null) {
+            return new ConfigurationClient(serviceEndpoint, pipeline);
+        }
+
         if (credentials == null) {
             throw new IllegalStateException("'credentials' is required.");
         }
@@ -72,11 +89,25 @@ public final class ConfigurationClientBuilder {
             ? new HttpPipeline(policies)
             : new HttpPipeline(httpClient, policies);
 
-        return new ConfigurationClient(credentials.baseUri(), pipeline);
+        return new ConfigurationClient(serviceEndpoint, pipeline);
     }
 
     /**
-     * Sets the credentials to use when authenticating HTTP requests.
+     * Sets the service endpoint for the Azure App Configuration instance.
+     *
+     * @param serviceEndpoint The URL of the Azure App Configuration instance to send {@link ConfigurationSetting}
+     * service requests to and receive responses from.
+     * @return The updated ConfigurationClientBuilder object.
+     * @throws MalformedURLException if {@code serviceEndpoint} is null or it cannot be parsed into a valid URL.
+     */
+    public ConfigurationClientBuilder serviceEndpoint(String serviceEndpoint) throws MalformedURLException {
+        this.serviceEndpoint = new URL(serviceEndpoint);
+        return this;
+    }
+
+    /**
+     * Sets the credentials to use when authenticating HTTP requests. Also, sets the
+     * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} for this ConfigurationClientBuilder.
      *
      * @param credentials The credentials to use for authenticating HTTP requests.
      * @return The updated ConfigurationClientBuilder object.
@@ -85,6 +116,7 @@ public final class ConfigurationClientBuilder {
     public ConfigurationClientBuilder credentials(ConfigurationClientCredentials credentials) {
         Objects.requireNonNull(credentials);
         this.credentials = credentials;
+        this.serviceEndpoint = credentials.baseUri();
         return this;
     }
 
@@ -121,7 +153,23 @@ public final class ConfigurationClientBuilder {
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public ConfigurationClientBuilder httpClient(HttpClient client) {
+        Objects.requireNonNull(client);
         this.httpClient = client;
+        return this;
+    }
+
+    /**
+     * Sets the HTTP pipeline to use for the service client.
+     *
+     * If {@code pipeline} is set, all other settings are ignored, aside from
+     * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} to build {@link ConfigurationClient}.
+     *
+     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
+        Objects.requireNonNull(pipeline);
+        this.pipeline = pipeline;
         return this;
     }
 }
