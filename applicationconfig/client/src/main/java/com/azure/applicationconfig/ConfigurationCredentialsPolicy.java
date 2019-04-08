@@ -47,9 +47,10 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
     private final Logger logger = LoggerFactory.getLogger(ConfigurationCredentialsPolicy.class);
 
     /**
-     * Sign the request.
+     * Adds the required headers to authenticate a request to Azure Application Configuration service.
      *
      * @param context The request context
+     * @param next The next HTTP pipeline policy to process the {@code context's} request after this policy completes.
      * @return A {@link Mono} representing the HTTP response that will arrive asynchronously.
      */
     @Override
