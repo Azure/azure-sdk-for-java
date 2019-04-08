@@ -7,7 +7,6 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 /**
@@ -26,12 +25,11 @@ public class ServiceClientChecks extends AbstractCheck {
 
     private static final int[] TOKENS = new int[] {
         TokenTypes.PACKAGE_DEF,
-        TokenTypes.CLASS_DEF,
         TokenTypes.CTOR_DEF,
         TokenTypes.METHOD_DEF
     };
 
-    private String packageName;
+    private Class<?> serviceClientClass;
     private boolean extendsServiceClient;
     private boolean hasStaticBuilder;
 
@@ -54,13 +52,21 @@ public class ServiceClientChecks extends AbstractCheck {
         return TOKENS;
     }
 
+    @Override
+    public void init() {
+        try {
+            this.serviceClientClass = Class.forName(SERVICE_CLIENT_CLASS_NAME);
+        } catch (ClassNotFoundException ex) {
+
+        }
+    }
+
     /**
      * Start of the TreeWalker traversal.
      * @param rootAST Root of the AST.
      */
     @Override
     public void beginTree(DetailAST rootAST) {
-        this.packageName = "";
         this.extendsServiceClient = false;
         this.hasStaticBuilder = false;
     }
@@ -70,14 +76,14 @@ public class ServiceClientChecks extends AbstractCheck {
      */
     @Override
     public void visitToken(DetailAST token) {
+        // Failed to load ServiceClient's class, don't validate anything.
+        if (this.serviceClientClass == null) {
+            return;
+        }
+
         switch (token.getType()) {
             case TokenTypes.PACKAGE_DEF:
-                this.packageName = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
-                break;
-            case TokenTypes.CLASS_DEF:
-                if (extendsServiceClient(token)) {
-                    this.extendsServiceClient = true;
-                }
+                this.extendsServiceClient = extendsServiceClient(token);
                 break;
             case TokenTypes.CTOR_DEF:
                 if (this.extendsServiceClient && visibilityIsPublicOrProtected(token)) {
@@ -105,21 +111,25 @@ public class ServiceClientChecks extends AbstractCheck {
 
     /**
      * Determines if the class extends ServiceClient.
-     * @param classDefinitionToken Class definition token.
-     * @return True if the class is not an inner class, is not in a track one package, and extends ServiceClient.
+     * @param packageDefinitionToken Package definition token.
+     * @return True if the package is not in "com.microsoft", the file is a class definition, and the class extends ServiceClient.
      */
-    private boolean extendsServiceClient(DetailAST classDefinitionToken) {
-        // Prevent inner classes from stating its parent class extends ServiceClient or if it is in a track one package.
-        if (ScopeUtil.isInClassBlock(classDefinitionToken) || this.packageName.startsWith("com.microsoft")) {
+    private boolean extendsServiceClient(DetailAST packageDefinitionToken) {
+        String packageName = FullIdent.createFullIdent(packageDefinitionToken.findFirstToken(TokenTypes.DOT)).getText();
+        if (packageName.startsWith("com.microsoft")) {
+            return false;
+        }
+
+        DetailAST classDefinitionToken = packageDefinitionToken.findFirstToken(TokenTypes.CLASS_DEF);
+        if (classDefinitionToken == null) {
             return false;
         }
 
         try {
-            String className = this.packageName + "." + classDefinitionToken.findFirstToken(TokenTypes.IDENT).getText();
-            Class<?> clazz = this.getClassLoader().loadClass(className);
-            Class<?> serviceClientClass = this.getClassLoader().loadClass(SERVICE_CLIENT_CLASS_NAME);
+            String className = packageName + "." + classDefinitionToken.findFirstToken(TokenTypes.IDENT).getText();
+            Class<?> clazz = Class.forName(className);
 
-            return serviceClientClass.isAssignableFrom(clazz);
+            return this.serviceClientClass.isAssignableFrom(clazz);
         } catch (ClassNotFoundException ex) {
             return false;
         }
