@@ -135,9 +135,6 @@ public final class ConfigurationClient extends ServiceClient {
     /**
      * Updates an existing configuration value in the service with the given key. The setting must already exist.
      *
-     * <p>
-     * Partial updates are not supported.
-     *
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
      * @return ConfigurationSetting that was updated.
@@ -150,12 +147,9 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Updates an existing configuration value in the service. The setting must already exist.
+     * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
+     * supported, the entire configuration value is replaced.
      *
-     * <p>
-     * Partial updates are not supported.
-     *
-     * <p>
      * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is only updated if it matches.
      *
      * @param setting The setting to add or update in the service.
@@ -231,8 +225,8 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all the
-     * {@link ConfigurationSetting configuration settings} are fetched in their current state.
+     * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all
+     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
@@ -252,9 +246,8 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
-     * in descending order from their {@link ConfigurationSetting#lastModified() lastModified} date.
-     * <p>
-     * Revisions expire after a period of time. (The default is 30 days.)
+     * in descending order from their {@link ConfigurationSetting#lastModified() lastModified} date. Revisions expire
+     * after a period of time. (The default is 30 days.)
      *
      * <p>
      * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
