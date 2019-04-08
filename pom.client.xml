@@ -163,18 +163,6 @@
       </dependency>
 
       <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-common</artifactId>
-        <version>${azure-common.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-common-auth</artifactId>
-        <version>${azure-common-auth.version}</version>
-      </dependency>
-
-      <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>adal4j</artifactId>
         <version>${adal4j.version}</version>
