@@ -86,6 +86,9 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting, true);
+
+        // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
+        // finds any existing configuration settings, then its e-tag will match and the service will return an error.
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, null, getETagValue(ETAG_ANY));
     }
 
@@ -120,6 +123,12 @@ public final class ConfigurationClient extends ServiceClient {
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
         ConfigurationSetting result = validateSetting(setting, true);
 
+        // This service method call is similar to addSetting except it will create or update a configuration setting.
+        // If the user provides an etag value, it is passed in as If-Match = "{etag value}". If the current value in the
+        // service has a matching etag then it matches, then its value is updated with what the user passed in.
+        // Otherwise, the service throws an exception because the current configuration value was updated and we have an
+        // old value locally.
+        // If no etag value was passed in, then the value is always added or updated.
         return service.setKey(serviceEndpoint, result.key(), result.label(), result, getETagValue(result.etag()), null);
     }
 
