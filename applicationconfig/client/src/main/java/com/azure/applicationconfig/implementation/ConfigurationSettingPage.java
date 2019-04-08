@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * An instance of this class defines a page of Azure App Configuration {@link ConfigurationSetting} resources and a link
- * to get the next page of resources, if any.
+ * A page of Azure App Configuration {@link ConfigurationSetting} resources and a link to get the next page of
+ * resources, if any.
  */
 public final class ConfigurationSettingPage implements Page<ConfigurationSetting> {
     @JsonProperty("@nextLink")
@@ -20,9 +20,9 @@ public final class ConfigurationSettingPage implements Page<ConfigurationSetting
     private List<ConfigurationSetting> items;
 
     /**
-     * Gets the link to the next page.
+     * Gets the link to the next page. Or {@code null} if there are no more resources to fetch.
      *
-     * @return the link to the next page.
+     * @return The link to the next page.
      */
     @Override
     public String nextLink() {
@@ -30,9 +30,9 @@ public final class ConfigurationSettingPage implements Page<ConfigurationSetting
     }
 
     /**
-     * Gets the list of items.
+     * Gets the list of {@link ConfigurationSetting ConfigurationSettings} on this page.
      *
-     * @return the list of items in {@link List}.
+     * @return The list of items in {@link List}.
      */
     @Override
     public List<ConfigurationSetting> items() {
