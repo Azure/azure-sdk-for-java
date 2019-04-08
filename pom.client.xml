@@ -918,6 +918,7 @@
       <modules>
         <module>./eng/spotbugs-aggregate-report</module>
         <module>./eng/code-quality-reports</module>
+        <module>./eng/custom-checkstyles</module>
       </modules>
     </profile>
 
