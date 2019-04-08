@@ -48,6 +48,12 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
         return this.credentials.baseUri();
     }
 
+    /**
+     * Gets the "Authentication" header value used authenticate the {@code request} with the configuration service.
+     *
+     * @param request HTTP request to send to the configuration service.
+     * @return The "Authentication" header value.
+     */
     @Override
     public Mono<String> authorizationHeaderValueAsync(HttpRequest request) {
         return Mono.just(headerProvider.getAuthenticationHeaderValue(request));

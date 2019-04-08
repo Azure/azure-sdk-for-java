@@ -26,7 +26,7 @@ import java.util.Base64;
 import java.util.Objects;
 
 /**
- * Creates a policy that authenticates requests with Azure Application Configuration service.
+ * A policy that authenticates requests with Azure Application Configuration service.
  *
  * @see ConfigurationClient
  * @see ConfigurationClientBuilder
