@@ -95,7 +95,7 @@ public final class Base64Url {
      */
     public byte[] decodedBytes() {
         if (this.bytes == null) {
-            return new byte[0];
+            return null;
         }
 
         final byte[] decodedBytes = Base64Util.decodeURL(bytes);

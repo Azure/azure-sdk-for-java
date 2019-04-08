@@ -138,7 +138,7 @@ final class HttpResponseBodyDecoder {
      */
     static boolean isErrorStatus(HttpResponse httpResponse, HttpResponseDecodeData decodeData) {
         final int[] expectedStatuses = decodeData.expectedStatusCodes();
-        if (expectedStatuses != null && expectedStatuses.length > 0) {
+        if (expectedStatuses != null) {
             return !contains(expectedStatuses, httpResponse.statusCode());
         } else {
             return httpResponse.statusCode() / 100 != 2;

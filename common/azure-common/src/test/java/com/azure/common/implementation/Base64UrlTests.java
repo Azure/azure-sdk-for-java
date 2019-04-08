@@ -8,8 +8,8 @@ public class Base64UrlTests {
     @Test
     public void constructorWithNullBytes() {
         final Base64Url base64Url = new Base64Url((byte[])null);
-        assertEmptyByteArray(base64Url.encodedBytes());
-        assertEmptyByteArray(base64Url.decodedBytes());
+        assertNull(base64Url.encodedBytes());
+        assertNull(base64Url.decodedBytes());
         assertEmptyString(base64Url.toString());
     }
 
@@ -32,8 +32,8 @@ public class Base64UrlTests {
     @Test
     public void constructorWithNullString() {
         final Base64Url base64Url = new Base64Url((String)null);
-        assertEmptyByteArray(base64Url.encodedBytes());
-        assertEmptyByteArray(base64Url.decodedBytes());
+        assertNull(base64Url.encodedBytes());
+        assertNull(base64Url.decodedBytes());
         assertEmptyString(base64Url.toString());
     }
 
@@ -88,8 +88,8 @@ public class Base64UrlTests {
     @Test
     public void encodeWithNullBytes() {
         final Base64Url base64Url = Base64Url.encode(null);
-        assertEmptyByteArray(base64Url.encodedBytes());
-        assertEmptyByteArray(base64Url.decodedBytes());
+        assertNull(base64Url.encodedBytes());
+        assertNull(base64Url.decodedBytes());
         assertEmptyString(base64Url.toString());
     }
 
@@ -113,7 +113,4 @@ public class Base64UrlTests {
         assertEquals("", input);
     }
 
-    private static void assertEmptyByteArray(byte[] input) {
-        assertEquals(0, input.length);
-    }
 }
