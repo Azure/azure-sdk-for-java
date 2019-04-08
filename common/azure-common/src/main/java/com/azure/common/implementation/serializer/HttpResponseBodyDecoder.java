@@ -6,16 +6,18 @@
 
 package com.azure.common.implementation.serializer;
 
+import com.azure.common.http.rest.Page;
+import com.azure.common.implementation.http.PagedResponseBase;
 import com.azure.common.implementation.Base64Url;
 import com.azure.common.implementation.DateTimeRfc1123;
-import com.azure.common.http.rest.RestException;
-import com.azure.common.http.rest.RestResponse;
-import com.azure.common.http.rest.RestResponseBase;
+import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.http.rest.Response;
+import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.implementation.UnixTime;
 import com.azure.common.annotations.ReturnValueWireType;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpResponse;
-import com.azure.common.http.rest.SimpleRestResponse;
+import com.azure.common.http.rest.SimpleResponse;
 import com.azure.common.implementation.util.FluxUtil;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Flux;
@@ -82,9 +84,9 @@ final class HttpResponseBodyDecoder {
                                         SerializerEncoding.fromHeaders(httpResponse.headers()));
                                 return decodedSuccessEntity == null ? Mono.empty() : Mono.just(decodedSuccessEntity);
                             } catch (MalformedValueException e) {
-                                return Mono.error(new RestException("HTTP response has a malformed body.", httpResponse, e));
+                                return Mono.error(new ServiceRequestException("HTTP response has a malformed body.", httpResponse, e));
                             } catch (IOException e) {
-                                return Mono.error(new RestException("Deserialization Failed.", httpResponse, e));
+                                return Mono.error(new ServiceRequestException("Deserialization Failed.", httpResponse, e));
                             }
                         });
             }
@@ -148,25 +150,28 @@ final class HttpResponseBodyDecoder {
     /**
      * Deserialize the given string value representing content of a REST API response.
      *
+     * If the {@link ReturnValueWireType} is of type {@link Page}, then the returned object will be an instance of that
+     * {@param wireType}. Otherwise, the returned object is converted back to its {@param resultType}.
+     *
      * @param value the string value to deserialize
      * @param resultType the return type of the java proxy method
      * @param wireType value of optional {@link ReturnValueWireType} annotation present in java proxy method indicating
      *                 'entity type' (wireType) of REST API wire response body
      * @param encoding the encoding format of value
      * @return Deserialized object
-     * @throws IOException
+     * @throws IOException When the body cannot be deserialized
      */
     private static Object deserializeBody(String value, Type resultType, Type wireType, SerializerAdapter serializer, SerializerEncoding encoding) throws IOException {
-        final Object result;
-
         if (wireType == null) {
-            result = serializer.deserialize(value, resultType, encoding);
+            return serializer.deserialize(value, resultType, encoding);
+        } else if (TypeUtil.isTypeOrSubTypeOf(wireType, Page.class)) {
+            return deserializePage(value, resultType, wireType, serializer, encoding);
         } else {
             final Type wireResponseType = constructWireResponseType(resultType, wireType);
             final Object wireResponse = serializer.deserialize(value, wireResponseType, encoding);
-            result = convertToResultType(wireResponse, resultType, wireType);
+
+            return convertToResultType(wireResponse, resultType, wireType);
         }
-        return result;
     }
 
     /**
@@ -207,7 +212,7 @@ final class HttpResponseBodyDecoder {
 
                 wireResponseType = TypeUtil.createParameterizedType(
                         (Class<?>) ((ParameterizedType) resultType).getRawType(), wireResponseElementType);
-            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class) || TypeUtil.isTypeOrSubTypeOf(resultType, RestResponse.class)) {
+            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class) || TypeUtil.isTypeOrSubTypeOf(resultType, Response.class)) {
                 Type[] typeArguments = TypeUtil.getTypeArguments(resultType);
                 final Type resultValueType = typeArguments[1];
                 final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
@@ -217,6 +222,32 @@ final class HttpResponseBodyDecoder {
             }
         }
         return wireResponseType;
+    }
+
+    /**
+     * Deserializes a response body as a Page<T> given that {@param wireType} is either:
+     * 1. A type that implements the interface
+     * 2. Is of {@link Page}
+     *
+     * @param value The string to deserialize
+     * @param resultType The type T, of the page contents.
+     * @param wireType The {@link Type} that either is, or implements {@link Page}
+     * @param serializer The serializer used to deserialize the value.
+     * @param encoding Encoding used to deserialize string
+     * @return An object representing an instance of {@param wireType}
+     * @throws IOException if the serializer is unable to deserialize the value.
+     */
+    private static Object deserializePage(String value, Type resultType, Type wireType, SerializerAdapter serializer, SerializerEncoding encoding) throws IOException {
+        final Type wireResponseType;
+
+        if (wireType == Page.class) {
+            // If the type is the 'Page' interface [i.e. `@ReturnValueWireType(Page.class)`], we will use the 'ItemPage' class instead.
+            wireResponseType = TypeUtil.createParameterizedType(ItemPage.class, resultType);
+        } else {
+            wireResponseType = wireType;
+        }
+
+        return serializer.deserialize(value, wireResponseType, encoding);
     }
 
     /**
@@ -273,25 +304,28 @@ final class HttpResponseBodyDecoder {
                     }
                     //
                     result = wireResponseMap;
-                } else if (TypeUtil.isTypeOrSubTypeOf(resultType, RestResponseBase.class)) {
-                    RestResponseBase<?, ?> restResponseBase = (RestResponseBase<?, ?>) wireResponse;
-                    Object wireResponseBody = restResponseBase.body();
+                } else if (TypeUtil.isTypeOrSubTypeOf(resultType, PagedResponseBase.class)) {
+                    PagedResponseBase<?, ?> restResponse = (PagedResponseBase<?, ?>) wireResponse;
+                    result = new PagedResponseBase<>(restResponse.request(), restResponse.statusCode(), restResponse.headers(), restResponse.items(), restResponse.nextLink(), restResponse.deserializedHeaders());
+                } else if (TypeUtil.isTypeOrSubTypeOf(resultType, ResponseBase.class)) {
+                    ResponseBase<?, ?> restResponseBase = (ResponseBase<?, ?>) wireResponse;
+                    Object wireResponseBody = restResponseBase.value();
 
                     // TODO: anuchan - RestProxy is always in charge of creating RestResponseBase--so this doesn't seem right
                     Object resultBody = convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
                     if (wireResponseBody != resultBody) {
-                        result = new RestResponseBase<>(restResponseBase.request(), restResponseBase.statusCode(), restResponseBase.headers(), resultBody, restResponseBase.deserializedHeaders());
+                        result = new ResponseBase<>(restResponseBase.request(), restResponseBase.statusCode(), restResponseBase.headers(), resultBody, restResponseBase.deserializedHeaders());
                     } else {
                         result = restResponseBase;
                     }
-                } else if (TypeUtil.isTypeOrSubTypeOf(resultType, RestResponse.class)) {
-                    RestResponse<?> restResponse = (RestResponse<?>) wireResponse;
-                    Object wireResponseBody = restResponse.body();
+                } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Response.class)) {
+                    Response<?> restResponse = (Response<?>) wireResponse;
+                    Object wireResponseBody = restResponse.value();
 
                     // TODO: anuchan - RestProxy is always in charge of creating RestResponseBase--so this doesn't seem right
                     Object resultBody = convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
                     if (wireResponseBody != resultBody) {
-                        result = new SimpleRestResponse<>(restResponse.request(), restResponse.statusCode(), restResponse.headers(), resultBody);
+                        result = new SimpleResponse<>(restResponse.request(), restResponse.statusCode(), restResponse.headers(), resultBody);
                     } else {
                         result = restResponse;
                     }
@@ -312,7 +346,7 @@ final class HttpResponseBodyDecoder {
      *               {@code Flux<Foo> getFoos(args);}
      *          where Foo is the REST API 'returned entity'.
      *
-     *      2. OR content (body) of {@link RestResponseBase} emitted by the reactor publisher returned from proxy method
+     *      2. OR content (value) of {@link ResponseBase} emitted by the reactor publisher returned from proxy method
      *
      *          e.g. {@code Mono<RestResponseBase<headers, Foo>> getFoo(args);}
      *               {@code Flux<RestResponseBase<headers, Foo>> getFoos(args);}
@@ -337,7 +371,7 @@ final class HttpResponseBodyDecoder {
                 }
             }
 
-            if (TypeUtil.isTypeOrSubTypeOf(token, RestResponse.class)) {
+            if (TypeUtil.isTypeOrSubTypeOf(token, Response.class)) {
                 token = TypeUtil.getRestResponseBodyType(token);
             }
 

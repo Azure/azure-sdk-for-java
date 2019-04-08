@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @param <T> the type items in the page
  */
-public interface RestPagedResponse<T> extends RestResponse<List<T>>, Closeable {
+public interface PagedResponse<T> extends Response<List<T>>, Closeable {
     /**
      * Gets the items in the page.
      *
@@ -22,7 +22,7 @@ public interface RestPagedResponse<T> extends RestResponse<List<T>>, Closeable {
     List<T> items();
 
     /**
-     * Get the link to retrieve RestPagedResponse containing next page.
+     * Get the link to retrieve PagedResponse containing next page.
      *
      * @return the next page link.
      */
@@ -33,7 +33,7 @@ public interface RestPagedResponse<T> extends RestResponse<List<T>>, Closeable {
      *
      * @return The items in the page.
      */
-    default List<T> body() {
+    default List<T> value() {
         return items();
     }
 }

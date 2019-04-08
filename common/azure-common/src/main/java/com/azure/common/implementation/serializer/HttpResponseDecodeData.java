@@ -6,7 +6,7 @@
 
 package com.azure.common.implementation.serializer;
 
-import com.azure.common.http.rest.RestResponseBase;
+import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.annotations.HeaderCollection;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Mono;
@@ -44,8 +44,8 @@ public interface HttpResponseDecodeData {
         }
 
         // Only the RestResponseBase class supports a custom header type. All other RestResponse subclasses do not.
-        if (TypeUtil.isTypeOrSubTypeOf(token, RestResponseBase.class)) {
-            headersType = TypeUtil.getTypeArguments(TypeUtil.getSuperType(token, RestResponseBase.class))[0];
+        if (TypeUtil.isTypeOrSubTypeOf(token, ResponseBase.class)) {
+            headersType = TypeUtil.getTypeArguments(TypeUtil.getSuperType(token, ResponseBase.class))[0];
         }
 
         return headersType;
