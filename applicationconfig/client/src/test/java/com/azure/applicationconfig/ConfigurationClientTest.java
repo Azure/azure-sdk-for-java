@@ -230,10 +230,7 @@ public class ConfigurationClientTest {
             .assertNext(response -> assertConfigurationEquals(expected, response))
             .verifyComplete();
 
-        StepVerifier.create(client.lockSetting(expected).then(client.setSetting(update)))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
-
-        StepVerifier.create(client.unlockSetting(expected).then(client.setSetting(update)))
+        StepVerifier.create(client.setSetting(update))
             .assertNext(response -> assertConfigurationEquals(update, response))
             .verifyComplete();
     }
@@ -338,10 +335,7 @@ public class ConfigurationClientTest {
             .assertNext(response -> assertConfigurationEquals(original, response))
             .verifyComplete();
 
-        StepVerifier.create(client.lockSetting(original.key()).then(client.updateSetting(updated.key(), updated.value())))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
-
-        StepVerifier.create(client.unlockSetting(original.key()).then(client.updateSetting(updated.key(), updated.value())))
+        StepVerifier.create(client.updateSetting(updated.key(), updated.value()))
             .assertNext(response -> assertConfigurationEquals(updated, response))
             .verifyComplete();
     }
