@@ -26,7 +26,7 @@ public class DatabaseUpdate extends ProxyResource {
 
     /**
      * The provisioned state of the resource. Possible values include:
-     * 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed'.
+     * 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Moving'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -39,8 +39,7 @@ public class DatabaseUpdate extends ProxyResource {
     private Period softDeletePeriod;
 
     /**
-     * The time the data that should be kept in cache for fast queries in
-     * TimeSpan.
+     * The time the data should be kept in cache for fast queries in TimeSpan.
      */
     @JsonProperty(value = "properties.hotCachePeriod")
     private Period hotCachePeriod;
@@ -72,7 +71,7 @@ public class DatabaseUpdate extends ProxyResource {
     }
 
     /**
-     * Get the provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed'.
+     * Get the provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Moving'.
      *
      * @return the provisioningState value
      */
@@ -101,7 +100,7 @@ public class DatabaseUpdate extends ProxyResource {
     }
 
     /**
-     * Get the time the data that should be kept in cache for fast queries in TimeSpan.
+     * Get the time the data should be kept in cache for fast queries in TimeSpan.
      *
      * @return the hotCachePeriod value
      */
@@ -110,7 +109,7 @@ public class DatabaseUpdate extends ProxyResource {
     }
 
     /**
-     * Set the time the data that should be kept in cache for fast queries in TimeSpan.
+     * Set the time the data should be kept in cache for fast queries in TimeSpan.
      *
      * @param hotCachePeriod the hotCachePeriod value to set
      * @return the DatabaseUpdate object itself.

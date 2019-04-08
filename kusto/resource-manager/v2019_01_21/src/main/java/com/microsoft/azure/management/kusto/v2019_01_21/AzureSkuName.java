@@ -16,26 +16,41 @@ import com.microsoft.rest.ExpandableStringEnum;
  * Defines values for AzureSkuName.
  */
 public final class AzureSkuName extends ExpandableStringEnum<AzureSkuName> {
-    /** Static value D13_v2 for AzureSkuName. */
-    public static final AzureSkuName D13_V2 = fromString("D13_v2");
+    /** Static value Standard_DS13_v2+1TB_PS for AzureSkuName. */
+    public static final AzureSkuName STANDARD_DS13_V21TB_PS = fromString("Standard_DS13_v2+1TB_PS");
 
-    /** Static value D14_v2 for AzureSkuName. */
-    public static final AzureSkuName D14_V2 = fromString("D14_v2");
+    /** Static value Standard_DS13_v2+2TB_PS for AzureSkuName. */
+    public static final AzureSkuName STANDARD_DS13_V22TB_PS = fromString("Standard_DS13_v2+2TB_PS");
 
-    /** Static value L8 for AzureSkuName. */
-    public static final AzureSkuName L8 = fromString("L8");
+    /** Static value Standard_DS14_v2+3TB_PS for AzureSkuName. */
+    public static final AzureSkuName STANDARD_DS14_V23TB_PS = fromString("Standard_DS14_v2+3TB_PS");
 
-    /** Static value L16 for AzureSkuName. */
-    public static final AzureSkuName L16 = fromString("L16");
+    /** Static value Standard_DS14_v2+4TB_PS for AzureSkuName. */
+    public static final AzureSkuName STANDARD_DS14_V24TB_PS = fromString("Standard_DS14_v2+4TB_PS");
 
-    /** Static value D11_v2 for AzureSkuName. */
-    public static final AzureSkuName D11_V2 = fromString("D11_v2");
+    /** Static value Standard_D13_v2 for AzureSkuName. */
+    public static final AzureSkuName STANDARD_D13_V2 = fromString("Standard_D13_v2");
 
-    /** Static value D12_v2 for AzureSkuName. */
-    public static final AzureSkuName D12_V2 = fromString("D12_v2");
+    /** Static value Standard_D14_v2 for AzureSkuName. */
+    public static final AzureSkuName STANDARD_D14_V2 = fromString("Standard_D14_v2");
 
-    /** Static value L4 for AzureSkuName. */
-    public static final AzureSkuName L4 = fromString("L4");
+    /** Static value Standard_L8s for AzureSkuName. */
+    public static final AzureSkuName STANDARD_L8S = fromString("Standard_L8s");
+
+    /** Static value Standard_L16s for AzureSkuName. */
+    public static final AzureSkuName STANDARD_L16S = fromString("Standard_L16s");
+
+    /** Static value Standard_D11_v2 for AzureSkuName. */
+    public static final AzureSkuName STANDARD_D11_V2 = fromString("Standard_D11_v2");
+
+    /** Static value Standard_D12_v2 for AzureSkuName. */
+    public static final AzureSkuName STANDARD_D12_V2 = fromString("Standard_D12_v2");
+
+    /** Static value Standard_L4s for AzureSkuName. */
+    public static final AzureSkuName STANDARD_L4S = fromString("Standard_L4s");
+
+    /** Static value Dev(No SLA)_Standard_D11_v2 for AzureSkuName. */
+    public static final AzureSkuName DEV_NO_SLA_STANDARD_D11_V2 = fromString("Dev(No SLA)_Standard_D11_v2");
 
     /**
      * Creates or finds a AzureSkuName from its string representation.

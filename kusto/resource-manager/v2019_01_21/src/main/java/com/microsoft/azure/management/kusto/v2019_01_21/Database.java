@@ -98,7 +98,7 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithHotCachePeriod {
             /**
              * Specifies hotCachePeriod.
-             * @param hotCachePeriod The time the data that should be kept in cache for fast queries in TimeSpan
+             * @param hotCachePeriod The time the data should be kept in cache for fast queries in TimeSpan
              * @return the next definition stage
              */
             WithCreate withHotCachePeriod(Period hotCachePeriod);
@@ -164,7 +164,7 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithHotCachePeriod {
             /**
              * Specifies hotCachePeriod.
-             * @param hotCachePeriod The time the data that should be kept in cache for fast queries in TimeSpan
+             * @param hotCachePeriod The time the data should be kept in cache for fast queries in TimeSpan
              * @return the next update stage
              */
             Update withHotCachePeriod(Period hotCachePeriod);

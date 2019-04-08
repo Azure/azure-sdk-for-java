@@ -13,10 +13,11 @@ import com.microsoft.azure.management.kusto.v2019_01_21.Cluster;
 import rx.Observable;
 import com.microsoft.azure.management.kusto.v2019_01_21.ClusterUpdate;
 import java.util.List;
+import com.microsoft.azure.management.kusto.v2019_01_21.AzureSku;
 import com.microsoft.azure.management.kusto.v2019_01_21.State;
 import com.microsoft.azure.management.kusto.v2019_01_21.ProvisioningState;
 import com.microsoft.azure.management.kusto.v2019_01_21.TrustedExternalTenant;
-import com.microsoft.azure.management.kusto.v2019_01_21.AzureSku;
+import com.microsoft.azure.management.kusto.v2019_01_21.IntelligentAutoscale;
 import rx.functions.Func1;
 
 class ClusterImpl extends GroupableResourceCoreImpl<Cluster, ClusterInner, ClusterImpl, KustoManager> implements Cluster, Cluster.Definition, Cluster.Update {
@@ -75,18 +76,18 @@ class ClusterImpl extends GroupableResourceCoreImpl<Cluster, ClusterInner, Clust
     }
 
     @Override
+    public IntelligentAutoscale intelligentAutoscale() {
+        return this.inner().intelligentAutoscale();
+    }
+
+    @Override
     public ProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
 
     @Override
     public AzureSku sku() {
-        AzureSkuInner inner = this.inner().sku();
-        if (inner != null) {
-            return  new AzureSkuImpl(inner, manager());
-        } else {
-            return null;
-        }
+        return this.inner().sku();
     }
 
     @Override
@@ -105,11 +106,21 @@ class ClusterImpl extends GroupableResourceCoreImpl<Cluster, ClusterInner, Clust
     }
 
     @Override
-    public ClusterImpl withSku(AzureSkuInner sku) {
+    public ClusterImpl withSku(AzureSku sku) {
         if (isInCreateMode()) {
             this.inner().withSku(sku);
         } else {
             this.updateParameter.withSku(sku);
+        }
+        return this;
+    }
+
+    @Override
+    public ClusterImpl withIntelligentAutoscale(IntelligentAutoscale intelligentAutoscale) {
+        if (isInCreateMode()) {
+            this.inner().withIntelligentAutoscale(intelligentAutoscale);
+        } else {
+            this.updateParameter.withIntelligentAutoscale(intelligentAutoscale);
         }
         return this;
     }

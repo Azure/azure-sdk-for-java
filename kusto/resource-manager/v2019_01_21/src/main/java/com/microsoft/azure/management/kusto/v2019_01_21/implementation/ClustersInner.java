@@ -1195,9 +1195,9 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;AzureSkuInner&gt; object if successful.
+     * @return the List&lt;SkuDescriptionInner&gt; object if successful.
      */
-    public List<AzureSkuInner> listSkus() {
+    public List<SkuDescriptionInner> listSkus() {
         return listSkusWithServiceResponseAsync().toBlocking().single().body();
     }
 
@@ -1208,7 +1208,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AzureSkuInner>> listSkusAsync(final ServiceCallback<List<AzureSkuInner>> serviceCallback) {
+    public ServiceFuture<List<SkuDescriptionInner>> listSkusAsync(final ServiceCallback<List<SkuDescriptionInner>> serviceCallback) {
         return ServiceFuture.fromResponse(listSkusWithServiceResponseAsync(), serviceCallback);
     }
 
@@ -1216,12 +1216,12 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * Lists eligible SKUs for Kusto resource provider.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;AzureSkuInner&gt; object
+     * @return the observable to the List&lt;SkuDescriptionInner&gt; object
      */
-    public Observable<List<AzureSkuInner>> listSkusAsync() {
-        return listSkusWithServiceResponseAsync().map(new Func1<ServiceResponse<List<AzureSkuInner>>, List<AzureSkuInner>>() {
+    public Observable<List<SkuDescriptionInner>> listSkusAsync() {
+        return listSkusWithServiceResponseAsync().map(new Func1<ServiceResponse<List<SkuDescriptionInner>>, List<SkuDescriptionInner>>() {
             @Override
-            public List<AzureSkuInner> call(ServiceResponse<List<AzureSkuInner>> response) {
+            public List<SkuDescriptionInner> call(ServiceResponse<List<SkuDescriptionInner>> response) {
                 return response.body();
             }
         });
@@ -1231,9 +1231,9 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * Lists eligible SKUs for Kusto resource provider.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;AzureSkuInner&gt; object
+     * @return the observable to the List&lt;SkuDescriptionInner&gt; object
      */
-    public Observable<ServiceResponse<List<AzureSkuInner>>> listSkusWithServiceResponseAsync() {
+    public Observable<ServiceResponse<List<SkuDescriptionInner>>> listSkusWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1241,16 +1241,16 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listSkus(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AzureSkuInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SkuDescriptionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<AzureSkuInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<SkuDescriptionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<AzureSkuInner>> result = listSkusDelegate(response);
-                        List<AzureSkuInner> items = null;
+                        ServiceResponse<PageImpl<SkuDescriptionInner>> result = listSkusDelegate(response);
+                        List<SkuDescriptionInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
                         }
-                        ServiceResponse<List<AzureSkuInner>> clientResponse = new ServiceResponse<List<AzureSkuInner>>(items, result.response());
+                        ServiceResponse<List<SkuDescriptionInner>> clientResponse = new ServiceResponse<List<SkuDescriptionInner>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1259,9 +1259,9 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
             });
     }
 
-    private ServiceResponse<PageImpl<AzureSkuInner>> listSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AzureSkuInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<AzureSkuInner>>() { }.getType())
+    private ServiceResponse<PageImpl<SkuDescriptionInner>> listSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SkuDescriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SkuDescriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

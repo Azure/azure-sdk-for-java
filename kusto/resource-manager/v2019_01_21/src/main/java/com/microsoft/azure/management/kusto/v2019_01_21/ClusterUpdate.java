@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.kusto.v2019_01_21;
 
 import java.util.Map;
-import com.microsoft.azure.management.kusto.v2019_01_21.implementation.AzureSkuInner;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -36,7 +35,7 @@ public class ClusterUpdate extends ProxyResource {
      * The SKU of the cluster.
      */
     @JsonProperty(value = "sku")
-    private AzureSkuInner sku;
+    private AzureSku sku;
 
     /**
      * The state of the resource. Possible values include: 'Creating',
@@ -48,7 +47,7 @@ public class ClusterUpdate extends ProxyResource {
 
     /**
      * The provisioned state of the resource. Possible values include:
-     * 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed'.
+     * 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Moving'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -70,6 +69,12 @@ public class ClusterUpdate extends ProxyResource {
      */
     @JsonProperty(value = "properties.trustedExternalTenants")
     private List<TrustedExternalTenant> trustedExternalTenants;
+
+    /**
+     * Intelligent auto scale definition.
+     */
+    @JsonProperty(value = "properties.intelligentAutoscale")
+    private IntelligentAutoscale intelligentAutoscale;
 
     /**
      * Get resource tags.
@@ -116,7 +121,7 @@ public class ClusterUpdate extends ProxyResource {
      *
      * @return the sku value
      */
-    public AzureSkuInner sku() {
+    public AzureSku sku() {
         return this.sku;
     }
 
@@ -126,7 +131,7 @@ public class ClusterUpdate extends ProxyResource {
      * @param sku the sku value to set
      * @return the ClusterUpdate object itself.
      */
-    public ClusterUpdate withSku(AzureSkuInner sku) {
+    public ClusterUpdate withSku(AzureSku sku) {
         this.sku = sku;
         return this;
     }
@@ -141,7 +146,7 @@ public class ClusterUpdate extends ProxyResource {
     }
 
     /**
-     * Get the provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed'.
+     * Get the provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Moving'.
      *
      * @return the provisioningState value
      */
@@ -184,6 +189,26 @@ public class ClusterUpdate extends ProxyResource {
      */
     public ClusterUpdate withTrustedExternalTenants(List<TrustedExternalTenant> trustedExternalTenants) {
         this.trustedExternalTenants = trustedExternalTenants;
+        return this;
+    }
+
+    /**
+     * Get intelligent auto scale definition.
+     *
+     * @return the intelligentAutoscale value
+     */
+    public IntelligentAutoscale intelligentAutoscale() {
+        return this.intelligentAutoscale;
+    }
+
+    /**
+     * Set intelligent auto scale definition.
+     *
+     * @param intelligentAutoscale the intelligentAutoscale value to set
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withIntelligentAutoscale(IntelligentAutoscale intelligentAutoscale) {
+        this.intelligentAutoscale = intelligentAutoscale;
         return this;
     }
 

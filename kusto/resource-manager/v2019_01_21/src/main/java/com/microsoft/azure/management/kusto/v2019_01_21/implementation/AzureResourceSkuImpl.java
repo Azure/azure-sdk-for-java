@@ -41,12 +41,7 @@ class AzureResourceSkuImpl extends WrapperImpl<AzureResourceSkuInner> implements
 
     @Override
     public AzureSku sku() {
-        AzureSkuInner inner = this.inner().sku();
-        if (inner != null) {
-            return  new AzureSkuImpl(inner, manager());
-        } else {
-            return null;
-        }
+        return this.inner().sku();
     }
 
 }

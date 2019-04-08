@@ -25,7 +25,7 @@ import com.microsoft.azure.Page;
 import java.util.List;
 import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameResult;
 import com.microsoft.azure.management.kusto.v2019_01_21.AzureResourceSku;
-import com.microsoft.azure.management.kusto.v2019_01_21.AzureSku;
+import com.microsoft.azure.management.kusto.v2019_01_21.SkuDescription;
 
 class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, ClusterInner, ClustersInner, KustoManager>  implements Clusters {
     protected ClustersImpl(KustoManager manager) {
@@ -186,19 +186,19 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
     }
 
     @Override
-    public Observable<AzureSku> listSkusAsync() {
+    public Observable<SkuDescription> listSkusAsync() {
         ClustersInner client = this.inner();
         return client.listSkusAsync()
-        .flatMap(new Func1<List<AzureSkuInner>, Observable<AzureSkuInner>>() {
+        .flatMap(new Func1<List<SkuDescriptionInner>, Observable<SkuDescriptionInner>>() {
             @Override
-            public Observable<AzureSkuInner> call(List<AzureSkuInner> innerList) {
+            public Observable<SkuDescriptionInner> call(List<SkuDescriptionInner> innerList) {
                 return Observable.from(innerList);
             }
         })
-        .map(new Func1<AzureSkuInner, AzureSku>() {
+        .map(new Func1<SkuDescriptionInner, SkuDescription>() {
             @Override
-            public AzureSku call(AzureSkuInner inner) {
-                return new AzureSkuImpl(inner, manager());
+            public SkuDescription call(SkuDescriptionInner inner) {
+                return new SkuDescriptionImpl(inner, manager());
             }
         });
     }
