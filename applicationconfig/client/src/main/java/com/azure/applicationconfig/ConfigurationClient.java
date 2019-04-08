@@ -247,9 +247,8 @@ public final class ConfigurationClient extends ServiceClient {
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
      * in descending order from their {@link ConfigurationSetting#lastModified() lastModified} date. Revisions expire
-     * after a period of time. (The default is 30 days.)
+     * after a period of time. The service maintains change history for up to 7 days.
      *
-     * <p>
      * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
      * in their current state. Otherwise, the results returned match the parameters given in {@code options}.
      *
