@@ -101,82 +101,8 @@ class ReactorNettyClient implements HttpClient {
      * @return a delegate upon invocation setup Rest response object
      */
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(final HttpRequest restRequest) {
-        BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate = (reactorNettyResponse, reactorNettyConnection) -> {
-            HttpResponse httpResponse = new HttpResponse() {
-                @Override
-                public int statusCode() {
-                    return reactorNettyResponse.status().code();
-                }
-
-                @Override
-                public String headerValue(String name) {
-                    return reactorNettyResponse.responseHeaders().get(name);
-                }
-
-                @Override
-                public com.azure.common.http.HttpHeaders headers() {
-                    Map<String, String> map = new HashMap<>();
-                    reactorNettyResponse.responseHeaders().forEach(e -> map.put(e.getKey(), e.getValue()));
-                    return new com.azure.common.http.HttpHeaders(map);
-                }
-
-                @Override
-                public Flux<ByteBuf> body() {
-                    final ByteBufFlux body = bodyIntern();
-                    //
-                    return body.doFinally(s -> {
-                        if (!reactorNettyConnection.isDisposed()) {
-                            reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-                        }
-                    });
-                }
-
-                @Override
-                public Mono<byte[]> bodyAsByteArray() {
-                    return bodyIntern().aggregate().asByteArray().doFinally(s -> {
-                        if (!reactorNettyConnection.isDisposed()) {
-                            reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-                        }
-                    });
-                }
-
-                @Override
-                public Mono<String> bodyAsString() {
-                    return bodyIntern().aggregate().asString().doFinally(s -> {
-                        if (!reactorNettyConnection.isDisposed()) {
-                            reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-                        }
-                    });
-                }
-
-                @Override
-                public Mono<String> bodyAsString(Charset charset) {
-                    return bodyIntern().aggregate().asString(charset).doFinally(s -> {
-                        if (!reactorNettyConnection.isDisposed()) {
-                            reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-                        }
-                    });
-                }
-
-                @Override
-                public void close() {
-                    if (!reactorNettyConnection.isDisposed()) {
-                        reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-                    }
-                }
-
-                private ByteBufFlux bodyIntern() {
-                    return reactorNettyConnection.inbound().receive();
-                }
-
-                @Override
-                Connection internConnection() {
-                    return reactorNettyConnection;
-                }
-            };
-            return Mono.just(httpResponse.withRequest(restRequest));
-        };
-        return responseDelegate;
+        return (reactorNettyResponse, reactorNettyConnection) ->
+            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection).withRequest(restRequest));
     }
 
     @Override
@@ -195,5 +121,84 @@ class ReactorNettyClient implements HttpClient {
     @Override
     public final HttpClient port(int port) {
         return new ReactorNettyClient(this.httpClient, client -> client.port(port));
+    }
+
+    private static class ReactorNettyHttpResponse extends HttpResponse {
+        private final HttpClientResponse reactorNettyResponse;
+        private final Connection reactorNettyConnection;
+
+        ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection) {
+            this.reactorNettyResponse = reactorNettyResponse;
+            this.reactorNettyConnection = reactorNettyConnection;
+        }
+
+        @Override
+        public int statusCode() {
+            return reactorNettyResponse.status().code();
+        }
+
+        @Override
+        public String headerValue(String name) {
+            return reactorNettyResponse.responseHeaders().get(name);
+        }
+
+        @Override
+        public HttpHeaders headers() {
+            HttpHeaders headers = new HttpHeaders();
+            reactorNettyResponse.responseHeaders().forEach(e -> headers.set(e.getKey(), e.getValue()));
+            return headers;
+        }
+
+        @Override
+        public Flux<ByteBuf> body() {
+            return bodyIntern().doFinally(s -> {
+                if (!reactorNettyConnection.isDisposed()) {
+                    reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
+                }
+            });
+        }
+
+        @Override
+        public Mono<byte[]> bodyAsByteArray() {
+            return bodyIntern().aggregate().asByteArray().doFinally(s -> {
+                if (!reactorNettyConnection.isDisposed()) {
+                    reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
+                }
+            });
+        }
+
+        @Override
+        public Mono<String> bodyAsString() {
+            return bodyIntern().aggregate().asString().doFinally(s -> {
+                if (!reactorNettyConnection.isDisposed()) {
+                    reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
+                }
+            });
+        }
+
+        @Override
+        public Mono<String> bodyAsString(Charset charset) {
+            return bodyIntern().aggregate().asString(charset).doFinally(s -> {
+                if (!reactorNettyConnection.isDisposed()) {
+                    reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
+                }
+            });
+        }
+
+        @Override
+        public void close() {
+            if (!reactorNettyConnection.isDisposed()) {
+                reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
+            }
+        }
+
+        private ByteBufFlux bodyIntern() {
+            return reactorNettyConnection.inbound().receive();
+        }
+
+        @Override
+        Connection internConnection() {
+            return reactorNettyConnection;
+        }
     }
 }
