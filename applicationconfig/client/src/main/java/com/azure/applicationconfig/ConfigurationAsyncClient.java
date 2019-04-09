@@ -64,8 +64,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      *
      * @param key The key for the configuration setting to add.
      * @param value The value associated with this configuration setting key.
-     * @return ConfigurationSetting that was created.
-     * @throws IllegalArgumentException If {@code key} or {@code value} are {@code null} or an empty string.
+     * @return The {@link ConfigurationSetting) that was created, or null, if a key collision occurs (which will also
+     * throw IllegalArgumentException described below).
+     * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws ServiceRequestException If a ConfigurationSetting with the same key exists.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
@@ -77,18 +78,19 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * ConfigurationSetting is optional.
      *
      * @param setting The setting to add to the configuration service.
-     * @return ConfigurationSetting that was created.
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or
-     * {@link ConfigurationSetting#value() value} are {@code null} or an empty string.
-     * @throws ServiceRequestException If a ConfigurationSetting with the same key and label exists.
+     * @return The {@link ConfigurationSetting) that was created, or null, if a key collision occurs (which will also
+     * throw IllegalArgumentException described below).
+     * @throws NullPointerException If {@code setting} is {@code null}. Or if {@link ConfigurationSetting#key() key} is
+     * {@code null}.
+     * @throws ServiceRequestException If a ConfigurationSetting with the same key and label exists. Or,
+     * {@link ConfigurationSetting#key() key} is {@code null}.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
+        validateSetting(setting);
 
         // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
-        return service.setKey(serviceEndpoint, result.key(), result.label(), result, null, getETagValue(ETAG_ANY));
+        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, null, getETagValue(ETAG_ANY));
     }
 
     /**
@@ -119,7 +121,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * {@link ConfigurationAsyncClient#ETAG_ANY}, and the current configuration value's etag does not match.
      */
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
+        validateSetting(setting);
 
         // This service method call is similar to addSetting except it will create or update a configuration setting.
         // If the user provides an etag value, it is passed in as If-Match = "{etag value}". If the current value in the
@@ -127,7 +129,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         // Otherwise, the service throws an exception because the current configuration value was updated and we have an
         // old value locally.
         // If no etag value was passed in, then the value is always added or updated.
-        return service.setKey(serviceEndpoint, result.key(), result.label(), result, getETagValue(result.etag()), null);
+        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(setting.etag()), null);
     }
 
     /**
@@ -159,10 +161,10 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * exist or the configuration value is locked.
      */
     public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
-        String etag = result.etag() == null ? ETAG_ANY : result.etag();
+        validateSetting(setting);
+        String etag = setting.etag() == null ? ETAG_ANY : setting.etag();
 
-        return service.setKey(serviceEndpoint, result.key(), result.label(), result, getETagValue(etag), null);
+        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(etag), null);
     }
 
     /**
@@ -190,9 +192,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * 304 if the key has not been modified.
      */
     public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
+        validateSetting(setting);
 
-        return service.getKeyValue(serviceEndpoint, result.key(), result.label(), null, null, null, null);
+        return service.getKeyValue(serviceEndpoint, setting.key(), setting.label(), null, null, null, null);
     }
 
     /**
@@ -217,9 +219,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @throws NullPointerException When {@code setting} is {@code null}.
      */
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
-        ConfigurationSetting result = validateSetting(setting);
+        validateSetting(setting);
 
-        return service.delete(serviceEndpoint, result.key(), result.label(), getETagValue(result.etag()), null);
+        return service.delete(serviceEndpoint, setting.key(), setting.label(), getETagValue(setting.etag()), null);
     }
 
     /**
@@ -305,13 +307,11 @@ public final class ConfigurationAsyncClient extends ServiceClient {
             .collect(Collectors.joining(","));
     }
 
-    private static ConfigurationSetting validateSetting(ConfigurationSetting setting) {
+    /*
+     * Ensure that setting is not null. And, key cannot be null because it is part of the service REST URL.
+     */
+    private static void validateSetting(ConfigurationSetting setting) {
         Objects.requireNonNull(setting);
-
-        if (setting.key() == null || setting.key().isEmpty()) {
-            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
-        }
-
-        return setting;
+        Objects.requireNonNull(setting.key());
     }
 }
