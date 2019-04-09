@@ -62,28 +62,29 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     /**
      * Adds a configuration value in the service if that key does not exist.
      *
-     * @param key The key for the configuration setting to add.
+     * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
-     * @return The {@link ConfigurationSetting) that was created, or null, if a key collision occurs (which will also
-     * throw IllegalArgumentException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws ServiceRequestException If a ConfigurationSetting with the same key exists.
+     * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
+     * is an invalid value (which will also throw ServiceRequestException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ServiceRequestException If a ConfigurationSetting with the same key exists. Or,
+     * {@link ConfigurationSetting#key() key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
         return addSetting(new ConfigurationSetting().key(key).value(value));
     }
 
     /**
-     * Adds a configuration value in the service if that key and label does not exist. The label value for the
+     * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
      *
      * @param setting The setting to add to the configuration service.
-     * @return The {@link ConfigurationSetting) that was created, or null, if a key collision occurs (which will also
-     * throw IllegalArgumentException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}. Or if {@link ConfigurationSetting#key() key} is
-     * {@code null}.
+     * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
+     * is an invalid value (which will also throw ServiceRequestException described below).
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ServiceRequestException If a ConfigurationSetting with the same key and label exists. Or,
-     * {@link ConfigurationSetting#key() key} is {@code null}.
+     * {@link ConfigurationSetting#key() key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
         validateSetting(setting);
@@ -94,12 +95,15 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     }
 
     /**
-     * Creates or updates a configuration value in the service with the given key. Partial updates are not supported.
+     * Creates or updates a configuration value in the service with the given key.
      *
-     * @param key The key for the configuration setting to create or update.
+     * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
-     * @return ConfigurationSetting that was created or updated.
-     * @throws IllegalArgumentException If {@code key} or {@code value} are {@code null} or an empty string.
+     * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
+     * value (which will also throw ServiceRequestException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ServiceRequestException If the setting exists and is locked. Or, if
+     * {@link ConfigurationSetting#key() key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> setSetting(String key, String value) {
         return setSetting(new ConfigurationSetting().key(key).value(value));
@@ -113,12 +117,14 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * will always be updated.
      *
      * @param setting The configuration setting to create or update.
-     * @return ConfigurationSetting that was created or updated.
+     * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
+     * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
+     * will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} or
-     * {@link ConfigurationSetting#value() value} are {@code null} or an empty string.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ServiceRequestException If the {@link ConfigurationSetting#etag() etag} was specified, is not
-     * {@link ConfigurationAsyncClient#ETAG_ANY}, and the current configuration value's etag does not match.
+     * {@link ConfigurationAsyncClient#ETAG_ANY}, and the current configuration value's etag does not match. Or, if the
+     * setting exists and is locked, or the key is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
         validateSetting(setting);
@@ -137,10 +143,11 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      *
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
-     * @return ConfigurationSetting that was updated.
-     * @throws IllegalArgumentException If {@code key} or {@code value} are {@code null} or an empty string.
+     * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
+     * exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ServiceRequestException If a ConfigurationSetting with the key does not exist or the configuration value
-     * is locked.
+     * is locked. Or, if {@link ConfigurationSetting#key() key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> updateSetting(String key, String value) {
         return updateSetting(new ConfigurationSetting().key(key).value(value));
