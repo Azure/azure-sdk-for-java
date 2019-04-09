@@ -10,7 +10,7 @@ public class Base64UrlTests {
         final Base64Url base64Url = new Base64Url((byte[])null);
         assertNull(base64Url.encodedBytes());
         assertNull(base64Url.decodedBytes());
-        assertNull(base64Url.toString());
+        assertEmptyString(base64Url.toString());
     }
 
     @Test
@@ -34,7 +34,7 @@ public class Base64UrlTests {
         final Base64Url base64Url = new Base64Url((String)null);
         assertNull(base64Url.encodedBytes());
         assertNull(base64Url.decodedBytes());
-        assertNull(base64Url.toString());
+        assertEmptyString(base64Url.toString());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class Base64UrlTests {
         final Base64Url base64Url = Base64Url.encode(null);
         assertNull(base64Url.encodedBytes());
         assertNull(base64Url.decodedBytes());
-        assertNull(base64Url.toString());
+        assertEmptyString(base64Url.toString());
     }
 
     @Test
@@ -108,4 +108,9 @@ public class Base64UrlTests {
         assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, base64Url.decodedBytes());
         assertEquals("AAECAwQFBgcICQ", base64Url.toString());
     }
+
+    private static void assertEmptyString(String input) {
+        assertEquals("", input);
+    }
+
 }
