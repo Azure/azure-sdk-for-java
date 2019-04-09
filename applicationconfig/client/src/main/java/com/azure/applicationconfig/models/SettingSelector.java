@@ -49,13 +49,12 @@ public class SettingSelector {
      *
      * <p>
      * Examples:
-     * <ul>
+     * <ol>
      *     <li>If key = "*", settings with any key are returned.</li>
      *     <li>If key = "abc1234", settings with a key equal to "abc1234" are returned.</li>
      *     <li>If key = "abc*", settings with a key starting with "abc" are returned.</li>
      *     <li>If key = "*abc*", settings with a key containing "abc" are returned.</li>
-     * </ul>
-     * </p>
+     * </ol>
      *
      * @return The expression to filter ConfigurationSetting keys on.
      */
@@ -74,7 +73,6 @@ public class SettingSelector {
      *     <li>If {@code key = "abc*"}, settings with a key starting with "abc" are returned.</li>
      *     <li>If {@code key = "*abc*"}, settings with a key containing "abc" are returned.</li>
      * </ul>
-     * </p>
      *
      * @param key The expression to filter ConfigurationSetting keys on.
      * @return The updated SettingSelector object
@@ -101,7 +99,6 @@ public class SettingSelector {
      *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
      *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
      * </ul>
-     * </p>
      *
      * @return label The label used to filter GET requests from the service.
      */
@@ -121,7 +118,6 @@ public class SettingSelector {
      *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
      *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
      * </ul>
-     * </p>
      *
      * @param label The ConfigurationSetting label to match. If the provided value is {@code null} or {@code ""}, all
      * ConfigurationSettings will be returned regardless of their label.
