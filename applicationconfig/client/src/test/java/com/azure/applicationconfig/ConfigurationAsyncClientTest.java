@@ -46,7 +46,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -160,23 +159,50 @@ public class ConfigurationAsyncClientTest {
     }
 
     /**
-     * Tests that a configuration is able to be added with the convenience overload. And that if we try to add another
-     * one with the same key and value, it fails.
+     * Tests that we cannot add a configuration setting when the key is an empty string.
      */
     @Test
-    public void addSettingOverload() {
-        ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix).value("A Value");
+    public void addSettingEmptyKey() {
+        StepVerifier.create(client.addSetting("", "A value"))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.METHOD_NOT_ALLOWED.code()));
+    }
+
+    /**
+     * Tests that we can add configuration settings when value is not null or an empty string.
+     */
+    @Test
+    public void addSettingEmptyValue() {
+        ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix);
+        ConfigurationSetting setting2 = new ConfigurationSetting().key(keyPrefix + "-1").value("");
 
         StepVerifier.create(client.addSetting(setting.key(), setting.value()))
             .assertNext(response -> assertConfigurationEquals(setting, response))
             .verifyComplete();
 
-        StepVerifier.create(client.addSetting(setting.key(), setting.value()))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+        StepVerifier.create(client.getSetting(setting.key()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.addSetting(setting2.key(), setting2.value()))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.getSetting(setting2.key()))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
     }
 
     /**
-     * Tests that a configuration cannot be added twice with the same key. THis should return a 412 error.
+     * Verifies that an exception is thrown when null key is passed.
+     */
+    @Test
+    public void addSettingNullKey() {
+        assertRunnableThrowsException(() -> client.addSetting(null, "A Value"), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.addSetting(null), NullPointerException.class);
+    }
+
+    /**
+     * Tests that a configuration cannot be added twice with the same key. This should return a 412 error.
      */
     @Test
     public void addExistingSetting() {
@@ -215,24 +241,6 @@ public class ConfigurationAsyncClientTest {
     }
 
     /**
-     * Tests that a configuration is able to be added or updated with set with our convenience overload.
-     * When the configuration is locked updates cannot happen, this will result in a 409.
-     */
-    @Test
-    public void setSettingOverload() {
-        ConfigurationSetting expected = new ConfigurationSetting().key(keyPrefix).value("A Value");
-        ConfigurationSetting update = new ConfigurationSetting().key(keyPrefix).value("A New Value");
-
-        StepVerifier.create(client.setSetting(expected.key(), expected.value()))
-            .assertNext(response -> assertConfigurationEquals(expected, response))
-            .verifyComplete();
-
-        StepVerifier.create(client.setSetting(update))
-            .assertNext(response -> assertConfigurationEquals(update, response))
-            .verifyComplete();
-    }
-
-    /**
      * Tests that when an etag is passed to set it will only set if the current representation of the setting has the
      * etag. If the set etag doesn't match anything the update won't happen, this will result in a 412. This will
      * prevent set from doing an add as well.
@@ -265,6 +273,50 @@ public class ConfigurationAsyncClientTest {
 
         testRunner.accept(newConfiguration, updateConfiguration);
         testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
+    }
+
+    /**
+     * Tests that we cannot set a configuration setting when the key is an empty string.
+     */
+    @Test
+    public void setSettingEmptyKey() {
+        StepVerifier.create(client.setSetting("", "A value"))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.METHOD_NOT_ALLOWED.code()));
+    }
+
+    /**
+     * Tests that we can set configuration settings when value is not null or an empty string.
+     * Value is not a required property.
+     */
+    @Test
+    public void setSettingEmptyValue() {
+        ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix);
+        ConfigurationSetting setting2 = new ConfigurationSetting().key(keyPrefix + "-1").value("");
+
+        StepVerifier.create(client.setSetting(setting.key(), setting.value()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.getSetting(setting.key()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.setSetting(setting2.key(), setting2.value()))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.getSetting(setting2.key()))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that an exception is thrown when null key is passed.
+     */
+    @Test
+    public void setSettingNullKey() {
+        assertRunnableThrowsException(() -> client.setSetting(null, "A Value"), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.setSetting(null), NullPointerException.class);
     }
 
     /**
@@ -351,6 +403,15 @@ public class ConfigurationAsyncClientTest {
 
         updateSettingIfEtagHelper(newConfiguration, updateConfiguration, finalConfiguration);
         updateSettingIfEtagHelper(newConfiguration.label(label), updateConfiguration.label(label), finalConfiguration.label(label));
+    }
+
+    /**
+     * Verifies that an exception is thrown when null key is passed.
+     */
+    @Test
+    public void updateSettingNullKey() {
+        assertRunnableThrowsException(() -> client.updateSetting(null, "A Value"), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.updateSetting(null), NullPointerException.class);
     }
 
     private void updateSettingIfEtagHelper(ConfigurationSetting initial, ConfigurationSetting update, ConfigurationSetting last) {
@@ -501,6 +562,15 @@ public class ConfigurationAsyncClientTest {
 
         testRunner.accept(newConfiguration, updateConfiguration);
         testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
+    }
+
+    /**
+     * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
+     */
+    @Test
+    public void deleteSettingNullKey() {
+        assertRunnableThrowsException(() -> client.deleteSetting((String) null), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.deleteSetting((ConfigurationSetting) null), NullPointerException.class);
     }
 
     /**
@@ -794,26 +864,6 @@ public class ConfigurationAsyncClientTest {
                 }).blockLast();
     }
 
-    @DataPoints("invalidKeys")
-    public static String[] invalidKeys = new String[]{"", null};
-
-    /**
-     * Test the API will not make a get call without having a key passed, an IllegalArgumentException should be thrown.
-     */
-    @Theory
-    public void getSettingRequiresKey(@FromDataPoints("invalidKeys") String key) {
-        assertRunnableThrowsArgumentException(() -> client.getSetting(key));
-    }
-
-    /**
-     * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
-     */
-    @Theory
-    public void deleteSettingRequiresKey(@FromDataPoints("invalidKeys") String key, String label) {
-        assertRunnableThrowsArgumentException(() -> client.deleteSetting(key));
-        assertRunnableThrowsArgumentException(() -> client.deleteSetting(new ConfigurationSetting().key(key).label(label)));
-    }
-
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
      *
@@ -889,12 +939,12 @@ public class ConfigurationAsyncClientTest {
      *
      * @param exceptionThrower Command that should throw the exception
      */
-    private static void assertRunnableThrowsArgumentException(Runnable exceptionThrower) {
+    private static void assertRunnableThrowsException(Runnable exceptionThrower, Class exception) {
         try {
             exceptionThrower.run();
             fail();
-        } catch (IllegalArgumentException ex) {
-
+        } catch (Exception ex) {
+            assertEquals(exception, ex.getClass());
         }
     }
 }
