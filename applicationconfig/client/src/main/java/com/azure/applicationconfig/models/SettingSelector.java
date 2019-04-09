@@ -167,7 +167,7 @@ public class SettingSelector {
      * Sets fields that will be returned in the response corresponding to properties in {@link ConfigurationSetting}.
      * If none are set, the service returns ConfigurationSettings with all of their fields populated.
      *
-     * @param fields the fields to select for the query response. If none are set, the service will return the
+     * @param fields The fields to select for the query response. If none are set, the service will return the
      * ConfigurationSettings with a default set of properties.
      * @return The updated SettingSelector object.
      */

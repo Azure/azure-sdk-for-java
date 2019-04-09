@@ -113,7 +113,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * configuration setting is updated.
      *
      * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current
-     * setting's etag matches. If the etag's value is equal to {@link ConfigurationAsyncClient#ETAG_ANY}, the setting
+     * setting's etag matches. If the etag's value is equal to the wildcard character ({@code "*"}), the setting
      * will always be updated.
      *
      * @param setting The configuration setting to create or update.
@@ -122,8 +122,8 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
-     * @throws ServiceRequestException If the {@link ConfigurationSetting#etag() etag} was specified, is not
-     * {@link ConfigurationAsyncClient#ETAG_ANY}, and the current configuration value's etag does not match. If the
+     * @throws ServiceRequestException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
+     * wildcard character, and the current configuration value's etag does not match. If the
      * setting exists and is locked, or {@link ConfigurationSetting#key() key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
@@ -222,7 +222,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     /**
      * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
      *
-     * If {@link ConfigurationSetting#etag() etag} is specified and is not {@link ConfigurationAsyncClient#ETAG_ANY},
+     * If {@link ConfigurationSetting#etag() etag} is specified and is not the wildcard character ({@code "*"}),
      * then the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated
      * the ConfigurationSetting yet.
      *
@@ -233,7 +233,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ServiceRequestException If {@code key} is an empty string or {@link ConfigurationSetting#etag() etag} is
-     * specified, not {@link ConfigurationAsyncClient#ETAG_ANY}, and does not match the current etag value.
+     * specified, not the wildcard character, and does not match the current etag value.
      */
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
         validateSetting(setting);
