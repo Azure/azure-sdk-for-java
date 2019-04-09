@@ -20,6 +20,7 @@ public class ServiceClientChecks extends AbstractCheck {
     private static final String BUILDER_METHOD_NAME = "builder";
     private static final String SERVICE_CLIENT_CLASS_NAME = "com.azure.common.ServiceClient";
 
+    private static final String FAILED_TO_LOAD_MESSAGE = "%s class failed to load, ServiceClientChecks will be ignored.";
     private static final String CONSTRUCTOR_ERROR_MESSAGE = "Descendants of ServiceClient cannot have public or protected constructors.";
     private static final String BUILDER_ERROR_MESSAGE = "Descendants of ServiceClient must have a static method named builder.";
 
@@ -57,7 +58,7 @@ public class ServiceClientChecks extends AbstractCheck {
         try {
             this.serviceClientClass = Class.forName(SERVICE_CLIENT_CLASS_NAME);
         } catch (ClassNotFoundException ex) {
-
+            log(0, String.format(FAILED_TO_LOAD_MESSAGE, "ServiceClient"));
         }
     }
 
@@ -125,12 +126,13 @@ public class ServiceClientChecks extends AbstractCheck {
             return false;
         }
 
+        String className = classDefinitionToken.findFirstToken(TokenTypes.IDENT).getText();
         try {
-            String className = packageName + "." + classDefinitionToken.findFirstToken(TokenTypes.IDENT).getText();
-            Class<?> clazz = Class.forName(className);
+            Class<?> clazz = Class.forName(packageName + "." + className);
 
             return this.serviceClientClass.isAssignableFrom(clazz);
         } catch (ClassNotFoundException ex) {
+            log(classDefinitionToken, String.format(FAILED_TO_LOAD_MESSAGE, className));
             return false;
         }
     }
