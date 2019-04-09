@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableMap;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterCreateParametersExtended;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementation.ClusterInner;
 import org.assertj.core.api.Condition;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Map;
@@ -55,21 +56,21 @@ public class ConfigurationTests extends HDInsightManagementTestBase {
         validateCluster(clusterName, createParams, cluster);
 
         Map<String, String> hive = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, hiveSite);
-        assertThat(hive).isEqualTo(hiveConfig);
+        Assert.assertEquals(hive,hiveConfig);
 
         Map<String, String> mapred = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, mapredSite);
-        assertThat(mapred).isEqualTo(mapredConfig);
+        Assert.assertEquals(mapred, mapredConfig);
 
         Map<String, String> yarn = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, yarnSite);
-        assertThat(yarn).isEqualTo(yarnConfig);
+        Assert.assertEquals(yarn, yarnConfig);
 
         Map<String, String> gateway = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, gatewayName);
-        assertThat(gateway).isNotEmpty().hasSize(3);
+        Assert.assertEquals(gateway.size(), 3);
 
         Map<String, String> core = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, coreSite);
-        assertThat(core).isNotEmpty().hasSize(2);
-        assertThat(core).containsKey("fs.defaultFS");
-        assertThat(core.keySet()).has(new Condition<Iterable<? extends String>>() {
+        Assert.assertEquals(core.size(), 2);
+        Assert.assertTrue(core.containsKey("fs.defaultFS"));
+        Assert.assertTrue(core.keySet()).has(new Condition<Iterable<? extends String>>() {
             @Override
             public boolean matches(Iterable<? extends String> keys) {
                 for (String key : keys) {
