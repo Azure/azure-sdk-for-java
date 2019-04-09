@@ -329,6 +329,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      */
     private static void validateSetting(ConfigurationSetting setting) {
         Objects.requireNonNull(setting);
-        Objects.requireNonNull(setting.key());
+
+        if (setting.key() == null) {
+            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
+        }
     }
 }
