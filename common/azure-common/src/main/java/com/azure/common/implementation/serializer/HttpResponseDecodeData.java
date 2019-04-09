@@ -6,8 +6,10 @@
 
 package com.azure.common.implementation.serializer;
 
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.annotations.HeaderCollection;
+import com.azure.common.implementation.UnexpectedException;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Mono;
 
@@ -88,5 +90,9 @@ public interface HttpResponseDecodeData {
      */
     default Class<?> exceptionBodyType() {
          return Object.class;
+    }
+
+    default UnexpectedException getUnexpectedException(int code) {
+        return new UnexpectedException(ServiceRequestException.class);
     }
 }

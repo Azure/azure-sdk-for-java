@@ -6,29 +6,29 @@
 
 package com.azure.common.implementation;
 
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.ServiceClient;
 import com.azure.common.annotations.ResumeOperation;
 import com.azure.common.credentials.ServiceClientCredentials;
-import com.azure.common.http.rest.Page;
-import com.azure.common.http.rest.PagedResponse;
-import com.azure.common.implementation.http.PagedResponseBase;
-import com.azure.common.implementation.http.ContentType;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
-import com.azure.common.implementation.http.UrlBuilder;
 import com.azure.common.http.policy.CookiePolicy;
 import com.azure.common.http.policy.CredentialsPolicy;
+import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
+import com.azure.common.http.rest.Page;
+import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.http.rest.ResponseBase;
+import com.azure.common.implementation.http.ContentType;
+import com.azure.common.implementation.http.PagedResponseBase;
+import com.azure.common.implementation.http.UrlBuilder;
 import com.azure.common.implementation.serializer.HttpResponseDecoder;
 import com.azure.common.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.common.implementation.serializer.SerializerAdapter;
@@ -281,8 +281,7 @@ public class RestProxy implements InvocationHandler {
                 .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, null));
     }
 
-    private static Exception instantiateUnexpectedException(Class<? extends ServiceRequestException> exceptionType,
-                                                            Class<?> exceptionBodyType,
+    private static Exception instantiateUnexpectedException(UnexpectedException exception,
                                                             HttpResponse httpResponse,
                                                             String responseContent,
                                                             Object responseDecodedContent) {
@@ -297,15 +296,15 @@ public class RestProxy implements InvocationHandler {
 
         Exception result;
         try {
-            final Constructor<? extends ServiceRequestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
+            final Constructor<? extends ServiceRequestException> exceptionConstructor = exception.exceptionType().getConstructor(String.class, HttpResponse.class, exception.exceptionBodyType());
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
                     httpResponse,
                     responseDecodedContent);
         } catch (ReflectiveOperationException e) {
             String message = "Status code " + responseStatusCode + ", but an instance of "
-                    + exceptionType.getCanonicalName() + " cannot be created."
+                    + exception.exceptionType().getCanonicalName() + " cannot be created."
                     + " Response body: " + bodyRepresentation;
-            //
+
             result = new IOException(message, e);
         }
         return result;
@@ -337,8 +336,7 @@ public class RestProxy implements InvocationHandler {
                 //
                 return decodedErrorBody.flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> {
                     // decodedBody() emits 'responseDecodedErrorObject' the successfully decoded exception body object
-                    Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
-                            methodParser.exceptionBodyType(),
+                    Throwable exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                             decodedResponse.sourceResponse(),
                             responseContent,
                             responseDecodedErrorObject);
@@ -347,8 +345,7 @@ public class RestProxy implements InvocationHandler {
                 }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
                     // decodedBody() emits empty, indicate unable to decode 'responseContent',
                     // create exception with un-decodable content string and without exception body object.
-                    Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
-                            methodParser.exceptionBodyType(),
+                    Throwable exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                             decodedResponse.sourceResponse(),
                             responseContent,
                             null);
@@ -357,8 +354,7 @@ public class RestProxy implements InvocationHandler {
                 }));
             }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
                 // bodyAsString() emits empty, indicate no body, create exception empty content string no exception body object.
-                Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
-                        methodParser.exceptionBodyType(),
+                Throwable exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                         decodedResponse.sourceResponse(),
                         "",
                         null);

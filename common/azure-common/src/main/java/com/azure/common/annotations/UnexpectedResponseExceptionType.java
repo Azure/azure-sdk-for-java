@@ -8,8 +8,10 @@ package com.azure.common.annotations;
 
 import com.azure.common.exception.ServiceRequestException;
 
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -27,6 +29,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Retention(RUNTIME)
 @Target(METHOD)
+@Repeatable(UnexpectedResponseExceptionTypes.class)
 public @interface UnexpectedResponseExceptionType {
     /**
      * The type of ServiceRequestException that should be thrown/returned when the API returns an unrecognized
@@ -34,4 +37,10 @@ public @interface UnexpectedResponseExceptionType {
      * @return The type of RestException that should be thrown/returned.
      */
     Class<? extends ServiceRequestException> value();
+
+    /**
+     * HTTP status codes which trigger the ServiceRequestException to be thrown/returned.
+     * @return The HTTP status code that trigger the ServiceRequestException.
+     */
+    int[] code() default {};
 }

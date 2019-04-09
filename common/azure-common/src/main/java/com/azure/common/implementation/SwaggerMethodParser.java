@@ -6,9 +6,6 @@
 
 package com.azure.common.implementation;
 
-import com.azure.common.http.rest.Page;
-import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
@@ -24,30 +21,38 @@ import com.azure.common.annotations.PathParam;
 import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.ReturnValueWireType;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpMethod;
+import com.azure.common.http.rest.Page;
 import com.azure.common.http.rest.Response;
+import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.common.implementation.serializer.HttpResponseDecodeData;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * The type to parse details of a specific Swagger REST API call from a provided Swagger interface
  * method.
  */
 public class SwaggerMethodParser implements HttpResponseDecodeData {
+    private static final int FALLTHROUGH_EXCEPTION_CODE = -1;
     private final SerializerAdapter serializer;
     private final String rawHost;
     private final String fullyQualifiedMethodName;
@@ -64,8 +69,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private int[] expectedStatusCodes;
     private Type returnType;
     private Type returnValueWireType;
-    private Class<? extends ServiceRequestException> exceptionType;
-    private Class<?> exceptionBodyType;
+    private Map<Integer, UnexpectedException> exceptionMapping = new HashMap<>();
 
     /**
      * Create a SwaggerMethodParser object using the provided fully qualified method name.
@@ -85,23 +89,17 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (swaggerMethod.isAnnotationPresent(GET.class)) {
             setHttpMethodAndRelativePath(HttpMethod.GET, swaggerMethod.getAnnotation(GET.class).value());
-        }
-        else if (swaggerMethod.isAnnotationPresent(PUT.class)) {
+        } else if (swaggerMethod.isAnnotationPresent(PUT.class)) {
             setHttpMethodAndRelativePath(HttpMethod.PUT, swaggerMethod.getAnnotation(PUT.class).value());
-        }
-        else if (swaggerMethod.isAnnotationPresent(HEAD.class)) {
+        } else if (swaggerMethod.isAnnotationPresent(HEAD.class)) {
             setHttpMethodAndRelativePath(HttpMethod.HEAD, swaggerMethod.getAnnotation(HEAD.class).value());
-        }
-        else if (swaggerMethod.isAnnotationPresent(DELETE.class)) {
+        } else if (swaggerMethod.isAnnotationPresent(DELETE.class)) {
             setHttpMethodAndRelativePath(HttpMethod.DELETE, swaggerMethod.getAnnotation(DELETE.class).value());
-        }
-        else if (swaggerMethod.isAnnotationPresent(POST.class)) {
+        } else if (swaggerMethod.isAnnotationPresent(POST.class)) {
             setHttpMethodAndRelativePath(HttpMethod.POST, swaggerMethod.getAnnotation(POST.class).value());
-        }
-        else if (swaggerMethod.isAnnotationPresent(PATCH.class)) {
+        } else if (swaggerMethod.isAnnotationPresent(PATCH.class)) {
             setHttpMethodAndRelativePath(HttpMethod.PATCH, swaggerMethod.getAnnotation(PATCH.class).value());
-        }
-        else {
+        } else {
             final ArrayList<Class<? extends Annotation>> requiredAnnotationOptions = new ArrayList<>();
             requiredAnnotationOptions.add(GET.class);
             requiredAnnotationOptions.add(PUT.class);
@@ -119,8 +117,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
             if (returnValueWireType == Base64Url.class || returnValueWireType == UnixTime.class || returnValueWireType == DateTimeRfc1123.class) {
                 this.returnValueWireType = returnValueWireType;
-            }
-            else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
+            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
                 this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
             } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)){
                 this.returnValueWireType = returnValueWireType;
@@ -149,21 +146,18 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             expectedStatusCodes = expectedResponses.value();
         }
 
-        final UnexpectedResponseExceptionType unexpectedResponseExceptionType = swaggerMethod.getAnnotation(UnexpectedResponseExceptionType.class);
-        if (unexpectedResponseExceptionType == null) {
-            exceptionType = ServiceRequestException.class;
-        }
-        else {
-            exceptionType = unexpectedResponseExceptionType.value();
+        for (UnexpectedResponseExceptionType exceptionAnnotation : swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionType.class)) {
+            UnexpectedException exception = new UnexpectedException(exceptionAnnotation.value());
+            if (exceptionAnnotation.code().length == 0) {
+                exceptionMapping.putIfAbsent(FALLTHROUGH_EXCEPTION_CODE, exception);
+            } else {
+                for (int statusCode : exceptionAnnotation.code()) {
+                    exceptionMapping.putIfAbsent(statusCode, exception);
+                }
+            }
         }
 
-        try {
-            final Method exceptionBodyMethod = exceptionType.getDeclaredMethod("value");
-            exceptionBodyType = exceptionBodyMethod.getReturnType();
-        } catch (NoSuchMethodException e) {
-            // Should always have a value() method. Register Object as a fallback plan.
-            exceptionBodyType = Object.class;
-        }
+        exceptionMapping.putIfAbsent(FALLTHROUGH_EXCEPTION_CODE, new UnexpectedException(ServiceRequestException.class));
 
         final Annotation[][] allParametersAnnotations = swaggerMethod.getParameterAnnotations();
         for (int parameterIndex = 0; parameterIndex < allParametersAnnotations.length; ++parameterIndex) {
@@ -173,20 +167,16 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 if (annotationType.equals(HostParam.class)) {
                     final HostParam hostParamAnnotation = (HostParam) annotation;
                     hostSubstitutions.add(new Substitution(hostParamAnnotation.value(), parameterIndex, !hostParamAnnotation.encoded()));
-                }
-                else if (annotationType.equals(PathParam.class)) {
+                } else if (annotationType.equals(PathParam.class)) {
                     final PathParam pathParamAnnotation = (PathParam) annotation;
                     pathSubstitutions.add(new Substitution(pathParamAnnotation.value(), parameterIndex, !pathParamAnnotation.encoded()));
-                }
-                else if (annotationType.equals(QueryParam.class)) {
+                } else if (annotationType.equals(QueryParam.class)) {
                     final QueryParam queryParamAnnotation = (QueryParam) annotation;
                     querySubstitutions.add(new Substitution(queryParamAnnotation.value(), parameterIndex, !queryParamAnnotation.encoded()));
-                }
-                else if (annotationType.equals(HeaderParam.class)) {
+                } else if (annotationType.equals(HeaderParam.class)) {
                     final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
                     headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex, false));
-                }
-                else if (annotationType.equals(BodyParam.class)) {
+                } else if (annotationType.equals(BodyParam.class)) {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
                     bodyContentType = bodyParamAnnotation.value();
@@ -387,7 +377,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * not one of the expected status codes
      */
     public Class<? extends ServiceRequestException> exceptionType() {
-        return exceptionType;
+        return exceptionMapping.get(FALLTHROUGH_EXCEPTION_CODE).exceptionType();
     }
 
     /**
@@ -399,7 +389,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     @Override
     public Class<?> exceptionBodyType() {
-        return exceptionBodyType;
+        return exceptionMapping.get(FALLTHROUGH_EXCEPTION_CODE).exceptionBodyType();
+    }
+
+    @Override
+    public UnexpectedException getUnexpectedException(int code) {
+        return exceptionMapping.getOrDefault(code, exceptionMapping.get(FALLTHROUGH_EXCEPTION_CODE));
     }
 
     /**
