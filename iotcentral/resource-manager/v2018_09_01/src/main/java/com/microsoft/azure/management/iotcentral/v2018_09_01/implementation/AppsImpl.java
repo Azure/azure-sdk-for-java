@@ -102,13 +102,13 @@ class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsIn
     @Override
     public PagedList<App> list() {
         AppsInner client = this.inner();
-        return this.wrapList(client.listBySubscription());
+        return this.wrapList(client.list());
     }
 
     @Override
     public Observable<App> listAsync() {
         AppsInner client = this.inner();
-        return client.listBySubscriptionAsync()
+        return client.listAsync()
         .flatMapIterable(new Func1<Page<AppInner>, Iterable<AppInner>>() {
             @Override
             public Iterable<AppInner> call(Page<AppInner> page) {
