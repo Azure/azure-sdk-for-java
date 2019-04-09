@@ -1,0 +1,122 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://conniey-config.azconfig.io/kv/key39056",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 11.0.2; Mac OS X 10.14.4",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Tue, 09 Apr 2019 04:51:57 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MzotMSMxNTUzMjc=;sn=155327",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "9c541053-f879-4a7b-887f-68090613a765",
+      "last-modified" : "Tue, 09 Apr 2019 04:51:57 GMT",
+      "etag" : "\"sbwVqCoosveNjOb3mK5lPpHVruX\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "9c541053-f879-4a7b-887f-68090613a765",
+      "Body" : "{\"etag\":\"sbwVqCoosveNjOb3mK5lPpHVruX\",\"key\":\"key39056\",\"label\":null,\"content_type\":null,\"value\":null,\"tags\":{},\"locked\":false,\"last_modified\":\"2019-04-09T04:51:57+00:00\"}",
+      "x-ms-client-request-id" : "ac754042-db34-4dbd-a733-55b02e7c5347"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://conniey-config.azconfig.io/kv/key39056-1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 11.0.2; Mac OS X 10.14.4",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Tue, 09 Apr 2019 04:51:57 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MzotMSMxNTUzMjg=;sn=155328",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "99ede212-6c6d-454d-ba65-f0ce1b55e725",
+      "last-modified" : "Tue, 09 Apr 2019 04:51:57 GMT",
+      "etag" : "\"khNofnLpl9Vyor7WdCt1ao2zjwH\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "99ede212-6c6d-454d-ba65-f0ce1b55e725",
+      "Body" : "{\"etag\":\"khNofnLpl9Vyor7WdCt1ao2zjwH\",\"key\":\"key39056-1\",\"label\":null,\"content_type\":null,\"value\":\"\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-04-09T04:51:57+00:00\"}",
+      "x-ms-client-request-id" : "e58f5e1a-4b1f-4293-8451-09d6d27456aa"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://conniey-config.azconfig.io/kv?key=key39056%2a",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 11.0.2; Mac OS X 10.14.4",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Tue, 09 Apr 2019 04:51:57 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MzotMSMxNTUzMjg=;sn=155328",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "8a239f7b-1e83-4f9b-adc0-d4c4ff825b55",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8",
+      "x-ms-request-id" : "8a239f7b-1e83-4f9b-adc0-d4c4ff825b55",
+      "Body" : "{\"items\":[{\"etag\":\"sbwVqCoosveNjOb3mK5lPpHVruX\",\"key\":\"key39056\",\"label\":null,\"content_type\":null,\"value\":null,\"tags\":{},\"locked\":false,\"last_modified\":\"2019-04-09T04:51:57+00:00\"},{\"etag\":\"khNofnLpl9Vyor7WdCt1ao2zjwH\",\"key\":\"key39056-1\",\"label\":null,\"content_type\":null,\"value\":\"\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-04-09T04:51:57+00:00\"}]}",
+      "x-ms-client-request-id" : "324a53aa-288d-4ae5-9180-9c25e8d31a2b"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://conniey-config.azconfig.io/kv/key39056",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 11.0.2; Mac OS X 10.14.4",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Tue, 09 Apr 2019 04:51:57 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MzotMSMxNTUzMjk=;sn=155329",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "6892309b-a096-4e34-ba3c-477ebb0dd02a",
+      "last-modified" : "Tue, 09 Apr 2019 04:51:57 GMT",
+      "etag" : "\"sbwVqCoosveNjOb3mK5lPpHVruX\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "6892309b-a096-4e34-ba3c-477ebb0dd02a",
+      "Body" : "{\"etag\":\"sbwVqCoosveNjOb3mK5lPpHVruX\",\"key\":\"key39056\",\"label\":null,\"content_type\":null,\"value\":null,\"tags\":{},\"locked\":false,\"last_modified\":\"2019-04-09T04:51:57+00:00\"}",
+      "x-ms-client-request-id" : "057b636d-0c47-4371-a47c-563294e1219d"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://conniey-config.azconfig.io/kv/key39056-1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 11.0.2; Mac OS X 10.14.4",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Tue, 09 Apr 2019 04:51:57 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "sync-token" : "zAJw6V16=MzotMSMxNTUzMzA=;sn=155330",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-correlation-request-id" : "aea3d4b8-4ae6-4df8-90ac-e2b780473e4e",
+      "last-modified" : "Tue, 09 Apr 2019 04:51:57 GMT",
+      "etag" : "\"khNofnLpl9Vyor7WdCt1ao2zjwH\"",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
+      "x-ms-request-id" : "aea3d4b8-4ae6-4df8-90ac-e2b780473e4e",
+      "Body" : "{\"etag\":\"khNofnLpl9Vyor7WdCt1ao2zjwH\",\"key\":\"key39056-1\",\"label\":null,\"content_type\":null,\"value\":\"\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-04-09T04:51:57+00:00\"}",
+      "x-ms-client-request-id" : "f850beb5-6a26-46dd-839d-042246781fc2"
+    }
+  } ],
+  "variables" : [ "key39056", "9d53d72b" ]
+}
