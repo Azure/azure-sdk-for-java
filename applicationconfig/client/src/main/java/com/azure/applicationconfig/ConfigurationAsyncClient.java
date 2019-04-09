@@ -210,22 +210,30 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * Deletes the ConfigurationSetting with a matching {@code key}.
      *
      * @param key The key of the setting to delete.
-     * @return The deleted ConfigurationSetting or null if it didn't exist.
-     * @throws IllegalArgumentException If {@code key} is {@code null} or an empty string.
+     * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if
+     * the {@code key} is an invalid value (which will also throw ServiceRequestException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ServiceRequestException If {@code key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> deleteSetting(String key) {
         return deleteSetting(new ConfigurationSetting().key(key));
     }
 
     /**
-     * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag. If the
-     * {@link ConfigurationSetting#etag() etag} is specified, the setting is <b>only</b> deleted if the etag matches the
-     * current etag; this means that no one has updated the ConfigurationSetting yet.
+     * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
+     *
+     * If {@link ConfigurationSetting#etag() etag} is specified and is not {@link ConfigurationAsyncClient#ETAG_ANY},
+     * then the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated
+     * the ConfigurationSetting yet.
      *
      * @param setting The ConfigurationSetting to delete.
-     * @return The deleted ConfigurationSetting or {@code null} if didn't exist.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null} or an empty string.
+     * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
+     * the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
+     * current etag (which will also throw ServiceRequestException described below).
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
+     * @throws ServiceRequestException If {@code key} is an empty string or {@link ConfigurationSetting#etag() etag} is
+     * specified, not {@link ConfigurationAsyncClient#ETAG_ANY}, and does not match the current etag value.
      */
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
         validateSetting(setting);
