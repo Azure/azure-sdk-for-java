@@ -104,7 +104,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                         reqBodyLoggingMono = collectedBytes.flatMap(bytes -> {
                             String bodyString = new String(bytes, StandardCharsets.UTF_8);
                             bodyString = prettyPrintIfNeeded(logger, request.headers().value("Content-Type"), bodyString);
-                            log(logger, String.format("%s-byte body:\n%s", contentLength, bodyString));
+                            log(logger, String.format("%s-byte body:%n%s", contentLength, bodyString));
                             log(logger, "--> END " + request.httpMethod());
                             return Mono.empty();
                         });
