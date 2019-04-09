@@ -15,6 +15,7 @@ import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGro
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.arm.collection.SupportsListing;
+import rx.Completable;
 import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.ServersInner;
 import com.microsoft.azure.arm.model.HasInner;
 
@@ -22,4 +23,14 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Servers.
  */
 public interface Servers extends SupportsCreating<Server.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Server>, SupportsListingByResourceGroup<Server>, SupportsListing<Server>, HasInner<ServersInner> {
+    /**
+     * Restarts a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable restartAsync(String resourceGroupName, String serverName);
+
 }

@@ -32,7 +32,7 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
         this.manager = manager;
         // Set resource name
         this.serverName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
         //
