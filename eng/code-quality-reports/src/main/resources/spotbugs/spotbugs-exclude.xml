@@ -142,6 +142,11 @@
         <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
       </Match>
 
+      <Match>
+        <Class name="~com\.azure\.common\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
+        <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+      </Match>
+
       <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
       <Match>
         <Class name="~com\.azure\.common\.implementation\.(Base64Url|util\.ImplUtils|serializer\.HttpResponseDecodeData)"/>
@@ -159,5 +164,35 @@
       <Match>
         <Class name="com.azure.common.implementation.util.TypeUtil"/>
         <Bug pattern="BC_UNCONFIRMED_CAST"/>
+      </Match>
+
+      <!-- These fields are designed to be not written. They are for deserializing. -->
+      <Match>
+        <Class name="com.azure.common.auth.credentials.AzureCliSubscription$UserInfo"/>
+        <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+      </Match>
+
+      <!-- These fields are designed to be not read. They are for deserializing. -->
+      <Match>
+        <Class name="com.azure.common.auth.credentials.AzureCliToken"/>
+        <Bug pattern="URF_UNREAD_FIELD"/>
+      </Match>
+
+      <!-- These fields are designed to be not used. They are for deserializing. -->
+      <Match>
+        <Class name="~com\.azure\.common\.auth\.credentials\.(AzureCliToken|AzureCliSubscription)"/>
+        <Bug pattern="UUF_UNUSED_FIELD"/>
+      </Match>
+
+      <!-- These fields are designed to be anonymous and not static. They are for letting the jackson serializer know what type to use. -->
+      <Match>
+        <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+      </Match>
+
+      <!-- These fields has checked null and initialized in the constructor. -->
+      <Match>
+        <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
+        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
       </Match>
 </FindBugsFilter>
