@@ -22,19 +22,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
 /**
- * A policy that authenticates requests with Azure Application Configuration service.
+ * A policy that authenticates requests with Azure Application Configuration service. The content added by this policy
+ * is leveraged in {@link ConfigurationClientCredentials} to generate the correct Authorization header.
  *
+ * @see ConfigurationClientCredentials
  * @see ConfigurationAsyncClient
  * @see ConfigurationAsyncClientBuilder
  */
 public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
-    private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";
-
     static final String HOST_HEADER = "Host";
-    static final String DATE_HEADER = "x-ms-date";
+    static final String DATE_HEADER = "Date";
     static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
-    private static final String CONTENT_TYPE_HEADER = "Content-Type";
-    private static final String ACCEPT_HEADER = "Accept";
 
     /**
      * Adds the required headers to authenticate a request to Azure Application Configuration service.
@@ -65,15 +63,17 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
                     final HttpHeaders headers = context.httpRequest().headers();
                     final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
 
-                    headers.set(CONTENT_HASH_HEADER, contentHash);
+                    // All three of these headers are used by ConfigurationClientCredentials to generate the
+                    // Authentication header value. So, we need to ensure that they exist.
                     headers.set(HOST_HEADER, context.httpRequest().url().getHost());
-                    headers.set(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
-                    headers.set(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
+                    headers.set(CONTENT_HASH_HEADER, contentHash);
 
                     if (headers.value(DATE_HEADER) == null) {
                         String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
                         headers.set(DATE_HEADER, utcNow);
                     }
+
+                    return next.process();
                 });
     }
 
