@@ -29,6 +29,14 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<EHNamespaceIdListResult> namespaceListAsync(String resourceGroupName, String clusterName);
+    Observable<EHNamespaceIdListResult> listNamespacesAsync(String resourceGroupName, String clusterName);
+
+    /**
+     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AvailableClustersList> listAvailableClustersAsync();
 
 }

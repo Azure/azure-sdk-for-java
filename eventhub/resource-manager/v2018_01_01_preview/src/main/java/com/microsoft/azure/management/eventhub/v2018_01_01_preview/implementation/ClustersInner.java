@@ -65,6 +65,10 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * used by Retrofit to perform actually REST calls.
      */
     interface ClustersService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters listAvailableClusters" })
+        @POST("providers/Microsoft.EventHub/availableClusters")
+        Observable<Response<ResponseBody>> listAvailableClusters(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -97,14 +101,83 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters namespaceList" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters listNamespaces" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/namespaces")
-        Observable<Response<ResponseBody>> namespaceList(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listNamespaces(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters listByResourceGroupNext" })
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+    }
+
+    /**
+     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AvailableClustersListInner object if successful.
+     */
+    public AvailableClustersListInner listAvailableClusters() {
+        return listAvailableClustersWithServiceResponseAsync().toBlocking().single().body();
+    }
+
+    /**
+     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AvailableClustersListInner> listAvailableClustersAsync(final ServiceCallback<AvailableClustersListInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listAvailableClustersWithServiceResponseAsync(), serviceCallback);
+    }
+
+    /**
+     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AvailableClustersListInner object
+     */
+    public Observable<AvailableClustersListInner> listAvailableClustersAsync() {
+        return listAvailableClustersWithServiceResponseAsync().map(new Func1<ServiceResponse<AvailableClustersListInner>, AvailableClustersListInner>() {
+            @Override
+            public AvailableClustersListInner call(ServiceResponse<AvailableClustersListInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AvailableClustersListInner object
+     */
+    public Observable<ServiceResponse<AvailableClustersListInner>> listAvailableClustersWithServiceResponseAsync() {
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listAvailableClusters(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AvailableClustersListInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AvailableClustersListInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AvailableClustersListInner> clientResponse = listAvailableClustersDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AvailableClustersListInner> listAvailableClustersDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AvailableClustersListInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AvailableClustersListInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
     }
 
     /**
@@ -803,8 +876,8 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EHNamespaceIdListResultInner object if successful.
      */
-    public EHNamespaceIdListResultInner namespaceList(String resourceGroupName, String clusterName) {
-        return namespaceListWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().single().body();
+    public EHNamespaceIdListResultInner listNamespaces(String resourceGroupName, String clusterName) {
+        return listNamespacesWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().single().body();
     }
 
     /**
@@ -816,8 +889,8 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<EHNamespaceIdListResultInner> namespaceListAsync(String resourceGroupName, String clusterName, final ServiceCallback<EHNamespaceIdListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(namespaceListWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    public ServiceFuture<EHNamespaceIdListResultInner> listNamespacesAsync(String resourceGroupName, String clusterName, final ServiceCallback<EHNamespaceIdListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listNamespacesWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
     }
 
     /**
@@ -828,8 +901,8 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EHNamespaceIdListResultInner object
      */
-    public Observable<EHNamespaceIdListResultInner> namespaceListAsync(String resourceGroupName, String clusterName) {
-        return namespaceListWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<EHNamespaceIdListResultInner>, EHNamespaceIdListResultInner>() {
+    public Observable<EHNamespaceIdListResultInner> listNamespacesAsync(String resourceGroupName, String clusterName) {
+        return listNamespacesWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<EHNamespaceIdListResultInner>, EHNamespaceIdListResultInner>() {
             @Override
             public EHNamespaceIdListResultInner call(ServiceResponse<EHNamespaceIdListResultInner> response) {
                 return response.body();
@@ -845,7 +918,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EHNamespaceIdListResultInner object
      */
-    public Observable<ServiceResponse<EHNamespaceIdListResultInner>> namespaceListWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+    public Observable<ServiceResponse<EHNamespaceIdListResultInner>> listNamespacesWithServiceResponseAsync(String resourceGroupName, String clusterName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -858,12 +931,12 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.namespaceList(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listNamespaces(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EHNamespaceIdListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<EHNamespaceIdListResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<EHNamespaceIdListResultInner> clientResponse = namespaceListDelegate(response);
+                        ServiceResponse<EHNamespaceIdListResultInner> clientResponse = listNamespacesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -872,7 +945,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
             });
     }
 
-    private ServiceResponse<EHNamespaceIdListResultInner> namespaceListDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<EHNamespaceIdListResultInner> listNamespacesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<EHNamespaceIdListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EHNamespaceIdListResultInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
