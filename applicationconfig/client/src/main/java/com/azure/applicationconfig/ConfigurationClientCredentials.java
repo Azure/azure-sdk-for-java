@@ -19,9 +19,9 @@ import java.util.Base64;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static com.azure.applicationconfig.ConfigurationCredentialsPolicy.CONTENT_HASH_HEADER;
-import static com.azure.applicationconfig.ConfigurationCredentialsPolicy.DATE_HEADER;
-import static com.azure.applicationconfig.ConfigurationCredentialsPolicy.HOST_HEADER;
+import static com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy.CONTENT_HASH_HEADER;
+import static com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy.DATE_HEADER;
+import static com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy.HOST_HEADER;
 
 /**
  * Credentials that authorizes requests to Azure Application Configuration.
