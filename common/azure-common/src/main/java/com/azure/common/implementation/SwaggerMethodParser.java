@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation;
 
@@ -34,8 +31,6 @@ import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -45,7 +40,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * The type to parse details of a specific Swagger REST API call from a provided Swagger interface
@@ -119,7 +113,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 this.returnValueWireType = returnValueWireType;
             } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
                 this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
-            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)){
+            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)) {
                 this.returnValueWireType = returnValueWireType;
             }
         }
@@ -345,8 +339,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (expectedStatusCodes == null) {
             result = (responseStatusCode < 400);
-        }
-        else {
+        } else {
             result = contains(expectedStatusCodes, responseStatusCode)
                     || contains(additionalAllowedStatusCodes, responseStatusCode);
         }
@@ -370,28 +363,14 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the type of RestException that will be thrown if the HTTP response's status code is not
-     * one of the expected status codes.
+     * Get the {@link UnexpectedException} that will be used to generate a RestException if the HTTP response status
+     * code is not one of the expected status codes.
      *
-     * @return the type of RestException that will be thrown if the HTTP response's status code is
-     * not one of the expected status codes
-     */
-    public Class<? extends ServiceRequestException> exceptionType() {
-        return exceptionMapping.get(FALLTHROUGH_EXCEPTION_CODE).exceptionType();
-    }
-
-    /**
-     * Get the type of body Object that a thrown RestException will contain if the HTTP response's
-     * status code is not one of the expected status codes.
+     * If an UnexpectedException is not found for the status code the fall through UnexpectedException will be returned.
      *
-     * @return the type of body Object that a thrown RestException will contain if the HTTP
-     * response's status code is not one of the expected status codes
+     * @param code Exception HTTP status code return from a REST API.
+     * @return the UnexpectedException to generate an exception to throw or return.
      */
-    @Override
-    public Class<?> exceptionBodyType() {
-        return exceptionMapping.get(FALLTHROUGH_EXCEPTION_CODE).exceptionBodyType();
-    }
-
     @Override
     public UnexpectedException getUnexpectedException(int code) {
         return exceptionMapping.getOrDefault(code, exceptionMapping.get(FALLTHROUGH_EXCEPTION_CODE));
@@ -467,8 +446,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             result = false;
-        }
-        else if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final ParameterizedType asyncReturnType = (ParameterizedType) returnType;
             final Type syncReturnType = asyncReturnType.getActualTypeArguments()[0];
             if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Void.class)) {
@@ -501,8 +479,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         if (value != null) {
             if (value instanceof String) {
                 result = (String) value;
-            }
-            else {
+            } else {
                 result = serializer.serializeRaw(value);
             }
         }
