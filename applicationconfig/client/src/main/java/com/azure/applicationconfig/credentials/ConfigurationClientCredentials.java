@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.applicationconfig;
+package com.azure.applicationconfig.credentials;
 
+import com.azure.applicationconfig.ConfigurationAsyncClientBuilder;
+import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
 import com.azure.common.credentials.AsyncServiceClientCredentials;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpRequest;
@@ -19,16 +21,21 @@ import java.util.Base64;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy.CONTENT_HASH_HEADER;
-import static com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy.DATE_HEADER;
-import static com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy.HOST_HEADER;
-
 /**
- * Credentials that authorizes requests to Azure Application Configuration.
+ * Credentials that authorizes requests to Azure Application Configuration. It uses content within the HTTP request to
+ * generate the correct "Authorization" header value. {@link ConfigurationCredentialsPolicy} ensures that the content
+ * exists in the HTTP request so that a valid authorization value is generated.
  *
+ * @see ConfigurationCredentialsPolicy
  * @see ConfigurationAsyncClientBuilder
  */
 public class ConfigurationClientCredentials implements AsyncServiceClientCredentials {
+    // "Host", "Date", and "x-ms-content-sha256" are required to generate "Authorization" value.
+    private static final String HOST_HEADER = "Host";
+    private static final String DATE_HEADER = "Date";
+    private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
+    private static final String[] SIGNED_HEADERS = new String[]{HOST_HEADER, DATE_HEADER, CONTENT_HASH_HEADER };
+
     private final CredentialInformation credentials;
     private final AuthorizationHeaderProvider headerProvider;
 
@@ -44,7 +51,12 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
         headerProvider = new AuthorizationHeaderProvider(credentials);
     }
 
-    URL baseUri() {
+    /**
+     * Gets the base URI of the Azure App Configuration instance based on the provided connection string.
+     *
+     * @return The base URI of the configuration service extracted from connection string provided.
+     */
+    public URL baseUri() {
         return this.credentials.baseUri();
     }
 
@@ -60,8 +72,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
     }
 
     private static class AuthorizationHeaderProvider {
-        private final String[] signedHeaders = new String[]{HOST_HEADER, DATE_HEADER, CONTENT_HASH_HEADER};
-        private final String signedHeadersValue = String.join(";", signedHeaders);
+        private final String signedHeadersValue = String.join(";", SIGNED_HEADERS);
         private final CredentialInformation credentials;
         private final Mac sha256HMAC;
 
@@ -89,7 +100,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
             }
 
             final HttpHeaders httpHeaders = request.headers();
-            final String signed = Arrays.stream(signedHeaders)
+            final String signed = Arrays.stream(SIGNED_HEADERS)
                     .map(httpHeaders::value)
                     .collect(Collectors.joining(";"));
 

@@ -4,7 +4,7 @@ package com.azure.applicationconfig.policy;
 
 import com.azure.applicationconfig.ConfigurationAsyncClient;
 import com.azure.applicationconfig.ConfigurationAsyncClientBuilder;
-import com.azure.applicationconfig.ConfigurationClientCredentials;
+import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipelineCallContext;
 import com.azure.common.http.HttpPipelineNextPolicy;
@@ -26,16 +26,18 @@ import java.util.Base64;
 
 /**
  * A policy that authenticates requests with Azure Application Configuration service. The content added by this policy
- * is leveraged in {@link ConfigurationClientCredentials} to generate the correct Authorization header.
+ * is leveraged in {@link ConfigurationClientCredentials} to generate the correct "Authorization" header value.
  *
  * @see ConfigurationClientCredentials
  * @see ConfigurationAsyncClient
  * @see ConfigurationAsyncClientBuilder
  */
 public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
-    static final String HOST_HEADER = "Host";
-    static final String DATE_HEADER = "Date";
-    static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
+    // "Host", "Date", and "x-ms-content-sha256" are required to generate "Authorization" value in
+    // ConfigurationClientCredentials.
+    private static final String HOST_HEADER = "Host";
+    private static final String DATE_HEADER = "Date";
+    private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
 
     /**
      * Adds the required headers to authenticate a request to Azure Application Configuration service.
