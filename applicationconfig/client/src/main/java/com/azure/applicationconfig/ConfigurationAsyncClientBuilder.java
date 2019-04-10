@@ -3,13 +3,19 @@
 
 package com.azure.applicationconfig;
 
+import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
+import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
 import com.azure.common.http.HttpClient;
+import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipeline;
+import com.azure.common.http.policy.AddDatePolicy;
+import com.azure.common.http.policy.AddHeadersPolicy;
 import com.azure.common.http.policy.AsyncCredentialsPolicy;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.common.http.policy.RequestIdPolicy;
 import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
 
@@ -26,7 +32,17 @@ import java.util.Objects;
  * @see ConfigurationClientCredentials
  */
 public final class ConfigurationAsyncClientBuilder {
+    // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
+    // request was sent.
+    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
+    private static final String CONTENT_TYPE_HEADER = "Content-Type";
+    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    private static final String ACCEPT_HEADER = "Accept";
+    private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
+
     private final List<HttpPipelinePolicy> policies;
+    private final HttpHeaders headers;
+
     private ConfigurationClientCredentials credentials;
     private URL serviceEndpoint;
     private HttpClient httpClient;
@@ -40,6 +56,11 @@ public final class ConfigurationAsyncClientBuilder {
         retryPolicy = new RetryPolicy();
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
+
+        headers = new HttpHeaders();
+        headers.set(ECHO_REQUEST_ID_HEADER, "true");
+        headers.set(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE);
+        headers.set(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
 
     /**
@@ -75,9 +96,11 @@ public final class ConfigurationAsyncClientBuilder {
 
         policies.add(new UserAgentPolicy(userAgent));
         policies.add(new RequestIdPolicy());
-        policies.add(retryPolicy);
+        policies.add(new AddHeadersPolicy(headers));
+        policies.add(new AddDatePolicy());
         policies.add(new ConfigurationCredentialsPolicy());
         policies.add(new AsyncCredentialsPolicy(credentials));
+        policies.add(retryPolicy);
 
         policies.addAll(this.policies);
 

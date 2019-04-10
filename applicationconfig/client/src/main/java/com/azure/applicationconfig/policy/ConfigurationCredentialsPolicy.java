@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.applicationconfig;
+package com.azure.applicationconfig.policy;
 
+import com.azure.applicationconfig.ConfigurationAsyncClient;
+import com.azure.applicationconfig.ConfigurationAsyncClientBuilder;
+import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipelineCallContext;
 import com.azure.common.http.HttpPipelineNextPolicy;
@@ -10,9 +13,6 @@ import com.azure.common.http.policy.HttpPipelinePolicy;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.EmptyByteBuf;
 import io.netty.buffer.UnpooledByteBufAllocator;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,25 +23,21 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.util.Objects;
 
 /**
- * A policy that authenticates requests with Azure Application Configuration service.
+ * A policy that authenticates requests with Azure Application Configuration service. The content added by this policy
+ * is leveraged in {@link ConfigurationClientCredentials} to generate the correct "Authorization" header value.
  *
+ * @see ConfigurationClientCredentials
  * @see ConfigurationAsyncClient
  * @see ConfigurationAsyncClientBuilder
  */
 public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
-    private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";
-
-    static final String HOST_HEADER = "Host";
-    static final String DATE_HEADER = "x-ms-date";
-    static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String CONTENT_TYPE_HEADER = "Content-Type";
-    private static final String ACCEPT_HEADER = "Accept";
-
-    private final Logger logger = LoggerFactory.getLogger(ConfigurationCredentialsPolicy.class);
+    // "Host", "Date", and "x-ms-content-sha256" are required to generate "Authorization" value in
+    // ConfigurationClientCredentials.
+    private static final String HOST_HEADER = "Host";
+    private static final String DATE_HEADER = "Date";
+    private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
 
     /**
      * Adds the required headers to authenticate a request to Azure Application Configuration service.
@@ -72,31 +68,22 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
                     final HttpHeaders headers = context.httpRequest().headers();
                     final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
 
-                    headers.set(CONTENT_HASH_HEADER, contentHash);
+                    // All three of these headers are used by ConfigurationClientCredentials to generate the
+                    // Authentication header value. So, we need to ensure that they exist.
                     headers.set(HOST_HEADER, context.httpRequest().url().getHost());
-                    headers.set(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
-                    headers.set(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
+                    headers.set(CONTENT_HASH_HEADER, contentHash);
 
                     if (headers.value(DATE_HEADER) == null) {
                         String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
                         headers.set(DATE_HEADER, utcNow);
                     }
 
-                    return next.process().doOnSuccess(this::logResponseDelegate);
+                    return next.process();
                 });
     }
 
     private ByteBuf getEmptyBuffer() {
         return new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT);
-    }
-
-    private void logResponseDelegate(HttpResponse response) {
-        Objects.requireNonNull(response, "HttpResponse is required.");
-
-        if (response.statusCode() == HttpResponseStatus.UNAUTHORIZED.code()) {
-            logger.error("HTTP Unauthorized status, String-to-Sign:'{}'",
-                    response.headers().value(AUTHORIZATION_HEADER));
-        }
     }
 }
 
