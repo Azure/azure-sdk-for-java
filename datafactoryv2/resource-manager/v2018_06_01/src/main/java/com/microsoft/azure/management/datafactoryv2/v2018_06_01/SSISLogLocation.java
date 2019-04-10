@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * SSIS package exection log location.
+ * SSIS package execution log location.
  */
 @JsonFlatten
 public class SSISLogLocation {

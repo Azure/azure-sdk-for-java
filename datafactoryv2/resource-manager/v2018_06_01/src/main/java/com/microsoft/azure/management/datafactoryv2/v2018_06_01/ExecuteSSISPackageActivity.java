@@ -91,7 +91,7 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
     private Map<String, SSISPropertyOverride> propertyOverrides;
 
     /**
-     * SSIS package exection log location.
+     * SSIS package execution log location.
      */
     @JsonProperty(value = "typeProperties.logLocation")
     private SSISLogLocation logLocation;
@@ -317,7 +317,7 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
     }
 
     /**
-     * Get sSIS package exection log location.
+     * Get sSIS package execution log location.
      *
      * @return the logLocation value
      */
@@ -326,7 +326,7 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
     }
 
     /**
-     * Set sSIS package exection log location.
+     * Set sSIS package execution log location.
      *
      * @param logLocation the logLocation value to set
      * @return the ExecuteSSISPackageActivity object itself.
