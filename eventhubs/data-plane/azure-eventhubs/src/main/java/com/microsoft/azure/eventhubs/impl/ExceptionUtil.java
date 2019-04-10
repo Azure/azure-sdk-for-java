@@ -106,7 +106,6 @@ public final class ExceptionUtil {
             return;
         }
         future.completeExceptionally(exception);
-
     }
 
     // not a specific message related error
@@ -134,7 +133,6 @@ public final class ExceptionUtil {
             builder.append(System.lineSeparator());
             builder.append(ste.toString());
         }
-
 
         final Throwable innerException = exception.getCause();
         if (innerException != null) {

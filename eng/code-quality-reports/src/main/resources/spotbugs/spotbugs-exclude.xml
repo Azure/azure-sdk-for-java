@@ -116,7 +116,7 @@
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L50
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L57 -->
   <Match>
-    <Class name="~com.microsoft.azure.eventhubs.BatchOptions"/>
+    <Class name="com.microsoft.azure.eventhubs.BatchOptions"/>
     <Field name="~(maxMessageSize|partitionKey)"/>
     <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
   </Match>

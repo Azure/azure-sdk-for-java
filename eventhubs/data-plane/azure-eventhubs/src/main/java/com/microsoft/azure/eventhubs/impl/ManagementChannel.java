@@ -133,6 +133,4 @@ final class ManagementChannel {
             resultFuture.completeExceptionally(error);
         }
     }
-
-
 }
