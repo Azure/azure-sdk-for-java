@@ -11,10 +11,10 @@ import com.azure.common.http.HttpRequest;
 /**
  * REST response with a strongly-typed content specified.
  *
- * @param <T> The deserialized type of the response content.
- * @see RestResponseBase
+ * @param <T> The deserialized type of the response content, available from {@link #value()}.
+ * @see ResponseBase
  */
-public interface RestResponse<T> {
+public interface Response<T> {
 
     /**
      * Get the HTTP response status code.
@@ -38,7 +38,7 @@ public interface RestResponse<T> {
     HttpRequest request();
 
     /**
-     * @return the deserialized body of the HTTP response.
+     * @return the deserialized value of the HTTP response.
      */
-    T body();
+    T value();
 }

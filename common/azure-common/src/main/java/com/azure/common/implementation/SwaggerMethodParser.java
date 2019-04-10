@@ -6,8 +6,9 @@
 
 package com.azure.common.implementation;
 
+import com.azure.common.http.rest.Page;
 import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
-import com.azure.common.http.rest.RestException;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
@@ -27,9 +28,10 @@ import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpMethod;
-import com.azure.common.http.rest.RestResponse;
+import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.serializer.HttpResponseDecodeData;
 import com.azure.common.implementation.serializer.SerializerAdapter;
+import com.azure.common.implementation.util.ImplUtils;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -63,7 +65,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private int[] expectedStatusCodes;
     private Type returnType;
     private Type returnValueWireType;
-    private Class<? extends RestException> exceptionType;
+    private Class<? extends ServiceRequestException> exceptionType;
     private Class<?> exceptionBodyType;
 
     /**
@@ -119,10 +121,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             if (returnValueWireType == Base64Url.class || returnValueWireType == UnixTime.class || returnValueWireType == DateTimeRfc1123.class) {
                 this.returnValueWireType = returnValueWireType;
             }
-            else {
-                if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
-                    this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
-                }
+            else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
+                this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
+            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)){
+                this.returnValueWireType = returnValueWireType;
             }
         }
 
@@ -150,17 +152,17 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         final UnexpectedResponseExceptionType unexpectedResponseExceptionType = swaggerMethod.getAnnotation(UnexpectedResponseExceptionType.class);
         if (unexpectedResponseExceptionType == null) {
-            exceptionType = RestException.class;
+            exceptionType = ServiceRequestException.class;
         }
         else {
             exceptionType = unexpectedResponseExceptionType.value();
         }
 
         try {
-            final Method exceptionBodyMethod = exceptionType.getDeclaredMethod("body");
+            final Method exceptionBodyMethod = exceptionType.getDeclaredMethod("value");
             exceptionBodyType = exceptionBodyMethod.getReturnType();
         } catch (NoSuchMethodException e) {
-            // Should always have a body() method. Register Object as a fallback plan.
+            // Should always have a value() method. Register Object as a fallback plan.
             exceptionBodyType = Object.class;
         }
 
@@ -223,7 +225,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     @Override
     public int[] expectedStatusCodes() {
-        return expectedStatusCodes;
+        return ImplUtils.clone(expectedStatusCodes);
     }
 
     /**
@@ -385,7 +387,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return the type of RestException that will be thrown if the HTTP response's status code is
      * not one of the expected status codes
      */
-    public Class<? extends RestException> exceptionType() {
+    public Class<? extends ServiceRequestException> exceptionType() {
         return exceptionType;
     }
 
@@ -402,9 +404,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the object to be used as the body of the HTTP request.
+     * Get the object to be used as the value of the HTTP request.
      *
-     * @param swaggerMethodArguments the method arguments to get the body object from
+     * @param swaggerMethodArguments the method arguments to get the value object from
      * @return the object that will be used as the body of the HTTP request
      */
     public Object body(Object[] swaggerMethodArguments) {
@@ -477,10 +479,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             final Type syncReturnType = asyncReturnType.getActualTypeArguments()[0];
             if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Void.class)) {
                 result = false;
-            } else if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, RestResponse.class)) {
-                result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(syncReturnType, RestResponse.class));
+            } else if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Response.class)) {
+                result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(syncReturnType, Response.class));
             }
-        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, RestResponse.class)) {
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
             result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) returnType);
         }
 
@@ -526,8 +528,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     if (substitutionValue != null && !substitutionValue.isEmpty() && substitution.shouldEncode() && escaper != null) {
                         substitutionValue = escaper.escape(substitutionValue);
                     }
-
-                    result = result.replace("{" + substitution.urlParameterName() + "}", substitutionValue);
+                    if (substitutionValue != null) {
+                        result = result.replace("{" + substitution.urlParameterName() + "}", substitutionValue);
+                    }
                 }
             }
         }

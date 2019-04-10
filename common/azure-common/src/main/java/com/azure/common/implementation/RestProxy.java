@@ -6,10 +6,13 @@
 
 package com.azure.common.implementation;
 
-import com.azure.common.http.rest.RestException;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.ServiceClient;
 import com.azure.common.annotations.ResumeOperation;
 import com.azure.common.credentials.ServiceClientCredentials;
+import com.azure.common.http.rest.Page;
+import com.azure.common.http.rest.PagedResponse;
+import com.azure.common.implementation.http.PagedResponseBase;
 import com.azure.common.implementation.http.ContentType;
 import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpHeader;
@@ -24,8 +27,8 @@ import com.azure.common.http.policy.CookiePolicy;
 import com.azure.common.http.policy.CredentialsPolicy;
 import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
-import com.azure.common.http.rest.RestResponse;
-import com.azure.common.http.rest.RestResponseBase;
+import com.azure.common.http.rest.Response;
+import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.implementation.serializer.HttpResponseDecoder;
 import com.azure.common.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.common.implementation.serializer.SerializerAdapter;
@@ -278,7 +281,7 @@ public class RestProxy implements InvocationHandler {
                 .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, null));
     }
 
-    private static Exception instantiateUnexpectedException(Class<? extends RestException> exceptionType,
+    private static Exception instantiateUnexpectedException(Class<? extends ServiceRequestException> exceptionType,
                                                             Class<?> exceptionBodyType,
                                                             HttpResponse httpResponse,
                                                             String responseContent,
@@ -294,7 +297,7 @@ public class RestProxy implements InvocationHandler {
 
         Exception result;
         try {
-            final Constructor<? extends RestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
+            final Constructor<? extends ServiceRequestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
                     httpResponse,
                     responseDecodedContent);
@@ -371,7 +374,7 @@ public class RestProxy implements InvocationHandler {
     private Mono<?> handleRestResponseReturnType(HttpDecodedResponse response, SwaggerMethodParser methodParser, Type entityType) {
         Mono<?> asyncResult;
 
-        if (TypeUtil.isTypeOrSubTypeOf(entityType, RestResponse.class)) {
+        if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
@@ -379,8 +382,8 @@ public class RestProxy implements InvocationHandler {
                         .then(Mono.just(createResponse(response, entityType, null)));
             } else {
                 asyncResult = handleBodyReturnType(response, methodParser, bodyType)
-                        .map((Function<Object, RestResponse<?>>) bodyAsObject -> createResponse(response, entityType, bodyAsObject))
-                        .switchIfEmpty(Mono.defer((Supplier<Mono<RestResponse<?>>>) () -> Mono.just(createResponse(response, entityType, null))));
+                        .map((Function<Object, Response<?>>) bodyAsObject -> createResponse(response, entityType, bodyAsObject))
+                        .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> Mono.just(createResponse(response, entityType, null))));
             }
         } else {
             // For now we're just throwing if the Maybe didn't emit a value.
@@ -390,7 +393,7 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    private RestResponse<?> createResponse(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
+    private Response<?> createResponse(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
         final HttpResponse httpResponse = response.sourceResponse();
         final HttpRequest httpRequest = httpResponse.request();
         final int responseStatusCode = httpResponse.statusCode();
@@ -398,9 +401,15 @@ public class RestProxy implements InvocationHandler {
 
         // determine the type of response class. If the type is the 'RestResponse' interface, we will use the
         // 'RestResponseBase' class instead.
-        Class<? extends RestResponse<?>> cls = (Class<? extends RestResponse<?>>) TypeUtil.getRawClass(entityType);
-        if (cls.equals(RestResponse.class)) {
-            cls = (Class<? extends RestResponse<?>>) (Object) RestResponseBase.class;
+        Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
+        if (cls.equals(Response.class)) {
+            cls = (Class<? extends Response<?>>) (Object) ResponseBase.class;
+        } else if (cls.equals(PagedResponse.class)) {
+            cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
+
+            if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
+                throw new RuntimeException("Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class);
+            }
         }
 
         // we try to find the most specific constructor, which we do in the following order:
@@ -421,7 +430,7 @@ public class RestProxy implements InvocationHandler {
 
         // try to create an instance using our list of potential candidates
         for (int i = 0; i < ctors.size(); i++) {
-            final Constructor<? extends RestResponse<?>> ctor = (Constructor<? extends RestResponse<?>>) ctors.get(i);
+            final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) ctors.get(i);
 
             try {
                 final int paramCount = ctor.getParameterCount();
@@ -466,7 +475,7 @@ public class RestProxy implements InvocationHandler {
             // Mono<Flux<ByteBuf>>
             asyncResult = Mono.just(response.sourceResponse().body());
         } else {
-            // Mono<Object>
+            // Mono<Object> or Mono<Page<T>>
             asyncResult = response.decodedBody();
         }
         return asyncResult;

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>azure-client-sdk-parent</artifactId>
         <groupId>com.azure</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../../pom.client.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -72,6 +72,16 @@
             <artifactId>azure-eventhubs-extensions</artifactId>
             <version>${azure-eventhubs.version}</version>
         </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-common</artifactId>
+          <version>${azure-common.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-common-auth</artifactId>
+          <version>${azure-common-auth.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -97,6 +107,8 @@
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
+                                <source>..\..\common\azure-common\src\main\java</source>
+                                <source>..\..\common\azure-common-auth\src\main\java</source>
                             </sources>
                         </configuration>
                     </execution>
