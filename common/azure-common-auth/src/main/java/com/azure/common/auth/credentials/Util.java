@@ -90,7 +90,7 @@ final class Util {
         matcher.find();
         try {
             CertificateFactory factory = CertificateFactory.getInstance("X.509");
-            InputStream stream = new ByteArrayInputStream(matcher.group().getBytes());
+            InputStream stream = new ByteArrayInputStream(matcher.group().getBytes(StandardCharsets.UTF_8));
             return (X509Certificate) factory.generateCertificate(stream);
         } catch (CertificateException e) {
             throw new RuntimeException(e);
