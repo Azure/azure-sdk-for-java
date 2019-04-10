@@ -11,17 +11,16 @@ import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
 import reactor.core.publisher.Mono;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -35,6 +34,7 @@ public final class MSICredentials extends AzureTokenCredentials {
     private final List<Integer> retrySlots = new ArrayList<>();
     private final Lock lock = new ReentrantLock();
     private final ConcurrentHashMap<String, MSIToken> cache = new ConcurrentHashMap<>();
+    private static final Random RANDOM = new Random();
     //
     private final JacksonAdapter adapter = new JacksonAdapter();
     private final MSIConfigurationForVirtualMachine configForVM;
@@ -42,6 +42,7 @@ public final class MSICredentials extends AzureTokenCredentials {
     private final HostType hostType;
     private final int maxRetry;
     private static final int MAX_RETRY_DEFAULT_LIMIT = 20;
+
     /**
      * Creates MSICredentials for application running on MSI enabled virtual machine.
      *
@@ -120,7 +121,7 @@ public final class MSICredentials extends AzureTokenCredentials {
         String urlString = String.format("%s?resource=%s&api-version=2017-09-01", this.configForAppService.msiEndpoint(), tokenAudience == null ? this.configForAppService.resource() : tokenAudience);
         URL url = new URL(urlString);
         HttpURLConnection connection = null;
-
+        InputStream stream = null;
         try {
             connection = (HttpURLConnection) url.openConnection();
 
@@ -130,15 +131,11 @@ public final class MSICredentials extends AzureTokenCredentials {
 
             connection.connect();
 
-            InputStream stream = connection.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 100);
-            String result = reader.readLine();
+            Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
+            String result = s.hasNext() ? s.next() : "";
 
             MSIToken msiToken = adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
             return msiToken.accessToken();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -157,6 +154,7 @@ public final class MSICredentials extends AzureTokenCredentials {
             postData += String.format("&msi_res_id=%s", this.configForVM.identityId());
         }
         HttpURLConnection connection = null;
+        OutputStreamWriter wr = null;
 
         try {
             connection = (HttpURLConnection) url.openConnection();
@@ -169,20 +167,19 @@ public final class MSICredentials extends AzureTokenCredentials {
 
             connection.connect();
 
-            OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
+            wr = new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8);
             wr.write(postData);
             wr.flush();
 
-            InputStream stream = connection.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 100);
-            String result = reader.readLine();
+            Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
+            String result = s.hasNext() ? s.next() : "";
 
             MSIToken msiToken = adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
             return msiToken.accessToken();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
         } finally {
+            if (wr != null) {
+                wr.close();
+            }
             if (connection != null) {
                 connection.disconnect();
             }
@@ -208,7 +205,10 @@ public final class MSICredentials extends AzureTokenCredentials {
             } catch (IOException exception) {
                 throw new RuntimeException(exception);
             }
-            return token.accessToken();
+            if (token != null) {
+                return token.accessToken();
+            }
+            return null;
         } finally {
             lock.unlock();
         }
@@ -258,14 +258,18 @@ public final class MSICredentials extends AzureTokenCredentials {
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Metadata", "true");
                 connection.connect();
-                InputStream stream = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 100);
-                String result = reader.readLine();
+
+                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
+                String result = s.hasNext() ? s.next() : "";
+
                 return adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-            } catch (Exception exception) {
+            } catch (IOException exception) {
+                if (connection == null) {
+                    throw new RuntimeException(String.format("Could not connect to the url: %s.", url), exception);
+                }
                 int responseCode = connection.getResponseCode();
                 if (responseCode == 410 || responseCode == 429 || responseCode == 404 || (responseCode >= 500 && responseCode <= 599)) {
-                    int retryTimeoutInMs = retrySlots.get(new Random().nextInt(retry));
+                    int retryTimeoutInMs = retrySlots.get(RANDOM.nextInt(retry));
                     // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
                     //
                     retryTimeoutInMs = (responseCode == 410 && retryTimeoutInMs < imdsUpgradeTimeInMs) ? imdsUpgradeTimeInMs : retryTimeoutInMs;

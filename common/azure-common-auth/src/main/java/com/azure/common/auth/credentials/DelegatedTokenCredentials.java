@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -207,8 +208,8 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
                 return Mono.error(use);
             }
             AsymmetricKeyCredential keyCredential = AsymmetricKeyCredential.create(clientId(),
-                    Util.privateKeyFromPem(new String(applicationCredentials.clientCertificate())),
-                    Util.publicKeyFromPem(new String(applicationCredentials.clientCertificate())));
+                    Util.privateKeyFromPem(new String(applicationCredentials.clientCertificate(), StandardCharsets.UTF_8)),
+                    Util.publicKeyFromPem(new String(applicationCredentials.clientCertificate(), StandardCharsets.UTF_8)));
             authMono = Mono.create(callback -> {
                 context.acquireTokenByAuthorizationCode(
                         authorizationCode,
