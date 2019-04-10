@@ -113,7 +113,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         Observable<Response<ResponseBody>> checkSubdomainAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body OperationInputs operationInputs, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listTemplates" })
-        @POST("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/IoTAppTemplates")
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/appTemplates")
         Observable<Response<ResponseBody>> listTemplates(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listNext" })
