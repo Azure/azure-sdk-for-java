@@ -7,6 +7,7 @@ package com.azure.common.exception;
  * The base exception type for all Azure-related exceptions.
  *
  * @see ServiceRequestException
+ * @see AzureLibraryException
  */
 public class AzureException extends RuntimeException {
 
