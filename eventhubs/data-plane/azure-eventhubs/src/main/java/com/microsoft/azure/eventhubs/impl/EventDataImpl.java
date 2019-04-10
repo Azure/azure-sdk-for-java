@@ -292,15 +292,16 @@ public final class EventDataImpl implements EventData {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof EventDataImpl)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         EventDataImpl eventData = (EventDataImpl) o;
-        return Objects.equals(bodyData, eventData.bodyData);
+        return Objects.equals(bodyData, eventData.bodyData)
+            && Objects.equals(amqpBody, eventData.amqpBody);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bodyData);
+        return Objects.hash(bodyData, amqpBody);
     }
 }
