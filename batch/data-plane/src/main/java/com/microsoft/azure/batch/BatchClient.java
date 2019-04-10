@@ -45,18 +45,34 @@ public class BatchClient {
 
     private BatchClient(BatchCredentials credentials) {
         RestClient restClient = new RestClient.Builder()
-            .withBaseUrl(credentials.baseUrl())
-            .withCredentials(credentials)
-            .withSerializerAdapter(new AzureJacksonAdapter())
-            .withResponseBuilderFactory(new ResponseBuilder.Factory() {
-                private final AzureResponseBuilder.Factory baseFactory = new AzureResponseBuilder.Factory();
-                @Override
-                public <T, E extends RestException> ResponseBuilder<T, E> newInstance(SerializerAdapter<?> serializerAdapter) {
-                    return baseFactory.<T, E>newInstance(serializerAdapter).withThrowOnGet404(true);
-                }
-            })
-            .build();
+                .withBaseUrl(credentials.baseUrl())
+                .withCredentials(credentials)
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new ResponseBuilder.Factory() {
+                    private final AzureResponseBuilder.Factory baseFactory = new AzureResponseBuilder.Factory();
+                    @Override
+                    public <T, E extends RestException> ResponseBuilder<T, E> newInstance(SerializerAdapter<?> serializerAdapter) {
+                        return baseFactory.<T, E>newInstance(serializerAdapter).withThrowOnGet404(true);
+                    }
+                })
+                .build();
+
         this.protocolLayer = new BatchServiceClientImpl(restClient).withBatchUrl(credentials.baseUrl());
+        this.customBehaviors = new LinkedList<>();
+        this.customBehaviors.add(new ClientRequestIdInterceptor());
+        this.certificateOperations = new CertificateOperations(this, customBehaviors());
+        this.jobOperations = new JobOperations(this, customBehaviors());
+        this.taskOperations = new TaskOperations(this, customBehaviors());
+        this.jobScheduleOperations = new JobScheduleOperations(this, customBehaviors());
+        this.poolOperations = new PoolOperations(this, customBehaviors());
+        this.fileOperations = new FileOperations(this, customBehaviors());
+        this.applicationOperations = new ApplicationOperations(this, customBehaviors());
+        this.accountOperations = new AccountOperations(this, customBehaviors());
+        this.computeNodeOperations = new ComputeNodeOperations(this, customBehaviors());
+    }
+
+    private BatchClient(RestClient restClient, String baseUrl) {
+        this.protocolLayer = new BatchServiceClientImpl(restClient).withBatchUrl(baseUrl);
         this.customBehaviors = new LinkedList<>();
         this.customBehaviors.add(new ClientRequestIdInterceptor());
         this.certificateOperations = new CertificateOperations(this, customBehaviors());
@@ -78,6 +94,18 @@ public class BatchClient {
      */
     public static BatchClient open(BatchCredentials credentials) {
         return new BatchClient(credentials);
+    }
+
+    /**
+     * Creates an instance of {@link BatchClient} associated with the specified restClient and baseurl.
+     *
+     * @param restClient A {@link RestClient} object specifying the definition of rest client used to
+     *                   interact with batch endpoint.
+     * @param baseUrl A  String object specifying the the batch end point.
+     * @return The new {@link BatchClient} instance.
+     */
+    static BatchClient open(RestClient restClient, String baseUrl) {
+        return new BatchClient(restClient, baseUrl);
     }
 
     /**

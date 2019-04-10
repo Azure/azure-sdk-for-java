@@ -47,6 +47,20 @@ public class StorageAccount {
     private String key;
 
     /**
+     * The resource ID of storage account, only to be specified for Azure Data
+     * Lake Storage Gen 2.
+     */
+    @JsonProperty(value = "resourceId")
+    private String resourceId;
+
+    /**
+     * The managed identity (MSI) that is allowed to access the storage
+     * account, only to be specified for Azure Data Lake Storage Gen 2.
+     */
+    @JsonProperty(value = "msiResourceId")
+    private String msiResourceId;
+
+    /**
      * Get the name of the storage account.
      *
      * @return the name value
@@ -143,6 +157,46 @@ public class StorageAccount {
      */
     public StorageAccount withKey(String key) {
         this.key = key;
+        return this;
+    }
+
+    /**
+     * Get the resource ID of storage account, only to be specified for Azure Data Lake Storage Gen 2.
+     *
+     * @return the resourceId value
+     */
+    public String resourceId() {
+        return this.resourceId;
+    }
+
+    /**
+     * Set the resource ID of storage account, only to be specified for Azure Data Lake Storage Gen 2.
+     *
+     * @param resourceId the resourceId value to set
+     * @return the StorageAccount object itself.
+     */
+    public StorageAccount withResourceId(String resourceId) {
+        this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
+     * Get the managed identity (MSI) that is allowed to access the storage account, only to be specified for Azure Data Lake Storage Gen 2.
+     *
+     * @return the msiResourceId value
+     */
+    public String msiResourceId() {
+        return this.msiResourceId;
+    }
+
+    /**
+     * Set the managed identity (MSI) that is allowed to access the storage account, only to be specified for Azure Data Lake Storage Gen 2.
+     *
+     * @param msiResourceId the msiResourceId value to set
+     * @return the StorageAccount object itself.
+     */
+    public StorageAccount withMsiResourceId(String msiResourceId) {
+        this.msiResourceId = msiResourceId;
         return this;
     }
 

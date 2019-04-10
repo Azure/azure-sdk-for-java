@@ -26,9 +26,7 @@ public class ServerTimeoutInterceptor extends RequestInterceptor {
                 Class<?> c = request.getClass();
                 try {
                     Method timeoutMethod = c.getMethod("withTimeout", Integer.class);
-                    if (timeoutMethod != null) {
-                        timeoutMethod.invoke(request, serverTimeout);
-                    }
+                    timeoutMethod.invoke(request, serverTimeout);
                 } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
                     // Ignore exception
                 }

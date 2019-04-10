@@ -209,7 +209,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <!-- See http://checkstyle.sf.net/config_modifiers.html -->
         <module name="ModifierOrder"/>
         <module name="RedundantModifier"/>
-        <module name="FileContentsHolder"/>
 
         <!-- Checks for blocks. You know, those {}'s         -->
         <!-- See http://checkstyle.sf.net/config_blocks.html -->
@@ -244,5 +243,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
 
+        <!--Checks for package naming and name length limit. Package names have to starting with either-->
+        <!--'com.microsoft.azure' or 'com.azure', and then the extension names should only contains-->
+        <!--characters 'a' to 'z' with no more than 20 characters and  the package names should be no-->
+        <!--more than 80 characters.-->
+        <module name="PackageName">
+            <property name="format" value="^(?=.{9,80}$)((com.microsoft.azure|com.azure)(\.[a-z]{1,20})*)+$"/>
+        </module>
     </module>
 </module>

@@ -3,16 +3,17 @@
  Licensed under the MIT License. See License.txt in the project root for
  license information.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
 
-  <version>1.2.0</version>
+  <version>1.2.1</version>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-keyvault-parent</artifactId>
   <packaging>pom</packaging>
@@ -28,10 +29,12 @@
     </site>
   </distributionManagement>
 
-  <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
 
   <properties>
-    <azure-keyvault.version>1.2.0</azure-keyvault.version>
+    <azure-keyvault.version>1.2.1</azure-keyvault.version>
   </properties>
 
   <dependencyManagement>
@@ -71,26 +74,33 @@
   </dependencyManagement>
 
   <build>
+    <plugins>
 
-      <plugins>
-
-        <!-- This plugin is used to compile the sources of your project. -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>1.7</source>
-            <target>1.7</target>
-            <showWarnings>true</showWarnings>
-            <showDeprecation>true</showDeprecation>
-            <compilerArgument>-Xlint:unchecked</compilerArgument>
-          </configuration>
-        </plugin>
-
-      </plugins>
-
+      <!-- This plugin is used to compile the sources of your project. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+          <showWarnings>true</showWarnings>
+          <showDeprecation>true</showDeprecation>
+          <compilerArgument>-Xlint:unchecked</compilerArgument>
+        </configuration>
+      </plugin>
+      
+      <!-- Now that all checkstyle issues have been resolved, override the 
+             default behavior to make checkstyle fail on error and violation. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
-
 
   <developers>
     <developer>
