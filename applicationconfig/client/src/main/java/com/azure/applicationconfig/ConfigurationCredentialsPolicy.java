@@ -17,23 +17,21 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
- * Creates a policy that authenticates requests with Azure Application Configuration service.
+ * A policy that authenticates requests with Azure Application Configuration service.
  *
- * package-private class as users do not need to see or modify which auth headers are added to requests.
+ * @see ConfigurationAsyncClient
+ * @see ConfigurationAsyncClientBuilder
  */
-final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
+public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
     private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";
 
     static final String HOST_HEADER = "Host";
@@ -46,9 +44,10 @@ final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
     private final Logger logger = LoggerFactory.getLogger(ConfigurationCredentialsPolicy.class);
 
     /**
-     * Sign the request.
+     * Adds the required headers to authenticate a request to Azure Application Configuration service.
      *
      * @param context The request context
+     * @param next The next HTTP pipeline policy to process the {@code context's} request after this policy completes.
      * @return A {@link Mono} representing the HTTP response that will arrive asynchronously.
      */
     @Override
@@ -70,29 +69,21 @@ final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
                         }
                     })
                 .flatMap(messageDigest -> {
-                    final Map<String, String> mapped = getDefaultHeaders(context.httpRequest().url(), context.httpRequest().headers());
+                    final HttpHeaders headers = context.httpRequest().headers();
                     final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
 
-                    mapped.put(CONTENT_HASH_HEADER, contentHash);
-                    mapped.forEach((key, value) -> context.httpRequest().headers().set(key, value));
+                    headers.set(CONTENT_HASH_HEADER, contentHash);
+                    headers.set(HOST_HEADER, context.httpRequest().url().getHost());
+                    headers.set(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
+                    headers.set(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
+
+                    if (headers.value(DATE_HEADER) == null) {
+                        String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
+                        headers.set(DATE_HEADER, utcNow);
+                    }
 
                     return next.process().doOnSuccess(this::logResponseDelegate);
                 });
-    }
-
-    private Map<String, String> getDefaultHeaders(URL url, HttpHeaders currentHeaders) {
-        final Map<String, String> mapped = new HashMap<>();
-
-        mapped.put(HOST_HEADER, url.getHost());
-        mapped.put(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
-        mapped.put(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
-
-        if (currentHeaders.value(DATE_HEADER) == null) {
-            String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
-            mapped.put(DATE_HEADER, utcNow);
-        }
-
-        return mapped;
     }
 
     private ByteBuf getEmptyBuffer() {

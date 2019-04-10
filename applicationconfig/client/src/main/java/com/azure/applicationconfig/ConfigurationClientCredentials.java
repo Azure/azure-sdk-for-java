@@ -23,6 +23,11 @@ import static com.azure.applicationconfig.ConfigurationCredentialsPolicy.CONTENT
 import static com.azure.applicationconfig.ConfigurationCredentialsPolicy.DATE_HEADER;
 import static com.azure.applicationconfig.ConfigurationCredentialsPolicy.HOST_HEADER;
 
+/**
+ * Credentials that authorizes requests to Azure Application Configuration.
+ *
+ * @see ConfigurationAsyncClientBuilder
+ */
 public class ConfigurationClientCredentials implements AsyncServiceClientCredentials {
     private final CredentialInformation credentials;
     private final AuthorizationHeaderProvider headerProvider;
@@ -30,7 +35,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
     /**
      * Creates an instance that is able to authorize requests to Azure Application Configuration service.
      *
-     * @param connectionString connection string in the format "endpoint={endpoint_value};id={id_value};secret={secret_value}"
+     * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};secret={secret_value}"
      * @throws NoSuchAlgorithmException When the HMAC-SHA256 MAC algorithm cannot be instantiated.
      * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.
      */
@@ -43,6 +48,12 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
         return this.credentials.baseUri();
     }
 
+    /**
+     * Gets the "Authentication" header value used authenticate the {@code request} with the configuration service.
+     *
+     * @param request HTTP request to send to the configuration service.
+     * @return The "Authentication" header value.
+     */
     @Override
     public Mono<String> authorizationHeaderValueAsync(HttpRequest request) {
         return Mono.just(headerProvider.getAuthenticationHeaderValue(request));
@@ -82,9 +93,10 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
                     .map(httpHeaders::value)
                     .collect(Collectors.joining(";"));
 
-            // String-To-Sign=HTTP_METHOD + '%n' + path_and_query + '%n' + signed_headers_values
+            // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
             // Signed headers: "host;x-ms-date;x-ms-content-sha256"
-            return String.format("%s%n%s%n%s", request.httpMethod().toString().toUpperCase(Locale.US), pathAndQuery, signed);
+            // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
+            return request.httpMethod().toString().toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signed;
         }
     }
 
