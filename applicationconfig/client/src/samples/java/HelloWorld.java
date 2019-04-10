@@ -1,5 +1,5 @@
-import com.azure.applicationconfig.ConfigurationClient;
-import com.azure.applicationconfig.ConfigurationClientCredentials;
+import com.azure.applicationconfig.ConfigurationAsyncClient;
+import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.common.http.rest.Response;
 import reactor.core.publisher.Mono;
@@ -17,7 +17,7 @@ public class HelloWorld {
         String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
 
         // Instantiate a client that will be used to call the service.
-        ConfigurationClient client = ConfigurationClient.builder()
+        ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
             .credentials(new ConfigurationClientCredentials(connectionString))
             .build();
 
@@ -29,14 +29,17 @@ public class HelloWorld {
         // you can call updateSetting to update a setting that is already present in the store.
         Mono<Response<ConfigurationSetting>> setSetting = client.setSetting(settingToAdd);
 
-        // Retrieve a stored setting by calling client.getSetting after setSetting completes.
-        // When we retrieve the value of that configuration, we print it out and then delete it.
-        // .block() is used to prevent the program from quitting before it is complete.
-        setSetting.then(client.getSetting(settingToAdd.key())).map(response -> {
-            ConfigurationSetting setting = response.value();
-            System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
-
-            return client.deleteSetting(setting.key());
-        }).block();
+        // We subscribe and wait for the service call to be complete then print out the contents.
+        // If an error occurs, we print out that error and on the completion of the subscription, we delete the setting.
+        // .block() exists there so the program does not end before the deletion has completed.
+        setSetting.subscribe(result -> {
+            ConfigurationSetting setting = result.value();
+            System.out.println(String.format("Key: %s, Value: %s", setting.value(), setting.value()));
+        }, error -> {
+            System.err.println("There was an error adding the setting: " + error.toString());
+        }, () -> {
+            System.out.println("Completed. Deleting setting...");
+            client.deleteSetting(settingToAdd.key()).block();
+        });
     }
 }
