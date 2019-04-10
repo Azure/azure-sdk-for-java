@@ -195,4 +195,21 @@
         <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
         <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
       </Match>
+
+      <!-- The poll strategy class has no necessary to serialize or deserialize. -->
+      <Match>
+        <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+        <Bug pattern="SE_NO_SERIALVERSIONID"/>
+      </Match>
+
+      <Match>
+        <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+        <Bug pattern="SE_BAD_FIELD"/>
+      </Match>
+
+      <!-- The checked field is always not null. -->
+      <Match>
+        <Class name="com.azure.common.mgmt.AzureProxy"/>
+        <Bug pattern="NP_NULL_PARAM_DEREF"/>
+      </Match>
 </FindBugsFilter>

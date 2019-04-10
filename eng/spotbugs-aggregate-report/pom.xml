@@ -82,6 +82,11 @@
           <artifactId>azure-common-auth</artifactId>
           <version>${azure-common-auth.version}</version>
         </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-common-mgmt</artifactId>
+          <version>${azure-common-mgmt.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -109,6 +114,7 @@
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
                                 <source>..\..\common\azure-common\src\main\java</source>
                                 <source>..\..\common\azure-common-auth\src\main\java</source>
+                                <source>..\..\common\azure-common-mgmt\src\main\java</source>
                             </sources>
                         </configuration>
                     </execution>

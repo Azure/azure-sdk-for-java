@@ -111,6 +111,7 @@
     <log4j-api.version>2.11.1</log4j-api.version>
     <azure-common.version>1.0.0-SNAPSHOT</azure-common.version>
     <azure-common-auth.version>1.0.0-SNAPSHOT</azure-common-auth.version>
+    <azure-common-mgmt.version>1.0.0-SNAPSHOT</azure-common-mgmt.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
 

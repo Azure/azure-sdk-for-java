@@ -45,6 +45,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      * The AzureAsyncOperationPollStrategy data.
      */
     private static class AzureAsyncOperationPollStrategyData extends PollStrategyData {
+        private static final long serialVersionUID = 1L;
         private boolean pollingCompleted;
         private boolean pollingSucceeded;
         private boolean gotResourceResponse;

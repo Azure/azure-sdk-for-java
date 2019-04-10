@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 
 /**
  * A PollStrategy type that uses the Location header value to check the status of a long running
@@ -40,6 +41,7 @@ public final class LocationPollStrategy extends PollStrategy {
      * The LocationPollStrategy data.
      */
     public static class LocationPollStrategyData extends PollStrategyData {
+        private static final long serialVersionUID = 1L;
         URL locationUrl;
         boolean done;
 
@@ -133,7 +135,7 @@ public final class LocationPollStrategy extends PollStrategy {
                 }
             }
             else {
-                final String locationUrlLower = locationUrl.toLowerCase();
+                final String locationUrlLower = locationUrl.toLowerCase(Locale.ROOT);
                 if (locationUrlLower.startsWith("http://") || locationUrlLower.startsWith("https://")) {
                     try {
                         pollUrl = new URL(locationUrl);
