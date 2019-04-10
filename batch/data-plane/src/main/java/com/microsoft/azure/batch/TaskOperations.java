@@ -5,10 +5,33 @@ package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.interceptor.BatchClientParallelOptions;
-import com.microsoft.azure.batch.protocol.models.*;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.CloudTask;
+import com.microsoft.azure.batch.protocol.models.CloudTaskListSubtasksResult;
+import com.microsoft.azure.batch.protocol.models.SubtaskInformation;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionOptions;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionResult;
+import com.microsoft.azure.batch.protocol.models.TaskAddOptions;
+import com.microsoft.azure.batch.protocol.models.TaskAddParameter;
+import com.microsoft.azure.batch.protocol.models.TaskAddResult;
+import com.microsoft.azure.batch.protocol.models.TaskAddStatus;
+import com.microsoft.azure.batch.protocol.models.TaskConstraints;
+import com.microsoft.azure.batch.protocol.models.TaskDeleteOptions;
+import com.microsoft.azure.batch.protocol.models.TaskGetOptions;
+import com.microsoft.azure.batch.protocol.models.TaskListOptions;
+import com.microsoft.azure.batch.protocol.models.TaskListSubtasksOptions;
+import com.microsoft.azure.batch.protocol.models.TaskReactivateOptions;
+import com.microsoft.azure.batch.protocol.models.TaskTerminateOptions;
+import com.microsoft.azure.batch.protocol.models.TaskUpdateOptions;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,15 +41,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class TaskOperations implements IInheritedBehaviors {
     TaskOperations(BatchClient batchClient, Collection<BatchClientBehavior> customBehaviors) {
-        _parentBatchClient = batchClient;
+        parentBatchClient = batchClient;
 
         // inherit from instantiating parent
-        InternalHelper.InheritClientBehaviorsAndSetPublicProperty(this, customBehaviors);
+        InternalHelper.inheritClientBehaviorsAndSetPublicProperty(this, customBehaviors);
     }
 
-    private Collection<BatchClientBehavior> _customBehaviors;
+    private Collection<BatchClientBehavior> customBehaviors;
 
-    private final BatchClient _parentBatchClient;
+    private final BatchClient parentBatchClient;
 
     /**
      * Gets a collection of behaviors that modify or customize requests to the Batch
@@ -36,7 +59,7 @@ public class TaskOperations implements IInheritedBehaviors {
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
-        return _customBehaviors;
+        return customBehaviors;
     }
 
     /**
@@ -49,7 +72,7 @@ public class TaskOperations implements IInheritedBehaviors {
      */
     @Override
     public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
-        _customBehaviors = behaviors;
+        customBehaviors = behaviors;
         return this;
     }
 
@@ -96,7 +119,7 @@ public class TaskOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().tasks().add(jobId, taskToAdd, options);
+        this.parentBatchClient.protocolLayer().tasks().add(jobId, taskToAdd, options);
     }
 
     /**
@@ -119,8 +142,8 @@ public class TaskOperations implements IInheritedBehaviors {
     }
 
     private static class WorkingThread implements Runnable {
-        final static int MAX_TASKS_PER_REQUEST = 100;
-        private static final AtomicInteger currentMaxTasks = new AtomicInteger(MAX_TASKS_PER_REQUEST);
+        static final int MAX_TASKS_PER_REQUEST = 100;
+        private static final AtomicInteger CURRENT_MAX_TASKS = new AtomicInteger(MAX_TASKS_PER_REQUEST);
 
         BatchClient client;
         BehaviorManager bhMgr;
@@ -147,11 +170,11 @@ public class TaskOperations implements IInheritedBehaviors {
 
         /**
          * Submits one chunk of tasks to a job.
-         * 
+         *
          * @param taskList
          *            A list of {@link TaskAddParameter tasks} to add.
          */
-        private void submit_chunk(List<TaskAddParameter> taskList) {
+        private void submitChunk(List<TaskAddParameter> taskList) {
             // The option should be different to every server calls (for example,
             // client-request-id)
             TaskAddCollectionOptions options = new TaskAddCollectionOptions();
@@ -185,18 +208,18 @@ public class TaskOperations implements IInheritedBehaviors {
                 if (e.body().code().equals(BatchErrorCodeStrings.RequestBodyTooLarge) && taskList.size() > 1) {
                     // Use binary reduction to decrease size of submitted chunks
                     int midpoint = taskList.size() / 2;
-                    // If the midpoint is less than the currentMaxTasks used to create new chunks,
-                    // attempt to atomically reduce currentMaxTasks.
-                    // In the case where compareAndSet fails, that means that currentMaxTasks which
+                    // If the midpoint is less than the CURRENT_MAX_TASKS used to create new chunks,
+                    // attempt to atomically reduce CURRENT_MAX_TASKS.
+                    // In the case where compareAndSet fails, that means that CURRENT_MAX_TASKS which
                     // was the goal
-                    int max = currentMaxTasks.get();
+                    int max = CURRENT_MAX_TASKS.get();
                     while (midpoint < max) {
-                        currentMaxTasks.compareAndSet(max, midpoint);
-                        max = currentMaxTasks.get();
+                        CURRENT_MAX_TASKS.compareAndSet(max, midpoint);
+                        max = CURRENT_MAX_TASKS.get();
                     }
                     // Resubmit chunk as a smaller list and requeue remaining tasks.
                     pendingList.addAll(taskList.subList(midpoint, taskList.size()));
-                    submit_chunk(taskList.subList(0, midpoint));
+                    submitChunk(taskList.subList(0, midpoint));
                 } else {
                     // Any exception will stop further call
                     exception = e;
@@ -216,7 +239,7 @@ public class TaskOperations implements IInheritedBehaviors {
 
                 // Take the task from the queue up to MAX_TASKS_PER_REQUEST
                 int count = 0;
-                int maxAmount = currentMaxTasks.get();
+                int maxAmount = CURRENT_MAX_TASKS.get();
                 while (count < maxAmount) {
                     TaskAddParameter param = pendingList.poll();
                     if (param != null) {
@@ -228,12 +251,12 @@ public class TaskOperations implements IInheritedBehaviors {
                 }
 
                 if (taskList.size() > 0) {
-                    submit_chunk(taskList);
+                    submitChunk(taskList);
                 }
             } finally {
                 synchronized (lock) {
                     // Notify main thread that sub thread finished
-                    lock.notify();
+                    lock.notifyAll();
                 }
             }
         }
@@ -283,7 +306,7 @@ public class TaskOperations implements IInheritedBehaviors {
 
                 if (threads.size() < threadNumber) {
                     // Kick as many as possible add tasks requests by max allowed threads
-                    WorkingThread worker = new WorkingThread(this._parentBatchClient, bhMgr, jobId, pendingList,
+                    WorkingThread worker = new WorkingThread(this.parentBatchClient, bhMgr, jobId, pendingList,
                             failures, lock);
                     Thread thread = new Thread(worker);
                     thread.start();
@@ -293,12 +316,12 @@ public class TaskOperations implements IInheritedBehaviors {
                     lock.wait();
 
                     List<Thread> finishedThreads = new ArrayList<>();
-                    for (Thread t : threads.keySet()) {
-                        if (t.getState() == Thread.State.TERMINATED) {
-                            finishedThreads.add(t);
+                    for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
+                        if (entry.getKey().getState() == Thread.State.TERMINATED) {
+                            finishedThreads.add(entry.getKey());
                             // If any exception is encountered, then stop immediately without waiting for
                             // remaining active threads.
-                            innerException = threads.get(t).getException();
+                            innerException = entry.getValue().getException();
                             if (innerException != null) {
                                 break;
                             }
@@ -324,8 +347,8 @@ public class TaskOperations implements IInheritedBehaviors {
 
         if (innerException == null) {
             // Check for errors in any of the threads.
-            for (Thread t : threads.keySet()) {
-                innerException = threads.get(t).getException();
+            for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
+                innerException = entry.getValue().getException();
                 if (innerException != null) {
                     break;
                 }
@@ -336,7 +359,7 @@ public class TaskOperations implements IInheritedBehaviors {
             // If an exception happened in any of the threads, throw it.
             if (innerException instanceof BatchErrorException) {
                 throw (BatchErrorException) innerException;
-            } else {
+            } else if (innerException instanceof  RuntimeException) {
                 // WorkingThread will only catch and store a BatchErrorException or a
                 // RuntimeException in its run() method.
                 // WorkingThread.getException() should therefore only return one of these two
@@ -424,7 +447,7 @@ public class TaskOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().tasks().list(jobId, options);
+        return this.parentBatchClient.protocolLayer().tasks().list(jobId, options);
     }
 
     /**
@@ -500,7 +523,7 @@ public class TaskOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        CloudTaskListSubtasksResult response = this._parentBatchClient.protocolLayer().tasks().listSubtasks(jobId,
+        CloudTaskListSubtasksResult response = this.parentBatchClient.protocolLayer().tasks().listSubtasks(jobId,
                 taskId, options);
 
         if (response != null) {
@@ -553,7 +576,7 @@ public class TaskOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().tasks().delete(jobId, taskId, options);
+        this.parentBatchClient.protocolLayer().tasks().delete(jobId, taskId, options);
     }
 
     /**
@@ -632,7 +655,7 @@ public class TaskOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().tasks().get(jobId, taskId, options);
+        return this.parentBatchClient.protocolLayer().tasks().get(jobId, taskId, options);
     }
 
     /**
@@ -685,7 +708,7 @@ public class TaskOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().tasks().update(jobId, taskId, constraints, options);
+        this.parentBatchClient.protocolLayer().tasks().update(jobId, taskId, constraints, options);
     }
 
     /**
@@ -731,7 +754,7 @@ public class TaskOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().tasks().terminate(jobId, taskId, options);
+        this.parentBatchClient.protocolLayer().tasks().terminate(jobId, taskId, options);
     }
 
     /**
@@ -779,7 +802,7 @@ public class TaskOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().tasks().reactivate(jobId, taskId, options);
+        this.parentBatchClient.protocolLayer().tasks().reactivate(jobId, taskId, options);
     }
 
 }

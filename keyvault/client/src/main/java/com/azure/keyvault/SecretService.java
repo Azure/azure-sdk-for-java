@@ -26,7 +26,7 @@ import com.azure.keyvault.models.SecretAttributes;
 import reactor.core.publisher.Mono;
 
 /**
- * The interface defining all the services for {@link SecretClient} to be used
+ * The interface defining all the services for {@link SecretAsyncClient} to be used
  * by the proxy service to perform REST calls.
  *
  * This is package-private so that these REST calls are transparent to the user.
@@ -50,7 +50,9 @@ interface SecretService {
                                          @PathParam("secret-name") String secretName,
                                          @PathParam("secret-version") String secretVersion,
                                          @QueryParam("api-version") String apiVersion,
-                                         @HeaderParam("accept-language") String acceptLanguage);
+                                         @HeaderParam("accept-language") String acceptLanguage,
+                                         @HeaderParam("Host") String host,
+                                         @HeaderParam("Content-Type") String type);
 
 
     @PATCH("secrets/{secret-name}/{secret-version}")

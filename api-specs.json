@@ -35,7 +35,7 @@
     "args": "--multiapi --fluent"
   },
   "containerservice/resource-manager": {
-    "source": "specification/containerservices/resource-manager/readme.md",
+    "source": "specification/containerservice/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "containerregistry/resource-manager": {
@@ -56,6 +56,10 @@
   },
   "dns/resource-manager": {
     "source": "specification/dns/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "edgegateway/resource-manager": {
+    "source": "specification/edgegateway/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "eventgrid/resource-manager": {
@@ -100,8 +104,16 @@
     "source": "specification/notificationhubs/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "marketplaceordering/resource-manager": {
+    "source": "specification/marketplaceordering/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "mediaservices/resource-manager": {
     "source": "specification/mediaservices/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "mixedreality/resource-manager": {
+    "source": "specification/mixedreality/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "mysql/resource-manager": {

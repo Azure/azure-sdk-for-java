@@ -63,17 +63,9 @@ final class KeyvaultCredentialsPolicy implements HttpPipelinePolicy {
             Mono.error(e);
         }
 
-        return next.process().doOnSuccess(this::logResponseDelegate);
+        return next.process();
     }
 
-    private void logResponseDelegate(HttpResponse response) {
-        Objects.requireNonNull(response, "HttpResponse is required.");
-
-        if (response.statusCode() == HttpResponseStatus.UNAUTHORIZED.code()) {
-            logger.error("HTTP Unauthorized status, String-to-Sign:'{}'",
-                    response.headers().value(AUTHORIZATION_HEADER));
-        }
-    }
 
     private String getAuthenticationHeaderValue() throws IOException {
         return String.format("Bearer %s",
