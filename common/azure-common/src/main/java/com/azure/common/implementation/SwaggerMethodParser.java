@@ -6,6 +6,7 @@
 
 package com.azure.common.implementation;
 
+import com.azure.common.http.rest.Page;
 import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.BodyParam;
@@ -30,6 +31,7 @@ import com.azure.common.http.HttpMethod;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.serializer.HttpResponseDecodeData;
 import com.azure.common.implementation.serializer.SerializerAdapter;
+import com.azure.common.implementation.util.ImplUtils;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -119,10 +121,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             if (returnValueWireType == Base64Url.class || returnValueWireType == UnixTime.class || returnValueWireType == DateTimeRfc1123.class) {
                 this.returnValueWireType = returnValueWireType;
             }
-            else {
-                if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
-                    this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
-                }
+            else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
+                this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
+            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)){
+                this.returnValueWireType = returnValueWireType;
             }
         }
 
@@ -223,7 +225,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     @Override
     public int[] expectedStatusCodes() {
-        return expectedStatusCodes;
+        return ImplUtils.clone(expectedStatusCodes);
     }
 
     /**
@@ -526,8 +528,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     if (substitutionValue != null && !substitutionValue.isEmpty() && substitution.shouldEncode() && escaper != null) {
                         substitutionValue = escaper.escape(substitutionValue);
                     }
-
-                    result = result.replace("{" + substitution.urlParameterName() + "}", substitutionValue);
+                    if (substitutionValue != null) {
+                        result = result.replace("{" + substitution.urlParameterName() + "}", substitutionValue);
+                    }
                 }
             }
         }

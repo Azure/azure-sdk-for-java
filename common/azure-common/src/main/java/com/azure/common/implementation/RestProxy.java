@@ -10,6 +10,9 @@ import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.ServiceClient;
 import com.azure.common.annotations.ResumeOperation;
 import com.azure.common.credentials.ServiceClientCredentials;
+import com.azure.common.http.rest.Page;
+import com.azure.common.http.rest.PagedResponse;
+import com.azure.common.implementation.http.PagedResponseBase;
 import com.azure.common.implementation.http.ContentType;
 import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpHeader;
@@ -401,6 +404,12 @@ public class RestProxy implements InvocationHandler {
         Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
         if (cls.equals(Response.class)) {
             cls = (Class<? extends Response<?>>) (Object) ResponseBase.class;
+        } else if (cls.equals(PagedResponse.class)) {
+            cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
+
+            if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
+                throw new RuntimeException("Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class);
+            }
         }
 
         // we try to find the most specific constructor, which we do in the following order:
@@ -466,7 +475,7 @@ public class RestProxy implements InvocationHandler {
             // Mono<Flux<ByteBuf>>
             asyncResult = Mono.just(response.sourceResponse().body());
         } else {
-            // Mono<Object>
+            // Mono<Object> or Mono<Page<T>>
             asyncResult = response.decodedBody();
         }
         return asyncResult;
