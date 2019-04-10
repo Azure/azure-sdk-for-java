@@ -1,8 +1,6 @@
 import com.azure.applicationconfig.ConfigurationAsyncClient;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.common.http.rest.Response;
-import reactor.core.publisher.Mono;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -12,8 +10,8 @@ import java.security.NoSuchAlgorithmException;
  */
 public class HelloWorld {
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException {
-        // Retrieve the connection string from the configuration store.
-        // You can get the string from your Azure portal.
+        // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
+        // and navigating to "Access Keys" page under the "Settings" section.
         String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
 
         // Instantiate a client that will be used to call the service.
