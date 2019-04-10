@@ -10,9 +10,6 @@ import com.azure.common.http.policy.HttpPipelinePolicy;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.EmptyByteBuf;
 import io.netty.buffer.UnpooledByteBufAllocator;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,7 +20,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.util.Objects;
 
 /**
  * A policy that authenticates requests with Azure Application Configuration service.
@@ -37,11 +33,8 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
     static final String HOST_HEADER = "Host";
     static final String DATE_HEADER = "x-ms-date";
     static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
-    private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
     private static final String ACCEPT_HEADER = "Accept";
-
-    private final Logger logger = LoggerFactory.getLogger(ConfigurationCredentialsPolicy.class);
 
     /**
      * Adds the required headers to authenticate a request to Azure Application Configuration service.
@@ -81,22 +74,11 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
                         String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
                         headers.set(DATE_HEADER, utcNow);
                     }
-
-                    return next.process().doOnSuccess(this::logResponseDelegate);
                 });
     }
 
     private ByteBuf getEmptyBuffer() {
         return new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT);
-    }
-
-    private void logResponseDelegate(HttpResponse response) {
-        Objects.requireNonNull(response, "HttpResponse is required.");
-
-        if (response.statusCode() == HttpResponseStatus.UNAUTHORIZED.code()) {
-            logger.error("HTTP Unauthorized status, String-to-Sign:'{}'",
-                    response.headers().value(AUTHORIZATION_HEADER));
-        }
     }
 }
 
