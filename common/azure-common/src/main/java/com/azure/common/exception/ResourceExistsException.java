@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
@@ -8,7 +8,7 @@ package com.azure.common.exception;
 
 import com.azure.common.http.HttpResponse;
 
-/*
+/**
  * The exception thrown when HTTP request tried to create an already existing resource.
  */
 public class ResourceExistsException extends ClientRequestException {
@@ -16,7 +16,7 @@ public class ResourceExistsException extends ClientRequestException {
     /**
      * Initializes a new instance of the ResourceExistsException class.
      *
-     * @param message  the exception message or the response content if a message is not available
+     * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
     public ResourceExistsException(String message, HttpResponse response) {
@@ -26,9 +26,9 @@ public class ResourceExistsException extends ClientRequestException {
     /**
      * Initializes a new instance of the ResourceExistsException class.
      *
-     * @param message  the exception message or the response content if a message is not available
+     * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
-     * @param value    the deserialized response value
+     * @param value the deserialized response value
      */
     public ResourceExistsException(String message, HttpResponse response, Object value) {
         super(message, response, value);
@@ -37,9 +37,9 @@ public class ResourceExistsException extends ClientRequestException {
     /**
      * Initializes a new instance of the ResourceExistsException class.
      *
-     * @param message  the exception message or the response content if a message is not available
+     * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
-     * @param cause    the Throwable which caused the creation of this ResourceExistsException
+     * @param cause the Throwable which caused the creation of this ResourceExistsException
      */
     public ResourceExistsException(String message, HttpResponse response, Throwable cause) {
         super(message, response, cause);
