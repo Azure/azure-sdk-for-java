@@ -782,7 +782,7 @@ public class ConfigurationAsyncClientTest {
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
-     * <p>
+     *
      * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
     @Test
@@ -808,7 +808,7 @@ public class ConfigurationAsyncClientTest {
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
-     * <p>
+     *
      * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
     @Test
