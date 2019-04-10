@@ -52,8 +52,8 @@ final class CBSChannel {
     }
 
     private static class RequestResponseChannelOperationResult implements OperationResult<RequestResponseChannel, Exception> {
-        Message requestMessage;
-        OperationResult<Void, Exception> sendTokenCallback;
+        final Message requestMessage;
+        final OperationResult<Void, Exception> sendTokenCallback;
 
         RequestResponseChannelOperationResult(Message requestMessage, OperationResult<Void, Exception> sendTokenCallback) {
             this.requestMessage = requestMessage;
@@ -72,7 +72,7 @@ final class CBSChannel {
     }
 
     private static class MessageOperationResult implements OperationResult<Message, Exception> {
-        OperationResult<Void, Exception> sendTokenCallback;
+        final OperationResult<Void, Exception> sendTokenCallback;
 
         MessageOperationResult(OperationResult<Void, Exception> sendTokenCallback) {
             this.sendTokenCallback = sendTokenCallback;

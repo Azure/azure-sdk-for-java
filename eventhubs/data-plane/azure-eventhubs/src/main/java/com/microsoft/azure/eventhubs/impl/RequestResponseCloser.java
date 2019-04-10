@@ -25,7 +25,7 @@ public class RequestResponseCloser implements Operation<Void> {
     }
 
     private static class CloseOperationResult implements OperationResult<Void, Exception> {
-        OperationResult<Void, Exception> closeOperationCallback;
+        final OperationResult<Void, Exception> closeOperationCallback;
 
         CloseOperationResult(OperationResult<Void, Exception> closeOperationCallback) {
             this.closeOperationCallback = closeOperationCallback;
