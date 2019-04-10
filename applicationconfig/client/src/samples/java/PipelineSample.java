@@ -25,7 +25,7 @@ class PipelineSample {
     public static void main(String[] args)  throws NoSuchAlgorithmException, InvalidKeyException {
         // Retrieve the connection string from the configuration store.
         // You can get the string from your Azure portal.
-        final String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
+        final String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
         final HttpMethodRequestTracker tracker = new HttpMethodRequestTracker();
 
         // Instantiate a client that will be used to call the service.

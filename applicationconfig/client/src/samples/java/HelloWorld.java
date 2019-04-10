@@ -14,7 +14,7 @@ public class HelloWorld {
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException {
         // Retrieve the connection string from the configuration store.
         // You can get the string from your Azure portal.
-        String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
+        String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
 
         // Instantiate a client that will be used to call the service.
         ConfigurationClient client = ConfigurationClient.builder()
