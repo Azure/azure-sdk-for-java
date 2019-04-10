@@ -352,13 +352,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
       <!-- This plugin scans checkstyle issues in the code -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
