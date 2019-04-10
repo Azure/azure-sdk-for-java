@@ -6,6 +6,7 @@
 
 package com.azure.common.auth.credentials;
 
+import com.azure.common.implementation.util.ImplUtils;
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationException;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +70,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     public ApplicationTokenCredentials(String clientId, String domain, byte[] certificate, String password, AzureEnvironment environment) {
         super(environment, domain);
         this.clientId = clientId;
-        this.clientCertificate = certificate;
+        this.clientCertificate = ImplUtils.clone(certificate);
         this.clientCertificatePassword = password;
         this.tokens = new HashMap<>();
     }
@@ -166,7 +168,8 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
                         Util.authenticationDelegate(callback));
             });
         } else if (clientCertificate != null) {
-            AsymmetricKeyCredential keyCredential = AsymmetricKeyCredential.create(clientId(), Util.privateKeyFromPem(new String(clientCertificate)), Util.publicKeyFromPem(new String(clientCertificate)));
+            AsymmetricKeyCredential keyCredential = AsymmetricKeyCredential.create(clientId(), Util.privateKeyFromPem(new String(clientCertificate, StandardCharsets.UTF_8)),
+                Util.publicKeyFromPem(new String(clientCertificate, StandardCharsets.UTF_8)));
             authMono = Mono.create(callback -> {
                 context.acquireToken(
                         resource,
