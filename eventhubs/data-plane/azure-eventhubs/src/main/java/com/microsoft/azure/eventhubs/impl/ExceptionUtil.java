@@ -97,14 +97,15 @@ public final class ExceptionUtil {
     }
 
     static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, ErrorContextProvider contextProvider) {
-        if (exception != null && exception instanceof EventHubException) {
+        if (exception == null) {
+            throw new NullPointerException();
+        }
+
+        if (exception instanceof EventHubException) {
             final ErrorContext errorContext = contextProvider.getContext();
             ((EventHubException) exception).setContext(errorContext);
         }
 
-        if (exception == null) {
-            return;
-        }
         future.completeExceptionally(exception);
     }
 
