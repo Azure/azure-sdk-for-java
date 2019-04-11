@@ -17,6 +17,7 @@ import java.util.Map;
  * that can be used to resume the polling of the original operation.
  */
 public class OperationDescription implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Serializable pollStrategyData;
     private Map<String, String> headers;
     private String httpMethod;

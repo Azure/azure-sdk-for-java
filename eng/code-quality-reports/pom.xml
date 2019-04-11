@@ -17,6 +17,9 @@
 
         <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
         <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
+
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <distributionManagement>
@@ -27,6 +30,14 @@
     </distributionManagement>
 
     <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>8.18</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

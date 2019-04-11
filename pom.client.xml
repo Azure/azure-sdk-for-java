@@ -5,7 +5,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <name>Microsoft Azure SDK for Java</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -500,33 +500,40 @@
               site for more Java documentation, including quick starts, tutorials, and code samples.
             </footer>
             <linksource>false</linksource>
-            <excludePackageNames>com.microsoft.azure.template</excludePackageNames>
+            <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
             <groups>
               <group>
                 <title>Azure Batch</title>
                 <packages>com.microsoft.azure.batch*</packages>
               </group>
               <group>
-                <title>Azure Key Vault</title>
-                <packages>com.microsoft.azure.keyvault*</packages>
-              </group>
-              <group>
                 <title>Azure Event Hubs</title>
                 <packages>com.microsoft.azure.eventhubs*:com.microsoft.azure.eventprocessorhost</packages>
               </group>
               <group>
+                <title>Azure Key Vault</title>
+                <packages>com.microsoft.azure.keyvault*</packages>
+              </group>
+              <group>
                 <title>Azure Common</title>
-                <packages>com.microsoft.azure.common.azure-common*</packages>
+                <packages>com.azure.common:com.azure.common.annotations:com.azure.common.credentials:com.azure.common.exception:com.azure.common.http*</packages>
               </group>
               <group>
                 <title>Azure Common - Management</title>
-                <packages>com.microsoft.azure.common.azure-common-mgmt*</packages>
+                <packages>com.azure.common.mgmt*</packages>
               </group>
               <group>
                 <title>Azure Common - Authentication</title>
-                <packages>com.microsoft.azure.common.azure-common-auth*</packages>
+                <packages>com.azure.common.auth*</packages>
               </group>
             </groups>
+            <links>
+              <link>https://docs.oracle.com/javase/8/docs/api/</link>
+              <link>https://projectreactor.io/docs/core/release/api/</link>
+              <link>https://netty.io/4.1/api/</link>
+              <link>http://reactivex.io/RxJava/javadoc/</link>
+            </links>
+            <isOffline>false</isOffline>
           </configuration>
         </plugin>
 

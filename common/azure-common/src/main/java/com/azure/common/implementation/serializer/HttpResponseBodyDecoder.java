@@ -294,12 +294,12 @@ final class HttpResponseBodyDecoder {
 
                     final Map<String, Object> wireResponseMap = (Map<String, Object>) wireResponse;
 
-                    final Set<String> wireResponseKeys = wireResponseMap.keySet();
-                    for (String wireResponseKey : wireResponseKeys) {
-                        final Object wireResponseValue = wireResponseMap.get(wireResponseKey);
+                    final Set<Map.Entry<String, Object>> wireResponseEntries = wireResponseMap.entrySet();
+                    for (Map.Entry<String, Object> wireResponseEntry : wireResponseEntries) {
+                        final Object wireResponseValue = wireResponseEntry.getValue();
                         final Object resultValue = convertToResultType(wireResponseValue, resultValueType, wireType);
                         if (wireResponseValue != resultValue) {
-                            wireResponseMap.put(wireResponseKey, resultValue);
+                            wireResponseMap.put(wireResponseEntry.getKey(), resultValue);
                         }
                     }
                     //
