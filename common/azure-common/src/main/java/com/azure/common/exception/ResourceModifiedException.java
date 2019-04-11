@@ -6,7 +6,7 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * The exception thrown for invalid resource modification.
+ * The exception thrown for invalid resource modification with status code of 4XX.
  */
 public class ResourceModifiedException extends ClientRequestException {
 

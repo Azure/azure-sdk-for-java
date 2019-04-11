@@ -4,7 +4,7 @@
 package com.azure.common.exception;
 
 /**
- * This is internal base exception for Azure Library.
+ * This is base exception for errors from client side.
  *
  * @see AzureLibraryRequestException
  * @see AzureLibraryResponseException

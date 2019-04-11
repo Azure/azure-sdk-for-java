@@ -6,7 +6,7 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * The exception thrown when HTTP request tried to create an already existing resource.
+ * The exception thrown when HTTP request tried to create an already existing resource with status code of 4XX.
  */
 public class ResourceExistsException extends ClientRequestException {
 

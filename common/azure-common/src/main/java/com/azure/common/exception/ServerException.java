@@ -6,7 +6,7 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * The exception thrown when status code indicates there is a server error.
+ * The exception thrown when there is a server error with status code of 5XX.
  */
 public class ServerException extends ServiceHttpRequestException {
 

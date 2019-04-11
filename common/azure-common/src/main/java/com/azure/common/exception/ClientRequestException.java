@@ -6,7 +6,7 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * The exception thrown when the http error status indicates invalid client request.
+ * The exception thrown when there is an invalid client request with status code of 4XX.
  *
  * @see ClientAuthenticationException
  * @see ResourceExistsException

@@ -6,7 +6,7 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * The exception thrown when failed to authenticate the client request.
+ * The exception thrown when failed to authenticate the client request with status code of 4XX.
  */
 public class ClientAuthenticationException extends ServiceRequestException {
 

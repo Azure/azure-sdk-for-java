@@ -4,7 +4,7 @@
 package com.azure.common.exception;
 
 /**
- * The exception thrown for invalid Azure library Request.
+ * The exception thrown when client error building the request to service.
  */
 public class AzureLibraryRequestException extends AzureLibraryException {
 
