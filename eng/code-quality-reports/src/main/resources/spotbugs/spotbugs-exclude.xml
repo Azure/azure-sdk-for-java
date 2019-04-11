@@ -196,16 +196,10 @@
         <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
       </Match>
 
-      <!-- The major fields of poll strategy data subclass are non-serializable, so there is no necessary to make it serializable. -->
+      <!-- The major fields of poll strategy data subclass are non-serializable, so when deserialize it will make it default value. No need to address the warning as it is expected. -->
       <Match>
         <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
-        <Bug pattern="SE_NO_SERIALVERSIONID"/>
-      </Match>
-
-      <!-- The major fields of poll strategy data subclass are non-serializable, so there is no necessary to make it serializable. -->
-      <Match>
-        <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
-        <Bug pattern="SE_BAD_FIELD"/>
+        <Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED"/>
       </Match>
 
       <!-- The checked field is always not null. -->

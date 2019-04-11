@@ -39,7 +39,8 @@ public class CompletedPollStrategy extends PollStrategy {
      * The CompletedPollStrategy data.
      */
     public static class CompletedPollStrategyData extends PollStrategyData {
-        HttpResponse firstHttpResponse;
+        private static final long serialVersionUID = 1L;
+        transient HttpResponse firstHttpResponse;
 
         /**
          * Create a new CompletedPollStrategyData.
