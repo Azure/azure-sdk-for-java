@@ -37,8 +37,8 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     private final ConfigurationService service;
 
     /**
-     * Creates a ConfigurationAsyncClient that uses {@code credentials} to authorize with Azure and {@code pipeline} to
-     * service requests
+     * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
+     * Each service call goes through the {@code pipeline}.
      *
      * @param serviceEndpoint URL for the Application configuration service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
