@@ -5,7 +5,7 @@ package com.azure.common.http;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class HttpMethodTests {
     @Test

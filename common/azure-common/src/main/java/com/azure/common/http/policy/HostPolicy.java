@@ -4,8 +4,8 @@
 package com.azure.common.http.policy;
 
 import com.azure.common.http.HttpPipelineCallContext;
-import com.azure.common.http.HttpResponse;
 import com.azure.common.http.HttpPipelineNextPolicy;
+import com.azure.common.http.HttpResponse;
 import com.azure.common.implementation.http.UrlBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -3,10 +3,10 @@
 
 package com.azure.common.implementation.serializer.jackson;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.azure.common.implementation.serializer.JsonFlatten;
+import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.azure.common.implementation.util.Foo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.Assert;
 import org.junit.Test;
 

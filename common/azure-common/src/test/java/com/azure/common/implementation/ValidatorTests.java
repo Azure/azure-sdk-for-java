@@ -5,7 +5,6 @@ package com.azure.common.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.TextNode;
-
 import org.junit.Assert;
 import org.junit.Test;
 

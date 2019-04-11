@@ -3,6 +3,7 @@
 
 package com.azure.common.mgmt.serializer;
 
+import com.azure.common.mgmt.CloudError;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -10,7 +11,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.azure.common.mgmt.CloudError;
 
 import java.io.IOException;
 

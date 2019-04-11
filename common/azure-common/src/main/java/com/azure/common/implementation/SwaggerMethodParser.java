@@ -3,9 +3,6 @@
 
 package com.azure.common.implementation;
 
-import com.azure.common.http.rest.Page;
-import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
@@ -21,11 +18,14 @@ import com.azure.common.annotations.PathParam;
 import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.ReturnValueWireType;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpMethod;
+import com.azure.common.http.rest.Page;
 import com.azure.common.http.rest.Response;
+import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.common.implementation.serializer.HttpResponseDecodeData;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.util.ImplUtils;

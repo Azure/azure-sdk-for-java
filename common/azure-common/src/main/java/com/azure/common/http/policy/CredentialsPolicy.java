@@ -5,8 +5,8 @@ package com.azure.common.http.policy;
 
 import com.azure.common.credentials.ServiceClientCredentials;
 import com.azure.common.http.HttpPipelineCallContext;
-import com.azure.common.http.HttpResponse;
 import com.azure.common.http.HttpPipelineNextPolicy;
+import com.azure.common.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

@@ -4,7 +4,6 @@
 package com.azure.common.implementation;
 
 import com.azure.common.MyRestException;
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
@@ -22,7 +21,7 @@ import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
 import com.azure.common.entities.HttpBinHeaders;
 import com.azure.common.entities.HttpBinJSON;
-import com.azure.common.implementation.http.ContentType;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipeline;
@@ -32,6 +31,7 @@ import com.azure.common.http.rest.Response;
 import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.http.rest.StreamResponse;
 import com.azure.common.http.rest.VoidResponse;
+import com.azure.common.implementation.http.ContentType;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.common.implementation.util.FluxUtil;
@@ -52,7 +52,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public abstract class RestProxyTests {
 
