@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
@@ -23,13 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Provides configuration options for instances of {@link ConfigurationAsyncClient}.
- *
- * @see ConfigurationAsyncClient
- * @see ConfigurationClientCredentials
- */
-public final class ConfigurationAsyncClientBuilder extends ConfigurationClientBuilderBase<ConfigurationAsyncClient> {
+public final class ConfigurationClientBuilder extends ConfigurationClientBuilderBase<ConfigurationClient> {
     /**
      * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time {@code build()} is
      * called, a new instance of {@link ConfigurationAsyncClient} is created.
@@ -47,11 +38,11 @@ public final class ConfigurationAsyncClientBuilder extends ConfigurationClientBu
      * @throws IllegalStateException If {@link ConfigurationAsyncClientBuilder#credentials(ConfigurationClientCredentials)}
      * has not been set.
      */
-    public ConfigurationAsyncClient build() {
+    public ConfigurationClient build() {
         Objects.requireNonNull(serviceEndpoint);
 
         if (pipeline != null) {
-            return new ConfigurationAsyncClient(serviceEndpoint, pipeline);
+            return new ConfigurationClient(serviceEndpoint, pipeline);
         }
 
         if (credentials == null) {
@@ -77,7 +68,7 @@ public final class ConfigurationAsyncClientBuilder extends ConfigurationClientBu
             ? new HttpPipeline(policies)
             : new HttpPipeline(httpClient, policies);
 
-        return new ConfigurationAsyncClient(serviceEndpoint, pipeline);
+        return new ConfigurationClient(serviceEndpoint, pipeline);
     }
 
     /**
@@ -88,7 +79,7 @@ public final class ConfigurationAsyncClientBuilder extends ConfigurationClientBu
      * @return The updated ConfigurationAsyncClientBuilder object.
      * @throws MalformedURLException if {@code serviceEndpoint} is null or it cannot be parsed into a valid URL.
      */
-    public ConfigurationAsyncClientBuilder serviceEndpoint(String serviceEndpoint) throws MalformedURLException {
+    public ConfigurationClientBuilder serviceEndpoint(String serviceEndpoint) throws MalformedURLException {
         this.serviceEndpoint = new URL(serviceEndpoint);
         return this;
     }
@@ -101,7 +92,7 @@ public final class ConfigurationAsyncClientBuilder extends ConfigurationClientBu
      * @return The updated ConfigurationAsyncClientBuilder object.
      * @throws NullPointerException If {@code credentials} is {@code null}.
      */
-    public ConfigurationAsyncClientBuilder credentials(ConfigurationClientCredentials credentials) {
+    public ConfigurationClientBuilder credentials(ConfigurationClientCredentials credentials) {
         Objects.requireNonNull(credentials);
         this.credentials = credentials;
         this.serviceEndpoint = credentials.baseUri();
@@ -114,7 +105,7 @@ public final class ConfigurationAsyncClientBuilder extends ConfigurationClientBu
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
      * @return The updated ConfigurationAsyncClientBuilder object.
      */
-    public ConfigurationAsyncClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
+    public ConfigurationClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         httpLogDetailLevel = logLevel;
         return this;
     }
@@ -127,7 +118,7 @@ public final class ConfigurationAsyncClientBuilder extends ConfigurationClientBu
      * @return The updated ConfigurationAsyncClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    public ConfigurationAsyncClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
         policies.add(policy);
         return this;
@@ -140,7 +131,7 @@ public final class ConfigurationAsyncClientBuilder extends ConfigurationClientBu
      * @return The updated ConfigurationAsyncClientBuilder object.
      * @throws NullPointerException If {@code client} is {@code null}.
      */
-    public ConfigurationAsyncClientBuilder httpClient(HttpClient client) {
+    public ConfigurationClientBuilder httpClient(HttpClient client) {
         Objects.requireNonNull(client);
         this.httpClient = client;
         return this;
@@ -155,10 +146,9 @@ public final class ConfigurationAsyncClientBuilder extends ConfigurationClientBu
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated ConfigurationAsyncClientBuilder object.
      */
-    public ConfigurationAsyncClientBuilder pipeline(HttpPipeline pipeline) {
+    public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
         Objects.requireNonNull(pipeline);
         this.pipeline = pipeline;
         return this;
     }
 }
-

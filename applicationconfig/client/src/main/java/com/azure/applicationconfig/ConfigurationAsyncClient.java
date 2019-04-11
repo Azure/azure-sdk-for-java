@@ -5,37 +5,23 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.ServiceClient;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
-import com.azure.common.implementation.RestProxy;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
- * Client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
+ * Asynchronous client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
  * Store.
  *
  * @see ConfigurationAsyncClientBuilder
  * @see ConfigurationClientCredentials
  */
-public final class ConfigurationAsyncClient extends ServiceClient {
-    private static final String ETAG_ANY = "*";
-
-    private final String serviceEndpoint;
-    private final ConfigurationService service;
-
+public final class ConfigurationAsyncClient extends ConfigurationClientBase<Mono<Response<ConfigurationSetting>>, Flux<ConfigurationSetting>> {
     /**
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
      * Each service call goes through the {@code pipeline}.
@@ -44,10 +30,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
     ConfigurationAsyncClient(URL serviceEndpoint, HttpPipeline pipeline) {
-        super(pipeline);
-
-        this.service = RestProxy.create(ConfigurationService.class, this);
-        this.serviceEndpoint = serviceEndpoint.toString();
+        super(serviceEndpoint, pipeline);
     }
 
     /**
@@ -87,12 +70,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * {@link ConfigurationSetting#key() key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
-
-        // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
-        // finds any existing configuration settings, then its e-tag will match and the service will return an error.
-        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, null, getETagValue(ETAG_ANY));
+        return addSettingBase(setting);
     }
 
     /**
@@ -128,16 +106,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * setting exists and is locked, or {@link ConfigurationSetting#key() key} is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
-
-        // This service method call is similar to addSetting except it will create or update a configuration setting.
-        // If the user provides an etag value, it is passed in as If-Match = "{etag value}". If the current value in the
-        // service has a matching etag then it matches, then its value is updated with what the user passed in.
-        // Otherwise, the service throws an exception because the current configuration value was updated and we have an
-        // old value locally.
-        // If no etag value was passed in, then the value is always added or updated.
-        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(setting.etag()), null);
+        return super.setSettingBase(setting);
     }
 
     /**
@@ -171,12 +140,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * {@link ConfigurationSetting#etag() etag} is specified but does not match the current value.
      */
     public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
-
-        String etag = setting.etag() == null ? ETAG_ANY : setting.etag();
-
-        return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(etag), null);
+        return super.updateSettingBase(setting);
     }
 
     /**
@@ -205,10 +169,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
-
-        return service.getKeyValue(serviceEndpoint, setting.key(), setting.label(), null, null, null, null);
+        return super.getSettingBase(setting);
     }
 
     /**
@@ -241,30 +202,14 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * specified, not the wildcard character, and does not match the current etag value.
      */
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
-
-        return service.delete(serviceEndpoint, setting.key(), setting.label(), getETagValue(setting.etag()), null);
+        return super.deleteSettingBase(setting);
     }
 
     /**
-     * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all
-     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
-     *
-     * @param options Optional. Options to filter configuration setting results from the service.
-     * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
-     * contains all of the current settings in the service.
+     * {@inheritDoc ConfigurationClientBase#listSettingBase(options)}
      */
     public Flux<ConfigurationSetting> listSettings(SettingSelector options) {
-        Mono<PagedResponse<ConfigurationSetting>> result;
-        if (options != null) {
-            String fields = getSelectQuery(options.fields());
-            result = service.listKeyValues(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime());
-        } else {
-            result = service.listKeyValues(serviceEndpoint, null, null, null, null);
-        }
-
-        return result.flatMapMany(this::extractAndFetchConfigurationSettings);
+        return super.listSettingsBase(options);
     }
 
     /**
@@ -279,65 +224,6 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @return Revisions of the ConfigurationSetting
      */
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        Mono<PagedResponse<ConfigurationSetting>> result;
-        if (selector != null) {
-            String fields = getSelectQuery(selector.fields());
-            result = service.listKeyValueRevisions(serviceEndpoint, selector.key(), selector.label(), fields, selector.acceptDateTime(), null);
-        } else {
-            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
-        }
-
-        return result.flatMapMany(this::extractAndFetchConfigurationSettings);
-    }
-
-    /*
-     * Gets all ConfigurationSetting settings given the {@code nextPageLink} that was retrieved from a call to
-     * {@link ConfigurationAsyncClient#listSettings(SettingSelector)} or a call from this method.
-     *
-     * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list
-     * operations.
-     * @return A stream of {@link ConfigurationSetting} from the next page of results.
-     */
-    private Flux<ConfigurationSetting> listSettings(String nextPageLink) {
-        Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink);
-        return result.flatMapMany(this::extractAndFetchConfigurationSettings);
-    }
-
-    private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(PagedResponse<ConfigurationSetting> page) {
-        String nextPageLink = page.nextLink();
-        if (nextPageLink == null) {
-            return Flux.fromIterable(page.items());
-        }
-        return Flux.fromIterable(page.items()).concatWith(listSettings(nextPageLink));
-    }
-
-    /*
-     * Azure Configuration service requires that the etag value is surrounded in quotation marks.
-     *
-     * @param etag The etag to get the value for. If null is pass in, an empty string is returned.
-     * @return The etag surrounded by quotations. (ex. "etag")
-     */
-    private static String getETagValue(String etag) {
-        return etag == null ? "" : "\"" + etag + "\"";
-    }
-
-    private static String getSelectQuery(SettingFields[] set) {
-        if (set == null || set.length == 0) {
-            return null;
-        }
-
-        return Arrays.stream(set).map(item -> item.toString().toLowerCase(Locale.US))
-            .collect(Collectors.joining(","));
-    }
-
-    /*
-     * Ensure that setting is not null. And, key cannot be null because it is part of the service REST URL.
-     */
-    private static void validateSetting(ConfigurationSetting setting) {
-        Objects.requireNonNull(setting);
-
-        if (setting.key() == null) {
-            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
-        }
+        return super.listSettingRevisionsBase(selector);
     }
 }
