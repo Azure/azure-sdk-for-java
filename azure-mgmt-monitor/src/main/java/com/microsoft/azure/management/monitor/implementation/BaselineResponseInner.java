@@ -11,7 +11,6 @@ package com.microsoft.azure.management.monitor.implementation;
 import org.joda.time.Period;
 import java.util.List;
 import org.joda.time.DateTime;
-import com.microsoft.azure.management.monitor.Baseline;
 import com.microsoft.azure.management.monitor.BaselineMetadataValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -73,7 +72,7 @@ public class BaselineResponseInner {
      * the baseline values for each sensitivity.
      */
     @JsonProperty(value = "properties.baseline")
-    private List<Baseline> baseline;
+    private List<BaselineInner> baseline;
 
     /**
      * the baseline metadata values.
@@ -193,7 +192,7 @@ public class BaselineResponseInner {
      *
      * @return the baseline value
      */
-    public List<Baseline> baseline() {
+    public List<BaselineInner> baseline() {
         return this.baseline;
     }
 
@@ -203,7 +202,7 @@ public class BaselineResponseInner {
      * @param baseline the baseline value to set
      * @return the BaselineResponseInner object itself.
      */
-    public BaselineResponseInner withBaseline(List<Baseline> baseline) {
+    public BaselineResponseInner withBaseline(List<BaselineInner> baseline) {
         this.baseline = baseline;
         return this;
     }

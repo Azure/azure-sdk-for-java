@@ -10,7 +10,6 @@ package com.microsoft.azure.management.monitor.implementation;
 
 import java.util.List;
 import org.joda.time.DateTime;
-import com.microsoft.azure.management.monitor.Baseline;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -33,7 +32,7 @@ public class CalculateBaselineResponseInner {
      * the baseline values for each sensitivity.
      */
     @JsonProperty(value = "baseline", required = true)
-    private List<Baseline> baseline;
+    private List<BaselineInner> baseline;
 
     /**
      * Get the resource type of the baseline resource.
@@ -80,7 +79,7 @@ public class CalculateBaselineResponseInner {
      *
      * @return the baseline value
      */
-    public List<Baseline> baseline() {
+    public List<BaselineInner> baseline() {
         return this.baseline;
     }
 
@@ -90,7 +89,7 @@ public class CalculateBaselineResponseInner {
      * @param baseline the baseline value to set
      * @return the CalculateBaselineResponseInner object itself.
      */
-    public CalculateBaselineResponseInner withBaseline(List<Baseline> baseline) {
+    public CalculateBaselineResponseInner withBaseline(List<BaselineInner> baseline) {
         this.baseline = baseline;
         return this;
     }
