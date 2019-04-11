@@ -37,11 +37,13 @@ import java.util.logging.Logger;
 
 public class Samples {
 
+    public static final String PLAYBACK_MODE = "PlAYBACK";
+
     //Samples only run in Live/Record mode.
     void checkMode() {
         String testMode = System.getenv("AZURE_TEST_MODE");
         if(testMode == null){
-            testMode = "PlAYBACK";
+            testMode = PLAYBACK_MODE;
         }
         Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
     }
