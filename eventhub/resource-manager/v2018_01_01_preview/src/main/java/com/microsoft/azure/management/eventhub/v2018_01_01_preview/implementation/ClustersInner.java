@@ -23,6 +23,7 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -117,9 +118,9 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the AvailableClustersListInner object if successful.
+     * @return the Map&lt;String, Integer&gt; object if successful.
      */
-    public AvailableClustersListInner listAvailableClusters() {
+    public Map<String, Integer> listAvailableClusters() {
         return listAvailableClustersWithServiceResponseAsync().toBlocking().single().body();
     }
 
@@ -130,7 +131,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AvailableClustersListInner> listAvailableClustersAsync(final ServiceCallback<AvailableClustersListInner> serviceCallback) {
+    public ServiceFuture<Map<String, Integer>> listAvailableClustersAsync(final ServiceCallback<Map<String, Integer>> serviceCallback) {
         return ServiceFuture.fromResponse(listAvailableClustersWithServiceResponseAsync(), serviceCallback);
     }
 
@@ -138,12 +139,12 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AvailableClustersListInner object
+     * @return the observable to the Map&lt;String, Integer&gt; object
      */
-    public Observable<AvailableClustersListInner> listAvailableClustersAsync() {
-        return listAvailableClustersWithServiceResponseAsync().map(new Func1<ServiceResponse<AvailableClustersListInner>, AvailableClustersListInner>() {
+    public Observable<Map<String, Integer>> listAvailableClustersAsync() {
+        return listAvailableClustersWithServiceResponseAsync().map(new Func1<ServiceResponse<Map<String, Integer>>, Map<String, Integer>>() {
             @Override
-            public AvailableClustersListInner call(ServiceResponse<AvailableClustersListInner> response) {
+            public Map<String, Integer> call(ServiceResponse<Map<String, Integer>> response) {
                 return response.body();
             }
         });
@@ -153,18 +154,18 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AvailableClustersListInner object
+     * @return the observable to the Map&lt;String, Integer&gt; object
      */
-    public Observable<ServiceResponse<AvailableClustersListInner>> listAvailableClustersWithServiceResponseAsync() {
+    public Observable<ServiceResponse<Map<String, Integer>>> listAvailableClustersWithServiceResponseAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listAvailableClusters(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AvailableClustersListInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Map<String, Integer>>>>() {
                 @Override
-                public Observable<ServiceResponse<AvailableClustersListInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Map<String, Integer>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AvailableClustersListInner> clientResponse = listAvailableClustersDelegate(response);
+                        ServiceResponse<Map<String, Integer>> clientResponse = listAvailableClustersDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -173,9 +174,9 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
             });
     }
 
-    private ServiceResponse<AvailableClustersListInner> listAvailableClustersDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AvailableClustersListInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<AvailableClustersListInner>() { }.getType())
+    private ServiceResponse<Map<String, Integer>> listAvailableClustersDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Map<String, Integer>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Map<String, Integer>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

@@ -37,6 +37,6 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<AvailableClustersList> listAvailableClustersAsync();
+    Observable<Map<String, Integer>> listAvailableClustersAsync();
 
 }
