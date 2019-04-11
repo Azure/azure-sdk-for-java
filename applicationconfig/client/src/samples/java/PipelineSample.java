@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.applicationconfig.ConfigurationClient;
-import com.azure.applicationconfig.ConfigurationClientCredentials;
+import com.azure.applicationconfig.ConfigurationAsyncClient;
+import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.http.HttpMethod;
@@ -26,15 +26,15 @@ import java.util.stream.Stream;
  */
 class PipelineSample {
     public static void main(String[] args)  throws NoSuchAlgorithmException, InvalidKeyException {
-        // Retrieve the connection string from the configuration store.
-        // You can get the string from your Azure portal.
+        // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
+        // and navigating to "Access Keys" page under the "Settings" section.
         final String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
         final HttpMethodRequestTracker tracker = new HttpMethodRequestTracker();
 
         // Instantiate a client that will be used to call the service.
         // We add in a policy to track the type of HTTP method calls we make.
         // We also want to see the Header information of our HTTP requests, so we specify the detail level.
-        final ConfigurationClient client = ConfigurationClient.builder()
+        final ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
                 .credentials(new ConfigurationClientCredentials(connectionString))
                 .addPolicy(new HttpMethodRequestTrackingPolicy(tracker))
                 .httpLogDetailLevel(HttpLogDetailLevel.HEADERS)
