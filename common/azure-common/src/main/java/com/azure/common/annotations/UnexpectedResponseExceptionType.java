@@ -14,9 +14,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * The exception type that is thrown or returned when one of the status codes is returned from a REST API. Multiple
- * annotations can be used, they are processed in a top-down order. When no codes are listed that exception is always
- * thrown or returned if it is reached during evaluation, this should be treated as a default case. If no default case
- * is annotated the fall through exception is ServiceRequestException.
+ * annotations can be used. When no codes are listed that exception is always thrown or returned if it is reached
+ * during evaluation, this should be treated as a default case. If no default case is annotated the fall through
+ * exception is {@link ServiceRequestException}.
  *
  * <p><strong>Example:</strong></p>
  *
@@ -30,6 +30,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
  *  void getUploadUrlForEntityType(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String hubName, @Path("subscriptionId") String subscriptionId, @Body GetImageUploadUrlInputInner parameters);
  * </pre>
+ *
+ * If multiple annotations share the same HTTP status code or there is multiple default annotations when the
+ * {@link com.azure.common.implementation.SwaggerMethodParser SwaggerMethodParser} parses the annotated method an
+ * {@link com.azure.common.implementation.exception.InvalidUnexpectedResponseAnnotationsException InvalidUnexpectedResponseAnnotationsException}
+ * will be thrown.
  */
 @Retention(RUNTIME)
 @Target(METHOD)

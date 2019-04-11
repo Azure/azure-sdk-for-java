@@ -8,6 +8,7 @@ import com.azure.common.annotations.UnexpectedResponseExceptionType;
 import com.azure.common.entities.HttpBinJSON;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpMethod;
+import com.azure.common.implementation.exception.InvalidUnexpectedResponseAnnotationsException;
 import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import org.junit.Test;
 
@@ -16,6 +17,7 @@ import java.lang.reflect.Method;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SwaggerMethodParserTests {
 
@@ -158,5 +160,55 @@ public class SwaggerMethodParserTests {
         assertEquals(false, methodParser.headers(null).iterator().hasNext());
         assertEquals("https", methodParser.scheme(null));
         assertEquals("raw.host.com", methodParser.host(null));
+    }
+
+    interface TestInterface7 {
+        @PATCH("my/rest/api/path")
+        @UnexpectedResponseExceptionType(MyRestException.class)
+        @UnexpectedResponseExceptionType(ServiceRequestException.class)
+        void testMethod7();
+    }
+
+    @Test
+    public void withInvalidUnexpectedResponseAnnotationsExceptionByDefaultAnnotation() {
+        try {
+            final Method testMethod7 = TestInterface7.class.getDeclaredMethods()[0];
+            assertEquals("testMethod7", testMethod7.getName());
+
+            final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod7, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+            assertEquals("com.azure.common.implementation.SwaggerMethodParserTests$TestInterface7.testMethod7", methodParser.fullyQualifiedMethodName());
+            assertEquals(MyRestException.class, methodParser.getUnexpectedException(400).exceptionType());
+            fail("InvalidUnexpectedResponseAnnotationsException was supposed to be thrown.");
+        } catch (InvalidUnexpectedResponseAnnotationsException ex) {
+            assertEquals(ex.getMessage(), "com.azure.common.implementation.SwaggerMethodParserTests$TestInterface7.testMethod7 " +
+                "lists multiple UnexpectedResponseExceptionType annotations that have an empty code value.");
+        } catch (Throwable e) {
+            fail("InvalidUnexpectedResponseAnnotationsException was supposed to be thrown.");
+        }
+    }
+
+    interface TestInterface8 {
+        @PATCH("my/rest/api/path")
+        @UnexpectedResponseExceptionType(code = {404}, value = MyRestException.class)
+        @UnexpectedResponseExceptionType(code = {404}, value = ServiceRequestException.class)
+        void testMethod8();
+    }
+
+    @Test
+    public void withInvalidUnexpectedResponseAnnotationsExceptionByRepeatCodes() {
+        try {
+            final Method testMethod8 = TestInterface8.class.getDeclaredMethods()[0];
+            assertEquals("testMethod8", testMethod8.getName());
+
+            final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod8, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+            assertEquals("com.azure.common.implementation.SwaggerMethodParserTests$TestInterface8.testMethod8", methodParser.fullyQualifiedMethodName());
+            assertEquals(MyRestException.class, methodParser.getUnexpectedException(404).exceptionType());
+            fail("InvalidUnexpectedResponseAnnotationsException was supposed to be thrown.");
+        } catch (InvalidUnexpectedResponseAnnotationsException ex) {
+            assertEquals(ex.getMessage(), "com.azure.common.implementation.SwaggerMethodParserTests$TestInterface8.testMethod8 " +
+                "lists multiple UnexpectedResponseExceptionType annotations that have share the HTTP status code 404.");
+        } catch (Throwable e) {
+            fail("InvalidUnexpectedResponseAnnotationsException was supposed to be thrown.");
+        }
     }
 }

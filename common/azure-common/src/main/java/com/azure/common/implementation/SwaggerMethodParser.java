@@ -29,6 +29,7 @@ import com.azure.common.http.HttpMethod;
 import com.azure.common.http.rest.Page;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
+import com.azure.common.implementation.exception.InvalidUnexpectedResponseAnnotationsException;
 import com.azure.common.implementation.serializer.HttpResponseDecodeData;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.util.TypeUtil;
@@ -65,7 +66,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private int[] expectedStatusCodes;
     private Type returnType;
     private Type returnValueWireType;
-    private Map<Integer, UnexpectedException> exceptionMapping = new HashMap<>();
+    private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
+    private Map<Integer, UnexpectedException> exceptionMapping;
     private UnexpectedException defaultException;
 
     /**
@@ -150,20 +152,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             expectedStatusCodes = expectedResponses.value();
         }
 
-        for (UnexpectedResponseExceptionType exceptionAnnotation : swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionType.class)) {
-            UnexpectedException exception = new UnexpectedException(exceptionAnnotation.value());
-            if (exceptionAnnotation.code().length == 0) {
-                defaultException = exception;
-            } else {
-                for (int statusCode : exceptionAnnotation.code()) {
-                    exceptionMapping.putIfAbsent(statusCode, exception);
-                }
-            }
-        }
-
-        if (defaultException == null) {
-            defaultException = new UnexpectedException(ServiceRequestException.class);
-        }
+        unexpectedResponseExceptionTypes = swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionType.class);
 
         final Annotation[][] allParametersAnnotations = swaggerMethod.getParameterAnnotations();
         for (int parameterIndex = 0; parameterIndex < allParametersAnnotations.length; ++parameterIndex) {
@@ -390,6 +379,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     @Override
     public UnexpectedException getUnexpectedException(int code) {
+        if (exceptionMapping == null) {
+            exceptionMapping = processUnexpectedResponseExceptionTypes();
+        }
+
         return exceptionMapping.getOrDefault(code, defaultException);
     }
 
@@ -525,5 +518,32 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         return result;
+    }
+
+    private HashMap<Integer, UnexpectedException> processUnexpectedResponseExceptionTypes() {
+        HashMap<Integer, UnexpectedException> exceptionHashMap = new HashMap<>();
+
+        for (UnexpectedResponseExceptionType exceptionAnnotation : unexpectedResponseExceptionTypes) {
+            UnexpectedException exception = new UnexpectedException(exceptionAnnotation.value());
+            if (exceptionAnnotation.code().length == 0) {
+                if (defaultException == null) {
+                    defaultException = exception;
+                } else {
+                    throw new InvalidUnexpectedResponseAnnotationsException(fullyQualifiedMethodName);
+                }
+            } else {
+                for (int statusCode : exceptionAnnotation.code()) {
+                    if (exceptionHashMap.putIfAbsent(statusCode, exception) != null) {
+                        throw new InvalidUnexpectedResponseAnnotationsException(fullyQualifiedMethodName, statusCode);
+                    }
+                }
+            }
+        }
+
+        if (defaultException == null) {
+            defaultException = new UnexpectedException(ServiceRequestException.class);
+        }
+
+        return exceptionHashMap;
     }
 }
