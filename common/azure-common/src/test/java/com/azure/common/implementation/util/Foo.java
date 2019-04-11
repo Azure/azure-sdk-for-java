@@ -3,11 +3,11 @@
 
 package com.azure.common.implementation.util;
 
+import com.azure.common.implementation.serializer.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.azure.common.implementation.serializer.JsonFlatten;
 
 import java.util.List;
 import java.util.Map;

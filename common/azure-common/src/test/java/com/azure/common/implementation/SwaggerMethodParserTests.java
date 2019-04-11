@@ -3,20 +3,21 @@
 
 package com.azure.common.implementation;
 
-import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.common.MyRestException;
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.ExpectedResponses;
 import com.azure.common.annotations.PATCH;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
 import com.azure.common.entities.HttpBinJSON;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpMethod;
+import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class SwaggerMethodParserTests {
 

@@ -3,29 +3,29 @@
 
 package com.azure.common.implementation;
 
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.ServiceClient;
 import com.azure.common.annotations.ResumeOperation;
 import com.azure.common.credentials.ServiceClientCredentials;
-import com.azure.common.http.rest.Page;
-import com.azure.common.http.rest.PagedResponse;
-import com.azure.common.implementation.http.PagedResponseBase;
-import com.azure.common.implementation.http.ContentType;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
-import com.azure.common.implementation.http.UrlBuilder;
 import com.azure.common.http.policy.CookiePolicy;
 import com.azure.common.http.policy.CredentialsPolicy;
+import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
+import com.azure.common.http.rest.Page;
+import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.http.rest.ResponseBase;
+import com.azure.common.implementation.http.ContentType;
+import com.azure.common.implementation.http.PagedResponseBase;
+import com.azure.common.implementation.http.UrlBuilder;
 import com.azure.common.implementation.serializer.HttpResponseDecoder;
 import com.azure.common.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.common.implementation.serializer.SerializerAdapter;

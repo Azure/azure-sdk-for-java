@@ -3,12 +3,6 @@
 
 package com.azure.common.mgmt.http;
 
-import com.azure.common.mgmt.AsyncOperationResource;
-import com.azure.common.mgmt.AzureAsyncOperationPollStrategy;
-import com.azure.common.mgmt.MockResource;
-import com.azure.common.mgmt.OperationState;
-import com.azure.common.mgmt.HttpBinJSON;
-import com.azure.common.mgmt.LocationPollStrategy;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpHeaders;
@@ -17,6 +11,12 @@ import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.ProxyOptions;
 import com.azure.common.implementation.util.FluxUtil;
+import com.azure.common.mgmt.AsyncOperationResource;
+import com.azure.common.mgmt.AzureAsyncOperationPollStrategy;
+import com.azure.common.mgmt.HttpBinJSON;
+import com.azure.common.mgmt.LocationPollStrategy;
+import com.azure.common.mgmt.MockResource;
+import com.azure.common.mgmt.OperationState;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

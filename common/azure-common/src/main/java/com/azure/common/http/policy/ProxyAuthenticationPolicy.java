@@ -4,8 +4,8 @@
 package com.azure.common.http.policy;
 
 import com.azure.common.http.HttpPipelineCallContext;
-import com.azure.common.http.HttpResponse;
 import com.azure.common.http.HttpPipelineNextPolicy;
+import com.azure.common.http.HttpResponse;
 import com.azure.common.implementation.util.Base64Util;
 import reactor.core.publisher.Mono;
 

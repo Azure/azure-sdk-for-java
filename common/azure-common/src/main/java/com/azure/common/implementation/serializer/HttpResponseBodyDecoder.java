@@ -3,18 +3,18 @@
 
 package com.azure.common.implementation.serializer;
 
-import com.azure.common.http.rest.Page;
-import com.azure.common.implementation.http.PagedResponseBase;
-import com.azure.common.implementation.Base64Url;
-import com.azure.common.implementation.DateTimeRfc1123;
-import com.azure.common.exception.ServiceRequestException;
-import com.azure.common.http.rest.Response;
-import com.azure.common.http.rest.ResponseBase;
-import com.azure.common.implementation.UnixTime;
 import com.azure.common.annotations.ReturnValueWireType;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.http.rest.Page;
+import com.azure.common.http.rest.Response;
+import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.Base64Url;
+import com.azure.common.implementation.DateTimeRfc1123;
+import com.azure.common.implementation.UnixTime;
+import com.azure.common.implementation.http.PagedResponseBase;
 import com.azure.common.implementation.util.FluxUtil;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Flux;

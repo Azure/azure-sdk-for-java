@@ -3,6 +3,8 @@
 
 package com.azure.common.implementation.serializer.jackson;
 
+import com.azure.common.implementation.serializer.JsonFlatten;
+import com.azure.common.implementation.util.TypeUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -18,8 +20,6 @@ import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.azure.common.implementation.serializer.JsonFlatten;
-import com.azure.common.implementation.util.TypeUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

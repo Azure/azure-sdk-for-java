@@ -6,7 +6,7 @@ package com.azure.common.implementation.util;
 /**
  *  The util class is a helper class for clone operation.
  */
-public class ImplUtils {
+public final class ImplUtils {
 
     private ImplUtils() {
         // Exists only to defeat instantiation.
