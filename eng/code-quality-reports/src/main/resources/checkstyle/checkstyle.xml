@@ -253,6 +253,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <module name="PackageName">
             <property name="format" value="^(?=.{9,80}$)((com.microsoft.azure|com.azure)(\.[a-z]{1,20})*)+$"/>
         </module>
+      
+        <!-- Javadoc checks                                   -->
+        <!-- See http://checkstyle.sf.net/config_javadoc.html -->
+        <module name="JavadocMethod">
+            <property name="scope" value="protected"/>
+        </module>
 
         <!-- CUSTOM CHECKS -->
         <!-- Verifies that subclasses of ServiceClient meet a set of guidelines.
@@ -260,6 +266,5 @@ page at http://checkstyle.sourceforge.net/config.html -->
         2) They must implement a public static method named builder
         -->
         <module name="com.azure.tools.checkstyle.checks.ServiceClientChecks"/>
-
     </module>
 </module>
