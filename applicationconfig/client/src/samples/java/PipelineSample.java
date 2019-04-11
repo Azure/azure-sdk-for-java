@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import com.azure.applicationconfig.ConfigurationClient;
 import com.azure.applicationconfig.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
