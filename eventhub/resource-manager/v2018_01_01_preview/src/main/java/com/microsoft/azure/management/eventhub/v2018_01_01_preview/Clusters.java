@@ -22,6 +22,14 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Cluster>, SupportsListingByResourceGroup<Cluster>, HasInner<ClustersInner> {
     /**
+     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Map<String, Integer>> listAvailableClustersAsync();
+
+    /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
@@ -30,13 +38,5 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
      * @return the observable for the request
      */
     Observable<EHNamespaceIdListResult> listNamespacesAsync(String resourceGroupName, String clusterName);
-
-    /**
-     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Map<String, Integer>> listAvailableClustersAsync();
 
 }

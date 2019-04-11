@@ -103,18 +103,6 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
     }
 
     @Override
-    public Observable<EHNamespaceIdListResult> listNamespacesAsync(String resourceGroupName, String clusterName) {
-        ClustersInner client = this.inner();
-        return client.listNamespacesAsync(resourceGroupName, clusterName)
-        .map(new Func1<EHNamespaceIdListResultInner, EHNamespaceIdListResult>() {
-            @Override
-            public EHNamespaceIdListResult call(EHNamespaceIdListResultInner inner) {
-                return new EHNamespaceIdListResultImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
     public Observable<Map<String, Integer>> listAvailableClustersAsync() {
         ClustersInner client = this.inner();
         return client.listAvailableClustersAsync()
@@ -128,6 +116,18 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
     @Override
     protected ClusterImpl wrapModel(String name) {
         return new ClusterImpl(name, new ClusterInner(), this.manager());
+    }
+
+    @Override
+    public Observable<EHNamespaceIdListResult> listNamespacesAsync(String resourceGroupName, String clusterName) {
+        ClustersInner client = this.inner();
+        return client.listNamespacesAsync(resourceGroupName, clusterName)
+        .map(new Func1<EHNamespaceIdListResultInner, EHNamespaceIdListResult>() {
+            @Override
+            public EHNamespaceIdListResult call(EHNamespaceIdListResultInner inner) {
+                return new EHNamespaceIdListResultImpl(inner, manager());
+            }
+        });
     }
 
 }
