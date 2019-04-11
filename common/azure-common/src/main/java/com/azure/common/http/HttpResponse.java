@@ -3,14 +3,14 @@
 
 package com.azure.common.http;
 
-import java.io.Closeable;
-import java.nio.charset.Charset;
-
 import com.azure.common.implementation.http.BufferedHttpResponse;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
+
+import java.io.Closeable;
+import java.nio.charset.Charset;
 
 /**
  * The type representing response of {@link HttpRequest}.

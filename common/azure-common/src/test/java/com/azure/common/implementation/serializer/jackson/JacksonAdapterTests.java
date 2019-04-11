@@ -3,15 +3,15 @@
 
 package com.azure.common.implementation.serializer.jackson;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.azure.common.implementation.serializer.SerializerEncoding;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class JacksonAdapterTests {
     @Test

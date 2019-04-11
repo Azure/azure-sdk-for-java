@@ -3,10 +3,10 @@
 
 package com.azure.common.mgmt;
 
-import com.azure.common.mgmt.annotations.AzureHost;
 import com.azure.common.annotations.GET;
 import com.azure.common.annotations.HostParam;
 import com.azure.common.annotations.PathParam;
+import com.azure.common.mgmt.annotations.AzureHost;
 
 public class AzureTests {
 

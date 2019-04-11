@@ -3,12 +3,12 @@
 
 package com.azure.common.implementation.util;
 
-import org.reactivestreams.Subscription;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
-import java.nio.ByteBuffer;
+import org.reactivestreams.Subscription;
 
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
 

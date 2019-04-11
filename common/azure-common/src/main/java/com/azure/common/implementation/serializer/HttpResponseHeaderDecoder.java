@@ -3,12 +3,12 @@
 
 package com.azure.common.implementation.serializer;
 
-import com.azure.common.exception.ServiceRequestException;
-import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.annotations.HeaderCollection;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Mono;
 

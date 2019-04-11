@@ -3,11 +3,11 @@
 
 package com.azure.common.implementation.serializer.jackson;
 
+import com.azure.common.implementation.Base64Url;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.azure.common.implementation.Base64Url;
 
 import java.io.IOException;
 

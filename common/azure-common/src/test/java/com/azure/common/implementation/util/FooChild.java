@@ -3,9 +3,9 @@
 
 package com.azure.common.implementation.util;
 
+import com.azure.common.implementation.serializer.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.azure.common.implementation.serializer.JsonFlatten;
 
 /**
  * Class for testing serialization.
