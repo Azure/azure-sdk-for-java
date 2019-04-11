@@ -3,9 +3,9 @@
 
 package com.azure.common.auth.credentials;
 
+import com.azure.common.annotations.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.azure.common.annotations.Beta;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

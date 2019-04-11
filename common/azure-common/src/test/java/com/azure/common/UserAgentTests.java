@@ -12,7 +12,6 @@ import com.azure.common.http.MockHttpResponse;
 import com.azure.common.http.policy.UserAgentPolicy;
 import org.junit.Assert;
 import org.junit.Test;
-
 import reactor.core.publisher.Mono;
 
 import java.net.URL;

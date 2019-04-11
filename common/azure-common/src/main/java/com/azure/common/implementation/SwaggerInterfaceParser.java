@@ -3,8 +3,8 @@
 
 package com.azure.common.implementation;
 
-import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.common.annotations.Host;
+import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 
 import java.lang.reflect.Method;

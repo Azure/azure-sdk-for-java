@@ -3,8 +3,8 @@
 
 package com.azure.common.auth.credentials;
 
-import com.azure.common.annotations.Beta;
 import com.azure.common.AzureEnvironment;
+import com.azure.common.annotations.Beta;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 

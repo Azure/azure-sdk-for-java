@@ -3,10 +3,10 @@
 
 package com.azure.common.mgmt;
 
-import com.azure.common.implementation.RestProxy;
-import com.azure.common.implementation.SwaggerMethodParser;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.SwaggerMethodParser;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -6,8 +6,8 @@ package com.azure.common.mgmt.policy;
 import com.azure.common.credentials.AsyncServiceClientCredentials;
 import com.azure.common.http.HttpPipelineCallContext;
 import com.azure.common.http.HttpPipelineNextPolicy;
-import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
 /**

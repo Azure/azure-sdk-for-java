@@ -3,8 +3,8 @@
 
 package com.azure.common.implementation.serializer;
 
-import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.annotations.HeaderCollection;
+import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Mono;
 

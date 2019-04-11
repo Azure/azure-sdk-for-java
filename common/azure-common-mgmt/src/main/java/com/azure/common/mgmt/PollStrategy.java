@@ -4,11 +4,11 @@
 package com.azure.common.mgmt;
 
 import com.azure.common.exception.ServiceRequestException;
-import com.azure.common.implementation.RestProxy;
-import com.azure.common.implementation.SwaggerMethodParser;
 import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.SwaggerMethodParser;
 import com.azure.common.implementation.serializer.HttpResponseDecoder;
 import com.azure.common.implementation.serializer.SerializerEncoding;
 import reactor.core.publisher.Flux;

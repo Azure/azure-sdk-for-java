@@ -3,8 +3,8 @@
 
 package com.azure.common.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.common.implementation.DateTimeRfc1123;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Defines headers for httpbin.org operations.
