@@ -1,21 +1,19 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.auth.credentials;
 
 import com.azure.common.AzureEnvironment;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.common.annotations.Beta;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -29,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Beta
 public final class AzureCliCredentials extends AzureTokenCredentials {
     private static final ObjectMapper MAPPER = new JacksonAdapter().serializer().setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSSSS"));
+    private static Object lock = new Object();
     /** A mapping from resource endpoint to its cached access token. */
     private Map<String, AzureCliSubscription> subscriptions;
     private File azureProfile;
@@ -39,7 +38,7 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
         subscriptions = new ConcurrentHashMap<>();
     }
 
-    private synchronized void loadAccessTokens() throws IOException {
+    private void loadAccessTokens() throws IOException {
         try {
             AzureCliSubscription.Wrapper wrapper = MAPPER.readValue(azureProfile, AzureCliSubscription.Wrapper.class);
             List<AzureCliToken> tokens = MAPPER.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() { });
@@ -53,7 +52,7 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
                 for (AzureCliToken token : tokens) {
                     // Find match of user and tenant
                     if (subscription.isServicePrincipal() == token.isServicePrincipal()
-                            && subscription.userName().equalsIgnoreCase(token.user())
+                            && subscription.getUserName().equalsIgnoreCase(token.user())
                             && subscription.tenant().equalsIgnoreCase(token.tenant())) {
                         subscriptions.put(subscription.id(), subscription.withToken(token));
                         if (subscription.isDefault()) {
@@ -89,9 +88,14 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
      * @throws IOException if the Azure CLI token files are not accessible
      */
     public static AzureCliCredentials create(File azureProfile, File accessTokens) throws IOException {
+        if (azureProfile == null || accessTokens == null) {
+            throw new FileNotFoundException("File azureProfile.json or accessTokens.json not found.");
+        }
         AzureCliCredentials credentials = new AzureCliCredentials();
-        credentials.azureProfile = azureProfile;
-        credentials.accessTokens = accessTokens;
+        synchronized (lock) {
+            credentials.azureProfile = azureProfile;
+            credentials.accessTokens = accessTokens;
+        }
         credentials.loadAccessTokens();
         return credentials;
     }
@@ -119,15 +123,17 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
     }
 
     @Override
-    public synchronized Mono<String> getToken(String resource) {
+    public Mono<String> getToken(String resource) {
         return subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource)
                 .onErrorResume(t -> {
-                    System.err.println("Please login in Azure CLI and press any key to continue after you've successfully logged in.");
-                    try {
-                        System.in.read();
-                        loadAccessTokens();
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
+                    synchronized (lock) {
+                        System.err.println("Please login in Azure CLI and press any key to continue after you've successfully logged in.");
+                        try {
+                            System.in.read();
+                            loadAccessTokens();
+                        } catch (IOException ioe) {
+                            throw Exceptions.propagate(ioe);
+                        }
                     }
                     return subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource).subscribeOn(Schedulers.immediate());
                 });

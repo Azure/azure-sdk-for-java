@@ -17,6 +17,8 @@
   <suppress checks="Javadoc" files=".*Test[s]?\.java"/>
   <suppress checks="Javadoc" files=".*Test[s]?Base\.java"/>
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
   <suppress checks="Header" files=".*package-info.java"/>
 
   <!-- Files licensed with alternate license in the header -->

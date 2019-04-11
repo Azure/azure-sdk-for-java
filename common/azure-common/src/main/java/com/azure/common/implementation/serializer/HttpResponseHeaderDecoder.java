@@ -1,17 +1,14 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation.serializer;
 
-import com.azure.common.exception.ServiceRequestException;
-import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.annotations.HeaderCollection;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Mono;
 
@@ -19,6 +16,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -96,13 +94,13 @@ final class HttpResponseHeaderDecoder {
                         final Type[] mapTypeArguments = TypeUtil.getTypeArguments(declaredFieldType);
                         if (mapTypeArguments.length == 2 && mapTypeArguments[0] == String.class && mapTypeArguments[1] == String.class) {
                             final HeaderCollection headerCollectionAnnotation = declaredField.getAnnotation(HeaderCollection.class);
-                            final String headerCollectionPrefix = headerCollectionAnnotation.value().toLowerCase();
+                            final String headerCollectionPrefix = headerCollectionAnnotation.value().toLowerCase(Locale.ROOT);
                             final int headerCollectionPrefixLength = headerCollectionPrefix.length();
                             if (headerCollectionPrefixLength > 0) {
                                 final Map<String, String> headerCollection = new HashMap<>();
                                 for (final HttpHeader header : headers) {
                                     final String headerName = header.name();
-                                    if (headerName.toLowerCase().startsWith(headerCollectionPrefix)) {
+                                    if (headerName.toLowerCase(Locale.ROOT).startsWith(headerCollectionPrefix)) {
                                         headerCollection.put(headerName.substring(headerCollectionPrefixLength), header.value());
                                     }
                                 }

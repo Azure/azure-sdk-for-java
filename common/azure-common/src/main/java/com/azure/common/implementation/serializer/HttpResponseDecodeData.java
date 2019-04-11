@@ -1,12 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation.serializer;
 
 import com.azure.common.annotations.HeaderCollection;
+
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.implementation.UnexpectedException;

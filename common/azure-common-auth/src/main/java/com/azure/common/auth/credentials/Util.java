@@ -1,15 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.auth.credentials;
 
+import com.azure.common.implementation.util.Base64Util;
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationCallback;
 import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.azure.common.implementation.util.Base64Util;
 import reactor.core.Exceptions;
 import reactor.core.publisher.MonoSink;
 
@@ -90,7 +87,7 @@ final class Util {
         matcher.find();
         try {
             CertificateFactory factory = CertificateFactory.getInstance("X.509");
-            InputStream stream = new ByteArrayInputStream(matcher.group().getBytes());
+            InputStream stream = new ByteArrayInputStream(matcher.group().getBytes(StandardCharsets.UTF_8));
             return (X509Certificate) factory.generateCertificate(stream);
         } catch (CertificateException e) {
             throw new RuntimeException(e);

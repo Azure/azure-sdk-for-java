@@ -1,23 +1,20 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation.serializer;
 
-import com.azure.common.http.rest.Page;
-import com.azure.common.implementation.http.PagedResponseBase;
-import com.azure.common.implementation.Base64Url;
-import com.azure.common.implementation.DateTimeRfc1123;
-import com.azure.common.exception.ServiceRequestException;
-import com.azure.common.http.rest.Response;
-import com.azure.common.http.rest.ResponseBase;
-import com.azure.common.implementation.UnixTime;
 import com.azure.common.annotations.ReturnValueWireType;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.http.rest.Page;
+import com.azure.common.http.rest.Response;
+import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.Base64Url;
+import com.azure.common.implementation.DateTimeRfc1123;
+import com.azure.common.implementation.UnixTime;
+import com.azure.common.implementation.http.PagedResponseBase;
 import com.azure.common.implementation.util.FluxUtil;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Flux;
@@ -294,12 +291,12 @@ final class HttpResponseBodyDecoder {
 
                     final Map<String, Object> wireResponseMap = (Map<String, Object>) wireResponse;
 
-                    final Set<String> wireResponseKeys = wireResponseMap.keySet();
-                    for (String wireResponseKey : wireResponseKeys) {
-                        final Object wireResponseValue = wireResponseMap.get(wireResponseKey);
+                    final Set<Map.Entry<String, Object>> wireResponseEntries = wireResponseMap.entrySet();
+                    for (Map.Entry<String, Object> wireResponseEntry : wireResponseEntries) {
+                        final Object wireResponseValue = wireResponseEntry.getValue();
                         final Object resultValue = convertToResultType(wireResponseValue, resultValueType, wireType);
                         if (wireResponseValue != resultValue) {
-                            wireResponseMap.put(wireResponseKey, resultValue);
+                            wireResponseMap.put(wireResponseEntry.getKey(), resultValue);
                         }
                     }
                     //
