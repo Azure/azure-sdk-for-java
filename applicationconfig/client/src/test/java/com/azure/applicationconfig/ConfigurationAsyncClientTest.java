@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig;
 
+import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
@@ -18,10 +19,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -31,38 +29,32 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 @RunWith(Theories.class)
-public class ConfigurationClientTest {
-    private static final String PLAYBACK_URI_BASE = "http://localhost:";
-
-    private final Logger logger = LoggerFactory.getLogger(ConfigurationClientTest.class);
+public class ConfigurationAsyncClientTest {
+    private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
 
     private InterceptorManager interceptorManager;
-    private ConfigurationClient client;
+    private ConfigurationAsyncClient client;
     private String keyPrefix;
     private String labelPrefix;
 
@@ -78,10 +70,9 @@ public class ConfigurationClientTest {
         if (interceptorManager.isPlaybackMode()) {
             logger.info("PLAYBACK MODE");
 
-            final String playbackUri = getPlaybackUri(testMode);
-            final String connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
+            final String connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
 
-            client = ConfigurationClient.builder()
+            client = ConfigurationAsyncClient.builder()
                     .credentials(new ConfigurationClientCredentials(connectionString))
                     .httpClient(interceptorManager.getPlaybackClient())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -92,7 +83,7 @@ public class ConfigurationClientTest {
             final String connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
             Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
-            client = ConfigurationClient.builder()
+            client = ConfigurationAsyncClient.builder()
                     .credentials(new ConfigurationClientCredentials(connectionString))
                     .httpClient(HttpClient.createDefault().wiretap(true))
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -102,26 +93,6 @@ public class ConfigurationClientTest {
 
         keyPrefix = SdkContext.randomResourceName("key", 8);
         labelPrefix = SdkContext.randomResourceName("label", 8);
-    }
-
-    private static String getPlaybackUri(TestMode testMode) throws IOException {
-        if (testMode == TestMode.RECORD) {
-            Properties mavenProps = new Properties();
-
-            try (InputStream in = ConfigurationClientTest.class.getResourceAsStream("/maven.properties")) {
-                if (in == null) {
-                    throw new IOException(
-                            "The file \"maven.properties\" has not been generated yet. Please execute \"mvn compile\" to generate the file.");
-                }
-                mavenProps.load(in);
-            }
-
-            String port = mavenProps.getProperty("playbackServerPort");
-            // 11080 and 11081 needs to be in sync with values in jetty.xml file
-            return PLAYBACK_URI_BASE + port;
-        } else {
-            return PLAYBACK_URI_BASE + "1234";
-        }
     }
 
     private TestMode getTestMode() throws IllegalArgumentException {
@@ -186,7 +157,50 @@ public class ConfigurationClientTest {
     }
 
     /**
-     * Tests that a configuration cannot be added twice with the same key. THis should return a 412 error.
+     * Tests that we cannot add a configuration setting when the key is an empty string.
+     */
+    @Test
+    public void addSettingEmptyKey() {
+        StepVerifier.create(client.addSetting("", "A value"))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.METHOD_NOT_ALLOWED.code()));
+    }
+
+    /**
+     * Tests that we can add configuration settings when value is not null or an empty string.
+     */
+    @Test
+    public void addSettingEmptyValue() {
+        ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix);
+        ConfigurationSetting setting2 = new ConfigurationSetting().key(keyPrefix + "-1").value("");
+
+        StepVerifier.create(client.addSetting(setting.key(), setting.value()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.getSetting(setting.key()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.addSetting(setting2.key(), setting2.value()))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.getSetting(setting2.key()))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that an exception is thrown when null key is passed.
+     */
+    @Test
+    public void addSettingNullKey() {
+        assertRunnableThrowsException(() -> client.addSetting(null, "A Value"), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.addSetting(null), NullPointerException.class);
+    }
+
+    /**
+     * Tests that a configuration cannot be added twice with the same key. This should return a 412 error.
      */
     @Test
     public void addExistingSetting() {
@@ -196,7 +210,7 @@ public class ConfigurationClientTest {
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
             StepVerifier.create(client.addSetting(expected).then(client.addSetting(expected)))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
         };
 
         testRunner.accept(newConfiguration);
@@ -260,6 +274,50 @@ public class ConfigurationClientTest {
     }
 
     /**
+     * Tests that we cannot set a configuration setting when the key is an empty string.
+     */
+    @Test
+    public void setSettingEmptyKey() {
+        StepVerifier.create(client.setSetting("", "A value"))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.METHOD_NOT_ALLOWED.code()));
+    }
+
+    /**
+     * Tests that we can set configuration settings when value is not null or an empty string.
+     * Value is not a required property.
+     */
+    @Test
+    public void setSettingEmptyValue() {
+        ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix);
+        ConfigurationSetting setting2 = new ConfigurationSetting().key(keyPrefix + "-1").value("");
+
+        StepVerifier.create(client.setSetting(setting.key(), setting.value()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.getSetting(setting.key()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.setSetting(setting2.key(), setting2.value()))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.getSetting(setting2.key()))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that an exception is thrown when null key is passed.
+     */
+    @Test
+    public void setSettingNullKey() {
+        assertRunnableThrowsException(() -> client.setSetting(null, "A Value"), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.setSetting(null), NullPointerException.class);
+    }
+
+    /**
      * Tests that update cannot be done to a non-existent configuration, this will result in a 412.
      * Unlike set update isn't able to create the configuration.
      */
@@ -312,6 +370,24 @@ public class ConfigurationClientTest {
     }
 
     /**
+     * Tests that a configuration is able to be updated when it exists with the convenience overload.
+     * When the configuration is locked updates cannot happen, this will result in a 409.
+     */
+    @Test
+    public void updateSettingOverload() {
+        ConfigurationSetting original = new ConfigurationSetting().key(keyPrefix).value("A Value");
+        ConfigurationSetting updated = new ConfigurationSetting().key(keyPrefix).value("A New Value");
+
+        StepVerifier.create(client.addSetting(original.key(), original.value()))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.updateSetting(updated.key(), updated.value()))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
+    }
+
+    /**
      * Tests that when an etag is passed to update it will only update if the current representation of the setting has the etag.
      * If the update etag doesn't match anything the update won't happen, this will result in a 412.
      */
@@ -325,6 +401,15 @@ public class ConfigurationClientTest {
 
         updateSettingIfEtagHelper(newConfiguration, updateConfiguration, finalConfiguration);
         updateSettingIfEtagHelper(newConfiguration.label(label), updateConfiguration.label(label), finalConfiguration.label(label));
+    }
+
+    /**
+     * Verifies that an exception is thrown when null key is passed.
+     */
+    @Test
+    public void updateSettingNullKey() {
+        assertRunnableThrowsException(() -> client.updateSetting(null, "A Value"), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.updateSetting(null), NullPointerException.class);
     }
 
     private void updateSettingIfEtagHelper(ConfigurationSetting initial, ConfigurationSetting update, ConfigurationSetting last) {
@@ -478,6 +563,15 @@ public class ConfigurationClientTest {
     }
 
     /**
+     * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
+     */
+    @Test
+    public void deleteSettingNullKey() {
+        assertRunnableThrowsException(() -> client.deleteSetting((String) null), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.deleteSetting((ConfigurationSetting) null), NullPointerException.class);
+    }
+
+    /**
      * Verifies that a ConfigurationSetting can be added with a label, and that we can fetch that ConfigurationSetting
      * from the service when filtering by either its label or just its key.
      */
@@ -513,11 +607,10 @@ public class ConfigurationClientTest {
         tags.put("tag1", "value1");
         tags.put("tag2", "value2");
 
-        final EnumSet<SettingFields> fields = EnumSet.of(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
         final SettingSelector secondLabelOptions = new SettingSelector()
                 .label("*-second*")
                 .key(keyPrefix + "-fetch-*")
-                .fields(fields);
+                .fields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
         final List<ConfigurationSetting> settings = IntStream.range(0, numberToCreate)
                 .mapToObj(value -> {
                     String key = value % 2 == 0 ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
@@ -606,7 +699,6 @@ public class ConfigurationClientTest {
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
-        final EnumSet<SettingFields> fields = EnumSet.of(SettingFields.KEY, SettingFields.ETAG);
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original))
@@ -627,7 +719,7 @@ public class ConfigurationClientTest {
                 .verifyComplete();
 
         // Verifies that we can select specific fields.
-        StepVerifier.create(client.listSettingRevisions(new SettingSelector().key(keyName).fields(fields)))
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().key(keyName).fields(SettingFields.KEY, SettingFields.ETAG)))
                 .assertNext(response -> {
                     assertEquals(updated2.key(), response.key());
                     assertNotNull(response.etag());
@@ -688,7 +780,7 @@ public class ConfigurationClientTest {
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
-     * <p>
+     *
      * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
     @Test
@@ -714,7 +806,7 @@ public class ConfigurationClientTest {
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
-     * <p>
+     *
      * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
     @Test
@@ -768,26 +860,6 @@ public class ConfigurationClientTest {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
                     return client.deleteSetting(configurationSetting);
                 }).blockLast();
-    }
-
-    @DataPoints("invalidKeys")
-    public static String[] invalidKeys = new String[]{"", null};
-
-    /**
-     * Test the API will not make a get call without having a key passed, an IllegalArgumentException should be thrown.
-     */
-    @Theory
-    public void getSettingRequiresKey(@FromDataPoints("invalidKeys") String key) {
-        assertRunnableThrowsArgumentException(() -> client.getSetting(key));
-    }
-
-    /**
-     * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
-     */
-    @Theory
-    public void deleteSettingRequiresKey(@FromDataPoints("invalidKeys") String key, String label) {
-        assertRunnableThrowsArgumentException(() -> client.deleteSetting(key));
-        assertRunnableThrowsArgumentException(() -> client.deleteSetting(new ConfigurationSetting().key(key).label(label)));
     }
 
     /**
@@ -865,12 +937,12 @@ public class ConfigurationClientTest {
      *
      * @param exceptionThrower Command that should throw the exception
      */
-    private static void assertRunnableThrowsArgumentException(Runnable exceptionThrower) {
+    private static void assertRunnableThrowsException(Runnable exceptionThrower, Class exception) {
         try {
             exceptionThrower.run();
             fail();
-        } catch (IllegalArgumentException ex) {
-
+        } catch (Exception ex) {
+            assertEquals(exception, ex.getClass());
         }
     }
 }

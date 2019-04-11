@@ -9,8 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ConfigurationSetting is a resource identified by unique combination of key + label. Label can be null.
- * To explicitly reference null label use "\0" (url encoded as %00).
+ * ConfigurationSetting is a resource identified by unique combination of {@link ConfigurationSetting#key() key} and
+ * {@link ConfigurationSetting#label() label}. By default, the label is {@code null}. To explicitly reference the
+ * default label use {@link ConfigurationSetting#NO_LABEL}.
  */
 public class ConfigurationSetting {
     /**
@@ -71,17 +72,19 @@ public class ConfigurationSetting {
     }
 
     /**
-     * @return key name
+     * Gets the key name for this configuration setting.
+     *
+     * @return The key for this configuration setting.
      */
     public String key() {
         return key;
     }
 
     /**
-     * Sets the key of this configuration value. This is required.
+     * Sets the key of this configuration setting.
      *
-     * @param key key name
-     * @return ConfigurationSetting object itself
+     * @param key The name of the configuration key.
+     * @return ConfigurationSetting object itself.
      */
     public ConfigurationSetting key(String key) {
         this.key = key;
@@ -122,7 +125,7 @@ public class ConfigurationSetting {
      * Sets the value of this setting.
      *
      * @param value The value to associate with this configuration setting.
-     * @return The updated ConfigurationSetting object
+     * @return The updated ConfigurationSetting object.
      */
     public ConfigurationSetting value(String value) {
         this.value = value;
@@ -182,8 +185,8 @@ public class ConfigurationSetting {
      * Gets whether or not the configuration setting is locked. If the setting is locked, then no modifications can be
      * made to this setting.
      *
-     * <p>
-     * This is a <b>readonly</b> property. It is populated from responses from the Azure Application Configuration service.
+     * This is a <b>readonly</b> property. It is populated from responses from the Azure Application Configuration
+     * service.
      *
      * @return true if locked; false otherwise.
      */
