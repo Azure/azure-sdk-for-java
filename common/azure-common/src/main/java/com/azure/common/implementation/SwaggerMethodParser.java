@@ -29,7 +29,6 @@ import com.azure.common.http.HttpMethod;
 import com.azure.common.http.rest.Page;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
-import com.azure.common.implementation.exception.InvalidUnexpectedResponseAnnotationsException;
 import com.azure.common.implementation.serializer.HttpResponseDecodeData;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.util.TypeUtil;
@@ -520,22 +519,16 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return result;
     }
 
-    private HashMap<Integer, UnexpectedException> processUnexpectedResponseExceptionTypes() {
+    private Map<Integer, UnexpectedException> processUnexpectedResponseExceptionTypes() {
         HashMap<Integer, UnexpectedException> exceptionHashMap = new HashMap<>();
 
         for (UnexpectedResponseExceptionType exceptionAnnotation : unexpectedResponseExceptionTypes) {
             UnexpectedException exception = new UnexpectedException(exceptionAnnotation.value());
             if (exceptionAnnotation.code().length == 0) {
-                if (defaultException == null) {
-                    defaultException = exception;
-                } else {
-                    throw new InvalidUnexpectedResponseAnnotationsException(fullyQualifiedMethodName);
-                }
+                defaultException = exception;
             } else {
                 for (int statusCode : exceptionAnnotation.code()) {
-                    if (exceptionHashMap.putIfAbsent(statusCode, exception) != null) {
-                        throw new InvalidUnexpectedResponseAnnotationsException(fullyQualifiedMethodName, statusCode);
-                    }
+                    exceptionHashMap.put(statusCode, exception);
                 }
             }
         }

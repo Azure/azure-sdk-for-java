@@ -31,10 +31,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *  void getUploadUrlForEntityType(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String hubName, @Path("subscriptionId") String subscriptionId, @Body GetImageUploadUrlInputInner parameters);
  * </pre>
  *
- * If multiple annotations share the same HTTP status code or there is multiple default annotations when the
- * {@link com.azure.common.implementation.SwaggerMethodParser SwaggerMethodParser} parses the annotated method an
- * {@link com.azure.common.implementation.exception.InvalidUnexpectedResponseAnnotationsException InvalidUnexpectedResponseAnnotationsException}
- * will be thrown.
+ * If multiple annotations share the same HTTP status code or there is multiple default annotations the exception
+ * from the last annotation in the top to bottom order will be used.
  */
 @Retention(RUNTIME)
 @Target(METHOD)
