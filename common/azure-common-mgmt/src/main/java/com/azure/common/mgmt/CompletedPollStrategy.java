@@ -58,9 +58,8 @@ public class CompletedPollStrategy extends PollStrategy {
         }
     }
 
-    public
     @Override
-    HttpRequest createPollRequest() {
+    public HttpRequest createPollRequest() {
         throw new UnsupportedOperationException();
     }
 
