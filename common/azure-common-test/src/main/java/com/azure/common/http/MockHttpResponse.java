@@ -16,6 +16,9 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
+/**
+ * An HTTP response that is created to simulate a HTTP request.
+ */
 public class MockHttpResponse extends HttpResponse {
     private final static SerializerAdapter serializer = new JacksonAdapter();
 
@@ -25,22 +28,56 @@ public class MockHttpResponse extends HttpResponse {
 
     private final byte[] bodyBytes;
 
-    public MockHttpResponse(int statusCode, HttpHeaders headers, byte[] bodyBytes) {
+    /**
+     * Creates a HTTP response associated with a {@code request}, returns the {@code statusCode}, and has an empty
+     * response body.
+     *
+     * @param request HttpRequest associated wit hthe response.
+     * @param statusCode Status code of the response.
+     */
+    public MockHttpResponse(HttpRequest request, int statusCode) {
+        this(request, statusCode, new byte[0]);
+    }
+
+    /**
+     * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, and response body of
+     * {@code bodyBytes}.
+     *
+     * @param request HttpRequest associated with the response.
+     * @param statusCode Status code of the response.
+     * @param bodyBytes Contents of the response.
+     */
+    public MockHttpResponse(HttpRequest request, int statusCode, byte[] bodyBytes) {
+        this(request, statusCode, new HttpHeaders(), bodyBytes);
+    }
+
+    /**
+     * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, contains the
+     * {@code headers}, and response body of {@code bodyBytes}.
+     *
+     * @param request HttpRequest associated with the response.
+     * @param statusCode Status code of the response.
+     * @param headers HttpHeaders of the response.
+     * @param bodyBytes Contents of the response.
+     */
+    public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] bodyBytes) {
         this.statusCode = statusCode;
         this.headers = headers;
         this.bodyBytes = bodyBytes;
+        this.withRequest(request);
     }
 
-    public MockHttpResponse(int statusCode, byte[] bodyBytes) {
-        this(statusCode, new HttpHeaders(), bodyBytes);
-    }
-
-    public MockHttpResponse(int statusCode) {
-        this(statusCode, new byte[0]);
-    }
-
-    public MockHttpResponse(int statusCode, HttpHeaders headers, Object serializable) {
-        this(statusCode, headers, serialize(serializable));
+    /**
+     * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, contains the given
+     * {@code headers}, and response body that is JSON serialized from {@code serializable}.
+     *
+     * @param request HttpRequest associated with the response.
+     * @param headers HttpHeaders of the response.
+     * @param statusCode Status code of the response.
+     * @param serializable Contents to be serialized into JSON for the response.
+     */
+    public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, Object serializable) {
+        this(request, statusCode, headers, serialize(serializable));
     }
 
     private static byte[] serialize(Object serializable) {
@@ -54,21 +91,33 @@ public class MockHttpResponse extends HttpResponse {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int statusCode() {
         return statusCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String headerValue(String name) {
         return headers.value(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpHeaders headers() {
         return new HttpHeaders(headers);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<byte[]> bodyAsByteArray() {
         if (bodyBytes == null) {
@@ -78,6 +127,9 @@ public class MockHttpResponse extends HttpResponse {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Flux<ByteBuf> body() {
         if (bodyBytes == null) {
@@ -87,11 +139,17 @@ public class MockHttpResponse extends HttpResponse {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<String> bodyAsString() {
         return bodyAsString(StandardCharsets.UTF_8);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<String> bodyAsString(Charset charset) {
         Objects.requireNonNull(charset);
