@@ -54,7 +54,8 @@
 
   <modules>
     <module>azure-common</module>
-    <module>azure-common-mgmt</module>
     <module>azure-common-auth</module>
+    <module>azure-common-mgmt</module>
+    <module>azure-common-test</module>
   </modules>
 </project>
