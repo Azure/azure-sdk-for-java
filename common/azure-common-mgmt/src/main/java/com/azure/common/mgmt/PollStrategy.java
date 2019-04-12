@@ -101,7 +101,7 @@ abstract class PollStrategy {
 
         final String retryAfterSecondsString = httpResponse.headerValue("Retry-After");
         if (retryAfterSecondsString != null && !retryAfterSecondsString.isEmpty()) {
-            result = Long.valueOf(retryAfterSecondsString) * 1000;
+            result = Long.parseLong(retryAfterSecondsString) * 1000;
         }
 
         return result;
