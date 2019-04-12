@@ -103,32 +103,31 @@ public class InterceptorManager implements Closeable {
     public class RecordPolicy implements HttpPipelinePolicy {
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             final NetworkCallRecord networkCallRecord = new NetworkCallRecord();
-
-            networkCallRecord.Headers = new HashMap<>();
+            Map<Object, Object> headers = new HashMap<>();
 
             if (context.httpRequest().headers().value("Content-Type") != null) {
-                networkCallRecord.Headers.put("Content-Type", context.httpRequest().headers().value("Content-Type"));
+                headers.put("Content-Type", context.httpRequest().headers().value("Content-Type"));
             }
             if (context.httpRequest().headers().value("x-ms-version") != null) {
-                networkCallRecord.Headers.put("x-ms-version", context.httpRequest().headers().value("x-ms-version"));
+                headers.put("x-ms-version", context.httpRequest().headers().value("x-ms-version"));
             }
             if (context.httpRequest().headers().value("User-Agent") != null) {
-                networkCallRecord.Headers.put("User-Agent", context.httpRequest().headers().value("User-Agent"));
+                headers.put("User-Agent", context.httpRequest().headers().value("User-Agent"));
             }
 
-            networkCallRecord.Method = context.httpRequest().httpMethod().toString();
-            networkCallRecord.Uri = applyReplacementRule(context.httpRequest().url().toString().replaceAll("\\?$", ""));
+            networkCallRecord.method(context.httpRequest().httpMethod().toString());
+            networkCallRecord.uri(applyReplacementRule(context.httpRequest().url().toString().replaceAll("\\?$", "")));
 
             return next.process().flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
                 return extractResponseData(bufferedResponse).map(responseData -> {
-                    networkCallRecord.Response = responseData;
-                    String body = networkCallRecord.Response.get("Body");
+                    networkCallRecord.response(responseData);
+                    String body = responseData.get("Body");
 
                     // Remove pre-added header if this is a waiting or redirection
                     if (body != null && body.contains("<Status>InProgress</Status>")
-                        || Integer.parseInt(networkCallRecord.Response.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
+                        || Integer.parseInt(responseData.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
                         logger.info("Waiting for a response or redirection.");
                     } else {
                         synchronized (recordedData.getNetworkCallRecords()) {
@@ -174,7 +173,7 @@ public class InterceptorManager implements Closeable {
             synchronized (recordedData) {
                 for (Iterator<NetworkCallRecord> iterator = recordedData.getNetworkCallRecords().iterator(); iterator.hasNext(); ) {
                     NetworkCallRecord record = iterator.next();
-                    if (record.Method.equalsIgnoreCase(incomingMethod) && removeHost(record.Uri).equalsIgnoreCase(incomingUrl)) {
+                    if (record.method().equalsIgnoreCase(incomingMethod) && removeHost(record.uri()).equalsIgnoreCase(incomingUrl)) {
                         networkCallRecord = record;
                         iterator.remove();
                         break;
@@ -190,10 +189,10 @@ public class InterceptorManager implements Closeable {
                 Assert.fail("==> Unexpected request: " + incomingMethod + " " + incomingUrl);
             }
 
-            int recordStatusCode = Integer.parseInt(networkCallRecord.Response.get("StatusCode"));
+            int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
             HttpHeaders headers = new HttpHeaders();
 
-            for (Map.Entry<String, String> pair : networkCallRecord.Response.entrySet()) {
+            for (Map.Entry<String, String> pair : networkCallRecord.response().entrySet()) {
                 if (!pair.getKey().equals("StatusCode") && !pair.getKey().equals("Body") && !pair.getKey().equals("Content-Length")) {
                     String rawHeader = pair.getValue();
                     for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
@@ -205,7 +204,7 @@ public class InterceptorManager implements Closeable {
                 }
             }
 
-            String rawBody = networkCallRecord.Response.get("Body");
+            String rawBody = networkCallRecord.response().get("Body");
             byte[] bytes = new byte[0];
 
             if (rawBody != null) {
@@ -219,8 +218,7 @@ public class InterceptorManager implements Closeable {
                 headers.set("Content-Length", String.valueOf(bytes.length));
             }
 
-            HttpResponse response = new MockHttpResponse(recordStatusCode, headers, bytes)
-                .withRequest(request);
+            HttpResponse response = new MockHttpResponse(request, recordStatusCode, headers, bytes);
             return Mono.just(response);
         }
     }

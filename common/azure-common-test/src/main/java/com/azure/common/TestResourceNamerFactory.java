@@ -3,7 +3,6 @@
 
 package com.azure.common;
 
-
 import com.azure.common.utils.ResourceNamer;
 import com.azure.common.utils.ResourceNamerFactory;
 

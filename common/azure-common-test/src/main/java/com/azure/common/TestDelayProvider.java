@@ -8,9 +8,11 @@ import reactor.core.publisher.Flux;
 
 public class TestDelayProvider extends DelayProvider {
     private boolean isLiveMode;
+
     public TestDelayProvider(boolean isLiveMode) {
         this.isLiveMode = isLiveMode;
     }
+
     @Override
     public void sleep(int milliseconds) {
         if (isLiveMode) {
