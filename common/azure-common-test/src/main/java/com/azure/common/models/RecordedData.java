@@ -5,8 +5,11 @@ package com.azure.common.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * Keeps track of the network calls that were made in a test session.
@@ -22,8 +25,29 @@ public class RecordedData {
         variables = new LinkedList<>();
     }
 
-    public LinkedList<NetworkCallRecord> getNetworkCallRecords() {
-        return networkCallRecords;
+    /**
+     * Finds the first matching {@link NetworkCallRecord} based on the predicate, removes it from the current network
+     * calls, and returns it. {@code null} is returned if network call could not be matched.
+     *
+     * @param isMatch Predicate to match for a given network call.
+     * @return The first {@link NetworkCallRecord} that matched {@code isMatch}, otherwise {@code null} if no network
+     * call could be matched.
+     */
+    public NetworkCallRecord findFirstAndRemoveNetworkCall(Predicate<NetworkCallRecord> isMatch) {
+        Objects.requireNonNull(isMatch);
+
+        synchronized (networkCallRecords) {
+            Iterator<NetworkCallRecord> iterator = networkCallRecords.iterator();
+            while (iterator.hasNext()) {
+                NetworkCallRecord next = iterator.next();
+                if (isMatch.test(next)) {
+                    iterator.remove();
+                    return next;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
