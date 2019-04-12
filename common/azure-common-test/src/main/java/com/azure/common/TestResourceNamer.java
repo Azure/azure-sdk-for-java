@@ -3,14 +3,26 @@
 
 package com.azure.common;
 
+import com.azure.common.models.RecordedData;
 import com.azure.common.utils.ResourceNamer;
 
-public class TestResourceNamer extends ResourceNamer {
-    private final InterceptorManager interceptorManager;
+import java.util.LinkedList;
+import java.util.Objects;
 
-    public TestResourceNamer(String name, InterceptorManager interceptorManager) {
+/**
+ * Provides random string names. If the test mode is {@link TestMode#PLAYBACK}, then names are fetched from
+ * {@link RecordedData}. If the test mode is {@link TestMode#RECORD}, then the names are randomly generated and
+ * persisted to {@link RecordedData}.
+ */
+public class TestResourceNamer extends ResourceNamer {
+    private final TestMode testMode;
+    private final LinkedList<String> variables;
+
+    public TestResourceNamer(String name, RecordedData recordedData, TestMode testMode) {
         super(name);
-        this.interceptorManager = interceptorManager;
+        Objects.requireNonNull(recordedData);
+        this.variables = new LinkedList<>(recordedData.getVariables());
+        this.testMode = testMode;
     }
 
     /**
@@ -22,25 +34,38 @@ public class TestResourceNamer extends ResourceNamer {
      */
     @Override
     public String randomName(String prefix, int maxLen) {
-        if (interceptorManager.isPlaybackMode()) {
-            return interceptorManager.popVariable();
+        if (testMode == TestMode.PLAYBACK) {
+            return getVariable();
+        } else {
+            return setVariable(super.randomName(prefix, maxLen));
         }
-        String randomName = super.randomName(prefix, maxLen);
-
-        interceptorManager.pushVariable(randomName);
-
-        return randomName;
     }
 
+    /**
+     * Gets a random UUID.
+     *
+     * @return A random UUID.
+     */
     @Override
     public String randomUuid() {
-        if (interceptorManager.isPlaybackMode()) {
-            return interceptorManager.popVariable();
+        if (testMode == TestMode.PLAYBACK) {
+            return getVariable();
+        } else {
+            return setVariable(super.randomUuid());
         }
-        String randomName = super.randomUuid();
+    }
 
-        interceptorManager.pushVariable(randomName);
+    private String getVariable() {
+        synchronized (variables) {
+            return variables.remove();
+        }
+    }
 
-        return randomName;
+    private String setVariable(String variable) {
+        synchronized (variables) {
+            variables.add(variable);
+        }
+
+        return variable;
     }
 }
