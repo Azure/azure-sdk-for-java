@@ -118,6 +118,7 @@
     <netty.version>4.1.33.Final</netty.version>
 
     <!-- Test Dependency Versions -->
+    <azure-common-test.version>1.0.0-SNAPSHOT</azure-common-test.version>
     <adal4j.version>1.6.1</adal4j.version>
     <bcprov-jdk15on.version>1.59</bcprov-jdk15on.version>
     <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
@@ -260,6 +261,12 @@
       </dependency>
 
       <!-- Test dependencies -->
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-common-test</artifactId>
+        <version>${azure-common-test.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-mgmt-storage</artifactId>
