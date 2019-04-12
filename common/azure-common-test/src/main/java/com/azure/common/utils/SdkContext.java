@@ -4,7 +4,6 @@
 package com.azure.common.utils;
 
 import com.azure.common.TestMode;
-import com.azure.common.TestResourceNamer;
 import com.azure.common.models.RecordedData;
 
 import java.util.Objects;
@@ -15,9 +14,9 @@ import java.util.Objects;
 public class SdkContext {
     private final ResourceNamer nameGenerator;
 
-    public SdkContext(TestMode testMode, RecordedData recordedData) {
+    public SdkContext(TestMode mode, RecordedData recordedData) {
         Objects.requireNonNull(recordedData);
-        nameGenerator =  new TestResourceNamer("", testMode, recordedData);
+        nameGenerator =  new TestResourceNamer("", mode, recordedData);
     }
 
     /**

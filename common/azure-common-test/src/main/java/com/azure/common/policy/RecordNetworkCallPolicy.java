@@ -1,12 +1,12 @@
 package com.azure.common.policy;
 
-import com.azure.common.models.RecordedData;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpPipelineCallContext;
 import com.azure.common.http.HttpPipelineNextPolicy;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.models.NetworkCallRecord;
+import com.azure.common.models.RecordedData;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +31,11 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private final Logger logger = LoggerFactory.getLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
 
+    /**
+     * Creates a policy that records network calls into {@code recordedData}.
+     *
+     * @param recordedData The record to persist network calls into.
+     */
     public RecordNetworkCallPolicy(RecordedData recordedData) {
         Objects.requireNonNull(recordedData);
         this.recordedData = recordedData;

@@ -37,7 +37,7 @@ public class InterceptorManager implements Closeable {
     // A state machine ensuring a test is always reset before another one is setup
     private final RecordedData recordedData;
 
-    private InterceptorManager(String testName, TestMode testMode) throws IOException {
+    public InterceptorManager(String testName, TestMode testMode) throws IOException {
         this.testName = testName;
         this.testMode = testMode;
 
@@ -46,18 +46,8 @@ public class InterceptorManager implements Closeable {
             : new RecordedData();
     }
 
-    // factory method
-    public static InterceptorManager create(String testName, TestMode testMode) throws IOException {
-        InterceptorManager interceptorManager = new InterceptorManager(testName, testMode);
-
-        //TODO: Do we need this?
-        SdkContext.setResourceNamerFactory(new TestResourceNamerFactory(interceptorManager));
-
-        return interceptorManager;
-    }
-
-    public boolean isRecordMode() {
-        return testMode == TestMode.RECORD;
+    public TestMode testMode() {
+        return testMode;
     }
 
     public boolean isPlaybackMode() {
@@ -213,21 +203,5 @@ public class InterceptorManager implements Closeable {
     private static String removeHost(String url) {
         URI uri = URI.create(url);
         return String.format("%s?%s", uri.getPath(), uri.getQuery());
-    }
-
-    //TODO: Do we really need this method?
-    public void pushVariable(String variable) {
-        if (this.isRecordMode()) {
-            synchronized (recordedData.getVariables()) {
-                recordedData.getVariables().add(variable);
-            }
-        }
-    }
-
-    //TODO: Do we really need this method?
-    public String popVariable() {
-        synchronized (recordedData.getVariables()) {
-            return recordedData.getVariables().remove();
-        }
     }
 }

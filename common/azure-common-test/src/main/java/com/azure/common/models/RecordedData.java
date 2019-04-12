@@ -22,6 +22,10 @@ public class RecordedData {
         variables = new LinkedList<>();
     }
 
+    public LinkedList<NetworkCallRecord> getNetworkCallRecords() {
+        return networkCallRecords;
+    }
+
     /**
      * Adds a network call to the end of the list.
      *
@@ -32,17 +36,6 @@ public class RecordedData {
 
         synchronized (networkCallRecords) {
             networkCallRecords.add(record);
-        }
-    }
-
-    /**
-     * Removes a network call from the beginning of the list and returns it.
-     *
-     * @return The network call that was at the beginning.
-     */
-    public NetworkCallRecord removeNetworkCall() {
-        synchronized (networkCallRecords) {
-            return networkCallRecords.remove();
         }
     }
 

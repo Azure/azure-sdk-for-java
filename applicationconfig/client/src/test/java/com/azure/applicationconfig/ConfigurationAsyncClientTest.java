@@ -67,8 +67,8 @@ public class ConfigurationAsyncClientTest {
     public void beforeTest() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         final TestMode testMode = getTestMode();
 
-        interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
-        sdkContext = new SdkContext(testMode, interceptorManager.recordedData());
+        interceptorManager = new InterceptorManager(testName.getMethodName(), testMode);
+        sdkContext = new SdkContext(interceptorManager);
 
         if (interceptorManager.isPlaybackMode()) {
             logger.info("PLAYBACK MODE");
@@ -90,7 +90,7 @@ public class ConfigurationAsyncClientTest {
                     .credentials(new ConfigurationClientCredentials(connectionString))
                     .httpClient(HttpClient.createDefault().wiretap(true))
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .addPolicy(new RecordNetworkCallPolicy(interceptorManager.recordedData()))
+                    .addPolicy(new RecordNetworkCallPolicy(interceptorManager))
                     .build();
         }
 

@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.common;
+package com.azure.common.utils;
 
+import com.azure.common.TestMode;
 import com.azure.common.models.RecordedData;
 import com.azure.common.utils.ResourceNamer;
 
@@ -13,11 +14,11 @@ import java.util.Objects;
  * {@link RecordedData}. If the test mode is {@link TestMode#RECORD}, then the names are randomly generated and
  * persisted to {@link RecordedData}.
  */
-public class TestResourceNamer extends ResourceNamer {
+class TestResourceNamer extends ResourceNamer {
     private final TestMode testMode;
     private final RecordedData recordedData;
 
-    public TestResourceNamer(String name, TestMode testMode, RecordedData recordedData) {
+    TestResourceNamer(String name, TestMode testMode, RecordedData recordedData) {
         super(name);
         Objects.requireNonNull(recordedData);
         this.recordedData = recordedData;
