@@ -111,6 +111,7 @@
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
                                 <source>..\..\common\azure-common\src\main\java</source>
                                 <source>..\..\common\azure-common-auth\src\main\java</source>
+                                <source>..\..\common\azure-common-test\src\main\java</source>
                             </sources>
                         </configuration>
                     </execution>
