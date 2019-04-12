@@ -1,6 +1,6 @@
 package com.azure.common.policy;
 
-import com.azure.common.RecordedData;
+import com.azure.common.models.RecordedData;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpPipelineCallContext;
 import com.azure.common.http.HttpPipelineNextPolicy;

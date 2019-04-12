@@ -4,17 +4,15 @@ package com.azure.common;
 
 import com.azure.common.http.*;
 import com.azure.common.models.NetworkCallRecord;
+import com.azure.common.models.RecordedData;
 import com.azure.common.utils.SdkContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +24,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
-import java.util.zip.GZIPInputStream;
 
 public class InterceptorManager implements Closeable {
     private final static String RECORD_FOLDER = "session-records/";
