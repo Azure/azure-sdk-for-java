@@ -12,6 +12,7 @@ import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
+import com.azure.common.policy.RecordNetworkCallPolicy;
 import com.azure.common.utils.SdkContext;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.After;
@@ -87,7 +88,7 @@ public class ConfigurationAsyncClientTest {
                     .credentials(new ConfigurationClientCredentials(connectionString))
                     .httpClient(HttpClient.createDefault().wiretap(true))
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .addPolicy(new RecordNetworkCallPolicy(interceptorManager.recordedData()))
                     .build();
         }
 
