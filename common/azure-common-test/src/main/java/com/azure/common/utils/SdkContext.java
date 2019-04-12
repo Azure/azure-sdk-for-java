@@ -15,9 +15,22 @@ import java.util.Objects;
 public class SdkContext {
     private final ResourceNamer nameGenerator;
 
-    public SdkContext(TestMode mode, RecordedData recordedData) {
+    /**
+     * Creates an SDK context that keeps track of variable names for the recorded data.
+     *
+     * <ul>
+     *     <li>If the {@code testMode} is {@link TestMode#PLAYBACK}, this will generate random variables by reading from
+     *     {@code recordedData}.</li>
+     *     <li>If the {@code testMode} is {@link TestMode#RECORD}, this will generate random variables and write them to
+     *     {@code recordedData}.</li>
+     * </ul>
+     *
+     * @param testMode The test for this context.
+     * @param recordedData The data to persist or read any variables names to or from.
+     */
+    public SdkContext(TestMode testMode, RecordedData recordedData) {
         Objects.requireNonNull(recordedData);
-        nameGenerator =  new TestResourceNamer("", mode, recordedData);
+        nameGenerator =  new TestResourceNamer("", testMode, recordedData);
     }
 
     /**
