@@ -88,8 +88,8 @@
           <compilerArgument>-Xlint:unchecked</compilerArgument>
         </configuration>
       </plugin>
-      
-      <!-- Now that all checkstyle issues have been resolved, override the 
+
+      <!-- Now that all checkstyle issues have been resolved, override the
              default behavior to make checkstyle fail on error and violation. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
