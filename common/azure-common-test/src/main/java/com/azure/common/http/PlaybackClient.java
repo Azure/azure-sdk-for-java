@@ -26,11 +26,10 @@ public final class PlaybackClient implements HttpClient {
 
     public PlaybackClient(RecordedData recordedData, Map<String, String> textReplacementRules) {
         Objects.requireNonNull(recordedData);
+        Objects.requireNonNull(textReplacementRules);
 
         this.recordedData = recordedData;
-        this.textReplacementRules = textReplacementRules == null
-            ? new HashMap<>()
-            : textReplacementRules;
+        this.textReplacementRules = textReplacementRules;
     }
 
     @Override
