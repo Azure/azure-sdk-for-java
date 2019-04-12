@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
@@ -95,7 +96,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 headerValueToStore = "0";
                 addedRetryAfter = true;
             }
-            responseData.put(header.name().toLowerCase(), headerValueToStore);
+            responseData.put(header.name().toLowerCase(Locale.US), headerValueToStore);
         }
 
         if (!addedRetryAfter) {

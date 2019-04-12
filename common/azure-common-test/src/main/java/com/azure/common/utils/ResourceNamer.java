@@ -11,8 +11,10 @@ import java.util.UUID;
  * A random string generator used in tests.
  */
 public class ResourceNamer {
-    private final String randName;
     private static final Random RANDOM = new Random();
+    private static final Locale LOCALE = Locale.US;
+
+    private final String randName;
 
     /**
      * Creates a ResourceNameGenerator that prefixes its strings with the name.
@@ -20,7 +22,7 @@ public class ResourceNamer {
      * @param name The prefix for generated strings.
      */
     public ResourceNamer(String name) {
-        this.randName = name.toLowerCase() + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase(Locale.US);
+        this.randName = name.toLowerCase(LOCALE) + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase(LOCALE);
     }
 
     /**
@@ -31,7 +33,7 @@ public class ResourceNamer {
      * @return the random name
      */
     public String randomName(String prefix, int maxLen) {
-        prefix = prefix.toLowerCase(Locale.US);
+        prefix = prefix.toLowerCase(LOCALE);
         int minRandomnessLength = 5;
         if (maxLen <= minRandomnessLength) {
             return randomString(maxLen);
@@ -66,7 +68,7 @@ public class ResourceNamer {
             str.append(UUID.randomUUID()
                 .toString()
                 .replace("-", "")
-                .substring(0, Math.min(32, length)).toLowerCase(Locale.US));
+                .substring(0, Math.min(32, length)).toLowerCase(LOCALE));
         }
         return str.toString();
     }
