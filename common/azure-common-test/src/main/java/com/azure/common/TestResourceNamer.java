@@ -6,7 +6,6 @@ package com.azure.common;
 import com.azure.common.models.RecordedData;
 import com.azure.common.utils.ResourceNamer;
 
-import java.util.LinkedList;
 import java.util.Objects;
 
 /**
@@ -16,12 +15,12 @@ import java.util.Objects;
  */
 public class TestResourceNamer extends ResourceNamer {
     private final TestMode testMode;
-    private final LinkedList<String> variables;
+    private final RecordedData recordedData;
 
-    public TestResourceNamer(String name, RecordedData recordedData, TestMode testMode) {
+    public TestResourceNamer(String name, TestMode testMode, RecordedData recordedData) {
         super(name);
         Objects.requireNonNull(recordedData);
-        this.variables = new LinkedList<>(recordedData.getVariables());
+        this.recordedData = recordedData;
         this.testMode = testMode;
     }
 
@@ -35,9 +34,11 @@ public class TestResourceNamer extends ResourceNamer {
     @Override
     public String randomName(String prefix, int maxLen) {
         if (testMode == TestMode.PLAYBACK) {
-            return getVariable();
+            return recordedData.removeVariable();
         } else {
-            return setVariable(super.randomName(prefix, maxLen));
+            String name = super.randomName(prefix, maxLen);
+            recordedData.addVariable(name);
+            return name;
         }
     }
 
@@ -49,23 +50,11 @@ public class TestResourceNamer extends ResourceNamer {
     @Override
     public String randomUuid() {
         if (testMode == TestMode.PLAYBACK) {
-            return getVariable();
+            return recordedData.removeVariable();
         } else {
-            return setVariable(super.randomUuid());
+            String uuid = super.randomUuid();
+            recordedData.addVariable(uuid);
+            return uuid;
         }
-    }
-
-    private String getVariable() {
-        synchronized (variables) {
-            return variables.remove();
-        }
-    }
-
-    private String setVariable(String variable) {
-        synchronized (variables) {
-            variables.add(variable);
-        }
-
-        return variable;
     }
 }
