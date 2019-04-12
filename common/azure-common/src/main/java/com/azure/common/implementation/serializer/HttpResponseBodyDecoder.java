@@ -1,23 +1,20 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation.serializer;
 
-import com.azure.common.http.rest.Page;
-import com.azure.common.implementation.http.PagedResponseBase;
-import com.azure.common.implementation.Base64Url;
-import com.azure.common.implementation.DateTimeRfc1123;
-import com.azure.common.exception.ServiceRequestException;
-import com.azure.common.http.rest.Response;
-import com.azure.common.http.rest.ResponseBase;
-import com.azure.common.implementation.UnixTime;
 import com.azure.common.annotations.ReturnValueWireType;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.http.rest.Page;
+import com.azure.common.http.rest.Response;
+import com.azure.common.http.rest.ResponseBase;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.Base64Url;
+import com.azure.common.implementation.DateTimeRfc1123;
+import com.azure.common.implementation.UnixTime;
+import com.azure.common.implementation.http.PagedResponseBase;
 import com.azure.common.implementation.util.FluxUtil;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Flux;
@@ -57,7 +54,7 @@ final class HttpResponseBodyDecoder {
                         .flatMap(bodyString -> {
                             try {
                                 final Object decodedErrorEntity = deserializeBody(bodyString,
-                                        decodeData.exceptionBodyType(),
+                                        decodeData.getUnexpectedException(httpResponse.statusCode()).exceptionBodyType(),
                                         null,
                                         serializer,
                                         SerializerEncoding.fromHeaders(httpResponse.headers()));
@@ -120,7 +117,7 @@ final class HttpResponseBodyDecoder {
         if (isErrorStatus(httpResponse, decodeData)) {
             // For error cases we always try to decode the non-empty response body
             // either to a strongly typed exception model or to Object
-            return decodeData.exceptionBodyType();
+            return decodeData.getUnexpectedException(httpResponse.statusCode()).exceptionBodyType();
         } else if (httpResponse.request().httpMethod() == HttpMethod.HEAD) {
             // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
             return null;

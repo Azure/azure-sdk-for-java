@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common;
 
@@ -15,7 +12,6 @@ import com.azure.common.http.MockHttpResponse;
 import com.azure.common.http.policy.UserAgentPolicy;
 import org.junit.Assert;
 import org.junit.Test;
-
 import reactor.core.publisher.Mono;
 
 import java.net.URL;

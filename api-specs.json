@@ -155,6 +155,10 @@
       "\"knownSingulars\"": ["\"redis\""]
     }
   },
+  "resourcegraph/resource-manager": {
+    "source": "specification/resourcegraph/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "resources/resource-manager": {
     "source": "specification/resources/resource-manager/readme.md",
     "args": "--multiapi --fluent"
