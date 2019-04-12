@@ -54,7 +54,7 @@ final class HttpResponseBodyDecoder {
                         .flatMap(bodyString -> {
                             try {
                                 final Object decodedErrorEntity = deserializeBody(bodyString,
-                                        decodeData.exceptionBodyType(),
+                                        decodeData.getUnexpectedException(httpResponse.statusCode()).exceptionBodyType(),
                                         null,
                                         serializer,
                                         SerializerEncoding.fromHeaders(httpResponse.headers()));
@@ -117,7 +117,7 @@ final class HttpResponseBodyDecoder {
         if (isErrorStatus(httpResponse, decodeData)) {
             // For error cases we always try to decode the non-empty response body
             // either to a strongly typed exception model or to Object
-            return decodeData.exceptionBodyType();
+            return decodeData.getUnexpectedException(httpResponse.statusCode()).exceptionBodyType();
         } else if (httpResponse.request().httpMethod() == HttpMethod.HEAD) {
             // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
             return null;
