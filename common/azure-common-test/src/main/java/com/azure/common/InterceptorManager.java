@@ -71,11 +71,7 @@ public class InterceptorManager implements AutoCloseable {
     private RecordedData readDataFromFile() throws IOException {
         File recordFile = getRecordFile(testName);
         ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-        RecordedData recordedData = mapper.readValue(recordFile, RecordedData.class);
-
-        logger.info("Total records: {}", recordedData.getNetworkCallRecords().size());
-
-        return recordedData;
+        return mapper.readValue(recordFile, RecordedData.class);
     }
 
     private void writeDataToFile() throws IOException {
