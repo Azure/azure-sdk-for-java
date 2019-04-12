@@ -23,6 +23,7 @@ public class SwaggerInterfaceParser {
     /**
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface
      * name.
+     *
      * @param swaggerInterface The interface that will be parsed.
      * @param serializer The serializer that will be used to serialize non-String header values and query values.
      */
@@ -33,6 +34,7 @@ public class SwaggerInterfaceParser {
     /**
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface
      * name.
+     *
      * @param swaggerInterface The interface that will be parsed.
      * @param serializer The serializer that will be used to serialize non-String header values and query values.
      * @param host The host of URLs that this Swagger interface targets.
@@ -42,13 +44,11 @@ public class SwaggerInterfaceParser {
 
         if (host != null && !host.isEmpty()) {
             this.host = host;
-        }
-        else {
+        } else {
             final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
             if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
                 this.host = hostAnnotation.value();
-            }
-            else {
+            } else {
                 throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
             }
         }
@@ -73,6 +73,7 @@ public class SwaggerInterfaceParser {
     /**
      * Get the desired host that the provided Swagger interface will target with its REST API
      * calls. This value is retrieved from the @Host annotation placed on the Swagger interface.
+     *
      * @return The value of the @Host annotation.
      */
     String host() {

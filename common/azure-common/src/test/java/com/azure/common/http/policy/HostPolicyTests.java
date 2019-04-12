@@ -38,11 +38,11 @@ public class HostPolicyTests {
                 return Mono.empty(); // NOP
             }
         },
-        new HostPolicy(host),
-        (context, next) -> {
-            assertEquals(expectedUrl, context.httpRequest().url().toString());
-            return next.process();
-        });
+            new HostPolicy(host),
+            (context, next) -> {
+                assertEquals(expectedUrl, context.httpRequest().url().toString());
+                return next.process();
+            });
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {

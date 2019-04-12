@@ -16,7 +16,6 @@ public class HttpPipelineNextPolicy {
 
     /**
      * Package Private ctr.
-     *
      * Creates HttpPipelineNextPolicy.
      *
      * @param pipeline the pipeline

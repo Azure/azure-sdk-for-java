@@ -13,9 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * The error type that will be thrown or returned when an unexpected status code is returned from an REST API.
- *
  * <p><strong>Example:</strong></p>
- *
  * <pre>
  * {@literal @}UnexpectedResponseExceptionType(MyCustomException.class)
  * {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
@@ -28,6 +26,7 @@ public @interface UnexpectedResponseExceptionType {
     /**
      * The type of ServiceRequestException that should be thrown/returned when the API returns an unrecognized
      * status code.
+     *
      * @return The type of RestException that should be thrown/returned.
      */
     Class<? extends ServiceRequestException> value();

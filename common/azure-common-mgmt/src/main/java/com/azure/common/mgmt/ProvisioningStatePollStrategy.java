@@ -19,6 +19,7 @@ import java.io.Serializable;
  */
 public final class ProvisioningStatePollStrategy extends PollStrategy {
     private ProvisioningStatePollStrategyData data;
+
     ProvisioningStatePollStrategy(ProvisioningStatePollStrategyData data) {
         super(data);
         setStatus(data.provisioningState);
@@ -34,9 +35,10 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
 
         /**
          * Create a new ProvisioningStatePollStrategyData.
+         *
          * @param restProxy The RestProxy that created this PollStrategy.
          * @param methodParser The method parser that describes the service interface method that
-         *                     initiated the long running operation.
+         *     initiated the long running operation.
          * @param originalRequest The HTTP response to the original HTTP request.
          * @param provisioningState The provisioning state.
          * @param delayInMilliseconds The delay value.
@@ -52,7 +54,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
         }
 
         PollStrategy initializeStrategy(RestProxy restProxy,
-                                                 SwaggerMethodParser methodParser) {
+                                        SwaggerMethodParser methodParser) {
             this.restProxy = restProxy;
             this.methodParser = methodParser;
             return new ProvisioningStatePollStrategy(this);
@@ -68,28 +70,26 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
     @Override
     Mono<HttpResponse> updateFromAsync(HttpResponse pollResponse) {
         return ensureExpectedStatus(pollResponse)
-                .flatMap(response -> {
-                        final HttpResponse bufferedHttpPollResponse = response.buffer();
-                        return bufferedHttpPollResponse.bodyAsString()
-                                .map(responseBody -> {
-                                        ResourceWithProvisioningState resource = null;
-                                        try {
-                                            resource = deserialize(responseBody, ResourceWithProvisioningState.class);
-                                        } catch (IOException ignored) {
-                                        }
+            .flatMap(response -> {
+                final HttpResponse bufferedHttpPollResponse = response.buffer();
+                return bufferedHttpPollResponse.bodyAsString()
+                    .map(responseBody -> {
+                        ResourceWithProvisioningState resource = null;
+                        try {
+                            resource = deserialize(responseBody, ResourceWithProvisioningState.class);
+                        } catch (IOException ignored) {
+                        }
 
-                                        if (resource == null || resource.properties() == null || resource.properties().provisioningState() == null) {
-                                            throw new CloudException("The polling response does not contain a valid body", bufferedHttpPollResponse, null);
-                                        }
-                                        else if (OperationState.isFailedOrCanceled(resource.properties().provisioningState())) {
-                                            throw new CloudException("Async operation failed with provisioning state: " + resource.properties().provisioningState(), bufferedHttpPollResponse);
-                                        }
-                                        else {
-                                            setStatus(resource.properties().provisioningState());
-                                        }
-                                        return bufferedHttpPollResponse;
-                                });
-                });
+                        if (resource == null || resource.properties() == null || resource.properties().provisioningState() == null) {
+                            throw new CloudException("The polling response does not contain a valid body", bufferedHttpPollResponse, null);
+                        } else if (OperationState.isFailedOrCanceled(resource.properties().provisioningState())) {
+                            throw new CloudException("Async operation failed with provisioning state: " + resource.properties().provisioningState(), bufferedHttpPollResponse);
+                        } else {
+                            setStatus(resource.properties().provisioningState());
+                        }
+                        return bufferedHttpPollResponse;
+                    });
+            });
     }
 
     @Override

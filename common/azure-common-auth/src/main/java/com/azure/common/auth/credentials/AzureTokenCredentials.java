@@ -67,7 +67,7 @@ public abstract class AzureTokenCredentials implements AsyncServiceClientCredent
                     resource = environment().applicationInsightsEndpoint();
                     break;
                 } else if (endpoint.getKey().equals(Endpoint.DATA_LAKE_STORE.identifier())
-                        || endpoint.getKey().equals(Endpoint.DATA_LAKE_ANALYTICS.identifier())) {
+                    || endpoint.getKey().equals(Endpoint.DATA_LAKE_ANALYTICS.identifier())) {
                     resource = environment().dataLakeEndpointResourceId();
                     break;
                 }
@@ -132,6 +132,7 @@ public abstract class AzureTokenCredentials implements AsyncServiceClientCredent
 
     /**
      * Set the proxy used for accessing Active Directory.
+     *
      * @param proxy the proxy to use
      * @return the credential itself
      */

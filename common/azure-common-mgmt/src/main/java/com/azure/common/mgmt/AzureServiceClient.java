@@ -36,6 +36,7 @@ public abstract class AzureServiceClient extends ServiceClient {
 
     /**
      * Get the environment that this AzureServiceClient targets.
+     *
      * @return the environment that this AzureServiceClient targets.
      */
     public AzureEnvironment azureEnvironment() {

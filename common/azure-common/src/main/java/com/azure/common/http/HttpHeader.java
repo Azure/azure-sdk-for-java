@@ -5,7 +5,6 @@ package com.azure.common.http;
 
 /**
  * A single header within a HTTP request or response.
- *
  * If multiple header values are added to a HTTP request or response with
  * the same name (case-insensitive), then the values will be appended
  * to the end of the same Header with commas separating them.

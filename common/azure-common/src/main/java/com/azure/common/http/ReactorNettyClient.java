@@ -44,7 +44,7 @@ class ReactorNettyClient implements HttpClient {
     }
 
     /**
-     *  Creates ReactorNettyClient with provided http client with configuration applied.
+     * Creates ReactorNettyClient with provided http client with configuration applied.
      *
      * @param httpClient the reactor http client
      * @param config the configuration to apply on the http client
@@ -60,11 +60,11 @@ class ReactorNettyClient implements HttpClient {
         Objects.requireNonNull(request.url().getProtocol());
         //
         Mono<HttpResponse> response = httpClient
-                .request(HttpMethod.valueOf(request.httpMethod().toString()))
-                .uri(request.url().toString())
-                .send(bodySendDelegate(request))
-                .responseConnection(responseDelegate(request))
-                .single();
+            .request(HttpMethod.valueOf(request.httpMethod().toString()))
+            .uri(request.url().toString())
+            .send(bodySendDelegate(request))
+            .responseConnection(responseDelegate(request))
+            .single();
         return response;
     }
 

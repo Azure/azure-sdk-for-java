@@ -37,7 +37,7 @@ public class UserTokenCredentials extends AzureTokenCredentials {
      * @param username the user name for the Organization Id account.
      * @param password the password for the Organization Id account.
      * @param environment the Azure environment to authenticate with.
-     *                    If null is provided, AzureEnvironment.AZURE will be used.
+     *     If null is provided, AzureEnvironment.AZURE will be used.
      */
     public UserTokenCredentials(String clientId, String domain, String username, String password, AzureEnvironment environment) {
         super(environment, domain); // defer token acquisition
@@ -84,9 +84,9 @@ public class UserTokenCredentials extends AzureTokenCredentials {
 
         if (shouldRefresh) {
             return Mono.defer(() -> acquireAccessTokenFromRefreshToken(resource, authenticationResult[0].getRefreshToken(), authenticationResult[0].isMultipleResourceRefreshToken())
-                    .onErrorResume(t -> acquireNewAccessToken(resource))
-                    .doOnNext(ar -> tokens.put(resource, ar))
-                    .then(Mono.just(tokens.get(resource).getAccessToken())));
+                .onErrorResume(t -> acquireNewAccessToken(resource))
+                .doOnNext(ar -> tokens.put(resource, ar))
+                .then(Mono.just(tokens.get(resource).getAccessToken())));
         } else {
             return Mono.just(tokens.get(resource).getAccessToken());
         }
@@ -107,11 +107,11 @@ public class UserTokenCredentials extends AzureTokenCredentials {
             }
             return Mono.create(callback -> {
                 context.acquireToken(
-                        resource,
-                        this.clientId(),
-                        this.username(),
-                        this.password,
-                        Util.authenticationDelegate(callback));
+                    resource,
+                    this.clientId(),
+                    this.username(),
+                    this.password,
+                    Util.authenticationDelegate(callback));
             });
         });
         return authMono.doFinally(s -> executor.shutdown());
@@ -133,10 +133,10 @@ public class UserTokenCredentials extends AzureTokenCredentials {
             }
             return Mono.create(callback -> {
                 context.acquireTokenByRefreshToken(
-                        refreshToken,
-                        clientId(),
-                        resource,
-                        Util.authenticationDelegate(callback));
+                    refreshToken,
+                    clientId(),
+                    resource,
+                    Util.authenticationDelegate(callback));
             });
         });
         return authMono.doFinally(s -> executor.shutdown());

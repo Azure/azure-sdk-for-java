@@ -53,6 +53,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
     /**
      * Creates an instance of FlatteningSerializer.
+     *
      * @param vc handled type
      * @param defaultSerializer the default JSON serializer
      * @param mapper the object mapper for default serializations
@@ -105,10 +106,10 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         }
 
         if (value.getClass().isPrimitive()
-                || value.getClass().isEnum()
-                || value instanceof OffsetDateTime
-                || value instanceof Duration
-                || value instanceof String) {
+            || value.getClass().isEnum()
+            || value instanceof OffsetDateTime
+            || value instanceof Duration
+            || value instanceof String) {
             return;
         }
 
@@ -203,8 +204,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                     source.add((ObjectNode) field.getValue());
                     target.add((ObjectNode) outNode);
                 } else if (field.getValue() instanceof ArrayNode
-                        && (field.getValue()).size() > 0
-                        && (field.getValue()).get(0) instanceof ObjectNode) {
+                    && (field.getValue()).size() > 0
+                    && (field.getValue()).get(0) instanceof ObjectNode) {
                     Iterator<JsonNode> sourceIt = field.getValue().elements();
                     Iterator<JsonNode> targetIt = outNode.elements();
                     while (sourceIt.hasNext()) {

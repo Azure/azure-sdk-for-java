@@ -36,6 +36,7 @@ public class MSIConfigurationForAppService {
     public AzureEnvironment azureEnvironment() {
         return this.environment;
     }
+
     /**
      * @return the audience identifying who will consume the token.
      */
@@ -45,6 +46,7 @@ public class MSIConfigurationForAppService {
         }
         return this.resource;
     }
+
     /**
      * @return the endpoint from which token needs to be retrieved.
      */
@@ -54,6 +56,7 @@ public class MSIConfigurationForAppService {
         }
         return this.msiEndpoint;
     }
+
     /**
      * @return the secret to use to retrieve the token.
      */
@@ -63,33 +66,33 @@ public class MSIConfigurationForAppService {
         }
         return this.msiSecret;
     }
+
     /**
      * Specifies the token audience.
      *
      * @param resource the audience of the token.
-     *
      * @return MSIConfigurationForAppService
      */
     public MSIConfigurationForAppService withResource(String resource) {
         this.resource = resource;
         return this;
     }
+
     /**
      * Specifies the endpoint from which token needs to retrieved.
      *
      * @param msiEndpoint the token endpoint.
-     *
      * @return MSIConfigurationForAppService
      */
     public MSIConfigurationForAppService withMsiEndpoint(String msiEndpoint) {
         this.msiSecret = msiEndpoint;
         return this;
     }
+
     /**
      * Specifies secret to use to retrieve the token.
      *
      * @param msiSecret the secret.
-     *
      * @return MSIConfigurationForAppService
      */
     public MSIConfigurationForAppService withMsiSecret(String msiSecret) {

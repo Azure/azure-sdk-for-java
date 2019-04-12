@@ -38,7 +38,6 @@ public final class HttpResponseDecoder {
 
     /**
      * A decorated HTTP response which has subscribable body and headers that supports lazy decoding.
-     *
      * Subscribing to body kickoff http content reading, it's decoding then emission of decoded object.
      * Subscribing to header kickoff header decoding and emission of decoded object.
      */
@@ -84,8 +83,8 @@ public final class HttpResponseDecoder {
         public Mono<Object> decodedBody() {
             if (this.bodyCached == null) {
                 this.bodyCached = HttpResponseBodyDecoder.decode(this.response,
-                        this.serializer,
-                        this.decodeData).cache();
+                    this.serializer,
+                    this.decodeData).cache();
             }
             return this.bodyCached;
         }
@@ -99,15 +98,15 @@ public final class HttpResponseDecoder {
         public Mono<Object> decodedHeaders() {
             if (this.headersCached == null) {
                 this.headersCached = HttpResponseHeaderDecoder.decode(this.response,
-                        this.serializer,
-                        this.decodeData).cache();
+                    this.serializer,
+                    this.decodeData).cache();
             }
             return this.headersCached;
         }
 
         /**
          * @return the {@code java.lang.reflect.Type} used to decode the response body,
-         * null if the body is not decodable
+         *     null if the body is not decodable
          */
         public Type decodedType() {
             return HttpResponseBodyDecoder.decodedType(this.response, this.decodeData);

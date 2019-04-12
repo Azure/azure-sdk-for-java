@@ -23,11 +23,11 @@ public final class Validator {
     /**
      * Private Ctr.
      */
-    private Validator() { }
+    private Validator() {
+    }
 
     /**
      * Validates a user provided required parameter to be not null.
-     *
      * An {@link IllegalArgumentException} is thrown if a property fails the validation.
      *
      * @param parameter the parameter to validate
@@ -41,23 +41,23 @@ public final class Validator {
 
         Class<?> type = parameter.getClass();
         if (type == Double.class
-                || type == Float.class
-                || type == Long.class
-                || type == Integer.class
-                || type == Short.class
-                || type == Character.class
-                || type == Byte.class
-                || type == Boolean.class) {
+            || type == Float.class
+            || type == Long.class
+            || type == Integer.class
+            || type == Short.class
+            || type == Character.class
+            || type == Byte.class
+            || type == Boolean.class) {
             type = wrapperToPrimitive(type);
         }
         if (type.isPrimitive()
-                || type.isEnum()
-                || type.isAssignableFrom(Class.class)
-                || type.isAssignableFrom(LocalDate.class)
-                || type.isAssignableFrom(OffsetDateTime.class)
-                || type.isAssignableFrom(String.class)
-                || type.isAssignableFrom(DateTimeRfc1123.class)
-                || type.isAssignableFrom(Duration.class)) {
+            || type.isEnum()
+            || type.isAssignableFrom(Class.class)
+            || type.isAssignableFrom(LocalDate.class)
+            || type.isAssignableFrom(OffsetDateTime.class)
+            || type.isAssignableFrom(String.class)
+            || type.isAssignableFrom(DateTimeRfc1123.class)
+            || type.isAssignableFrom(Duration.class)) {
             return;
         }
 
@@ -136,15 +136,13 @@ public final class Validator {
                         for (Object item : items) {
                             Validator.validate(item);
                         }
-                    }
-                    else if (Map.class.isAssignableFrom(propertyType)) {
+                    } else if (Map.class.isAssignableFrom(propertyType)) {
                         Map<?, ?> entries = (Map<?, ?>) property;
                         for (Map.Entry<?, ?> entry : entries.entrySet()) {
                             Validator.validate(entry.getKey());
                             Validator.validate(entry.getValue());
                         }
-                    }
-                    else if (parameter.getClass() != propertyType) {
+                    } else if (parameter.getClass() != propertyType) {
                         Validator.validate(property);
                     }
                 } catch (IllegalArgumentException ex) {

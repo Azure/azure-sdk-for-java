@@ -132,7 +132,7 @@ public final class TypeUtil {
 
     /**
      * Determines if a type is the same or a subtype for another type.
-     * 
+     *
      * @param subType the supposed sub type
      * @param superType the supposed super type
      * @return true if the first type is the same or a subtype for the second type

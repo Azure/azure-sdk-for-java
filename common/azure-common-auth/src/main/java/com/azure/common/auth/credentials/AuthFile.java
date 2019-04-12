@@ -47,6 +47,7 @@ final class AuthFile {
 
     /**
      * Parses an auth file and read into an AuthFile object.
+     *
      * @param file the auth file to read
      * @return the AuthFile object created
      * @throws IOException thrown when the auth file or the certificate file cannot be read or parsed
@@ -57,7 +58,8 @@ final class AuthFile {
         AuthFile authFile;
         if (isJsonBased(content)) {
             authFile = ADAPTER.deserialize(content, AuthFile.class, SerializerEncoding.JSON);
-            Map<String, String> endpoints = ADAPTER.deserialize(content, new TypeToken<Map<String, String>>() { }.getType(), SerializerEncoding.JSON);
+            Map<String, String> endpoints = ADAPTER.deserialize(content, new TypeToken<Map<String, String>>() {
+            }.getType(), SerializerEncoding.JSON);
             authFile.environment.endpoints().putAll(endpoints);
         } else {
             // Set defaults
@@ -101,10 +103,10 @@ final class AuthFile {
     ApplicationTokenCredentials generateCredentials() throws IOException {
         if (clientSecret != null) {
             return (ApplicationTokenCredentials) new ApplicationTokenCredentials(
-                    clientId,
-                    tenantId,
-                    clientSecret,
-                    environment).withDefaultSubscriptionId(subscriptionId);
+                clientId,
+                tenantId,
+                clientSecret,
+                environment).withDefaultSubscriptionId(subscriptionId);
         } else if (clientCertificate != null) {
             byte[] certData;
             if (new File(clientCertificate).exists()) {
@@ -114,11 +116,11 @@ final class AuthFile {
             }
 
             return (ApplicationTokenCredentials) new ApplicationTokenCredentials(
-                    clientId,
-                    tenantId,
-                    certData,
-                    clientCertificatePassword,
-                    environment).withDefaultSubscriptionId(subscriptionId);
+                clientId,
+                tenantId,
+                certData,
+                clientCertificatePassword,
+                environment).withDefaultSubscriptionId(subscriptionId);
         } else {
             throw new IllegalArgumentException("Please specify either a client key or a client certificate.");
         }

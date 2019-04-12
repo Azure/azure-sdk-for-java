@@ -96,7 +96,7 @@ final class AzureCliSubscription {
                 tenant(),
                 servicePrincipalToken.accessToken(),
                 environment()
-                );
+            );
         } else {
             credentialInstance = new UserTokenCredentials(clientId(), tenant(), null, null, environment()) {
                 @Override
@@ -120,15 +120,15 @@ final class AzureCliSubscription {
                     if (shouldRefresh) {
                         AzureCliToken finalToken = token;
                         return acquireAccessTokenFromRefreshToken(resource, token.refreshToken(), token.isMRRT())
-                                .map(authenticationResult -> {
-                                    try {
-                                        AzureCliToken newToken = finalToken.clone().withResource(resource).withAuthenticationResult(authenticationResult);
-                                        userTokens.put(resource, newToken);
-                                        return newToken.accessToken();
-                                    } catch (CloneNotSupportedException cnse) {
-                                        throw Exceptions.propagate(cnse);
-                                    }
-                                });
+                            .map(authenticationResult -> {
+                                try {
+                                    AzureCliToken newToken = finalToken.clone().withResource(resource).withAuthenticationResult(authenticationResult);
+                                    userTokens.put(resource, newToken);
+                                    return newToken.accessToken();
+                                } catch (CloneNotSupportedException cnse) {
+                                    throw Exceptions.propagate(cnse);
+                                }
+                            });
                     } else {
                         return Mono.error(new RuntimeException("No refresh token available for user " + getUserName()));
                     }

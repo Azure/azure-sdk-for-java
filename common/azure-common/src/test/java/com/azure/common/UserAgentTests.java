@@ -20,18 +20,18 @@ public class UserAgentTests {
     @Test
     public void defaultUserAgentTests() throws Exception {
         final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    Assert.assertEquals(
-                            request.headers().value("User-Agent"),
-                            "AutoRest-Java");
-                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
-                }
-            },
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                Assert.assertEquals(
+                    request.headers().value("User-Agent"),
+                    "AutoRest-Java");
+                return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
+            }
+        },
             new UserAgentPolicy("AutoRest-Java"));
 
         HttpResponse response = pipeline.send(new HttpRequest(
-                HttpMethod.GET, new URL("http://localhost"))).block();
+            HttpMethod.GET, new URL("http://localhost"))).block();
 
         Assert.assertEquals(200, response.statusCode());
     }
@@ -40,16 +40,16 @@ public class UserAgentTests {
     public void customUserAgentTests() throws Exception {
         final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient() {
             @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    String header = request.headers().value("User-Agent");
-                    Assert.assertEquals("Awesome", header);
-                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
-                }
-            },
+            public Mono<HttpResponse> send(HttpRequest request) {
+                String header = request.headers().value("User-Agent");
+                Assert.assertEquals("Awesome", header);
+                return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
+            }
+        },
             new UserAgentPolicy("Awesome"));
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost"))).block();
+            new URL("http://localhost"))).block();
         Assert.assertEquals(200, response.statusCode());
     }
 }

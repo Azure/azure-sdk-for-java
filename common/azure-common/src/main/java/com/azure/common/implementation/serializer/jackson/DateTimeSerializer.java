@@ -41,6 +41,7 @@ final class DateTimeSerializer extends JsonSerializer<OffsetDateTime> {
 
     /**
      * Convert the provided OffsetDateTime to its String representation.
+     *
      * @param offsetDateTime The OffsetDateTime to convert.
      * @return The String representation of the provided offsetDateTime.
      */

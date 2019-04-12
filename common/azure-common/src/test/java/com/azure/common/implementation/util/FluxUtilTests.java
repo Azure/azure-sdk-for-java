@@ -35,23 +35,23 @@ public class FluxUtilTests {
         stream.write("hello there".getBytes(StandardCharsets.UTF_8));
         stream.close();
 
-        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath() , StandardOpenOption.READ)) {
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel, 1, 3)
-                    .map(bb -> {
-                        byte[] bt = toBytes(bb);
-                        ReferenceCountUtil.release(bb);
-                        return bt;
+                .map(bb -> {
+                    byte[] bt = toBytes(bb);
+                    ReferenceCountUtil.release(bb);
+                    return bt;
+                })
+                .collect(() -> new ByteArrayOutputStream(),
+                    (bos, b) -> {
+                        try {
+                            bos.write(b);
+                        } catch (IOException ioe) {
+                            throw Exceptions.propagate(ioe);
+                        }
                     })
-                    .collect(() -> new ByteArrayOutputStream(),
-                        (bos, b) -> {
-                            try {
-                                bos.write(b);
-                            } catch (IOException ioe) {
-                                throw Exceptions.propagate(ioe);
-                            }
-                        })
-                    .block()
-                    .toByteArray();
+                .block()
+                .toByteArray();
             assertEquals("ell", new String(bytes, StandardCharsets.UTF_8));
         } catch (IOException ioe) {
 
@@ -65,20 +65,20 @@ public class FluxUtilTests {
 
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel, 1, 3)
-                    .map(bb -> {
-                        byte[] bt = toBytes(bb);
-                        ReferenceCountUtil.release(bb);
-                        return bt;
+                .map(bb -> {
+                    byte[] bt = toBytes(bb);
+                    ReferenceCountUtil.release(bb);
+                    return bt;
+                })
+                .collect(() -> new ByteArrayOutputStream(),
+                    (bos, b) -> {
+                        try {
+                            bos.write(b);
+                        } catch (IOException ioe) {
+                            throw Exceptions.propagate(ioe);
+                        }
                     })
-                    .collect(() -> new ByteArrayOutputStream(),
-                            (bos, b) -> {
-                                try {
-                                    bos.write(b);
-                                } catch (IOException ioe) {
-                                    throw Exceptions.propagate(ioe);
-                                }
-                            })
-                    .block().toByteArray();
+                .block().toByteArray();
             assertEquals(0, bytes.length);
         }
         assertTrue(file.delete());
@@ -92,24 +92,24 @@ public class FluxUtilTests {
         stream.close();
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel)
-                    .map(bb -> {
-                        byte[] bt = toBytes(bb);
-                        ReferenceCountUtil.release(bb);
-                        return bt;
+                .map(bb -> {
+                    byte[] bt = toBytes(bb);
+                    ReferenceCountUtil.release(bb);
+                    return bt;
+                })
+                .limitRequest(1)
+                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+                .collect(() -> new ByteArrayOutputStream(),
+                    (bos, b) -> {
+                        try {
+                            bos.write(b);
+                        } catch (IOException ioe) {
+                            throw Exceptions.propagate(ioe);
+                        }
                     })
-                    .limitRequest(1)
-                    .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .collect(() -> new ByteArrayOutputStream(),
-                            (bos, b) -> {
-                                try {
-                                    bos.write(b);
-                                } catch (IOException ioe) {
-                                    throw Exceptions.propagate(ioe);
-                                }
-                            })
-                    .block()
-                    .toByteArray();
+                .block()
+                .toByteArray();
             assertEquals("hello there", new String(bytes, StandardCharsets.UTF_8));
         }
         assertTrue(file.delete());
@@ -128,26 +128,26 @@ public class FluxUtilTests {
                 digest.update(array);
             }
         }
-        System.out.println("long input file size="+ file.length()/(1024*1024) + "MB");
+        System.out.println("long input file size=" + file.length() / (1024 * 1024) + "MB");
         byte[] expected = digest.digest();
         digest.reset();
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             FluxUtil.byteBufStreamFromFile(channel)
-                    .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .toIterable().forEach(bb -> {
-                        digest.update(bb.nioBuffer());
-                        ReferenceCountUtil.release(bb);
-                    });
+                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+                .toIterable().forEach(bb -> {
+                digest.update(bb.nioBuffer());
+                ReferenceCountUtil.release(bb);
+            });
 
             assertArrayEquals(expected, digest.digest());
         }
         assertTrue(file.delete());
     }
 
-      @Test
-      @Ignore("Need to sync with smaldini to find equivalent for rx.test.awaitDone")
-      public void testBackpressureLongInput() throws IOException, NoSuchAlgorithmException {
+    @Test
+    @Ignore("Need to sync with smaldini to find equivalent for rx.test.awaitDone")
+    public void testBackpressureLongInput() throws IOException, NoSuchAlgorithmException {
 //        File file = new File("target/test4");
 //        byte[] array = "1234567690".getBytes(StandardCharsets.UTF_8);
 //        MessageDigest digest = MessageDigest.getInstance("MD5");
@@ -181,14 +181,14 @@ public class FluxUtilTests {
 //
 //        assertArrayEquals(expected, digest.digest());
 //        assertTrue(file.delete());
-      }
-    
+    }
+
     @Test
     public void testSplitForMultipleSplitSizesFromOneTo16() throws NoSuchAlgorithmException {
         ByteBuf bb = null;
         try {
             bb = Unpooled.directBuffer(1000);
-            byte [] oneByte = new byte[1];
+            byte[] oneByte = new byte[1];
             for (int i = 0; i < 1000; i++) {
                 oneByte[0] = (byte) i;
                 bb.writeBytes(oneByte);
@@ -202,7 +202,7 @@ public class FluxUtilTests {
                 bb.readerIndex(0);
                 //
                 FluxUtil.split(bb, 3).doOnNext(b -> digest.update(b.nioBuffer()))
-                        .subscribe();
+                    .subscribe();
 //
 //            StepVerifier.create(FluxUtil1.split(bb, 3).doOnNext(b -> digest.update(b)))
 //                    .expectNextCount(?) // TODO: ? is Unknown. Check with smaldini - what is the Verifier way to ignore all next calls and simply check stream completes?
@@ -216,16 +216,16 @@ public class FluxUtilTests {
             }
         }
     }
-    
+
     @Test
     public void testSplitOnEmptyContent() {
         ByteBuf bb = null;
         try {
             bb = Unpooled.directBuffer(16);
             StepVerifier.create(FluxUtil.split(bb, 3))
-                    .expectNextCount(0)
-                    .expectComplete()
-                    .verify();
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
         } finally {
             if (bb != null) {
                 bb.release();
@@ -240,13 +240,14 @@ public class FluxUtilTests {
 
     @Test
     public void toByteArrayWithNonEmptyByteBuffer() {
-        final ByteBuf byteBuffer = Unpooled.wrappedBuffer(new byte[] { 0, 1, 2, 3, 4 });
+        final ByteBuf byteBuffer = Unpooled.wrappedBuffer(new byte[] {0, 1, 2, 3, 4});
         assertEquals(5, byteBuffer.readableBytes());
         final byte[] byteArray = FluxUtil.byteBufToArray(byteBuffer);
-        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4 }, byteArray);
+        assertArrayEquals(new byte[] {0, 1, 2, 3, 4}, byteArray);
         assertEquals(5, byteBuffer.readableBytes());
     }
-//
+
+    //
     private static byte[] toBytes(ByteBuf bb) {
         byte[] bytes = new byte[bb.readableBytes()];
         bb.readBytes(bytes);

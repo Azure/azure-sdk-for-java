@@ -64,6 +64,7 @@ public class RequestIdPolicyTests {
     public void newRequestIdForEachCall() throws Exception {
         HttpPipeline pipeline = new HttpPipeline(new MockHttpClient() {
             String firstRequestId = null;
+
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
                 if (firstRequestId != null) {
@@ -79,7 +80,7 @@ public class RequestIdPolicyTests {
                 return Mono.just(mockResponse);
             }
         },
-        new RequestIdPolicy());
+            new RequestIdPolicy());
 
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
@@ -104,8 +105,8 @@ public class RequestIdPolicyTests {
                 return Mono.just(mockResponse);
             }
         },
-        new RequestIdPolicy(),
-        new RetryPolicy(1, Duration.of(0, ChronoUnit.SECONDS)));
+            new RequestIdPolicy(),
+            new RetryPolicy(1, Duration.of(0, ChronoUnit.SECONDS)));
 
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
     }

@@ -15,6 +15,7 @@ public class MissingRequiredAnnotationException extends RuntimeException {
     /**
      * Create a new MissingRequiredAnnotationException for the provided missing required annotation
      * on the provided swaggerInterface.
+     *
      * @param requiredAnnotation The annotation that is required.
      * @param swaggerInterface The swagger interface that is missing the required annotation.
      */
@@ -25,6 +26,7 @@ public class MissingRequiredAnnotationException extends RuntimeException {
     /**
      * Create a new MissingRequiredAnnotationException for the provided missing required annotation
      * on the provided swaggerInterface method.
+     *
      * @param requiredAnnotation The annotation that is required.
      * @param swaggerInterfaceMethod The swagger interface method that is missing the required annotation.
      */
@@ -35,6 +37,7 @@ public class MissingRequiredAnnotationException extends RuntimeException {
     /**
      * Create a new MissingRequiredAnnotationException for the provided missing required annotation
      * options on the provided swaggerInterface method.
+     *
      * @param requiredAnnotationOptions The options for the annotation that is required.
      * @param swaggerInterfaceMethod The swagger interface method that is missing the required annotation.
      */

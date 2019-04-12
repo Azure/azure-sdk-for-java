@@ -13,19 +13,19 @@ import java.util.Date;
 
 public class UserTokenCredentialsTests {
     private static MockUserTokenCredentials credentials = new MockUserTokenCredentials(
-            "clientId",
-            "domain",
-            "username",
-            "password",
-            AzureEnvironment.AZURE
+        "clientId",
+        "domain",
+        "username",
+        "password",
+        AzureEnvironment.AZURE
     );
 
     @Test
     public void testAcquireToken() throws Exception {
         credentials.acquireAccessToken();
-        Assert.assertEquals("token1", credentials.getToken((String)null).block());
+        Assert.assertEquals("token1", credentials.getToken((String) null).block());
         Thread.sleep(1500);
-        Assert.assertEquals("token2", credentials.getToken((String)null).block());
+        Assert.assertEquals("token2", credentials.getToken((String) null).block());
     }
 
     public static class MockUserTokenCredentials extends UserTokenCredentials {
@@ -48,24 +48,24 @@ public class UserTokenCredentialsTests {
 
         private void acquireAccessToken() {
             this.authenticationResult = new AuthenticationResult(
-                    null,
-                    "token1",
-                    "refresh",
-                    1,
-                    null,
-                    null,
-                    false);
+                null,
+                "token1",
+                "refresh",
+                1,
+                null,
+                null,
+                false);
         }
 
         private void acquireAccessTokenFromRefreshToken() {
             this.authenticationResult = new AuthenticationResult(
-                    null,
-                    "token2",
-                    "refresh",
-                    1,
-                    null,
-                    null,
-                    false);
+                null,
+                "token2",
+                "refresh",
+                1,
+                null,
+                null,
+                false);
         }
     }
 }

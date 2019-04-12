@@ -10,18 +10,13 @@ import java.lang.annotation.Target;
 
 /**
  * HTTP DELETE method annotation describing the parameterized relative path to a REST endpoint for resource deletion.
- *
  * <p>The required value can be either a relative path or an absolute path. When it's an absolute path, it must start
  * with a protocol or a parameterized segment (otherwise the parse cannot tell if it's absolute or relative).</p>
- *
  * <p><strong>Example 1: Relative path segments</strong></p>
- *
  * <pre>
  * {@literal @}DELETE("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
  *  void delete(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);</pre>
- *
  * <p><strong>Example 2: Absolute path segment</strong></p>
- *
  * <pre>
  * {@literal @}DELETE({vaultBaseUrl}/secrets/{secretName})
  *  void delete(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl, @PathParam("secretName") String secretName);</pre>
@@ -31,6 +26,7 @@ import java.lang.annotation.Target;
 public @interface DELETE {
     /**
      * Get the relative path of the annotated method's DELETE URL.
+     *
      * @return The relative path of the annotated method's DELETE URL.
      */
     String value();

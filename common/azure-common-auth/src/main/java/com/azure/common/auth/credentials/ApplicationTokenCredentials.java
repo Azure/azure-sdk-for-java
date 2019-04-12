@@ -45,7 +45,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
      * @param domain the domain or tenant id containing this application.
      * @param secret the authentication secret for the application.
      * @param environment the Azure environment to authenticate with.
-     *                    If null is provided, AzureEnvironment.AZURE will be used.
+     *     If null is provided, AzureEnvironment.AZURE will be used.
      */
     public ApplicationTokenCredentials(String clientId, String domain, String secret, AzureEnvironment environment) {
         super(environment, domain); // defer token acquisition
@@ -62,7 +62,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
      * @param certificate the PKCS12 certificate file content
      * @param password the password to the certificate file
      * @param environment the Azure environment to authenticate with.
-     *                    If null is provided, AzureEnvironment.AZURE will be used.
+     *     If null is provided, AzureEnvironment.AZURE will be used.
      */
     public ApplicationTokenCredentials(String clientId, String domain, byte[] certificate, String password, AzureEnvironment environment) {
         super(environment, domain);
@@ -76,7 +76,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
      * Initializes the credentials based on the provided credentials file.
      *
      * @param credentialsFile A  file with credentials, using the standard Java properties format.
-     * and the following keys:
+     *     and the following keys:
      *     subscription=&lt;subscription-id&gt;
      *     tenant=&lt;tenant-id&gt;
      *     client=&lt;client-id&gt;
@@ -84,15 +84,14 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
      *     managementURI=&lt;management-URI&gt;
      *     baseURL=&lt;base-URL&gt;
      *     authURL=&lt;authentication-URL&gt;
-     * or a JSON format and the following keys
-     * {
+     *     or a JSON format and the following keys
+     *     {
      *     "clientId": "&lt;client-id&gt;",
      *     "clientSecret": "&lt;client-key&gt;",
      *     "subscriptionId": "&lt;subscription-id&gt;",
      *     "tenantId": "&lt;tenant-id&gt;",
-     * }
-     * and any custom endpoints listed in {@link AzureEnvironment}.
-     *
+     *     }
+     *     and any custom endpoints listed in {@link AzureEnvironment}.
      * @return The credentials based on the file.
      * @throws IOException exception thrown from file access errors.
      */
@@ -128,10 +127,10 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
             return Mono.just(authenticationResult.getAccessToken());
         } else {
             return acquireAccessToken(resource)
-                    .map(ar -> {
-                        tokens.put(resource, ar);
-                        return ar.getAccessToken();
-                    });
+                .map(ar -> {
+                    tokens.put(resource, ar);
+                    return ar.getAccessToken();
+                });
         }
     }
 
@@ -152,26 +151,26 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         if (clientSecret != null) {
             authMono = Mono.create(callback -> {
                 context.acquireToken(
-                        resource,
-                        new ClientCredential(this.clientId(), clientSecret),
-                        Util.authenticationDelegate(callback));
+                    resource,
+                    new ClientCredential(this.clientId(), clientSecret),
+                    Util.authenticationDelegate(callback));
             });
         } else if (clientCertificate != null && clientCertificatePassword != null) {
             authMono = Mono.create(callback -> {
                 AsymmetricKeyCredential keyCredential = Util.createAsymmetricKeyCredential(clientId, clientCertificate, clientCertificatePassword);
                 context.acquireToken(
-                        resource,
-                        keyCredential,
-                        Util.authenticationDelegate(callback));
+                    resource,
+                    keyCredential,
+                    Util.authenticationDelegate(callback));
             });
         } else if (clientCertificate != null) {
             AsymmetricKeyCredential keyCredential = AsymmetricKeyCredential.create(clientId(), Util.privateKeyFromPem(new String(clientCertificate, StandardCharsets.UTF_8)),
                 Util.publicKeyFromPem(new String(clientCertificate, StandardCharsets.UTF_8)));
             authMono = Mono.create(callback -> {
                 context.acquireToken(
-                        resource,
-                        keyCredential,
-                        Util.authenticationDelegate(callback));
+                    resource,
+                    keyCredential,
+                    Util.authenticationDelegate(callback));
             });
         } else {
             authMono = Mono.error(new AuthenticationException("Please provide either a non-null secret or a non-null certificate."));

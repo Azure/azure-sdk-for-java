@@ -50,6 +50,7 @@ public class MSIConfigurationForVirtualMachine {
         }
         return this.tokenSource;
     }
+
     /**
      * @return the audience identifying who will consume the token.
      */
@@ -59,24 +60,28 @@ public class MSIConfigurationForVirtualMachine {
         }
         return this.resource;
     }
+
     /**
      * @return the principal id of user assigned or system assigned identity.
      */
     public String objectId() {
         return this.objectId;
     }
+
     /**
      * @return the client id of user assigned or system assigned identity.
      */
     public String clientId() {
         return this.clientId;
     }
+
     /**
      * @return the ARM resource id of the user assigned identity resource.
      */
     public String identityId() {
         return this.identityId;
     }
+
     /**
      * @return the port of token retrieval service running in the extension.
      */
@@ -98,7 +103,6 @@ public class MSIConfigurationForVirtualMachine {
      * Specifies the token retrieval source.
      *
      * @param tokenSource the source of token
-     *
      * @return MSIConfigurationForVirtualMachine
      */
     public MSIConfigurationForVirtualMachine withTokenSource(MSITokenSource tokenSource) {
@@ -110,7 +114,6 @@ public class MSIConfigurationForVirtualMachine {
      * Specifies the token audience.
      *
      * @param resource the audience of the token.
-     *
      * @return MSIConfigurationForVirtualMachine
      */
     public MSIConfigurationForVirtualMachine withResource(String resource) {

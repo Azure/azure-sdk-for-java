@@ -50,28 +50,28 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next, final HttpRequest originalHttpRequest, final int tryCount) {
         context.withHttpRequest(originalHttpRequest.buffer());
         return next.clone().process()
-                .flatMap(httpResponse -> {
-                    if (shouldRetry(httpResponse, tryCount)) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(this.delayDuration);
-                    } else {
-                        return Mono.just(httpResponse);
-                    }
-                })
-                .onErrorResume(err -> {
-                    if (tryCount < maxRetries) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(this.delayDuration);
-                    } else {
-                        return Mono.error(err);
-                    }
-                });
+            .flatMap(httpResponse -> {
+                if (shouldRetry(httpResponse, tryCount)) {
+                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(this.delayDuration);
+                } else {
+                    return Mono.just(httpResponse);
+                }
+            })
+            .onErrorResume(err -> {
+                if (tryCount < maxRetries) {
+                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(this.delayDuration);
+                } else {
+                    return Mono.error(err);
+                }
+            });
     }
 
     private boolean shouldRetry(HttpResponse response, int tryCount) {
         int code = response.statusCode();
         return tryCount < maxRetries
-                && (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
-                || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
-                && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
-                && code != HttpURLConnection.HTTP_VERSION));
+            && (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
+            || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
+            && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
+            && code != HttpURLConnection.HTTP_VERSION));
     }
 }

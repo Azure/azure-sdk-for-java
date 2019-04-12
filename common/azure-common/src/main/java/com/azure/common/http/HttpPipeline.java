@@ -23,8 +23,8 @@ public final class HttpPipeline {
      *
      * @param httpClient the http client to write request to wire and receive response from wire.
      * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this array will
-     *                                  be made hence changing the original array after the creation of pipeline
-     *                                  will not  mutate the pipeline
+     *     be made hence changing the original array after the creation of pipeline
+     *     will not  mutate the pipeline
      */
     public HttpPipeline(HttpClient httpClient, HttpPipelinePolicy... pipelinePolicies) {
         Objects.requireNonNull(httpClient);
@@ -36,13 +36,12 @@ public final class HttpPipeline {
     /**
      * Creates a HttpPipeline holding array of policies that gets applied all request initiated through
      * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
-     *
      * The default HttpClient {@link HttpClient#createDefault()} will be used to write request to wire and
      * receive response from wire.
      *
      * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this array will
-     *                                  be made hence changing the original array after the creation of pipeline
-     *                                  will not  mutate the pipeline
+     *     be made hence changing the original array after the creation of pipeline
+     *     will not  mutate the pipeline
      */
     public HttpPipeline(HttpPipelinePolicy... pipelinePolicies) {
         this(HttpClient.createDefault(), pipelinePolicies);
@@ -54,8 +53,8 @@ public final class HttpPipeline {
      *
      * @param httpClient the http client to write request to wire and receive response from wire.
      * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this list
-     *                         will be made so changing the original list after the creation of pipeline
-     *                         will not mutate the pipeline
+     *     will be made so changing the original list after the creation of pipeline
+     *     will not mutate the pipeline
      */
     public HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
         Objects.requireNonNull(httpClient);
@@ -67,13 +66,12 @@ public final class HttpPipeline {
     /**
      * Creates a HttpPipeline holding array of policies that gets applied all request initiated through
      * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
-     *
      * The default HttpClient {@link HttpClient#createDefault()} will be used to write request to wire and
      * receive response from wire.
      *
      * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this list
-     *                         will be made so changing the original list after the creation of pipeline
-     *                         will not mutate the pipeline
+     *     will be made so changing the original list after the creation of pipeline
+     *     will not mutate the pipeline
      */
     public HttpPipeline(List<HttpPipelinePolicy> pipelinePolicies) {
         this(HttpClient.createDefault(), pipelinePolicies);

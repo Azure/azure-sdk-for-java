@@ -100,7 +100,7 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
      */
     public String generateAuthenticationUrl() {
         return String.format("%s/%s/oauth2/authorize?client_id=%s&response_type=code&redirect_uri=%s&response_mode=query&state=%s",
-                environment().activeDirectoryEndpoint(), domain(), clientId(), this.redirectUrl, UUID.randomUUID());
+            environment().activeDirectoryEndpoint(), domain(), clientId(), this.redirectUrl, UUID.randomUUID());
     }
 
     /**
@@ -112,11 +112,12 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
      */
     public String generateAuthenticationUrl(ResponseMode responseMode, String state) {
         return String.format("%s/%s/oauth2/authorize?client_id=%s&response_type=code&redirect_uri=%s&response_mode=%s&state=%s",
-                environment().activeDirectoryEndpoint(), domain(), clientId(), this.redirectUrl, responseMode.value, state);
+            environment().activeDirectoryEndpoint(), domain(), clientId(), this.redirectUrl, responseMode.value, state);
     }
 
     /**
      * Set the authorization code acquired returned to the redirect URL.
+     *
      * @param authorizationCode the oauth2 authorization code
      */
     public void setAuthorizationCode(String authorizationCode) {
@@ -142,9 +143,9 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
 
         if (shouldRefresh) {
             return Mono.defer(() -> acquireAccessTokenFromRefreshToken(resource, authenticationResult[0].getRefreshToken(), authenticationResult[0].isMultipleResourceRefreshToken())
-                    .onErrorResume(t -> acquireNewAccessToken(resource))
-                    .doOnNext(ar -> tokens.put(resource, ar))
-                    .then(Mono.just(tokens.get(resource).getAccessToken())));
+                .onErrorResume(t -> acquireNewAccessToken(resource))
+                .doOnNext(ar -> tokens.put(resource, ar))
+                .then(Mono.just(tokens.get(resource).getAccessToken())));
         } else {
             return Mono.just(tokens.get(resource).getAccessToken());
         }
@@ -176,11 +177,11 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
             }
             authMono = Mono.create(callback -> {
                 context.acquireTokenByAuthorizationCode(
-                        authorizationCode,
-                        uri,
-                        new ClientCredential(applicationCredentials.clientId(), applicationCredentials.clientSecret()),
-                        resource,
-                        Util.authenticationDelegate(callback));
+                    authorizationCode,
+                    uri,
+                    new ClientCredential(applicationCredentials.clientId(), applicationCredentials.clientSecret()),
+                    resource,
+                    Util.authenticationDelegate(callback));
             });
         } else if (applicationCredentials.clientCertificate() != null && applicationCredentials.clientCertificatePassword() != null) {
             URI uri;
@@ -190,12 +191,12 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
                 return Mono.error(use);
             }
             authMono = Mono.create(callback -> {
-                AsymmetricKeyCredential keyCredential  = Util.createAsymmetricKeyCredential(applicationCredentials.clientId(), applicationCredentials.clientCertificate(), applicationCredentials.clientCertificatePassword());
+                AsymmetricKeyCredential keyCredential = Util.createAsymmetricKeyCredential(applicationCredentials.clientId(), applicationCredentials.clientCertificate(), applicationCredentials.clientCertificatePassword());
                 context.acquireTokenByAuthorizationCode(
-                        authorizationCode,
-                        uri,
-                        keyCredential,
-                        Util.authenticationDelegate(callback));
+                    authorizationCode,
+                    uri,
+                    keyCredential,
+                    Util.authenticationDelegate(callback));
             });
         } else if (applicationCredentials.clientCertificate() != null) {
             URI uri;
@@ -205,15 +206,15 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
                 return Mono.error(use);
             }
             AsymmetricKeyCredential keyCredential = AsymmetricKeyCredential.create(clientId(),
-                    Util.privateKeyFromPem(new String(applicationCredentials.clientCertificate(), StandardCharsets.UTF_8)),
-                    Util.publicKeyFromPem(new String(applicationCredentials.clientCertificate(), StandardCharsets.UTF_8)));
+                Util.privateKeyFromPem(new String(applicationCredentials.clientCertificate(), StandardCharsets.UTF_8)),
+                Util.publicKeyFromPem(new String(applicationCredentials.clientCertificate(), StandardCharsets.UTF_8)));
             authMono = Mono.create(callback -> {
                 context.acquireTokenByAuthorizationCode(
-                        authorizationCode,
-                        uri,
-                        keyCredential,
-                        resource,
-                        Util.authenticationDelegate(callback));
+                    authorizationCode,
+                    uri,
+                    keyCredential,
+                    resource,
+                    Util.authenticationDelegate(callback));
             });
         } else {
             authMono = Mono.error(new AuthenticationException("Please provide either a non-null secret or a non-null certificate."));
@@ -236,10 +237,10 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
                 context.setProxy(proxy());
             }
             return Mono.create(callback -> context.acquireTokenByRefreshToken(
-                    refreshToken,
-                    clientId(),
-                    resource,
-                    Util.authenticationDelegate(callback)));
+                refreshToken,
+                clientId(),
+                resource,
+                Util.authenticationDelegate(callback)));
         });
         return authMono.doFinally(s -> executor.shutdown());
     }

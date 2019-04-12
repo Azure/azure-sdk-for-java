@@ -38,7 +38,7 @@ public class FlatteningSerializerTests {
         // deserialization
         Foo deserialized = adapter.deserialize(serialized, Foo.class, SerializerEncoding.JSON);
         Assert.assertEquals("hello.world", deserialized.bar);
-        Assert.assertArrayEquals(new String[]{"hello", "hello.world"}, deserialized.baz.toArray());
+        Assert.assertArrayEquals(new String[] {"hello", "hello.world"}, deserialized.baz.toArray());
         Assert.assertNotNull(deserialized.qux);
         Assert.assertEquals("world", deserialized.qux.get("hello"));
         Assert.assertEquals("c.d", deserialized.qux.get("a.b"));

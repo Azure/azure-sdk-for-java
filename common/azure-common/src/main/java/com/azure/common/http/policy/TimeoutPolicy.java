@@ -13,7 +13,6 @@ import java.time.Duration;
 /**
  * The Pipeline policy that limits the time allowed between sending a request
  * and receiving the response.
- *
  */
 public class TimeoutPolicy implements HttpPipelinePolicy {
     private final Duration timoutDuration;

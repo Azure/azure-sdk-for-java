@@ -21,19 +21,19 @@ public class RetryPolicyTests {
     @Test
     public void exponentialRetryEndOn501() throws Exception {
         final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient() {
-           // Send 408, 500, 502, all retried, with a 501 ending
-           private final int[] codes = new int[]{408, 500, 502, 501};
-           private int count = 0;
+            // Send 408, 500, 502, all retried, with a 501 ending
+            private final int[] codes = new int[] {408, 500, 502, 501};
+            private int count = 0;
 
-           @Override
-           public Mono<HttpResponse> send(HttpRequest request) {
-               return Mono.<HttpResponse>just(new MockHttpResponse(request, codes[count++]));
-           }
-       },
-       new RetryPolicy(3, Duration.of(0, ChronoUnit.MILLIS)));
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.<HttpResponse>just(new MockHttpResponse(request, codes[count++]));
+            }
+        },
+            new RetryPolicy(3, Duration.of(0, ChronoUnit.MILLIS)));
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-                        new URL("http://localhost/"))).block();
+            new URL("http://localhost/"))).block();
 
         Assert.assertEquals(501, response.statusCode());
     }
@@ -50,11 +50,11 @@ public class RetryPolicyTests {
                 return Mono.<HttpResponse>just(new MockHttpResponse(request, 500));
             }
         },
-        new RetryPolicy(maxRetries, Duration.of(0, ChronoUnit.MILLIS)));
+            new RetryPolicy(maxRetries, Duration.of(0, ChronoUnit.MILLIS)));
 
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-                        new URL("http://localhost/"))).block();
+            new URL("http://localhost/"))).block();
 
         Assert.assertEquals(500, response.statusCode());
     }

@@ -14,6 +14,7 @@ public class AsyncOperationResource {
 
     /**
      * The status of the asynchronous operation.
+     *
      * @return The status of the asynchronous operation.
      */
     public String status() {
@@ -22,6 +23,7 @@ public class AsyncOperationResource {
 
     /**
      * Set the status of the asynchronous operation.
+     *
      * @param status The status of the asynchronous operation.
      */
     public void setStatus(String status) {
@@ -40,6 +42,7 @@ public class AsyncOperationResource {
 
     /**
      * Set the id of this resource.
+     *
      * @param id The id of this resource.
      */
     public void setId(String id) {

@@ -42,6 +42,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
 
     /**
      * Creates an instance of FlatteningDeserializer.
+     *
      * @param vc handled type
      * @param defaultDeserializer the default JSON mapperAdapter
      * @param mapper the object mapper for default deserializations

@@ -41,7 +41,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <legal>
+      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
   </properties>
 
   <developers>
@@ -147,7 +148,9 @@
         <artifactId>exec-maven-plugin</artifactId>
         <executions>
           <execution>
-            <goals><goal>java</goal></goals>
+            <goals>
+              <goal>java</goal>
+            </goals>
           </execution>
         </executions>
         <configuration>

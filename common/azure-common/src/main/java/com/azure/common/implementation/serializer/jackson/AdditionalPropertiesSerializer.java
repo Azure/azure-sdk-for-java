@@ -44,6 +44,7 @@ final class AdditionalPropertiesSerializer extends StdSerializer<Object> impleme
 
     /**
      * Creates an instance of FlatteningSerializer.
+     *
      * @param vc handled type
      * @param defaultSerializer the default JSON serializer
      * @param mapper the object mapper for default serializations

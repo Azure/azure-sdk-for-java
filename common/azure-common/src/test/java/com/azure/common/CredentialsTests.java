@@ -22,15 +22,15 @@ public class CredentialsTests {
     public void basicCredentialsTest() throws Exception {
         BasicAuthenticationCredentials credentials = new BasicAuthenticationCredentials("user", "pass");
 
-        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
             String headerValue = context.httpRequest().headers().value("Authorization");
             Assert.assertEquals("Basic dXNlcjpwYXNz", headerValue);
             return next.process();
         };
         //
         final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient(),
-                new CredentialsPolicy(credentials),
-                auditorPolicy);
+            new CredentialsPolicy(credentials),
+            auditorPolicy);
 
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
@@ -41,15 +41,15 @@ public class CredentialsTests {
     public void tokenCredentialsTest() throws Exception {
         TokenCredentials credentials = new TokenCredentials(null, "this_is_a_token");
 
-        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
             String headerValue = context.httpRequest().headers().value("Authorization");
             Assert.assertEquals("Bearer this_is_a_token", headerValue);
             return next.process();
         };
 
         final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient(),
-                new CredentialsPolicy(credentials),
-                auditorPolicy);
+            new CredentialsPolicy(credentials),
+            auditorPolicy);
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
         pipeline.send(request).block();

@@ -14,27 +14,24 @@ public final class HttpPipelineCallContext {
     private ContextData data;
 
     //<editor-fold defaultstate="collapsed" desc="Package internal methods">
+
     /**
      * Package private ctr.
-     *
      * Creates HttpPipelineCallContext.
      *
      * @param httpRequest the request for which context needs to be created
-     *
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
     HttpPipelineCallContext(HttpRequest httpRequest) {
-       this(httpRequest, ContextData.NONE);
+        this(httpRequest, ContextData.NONE);
     }
 
     /**
      * Package private ctr.
-     *
      * Creates HttpPipelineCallContext.
      *
      * @param httpRequest the request for which context needs to be created
      * @param data the data to associate with this context
-     *
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
     HttpPipelineCallContext(HttpRequest httpRequest, ContextData data) {

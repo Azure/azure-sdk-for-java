@@ -41,19 +41,21 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
     private void loadAccessTokens() throws IOException {
         try {
             AzureCliSubscription.Wrapper wrapper = MAPPER.readValue(azureProfile, AzureCliSubscription.Wrapper.class);
-            List<AzureCliToken> tokens = MAPPER.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() { });
+            List<AzureCliToken> tokens = MAPPER.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() {
+            });
             while (wrapper == null || tokens == null || tokens.isEmpty() || wrapper.subscriptions == null || wrapper.subscriptions.isEmpty()) {
                 System.err.println("Please login in Azure CLI and press any key to continue after you've successfully logged in.");
                 System.in.read();
                 wrapper = MAPPER.readValue(azureProfile, AzureCliSubscription.Wrapper.class);
-                tokens = MAPPER.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() { });
+                tokens = MAPPER.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() {
+                });
             }
             for (AzureCliSubscription subscription : wrapper.subscriptions) {
                 for (AzureCliToken token : tokens) {
                     // Find match of user and tenant
                     if (subscription.isServicePrincipal() == token.isServicePrincipal()
-                            && subscription.getUserName().equalsIgnoreCase(token.user())
-                            && subscription.tenant().equalsIgnoreCase(token.tenant())) {
+                        && subscription.getUserName().equalsIgnoreCase(token.user())
+                        && subscription.tenant().equalsIgnoreCase(token.tenant())) {
                         subscriptions.put(subscription.id(), subscription.withToken(token));
                         if (subscription.isDefault()) {
                             withDefaultSubscriptionId(subscription.id());
@@ -125,17 +127,17 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
     @Override
     public Mono<String> getToken(String resource) {
         return subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource)
-                .onErrorResume(t -> {
-                    synchronized (lock) {
-                        System.err.println("Please login in Azure CLI and press any key to continue after you've successfully logged in.");
-                        try {
-                            System.in.read();
-                            loadAccessTokens();
-                        } catch (IOException ioe) {
-                            throw Exceptions.propagate(ioe);
-                        }
+            .onErrorResume(t -> {
+                synchronized (lock) {
+                    System.err.println("Please login in Azure CLI and press any key to continue after you've successfully logged in.");
+                    try {
+                        System.in.read();
+                        loadAccessTokens();
+                    } catch (IOException ioe) {
+                        throw Exceptions.propagate(ioe);
                     }
-                    return subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource).subscribeOn(Schedulers.immediate());
-                });
+                }
+                return subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource).subscribeOn(Schedulers.immediate());
+            });
     }
 }

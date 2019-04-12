@@ -154,7 +154,6 @@ public class HttpRequest {
 
     /**
      * Set request content.
-     *
      * Caller must set the Content-Length header to indicate the length of the content,
      * or use Transfer-Encoding: chunked.
      *
@@ -168,7 +167,6 @@ public class HttpRequest {
 
     /**
      * Creates a clone of the request.
-     *
      * The main purpose of this is so that this HttpRequest can be changed and the resulting
      * HttpRequest can be a backup. This means that the buffered HttpHeaders and body must
      * not be able to change from side effects of this HttpRequest.

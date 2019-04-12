@@ -61,7 +61,6 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
 
     /**
      * Set a header.
-     *
      * if header with same name already exists then the value will be overwritten.
      * if value is null and header with provided name already exists then it will be removed.
      *
@@ -73,8 +72,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
         final String headerKey = name.toLowerCase(Locale.ROOT);
         if (value == null) {
             headers.remove(headerKey);
-        }
-        else {
+        } else {
             headers.put(headerKey, new HttpHeader(name, value));
         }
         return this;

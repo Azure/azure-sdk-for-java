@@ -32,8 +32,8 @@ public class HttpPipelineTests {
     @Test
     public void withRequestPolicy() {
         HttpPipeline pipeline = new HttpPipeline(new PortPolicy(80, true),
-                new ProtocolPolicy("ftp", true),
-                new RetryPolicy());
+            new ProtocolPolicy("ftp", true),
+            new RetryPolicy());
 
         assertEquals(3, pipeline.pipelinePolicies().length);
         assertEquals(PortPolicy.class, pipeline.pipelinePolicies()[0].getClass());
@@ -46,8 +46,8 @@ public class HttpPipelineTests {
     @Test
     public void withRequestOptions() throws MalformedURLException {
         HttpPipeline pipeline = new HttpPipeline(new PortPolicy(80, true),
-                new ProtocolPolicy("ftp", true),
-                new RetryPolicy());
+            new ProtocolPolicy("ftp", true),
+            new RetryPolicy());
 
         HttpPipelineCallContext context = pipeline.newContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
         assertNotNull(context);
@@ -91,7 +91,7 @@ public class HttpPipelineTests {
         };
 
         final HttpPipeline httpPipeline = new HttpPipeline(httpClient,
-                new UserAgentPolicy(expectedUserAgent));
+            new UserAgentPolicy(expectedUserAgent));
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
@@ -103,18 +103,18 @@ public class HttpPipelineTests {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final URL expectedUrl = new URL("http://my.site.com/1");
         final HttpPipeline httpPipeline = new HttpPipeline(new MockHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    assertEquals(1, request.headers().size());
-                    final String requestId = request.headers().value("x-ms-client-request-id");
-                    assertNotNull(requestId);
-                    assertFalse(requestId.isEmpty());
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                assertEquals(1, request.headers().size());
+                final String requestId = request.headers().value("x-ms-client-request-id");
+                assertNotNull(requestId);
+                assertFalse(requestId.isEmpty());
 
-                    assertEquals(expectedHttpMethod, request.httpMethod());
-                    assertEquals(expectedUrl, request.url());
-                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
-                }
-            },
+                assertEquals(expectedHttpMethod, request.httpMethod());
+                assertEquals(expectedUrl, request.url());
+                return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
+            }
+        },
             new RequestIdPolicy());
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();

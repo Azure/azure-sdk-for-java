@@ -9,6 +9,7 @@ import com.azure.common.implementation.OperationDescription;
 
 /**
  * The current state of polling for the result of a long running operation.
+ *
  * @param <T> The type of value that will be returned from the long running operation.
  */
 public class OperationStatus<T> {
@@ -20,8 +21,9 @@ public class OperationStatus<T> {
 
     /**
      * Create a new OperationStatus with the provided PollStrategy.
+     *
      * @param pollStrategy The polling strategy that the OperationStatus will use to check the
-     *                     progress of a long running operation.
+     *     progress of a long running operation.
      */
     OperationStatus(PollStrategy pollStrategy, HttpRequest originalHttpRequest) {
         this.originalHttpRequest = originalHttpRequest;
@@ -33,6 +35,7 @@ public class OperationStatus<T> {
 
     /**
      * Create a new OperationStatus with the provided result.
+     *
      * @param result The final result of a long running operation.
      */
     OperationStatus(T result, String provisioningState) {
@@ -68,6 +71,7 @@ public class OperationStatus<T> {
     /**
      * If the long running operation is done, get the result of the operation. If the operation is
      * not done or if the operation failed, then return null.
+     *
      * @return The result of the operation, or null if the operation isn't done yet or if it failed.
      */
     public T result() {
@@ -77,6 +81,7 @@ public class OperationStatus<T> {
     /**
      * If the long running operation failed, get the error that occurred. If the operation is not
      * done or did not fail, then return null.
+     *
      * @return The error of the operation, or null if the operation isn't done or didn't fail.
      */
     public ServiceRequestException error() {
@@ -85,6 +90,7 @@ public class OperationStatus<T> {
 
     /**
      * Builds an object that can be used to resume the polling of the operation.
+     *
      * @return The OperationDescription.
      */
     public OperationDescription buildDescription() {
@@ -93,9 +99,9 @@ public class OperationStatus<T> {
         }
 
         return new OperationDescription(
-                this.pollStrategy.methodParser().fullyQualifiedMethodName(),
-                this.pollStrategy.strategyData(),
-                this.originalHttpRequest);
+            this.pollStrategy.methodParser().fullyQualifiedMethodName(),
+            this.pollStrategy.strategyData(),
+            this.originalHttpRequest);
     }
 
 }

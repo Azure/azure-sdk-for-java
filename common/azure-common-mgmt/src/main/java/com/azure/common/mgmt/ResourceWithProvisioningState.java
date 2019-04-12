@@ -22,6 +22,7 @@ public class ResourceWithProvisioningState {
 
     /**
      * Set the properties of this ResourceWithProvisioningState.
+     *
      * @param properties The properties of this ResourceWithProvisioningState.
      */
     public void setProperties(Properties properties) {
@@ -44,6 +45,7 @@ public class ResourceWithProvisioningState {
 
         /**
          * Set the provisioning state of this ResourceWithProvisioningState.
+         *
          * @param provisioningState The provisioning state of this ResourceWithProvisioningState.
          */
         public void setProvisioningState(String provisioningState) {

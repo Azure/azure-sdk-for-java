@@ -47,7 +47,7 @@ public class SwaggerMethodParserTests {
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, RestProxy.createDefaultSerializer(), "https://raw.host.com");
         assertEquals("com.azure.common.implementation.SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
-        assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
+        assertArrayEquals(new int[] {200}, methodParser.expectedStatusCodes());
         assertEquals(ServiceRequestException.class, methodParser.exceptionType());
         assertEquals(Object.class, methodParser.exceptionBodyType());
         assertEquals(false, methodParser.headers(null).iterator().hasNext());
@@ -70,7 +70,7 @@ public class SwaggerMethodParserTests {
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, RestProxy.createDefaultSerializer(), "https://raw.host.com");
         assertEquals("com.azure.common.implementation.SwaggerMethodParserTests$TestInterface3.testMethod3", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
-        assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
+        assertArrayEquals(new int[] {200}, methodParser.expectedStatusCodes());
         assertEquals(MyRestException.class, methodParser.exceptionType());
         assertEquals(HttpBinJSON.class, methodParser.exceptionBodyType());
         assertEquals(false, methodParser.headers(null).iterator().hasNext());

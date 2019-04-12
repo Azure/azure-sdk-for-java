@@ -16,7 +16,7 @@ public final class DateTimeRfc1123 {
      * The pattern of the datetime used for RFC1123 datetime format.
      */
     private static final DateTimeFormatter RFC1123_DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneId.of("UTC")).withLocale(Locale.US);
+        DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneId.of("UTC")).withLocale(Locale.US);
     /**
      * The actual datetime object.
      */
@@ -24,6 +24,7 @@ public final class DateTimeRfc1123 {
 
     /**
      * Creates a new DateTimeRfc1123 object with the specified DateTime.
+     *
      * @param dateTime The DateTime object to wrap.
      */
     public DateTimeRfc1123(OffsetDateTime dateTime) {
@@ -32,6 +33,7 @@ public final class DateTimeRfc1123 {
 
     /**
      * Creates a new DateTimeRfc1123 object with the specified DateTime.
+     *
      * @param formattedString The datetime string in RFC1123 format
      */
     public DateTimeRfc1123(String formattedString) {
@@ -40,6 +42,7 @@ public final class DateTimeRfc1123 {
 
     /**
      * Returns the underlying DateTime.
+     *
      * @return The underlying DateTime.
      */
     public OffsetDateTime dateTime() {

@@ -10,6 +10,7 @@ package com.azure.common.implementation.exception;
 public class InvalidReturnTypeException extends RuntimeException {
     /**
      * Create a new InvalidReturnTypeException with the provided message.
+     *
      * @param message The message for this exception.
      */
     public InvalidReturnTypeException(String message) {

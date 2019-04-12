@@ -50,14 +50,15 @@ public class JacksonAdapter implements SerializerAdapter {
         xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
         xmlMapper.setDefaultUseWrapper(false);
         ObjectMapper flatteningMapper = initializeObjectMapper(new ObjectMapper())
-                .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-                .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+            .registerModule(FlatteningSerializer.getModule(simpleMapper()))
+            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
         mapper = initializeObjectMapper(new ObjectMapper())
-                // Order matters: must register in reverse order of hierarchy
-                .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
-                .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
-                .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-                .registerModule(FlatteningDeserializer.getModule(simpleMapper()));    }
+            // Order matters: must register in reverse order of hierarchy
+            .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
+            .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
+            .registerModule(FlatteningSerializer.getModule(simpleMapper()))
+            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+    }
 
     /**
      * Gets a static instance of {@link ObjectMapper} that doesn't handle flattening.
@@ -142,23 +143,23 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private static <T extends ObjectMapper> T initializeObjectMapper(T mapper) {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-                .configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true)
-                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-                .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
-                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                .registerModule(new JavaTimeModule())
-                .registerModule(ByteArraySerializer.getModule())
-                .registerModule(Base64UrlSerializer.getModule())
-                .registerModule(DateTimeSerializer.getModule())
-                .registerModule(DateTimeRfc1123Serializer.getModule())
-                .registerModule(DurationSerializer.getModule());
+            .configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+            .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            .registerModule(new JavaTimeModule())
+            .registerModule(ByteArraySerializer.getModule())
+            .registerModule(Base64UrlSerializer.getModule())
+            .registerModule(DateTimeSerializer.getModule())
+            .registerModule(DateTimeRfc1123Serializer.getModule())
+            .registerModule(DurationSerializer.getModule());
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
-                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
+            .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+            .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+            .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+            .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
         return mapper;
     }
 
@@ -166,11 +167,9 @@ public class JacksonAdapter implements SerializerAdapter {
         JavaType result;
         if (type == null) {
             result = null;
-        }
-        else if (type instanceof JavaType) {
+        } else if (type instanceof JavaType) {
             result = (JavaType) type;
-        }
-        else if (type instanceof ParameterizedType) {
+        } else if (type instanceof ParameterizedType) {
             final ParameterizedType parameterizedType = (ParameterizedType) type;
             final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
             JavaType[] javaTypeArguments = new JavaType[actualTypeArguments.length];
@@ -178,8 +177,7 @@ public class JacksonAdapter implements SerializerAdapter {
                 javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
             }
             result = mapper.getTypeFactory().constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments);
-        }
-        else {
+        } else {
             result = mapper.getTypeFactory().constructType(type);
         }
         return result;

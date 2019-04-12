@@ -47,17 +47,17 @@ final class Util {
         try {
             return AsymmetricKeyCredential.create(clientId, new ByteArrayInputStream(clientCertificate), clientCertificatePassword);
         } catch (KeyStoreException kse) {
-            throw  Exceptions.propagate(kse);
+            throw Exceptions.propagate(kse);
         } catch (NoSuchProviderException nspe) {
-            throw  Exceptions.propagate(nspe);
+            throw Exceptions.propagate(nspe);
         } catch (NoSuchAlgorithmException nsae) {
-            throw  Exceptions.propagate(nsae);
+            throw Exceptions.propagate(nsae);
         } catch (CertificateException ce) {
-            throw  Exceptions.propagate(ce);
+            throw Exceptions.propagate(ce);
         } catch (IOException ioe) {
-            throw  Exceptions.propagate(ioe);
+            throw Exceptions.propagate(ioe);
         } catch (UnrecoverableKeyException uke) {
-            throw  Exceptions.propagate(uke);
+            throw Exceptions.propagate(uke);
         }
     }
 
@@ -67,10 +67,10 @@ final class Util {
         Matcher matcher = pattern.matcher(pem);
         matcher.find();
         String base64 = matcher.group()
-                .replace("-----BEGIN PRIVATE KEY-----", "")
-                .replace("-----END PRIVATE KEY-----", "")
-                .replace("\n", "")
-                .replace("\r", "");
+            .replace("-----BEGIN PRIVATE KEY-----", "")
+            .replace("-----END PRIVATE KEY-----", "")
+            .replace("\n", "")
+            .replace("\r", "");
         byte[] key = Base64Util.decode(base64.getBytes(StandardCharsets.UTF_8));
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(key);
         try {
@@ -94,5 +94,6 @@ final class Util {
         }
     }
 
-    private Util() { }
+    private Util() {
+    }
 }

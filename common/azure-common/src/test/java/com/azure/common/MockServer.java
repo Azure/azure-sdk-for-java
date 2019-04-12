@@ -54,7 +54,9 @@ public class MockServer {
                     // Appears to be necessary to read all the request content to prevent hangs
                     // Would like to be able to test scenarios where the server drops the connection
                     // when we're in the middle of sending request content.
-                    while (is.read(buf) != -1) ;
+                    while (is.read(buf) != -1) {
+                        ;
+                    }
 
                     return;
                 }

@@ -59,13 +59,13 @@ public final class BufferedHttpResponse extends HttpResponse {
     @Override
     public Mono<String> bodyAsString() {
         return bodyAsByteArray()
-                .map(bytes -> bytes == null ? null : new String(bytes, StandardCharsets.UTF_8));
+            .map(bytes -> bytes == null ? null : new String(bytes, StandardCharsets.UTF_8));
     }
 
     @Override
     public Mono<String> bodyAsString(Charset charset) {
         return bodyAsByteArray()
-                .map(bytes -> bytes == null ? null : new String(bytes, charset));
+            .map(bytes -> bytes == null ? null : new String(bytes, charset));
     }
 
     @Override

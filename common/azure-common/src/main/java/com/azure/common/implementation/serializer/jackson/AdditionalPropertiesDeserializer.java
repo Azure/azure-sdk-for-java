@@ -41,6 +41,7 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
 
     /**
      * Creates FlatteningDeserializer.
+     *
      * @param vc handled type
      * @param defaultDeserializer the default JSON mapperAdapter
      * @param mapper the object mapper for default deserializations

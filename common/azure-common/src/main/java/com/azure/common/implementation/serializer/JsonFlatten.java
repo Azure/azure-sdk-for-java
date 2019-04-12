@@ -13,7 +13,6 @@ import java.lang.annotation.Target;
  * E.g. a property with JsonProperty value "properties.value"
  * will have "value" property under the "properties" tree on
  * the wire.
- *
  */
 @Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

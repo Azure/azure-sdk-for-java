@@ -46,12 +46,12 @@ public class ReactorNettyClientTests {
     public static void beforeClass() {
         server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
         server.stubFor(
-                WireMock.get("/short").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
+            WireMock.get("/short").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
         server.stubFor(WireMock.get("/long").willReturn(WireMock.aResponse().withBody(LONG_BODY)));
         server.stubFor(WireMock.get("/error")
-                .willReturn(WireMock.aResponse().withBody("error").withStatus(500)));
+            .willReturn(WireMock.aResponse().withBody("error").withStatus(500)));
         server.stubFor(
-                WireMock.post("/shortPost").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
+            WireMock.post("/shortPost").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
         server.start();
         // ResourceLeakDetector.setLevel(Level.PARANOID);
     }
@@ -81,8 +81,8 @@ public class ReactorNettyClientTests {
         response.bodyAsByteArray().block();
         // Subscription:2
         StepVerifier.create(response.bodyAsByteArray())
-                .expectNextCount(0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
-                .verifyError(IllegalStateException.class);
+            .expectNextCount(0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
+            .verifyError(IllegalStateException.class);
 
     }
 
@@ -96,7 +96,6 @@ public class ReactorNettyClientTests {
     }
 
 
-
     @Test
     public void testCancel() {
         HttpResponse response = getResponse("/long");
@@ -105,11 +104,11 @@ public class ReactorNettyClientTests {
         stepVerifierOptions.initialRequest(0);
         //
         StepVerifier.create(response.body(), stepVerifierOptions)
-                .expectNextCount(0)
-                .thenRequest(1)
-                .expectNextCount(1)
-                .thenCancel()
-                .verify();
+            .expectNextCount(0)
+            .thenRequest(1)
+            .expectNextCount(1)
+            .thenCancel()
+            .verify();
         Assert.assertTrue(response.internConnection().isDisposed());
     }
 
@@ -117,8 +116,8 @@ public class ReactorNettyClientTests {
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
         HttpResponse response = getResponse("/error");
         StepVerifier.create(response.bodyAsString())
-                .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
-                .verifyComplete();
+            .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
+            .verifyComplete();
         assertEquals(500, response.statusCode());
     }
 
@@ -131,26 +130,26 @@ public class ReactorNettyClientTests {
         stepVerifierOptions.initialRequest(0);
         //
         StepVerifier.create(response.body(), stepVerifierOptions)
-                .expectNextCount(0)
-                .thenRequest(1)
-                .expectNextCount(1)
-                .thenRequest(3)
-                .expectNextCount(3)
-                .thenRequest(Long.MAX_VALUE)// TODO: Check with smaldini, what is the verifier operator to ignore all next emissions
-                .expectNextCount(1507)
-                .verifyComplete();
+            .expectNextCount(0)
+            .thenRequest(1)
+            .expectNextCount(1)
+            .thenRequest(3)
+            .expectNextCount(3)
+            .thenRequest(Long.MAX_VALUE)// TODO: Check with smaldini, what is the verifier operator to ignore all next emissions
+            .expectNextCount(1507)
+            .verifyComplete();
     }
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = HttpClient.createDefault();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-                .withHeader("Content-Length", "123")
-                .withBody(Flux.error(new RuntimeException("boo")));
+            .withHeader("Content-Length", "123")
+            .withBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
-                .expectErrorMessage("boo")
-                .verify();
+            .expectErrorMessage("boo")
+            .verify();
     }
 
     @Test
@@ -159,20 +158,20 @@ public class ReactorNettyClientTests {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-                .withHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions))
-                .withBody(Flux.just(contentChunk)
-                        .repeat(repetitions)
-                        .map(s -> Unpooled.wrappedBuffer(s.getBytes(StandardCharsets.UTF_8)))
-                        .concatWith(Flux.error(new RuntimeException("boo"))));
+            .withHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions))
+            .withBody(Flux.just(contentChunk)
+                .repeat(repetitions)
+                .map(s -> Unpooled.wrappedBuffer(s.getBytes(StandardCharsets.UTF_8)))
+                .concatWith(Flux.error(new RuntimeException("boo"))));
         StepVerifier.create(client.send(request))
-                // .awaitDone(10, TimeUnit.SECONDS)
-                .expectErrorMessage("boo")
-                .verify();
+            // .awaitDone(10, TimeUnit.SECONDS)
+            .expectErrorMessage("boo")
+            .verify();
     }
 
     @Test(timeout = 5000)
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable()
-            throws IOException, InterruptedException {
+        throws IOException, InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<Socket> sock = new AtomicReference<>();
         ServerSocket ss = new ServerSocket(0);
@@ -188,10 +187,10 @@ public class ReactorNettyClientTests {
                 int n = socket.getInputStream().read(bytes);
                 System.out.println(new String(bytes, 0, n, StandardCharsets.UTF_8));
                 String response = "HTTP/1.1 200 OK\r\n" //
-                        + "Content-Type: text/plain\r\n" //
-                        + "Content-Length: 10\r\n" //
-                        + "\r\n" //
-                        + "zi";
+                    + "Content-Type: text/plain\r\n" //
+                    + "Content-Length: 10\r\n" //
+                    + "\r\n" //
+                    + "zi";
                 OutputStream out = socket.getOutputStream();
                 out.write(response.getBytes());
                 out.flush();
@@ -199,20 +198,20 @@ public class ReactorNettyClientTests {
                 socket.close();
                 return 1;
             })
-            .subscribeOn(Schedulers.io())
-            .subscribe();
+                .subscribeOn(Schedulers.io())
+                .subscribe();
             //
             latch.await();
             HttpClient client = HttpClient.createDefault();
             HttpRequest request = new HttpRequest(HttpMethod.GET,
-                    new URL("http://localhost:" + ss.getLocalPort() + "/get"));
+                new URL("http://localhost:" + ss.getLocalPort() + "/get"));
             HttpResponse response = client.send(request).block();
             assertEquals(200, response.statusCode());
             System.out.println("reading body");
             //
             StepVerifier.create(response.bodyAsByteArray())
-                    // .awaitDone(20, TimeUnit.SECONDS)
-                    .verifyError(IOException.class);
+                // .awaitDone(20, TimeUnit.SECONDS)
+                .verifyError(IOException.class);
         } finally {
             ss.close();
         }
@@ -227,46 +226,46 @@ public class ReactorNettyClientTests {
         byte[] expectedDigest = digest(LONG_BODY);
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
-                .parallel(10)
-                .runOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
-                    MessageDigest md = md5Digest();
-                    return response.body()
-                            .doOnNext(bb -> {
-                                bb.retain();
-                                if (bb.hasArray()) {
-                                    // Heap buffer
-                                    md.update(bb.array());
-                                } else {
-                                    // Direct buffer
-                                    int len = bb.readableBytes();
-                                    byte[] array = new byte[len];
-                                    bb.getBytes(bb.readerIndex(), array);
-                                    md.update(array);
-                                }
-                            })
-                            .map(bb -> new NumberedByteBuf(n, bb))
+            .parallel(10)
+            .runOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+            .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
+                MessageDigest md = md5Digest();
+                return response.body()
+                    .doOnNext(bb -> {
+                        bb.retain();
+                        if (bb.hasArray()) {
+                            // Heap buffer
+                            md.update(bb.array());
+                        } else {
+                            // Direct buffer
+                            int len = bb.readableBytes();
+                            byte[] array = new byte[len];
+                            bb.getBytes(bb.readerIndex(), array);
+                            md.update(array);
+                        }
+                    })
+                    .map(bb -> new NumberedByteBuf(n, bb))
 //                          .doOnComplete(() -> System.out.println("completed " + n))
-                            .doOnComplete(() -> Assert.assertArrayEquals("wrong digest!", expectedDigest,
-                                    md.digest()));
-                }))
-                .sequential()
-                // enable the doOnNext call to see request numbers and thread names
-                // .doOnNext(g -> System.out.println(g.n + " " +
-                // Thread.currentThread().getName()))
-                .map(nbb -> {
-                    long bytesCount = (long) nbb.bb.readableBytes();
-                    ReferenceCountUtil.release(nbb.bb);
-                    return bytesCount;
-                })
-                .reduce((x, y) -> x + y)
-                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
+                    .doOnComplete(() -> Assert.assertArrayEquals("wrong digest!", expectedDigest,
+                        md.digest()));
+            }))
+            .sequential()
+            // enable the doOnNext call to see request numbers and thread names
+            // .doOnNext(g -> System.out.println(g.n + " " +
+            // Thread.currentThread().getName()))
+            .map(nbb -> {
+                long bytesCount = (long) nbb.bb.readableBytes();
+                ReferenceCountUtil.release(nbb.bb);
+                return bytesCount;
+            })
+            .reduce((x, y) -> x + y)
+            .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+            .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
 
         StepVerifier.create(numBytesMono)
 //              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
-                .expectNext((long)(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
-                .verifyComplete();
+            .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
+            .verifyComplete();
 //
 //        long numBytes = numBytesMono.block();
 //        t = System.currentTimeMillis() - t;
@@ -329,7 +328,7 @@ public class ReactorNettyClientTests {
         HttpClient client = HttpClient.createDefault();
         HttpResponse response = doRequest(client, path);
         String s = new String(response.bodyAsByteArray().block(),
-                StandardCharsets.UTF_8);
+            StandardCharsets.UTF_8);
         assertEquals(expectedBody, s);
     }
 

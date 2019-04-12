@@ -6,6 +6,7 @@ package com.azure.common.mgmt;
 /**
  * A container for a generic type. Serves a similar purpose as pointers in C/C++. It's a workaround
  * for the fact that Java doesn't allow mutation of local variables in closure.
+ *
  * @param <T>
  */
 class Value<T> {
@@ -19,6 +20,7 @@ class Value<T> {
 
     /**
      * Create a new Value with the provided inner value.
+     *
      * @param value
      */
     Value(T value) {
@@ -27,6 +29,7 @@ class Value<T> {
 
     /**
      * Get the inner value of this Value.
+     *
      * @return The inner value of this Value.
      */
     public T get() {
@@ -35,6 +38,7 @@ class Value<T> {
 
     /**
      * Set the inner value of this Value.
+     *
      * @param value The new inner value of this Value.
      */
     public void set(T value) {

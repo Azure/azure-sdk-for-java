@@ -87,8 +87,8 @@ public class RestProxyStressTests {
     @BeforeClass
     public static void beforeClass() throws IOException {
         Assume.assumeTrue(
-                "Set the environment variable JAVA_SDK_STRESS_TESTS to \"true\" to run stress tests",
-                Boolean.parseBoolean(System.getenv("JAVA_SDK_STRESS_TESTS")));
+            "Set the environment variable JAVA_SDK_STRESS_TESTS to \"true\" to run stress tests",
+            Boolean.parseBoolean(System.getenv("JAVA_SDK_STRESS_TESTS")));
 
         ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
         LoggerFactory.getLogger(RestProxyStressTests.class).info("ResourceLeakDetector level: " + ResourceLeakDetector.getLevel());
@@ -99,7 +99,7 @@ public class RestProxyStressTests {
         }
 
         HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
+            .set("x-ms-version", "2017-04-17");
         // Order in which policies applied will be the order in which they added to builder
         List<HttpPipelinePolicy> polices = new ArrayList<HttpPipelinePolicy>();
         polices.add(new AddDatePolicy());
@@ -115,7 +115,7 @@ public class RestProxyStressTests {
         polices.add(new HttpLoggingPolicy(HttpLogDetailLevel.BASIC, false));
         //
         service = RestProxy.create(IOService.class,
-                new HttpPipeline(polices.toArray(new HttpPipelinePolicy[polices.size()])));
+            new HttpPipeline(polices.toArray(new HttpPipelinePolicy[polices.size()])));
 
         TEMP_FOLDER_PATH = Paths.get(tempFolderPath);
         create100MFiles(false);
@@ -135,7 +135,7 @@ public class RestProxyStressTests {
             String className = MockServer.class.getCanonicalName();
 
             ProcessBuilder builder = new ProcessBuilder(
-                    javaExecutable, "-cp", classpath, className).redirectErrorStream(true).redirectOutput(Redirect.INHERIT);
+                javaExecutable, "-cp", classpath, className).redirectErrorStream(true).redirectOutput(Redirect.INHERIT);
             testServer = builder.start();
         }
     }
@@ -162,7 +162,7 @@ public class RestProxyStressTests {
                     final int nextWaitTime = 5 + ThreadLocalRandom.current().nextInt(10);
                     httpResponse.body().subscribe().dispose(); // TODO: Anu re-evaluate this
                     return Mono.delay(Duration.of(waitTimeSeconds, ChronoUnit.SECONDS))
-                            .then(process(nextWaitTime, context, nextPolicy));
+                        .then(process(nextWaitTime, context, nextPolicy));
                 }
             }).onErrorResume(throwable -> {
                 if (throwable instanceof IOException) {
@@ -250,8 +250,8 @@ public class RestProxyStressTests {
                     final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
 
                     Flowable<java.nio.ByteBuffer> fileContent = contentGenerator
-                            .take(CHUNKS_PER_FILE)
-                            .doOnNext(buf -> messageDigest.update(buf.array()));
+                        .take(CHUNKS_PER_FILE)
+                        .doOnNext(buf -> messageDigest.update(buf.array()));
 
                     return FlowableUtils.writeFile(fileContent, file).andThen(Completable.defer(new Callable<CompletableSource>() {
                         @Override
@@ -278,34 +278,34 @@ public class RestProxyStressTests {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
         Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
-        .map(integer -> {
-            final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
-            try {
-                return Files.readAllBytes(filePath);
-            } catch (IOException ioe) {
-                throw Exceptions.propagate(ioe);
-            }
-        });
+            .map(integer -> {
+                final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
+                try {
+                    return Files.readAllBytes(filePath);
+                } catch (IOException ioe) {
+                    throw Exceptions.propagate(ioe);
+                }
+            });
         //
         Instant uploadStart = Instant.now();
         //
         Flux.range(0, NUM_FILES)
-                .zipWith(md5s, (id, md5) -> {
-                    AsynchronousFileChannel fileStream = null;
-                    try {
-                        fileStream = AsynchronousFileChannel.open(TEMP_FOLDER_PATH.resolve("100m-" + id + ".dat"));
-                    } catch (IOException ioe) {
-                        Exceptions.propagate(ioe);
-                    }
-                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", FluxUtil.byteBufStreamFromFile(fileStream), FILE_SIZE).map(response -> {
-                        String base64MD5 = response.headers().value("Content-MD5");
-                        byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
-                        Assert.assertArrayEquals(md5, receivedMD5);
-                        return response;
-                    });
-                })
-                .flatMapDelayError(m -> m, 15, 1)
-                .blockLast();
+            .zipWith(md5s, (id, md5) -> {
+                AsynchronousFileChannel fileStream = null;
+                try {
+                    fileStream = AsynchronousFileChannel.open(TEMP_FOLDER_PATH.resolve("100m-" + id + ".dat"));
+                } catch (IOException ioe) {
+                    Exceptions.propagate(ioe);
+                }
+                return service.upload100MB(String.valueOf(id), sas, "BlockBlob", FluxUtil.byteBufStreamFromFile(fileStream), FILE_SIZE).map(response -> {
+                    String base64MD5 = response.headers().value("Content-MD5");
+                    byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
+                    Assert.assertArrayEquals(md5, receivedMD5);
+                    return response;
+                });
+            })
+            .flatMapDelayError(m -> m, 15, 1)
+            .blockLast();
         //
         long durationMilliseconds = Duration.between(uploadStart, Instant.now()).toMillis();
         LoggerFactory.getLogger(getClass()).info("Upload took " + durationMilliseconds + " milliseconds.");
@@ -316,46 +316,46 @@ public class RestProxyStressTests {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
         Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
-                .map(integer -> {
-                    final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
-                    try {
-                        return Files.readAllBytes(filePath);
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
-                    }
-                });
+            .map(integer -> {
+                final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
+                try {
+                    return Files.readAllBytes(filePath);
+                } catch (IOException ioe) {
+                    throw Exceptions.propagate(ioe);
+                }
+            });
 
         Instant uploadStart = Instant.now();
         //
         Flux.range(0, NUM_FILES)
-                .zipWith(md5s, (id, md5) -> {
-                    FileChannel fileStream = null;
-                    try {
-                        fileStream = FileChannel.open(TEMP_FOLDER_PATH.resolve("100m-" + id + ".dat"), StandardOpenOption.READ);
-                    } catch (IOException ioe) {
-                        Exceptions.propagate(ioe);
-                    }
-                    //
-                    ByteBuf mappedByteBufFile = null;
-                    Flux<ByteBuf> stream = null;
-                    try {
-                        MappedByteBuffer mappedByteBufferFile = fileStream.map(FileChannel.MapMode.READ_ONLY, 0, fileStream.size());
-                        mappedByteBufFile = Unpooled.wrappedBuffer(mappedByteBufferFile);
-                        stream = FluxUtil.split(mappedByteBufFile, CHUNK_SIZE);
-                    } catch (IOException ioe) {
-                        mappedByteBufFile.release();
-                        Exceptions.propagate(ioe);
-                    }
-                    //
-                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", stream, FILE_SIZE).map(response -> {
-                        String base64MD5 = response.headers().value("Content-MD5");
-                        byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
-                        Assert.assertArrayEquals(md5, receivedMD5);
-                        return response;
-                    });
-                })
-                .flatMapDelayError(m -> m, 15, 1)
-                .blockLast();
+            .zipWith(md5s, (id, md5) -> {
+                FileChannel fileStream = null;
+                try {
+                    fileStream = FileChannel.open(TEMP_FOLDER_PATH.resolve("100m-" + id + ".dat"), StandardOpenOption.READ);
+                } catch (IOException ioe) {
+                    Exceptions.propagate(ioe);
+                }
+                //
+                ByteBuf mappedByteBufFile = null;
+                Flux<ByteBuf> stream = null;
+                try {
+                    MappedByteBuffer mappedByteBufferFile = fileStream.map(FileChannel.MapMode.READ_ONLY, 0, fileStream.size());
+                    mappedByteBufFile = Unpooled.wrappedBuffer(mappedByteBufferFile);
+                    stream = FluxUtil.split(mappedByteBufFile, CHUNK_SIZE);
+                } catch (IOException ioe) {
+                    mappedByteBufFile.release();
+                    Exceptions.propagate(ioe);
+                }
+                //
+                return service.upload100MB(String.valueOf(id), sas, "BlockBlob", stream, FILE_SIZE).map(response -> {
+                    String base64MD5 = response.headers().value("Content-MD5");
+                    byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
+                    Assert.assertArrayEquals(md5, receivedMD5);
+                    return response;
+                });
+            })
+            .flatMapDelayError(m -> m, 15, 1)
+            .blockLast();
         //
         long durationMilliseconds = Duration.between(uploadStart, Instant.now()).toMillis();
         LoggerFactory.getLogger(getClass()).info("Upload took " + durationMilliseconds + " milliseconds.");
@@ -370,39 +370,39 @@ public class RestProxyStressTests {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
         Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
-                .map(integer -> {
-                    final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
-                    try {
-                        return Files.readAllBytes(filePath);
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
-                    }
-                });
+            .map(integer -> {
+                final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
+                try {
+                    return Files.readAllBytes(filePath);
+                } catch (IOException ioe) {
+                    throw Exceptions.propagate(ioe);
+                }
+            });
         //
         Instant downloadStart = Instant.now();
         //
         Flux.range(0, NUM_FILES)
-                .zipWith(md5s, (id, md5) -> {
-                    return service.download100M(String.valueOf(id), sas).flatMap(response -> {
-                        Flux<ByteBuf> content;
-                        try {
-                            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-                            content = response.value()
-                                    .doOnNext(buf -> messageDigest.update(buf.slice().nioBuffer()));
+            .zipWith(md5s, (id, md5) -> {
+                return service.download100M(String.valueOf(id), sas).flatMap(response -> {
+                    Flux<ByteBuf> content;
+                    try {
+                        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+                        content = response.value()
+                            .doOnNext(buf -> messageDigest.update(buf.slice().nioBuffer()));
 
-                            return content.last().doOnSuccess(b -> {
-                                assertArrayEquals(md5, messageDigest.digest());
-                                LoggerFactory.getLogger(getClass()).info("Finished downloading and MD5 validated for " + id);
+                        return content.last().doOnSuccess(b -> {
+                            assertArrayEquals(md5, messageDigest.digest());
+                            LoggerFactory.getLogger(getClass()).info("Finished downloading and MD5 validated for " + id);
 
-                            });
+                        });
 
-                        } catch (NoSuchAlgorithmException nsae) {
-                            throw Exceptions.propagate(nsae);
-                        }
-                    });
-                })
-                .flatMapDelayError(m -> m, 15, 1)
-                .blockLast();
+                    } catch (NoSuchAlgorithmException nsae) {
+                        throw Exceptions.propagate(nsae);
+                    }
+                });
+            })
+            .flatMapDelayError(m -> m, 15, 1)
+            .blockLast();
         //
         long durationMilliseconds = Duration.between(downloadStart, Instant.now()).toMillis();
         LoggerFactory.getLogger(getClass()).info("Download took " + durationMilliseconds + " milliseconds.");
@@ -413,63 +413,63 @@ public class RestProxyStressTests {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
         Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
-                .map(integer -> {
-                    final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
-                    try {
-                        return Files.readAllBytes(filePath);
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
-                    }
-                });
+            .map(integer -> {
+                final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
+                try {
+                    return Files.readAllBytes(filePath);
+                } catch (IOException ioe) {
+                    throw Exceptions.propagate(ioe);
+                }
+            });
         //
         Instant downloadStart = Instant.now();
         //
         Flux.range(0, NUM_FILES)
-                .zipWith(md5s, (integer, md5) -> {
-                    final int id = integer;
-                    Flux<ByteBuf> downloadContent = service.download100M(String.valueOf(id), sas)
-                            // Ideally we would intercept this content to load an MD5 to check consistency between download and upload directly,
-                            // but it's sufficient to demonstrate that no corruption occurred between preparation->upload->download->upload.
-                            .flatMapMany(StreamResponse::value)
-                            .map(reactorNettybb -> {
-                                //
-                                // This test 'downloadUploadStreamingTest' exercises piping scenario.
-                                //
-                                //   A. Receive ByteBufFlux from reactor-netty from NettyInbound.receive() [via service.download100M].
-                                //   B. Directly pass this ByteBufFlux to Outbound.send() [via service.upload100MB]
-                                //
-                                //   NettyOutbound.send(NettyInbound.receive())
-                                //
-                                // A property of ByteBufFlux publisher is - The chunks in the stream gets released automatically once 'onNext' returns.
-                                //
-                                // The Outbound.send method subscribe to ByteBufFlux
-                                //     1. on each onNext call, the received ByteBuf chunk gets 'scheduled' to write through Netty.write()
-                                //     2. onNext returns.
-                                //     3. repeat 1 & 2 until stream completes or errored.
-                                //
-                                // The scheduling & immediate return from onNext [1 & 2] can result in the a chunk of ByteBufFlux to be released
-                                // before the scheduled Netty.write() completes.
-                                //
-                                // This can cause following issues:
-                                //   a. Write of content of released chunks, which is bad.
-                                //   b. Netty.write() calls release on the ByteBuf after write is done. We have double release problem here.
-                                //
-                                // Solution is to aware of ByteBufFlux auto-release property and retain each chunk before passing to Netty.write().
-                                //
-                                return reactorNettybb.retain();
-                            });
-                    //
-                    return service.upload100MB("copy-" + integer, sas, "BlockBlob", downloadContent, FILE_SIZE)
-                            .flatMap(uploadResponse -> {
-                                String base64MD5 = uploadResponse.headers().value("Content-MD5");
-                                byte[] uploadMD5 = Base64.getDecoder().decode(base64MD5);
-                                assertArrayEquals(md5, uploadMD5);
-                                LoggerFactory.getLogger(getClass()).info("Finished upload and validation for id " + id);
-                                return Mono.just(uploadResponse);
-                            });
-                })
-                .flatMapDelayError(m -> m, 30, 1)
-                .blockLast();
+            .zipWith(md5s, (integer, md5) -> {
+                final int id = integer;
+                Flux<ByteBuf> downloadContent = service.download100M(String.valueOf(id), sas)
+                    // Ideally we would intercept this content to load an MD5 to check consistency between download and upload directly,
+                    // but it's sufficient to demonstrate that no corruption occurred between preparation->upload->download->upload.
+                    .flatMapMany(StreamResponse::value)
+                    .map(reactorNettybb -> {
+                        //
+                        // This test 'downloadUploadStreamingTest' exercises piping scenario.
+                        //
+                        //   A. Receive ByteBufFlux from reactor-netty from NettyInbound.receive() [via service.download100M].
+                        //   B. Directly pass this ByteBufFlux to Outbound.send() [via service.upload100MB]
+                        //
+                        //   NettyOutbound.send(NettyInbound.receive())
+                        //
+                        // A property of ByteBufFlux publisher is - The chunks in the stream gets released automatically once 'onNext' returns.
+                        //
+                        // The Outbound.send method subscribe to ByteBufFlux
+                        //     1. on each onNext call, the received ByteBuf chunk gets 'scheduled' to write through Netty.write()
+                        //     2. onNext returns.
+                        //     3. repeat 1 & 2 until stream completes or errored.
+                        //
+                        // The scheduling & immediate return from onNext [1 & 2] can result in the a chunk of ByteBufFlux to be released
+                        // before the scheduled Netty.write() completes.
+                        //
+                        // This can cause following issues:
+                        //   a. Write of content of released chunks, which is bad.
+                        //   b. Netty.write() calls release on the ByteBuf after write is done. We have double release problem here.
+                        //
+                        // Solution is to aware of ByteBufFlux auto-release property and retain each chunk before passing to Netty.write().
+                        //
+                        return reactorNettybb.retain();
+                    });
+                //
+                return service.upload100MB("copy-" + integer, sas, "BlockBlob", downloadContent, FILE_SIZE)
+                    .flatMap(uploadResponse -> {
+                        String base64MD5 = uploadResponse.headers().value("Content-MD5");
+                        byte[] uploadMD5 = Base64.getDecoder().decode(base64MD5);
+                        assertArrayEquals(md5, uploadMD5);
+                        LoggerFactory.getLogger(getClass()).info("Finished upload and validation for id " + id);
+                        return Mono.just(uploadResponse);
+                    });
+            })
+            .flatMapDelayError(m -> m, 30, 1)
+            .blockLast();
         //
         long durationMilliseconds = Duration.between(downloadStart, Instant.now()).toMillis();
         LoggerFactory.getLogger(getClass()).info("Download/Upload took " + durationMilliseconds + " milliseconds.");
@@ -479,10 +479,10 @@ public class RestProxyStressTests {
     public void cancellationTest() throws Exception {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
         final Disposable d = Flux.range(0, NUM_FILES)
-                .flatMap(integer ->
-                        service.download100M(String.valueOf(integer), sas)
-                                .flatMapMany(StreamResponse::value))
-                .subscribe();
+            .flatMap(integer ->
+                service.download100M(String.valueOf(integer), sas)
+                    .flatMapMany(StreamResponse::value))
+            .subscribe();
 
         Mono.delay(Duration.ofSeconds(10)).then(Mono.defer(() -> {
             d.dispose();
@@ -497,7 +497,7 @@ public class RestProxyStressTests {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
         HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
+            .set("x-ms-version", "2017-04-17");
         // Order in which policies applied will be the order in which they added to builder
         //
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -510,24 +510,24 @@ public class RestProxyStressTests {
         }
 
         final IOService innerService = RestProxy.create(IOService.class,
-                new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()])));
+            new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()])));
 
         // When running with MockServer, connections sometimes get dropped,
         // but this doesn't seem to result in any bad behavior as long as we retry.
 
         Flux.range(0, 10000)
-                .flatMap(integer ->
-                        innerService.createContainer(integer.toString(), sas)
-                                .onErrorResume(throwable -> {
-                                    if (throwable instanceof ServiceRequestException) {
-                                        ServiceRequestException restException = (ServiceRequestException) throwable;
-                                        if ((restException.response().statusCode() == 409 || restException.response().statusCode() == 404)) {
-                                            return Mono.empty();
-                                        }
-                                    }
-                                    return Mono.error(throwable);
-                                })
-                                .then(innerService.deleteContainer(integer.toString(), sas)))
-                                .blockLast();
+            .flatMap(integer ->
+                innerService.createContainer(integer.toString(), sas)
+                    .onErrorResume(throwable -> {
+                        if (throwable instanceof ServiceRequestException) {
+                            ServiceRequestException restException = (ServiceRequestException) throwable;
+                            if ((restException.response().statusCode() == 409 || restException.response().statusCode() == 404)) {
+                                return Mono.empty();
+                            }
+                        }
+                        return Mono.error(throwable);
+                    })
+                    .then(innerService.deleteContainer(integer.toString(), sas)))
+            .blockLast();
     }
 }

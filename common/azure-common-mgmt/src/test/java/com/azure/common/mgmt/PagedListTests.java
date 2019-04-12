@@ -299,7 +299,7 @@ public class PagedListTests {
 
         FluxFromPagedList obpl = new FluxFromPagedList();
 
-        final Integer[] cnt = new Integer[] { 0 };
+        final Integer[] cnt = new Integer[] {0};
         obpl.toFlux().subscribe(integer -> {
             Assert.assertEquals(cnt[0], integer);
             cnt[0]++;

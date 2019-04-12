@@ -35,7 +35,6 @@ import java.util.Set;
 final class HttpResponseBodyDecoder {
     /**
      * Decodes body of a http response.
-     *
      * The content reading and decoding happens when caller subscribe to the returned {@code Mono<Object>},
      * if the response body is not decodable then {@code Mono.empty()} will be returned.
      *
@@ -43,7 +42,7 @@ final class HttpResponseBodyDecoder {
      * @param serializer the adapter to use for decoding
      * @param decodeData the necessary data required to decode a Http response
      * @return publisher that emits decoded response body upon subscription if body is decodable,
-     * no emission if the body is not-decodable
+     *     no emission if the body is not-decodable
      */
     static Mono<Object> decode(HttpResponse httpResponse, SerializerAdapter serializer, HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
@@ -51,20 +50,20 @@ final class HttpResponseBodyDecoder {
         return Mono.defer(() -> {
             if (isErrorStatus(httpResponse, decodeData)) {
                 return httpResponse.bodyAsString()
-                        .flatMap(bodyString -> {
-                            try {
-                                final Object decodedErrorEntity = deserializeBody(bodyString,
-                                        decodeData.exceptionBodyType(),
-                                        null,
-                                        serializer,
-                                        SerializerEncoding.fromHeaders(httpResponse.headers()));
-                                return decodedErrorEntity == null ? Mono.empty() : Mono.just(decodedErrorEntity);
-                            } catch (IOException | MalformedValueException ignored) {
-                                // This translates in RestProxy as a RestException with no deserialized body.
-                                // The response content will still be accessible via the .response() member.
-                            }
-                            return Mono.empty();
-                        });
+                    .flatMap(bodyString -> {
+                        try {
+                            final Object decodedErrorEntity = deserializeBody(bodyString,
+                                decodeData.exceptionBodyType(),
+                                null,
+                                serializer,
+                                SerializerEncoding.fromHeaders(httpResponse.headers()));
+                            return decodedErrorEntity == null ? Mono.empty() : Mono.just(decodedErrorEntity);
+                        } catch (IOException | MalformedValueException ignored) {
+                            // This translates in RestProxy as a RestException with no deserialized body.
+                            // The response content will still be accessible via the .response() member.
+                        }
+                        return Mono.empty();
+                    });
             } else if (httpResponse.request().httpMethod() == HttpMethod.HEAD) {
                 // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
                 return Mono.empty();
@@ -72,20 +71,20 @@ final class HttpResponseBodyDecoder {
                 return Mono.empty();
             } else {
                 return httpResponse.bodyAsString()
-                        .flatMap(bodyString -> {
-                            try {
-                                final Object decodedSuccessEntity = deserializeBody(bodyString,
-                                        extractEntityTypeFromReturnType(decodeData),
-                                        decodeData.returnValueWireType(),
-                                        serializer,
-                                        SerializerEncoding.fromHeaders(httpResponse.headers()));
-                                return decodedSuccessEntity == null ? Mono.empty() : Mono.just(decodedSuccessEntity);
-                            } catch (MalformedValueException e) {
-                                return Mono.error(new ServiceRequestException("HTTP response has a malformed body.", httpResponse, e));
-                            } catch (IOException e) {
-                                return Mono.error(new ServiceRequestException("Deserialization Failed.", httpResponse, e));
-                            }
-                        });
+                    .flatMap(bodyString -> {
+                        try {
+                            final Object decodedSuccessEntity = deserializeBody(bodyString,
+                                extractEntityTypeFromReturnType(decodeData),
+                                decodeData.returnValueWireType(),
+                                serializer,
+                                SerializerEncoding.fromHeaders(httpResponse.headers()));
+                            return decodedSuccessEntity == null ? Mono.empty() : Mono.just(decodedSuccessEntity);
+                        } catch (MalformedValueException e) {
+                            return Mono.error(new ServiceRequestException("HTTP response has a malformed body.", httpResponse, e));
+                        } catch (IOException e) {
+                            return Mono.error(new ServiceRequestException("Deserialization Failed.", httpResponse, e));
+                        }
+                    });
             }
         });
     }
@@ -146,14 +145,13 @@ final class HttpResponseBodyDecoder {
 
     /**
      * Deserialize the given string value representing content of a REST API response.
-     *
      * If the {@link ReturnValueWireType} is of type {@link Page}, then the returned object will be an instance of that
      * {@param wireType}. Otherwise, the returned object is converted back to its {@param resultType}.
      *
      * @param value the string value to deserialize
      * @param resultType the return type of the java proxy method
      * @param wireType value of optional {@link ReturnValueWireType} annotation present in java proxy method indicating
-     *                 'entity type' (wireType) of REST API wire response body
+     *     'entity type' (wireType) of REST API wire response body
      * @param encoding the encoding format of value
      * @return Deserialized object
      * @throws IOException When the body cannot be deserialized
@@ -175,9 +173,8 @@ final class HttpResponseBodyDecoder {
      * Given:
      * (1). the {@code java.lang.reflect.Type} (resultType) of java proxy method return value
      * (2). and {@link ReturnValueWireType} annotation value indicating 'entity type' (wireType)
-     *      of same REST API's wire response body
+     * of same REST API's wire response body
      * this method construct 'response body Type'.
-     *
      * Note: When {@link ReturnValueWireType} annotation is applied to a proxy method, then the raw
      * HTTP response content will need to parsed using the derived 'response body Type' then converted
      * to actual {@code returnType}.
@@ -208,14 +205,14 @@ final class HttpResponseBodyDecoder {
                 final Type wireResponseElementType = constructWireResponseType(resultElementType, wireType);
 
                 wireResponseType = TypeUtil.createParameterizedType(
-                        (Class<?>) ((ParameterizedType) resultType).getRawType(), wireResponseElementType);
+                    (Class<?>) ((ParameterizedType) resultType).getRawType(), wireResponseElementType);
             } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class) || TypeUtil.isTypeOrSubTypeOf(resultType, Response.class)) {
                 Type[] typeArguments = TypeUtil.getTypeArguments(resultType);
                 final Type resultValueType = typeArguments[1];
                 final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
 
                 wireResponseType = TypeUtil.createParameterizedType(
-                        (Class<?>) ((ParameterizedType) resultType).getRawType(), typeArguments[0], wireResponseValueType);
+                    (Class<?>) ((ParameterizedType) resultType).getRawType(), typeArguments[0], wireResponseValueType);
             }
         }
         return wireResponseType;
@@ -334,20 +331,15 @@ final class HttpResponseBodyDecoder {
 
     /**
      * Get the {@link Type} of the REST API 'returned entity'.
-     *
      * In the declaration of a java proxy method corresponding to the REST API, the 'returned entity' can be:
-     *
-     *      1. emission value of the reactor publisher returned by proxy method
-     *
-     *          e.g. {@code Mono<Foo> getFoo(args);}
-     *               {@code Flux<Foo> getFoos(args);}
-     *          where Foo is the REST API 'returned entity'.
-     *
-     *      2. OR content (value) of {@link ResponseBase} emitted by the reactor publisher returned from proxy method
-     *
-     *          e.g. {@code Mono<RestResponseBase<headers, Foo>> getFoo(args);}
-     *               {@code Flux<RestResponseBase<headers, Foo>> getFoos(args);}
-     *          where Foo is the REST API return entity.
+     * 1. emission value of the reactor publisher returned by proxy method
+     * e.g. {@code Mono<Foo> getFoo(args);}
+     * {@code Flux<Foo> getFoos(args);}
+     * where Foo is the REST API 'returned entity'.
+     * 2. OR content (value) of {@link ResponseBase} emitted by the reactor publisher returned from proxy method
+     * e.g. {@code Mono<RestResponseBase<headers, Foo>> getFoo(args);}
+     * {@code Flux<RestResponseBase<headers, Foo>> getFoos(args);}
+     * where Foo is the REST API return entity.
      *
      * @return the entity type.
      */
@@ -396,9 +388,9 @@ final class HttpResponseBodyDecoder {
             return false;
         } else {
             return !FluxUtil.isFluxByteBuf(returnType)
-                    && !(TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) && TypeUtil.isTypeOrSubTypeOf(TypeUtil.getTypeArgument(returnType), Void.class))
-                    && !TypeUtil.isTypeOrSubTypeOf(returnType, byte[].class)
-                    && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE) && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
+                && !(TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) && TypeUtil.isTypeOrSubTypeOf(TypeUtil.getTypeArgument(returnType), Void.class))
+                && !TypeUtil.isTypeOrSubTypeOf(returnType, byte[].class)
+                && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE) && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
         }
     }
 

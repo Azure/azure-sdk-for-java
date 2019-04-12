@@ -31,6 +31,7 @@ public class ProtocolPolicyTests {
         final HttpPipeline pipeline = createPipeline("ftp", false, "https://www.bing.com");
         pipeline.send(createHttpRequest("https://www.bing.com"));
     }
+
     private static HttpPipeline createPipeline(String protocol, String expectedUrl) {
         return new HttpPipeline(new MockHttpClient() {
             @Override
@@ -38,11 +39,11 @@ public class ProtocolPolicyTests {
                 return Mono.empty(); // NOP
             }
         },
-        new ProtocolPolicy(protocol, true),
-        (context, next) -> {
-            assertEquals(expectedUrl, context.httpRequest().url().toString());
-            return next.process();
-        });
+            new ProtocolPolicy(protocol, true),
+            (context, next) -> {
+                assertEquals(expectedUrl, context.httpRequest().url().toString());
+                return next.process();
+            });
     }
 
     private static HttpPipeline createPipeline(String protocol, boolean overwrite, String expectedUrl) {
@@ -52,11 +53,11 @@ public class ProtocolPolicyTests {
                 return Mono.empty(); // NOP
             }
         },
-        new ProtocolPolicy(protocol, overwrite),
-        (context, next) -> {
-            assertEquals(expectedUrl, context.httpRequest().url().toString());
-            return next.process();
-        });
+            new ProtocolPolicy(protocol, overwrite),
+            (context, next) -> {
+                assertEquals(expectedUrl, context.httpRequest().url().toString());
+                return next.process();
+            });
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {

@@ -30,10 +30,10 @@ public class HttpRequestTests {
         headers.set("other-header", "other-value");
 
         final HttpRequest request = new HttpRequest(
-                HttpMethod.PUT,
-                new URL("http://request.url"),
-                headers,
-                Flux.just(Unpooled.buffer(0, 0)));
+            HttpMethod.PUT,
+            new URL("http://request.url"),
+            headers,
+            Flux.just(Unpooled.buffer(0, 0)));
 
         final HttpRequest bufferedRequest = request.buffer();
 

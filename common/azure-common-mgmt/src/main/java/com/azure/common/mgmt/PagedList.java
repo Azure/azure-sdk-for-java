@@ -210,7 +210,7 @@ public abstract class PagedList<E> implements List<E> {
             if (i < 0) {
                 throw new NoSuchElementException();
             } else if (i >= items.size()) {
-                    throw new ConcurrentModificationException();
+                throw new ConcurrentModificationException();
             } else {
                 try {
                     this.nextIndex = i;
@@ -401,8 +401,8 @@ public abstract class PagedList<E> implements List<E> {
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
         while ((fromIndex >= items.size()
-                || toIndex >= items.size())
-                && hasNextPage()) {
+            || toIndex >= items.size())
+            && hasNextPage()) {
             loadNextPage();
         }
         return items.subList(fromIndex, toIndex);

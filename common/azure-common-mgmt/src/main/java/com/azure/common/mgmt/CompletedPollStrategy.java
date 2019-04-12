@@ -23,6 +23,7 @@ public class CompletedPollStrategy extends PollStrategy {
 
     /**
      * Create a new CompletedPollStrategy.
+     *
      * @param data The poll strategy data.
      */
     public CompletedPollStrategy(CompletedPollStrategyData data) {
@@ -40,9 +41,10 @@ public class CompletedPollStrategy extends PollStrategy {
 
         /**
          * Create a new CompletedPollStrategyData.
+         *
          * @param restProxy The RestProxy that created this PollStrategy.
          * @param methodParser The method parser that describes the service interface method that
-         *                     initiated the long running operation.
+         *     initiated the long running operation.
          * @param firstHttpResponse The HTTP response to the original HTTP request.
          */
         public CompletedPollStrategyData(RestProxy restProxy, SwaggerMethodParser methodParser, HttpResponse firstHttpResponse) {
@@ -58,9 +60,9 @@ public class CompletedPollStrategy extends PollStrategy {
         }
     }
 
-    public
+
     @Override
-    HttpRequest createPollRequest() {
+    public HttpRequest createPollRequest() {
         throw new UnsupportedOperationException();
     }
 
@@ -76,7 +78,7 @@ public class CompletedPollStrategy extends PollStrategy {
 
     Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
         return createOperationStatusMono(originalHttpRequest, firstHttpResponse, methodParser, operationStatusResultType)
-                .flatMapMany(cos -> Flux.just(cos));
+            .flatMapMany(cos -> Flux.just(cos));
     }
 
     Mono<HttpResponse> pollUntilDone() {

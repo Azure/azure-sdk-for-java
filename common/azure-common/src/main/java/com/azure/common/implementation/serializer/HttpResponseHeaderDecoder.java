@@ -25,7 +25,6 @@ import java.util.Map;
 final class HttpResponseHeaderDecoder {
     /**
      * Decode headers of the http response.
-     *
      * The decoding happens when caller subscribed to the returned {@code Mono<Object>},
      * if the response header is not decodable then {@code Mono.empty()} will be returned.
      *
@@ -33,7 +32,7 @@ final class HttpResponseHeaderDecoder {
      * @param serializer the adapter to use for decoding
      * @param decodeData the necessary data required to decode a Http response
      * @return publisher that emits decoded response header upon subscription if header is decodable,
-     * no emission if the header is not-decodable
+     *     no emission if the header is not-decodable
      */
     static Mono<Object> decode(HttpResponse httpResponse, SerializerAdapter serializer, HttpResponseDecodeData decodeData) {
         Type headerType = decodeData.headersType();
@@ -53,29 +52,25 @@ final class HttpResponseHeaderDecoder {
     /**
      * Deserialize the provided headers returned from a REST API to an entity instance declared as
      * the model to hold 'Matching' headers.
-     *
      * 'Matching' headers are the REST API returned headers those with:
-     *      1. header names same as name of a properties in the entity.
-     *      2. header names start with value of {@link HeaderCollection} annotation applied to the properties in the entity.
-     *
+     * 1. header names same as name of a properties in the entity.
+     * 2. header names start with value of {@link HeaderCollection} annotation applied to the properties in the entity.
      * When needed, the 'header entity' types must be declared as first generic argument of {@link ResponseBase} returned
      * by java proxy method corresponding to the REST API.
      * e.g.
      * {@code Mono<RestResponseBase<FooMetadataHeaders, Void>> getMetadata(args);}
      * {@code
-     *      class FooMetadataHeaders {
-     *          String name;
-     *          @HeaderCollection("header-collection-prefix-")
-     *          Map<String,String> headerCollection;
-     *      }
-     * }
-     *
-     * in the case of above example, this method produces an instance of FooMetadataHeaders from provided {@headers}.
+     * class FooMetadataHeaders {
+     * String name;
      *
      * @param headers the REST API returned headers
      * @return instance of header entity type created based on provided {@headers}, if header entity model does
-     * not exists then return null
+     *     not exists then return null
      * @throws IOException
+     * @HeaderCollection("header-collection-prefix-") Map<String, String> headerCollection;
+     *     }
+     *     }
+     *     in the case of above example, this method produces an instance of FooMetadataHeaders from provided {@headers}.
      */
     private static Object deserializeHeaders(HttpHeaders headers, SerializerAdapter serializer, HttpResponseDecodeData decodeData) throws IOException {
         final Type deserializedHeadersType = decodeData.headersType();

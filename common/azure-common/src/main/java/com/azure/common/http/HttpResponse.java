@@ -42,7 +42,6 @@ public abstract class HttpResponse implements Closeable {
 
     /**
      * Get the publisher emitting response content chunks.
-     *
      * <p>
      * Returns a stream of the response's body content. Emissions may occur on the
      * Netty EventLoop threads which are shared across channels and should not be
@@ -50,7 +49,6 @@ public abstract class HttpResponse implements Closeable {
      * programming but if you do use methods like {@code blockingSubscribe} or {@code blockingGet}
      * on the stream then be sure to use {@code subscribeOn} and {@code observeOn}
      * before the blocking call. For example:
-     *
      * <pre>
      * {@code
      *   response.body()

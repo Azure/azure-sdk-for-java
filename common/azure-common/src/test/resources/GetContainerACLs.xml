@@ -5,12 +5,12 @@
   -->
 
 <SignedIdentifiers>
-    <SignedIdentifier>
-        <Id>MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=</Id>
-        <AccessPolicy>
-            <Start>2009-09-28T08:49:37.0000000Z</Start>
-            <Expiry>2009-09-29T08:49:37.0000000Z</Expiry>
-            <Permission>rwd</Permission>
-        </AccessPolicy>
-    </SignedIdentifier>
+  <SignedIdentifier>
+    <Id>MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=</Id>
+    <AccessPolicy>
+      <Start>2009-09-28T08:49:37.0000000Z</Start>
+      <Expiry>2009-09-29T08:49:37.0000000Z</Expiry>
+      <Permission>rwd</Permission>
+    </AccessPolicy>
+  </SignedIdentifier>
 </SignedIdentifiers>

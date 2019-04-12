@@ -4,7 +4,7 @@
 package com.azure.common.implementation.util;
 
 /**
- *  The util class is a helper class for clone operation.
+ * The util class is a helper class for clone operation.
  */
 public final class ImplUtils {
 
@@ -14,6 +14,7 @@ public final class ImplUtils {
 
     /**
      * Creates a copy of the source byte array.
+     *
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
@@ -28,6 +29,7 @@ public final class ImplUtils {
 
     /**
      * Creates a copy of the source int array.
+     *
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */

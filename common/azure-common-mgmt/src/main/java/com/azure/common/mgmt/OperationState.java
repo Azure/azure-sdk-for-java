@@ -29,23 +29,25 @@ public final class OperationState {
 
     /**
      * Get whether or not the provided operation state represents a completed state.
+     *
      * @param operationState The operation state to check.
      * @return Whether or not the provided operation state represents a completed state.
      */
     public static boolean isCompleted(String operationState) {
         return operationState == null
-                || operationState.length() == 0
-                || SUCCEEDED.equalsIgnoreCase(operationState)
-                || isFailedOrCanceled(operationState);
+            || operationState.length() == 0
+            || SUCCEEDED.equalsIgnoreCase(operationState)
+            || isFailedOrCanceled(operationState);
     }
 
     /**
      * Get whether or not the provided operation state represents a failed or canceled state.
+     *
      * @param operationState The operation state to check.
      * @return Whether or not the provided operation state represents a failed or canceled state.
      */
     public static boolean isFailedOrCanceled(String operationState) {
         return FAILED.equalsIgnoreCase(operationState)
-                || CANCELED.equalsIgnoreCase(operationState);
+            || CANCELED.equalsIgnoreCase(operationState);
     }
 }

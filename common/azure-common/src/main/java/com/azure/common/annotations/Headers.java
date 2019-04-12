@@ -11,11 +11,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Annotation to annotate list of static headers sent to a REST endpoint.
- *
  * <p>Headers are comma separated strings, with each in the format of "header name: header value1,header value2".</p>
- *
  * <p><strong>Examples:</strong></p>
- *
  * <pre>
  * {@literal @}Headers({ "Content-Type: application/json; charset=utf-8", "accept-language: en-US" })
  * {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
@@ -26,6 +23,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Headers {
     /**
      * List of static headers.
+     *
      * @return List of static headers.
      */
     String[] value();

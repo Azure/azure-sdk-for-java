@@ -46,7 +46,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      *
      * @param detailLevel The HTTP logging detail level.
      * @param prettyPrintJSON If true, pretty prints JSON message bodies when logging.
-     *                        If the detailLevel does not include body logging, this flag does nothing.
+     *     If the detailLevel does not include body logging, this flag does nothing.
      */
     public HttpLoggingPolicy(HttpLogDetailLevel detailLevel, boolean prettyPrintJSON) {
         this.detailLevel = detailLevel;
@@ -71,7 +71,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate = logResponseDelegate(logger, context.httpRequest().url(), startNs);
         //
         return logRequest.then(next.process()).flatMap(logResponseDelegate)
-                .doOnError(throwable -> log(logger, "<-- HTTP FAILED: " + throwable));
+            .doOnError(throwable -> log(logger, "<-- HTTP FAILED: " + throwable));
     }
 
     private Mono<Void> logRequest(final Logger logger, final HttpRequest request) {
@@ -144,7 +144,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 long contentLength = getContentLength(response.headers());
                 final String contentTypeHeader = response.headerValue("Content-Type");
                 if ((contentTypeHeader == null || !"application/octet-stream".equalsIgnoreCase(contentTypeHeader))
-                        && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
+                    && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
                     final HttpResponse bufferedResponse = response.buffer();
                     return bufferedResponse.bodyAsString().map(bodyStr -> {
                         bodyStr = prettyPrintIfNeeded(logger, contentTypeHeader, bodyStr);
@@ -180,7 +180,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * Process the log using an SLF4j logger and an HTTP message.
      *
      * @param logger the SLF4j logger with the context of the request
-     * @param s      the message for logging
+     * @param s the message for logging
      */
     private void log(Logger logger, String s) {
         logger.info(s);

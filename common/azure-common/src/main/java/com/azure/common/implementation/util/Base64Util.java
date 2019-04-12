@@ -11,6 +11,7 @@ import java.util.Base64;
 public final class Base64Util {
     /**
      * Encodes a byte array to base64.
+     *
      * @param src the byte array to encode
      * @return the base64 encoded bytes
      */
@@ -20,6 +21,7 @@ public final class Base64Util {
 
     /**
      * Encodes a byte array to base64 URL format.
+     *
      * @param src the byte array to encode
      * @return the base64 URL encoded bytes
      */
@@ -29,6 +31,7 @@ public final class Base64Util {
 
     /**
      * Encodes a byte array to a base 64 string.
+     *
      * @param src the byte array to encode
      * @return the base64 encoded string
      */
@@ -38,6 +41,7 @@ public final class Base64Util {
 
     /**
      * Decodes a base64 encoded byte array.
+     *
      * @param encoded the byte array to decode
      * @return the decoded byte array
      */
@@ -47,6 +51,7 @@ public final class Base64Util {
 
     /**
      * Decodes a byte array in base64 URL format.
+     *
      * @param src the byte array to decode
      * @return the decoded byte array
      */
@@ -56,6 +61,7 @@ public final class Base64Util {
 
     /**
      * Decodes a base64 encoded string.
+     *
      * @param encoded the string to decode
      * @return the decoded byte array
      */

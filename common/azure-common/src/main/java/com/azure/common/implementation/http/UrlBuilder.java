@@ -22,14 +22,14 @@ public final class UrlBuilder {
 
     /**
      * Set the scheme/protocol that will be used to build the final URL.
+     *
      * @param scheme The scheme/protocol that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withScheme(String scheme) {
         if (scheme == null || scheme.isEmpty()) {
             this.scheme = null;
-        }
-        else {
+        } else {
             with(scheme, UrlTokenizerState.SCHEME);
         }
         return this;
@@ -37,6 +37,7 @@ public final class UrlBuilder {
 
     /**
      * Get the scheme/protocol that has been assigned to this UrlBuilder.
+     *
      * @return the scheme/protocol that has been assigned to this UrlBuilder.
      */
     public String scheme() {
@@ -45,14 +46,14 @@ public final class UrlBuilder {
 
     /**
      * Set the host that will be used to build the final URL.
+     *
      * @param host The host that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withHost(String host) {
         if (host == null || host.isEmpty()) {
             this.host = null;
-        }
-        else {
+        } else {
             with(host, UrlTokenizerState.SCHEME_OR_HOST);
         }
         return this;
@@ -60,6 +61,7 @@ public final class UrlBuilder {
 
     /**
      * Get the host that has been assigned to this UrlBuilder.
+     *
      * @return the host that has been assigned to this UrlBuilder.
      */
     public String host() {
@@ -68,14 +70,14 @@ public final class UrlBuilder {
 
     /**
      * Set the port that will be used to build the final URL.
+     *
      * @param port The port that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withPort(String port) {
         if (port == null || port.isEmpty()) {
             this.port = null;
-        }
-        else {
+        } else {
             with(port, UrlTokenizerState.PORT);
         }
         return this;
@@ -83,6 +85,7 @@ public final class UrlBuilder {
 
     /**
      * Set the port that will be used to build the final URL.
+     *
      * @param port The port that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
@@ -92,6 +95,7 @@ public final class UrlBuilder {
 
     /**
      * Get the port that has been assigned to this UrlBuilder.
+     *
      * @return the port that has been assigned to this UrlBuilder.
      */
     public Integer port() {
@@ -100,14 +104,14 @@ public final class UrlBuilder {
 
     /**
      * Set the path that will be used to build the final URL.
+     *
      * @param path The path that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withPath(String path) {
         if (path == null || path.isEmpty()) {
             this.path = null;
-        }
-        else {
+        } else {
             with(path, UrlTokenizerState.PATH);
         }
         return this;
@@ -115,6 +119,7 @@ public final class UrlBuilder {
 
     /**
      * Get the path that has been assigned to this UrlBuilder.
+     *
      * @return the path that has been assigned to this UrlBuilder.
      */
     public String path() {
@@ -123,10 +128,11 @@ public final class UrlBuilder {
 
     /**
      * Set the provided query parameter name and encoded value to query string for the final URL.
+     *
      * @param queryParameterName The name of the query parameter.
      * @param queryParameterEncodedValue The encoded value of the query parameter.
      * @return The provided query parameter name and encoded value to query string for the final
-     * URL.
+     *     URL.
      */
     public UrlBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
         query.put(queryParameterName, queryParameterEncodedValue);
@@ -135,14 +141,14 @@ public final class UrlBuilder {
 
     /**
      * Set the query that will be used to build the final URL.
+     *
      * @param query The query that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withQuery(String query) {
         if (query == null || query.isEmpty()) {
             this.query.clear();
-        }
-        else {
+        } else {
             with(query, UrlTokenizerState.QUERY);
         }
         return this;
@@ -150,6 +156,7 @@ public final class UrlBuilder {
 
     /**
      * Get the query that has been assigned to this UrlBuilder.
+     *
      * @return the query that has been assigned to this UrlBuilder.
      */
     public Map<String, String> query() {
@@ -211,6 +218,7 @@ public final class UrlBuilder {
 
     /**
      * Get the URL that is being built.
+     *
      * @return The URL that is being built.
      * @throws MalformedURLException if the URL is not fully formed.
      */
@@ -220,6 +228,7 @@ public final class UrlBuilder {
 
     /**
      * Get the string representation of the URL that is being built.
+     *
      * @return The string representation of the URL that is being built.
      */
     public String toString() {
@@ -271,6 +280,7 @@ public final class UrlBuilder {
 
     /**
      * Parse a UrlBuilder from the provided URL string.
+     *
      * @param url The string to parse.
      * @return The UrlBuilder that was parsed from the string.
      */
@@ -282,6 +292,7 @@ public final class UrlBuilder {
 
     /**
      * Parse a UrlBuilder from the provided URL object.
+     *
      * @param url The URL object to parse.
      * @return The UrlBuilder that was parsed from the URL object.
      */

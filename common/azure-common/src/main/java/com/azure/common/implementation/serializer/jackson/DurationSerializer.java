@@ -34,6 +34,7 @@ final class DurationSerializer extends JsonSerializer<Duration> {
 
     /**
      * Convert to provided Duration to an ISO 8601 String with a days component.
+     *
      * @param duration The Duration to convert.
      * @return The String representation of the provided Duration.
      */
