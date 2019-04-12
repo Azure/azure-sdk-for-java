@@ -6,30 +6,23 @@ import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.InterceptorManager;
+import com.azure.common.TestBase;
 import com.azure.common.TestMode;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
-import com.azure.common.policy.RecordNetworkCallPolicy;
-import com.azure.common.utils.SdkContext;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.experimental.theories.Theories;
 import org.junit.rules.TestName;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
@@ -50,44 +43,51 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-@RunWith(Theories.class)
-public class ConfigurationAsyncClientTest {
+public class ConfigurationAsyncClientTest extends TestBase {
     private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
 
-    private InterceptorManager interceptorManager;
-    private SdkContext sdkContext;
     private ConfigurationAsyncClient client;
     private String keyPrefix;
     private String labelPrefix;
 
+    public ConfigurationAsyncClientTest() {
+        super(getTestMode());
+    }
+
     @Rule
     public TestName testName = new TestName();
 
-    @Before
-    public void beforeTest() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
-        final TestMode testMode = getTestMode();
+    @Override
+    protected String testName() {
+        return testName.getMethodName();
+    }
 
-        interceptorManager = new InterceptorManager(testName.getMethodName(), testMode);
-        sdkContext = new SdkContext(testMode, interceptorManager.getRecordedData());
+    @Override
+    protected void beforeTest() {
+        final String connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+            : System.getenv("AZCONFIG_CONNECTION_STRING");
+
+        Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
+
+        final ConfigurationClientCredentials credentials;
+        try {
+            credentials = new ConfigurationClientCredentials(connectionString);
+        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
+            logger.error("Could not create an configuration client credentials.", e);
+            fail();
+            return;
+        }
 
         if (interceptorManager.isPlaybackMode()) {
-            logger.info("PLAYBACK MODE");
-
-            final String connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
-
             client = ConfigurationAsyncClient.builder()
-                    .credentials(new ConfigurationClientCredentials(connectionString))
+                    .credentials(credentials)
                     .httpClient(interceptorManager.getPlaybackClient())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .build();
         } else {
-            logger.info("RECORD MODE");
-
-            final String connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
-            Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
-
             client = ConfigurationAsyncClient.builder()
-                    .credentials(new ConfigurationClientCredentials(connectionString))
+                    .credentials(credentials)
                     .httpClient(HttpClient.createDefault().wiretap(true))
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .addPolicy(interceptorManager.getRecordPolicy())
@@ -98,29 +98,8 @@ public class ConfigurationAsyncClientTest {
         labelPrefix = sdkContext.randomResourceName("label", 8);
     }
 
-    private TestMode getTestMode() throws IllegalArgumentException {
-        final String azureTestMode = System.getenv("AZURE_TEST_MODE");
-
-        if (azureTestMode != null) {
-            try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
-            } catch (IllegalArgumentException e) {
-                logger.error("Could not parse '{}' into TestEnum.", azureTestMode);
-                throw e;
-            }
-        } else {
-            logger.info("Environment variable 'AZURE_TEST_MODE' has not been set yet. Using 'Playback' mode.");
-            return TestMode.PLAYBACK;
-        }
-    }
-
-    @After
-    public void afterTest() {
-        cleanUpResources();
-        interceptorManager.close();
-    }
-
-    private void cleanUpResources() {
+    @Override
+    protected void cleanUpResources() {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().key(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
@@ -130,6 +109,23 @@ public class ConfigurationAsyncClientTest {
                 .blockLast();
 
         logger.info("Finished cleaning up values.");
+    }
+
+    private static TestMode getTestMode() {
+        final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
+        final String azureTestMode = System.getenv("AZURE_TEST_MODE");
+
+        if (azureTestMode != null) {
+            try {
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException e) {
+                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                return TestMode.PLAYBACK;
+            }
+        } else {
+            logger.info("Environment variable 'AZURE_TEST_MODE' has not been set yet. Using 'Playback' mode.");
+            return TestMode.PLAYBACK;
+        }
     }
 
     /**
