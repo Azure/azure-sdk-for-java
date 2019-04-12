@@ -3,11 +3,8 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.exception.ServiceRequestException;
-import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.rest.Response;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 /**

@@ -9,7 +9,6 @@ import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.HttpResponse;
 import com.azure.common.http.policy.AddDatePolicy;
 import com.azure.common.http.policy.AddHeadersPolicy;
 import com.azure.common.http.policy.AsyncCredentialsPolicy;

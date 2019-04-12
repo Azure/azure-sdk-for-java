@@ -2,23 +2,12 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.policy.AddDatePolicy;
-import com.azure.common.http.policy.AddHeadersPolicy;
-import com.azure.common.http.policy.AsyncCredentialsPolicy;
 import com.azure.common.http.policy.HttpLogDetailLevel;
-import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.common.http.policy.HttpPipelinePolicy;
-import com.azure.common.http.policy.RequestIdPolicy;
-import com.azure.common.http.policy.UserAgentPolicy;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public final class ConfigurationClientBuilder {
     private final ConfigurationAsyncClientBuilder builder;
