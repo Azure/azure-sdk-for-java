@@ -55,22 +55,22 @@ public class ConfigurationTests extends HDInsightManagementTestBase {
         ClusterInner cluster = hdInsightManager.clusters().inner().create(resourceGroup.name(), clusterName, createParams);
         validateCluster(clusterName, createParams, cluster);
 
-        Map<String, String> hive = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, hiveSite);
+        Map<String, String> hive = hdInsightManager.inner().configurations().get(resourceGroup.name(), clusterName, hiveSite);
         Assert.assertEquals(hive,hiveConfig);
 
-        Map<String, String> mapred = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, mapredSite);
+        Map<String, String> mapred = hdInsightManager.inner().configurations().get(resourceGroup.name(), clusterName, mapredSite);
         Assert.assertEquals(mapred, mapredConfig);
 
-        Map<String, String> yarn = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, yarnSite);
+        Map<String, String> yarn = hdInsightManager.inner().configurations().get(resourceGroup.name(), clusterName, yarnSite);
         Assert.assertEquals(yarn, yarnConfig);
 
-        Map<String, String> gateway = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, gatewayName);
+        Map<String, String> gateway = hdInsightManager.inner().configurations().get(resourceGroup.name(), clusterName, gatewayName);
         Assert.assertEquals(gateway.size(), 3);
 
-        Map<String, String> core = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, coreSite);
-        Assert.assertEquals(core.size(), 2);
-        Assert.assertTrue(core.containsKey("fs.defaultFS"));
-        Assert.assertTrue(core.keySet()).has(new Condition<Iterable<? extends String>>() {
+        Map<String, String> core = hdInsightManager.inner().configurations().get(resourceGroup.name(), clusterName, coreSite);
+        assertThat(core).isNotEmpty().hasSize(2);
+        assertThat(core).containsKey("fs.defaultFS");
+        assertThat(core.keySet()).has(new Condition<Iterable<? extends String>>() {
             @Override
             public boolean matches(Iterable<? extends String> keys) {
                 for (String key : keys) {
@@ -94,7 +94,7 @@ public class ConfigurationTests extends HDInsightManagementTestBase {
         String gateway = "gateway";
         String expectedUserName = CLUSTER_USERNAME;
         String expectedUserPassword = CLUSTER_PASSWORD;
-        Map<String, String> actualHttpSettings = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, gateway);
+        Map<String, String> actualHttpSettings = hdInsightManager.inner().configurations().get(resourceGroup.name(), clusterName, gateway);
         validateHttpSettings(expectedUserName, expectedUserPassword, actualHttpSettings);
 
         String newExpectedUserPassword = "NewPassword1!";
@@ -104,8 +104,8 @@ public class ConfigurationTests extends HDInsightManagementTestBase {
             "restAuthCredential.password", newExpectedUserPassword
         );
 
-        hdInsightManager.configurations().inner().update(resourceGroup.name(), clusterName, gateway, updateParams);
-        actualHttpSettings = hdInsightManager.configurations().inner().get(resourceGroup.name(), clusterName, gateway);
+        hdInsightManager.inner().configurations().update(resourceGroup.name(), clusterName, gateway, updateParams);
+        actualHttpSettings = hdInsightManager.inner().configurations().get(resourceGroup.name(), clusterName, gateway);
         validateHttpSettings(expectedUserName, newExpectedUserPassword, actualHttpSettings);
     }
 }
