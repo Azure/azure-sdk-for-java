@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.common;
+package com.azure.common.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Keeps track of network call records from each unit test session.
  */
-class NetworkCallRecord {
+public class NetworkCallRecord {
     @JsonProperty("Method")
     private String method;
 

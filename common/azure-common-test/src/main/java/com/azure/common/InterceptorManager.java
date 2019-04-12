@@ -3,11 +3,10 @@
 package com.azure.common;
 
 import com.azure.common.http.*;
-import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.common.models.NetworkCallRecord;
 import com.azure.common.utils.SdkContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +30,6 @@ import java.util.zip.GZIPInputStream;
 
 public class InterceptorManager implements Closeable {
     private final static String RECORD_FOLDER = "session-records/";
-    private final static int DEFAULT_BUFFER_LENGTH = 1024;
 
     private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
     private final Map<String, String> textReplacementRules = new HashMap<>();
@@ -70,16 +68,12 @@ public class InterceptorManager implements Closeable {
         return testMode == TestMode.PLAYBACK;
     }
 
-    public RecordPolicy getRecordPolicy() {
-        return new RecordPolicy();
+    public RecordedData recordedData() {
+        return recordedData;
     }
 
     public HttpClient getPlaybackClient() {
         return new PlaybackClient();
-    }
-
-    public void addTextReplacementRule(String regex, String replacement) {
-        textReplacementRules.put(regex, replacement);
     }
 
     @Override
@@ -97,47 +91,6 @@ public class InterceptorManager implements Closeable {
                 break;
             default:
                 System.out.println("==> Unknown AZURE_TEST_MODE: " + testMode);
-        }
-    }
-
-    public class RecordPolicy implements HttpPipelinePolicy {
-        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            final NetworkCallRecord networkCallRecord = new NetworkCallRecord();
-            Map<Object, Object> headers = new HashMap<>();
-
-            if (context.httpRequest().headers().value("Content-Type") != null) {
-                headers.put("Content-Type", context.httpRequest().headers().value("Content-Type"));
-            }
-            if (context.httpRequest().headers().value("x-ms-version") != null) {
-                headers.put("x-ms-version", context.httpRequest().headers().value("x-ms-version"));
-            }
-            if (context.httpRequest().headers().value("User-Agent") != null) {
-                headers.put("User-Agent", context.httpRequest().headers().value("User-Agent"));
-            }
-
-            networkCallRecord.method(context.httpRequest().httpMethod().toString());
-            networkCallRecord.uri(applyReplacementRule(context.httpRequest().url().toString().replaceAll("\\?$", "")));
-
-            return next.process().flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
-
-                return extractResponseData(bufferedResponse).map(responseData -> {
-                    networkCallRecord.response(responseData);
-                    String body = responseData.get("Body");
-
-                    // Remove pre-added header if this is a waiting or redirection
-                    if (body != null && body.contains("<Status>InProgress</Status>")
-                        || Integer.parseInt(responseData.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
-                        logger.info("Waiting for a response or redirection.");
-                    } else {
-                        synchronized (recordedData.getNetworkCallRecords()) {
-                            recordedData.getNetworkCallRecords().add(networkCallRecord);
-                        }
-                    }
-
-                    return bufferedResponse;
-                });
-            });
         }
     }
 
@@ -220,67 +173,6 @@ public class InterceptorManager implements Closeable {
 
             HttpResponse response = new MockHttpResponse(request, recordStatusCode, headers, bytes);
             return Mono.just(response);
-        }
-    }
-
-    private Mono<Map<String, String>> extractResponseData(final HttpResponse response) {
-        final Map<String, String> responseData = new HashMap<>();
-        responseData.put("StatusCode", Integer.toString(response.statusCode()));
-
-        boolean addedRetryAfter = false;
-        for (HttpHeader header : response.headers()) {
-            String headerValueToStore = header.value();
-
-            if (header.name().equalsIgnoreCase("location") || header.name().equalsIgnoreCase("azure-asyncoperation")) {
-                headerValueToStore = applyReplacementRule(headerValueToStore);
-            }
-            if (header.name().equalsIgnoreCase("retry-after")) {
-                headerValueToStore = "0";
-                addedRetryAfter = true;
-            }
-            responseData.put(header.name().toLowerCase(), headerValueToStore);
-        }
-
-        if (!addedRetryAfter) {
-            responseData.put("retry-after", "0");
-        }
-
-        String contentType = response.headerValue("content-type");
-        if (contentType == null) {
-            return Mono.just(responseData);
-        } else if (contentType.contains("json") || response.headerValue("content-encoding") == null) {
-            return response.bodyAsString().map(content -> {
-                content = applyReplacementRule(content);
-                responseData.put("Body", content);
-                return responseData;
-            });
-        } else {
-            return response.bodyAsByteArray().map(bytes -> {
-                String content;
-                try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
-                     ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-                    byte[] buffer = new byte[DEFAULT_BUFFER_LENGTH];
-                    int position = 0;
-                    int bytesRead = gis.read(buffer, position, buffer.length);
-
-                    while (bytesRead != -1) {
-                        output.write(buffer, 0, bytesRead);
-                        position += bytesRead;
-                        bytesRead = gis.read(buffer, position, buffer.length);
-                    }
-
-                    content = new String(output.toByteArray(), StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    throw Exceptions.propagate(e);
-                }
-
-                responseData.remove("content-encoding");
-                responseData.put("content-length", Integer.toString(content.length()));
-
-                content = applyReplacementRule(content);
-                responseData.put("body", content);
-                return responseData;
-            });
         }
     }
 

@@ -3,6 +3,8 @@
 
 package com.azure.common;
 
+import com.azure.common.models.NetworkCallRecord;
+
 import java.util.LinkedList;
 
 public class RecordedData {
