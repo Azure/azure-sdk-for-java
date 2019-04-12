@@ -3,6 +3,7 @@
 
 package com.azure.common.utils;
 
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ public class ResourceNamer {
      * @param name The prefix for generated strings.
      */
     public ResourceNamer(String name) {
-        this.randName = name.toLowerCase() + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase();
+        this.randName = name.toLowerCase() + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase(Locale.US);
     }
 
     /**
@@ -30,7 +31,7 @@ public class ResourceNamer {
      * @return the random name
      */
     public String randomName(String prefix, int maxLen) {
-        prefix = prefix.toLowerCase();
+        prefix = prefix.toLowerCase(Locale.US);
         int minRandomnessLength = 5;
         if (maxLen <= minRandomnessLength) {
             return randomString(maxLen);
@@ -65,7 +66,7 @@ public class ResourceNamer {
             str.append(UUID.randomUUID()
                 .toString()
                 .replace("-", "")
-                .substring(0, Math.min(32, length)).toLowerCase());
+                .substring(0, Math.min(32, length)).toLowerCase(Locale.US));
         }
         return str.toString();
     }
