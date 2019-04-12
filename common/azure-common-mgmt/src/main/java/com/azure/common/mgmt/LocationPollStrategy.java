@@ -92,8 +92,7 @@ public final class LocationPollStrategy extends PollStrategy {
                                 throw Exceptions.propagate(mfue);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         data.done = true;
                     }
                     return response;
@@ -128,8 +127,7 @@ public final class LocationPollStrategy extends PollStrategy {
                     pollUrl = new URL(originalRequestUrl, locationUrl);
                 } catch (MalformedURLException ignored) {
                 }
-            }
-            else {
+            } else {
                 final String locationUrlLower = locationUrl.toLowerCase();
                 if (locationUrlLower.startsWith("http://") || locationUrlLower.startsWith("https://")) {
                     try {

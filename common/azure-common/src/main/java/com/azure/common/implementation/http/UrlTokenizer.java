@@ -55,16 +55,14 @@ class UrlTokenizer {
     boolean next() {
         if (!hasCurrentCharacter()) {
             currentToken = null;
-        }
-        else {
+        } else {
             switch (state) {
                 case SCHEME:
                     final String scheme = readUntilNotLetterOrDigit();
                     currentToken = UrlToken.scheme(scheme);
                     if (!hasCurrentCharacter()) {
                         state = UrlTokenizerState.DONE;
-                    }
-                    else {
+                    } else {
                         state = UrlTokenizerState.HOST;
                     }
                     break;
@@ -74,22 +72,18 @@ class UrlTokenizer {
                     if (!hasCurrentCharacter()) {
                         currentToken = UrlToken.host(schemeOrHost);
                         state = UrlTokenizerState.DONE;
-                    }
-                    else if (currentCharacter() == ':') {
+                    } else if (currentCharacter() == ':') {
                         if (peekCharacters(3).equals("://")) {
                             currentToken = UrlToken.scheme(schemeOrHost);
                             state = UrlTokenizerState.HOST;
-                        }
-                        else {
+                        } else {
                             currentToken = UrlToken.host(schemeOrHost);
                             state = UrlTokenizerState.PORT;
                         }
-                    }
-                    else if (currentCharacter() == '/') {
+                    } else if (currentCharacter() == '/') {
                         currentToken = UrlToken.host(schemeOrHost);
                         state = UrlTokenizerState.PATH;
-                    }
-                    else if (currentCharacter() == '?') {
+                    } else if (currentCharacter() == '?') {
                         currentToken = UrlToken.host(schemeOrHost);
                         state = UrlTokenizerState.QUERY;
                     }
@@ -105,14 +99,11 @@ class UrlTokenizer {
 
                     if (!hasCurrentCharacter()) {
                         state = UrlTokenizerState.DONE;
-                    }
-                    else if (currentCharacter() == ':') {
+                    } else if (currentCharacter() == ':') {
                         state = UrlTokenizerState.PORT;
-                    }
-                    else if (currentCharacter() == '/') {
+                    } else if (currentCharacter() == '/') {
                         state = UrlTokenizerState.PATH;
-                    }
-                    else {
+                    } else {
                         state = UrlTokenizerState.QUERY;
                     }
                     break;
@@ -127,11 +118,9 @@ class UrlTokenizer {
 
                     if (!hasCurrentCharacter()) {
                         state = UrlTokenizerState.DONE;
-                    }
-                    else if (currentCharacter() == '/') {
+                    } else if (currentCharacter() == '/') {
                         state = UrlTokenizerState.PATH;
-                    }
-                    else {
+                    } else {
                         state = UrlTokenizerState.QUERY;
                     }
                     break;
@@ -142,8 +131,7 @@ class UrlTokenizer {
 
                     if (!hasCurrentCharacter()) {
                         state = UrlTokenizerState.DONE;
-                    }
-                    else {
+                    } else {
                         state = UrlTokenizerState.QUERY;
                     }
                     break;
@@ -175,8 +163,7 @@ class UrlTokenizer {
                 final char currentCharacter = currentCharacter();
                 if (!Character.isLetterOrDigit(currentCharacter)) {
                     break;
-                }
-                else {
+                } else {
                     builder.append(currentCharacter);
                     nextCharacter();
                 }
@@ -205,8 +192,7 @@ class UrlTokenizer {
 
                 if (foundTerminator) {
                     break;
-                }
-                else {
+                } else {
                     builder.append(currentCharacter);
                     nextCharacter();
                 }

@@ -60,7 +60,7 @@ public interface HttpResponseDecodeData {
      * @return the expected HTTP response status codes
      */
     default int[] expectedStatusCodes() {
-         return null;
+        return null;
     }
 
     /**
@@ -72,7 +72,7 @@ public interface HttpResponseDecodeData {
      *
      * @return the type that the raw HTTP response content will be sent as
      */
-     default Type returnValueWireType() {
+    default Type returnValueWireType() {
         return null;
     }
 

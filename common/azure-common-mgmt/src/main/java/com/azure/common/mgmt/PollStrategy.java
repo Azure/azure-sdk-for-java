@@ -178,10 +178,10 @@ abstract class PollStrategy {
     }
 
     Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
-            return sendPollRequestWithDelay()
-                    .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType))
-                    .repeat()
-                    .takeUntil(operationStatus -> isDone());
+        return sendPollRequestWithDelay()
+                .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType))
+                .repeat()
+                .takeUntil(operationStatus -> isDone());
     }
 
     Mono<HttpResponse> pollUntilDone() {
