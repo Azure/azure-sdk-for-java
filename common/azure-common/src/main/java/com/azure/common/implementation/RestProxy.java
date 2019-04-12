@@ -271,8 +271,7 @@ public class RestProxy implements InvocationHandler {
             .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, null));
     }
 
-    private static Exception instantiateUnexpectedException(Class<? extends ServiceRequestException> exceptionType,
-                                                            Class<?> exceptionBodyType,
+    private static Exception instantiateUnexpectedException(UnexpectedException exception,
                                                             HttpResponse httpResponse,
                                                             String responseContent,
                                                             Object responseDecodedContent) {
@@ -287,7 +286,7 @@ public class RestProxy implements InvocationHandler {
 
         Exception result;
         try {
-            final Constructor<? extends ServiceRequestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
+            final Constructor<? extends ServiceRequestException> exceptionConstructor = exception.exceptionType().getConstructor(String.class, HttpResponse.class, exception.exceptionBodyType());
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
                 httpResponse,
                 responseDecodedContent);
@@ -295,7 +294,6 @@ public class RestProxy implements InvocationHandler {
             String message = "Status code " + responseStatusCode + ", but an instance of "
                 + exceptionType.getCanonicalName() + " cannot be created."
                 + " Response body: " + bodyRepresentation;
-            //
             result = new IOException(message, e);
         }
         return result;
@@ -325,32 +323,29 @@ public class RestProxy implements InvocationHandler {
                 Mono<Object> decodedErrorBody = decodedResponse.decodedBody();
                 //
                 return decodedErrorBody.flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> {
-                    // decodedBody() emits 'responseDecodedErrorObject' the successfully decoded exception body object
-                    Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
-                        methodParser.exceptionBodyType(),
-                        decodedResponse.sourceResponse(),
-                        responseContent,
-                        responseDecodedErrorObject);
+                    // decodedBody() emits 'responseDecodedErrorObject' the successfully decoded exception bod
+                    Throwable exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                            decodedResponse.sourceResponse(),
+                            responseContent,
+                            responseDecodedErrorObject);
                     return Mono.error(exception);
                     //
                 }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
                     // decodedBody() emits empty, indicate unable to decode 'responseContent',
                     // create exception with un-decodable content string and without exception body object.
-                    Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
-                        methodParser.exceptionBodyType(),
-                        decodedResponse.sourceResponse(),
-                        responseContent,
-                        null);
+                    Throwable exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                            decodedResponse.sourceResponse(),
+                            responseContent,
+                            null);
                     return Mono.error(exception);
                     //
                 }));
             }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
                 // bodyAsString() emits empty, indicate no body, create exception empty content string no exception body object.
-                Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
-                    methodParser.exceptionBodyType(),
-                    decodedResponse.sourceResponse(),
-                    "",
-                    null);
+                Throwable exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                        decodedResponse.sourceResponse(),
+                        "",
+                        null);
                 return Mono.error(exception);
                 //
             }));
