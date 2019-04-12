@@ -47,9 +47,6 @@ public class GoodLoggingCheck extends AbstractCheck {
     private static final String IS_DEBUG_ENABLED = "isDebugEnabled";
     private static final String IS_TRACE_ENABLED = "isTraceEnabled";
 
-
-
-
     private static final Set<String> loggerSet = new HashSet<>();
 
     @Override
@@ -172,10 +169,8 @@ public class GoodLoggingCheck extends AbstractCheck {
                     break;
             }
         }
-
     }
-
-
+    
     /**
      * @param methodCallRoot METHOD_CALL node which contains logging method call, such as logger.debug()
      * @param loggingLevelName  logging level method name, such as debug, error, info, etc.
