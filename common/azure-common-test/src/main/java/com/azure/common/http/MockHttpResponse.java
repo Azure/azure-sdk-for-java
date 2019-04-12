@@ -3,8 +3,6 @@
 
 package com.azure.common.http;
 
-import com.azure.common.http.HttpHeaders;
-import com.azure.common.http.HttpResponse;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
@@ -18,7 +16,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-class MockHttpResponse extends HttpResponse {
+public class MockHttpResponse extends HttpResponse {
     private final static SerializerAdapter serializer = new JacksonAdapter();
 
     private final int statusCode;
@@ -27,21 +25,21 @@ class MockHttpResponse extends HttpResponse {
 
     private final byte[] bodyBytes;
 
-    MockHttpResponse(int statusCode, HttpHeaders headers, byte[] bodyBytes) {
+    public MockHttpResponse(int statusCode, HttpHeaders headers, byte[] bodyBytes) {
         this.statusCode = statusCode;
         this.headers = headers;
         this.bodyBytes = bodyBytes;
     }
 
-    MockHttpResponse(int statusCode, byte[] bodyBytes) {
+    public MockHttpResponse(int statusCode, byte[] bodyBytes) {
         this(statusCode, new HttpHeaders(), bodyBytes);
     }
 
-    MockHttpResponse(int statusCode) {
+    public MockHttpResponse(int statusCode) {
         this(statusCode, new byte[0]);
     }
 
-    MockHttpResponse(int statusCode, HttpHeaders headers, Object serializable) {
+    public MockHttpResponse(int statusCode, HttpHeaders headers, Object serializable) {
         this(statusCode, headers, serialize(serializable));
     }
 
