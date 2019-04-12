@@ -42,7 +42,6 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 //governing permissions and limitations under the License.
 
 public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegrationTestBase {
-    
     private static boolean hasUnlimitedCrypto() {
         try {
             return Cipher.getMaxAllowedKeyLength("RC5") >= 256;
@@ -78,7 +77,7 @@ public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegr
     @Test
     public void KeyVault_KeyVaultKeyResolver_Key_KeyVaultKeyResolverDefaultProviderTest() throws InterruptedException, ExecutionException
     {
-    	String TEST_KEY_NAME = KEY_NAME + "1";
+        String TEST_KEY_NAME = KEY_NAME + "1";
         try {
             // Create a key on a vault.
             CreateKeyRequest  request   = new CreateKeyRequest.Builder(getVaultUri(), TEST_KEY_NAME, JsonWebKeyType.RSA).build();

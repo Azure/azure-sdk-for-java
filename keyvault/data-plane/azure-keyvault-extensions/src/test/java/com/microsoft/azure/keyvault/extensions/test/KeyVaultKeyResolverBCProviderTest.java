@@ -77,7 +77,7 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
     @Test
     public void KeyVault_KeyVaultKeyResolver_Key_KeyVaultKeyResolverBCProviderTest() throws InterruptedException, ExecutionException
     {
-    	String TEST_KEY_NAME = KEY_NAME + "1";
+        String TEST_KEY_NAME = KEY_NAME + "1";
         try {
             // Create a key on a vault.
             CreateKeyRequest           request  = new CreateKeyRequest.Builder(getVaultUri(), TEST_KEY_NAME, JsonWebKeyType.RSA).build();
