@@ -66,9 +66,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     || Integer.parseInt(responseData.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
                     logger.info("Waiting for a response or redirection.");
                 } else {
-                    synchronized (recordedData.getNetworkCallRecords()) {
-                        recordedData.getNetworkCallRecords().add(networkCallRecord);
-                    }
+                    recordedData.addNetworkCall(networkCallRecord);
                 }
 
                 return bufferedResponse;
