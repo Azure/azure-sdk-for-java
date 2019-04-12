@@ -14,13 +14,13 @@ class NetworkCallRecord {
     @JsonProperty("Method")
     private String method;
 
-    @JsonProperty()
+    @JsonProperty("Uri")
     private String uri;
 
-    @JsonProperty()
+    @JsonProperty("Headers")
     private Map<String, String> headers;
 
-    @JsonProperty()
+    @JsonProperty("Response")
     private Map<String, String> response;
 
     /**
@@ -77,7 +77,7 @@ class NetworkCallRecord {
 
     /**
      * Gets the contents of the HTTP response as a map of its HTTP headers and response body. The HTTP response body is
-     * mapped under key "body".
+     * mapped under key "Body".
      *
      * @return Contents of the HTTP response.
      */
