@@ -670,7 +670,7 @@ class TransferManagerTest extends APISpec {
 
         then:
         //Due to memory issues, this check only runs on small to medium sized files.
-        if(dataSize < 500){
+        if(dataSize < 100 * 1024 * 1024){
             FlowableUtil.collectBytesInBuffer(bu.download().blockingGet().body(null)).blockingGet() == data
         }
         bu.getBlockList(BlockListType.ALL).blockingGet().body().committedBlocks().size() == blockCount
@@ -684,10 +684,7 @@ class TransferManagerTest extends APISpec {
         10 * 1024 * 1024  | 1 * 1024 * 1024   | 10       || 10
         500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5
         10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7
-        200 * 1024 * 1024   | 40 * 1024 * 1024 | 4        || 5
-        // Disabling this test, as it causes Java Out of Memory error on Dev Ops VM.
-        // Will enable it later, when a decision on virtual machines upgrade is made.
-        // Issue Link : https://github.com/Azure/azure-sdk-for-java/issues/3106
+        100 * 1024 * 1024 | 10 * 1024 * 1024  | 4        || 10
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
