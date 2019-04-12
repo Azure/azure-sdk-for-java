@@ -55,6 +55,7 @@ public class ConfigurationAsyncClientTest {
     private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
 
     private InterceptorManager interceptorManager;
+    private SdkContext sdkContext;
     private ConfigurationAsyncClient client;
     private String keyPrefix;
     private String labelPrefix;
@@ -67,6 +68,7 @@ public class ConfigurationAsyncClientTest {
         final TestMode testMode = getTestMode();
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
+        sdkContext = new SdkContext(testMode, interceptorManager.recordedData());
 
         if (interceptorManager.isPlaybackMode()) {
             logger.info("PLAYBACK MODE");
@@ -92,8 +94,8 @@ public class ConfigurationAsyncClientTest {
                     .build();
         }
 
-        keyPrefix = SdkContext.randomResourceName("key", 8);
-        labelPrefix = SdkContext.randomResourceName("label", 8);
+        keyPrefix = sdkContext.randomResourceName("key", 8);
+        labelPrefix = sdkContext.randomResourceName("label", 8);
     }
 
     private TestMode getTestMode() throws IllegalArgumentException {
@@ -135,8 +137,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void addSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final Map<String, String> tags = new HashMap<>();
         tags.put("MyTag", "TagValue");
         tags.put("AnotherTag", "AnotherTagValue");
@@ -205,8 +207,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void addExistingSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
@@ -224,8 +226,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void setSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting setConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdatedValue");
 
@@ -246,8 +248,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void setSettingIfEtag() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
 
@@ -324,8 +326,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void updateNoExistingSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting expectedFail = new ConfigurationSetting().key(key).value("myFailingUpdate");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
@@ -343,8 +345,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void updateSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final Map<String, String> tags = new HashMap<>();
         tags.put("first tag", "first value");
         tags.put("second tag", "second value");
@@ -394,8 +396,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void updateSettingIfEtag() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
         final ConfigurationSetting finalConfiguration = new ConfigurationSetting().key(key).value("myFinalValue");
@@ -442,7 +444,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void getSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
@@ -460,7 +462,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void getSettingNotFound() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().key(key).value("myNeverRetreivedValue");
         final ConfigurationSetting nonExistentLabel = new ConfigurationSetting().key(key).label("myNonExistentLabel");
 
@@ -483,8 +485,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void deleteSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting deletableConfiguration = new ConfigurationSetting().key(key).value("myValue");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
@@ -509,7 +511,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void deleteSettingNotFound() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().key(key).value("myNeverDeletedValue");
 
         StepVerifier.create(client.addSetting(neverDeletedConfiguation))
@@ -535,8 +537,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void deleteSettingWithETag() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting(newConfiguration).value("myUpdateValue");
 
@@ -579,8 +581,8 @@ public class ConfigurationAsyncClientTest {
     @Test
     public void listWithKeyAndLabel() {
         final String value = "myValue";
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName("lbl", 8);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName("lbl", 8);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value(value).label(label);
 
         StepVerifier.create(client.setSetting(expected))
@@ -661,7 +663,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void listSettingsAcceptDateTime() {
-        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
@@ -696,7 +698,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void listRevisions() {
-        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
@@ -747,7 +749,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void listRevisionsAcceptDateTime() {
-        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
@@ -840,7 +842,7 @@ public class ConfigurationAsyncClientTest {
     @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
     @Test
     public void getSettingWhenValueNotUpdated() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().key(key).value("myNewValue");
         final Response<ConfigurationSetting> block = client.addSetting(expected).single().block();
