@@ -5,6 +5,7 @@ package com.azure.common.utils;
 
 import com.azure.common.TestMode;
 import com.azure.common.models.RecordedData;
+import com.azure.common.TestResourceNamer;
 
 import java.util.Objects;
 
