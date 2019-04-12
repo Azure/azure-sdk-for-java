@@ -2,14 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.common;
 
-import com.azure.common.http.HttpClient;
-import com.azure.common.http.HttpHeader;
-import com.azure.common.http.HttpHeaders;
-import com.azure.common.http.HttpPipelineCallContext;
-import com.azure.common.http.HttpPipelineNextPolicy;
-import com.azure.common.http.HttpRequest;
-import com.azure.common.http.HttpResponse;
-import com.azure.common.http.ProxyOptions;
+import com.azure.common.http.*;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.utils.SdkContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
