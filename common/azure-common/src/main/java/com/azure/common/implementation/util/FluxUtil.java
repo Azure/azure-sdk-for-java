@@ -53,14 +53,14 @@ public final class FluxUtil {
             // A stream is auto-release enabled means - the ByteBuf chunks in the stream get
             // released as consumer consumes each chunk.
             return Mono.using(Unpooled::compositeBuffer,
-                    cbb -> stream.collect(() -> cbb,
-                            (cbb1, buffer) -> cbb1.addComponent(true, Unpooled.wrappedBuffer(buffer).retain())),
+                cbb -> stream.collect(() -> cbb,
+                    (cbb1, buffer) -> cbb1.addComponent(true, Unpooled.wrappedBuffer(buffer).retain())),
                     ReferenceCountUtil::release)
                     .filter((CompositeByteBuf cbb) -> cbb.isReadable())
                     .map(FluxUtil::byteBufToArray);
         } else {
             return stream.collect(Unpooled::compositeBuffer,
-                    (cbb1, buffer) -> cbb1.addComponent(true, Unpooled.wrappedBuffer(buffer)))
+                (cbb1, buffer) -> cbb1.addComponent(true, Unpooled.wrappedBuffer(buffer)))
                     .filter((CompositeByteBuf cbb) -> cbb.isReadable())
                     .map(FluxUtil::byteBufToArray);
         }
@@ -121,27 +121,27 @@ public final class FluxUtil {
         if (autoReleaseEnabled) {
             Mono<ByteBuf> mergedCbb = Mono.using(
                     // Resource supplier
-                    () -> {
-                        CompositeByteBuf initialCbb = Unpooled.compositeBuffer();
-                        return initialCbb;
-                    },
+                () -> {
+                    CompositeByteBuf initialCbb = Unpooled.compositeBuffer();
+                    return initialCbb;
+                },
                     // source Mono creator
-                    (CompositeByteBuf initialCbb) -> {
-                        Mono<CompositeByteBuf> reducedCbb = stream.reduce(initialCbb, (CompositeByteBuf currentCbb, ByteBuf nextBb) -> {
-                            CompositeByteBuf updatedCbb = currentCbb.addComponent(nextBb.retain());
-                            return updatedCbb;
-                        });
-                        //
-                        return reducedCbb
-                                .doOnNext((CompositeByteBuf cbb) -> cbb.writerIndex(cbb.capacity()))
-                                .filter((CompositeByteBuf cbb) -> cbb.isReadable());
-                    },
+                (CompositeByteBuf initialCbb) -> {
+                    Mono<CompositeByteBuf> reducedCbb = stream.reduce(initialCbb, (CompositeByteBuf currentCbb, ByteBuf nextBb) -> {
+                        CompositeByteBuf updatedCbb = currentCbb.addComponent(nextBb.retain());
+                        return updatedCbb;
+                    });
+                    //
+                    return reducedCbb
+                            .doOnNext((CompositeByteBuf cbb) -> cbb.writerIndex(cbb.capacity()))
+                            .filter((CompositeByteBuf cbb) -> cbb.isReadable());
+                },
                     // Resource cleaner
-                    (CompositeByteBuf finalCbb) -> finalCbb.release());
+                (CompositeByteBuf finalCbb) -> finalCbb.release());
             return mergedCbb;
         } else {
             return stream.collect(Unpooled::compositeBuffer,
-                    (cbb1, buffer) -> cbb1.addComponent(true, Unpooled.wrappedBuffer(buffer)))
+                (cbb1, buffer) -> cbb1.addComponent(true, Unpooled.wrappedBuffer(buffer)))
                     .filter((CompositeByteBuf cbb) -> cbb.isReadable())
                     .map(bb -> bb);
         }

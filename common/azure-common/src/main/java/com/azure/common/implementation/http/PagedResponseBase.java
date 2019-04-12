@@ -42,31 +42,41 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * {@inheritDoc}
      */
     @Override
-    public List<T> items() { return items; }
+    public List<T> items() {
+        return items;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String nextLink() { return nextLink; }
+    public String nextLink() {
+        return nextLink;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int statusCode() { return statusCode; }
+    public int statusCode() {
+        return statusCode;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public HttpHeaders headers() { return headers; }
+    public HttpHeaders headers() {
+        return headers;
+    }
 
     /**
      * @return the request which resulted in this PagedRequestResponse.
      */
     @Override
-    public HttpRequest request() { return request; }
+    public HttpRequest request() {
+        return request;
+    }
 
     /**
      * Get the headers from the HTTP response, transformed into the header type H.
