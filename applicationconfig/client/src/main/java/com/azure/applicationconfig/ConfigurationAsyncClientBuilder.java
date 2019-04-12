@@ -7,7 +7,9 @@ import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
 import com.azure.common.http.HttpClient;
+import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipeline;
+import com.azure.common.http.HttpResponse;
 import com.azure.common.http.policy.AddDatePolicy;
 import com.azure.common.http.policy.AddHeadersPolicy;
 import com.azure.common.http.policy.AsyncCredentialsPolicy;
@@ -15,6 +17,7 @@ import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.RequestIdPolicy;
+import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
 
 import java.net.MalformedURLException;
@@ -29,7 +32,38 @@ import java.util.Objects;
  * @see ConfigurationAsyncClient
  * @see ConfigurationClientCredentials
  */
-public final class ConfigurationAsyncClientBuilder extends ConfigurationClientBuilderBase<ConfigurationAsyncClient> {
+public final class ConfigurationAsyncClientBuilder {
+    // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
+    // request was sent.
+    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
+    private static final String CONTENT_TYPE_HEADER = "Content-Type";
+    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    private static final String ACCEPT_HEADER = "Accept";
+    private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
+
+    final List<HttpPipelinePolicy> policies;
+    final HttpHeaders headers;
+
+    ConfigurationClientCredentials credentials;
+    URL serviceEndpoint;
+    HttpClient httpClient;
+    HttpLogDetailLevel httpLogDetailLevel;
+    HttpPipeline pipeline;
+    RetryPolicy retryPolicy;
+    String userAgent;
+
+    ConfigurationAsyncClientBuilder() {
+        userAgent = AzureConfiguration.getUserAgentHeader(AzureConfiguration.NAME, AzureConfiguration.VERSION);
+        retryPolicy = new RetryPolicy();
+        httpLogDetailLevel = HttpLogDetailLevel.NONE;
+        policies = new ArrayList<>();
+
+        headers = new HttpHeaders();
+        headers.set(ECHO_REQUEST_ID_HEADER, "true");
+        headers.set(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE);
+        headers.set(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
+    }
+
     /**
      * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time {@code build()} is
      * called, a new instance of {@link ConfigurationAsyncClient} is created.

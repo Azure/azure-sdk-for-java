@@ -20,7 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public final class ConfigurationClientBuilder extends ConfigurationClientBuilderBase<ConfigurationClient> {
+public final class ConfigurationClientBuilder {
+    private final ConfigurationAsyncClientBuilder builder;
+
+    public ConfigurationClientBuilder() {
+        builder = ConfigurationAsyncClient.builder();
+    }
+
     /**
      * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code build()} is
      * called, a new instance of {@link ConfigurationClient} is created.
@@ -39,36 +45,7 @@ public final class ConfigurationClientBuilder extends ConfigurationClientBuilder
      * has not been set.
      */
     public ConfigurationClient build() {
-        Objects.requireNonNull(serviceEndpoint);
-
-        if (pipeline != null) {
-            return new ConfigurationClient(serviceEndpoint, pipeline);
-        }
-
-        if (credentials == null) {
-            throw new IllegalStateException("'credentials' is required.");
-        }
-
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new UserAgentPolicy(userAgent));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddHeadersPolicy(headers));
-        policies.add(new AddDatePolicy());
-        policies.add(new ConfigurationCredentialsPolicy());
-        policies.add(new AsyncCredentialsPolicy(credentials));
-        policies.add(retryPolicy);
-
-        policies.addAll(this.policies);
-
-        policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
-
-        HttpPipeline pipeline = httpClient == null
-            ? new HttpPipeline(policies)
-            : new HttpPipeline(httpClient, policies);
-
-        return new ConfigurationClient(serviceEndpoint, pipeline);
+        return new ConfigurationClient(builder.build());
     }
 
     /**
@@ -80,7 +57,7 @@ public final class ConfigurationClientBuilder extends ConfigurationClientBuilder
      * @throws MalformedURLException if {@code serviceEndpoint} is null or it cannot be parsed into a valid URL.
      */
     public ConfigurationClientBuilder serviceEndpoint(String serviceEndpoint) throws MalformedURLException {
-        this.serviceEndpoint = new URL(serviceEndpoint);
+        builder.serviceEndpoint(serviceEndpoint);
         return this;
     }
 
@@ -93,9 +70,7 @@ public final class ConfigurationClientBuilder extends ConfigurationClientBuilder
      * @throws NullPointerException If {@code credentials} is {@code null}.
      */
     public ConfigurationClientBuilder credentials(ConfigurationClientCredentials credentials) {
-        Objects.requireNonNull(credentials);
-        this.credentials = credentials;
-        this.serviceEndpoint = credentials.baseUri();
+        builder.credentials(credentials);
         return this;
     }
 
@@ -106,7 +81,7 @@ public final class ConfigurationClientBuilder extends ConfigurationClientBuilder
      * @return The updated ConfigurationClientBuilder object.
      */
     public ConfigurationClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        httpLogDetailLevel = logLevel;
+        builder.httpLogDetailLevel(logLevel);
         return this;
     }
 
@@ -119,8 +94,7 @@ public final class ConfigurationClientBuilder extends ConfigurationClientBuilder
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy);
-        policies.add(policy);
+        builder.addPolicy(policy);
         return this;
     }
 
@@ -132,8 +106,7 @@ public final class ConfigurationClientBuilder extends ConfigurationClientBuilder
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public ConfigurationClientBuilder httpClient(HttpClient client) {
-        Objects.requireNonNull(client);
-        this.httpClient = client;
+        builder.httpClient(client);
         return this;
     }
 
@@ -147,8 +120,7 @@ public final class ConfigurationClientBuilder extends ConfigurationClientBuilder
      * @return The updated ConfigurationClientBuilder object.
      */
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
-        Objects.requireNonNull(pipeline);
-        this.pipeline = pipeline;
+        builder.pipeline(pipeline);
         return this;
     }
 }

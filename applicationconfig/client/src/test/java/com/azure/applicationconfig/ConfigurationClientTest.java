@@ -108,6 +108,7 @@ public class ConfigurationClientTest {
         interceptorManager.close();
     }
 
+    // TODO (alzimmer): Remove the try/catch sleep when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
     private void cleanUpResources() {
         logger.info("Cleaning up created key values.");
 
@@ -676,8 +677,6 @@ public class ConfigurationClientTest {
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
-     *
-     * TODO (alzimmer): Remove the sleep when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
     @Test
     public void listSettingsWithPagination() {
