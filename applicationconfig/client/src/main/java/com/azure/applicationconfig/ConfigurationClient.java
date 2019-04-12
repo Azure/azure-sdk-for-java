@@ -2,7 +2,6 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.rest.Response;
 
@@ -38,15 +37,7 @@ public final class ConfigurationClient extends ConfigurationClientBase<Response<
     }
 
     /**
-     * Adds a configuration value in the service if that key does not exist.
-     *
-     * @param key The key of the configuration setting to add.
-     * @param value The value associated with this configuration setting key.
-     * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
-     * is an invalid value (which will also throw ServiceRequestException described below).
-     * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws ServiceRequestException If a ConfigurationSetting with the same key exists. Or, {@code key} is an empty
-     * string.
+     * {@inheritDoc}
      */
     public Response<ConfigurationSetting> addSetting(String key, String value) {
         return addSetting(new ConfigurationSetting().key(key).value(value));
@@ -56,18 +47,11 @@ public final class ConfigurationClient extends ConfigurationClientBase<Response<
      * {@inheritDoc}
      */
     public Response<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
-        return super.addSettingBase(setting).block();
+        return addSettingBase(setting).block();
     }
 
     /**
-     * Creates or updates a configuration value in the service with the given key.
-     *
-     * @param key The key of the configuration setting to create or update.
-     * @param value The value of this configuration setting.
-     * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
-     * value (which will also throw ServiceRequestException described below).
-     * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws ServiceRequestException If the setting exists and is locked. Or, if {@code key} is an empty string.
+     * {@inheritDoc}
      */
     public Response<ConfigurationSetting> setSetting(String key, String value) {
         return setSetting(new ConfigurationSetting().key(key).value(value));
@@ -77,38 +61,64 @@ public final class ConfigurationClient extends ConfigurationClientBase<Response<
      * {@inheritDoc}
      */
     public Response<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
-        return super.setSettingBase(setting).block();
+        return setSettingBase(setting).block();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Response<ConfigurationSetting> updateSetting(String key, String value) {
         return updateSetting(new ConfigurationSetting().key(key).value(value));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
-        return super.updateSettingBase(setting).block();
+        return updateSettingBase(setting).block();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Response<ConfigurationSetting> getSetting(String key) {
         return getSetting(new ConfigurationSetting().key(key));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Response<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
-        return super.getSettingBase(setting).block();
+        return getSettingBase(setting).block();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Response<ConfigurationSetting> deleteSetting(String key) {
         return deleteSetting(new ConfigurationSetting().key(key));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
-        return super.deleteSettingBase(setting).block();
+        return deleteSettingBase(setting).block();
     }
 
+    /**
+     * {@inheritDoc}
+     * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
+     * contains all of the current settings in the service.
+     */
     public List<ConfigurationSetting> listSettings(SettingSelector options) {
-        return super.listSettingsBase(options).collectList().block();
+        return listSettingsBase(options).collectList().block();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        return super.listSettingRevisionsBase(selector).collectList().block();
+        return listSettingRevisionsBase(selector).collectList().block();
     }
 }

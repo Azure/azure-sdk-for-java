@@ -40,6 +40,19 @@ abstract class ConfigurationClientBase<T, U> extends ServiceClient {
     }
 
     /**
+     * Adds a configuration value in the service if that key does not exist.
+     *
+     * @param key The key of the configuration setting to add.
+     * @param value The value associated with this configuration setting key.
+     * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
+     * is an invalid value (which will also throw ServiceRequestException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ServiceRequestException If a ConfigurationSetting with the same key exists. Or, {@code key} is an empty
+     * string.
+     */
+    abstract T addSetting(String key, String value);
+
+    /**
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
      *
@@ -61,6 +74,18 @@ abstract class ConfigurationClientBase<T, U> extends ServiceClient {
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
         return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, null, getETagValue(ETAG_ANY));
     }
+
+    /**
+     * Creates or updates a configuration value in the service with the given key.
+     *
+     * @param key The key of the configuration setting to create or update.
+     * @param value The value of this configuration setting.
+     * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
+     * value (which will also throw ServiceRequestException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ServiceRequestException If the setting exists and is locked. Or, if {@code key} is an empty string.
+     */
+    abstract T setSetting(String key, String value);
 
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
@@ -96,6 +121,19 @@ abstract class ConfigurationClientBase<T, U> extends ServiceClient {
     }
 
     /**
+     * Updates an existing configuration value in the service with the given key. The setting must already exist.
+     *
+     * @param key The key of the configuration setting to update.
+     * @param value The updated value of this configuration setting.
+     * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
+     * exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ServiceRequestException If a ConfigurationSetting with the key does not exist or the configuration value
+     * is locked. Or, if {@code key} is an empty string.
+     */
+    abstract T updateSetting(String key, String value);
+
+    /**
      * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
      * supported, the entire configuration value is replaced.
      *
@@ -122,6 +160,18 @@ abstract class ConfigurationClientBase<T, U> extends ServiceClient {
     }
 
     /**
+     * Attempts to get a ConfigurationSetting that matches the {@code key}.
+     *
+     * @param key The key of the setting to retrieve.
+     * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
+     * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ServiceRequestException If the {@code key} and {@code label} does not exist. Or, if {@code key} is an
+     * empty string.
+     */
+    abstract T getSetting(String key);
+
+    /**
      * Attempts to get the ConfigurationSetting given the {@code key}, optional {@code label}.
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
@@ -140,6 +190,17 @@ abstract class ConfigurationClientBase<T, U> extends ServiceClient {
 
         return service.getKeyValue(serviceEndpoint, setting.key(), setting.label(), null, null, null, null);
     }
+
+    /**
+     * Deletes the ConfigurationSetting with a matching {@code key}.
+     *
+     * @param key The key of the setting to delete.
+     * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if
+     * the {@code key} is an invalid value (which will also throw ServiceRequestException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ServiceRequestException If {@code key} is an empty string.
+     */
+    abstract T deleteSetting(String key);
 
     /**
      * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
@@ -176,14 +237,6 @@ abstract class ConfigurationClientBase<T, U> extends ServiceClient {
      */
     abstract U listSettings(SettingSelector options);
 
-    /**
-     * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all
-     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
-     *
-     * @param options Optional. Options to filter configuration setting results from the service.
-     * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
-     * contains all of the current settings in the service.
-     */
     Flux<ConfigurationSetting> listSettingsBase(SettingSelector options) {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (options != null) {
@@ -196,6 +249,17 @@ abstract class ConfigurationClientBase<T, U> extends ServiceClient {
         return result.flatMapMany(this::extractAndFetchConfigurationSettings);
     }
 
+    /**
+     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
+     * in descending order from their {@link ConfigurationSetting#lastModified() lastModified} date. Revisions expire
+     * after a period of time. The service maintains change history for up to 7 days.
+     *
+     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
+     * in their current state. Otherwise, the results returned match the parameters given in {@code options}.
+     *
+     * @param selector Optional. Used to filter configuration setting revisions from the service.
+     * @return Revisions of the ConfigurationSetting
+     */
     abstract U listSettingRevisions(SettingSelector selector);
 
     Flux<ConfigurationSetting> listSettingRevisionsBase(SettingSelector selector) {

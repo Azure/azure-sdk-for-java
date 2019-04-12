@@ -6,13 +6,11 @@ import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
-import com.azure.common.http.HttpResponse;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
-import com.sun.xml.internal.ws.api.config.management.policy.ManagementAssertion;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.After;
 import org.junit.Before;
@@ -22,14 +20,10 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,9 +111,21 @@ public class ConfigurationClientTest {
     private void cleanUpResources() {
         logger.info("Cleaning up created key values.");
 
-        for(ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().key(keyPrefix + "*"))) {
+        List<ConfigurationSetting> settingsToDelete = client.listSettings(new SettingSelector().key(keyPrefix + "*"));
+        for (ConfigurationSetting configurationSetting : settingsToDelete) {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
-            client.deleteSetting(configurationSetting);
+            try {
+                client.deleteSetting(configurationSetting);
+            } catch (Throwable e) {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException ex) {
+
+                }
+
+                client.deleteSetting(configurationSetting);
+            }
+
         }
 
         logger.info("Finished cleaning up values.");
@@ -647,7 +653,7 @@ public class ConfigurationClientTest {
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      *
-     * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
+     * TODO (alzimmer): Remove the sleep when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
     @Test
     public void listRevisionsWithPagination() {
@@ -671,7 +677,7 @@ public class ConfigurationClientTest {
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      *
-     * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
+     * TODO (alzimmer): Remove the sleep when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
     @Test
     public void listSettingsWithPagination() {

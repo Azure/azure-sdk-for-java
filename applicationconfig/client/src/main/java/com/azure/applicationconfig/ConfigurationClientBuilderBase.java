@@ -45,7 +45,11 @@ abstract class ConfigurationClientBuilderBase<T> {
         headers.set(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
 
-    public abstract T build();
+    /**
+     * Constructs a new instance of T every time build
+     * @return
+     */
+    abstract T build();
 
     abstract ConfigurationClientBuilderBase serviceEndpoint(String serviceEndpoint) throws MalformedURLException;
 
