@@ -1,6 +1,5 @@
 package com.azure.common.policy;
 
-import com.azure.common.InterceptorManager;
 import com.azure.common.RecordedData;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpPipelineCallContext;
@@ -23,12 +22,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
-public class RecordPolicy implements HttpPipelinePolicy {
+/**
+ * HTTP Pipeline policy that keeps track of each HTTP request and response that flows through the pipeline.
+ * Data is recorded into {@link RecordedData}.
+ */
+public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private final static int DEFAULT_BUFFER_LENGTH = 1024;
-    private final Logger logger = LoggerFactory.getLogger(RecordPolicy.class);
+    private final Logger logger = LoggerFactory.getLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
 
-    public RecordPolicy(RecordedData recordedData) {
+    public RecordNetworkCallPolicy(RecordedData recordedData) {
         Objects.requireNonNull(recordedData);
         this.recordedData = recordedData;
     }
