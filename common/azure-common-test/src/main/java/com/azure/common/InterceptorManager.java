@@ -114,7 +114,7 @@ public class InterceptorManager implements AutoCloseable {
     /**
      * Gets the recorded data InterceptorManager is keeping track of.
      *
-     * @return
+     * @return The recorded data managed by InterceptorManager.
      */
     public RecordedData getRecordedData() {
         return recordedData;
@@ -171,18 +171,29 @@ public class InterceptorManager implements AutoCloseable {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         File recordFile = getRecordFile(testName);
-        recordFile.createNewFile();
+
+        if (recordFile.createNewFile() && logger.isTraceEnabled()) {
+            logger.trace("Created record file: {}", recordFile.getPath());
+        }
+
         mapper.writeValue(recordFile, recordedData);
     }
 
     private File getRecordFile(String testName) {
         URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
         File folderFile = new File(folderUrl.getPath() + RECORD_FOLDER);
+
         if (!folderFile.exists()) {
-            folderFile.mkdir();
+            if (folderFile.mkdir() && logger.isTraceEnabled()) {
+                logger.trace("Created directory: {}", folderFile.getPath());
+            }
         }
+
         String filePath = folderFile.getPath() + "/" + testName + ".json";
-        logger.info("==> Playback file path: " + filePath);
+        if (logger.isInfoEnabled()) {
+            logger.info("==> Playback file path: " + filePath);
+        }
+
         return new File(filePath);
     }
 }
