@@ -254,6 +254,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
             <property name="format" value="^(?=.{9,80}$)((com.microsoft.azure|com.azure)(\.[a-z]{1,20})*)+$"/>
         </module>
 
+        <!-- Javadoc checks                                   -->
+        <!-- See http://checkstyle.sf.net/config_javadoc.html -->
+        <module name="JavadocMethod">
+            <property name="scope" value="protected"/>
+        </module>
+
         <!-- CUSTOM CHECKS -->
         <!-- Verifies that subclasses of ServiceClient meet a set of guidelines.
         1) They cannot have public or protected constructors

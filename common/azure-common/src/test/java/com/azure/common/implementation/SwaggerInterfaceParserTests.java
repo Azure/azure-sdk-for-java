@@ -1,14 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.common.implementation;
 
-import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.common.annotations.ExpectedResponses;
 import com.azure.common.annotations.GET;
 import com.azure.common.annotations.Host;
+import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 public class SwaggerInterfaceParserTests {
 

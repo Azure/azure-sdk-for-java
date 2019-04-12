@@ -1,11 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation.serializer.jackson;
 
+import com.azure.common.implementation.CollectionFormat;
+import com.azure.common.implementation.serializer.MalformedValueException;
+import com.azure.common.implementation.serializer.SerializerAdapter;
+import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -16,10 +17,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.azure.common.implementation.CollectionFormat;
-import com.azure.common.implementation.serializer.MalformedValueException;
-import com.azure.common.implementation.serializer.SerializerAdapter;
-import com.azure.common.implementation.serializer.SerializerEncoding;
 
 import java.io.IOException;
 import java.io.StringWriter;

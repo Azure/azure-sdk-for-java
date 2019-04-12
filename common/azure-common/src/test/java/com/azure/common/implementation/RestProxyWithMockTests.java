@@ -1,14 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.common.implementation;
 
 import com.azure.common.annotations.BodyParam;
-import com.azure.common.annotations.POST;
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.ExpectedResponses;
 import com.azure.common.annotations.GET;
 import com.azure.common.annotations.HeaderCollection;
 import com.azure.common.annotations.Host;
+import com.azure.common.annotations.POST;
 import com.azure.common.annotations.ReturnValueWireType;
 import com.azure.common.entities.HttpBinJSON;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipeline;
@@ -16,11 +19,11 @@ import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.MockHttpClient;
 import com.azure.common.http.MockHttpResponse;
+import com.azure.common.http.ProxyOptions;
 import com.azure.common.http.rest.Page;
 import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.http.rest.ResponseBase;
-import com.azure.common.http.ProxyOptions;
 import com.azure.common.implementation.http.ContentType;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
