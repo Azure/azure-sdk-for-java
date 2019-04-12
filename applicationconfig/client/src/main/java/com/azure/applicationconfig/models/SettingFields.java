@@ -2,8 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.models;
 
+import com.azure.applicationconfig.ConfigurationAsyncClient;
+
 /**
  * Fields in {@link ConfigurationSetting} that can be returned from GET queries.
+ *
+ * @see SettingSelector
+ * @see ConfigurationAsyncClient
  */
 public enum SettingFields {
     /**

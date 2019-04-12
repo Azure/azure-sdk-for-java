@@ -3,49 +3,58 @@
 
 package com.azure.applicationconfig.models;
 
+import com.azure.applicationconfig.ConfigurationAsyncClient;
+
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.EnumSet;
+import java.util.Arrays;
 
 /**
  * A set of options for selecting configuration settings from Application Configuration service.
  *
- * <p>
- * Providing {@link SettingSelector#label()} will filter {@link ConfigurationSetting}s that match that label name in
- * conjunction with the key that is passed in to the service request.
+ * <ul>
+ *     <li>
+ *         Providing {@link SettingSelector#label() label} will filter
+ *         {@link ConfigurationSetting ConfigurationSettings} that match that label name in conjunction with the key
+ *         that is passed in to the service request.
+ *     </li>
+ *     <li>
+ *         Providing {@link SettingSelector#acceptDateTime() acceptDateTime} will return the representation of matching
+ *         {@link ConfigurationSetting} at that given {@link OffsetDateTime}.
+ *     </li>
+ *     <li>
+ *         Providing {@link SettingSelector#fields() fields} will populate only those {@link ConfigurationSetting}
+ *         fields in the response. By default, all of the fields are returned.
+ *     </li>
+ * </ul>
  *
- * <p>
- * Providing {@link SettingSelector#acceptDateTime()} will return the representation of matching {@link ConfigurationSetting}
- * at that given {@link OffsetDateTime}.
- *
- * <p>
- * Providing {@link SettingSelector#fields()} will populate only those {@link ConfigurationSetting} fields in the response.
+ * @see ConfigurationAsyncClient
  */
 public class SettingSelector {
     private String key;
     private String label;
-    private EnumSet<SettingFields> fields;
+    private SettingFields[] fields;
     private String acceptDatetime;
 
     /**
-     * Creates a setting selector that will populate {@link ConfigurationSetting} responses with default properties and
-     * select all {@link ConfigurationSetting#key()}s.
+     * Creates a setting selector that will populate responses with all of the
+     * {@link ConfigurationSetting ConfigurationSetting's} properties and select all
+     * {@link ConfigurationSetting#key() keys}.
      */
     public SettingSelector() {
-        key = "*";
     }
 
     /**
-     * Gets the expression to filter {@link ConfigurationSetting#key()} on for the request.
+     * Gets the expression to filter {@link ConfigurationSetting#key() key} on for the request.
      *
      * <p>
      * Examples:
-     * <ul>
-     *     <li>If key = "*", all settings are returned.</li>
+     * <ol>
+     *     <li>If key = "*", settings with any key are returned.</li>
      *     <li>If key = "abc1234", settings with a key equal to "abc1234" are returned.</li>
      *     <li>If key = "abc*", settings with a key starting with "abc" are returned.</li>
      *     <li>If key = "*abc*", settings with a key containing "abc" are returned.</li>
-     * </ul>
+     * </ol>
      *
      * @return The expression to filter ConfigurationSetting keys on.
      */
@@ -54,12 +63,12 @@ public class SettingSelector {
     }
 
     /**
-     * Sets the expression to filter {@link ConfigurationSetting#key()} on for the request.
+     * Sets the expression to filter {@link ConfigurationSetting#key() key} on for the request.
      *
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code key = "*"}, all settings are returned.</li>
+     *     <li>If {@code key = "*"}, settings with any key are returned.</li>
      *     <li>If {@code key = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
      *     <li>If {@code key = "abc*"}, settings with a key starting with "abc" are returned.</li>
      *     <li>If {@code key = "*abc*"}, settings with a key containing "abc" are returned.</li>
@@ -74,7 +83,7 @@ public class SettingSelector {
     }
 
     /**
-     * The label used to filter settings based on their {@link ConfigurationSetting#label()} in the service.
+     * Gets the label used to filter settings based on their {@link ConfigurationSetting#label() label} in the service.
      *
      * If the value is {@code null} or an empty string, all ConfigurationSettings with
      * {@link ConfigurationSetting#NO_LABEL} are returned.
@@ -82,7 +91,7 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code label = "*"}, all settings are returned.</li>
+     *     <li>If {@code label = "*"}, settings with any label are returned.</li>
      *     <li>If {@code label = "\0"}, settings without any label are returned.</li>
      *     <li>If {@code label = ""}, settings without any label are returned.</li>
      *     <li>If {@code label = null}, settings without any label are returned.</li>
@@ -98,12 +107,12 @@ public class SettingSelector {
     }
 
     /**
-     * Sets the query to match {@link ConfigurationSetting#label()}s in the service.
+     * Sets the query to match {@link ConfigurationSetting#label() labels} in the service.
      *
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code label = "*"}, all settings are returned.</li>
+     *     <li>If {@code label = "*"}, settings with any label are returned.</li>
      *     <li>If {@code label = "\0"}, settings without any label are returned. (This is the default label.)</li>
      *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
      *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
@@ -111,7 +120,7 @@ public class SettingSelector {
      * </ul>
      *
      * @param label The ConfigurationSetting label to match. If the provided value is {@code null} or {@code ""}, all
-     *              ConfigurationSettings will be returned regardless of their label.
+     * ConfigurationSettings will be returned regardless of their label.
      * @return SettingSelector The updated SettingSelector object.
      */
     public SettingSelector label(String label) {
@@ -120,11 +129,9 @@ public class SettingSelector {
     }
 
     /**
-     * Gets the date time for the request query. When the query is performed, the state of the
-     * {@link ConfigurationSetting}s at that point in time is returned based on the provided acceptDateTime.
-     *
-     * <p>
-     * If the value is not set, then the {@link ConfigurationSetting}s at their current state is returned.
+     * Gets the date time for the request query. When the query is performed, if {@code acceptDateTime} is set, the
+     * {@link ConfigurationSetting#value() configuration setting value} at that point in time is returned. Otherwise,
+     * the current value is returned.
      *
      * @return Gets the currently set datetime in {@link DateTimeFormatter#RFC_1123_DATE_TIME} format.
      */
@@ -133,7 +140,8 @@ public class SettingSelector {
     }
 
     /**
-     * If set, then key values will be retrieved exactly as they existed at the provided time.
+     * If set, then configuration setting values will be retrieved as they existed at the provided datetime. Otherwise,
+     * the current values are returned.
      *
      * @param datetime The value of the configuration setting at that given {@link OffsetDateTime}.
      * @return The updated SettingSelector object.
@@ -145,22 +153,25 @@ public class SettingSelector {
 
     /**
      * Gets the fields on {@link ConfigurationSetting} to return from the GET request. If none are set, the service
-     * returns the ConfigurationSettings with a default set of properties populated.
+     * returns the ConfigurationSettings with all of their fields populated.
      *
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
-    public EnumSet<SettingFields> fields() {
-        return fields;
+    public SettingFields[] fields() {
+        return fields == null
+            ? new SettingFields[0]
+            : Arrays.copyOf(fields, fields.length);
     }
 
     /**
      * Sets fields that will be returned in the response corresponding to properties in {@link ConfigurationSetting}.
+     * If none are set, the service returns ConfigurationSettings with all of their fields populated.
      *
-     * @param fields the fields to select for the query response. If none are set, the service will return the
-     *               ConfigurationSettings with a default set of properties.
+     * @param fields The fields to select for the query response. If none are set, the service will return the
+     * ConfigurationSettings with a default set of properties.
      * @return The updated SettingSelector object.
      */
-    public SettingSelector fields(EnumSet<SettingFields> fields) {
+    public SettingSelector fields(SettingFields... fields) {
         this.fields = fields;
         return this;
     }
