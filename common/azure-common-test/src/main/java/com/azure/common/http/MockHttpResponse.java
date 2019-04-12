@@ -6,6 +6,7 @@ package com.azure.common.http;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.common.implementation.util.ImplUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
@@ -63,7 +64,7 @@ public class MockHttpResponse extends HttpResponse {
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] bodyBytes) {
         this.statusCode = statusCode;
         this.headers = headers;
-        this.bodyBytes = bodyBytes;
+        this.bodyBytes = ImplUtils.clone(bodyBytes);
         this.withRequest(request);
     }
 
@@ -84,7 +85,7 @@ public class MockHttpResponse extends HttpResponse {
         byte[] result = null;
         try {
             final String serializedString = serializer.serialize(serializable, SerializerEncoding.JSON);
-            result = serializedString == null ? null : serializedString.getBytes();
+            result = serializedString == null ? null : serializedString.getBytes(StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
