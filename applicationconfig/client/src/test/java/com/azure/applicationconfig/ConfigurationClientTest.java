@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.security.krb5.Config;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -42,7 +43,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class ConfigurationClientTest {
-    private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
+    private final Logger logger = LoggerFactory.getLogger(ConfigurationClientTest.class);
 
     private InterceptorManager interceptorManager;
     private ConfigurationClient client;
@@ -137,24 +138,9 @@ public class ConfigurationClientTest {
      */
     @Test
     public void addSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("MyTag", "TagValue");
-        tags.put("AnotherTag", "AnotherTagValue");
-
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting()
-            .key(key)
-            .value("myNewValue")
-            .tags(tags)
-            .contentType("text");
-
-        final Consumer<ConfigurationSetting> testRunner = (expected) -> {
+        ConfigurationClientTestBase.addSetting(keyPrefix, labelPrefix, (expected) -> {
             assertConfigurationEquals(expected, client.addSetting(expected));
-        };
-
-        testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.label(label));
+        });
     }
 
     /**
@@ -170,14 +156,10 @@ public class ConfigurationClientTest {
      */
     @Test
     public void addSettingEmptyValue() {
-        ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix);
-        ConfigurationSetting setting2 = new ConfigurationSetting().key(keyPrefix + "-1").value("");
-
-        assertConfigurationEquals(setting, client.addSetting(setting.key(), setting.value()));
-        assertConfigurationEquals(setting, client.getSetting(setting.key()));
-
-        assertConfigurationEquals(setting2, client.addSetting(setting2.key(), setting2.value()));
-        assertConfigurationEquals(setting2, client.getSetting(setting2.key()));
+        ConfigurationClientTestBase.addSettingEmptyValue(keyPrefix, (setting) -> {
+            assertConfigurationEquals(setting, client.addSetting(setting.key(), setting.value()));
+            assertConfigurationEquals(setting, client.getSetting(setting.key()));
+        });
     }
 
     /**
@@ -194,17 +176,10 @@ public class ConfigurationClientTest {
      */
     @Test
     public void addExistingSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-
-        final Consumer<ConfigurationSetting> testRunner = (expected) -> {
+        ConfigurationClientTestBase.addExistingSetting(keyPrefix, labelPrefix, (expected) -> {
             client.addSetting(expected);
             assertRestException(() -> client.addSetting(expected), HttpResponseStatus.PRECONDITION_FAILED.code());
-        };
-
-        testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.label(label));
+        });
     }
 
     /**
@@ -213,17 +188,9 @@ public class ConfigurationClientTest {
      */
     @Test
     public void setSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting setConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdatedValue");
-
-        final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (expected, update) -> {
+        ConfigurationClientTestBase.setSetting(keyPrefix, labelPrefix, (expected, update) -> {
             assertConfigurationEquals(expected, client.setSetting(expected));
-        };
-
-        testRunner.accept(setConfiguration, updateConfiguration);
-        testRunner.accept(setConfiguration.label(label), updateConfiguration.label(label));
+        });
     }
 
     /**
@@ -233,12 +200,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void setSettingIfEtag() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
-
-        final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
+        ConfigurationClientTestBase.setSettingIfEtag(keyPrefix, labelPrefix, (initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
             assertRestException(() -> client.setSetting(initial.etag("badEtag")), HttpResponseStatus.PRECONDITION_FAILED.code());
 
@@ -247,10 +209,7 @@ public class ConfigurationClientTest {
             assertConfigurationEquals(update, client.setSetting(update.etag(etag)));
             assertRestException(() -> client.setSetting(initial), HttpResponseStatus.PRECONDITION_FAILED.code());
             assertConfigurationEquals(update, client.getSetting(update));
-        };
-
-        testRunner.accept(newConfiguration, updateConfiguration);
-        testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
+        });
     }
 
     /**
@@ -267,14 +226,10 @@ public class ConfigurationClientTest {
      */
     @Test
     public void setSettingEmptyValue() {
-        ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix);
-        ConfigurationSetting setting2 = new ConfigurationSetting().key(keyPrefix + "-1").value("");
-
-        assertConfigurationEquals(setting, client.setSetting(setting.key(), setting.value()));
-        assertConfigurationEquals(setting, client.getSetting(setting.key()));
-
-        assertConfigurationEquals(setting2, client.setSetting(setting2.key(), setting2.value()));
-        assertConfigurationEquals(setting2, client.getSetting(setting2.key()));
+        ConfigurationClientTestBase.setSettingEmptyValue(keyPrefix, (setting) -> {
+            assertConfigurationEquals(setting, client.setSetting(setting.key(), setting.value()));
+            assertConfigurationEquals(setting, client.getSetting(setting.key()));
+        });
     }
 
     /**
@@ -292,16 +247,9 @@ public class ConfigurationClientTest {
      */
     @Test
     public void updateNoExistingSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting expectedFail = new ConfigurationSetting().key(key).value("myFailingUpdate");
-
-        final Consumer<ConfigurationSetting> testRunner = (expected) -> {
+        ConfigurationClientTestBase.updateNoExistingSetting(keyPrefix, labelPrefix, (expected) -> {
             assertRestException(() -> client.updateSetting(expected), HttpResponseStatus.PRECONDITION_FAILED.code());
-        };
-
-        testRunner.accept(expectedFail);
-        testRunner.accept(expectedFail.label(label));
+        });
     }
 
     /**
@@ -310,29 +258,9 @@ public class ConfigurationClientTest {
      */
     @Test
     public void updateSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("first tag", "first value");
-        tags.put("second tag", "second value");
-        final ConfigurationSetting original = new ConfigurationSetting()
-            .key(key)
-            .value("myNewValue")
-            .tags(tags)
-            .contentType("json");
-
-        final Map<String, String> updatedTags = new HashMap<>(tags);
-        final ConfigurationSetting updated = new ConfigurationSetting(original)
-            .value("myUpdatedValue")
-            .tags(updatedTags)
-            .contentType("text");
-
-        final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
+        ConfigurationClientTestBase.updateSetting(keyPrefix, labelPrefix, (initial, update) -> {
             assertConfigurationEquals(initial, client.addSetting(initial));
-        };
-
-        testRunner.accept(original, updated);
-        testRunner.accept(original.label(label), updated.label(label));
+        });
     }
 
     /**
@@ -341,11 +269,10 @@ public class ConfigurationClientTest {
      */
     @Test
     public void updateSettingOverload() {
-        ConfigurationSetting original = new ConfigurationSetting().key(keyPrefix).value("A Value");
-        ConfigurationSetting updated = new ConfigurationSetting().key(keyPrefix).value("A New Value");
-
-        assertConfigurationEquals(original, client.addSetting(original.key(), original.value()));
-        assertConfigurationEquals(updated, client.updateSetting(updated.key(), updated.value()));
+        ConfigurationClientTestBase.updateSettingOverload(keyPrefix, (original, updated) -> {
+            assertConfigurationEquals(original, client.addSetting(original.key(), original.value()));
+            assertConfigurationEquals(updated, client.updateSetting(updated.key(), updated.value()));
+        });
     }
 
     /**
@@ -364,15 +291,6 @@ public class ConfigurationClientTest {
         updateSettingIfEtagHelper(newConfiguration.label(label), updateConfiguration.label(label), finalConfiguration.label(label));
     }
 
-    /**
-     * Verifies that an exception is thrown when null key is passed.
-     */
-    @Test
-    public void updateSettingNullKey() {
-        assertRunnableThrowsException(() -> client.updateSetting(null, "A Value"), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.updateSetting(null), NullPointerException.class);
-    }
-
     private void updateSettingIfEtagHelper(ConfigurationSetting initial, ConfigurationSetting update, ConfigurationSetting last) {
         final String initialEtag = client.addSetting(initial).value().etag();
         final String updateEtag = client.updateSetting(update).value().etag();
@@ -388,20 +306,23 @@ public class ConfigurationClientTest {
     }
 
     /**
+     * Verifies that an exception is thrown when null key is passed.
+     */
+    @Test
+    public void updateSettingNullKey() {
+        assertRunnableThrowsException(() -> client.updateSetting(null, "A Value"), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.updateSetting(null), NullPointerException.class);
+    }
+
+    /**
      * Tests that a configuration is able to be retrieved when it exists, whether or not it is locked.
      */
     @Test
     public void getSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-
-        final Consumer<ConfigurationSetting> testRunner = (expected) -> {
+        ConfigurationClientTestBase.getSetting(keyPrefix, (expected) -> {
             client.addSetting(expected);
             assertConfigurationEquals(expected, client.getSetting(expected));
-        };
-
-        testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.label("myLabel"));
+        });
     }
 
     /**
@@ -426,20 +347,13 @@ public class ConfigurationClientTest {
      */
     @Test
     public void deleteSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting deletableConfiguration = new ConfigurationSetting().key(key).value("myValue");
-
-        final Consumer<ConfigurationSetting> testRunner = (expected) -> {
+        ConfigurationClientTestBase.deleteSetting(keyPrefix, labelPrefix, (expected) -> {
             client.addSetting(expected);
             assertConfigurationEquals(expected, client.getSetting(expected));
 
             assertConfigurationEquals(expected, client.deleteSetting(expected));
             assertRestException(() -> client.getSetting(expected), HttpResponseStatus.NOT_FOUND.code());
-        };
-
-        testRunner.accept(deletableConfiguration);
-        testRunner.accept(deletableConfiguration.label(label));
+        });
     }
 
     /**
@@ -465,23 +379,15 @@ public class ConfigurationClientTest {
      */
     @Test
     public void deleteSettingWithETag() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting(newConfiguration).value("myUpdateValue");
-
-        final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
+        ConfigurationClientTestBase.deleteSettingWithETag(keyPrefix, labelPrefix, (initial, update) -> {
             final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial).value();
             final ConfigurationSetting updatedConfig = client.updateSetting(update).value();
 
             assertConfigurationEquals(update, client.getSetting(initial));
             assertRestException(() -> client.deleteSetting(initiallyAddedConfig), HttpResponseStatus.PRECONDITION_FAILED.code());
-            assertConfigurationEquals(update, client.deleteSetting(updateConfiguration));
+            assertConfigurationEquals(update, client.deleteSetting(updatedConfig));
             assertRestException(() -> client.getSetting(initial), HttpResponseStatus.NOT_FOUND.code());
-        };
-
-        testRunner.accept(newConfiguration, updateConfiguration);
-        testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
+        });
     }
 
     /**
