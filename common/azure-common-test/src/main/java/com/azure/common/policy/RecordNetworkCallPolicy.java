@@ -31,7 +31,7 @@ import java.util.zip.GZIPInputStream;
  * Data is recorded into {@link RecordedData}.
  */
 public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
-    private final static int DEFAULT_BUFFER_LENGTH = 1024;
+    private static final int DEFAULT_BUFFER_LENGTH = 1024;
     private final Logger logger = LoggerFactory.getLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
 
