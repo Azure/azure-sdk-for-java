@@ -24,29 +24,47 @@ public final class PlaybackClient implements HttpClient {
     private final Map<String, String> textReplacementRules;
     private final RecordedData recordedData;
 
+    /**
+     * Creates a PlaybackClient that replays network calls from {@code recordedData} and replaces
+     * {@link NetworkCallRecord#response() response text} for any rules specified in {@code textReplacementRules}.
+     *
+     * @param recordedData The data to playback.
+     * @param textReplacementRules A set of rules to replace text in network call responses.
+     */
     public PlaybackClient(RecordedData recordedData, Map<String, String> textReplacementRules) {
         Objects.requireNonNull(recordedData);
-        Objects.requireNonNull(textReplacementRules);
 
         this.recordedData = recordedData;
-        this.textReplacementRules = textReplacementRules;
+        this.textReplacementRules = textReplacementRules == null ? new HashMap<>() : textReplacementRules;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<HttpResponse> send(final HttpRequest request) {
         return Mono.defer(() -> playbackHttpResponse(request));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpClient proxy(Supplier<ProxyOptions> supplier) {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpClient wiretap(boolean b) {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpClient port(int i) {
         return this;
