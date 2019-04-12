@@ -7,16 +7,16 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * The ResourceNamer to generate random name.
+ * A random string generator used in tests.
  */
 public class ResourceNamer {
     private final String randName;
     private static final Random RANDOM = new Random();
 
     /**
-     * Creates ResourceNamer.
+     * Creates a ResourceNameGenerator that prefixes its strings with the name.
      *
-     * @param name the randName
+     * @param name The prefix for generated strings.
      */
     public ResourceNamer(String name) {
         this.randName = name.toLowerCase() + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase();
@@ -60,13 +60,13 @@ public class ResourceNamer {
     }
 
     private String randomString(int length) {
-        String str = "";
+        StringBuilder str = new StringBuilder();
         while (str.length() < length) {
-            str += UUID.randomUUID()
-                    .toString()
-                    .replace("-", "")
-                    .substring(0, Math.min(32, length)).toLowerCase();
+            str.append(UUID.randomUUID()
+                .toString()
+                .replace("-", "")
+                .substring(0, Math.min(32, length)).toLowerCase());
         }
-        return str;
+        return str.toString();
     }
 }
