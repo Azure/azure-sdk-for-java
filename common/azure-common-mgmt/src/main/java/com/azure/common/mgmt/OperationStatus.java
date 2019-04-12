@@ -1,14 +1,11 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.mgmt;
 
-import com.azure.common.implementation.OperationDescription;
-import com.azure.common.http.rest.RestException;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpRequest;
+import com.azure.common.implementation.OperationDescription;
 
 /**
  * The current state of polling for the result of a long running operation.
@@ -18,7 +15,7 @@ public class OperationStatus<T> {
     private final PollStrategy pollStrategy;
     private final HttpRequest originalHttpRequest;
     private final T result;
-    private final RestException error;
+    private final ServiceRequestException error;
     private final String status;
 
     /**
@@ -46,7 +43,7 @@ public class OperationStatus<T> {
         this.status = provisioningState;
     }
 
-    OperationStatus(RestException error, String provisioningState) {
+    OperationStatus(ServiceRequestException error, String provisioningState) {
         this.pollStrategy = null;
         this.originalHttpRequest = null;
         this.result = null;
@@ -82,7 +79,7 @@ public class OperationStatus<T> {
      * done or did not fail, then return null.
      * @return The error of the operation, or null if the operation isn't done or didn't fail.
      */
-    public RestException error() {
+    public ServiceRequestException error() {
         return error;
     }
 

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.common.http.rest;
 
 import com.azure.common.http.HttpHeaders;
@@ -12,30 +9,30 @@ import com.azure.common.http.HttpRequest;
  * The response of a REST request.
  *
  * @param <H> The deserialized type of the response headers.
- * @param <T> The deserialized type of the response body.
+ * @param <T> The deserialized type of the response value, available from {@link #value()}.
  */
-public class RestResponseBase<H, T> implements RestResponse<T> {
+public class ResponseBase<H, T> implements Response<T> {
     private final HttpRequest request;
     private final int statusCode;
     private final H deserializedHeaders;
     private final HttpHeaders headers;
-    private final T body;
+    private final T value;
 
     /**
-     * Create RestResponseBase.
+     * Create ResponseBase.
      *
      * @param request the request which resulted in this response
      * @param statusCode the status code of the HTTP response
      * @param headers the headers of the HTTP response
      * @param deserializedHeaders the deserialized headers of the HTTP response
-     * @param body the deserialized body
+     * @param value the deserialized value
      */
-    public RestResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, T body, H deserializedHeaders) {
+    public ResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, T value, H deserializedHeaders) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
         this.deserializedHeaders = deserializedHeaders;
-        this.body = body;
+        this.value = value;
     }
 
     /**
@@ -75,7 +72,7 @@ public class RestResponseBase<H, T> implements RestResponse<T> {
      * {@inheritDoc}
      */
     @Override
-    public T body() {
-        return body;
+    public T value() {
+        return value;
     }
 }

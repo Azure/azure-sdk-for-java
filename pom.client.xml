@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <name>Microsoft Azure SDK for Java</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -109,6 +110,8 @@
     <proton-j-version>0.31.0</proton-j-version>
     <qpid-proton-j-extensions-version>1.1.0</qpid-proton-j-extensions-version>
     <log4j-api.version>2.11.1</log4j-api.version>
+    <slf4j-api.version>1.7.5</slf4j-api.version>
+
     <azure-common.version>1.0.0-SNAPSHOT</azure-common.version>
     <azure-common-auth.version>1.0.0-SNAPSHOT</azure-common-auth.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
@@ -236,6 +239,12 @@
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-api</artifactId>
         <version>${log4j-api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-api.version}</version>
       </dependency>
 
       <dependency>
@@ -476,6 +485,12 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Allows the sample sources to be built during test-compile phase. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+      </plugin>
     </plugins>
 
     <pluginManagement>
@@ -494,33 +509,40 @@
               site for more Java documentation, including quick starts, tutorials, and code samples.
             </footer>
             <linksource>false</linksource>
-            <excludePackageNames>com.microsoft.azure.template</excludePackageNames>
+            <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
             <groups>
               <group>
                 <title>Azure Batch</title>
                 <packages>com.microsoft.azure.batch*</packages>
               </group>
               <group>
-                <title>Azure Key Vault</title>
-                <packages>com.microsoft.azure.keyvault*</packages>
-              </group>
-              <group>
                 <title>Azure Event Hubs</title>
                 <packages>com.microsoft.azure.eventhubs*:com.microsoft.azure.eventprocessorhost</packages>
               </group>
               <group>
+                <title>Azure Key Vault</title>
+                <packages>com.microsoft.azure.keyvault*</packages>
+              </group>
+              <group>
                 <title>Azure Common</title>
-                <packages>com.microsoft.azure.common.azure-common*</packages>
+                <packages>com.azure.common:com.azure.common.annotations:com.azure.common.credentials:com.azure.common.exception:com.azure.common.http*</packages>
               </group>
               <group>
                 <title>Azure Common - Management</title>
-                <packages>com.microsoft.azure.common.azure-common-mgmt*</packages>
+                <packages>com.azure.common.mgmt*</packages>
               </group>
               <group>
                 <title>Azure Common - Authentication</title>
-                <packages>com.microsoft.azure.common.azure-common-auth*</packages>
+                <packages>com.azure.common.auth*</packages>
               </group>
             </groups>
+            <links>
+              <link>https://docs.oracle.com/javase/8/docs/api/</link>
+              <link>https://projectreactor.io/docs/core/release/api/</link>
+              <link>https://netty.io/4.1/api/</link>
+              <link>http://reactivex.io/RxJava/javadoc/</link>
+            </links>
+            <isOffline>false</isOffline>
           </configuration>
         </plugin>
 
@@ -935,6 +957,7 @@
   </profiles>
 
   <modules>
+    <module>./applicationconfig/client</module>
     <module>./batch/data-plane</module>
     <module>./common</module>
     <module>./eventhubs/data-plane</module>

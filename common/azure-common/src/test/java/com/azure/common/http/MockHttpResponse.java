@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.http;
 
@@ -34,16 +31,8 @@ public class MockHttpResponse extends HttpResponse {
         this.withRequest(request);
     }
 
-    public MockHttpResponse(HttpRequest request, int statusCode, byte[] bodyBytes) {
-        this(request, statusCode, new HttpHeaders(), bodyBytes);
-    }
-
     public MockHttpResponse(HttpRequest request, int statusCode) {
-        this(request, statusCode, new byte[0]);
-    }
-
-    public MockHttpResponse(HttpRequest request, int statusCode, String string) {
-        this(request, statusCode, new HttpHeaders(), string == null ? new byte[0] : string.getBytes());
+        this(request, statusCode, new HttpHeaders(), new byte[0]);
     }
 
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {

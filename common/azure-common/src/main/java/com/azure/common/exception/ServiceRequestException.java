@@ -1,59 +1,56 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.azure.common.http.rest;
+package com.azure.common.exception;
 
 import com.azure.common.http.HttpResponse;
 
 /**
  * An exception thrown for an invalid response with custom error information.
  */
-public class RestException extends RuntimeException {
+public class ServiceRequestException extends AzureException {
     /**
      * Information about the associated HTTP response.
      */
     private HttpResponse response;
 
     /**
-     * The HTTP response body.
+     * The HTTP response value.
      */
-    private Object body;
+    private Object value;
 
     /**
-     * Initializes a new instance of the RestException class.
+     * Initializes a new instance of the ServiceRequestException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public RestException(String message, HttpResponse response) {
+    public ServiceRequestException(String message, HttpResponse response) {
         super(message);
         this.response = response;
     }
 
     /**
-     * Initializes a new instance of the RestException class.
+     * Initializes a new instance of the ServiceRequestException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
-     * @param body the deserialized response body
+     * @param value the deserialized response value
      */
-    public RestException(String message, HttpResponse response, Object body) {
+    public ServiceRequestException(String message, HttpResponse response, Object value) {
         super(message);
         this.response = response;
-        this.body = body;
+        this.value = value;
     }
 
     /**
-     * Initializes a new instance of the RestException class.
+     * Initializes a new instance of the ServiceRequestException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
-     * @param cause the Throwable which caused the creation of this RestException
+     * @param cause the Throwable which caused the creation of this ServiceRequestException
      */
-    public RestException(String message, HttpResponse response, Throwable cause) {
+    public ServiceRequestException(String message, HttpResponse response, Throwable cause) {
         super(message, cause);
         this.response = response;
     }
@@ -66,9 +63,9 @@ public class RestException extends RuntimeException {
     }
 
     /**
-     * @return the HTTP response body
+     * @return the HTTP response value
      */
-    public Object body() {
-        return body;
+    public Object value() {
+        return value;
     }
 }

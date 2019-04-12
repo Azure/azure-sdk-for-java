@@ -1,18 +1,18 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.http;
 
+import com.azure.common.entities.HttpBinJSON;
 import com.azure.common.implementation.Base64Url;
 import com.azure.common.implementation.DateTimeRfc1123;
-import com.azure.common.entities.HttpBinJSON;
 import com.azure.common.implementation.util.FluxUtil;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -47,7 +47,7 @@ public class MockHttpClient implements HttpClient {
                 final String requestPathLower = requestPath.toLowerCase();
                 if (requestPathLower.equals("/anything") || requestPathLower.startsWith("/anything/")) {
                     if ("HEAD".equals(request.httpMethod())) {
-                        response = new MockHttpResponse(request, 200, "");
+                        response = new MockHttpResponse(request, 200, new byte[0]);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
                         json.url = request.url().toString()
@@ -167,6 +167,15 @@ public class MockHttpClient implements HttpClient {
                     final int statusCode = Integer.valueOf(statusCodeString);
                     response = new MockHttpResponse(request, statusCode);
                 }
+            }
+            else if ("echo.org".equalsIgnoreCase(requestHost)) {
+                return request.body()
+                    .map(ByteBuf::nioBuffer)
+                    .collectList()
+                    .map(list ->  {
+                        byte[] bytes = Unpooled.wrappedBuffer(list.toArray(new ByteBuffer[0])).array();
+                        return new MockHttpResponse(request, 200, new HttpHeaders(request.headers()), bytes);
+                    });
             }
         }
         catch (Exception ex) {

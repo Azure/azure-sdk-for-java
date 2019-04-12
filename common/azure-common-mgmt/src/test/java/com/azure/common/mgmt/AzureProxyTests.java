@@ -1,19 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.common.mgmt;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.azure.common.mgmt.http.MockAzureHttpClient;
-import com.azure.common.mgmt.http.MockAzureHttpResponse;
-import com.azure.common.implementation.OperationDescription;
-import com.azure.common.http.rest.RestException;
-import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.HttpRequest;
-import com.azure.common.http.HttpResponse;
-import com.azure.common.implementation.serializer.SerializerAdapter;
-import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.common.implementation.exception.InvalidReturnTypeException;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
 import com.azure.common.annotations.GET;
@@ -21,8 +10,23 @@ import com.azure.common.annotations.Host;
 import com.azure.common.annotations.PUT;
 import com.azure.common.annotations.PathParam;
 import com.azure.common.annotations.ResumeOperation;
+import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.http.HttpPipeline;
+import com.azure.common.http.HttpRequest;
+import com.azure.common.http.HttpResponse;
+import com.azure.common.implementation.OperationDescription;
+import com.azure.common.implementation.exception.InvalidReturnTypeException;
+import com.azure.common.implementation.serializer.SerializerAdapter;
+import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.common.mgmt.http.MockAzureHttpClient;
+import com.azure.common.mgmt.http.MockAzureHttpResponse;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,7 +35,10 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class AzureProxyTests {
     private long delayInMillisecondsBackup;
@@ -387,6 +394,7 @@ public class AzureProxyTests {
     }
 
     @Test
+    @Ignore("Test does not run in a stable fashion across Windows, MacOS, and Linux")
     public void createAsyncWithAzureAsyncOperationAndPollsWithDelay() throws InterruptedException {
         final long delayInMilliseconds = 100;
         AzureProxy.setDefaultPollingDelayInMilliseconds(delayInMilliseconds);
@@ -482,8 +490,8 @@ public class AzureProxyTests {
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) {
-                                assertEquals(RestException.class, throwable.getClass());
                                 assertEquals("Status code 294, (empty body)", throwable.getMessage());
+                                assertEquals(ServiceRequestException.class, throwable.getClass());
                             }
                         });
 
@@ -844,7 +852,7 @@ public class AzureProxyTests {
             service.deleteAsyncWithForbiddenResponse().block();
             fail("Expected RestException to be thrown.");
         }
-        catch (RestException e) {
+        catch (ServiceRequestException e) {
             assertEquals(403, e.response().statusCode());
             assertEquals("Status code 403, (empty body)", e.getMessage());
         }

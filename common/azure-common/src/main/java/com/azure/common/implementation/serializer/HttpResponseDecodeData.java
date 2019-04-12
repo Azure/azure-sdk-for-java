@@ -1,13 +1,13 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation.serializer;
 
-import com.azure.common.http.rest.RestResponseBase;
 import com.azure.common.annotations.HeaderCollection;
+
+import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.http.rest.ResponseBase;
+import com.azure.common.implementation.UnexpectedException;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Mono;
 
@@ -35,7 +35,7 @@ public interface HttpResponseDecodeData {
      *
      * @return headers entity type
      */
-     default Type headersType() {
+    default Type headersType() {
         Type token = this.returnType();
         Type headersType = null;
 
@@ -44,8 +44,8 @@ public interface HttpResponseDecodeData {
         }
 
         // Only the RestResponseBase class supports a custom header type. All other RestResponse subclasses do not.
-        if (TypeUtil.isTypeOrSubTypeOf(token, RestResponseBase.class)) {
-            headersType = TypeUtil.getTypeArguments(TypeUtil.getSuperType(token, RestResponseBase.class))[0];
+        if (TypeUtil.isTypeOrSubTypeOf(token, ResponseBase.class)) {
+            headersType = TypeUtil.getTypeArguments(TypeUtil.getSuperType(token, ResponseBase.class))[0];
         }
 
         return headersType;
@@ -77,16 +77,13 @@ public interface HttpResponseDecodeData {
     }
 
     /**
-     * Get the type of error body Object to be used for deserializing body when HTTP response status
+     * Get the {@link UnexpectedException} that will be used to generate a RestException if the HTTP response status
      * code is not one of the expected status codes.
      *
-     * expected status codes are the codes returned by {@code expectedStatusCodes()},
-     * when {@code expectedStatusCodes()} returns null then 2XX are considered as expected status codes
-     *
-     * @return the type of error body Object to be used for deserializing body when HTTP response
-     * status code is not one of the expected status codes
+     * @param code Exception HTTP status code return from a REST API.
+     * @return the UnexpectedException to generate an exception to throw or return.
      */
-    default Class<?> exceptionBodyType() {
-         return Object.class;
+    default UnexpectedException getUnexpectedException(int code) {
+        return new UnexpectedException(ServiceRequestException.class);
     }
 }
