@@ -52,7 +52,6 @@ public class InterceptorManager implements Closeable {
 
         //TODO: Do we need this?
         SdkContext.setResourceNamerFactory(new TestResourceNamerFactory(interceptorManager));
-        SdkContext.setDelayProvider(new TestDelayProvider(interceptorManager.isRecordMode()));
 
         return interceptorManager;
     }
