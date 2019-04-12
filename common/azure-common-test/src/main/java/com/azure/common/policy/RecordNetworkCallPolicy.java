@@ -61,6 +61,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
         networkCallRecord.headers(headers);
         networkCallRecord.method(context.httpRequest().httpMethod().toString());
+        networkCallRecord.uri(context.httpRequest().url().toString().replaceAll("\\?$", ""));
 
         return next.process().flatMap(httpResponse -> {
             final HttpResponse bufferedResponse = httpResponse.buffer();
