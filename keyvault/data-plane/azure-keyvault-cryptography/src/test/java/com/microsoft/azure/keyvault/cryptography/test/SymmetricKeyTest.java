@@ -59,7 +59,7 @@ public class SymmetricKeyTest {
 
     @Before
     public void setUp() throws Exception {
-    	setProvider(null);
+        setProvider(null);
     }
 
     @After
@@ -67,7 +67,7 @@ public class SymmetricKeyTest {
     }
     
     protected void setProvider(Provider provider) {
-    	_provider = provider;
+        _provider = provider;
     }
 
     @Test
@@ -139,8 +139,8 @@ public class SymmetricKeyTest {
             // In the limited case, the failure should be InvalidKeyException
             // In the unlimited case, this should not fail
             if (!unlimited) {
-            	Throwable cause = e.getCause();
-            	if (cause == null || !(cause instanceof InvalidKeyException)) fail("ExecutionException");
+                Throwable cause = e.getCause();
+                if (cause == null || !(cause instanceof InvalidKeyException)) fail("ExecutionException");
             } else {
                 fail("ExecutionException");
             }
@@ -491,8 +491,8 @@ public class SymmetricKeyTest {
             // In the limited case, the failure should be InvalidKeyException
             // In the unlimited case, this should not fail
             if (!unlimited) {
-            	Throwable cause = e.getCause();
-            	if (cause == null || !(cause instanceof InvalidKeyException)) fail("ExecutionException");
+                Throwable cause = e.getCause();
+                if (cause == null || !(cause instanceof InvalidKeyException)) fail("ExecutionException");
             } else {
                 fail("ExecutionException");
             }
