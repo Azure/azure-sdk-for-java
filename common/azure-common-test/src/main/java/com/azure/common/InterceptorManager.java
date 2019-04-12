@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.common.test;
+package com.azure.common;
 
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeader;
@@ -11,9 +11,9 @@ import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.ProxyOptions;
 import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.common.utils.SdkContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.microsoft.azure.utils.SdkContext;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.slf4j.Logger;

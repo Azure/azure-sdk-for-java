@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.core;
+package com.azure.common;
 
-import com.microsoft.azure.utils.DelayProvider;
+import com.azure.common.utils.DelayProvider;
 import reactor.core.publisher.Flux;
 
 public class TestDelayProvider extends DelayProvider {

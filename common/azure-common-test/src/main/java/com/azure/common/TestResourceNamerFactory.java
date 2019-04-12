@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.core;
+package com.azure.common;
 
 
-import com.microsoft.azure.utils.ResourceNamer;
-import com.microsoft.azure.utils.ResourceNamerFactory;
+import com.azure.common.utils.ResourceNamer;
+import com.azure.common.utils.ResourceNamerFactory;
 
 public class TestResourceNamerFactory extends ResourceNamerFactory {
 
@@ -14,6 +14,7 @@ public class TestResourceNamerFactory extends ResourceNamerFactory {
     TestResourceNamerFactory(InterceptorManager mockIntegrationTestBase) {
         this.interceptorManager = mockIntegrationTestBase;
     }
+
     @Override
     public ResourceNamer createResourceNamer(String name) {
         return new TestResourceNamer(name, interceptorManager);

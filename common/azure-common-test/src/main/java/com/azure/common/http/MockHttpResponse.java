@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.core;
+package com.azure.common.http;
 
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpResponse;

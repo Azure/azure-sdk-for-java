@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.core;
+package com.azure.common;
 
-import com.microsoft.azure.utils.ResourceNamer;
+import com.azure.common.utils.ResourceNamer;
 
 public class TestResourceNamer extends ResourceNamer {
     private final InterceptorManager interceptorManager;

@@ -1,4 +1,4 @@
-package com.azure.common.test;
+package com.azure.common;
 
 public enum TestMode {
     RECORD,
