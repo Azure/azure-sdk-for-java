@@ -25,6 +25,15 @@ public final class TimeGrainType extends ExpandableStringEnum<TimeGrainType> {
     /** Static value Annually for TimeGrainType. */
     public static final TimeGrainType ANNUALLY = fromString("Annually");
 
+    /** Static value BillingMonth for TimeGrainType. */
+    public static final TimeGrainType BILLING_MONTH = fromString("BillingMonth");
+
+    /** Static value BillingQuarter for TimeGrainType. */
+    public static final TimeGrainType BILLING_QUARTER = fromString("BillingQuarter");
+
+    /** Static value BillingAnnual for TimeGrainType. */
+    public static final TimeGrainType BILLING_ANNUAL = fromString("BillingAnnual");
+
     /**
      * Creates or finds a TimeGrainType from its string representation.
      * @param name a name to look for

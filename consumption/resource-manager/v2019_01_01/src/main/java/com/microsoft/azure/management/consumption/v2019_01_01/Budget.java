@@ -137,7 +137,7 @@ public interface Budget extends HasInner<BudgetInner>, Indexable, Updatable<Budg
         interface WithTimeGrain {
            /**
             * Specifies timeGrain.
-            * @param timeGrain The time covered by a budget. Tracking of the amount will be reset based on the time grain. Possible values include: 'Monthly', 'Quarterly', 'Annually'
+            * @param timeGrain The time covered by a budget. Tracking of the amount will be reset based on the time grain. Possible values include: 'Monthly', 'Quarterly', 'Annually', 'BillingMonth', 'BillingQuarter', 'BillingAnnual'
             * @return the next definition stage
             */
             WithTimePeriod withTimeGrain(TimeGrainType timeGrain);

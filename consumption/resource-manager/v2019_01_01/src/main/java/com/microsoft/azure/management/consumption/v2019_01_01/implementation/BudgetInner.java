@@ -41,7 +41,7 @@ public class BudgetInner extends ProxyResource {
     /**
      * The time covered by a budget. Tracking of the amount will be reset based
      * on the time grain. Possible values include: 'Monthly', 'Quarterly',
-     * 'Annually'.
+     * 'Annually', 'BillingMonth', 'BillingQuarter', 'BillingAnnual'.
      */
     @JsonProperty(value = "properties.timeGrain", required = true)
     private TimeGrainType timeGrain;
@@ -124,7 +124,7 @@ public class BudgetInner extends ProxyResource {
     }
 
     /**
-     * Get the time covered by a budget. Tracking of the amount will be reset based on the time grain. Possible values include: 'Monthly', 'Quarterly', 'Annually'.
+     * Get the time covered by a budget. Tracking of the amount will be reset based on the time grain. Possible values include: 'Monthly', 'Quarterly', 'Annually', 'BillingMonth', 'BillingQuarter', 'BillingAnnual'.
      *
      * @return the timeGrain value
      */
@@ -133,7 +133,7 @@ public class BudgetInner extends ProxyResource {
     }
 
     /**
-     * Set the time covered by a budget. Tracking of the amount will be reset based on the time grain. Possible values include: 'Monthly', 'Quarterly', 'Annually'.
+     * Set the time covered by a budget. Tracking of the amount will be reset based on the time grain. Possible values include: 'Monthly', 'Quarterly', 'Annually', 'BillingMonth', 'BillingQuarter', 'BillingAnnual'.
      *
      * @param timeGrain the timeGrain value to set
      * @return the BudgetInner object itself.
