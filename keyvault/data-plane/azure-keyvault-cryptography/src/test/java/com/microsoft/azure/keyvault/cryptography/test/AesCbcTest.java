@@ -20,8 +20,8 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Aes128Cbc;
 
 public class AesCbcTest {
 
-	private Provider _provider = null;
-	
+    private Provider _provider = null;
+
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }
@@ -32,7 +32,7 @@ public class AesCbcTest {
 
     @Before
     public void setUp() throws Exception {
-    	setProvider(null);
+        setProvider(null);
     }
 
     @After
@@ -40,7 +40,7 @@ public class AesCbcTest {
     }
     
     protected void setProvider(Provider provider) {
-    	_provider = provider;
+        _provider = provider;
     }
 
     @Test

@@ -8,7 +8,7 @@ import org.junit.Before;
 
 public class RsaKeyBCProviderTest extends RsaKeyTest {
 
-	@Before
+    @Before
     public void setUp() throws Exception {
         try {
             super.setProvider((Provider) Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider").newInstance());
