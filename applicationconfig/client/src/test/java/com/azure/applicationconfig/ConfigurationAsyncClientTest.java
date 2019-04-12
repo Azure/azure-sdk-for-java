@@ -68,7 +68,7 @@ public class ConfigurationAsyncClientTest {
         final TestMode testMode = getTestMode();
 
         interceptorManager = new InterceptorManager(testName.getMethodName(), testMode);
-        sdkContext = new SdkContext(interceptorManager);
+        sdkContext = new SdkContext(testMode, interceptorManager.getRecordedData());
 
         if (interceptorManager.isPlaybackMode()) {
             logger.info("PLAYBACK MODE");
@@ -90,7 +90,7 @@ public class ConfigurationAsyncClientTest {
                     .credentials(new ConfigurationClientCredentials(connectionString))
                     .httpClient(HttpClient.createDefault().wiretap(true))
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .addPolicy(new RecordNetworkCallPolicy(interceptorManager))
+                    .addPolicy(interceptorManager.getRecordPolicy())
                     .build();
         }
 
