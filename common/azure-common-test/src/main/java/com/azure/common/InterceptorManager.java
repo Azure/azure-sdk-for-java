@@ -36,7 +36,7 @@ import java.util.Objects;
  * calls that were recorded are persisted to: "<i>session-records/{@code testName}.json</i>"
  */
 public class InterceptorManager implements AutoCloseable {
-    private final static String RECORD_FOLDER = "session-records/";
+    private static final String RECORD_FOLDER = "session-records/";
 
     private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
     private final Map<String, String> textReplacementRules;
