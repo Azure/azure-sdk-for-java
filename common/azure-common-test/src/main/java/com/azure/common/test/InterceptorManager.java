@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.microsoft.azure.core;
+package com.azure.common.test;
 
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeader;

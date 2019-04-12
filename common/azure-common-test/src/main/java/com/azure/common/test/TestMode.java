@@ -1,7 +1,6 @@
-package com.microsoft.azure.core;
+package com.azure.common.test;
 
 public enum TestMode {
-    NONE,
     RECORD,
     PLAYBACK,
 }
