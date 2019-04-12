@@ -38,6 +38,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,8 +63,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private int[] expectedStatusCodes;
     private Type returnType;
     private Type returnValueWireType;
-    private Class<? extends ServiceRequestException> exceptionType;
-    private Class<?> exceptionBodyType;
+    private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
+    private Map<Integer, UnexpectedException> exceptionMapping;
+    private UnexpectedException defaultException;
 
     /**
      * Create a SwaggerMethodParser object using the provided fully qualified method name.
@@ -147,21 +149,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             expectedStatusCodes = expectedResponses.value();
         }
 
-        final UnexpectedResponseExceptionType unexpectedResponseExceptionType = swaggerMethod.getAnnotation(UnexpectedResponseExceptionType.class);
-        if (unexpectedResponseExceptionType == null) {
-            exceptionType = ServiceRequestException.class;
-        }
-        else {
-            exceptionType = unexpectedResponseExceptionType.value();
-        }
-
-        try {
-            final Method exceptionBodyMethod = exceptionType.getDeclaredMethod("value");
-            exceptionBodyType = exceptionBodyMethod.getReturnType();
-        } catch (NoSuchMethodException e) {
-            // Should always have a value() method. Register Object as a fallback plan.
-            exceptionBodyType = Object.class;
-        }
+        unexpectedResponseExceptionTypes = swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionType.class);
 
         final Annotation[][] allParametersAnnotations = swaggerMethod.getParameterAnnotations();
         for (int parameterIndex = 0; parameterIndex < allParametersAnnotations.length; ++parameterIndex) {
@@ -378,26 +366,21 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the type of RestException that will be thrown if the HTTP response's status code is not
-     * one of the expected status codes.
+     * Get the {@link UnexpectedException} that will be used to generate a RestException if the HTTP response status
+     * code is not one of the expected status codes.
      *
-     * @return the type of RestException that will be thrown if the HTTP response's status code is
-     * not one of the expected status codes
-     */
-    public Class<? extends ServiceRequestException> exceptionType() {
-        return exceptionType;
-    }
-
-    /**
-     * Get the type of body Object that a thrown RestException will contain if the HTTP response's
-     * status code is not one of the expected status codes.
+     * If an UnexpectedException is not found for the status code the default UnexpectedException will be returned.
      *
-     * @return the type of body Object that a thrown RestException will contain if the HTTP
-     * response's status code is not one of the expected status codes
+     * @param code Exception HTTP status code return from a REST API.
+     * @return the UnexpectedException to generate an exception to throw or return.
      */
     @Override
-    public Class<?> exceptionBodyType() {
-        return exceptionBodyType;
+    public UnexpectedException getUnexpectedException(int code) {
+        if (exceptionMapping == null) {
+            exceptionMapping = processUnexpectedResponseExceptionTypes();
+        }
+
+        return exceptionMapping.getOrDefault(code, defaultException);
     }
 
     /**
@@ -479,7 +462,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             } else if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Response.class)) {
                 result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(syncReturnType, Response.class));
             }
-        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
+        }
+        else if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
             result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) returnType);
         }
 
@@ -504,8 +488,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         if (value != null) {
             if (value instanceof String) {
                 result = (String) value;
-            }
-            else {
+            } else {
                 result = serializer.serializeRaw(value);
             }
         }
@@ -533,5 +516,26 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         return result;
+    }
+
+    private Map<Integer, UnexpectedException> processUnexpectedResponseExceptionTypes() {
+        HashMap<Integer, UnexpectedException> exceptionHashMap = new HashMap<>();
+
+        for (UnexpectedResponseExceptionType exceptionAnnotation : unexpectedResponseExceptionTypes) {
+            UnexpectedException exception = new UnexpectedException(exceptionAnnotation.value());
+            if (exceptionAnnotation.code().length == 0) {
+                defaultException = exception;
+            } else {
+                for (int statusCode : exceptionAnnotation.code()) {
+                    exceptionHashMap.put(statusCode, exception);
+                }
+            }
+        }
+
+        if (defaultException == null) {
+            defaultException = new UnexpectedException(ServiceRequestException.class);
+        }
+
+        return exceptionHashMap;
     }
 }

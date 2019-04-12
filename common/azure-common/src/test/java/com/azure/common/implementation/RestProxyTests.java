@@ -4,6 +4,8 @@
 package com.azure.common.implementation;
 
 import com.azure.common.MyRestException;
+import com.azure.common.ServiceClient;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
@@ -433,6 +435,40 @@ public abstract class RestProxyTests {
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MyRestException.class)
         Mono<HttpBinJSON> putWithUnexpectedResponseAndExceptionTypeAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @PUT("put")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(code = {200}, value = MyRestException.class)
+        @UnexpectedResponseExceptionType(ServiceRequestException.class)
+        HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @PUT("put")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(code = {200}, value = MyRestException.class)
+        @UnexpectedResponseExceptionType(ServiceRequestException.class)
+        Mono<HttpBinJSON> putWithUnexpectedResponseAndDeterminedExceptionTypeAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @PUT("put")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(code = {400}, value = ServiceRequestException.class)
+        @UnexpectedResponseExceptionType(MyRestException.class)
+        HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @PUT("put")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(code = {400}, value = ServiceRequestException.class)
+        @UnexpectedResponseExceptionType(MyRestException.class)
+        Mono<HttpBinJSON> putWithUnexpectedResponseAndFallthroughExceptionTypeAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @PUT("put")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(code = {400}, value = MyRestException.class)
+        HttpBinJSON putWithUnexpectedResponseAndNoFallthroughExceptionType(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @PUT("put")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(code = {400}, value = MyRestException.class)
+        Mono<HttpBinJSON> putWithUnexpectedResponseAndNoFallthroughExceptionTypeAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
     }
 
     @Test
@@ -507,6 +543,99 @@ public abstract class RestProxyTests {
         } catch (MyRestException e) {
             assertNotNull(e.value());
             Assert.assertEquals("I'm the body!", e.value().data);
+        } catch (Throwable e) {
+            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
+        }
+    }
+
+    @Test
+    public void SyncPutRequestWithUnexpectedResponseAndDeterminedExceptionType() {
+        try {
+            createService(Service9.class)
+                .putWithUnexpectedResponseAndDeterminedExceptionType("I'm the body!");
+            fail("Expected ServiceRequestException would be thrown.");
+        } catch (MyRestException e) {
+            assertNotNull(e.value());
+            Assert.assertEquals("I'm the body!", e.value().data);
+        } catch (Throwable e) {
+            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
+        }
+    }
+
+    @Test
+    public void AsyncPutRequestWithUnexpectedResponseAndDeterminedExceptionType() {
+        try {
+            createService(Service9.class)
+                .putWithUnexpectedResponseAndDeterminedExceptionTypeAsync("I'm the body!")
+                .block();
+            fail("Expected ServiceRequestException would be thrown.");
+        } catch (MyRestException e) {
+            assertNotNull(e.value());
+            Assert.assertEquals("I'm the body!", e.value().data);
+        } catch (Throwable e) {
+            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
+        }
+    }
+
+    @Test
+    public void SyncPutRequestWithUnexpectedResponseAndFallthroughExceptionType() {
+        try {
+            createService(Service9.class)
+                .putWithUnexpectedResponseAndFallthroughExceptionType("I'm the body!");
+            fail("Expected ServiceRequestException would be thrown.");
+        } catch (MyRestException e) {
+            assertNotNull(e.value());
+            Assert.assertEquals("I'm the body!", e.value().data);
+        } catch (Throwable e) {
+            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
+        }
+    }
+
+    @Test
+    public void AsyncPutRequestWithUnexpectedResponseAndFallthroughExceptionType() {
+        try {
+            createService(Service9.class)
+                .putWithUnexpectedResponseAndFallthroughExceptionTypeAsync("I'm the body!")
+                .block();
+            fail("Expected ServiceRequestException would be thrown.");
+        } catch (MyRestException e) {
+            assertNotNull(e.value());
+            Assert.assertEquals("I'm the body!", e.value().data);
+        } catch (Throwable e) {
+            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
+        }
+    }
+
+    @Test
+    public void SyncPutRequestWithUnexpectedResponseAndNoFallthroughExceptionType() {
+        try {
+            createService(Service9.class)
+                .putWithUnexpectedResponseAndNoFallthroughExceptionType("I'm the body!");
+            fail("Expected ServiceRequestException would be thrown.");
+        } catch (ServiceRequestException e) {
+            assertNotNull(e.value());
+            assertTrue(e.value() instanceof LinkedHashMap);
+
+            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            assertEquals("I'm the body!", expectedBody.get("data"));
+        } catch (Throwable e) {
+            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
+        }
+    }
+
+    @Test
+    public void AsyncPutRequestWithUnexpectedResponseAndNoFallthroughExceptionType() {
+        try {
+            createService(Service9.class)
+                .putWithUnexpectedResponseAndNoFallthroughExceptionTypeAsync("I'm the body!")
+                .block();
+            fail("Expected ServiceRequestException would be thrown.");
+        } catch (ServiceRequestException e) {
+            assertNotNull(e.value());
+            assertTrue(e.value() instanceof LinkedHashMap);
+
+            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            assertEquals("I'm the body!", expectedBody.get("data"));
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
         }
