@@ -58,8 +58,7 @@ final class AuthFile {
         AuthFile authFile;
         if (isJsonBased(content)) {
             authFile = ADAPTER.deserialize(content, AuthFile.class, SerializerEncoding.JSON);
-            Map<String, String> endpoints = ADAPTER.deserialize(content, new TypeToken<Map<String, String>>() {
-            }.getType(), SerializerEncoding.JSON);
+            Map<String, String> endpoints = ADAPTER.deserialize(content, new TypeToken<Map<String, String>>() { }.getType(), SerializerEncoding.JSON);
             authFile.environment.endpoints().putAll(endpoints);
         } else {
             // Set defaults

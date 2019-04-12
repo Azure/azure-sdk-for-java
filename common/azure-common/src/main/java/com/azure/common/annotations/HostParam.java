@@ -37,7 +37,7 @@ public @interface HostParam {
      * of the parameter annotated with this annotation.
      *
      * @return The name of the variable in the endpoint uri template which will be replaced with the
-     *     value of the parameter annotated with this annotation.
+     *         value of the parameter annotated with this annotation.
      */
     String value();
 

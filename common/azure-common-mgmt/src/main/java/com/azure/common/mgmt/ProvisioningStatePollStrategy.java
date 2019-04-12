@@ -38,7 +38,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
          *
          * @param restProxy The RestProxy that created this PollStrategy.
          * @param methodParser The method parser that describes the service interface method that
-         *     initiated the long running operation.
+         *                     initiated the long running operation.
          * @param originalRequest The HTTP response to the original HTTP request.
          * @param provisioningState The provisioning state.
          * @param delayInMilliseconds The delay value.

@@ -41,14 +41,12 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
     private void loadAccessTokens() throws IOException {
         try {
             AzureCliSubscription.Wrapper wrapper = MAPPER.readValue(azureProfile, AzureCliSubscription.Wrapper.class);
-            List<AzureCliToken> tokens = MAPPER.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() {
-            });
+            List<AzureCliToken> tokens = MAPPER.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() { });
             while (wrapper == null || tokens == null || tokens.isEmpty() || wrapper.subscriptions == null || wrapper.subscriptions.isEmpty()) {
                 System.err.println("Please login in Azure CLI and press any key to continue after you've successfully logged in.");
                 System.in.read();
                 wrapper = MAPPER.readValue(azureProfile, AzureCliSubscription.Wrapper.class);
-                tokens = MAPPER.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() {
-                });
+                tokens = MAPPER.readValue(accessTokens, new TypeReference<List<AzureCliToken>>() { });
             }
             for (AzureCliSubscription subscription : wrapper.subscriptions) {
                 for (AzureCliToken token : tokens) {

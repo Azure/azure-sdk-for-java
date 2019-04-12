@@ -45,7 +45,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
      * @param domain the domain or tenant id containing this application.
      * @param secret the authentication secret for the application.
      * @param environment the Azure environment to authenticate with.
-     *     If null is provided, AzureEnvironment.AZURE will be used.
+     *                    If null is provided, AzureEnvironment.AZURE will be used.
      */
     public ApplicationTokenCredentials(String clientId, String domain, String secret, AzureEnvironment environment) {
         super(environment, domain); // defer token acquisition
@@ -62,7 +62,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
      * @param certificate the PKCS12 certificate file content
      * @param password the password to the certificate file
      * @param environment the Azure environment to authenticate with.
-     *     If null is provided, AzureEnvironment.AZURE will be used.
+     *                    If null is provided, AzureEnvironment.AZURE will be used.
      */
     public ApplicationTokenCredentials(String clientId, String domain, byte[] certificate, String password, AzureEnvironment environment) {
         super(environment, domain);

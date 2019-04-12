@@ -112,11 +112,11 @@ public final class LocationPollStrategy extends PollStrategy {
      *
      * @param originalHttpRequest The original HTTP request.
      * @param methodParser The method parser that describes the service interface method that
-     *     initiated the long running operation.
+     *                     initiated the long running operation.
      * @param httpResponse The HTTP response that the required header values for this pollStrategy
-     *     will be read from.
+     *                     will be read from.
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
-     *     use when polling.
+     *                            use when polling.
      */
     static PollStrategy tryToCreate(RestProxy restProxy, SwaggerMethodParser methodParser, HttpRequest originalHttpRequest, HttpResponse httpResponse, long delayInMilliseconds) {
         final String locationUrl = getHeader(httpResponse);
