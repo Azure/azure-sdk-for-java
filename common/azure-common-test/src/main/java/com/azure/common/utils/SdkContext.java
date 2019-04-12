@@ -3,27 +3,21 @@
 
 package com.azure.common.utils;
 
+import com.azure.common.TestMode;
+import com.azure.common.TestResourceNamer;
+import com.azure.common.models.RecordedData;
+
+import java.util.Objects;
+
 /**
- * The class to contain the common factory methods required for SDK framework.
+ * The class to contain the common test methods for testing SDK.
  */
 public class SdkContext {
-    private static ResourceNamerFactory resourceNamerFactory = new ResourceNamerFactory();
+    private final ResourceNamer nameGenerator;
 
-    /**
-     * Function to override the ResourceNamerFactory.
-     *
-     * @param resourceNamerFactory factory to override.
-     */
-    public static void setResourceNamerFactory(ResourceNamerFactory resourceNamerFactory) {
-        SdkContext.resourceNamerFactory = resourceNamerFactory;
-    }
-
-    /**
-     * Gets the current factory for ResourceNamer.
-     * @return resourceNamer factory.
-     */
-    public static ResourceNamerFactory getResourceNamerFactory() {
-        return SdkContext.resourceNamerFactory;
+    public SdkContext(TestMode testMode, RecordedData recordedData) {
+        Objects.requireNonNull(recordedData);
+        nameGenerator =  new TestResourceNamer("", testMode, recordedData);
     }
 
     /**
@@ -33,9 +27,8 @@ public class SdkContext {
      * @param maxLen the maximum length for the random generated name
      * @return the random name
      */
-    public static String randomResourceName(String prefix, int maxLen) {
-        ResourceNamer resourceNamer = SdkContext.getResourceNamerFactory().createResourceNamer("");
-        return resourceNamer.randomName(prefix, maxLen);
+    public String randomResourceName(String prefix, int maxLen) {
+        return nameGenerator.randomName(prefix, maxLen);
     }
 
     /**
@@ -45,22 +38,11 @@ public class SdkContext {
      * @param count the number of names to generate
      * @return random names
      */
-    public static String[] randomResourceNames(String prefix, int maxLen, int count) {
+    public String[] randomResourceNames(String prefix, int maxLen, int count) {
         String[] names = new String[count];
-        ResourceNamer resourceNamer = SdkContext.getResourceNamerFactory().createResourceNamer("");
         for (int i = 0; i < count; i++) {
-            names[i] = resourceNamer.randomName(prefix, maxLen);
+            names[i] = nameGenerator.randomName(prefix, maxLen);
         }
         return names;
-    }
-
-    /**
-     * Gets a random UUID.
-     *
-     * @return the random UUID.
-     */
-    public static String randomUuid() {
-        ResourceNamer resourceNamer = SdkContext.getResourceNamerFactory().createResourceNamer("");
-        return resourceNamer.randomUuid();
     }
 }
