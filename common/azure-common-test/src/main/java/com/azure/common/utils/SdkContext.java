@@ -3,17 +3,11 @@
 
 package com.azure.common.utils;
 
-import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
-
 /**
  * The class to contain the common factory methods required for SDK framework.
  */
 public class SdkContext {
     private static ResourceNamerFactory resourceNamerFactory = new ResourceNamerFactory();
-    private static DelayProvider delayProvider = new DelayProvider();
-    private static Scheduler rxScheduler = Schedulers.single();
 
     /**
      * Function to override the ResourceNamerFactory.
@@ -68,50 +62,5 @@ public class SdkContext {
     public static String randomUuid() {
         ResourceNamer resourceNamer = SdkContext.getResourceNamerFactory().createResourceNamer("");
         return resourceNamer.randomUuid();
-    }
-
-    /**
-     * Function to override the DelayProvider.
-     *
-     * @param delayProvider delayProvider to override.
-     */
-    public static void setDelayProvider(DelayProvider delayProvider) {
-        SdkContext.delayProvider = delayProvider;
-    }
-
-    /**
-     * Wrapper for sleep, based on delayProvider.
-     * @param milliseconds number of millisecond for which thread should put on sleep.
-     */
-    public static void sleep(int milliseconds) {
-        delayProvider.sleep(milliseconds);
-    }
-
-    /**
-     * Wrapper delayed emission, based on delayProvider.
-     *
-     * @param event the event to emit
-     * @param milliseconds the delay in milliseconds
-     * @param <T> the type of event
-     * @return delayed observable
-     */
-    public static <T> Flux<T> delayedEmitAsync(T event, int milliseconds) {
-        return delayProvider.delayedEmitAsync(event, milliseconds);
-    }
-
-    /**
-     * Gets the current Rx Scheduler for the SDK framework.
-     * @return current rx scheduler.
-     */
-    public static Scheduler getRxScheduler() {
-        return rxScheduler;
-    }
-
-    /**
-     * Sets the Rx Scheduler for SDK framework, by default is Scheduler.io().
-     * @param rxScheduler current Rx Scheduler to be used in SDK framework.
-     */
-    public static void setRxScheduler(Scheduler rxScheduler) {
-        SdkContext.rxScheduler = rxScheduler;
     }
 }
