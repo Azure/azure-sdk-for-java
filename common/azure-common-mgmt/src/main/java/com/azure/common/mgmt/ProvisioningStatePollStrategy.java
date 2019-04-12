@@ -29,8 +29,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
      * The ProvisioningStatePollStrategy data.
      */
     public static class ProvisioningStatePollStrategyData extends PollStrategy.PollStrategyData {
-        private static final long serialVersionUID = 1L;
-        transient HttpRequest originalRequest;
+        HttpRequest originalRequest;
         String provisioningState;
 
         /**
