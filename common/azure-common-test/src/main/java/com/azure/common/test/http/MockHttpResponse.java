@@ -3,6 +3,9 @@
 
 package com.azure.common.test.http;
 
+import com.azure.common.http.HttpHeaders;
+import com.azure.common.http.HttpRequest;
+import com.azure.common.http.HttpResponse;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;

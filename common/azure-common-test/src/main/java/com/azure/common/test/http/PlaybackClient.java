@@ -2,9 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.common.test.http;
 
-import com.azure.common.InterceptorManager;
-import com.azure.common.models.NetworkCallRecord;
-import com.azure.common.models.RecordedData;
+import com.azure.common.http.HttpClient;
+import com.azure.common.http.HttpHeaders;
+import com.azure.common.http.HttpRequest;
+import com.azure.common.http.HttpResponse;
+import com.azure.common.http.ProxyOptions;
+import com.azure.common.test.InterceptorManager;
+import com.azure.common.test.models.NetworkCallRecord;
+import com.azure.common.test.models.RecordedData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;

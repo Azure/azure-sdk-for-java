@@ -3,8 +3,8 @@
 
 package com.azure.common.test.utils;
 
-import com.azure.common.TestMode;
-import com.azure.common.models.RecordedData;
+import com.azure.common.test.TestMode;
+import com.azure.common.test.models.RecordedData;
 
 import java.util.Objects;
 

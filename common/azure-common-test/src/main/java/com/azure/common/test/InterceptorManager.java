@@ -3,11 +3,11 @@
 package com.azure.common.test;
 
 import com.azure.common.http.HttpClient;
-import com.azure.common.http.PlaybackClient;
 import com.azure.common.http.policy.HttpPipelinePolicy;
-import com.azure.common.models.NetworkCallRecord;
-import com.azure.common.models.RecordedData;
-import com.azure.common.policy.RecordNetworkCallPolicy;
+import com.azure.common.test.http.PlaybackClient;
+import com.azure.common.test.models.NetworkCallRecord;
+import com.azure.common.test.models.RecordedData;
+import com.azure.common.test.policy.RecordNetworkCallPolicy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;

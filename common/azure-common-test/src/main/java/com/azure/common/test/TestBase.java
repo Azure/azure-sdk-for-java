@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.common.test;
 
-import com.azure.common.utils.SdkContext;
+import com.azure.common.test.utils.SdkContext;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -43,7 +43,7 @@ public abstract class TestBase {
         try {
             interceptorManager = new InterceptorManager(testName, testMode);
         } catch (IOException e) {
-            logger.error("Could not create interceptor for ", testName, e);
+            logger.error("Could not create interceptor for {}", testName, e);
             Assert.fail();
         }
 
