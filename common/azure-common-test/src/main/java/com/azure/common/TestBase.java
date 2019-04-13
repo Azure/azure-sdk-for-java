@@ -56,9 +56,9 @@ public abstract class TestBase {
      * Disposes of {@link InterceptorManager} and its inheriting class' resources.
      */
     @After
-    public void afterTest() {
+    public void teardownTest() {
         interceptorManager.close();
-        cleanUpResources();
+        afterTest();
     }
 
     /**
@@ -72,11 +72,15 @@ public abstract class TestBase {
 
     /**
      * Performs any set-up before each test case. Any initialization that occurs in TestBase occurs first before this.
+     * Can be overridden in an inheriting class to add additional functionality during test set-up.
      */
-    protected abstract void beforeTest();
+    protected void beforeTest() {
+    }
 
     /**
-     * Dispose of any resources after a test case runs.
+     * Dispose of any resources and clean-up after a test case runs.
+     * Can be overridden in an inheriting class to add additional functionality during test teardown.
      */
-    protected abstract void cleanUpResources();
+    protected void afterTest() {
+    }
 }

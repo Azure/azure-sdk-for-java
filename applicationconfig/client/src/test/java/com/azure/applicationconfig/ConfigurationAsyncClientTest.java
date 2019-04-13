@@ -99,7 +99,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
     }
 
     @Override
-    protected void cleanUpResources() {
+    protected void afterTest() {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().key(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
