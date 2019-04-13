@@ -6,6 +6,7 @@ import com.azure.common.test.utils.SdkContext;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,28 +20,20 @@ import java.util.Locale;
 public abstract class TestBase {
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
+    private static TestMode testMode;
 
     private final Logger logger = LoggerFactory.getLogger(TestBase.class);
-    private final TestMode testMode;
 
     protected InterceptorManager interceptorManager;
     protected SdkContext sdkContext;
 
     /**
-     * Creates a TestBase that determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
-     * variable. If it is not set, {@link TestMode#PLAYBACK} is used.
+     * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
+     * variable. If it is not set, {@link TestMode#PLAYBACK}
      */
-    protected TestBase() {
-        this.testMode = getTestMode();
-    }
-
-    /**
-     * Creates a TestBase that runs in the specified {@code testMode}.
-     *
-     * @param testMode TestMode to run tests in.
-     */
-    protected TestBase(TestMode testMode) {
-        this.testMode = testMode;
+    @BeforeClass
+    public static void setupClass() {
+        testMode = getTestMode();
     }
 
     /**
@@ -69,8 +62,8 @@ public abstract class TestBase {
      */
     @After
     public void teardownTest() {
-        interceptorManager.close();
         afterTest();
+        interceptorManager.close();
     }
 
     /**
@@ -96,7 +89,8 @@ public abstract class TestBase {
     protected void afterTest() {
     }
 
-    private TestMode getTestMode() {
+    private static TestMode getTestMode() {
+        final Logger logger = LoggerFactory.getLogger(TestBase.class);
         final String azureTestMode = System.getenv(AZURE_TEST_MODE);
 
         if (azureTestMode != null) {
