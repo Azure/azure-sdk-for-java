@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.common.policy;
+package com.azure.common.test.policy;
 
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpPipelineCallContext;

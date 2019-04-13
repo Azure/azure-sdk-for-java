@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.common.http;
+package com.azure.common.test.http;
 
 import com.azure.common.InterceptorManager;
 import com.azure.common.models.NetworkCallRecord;

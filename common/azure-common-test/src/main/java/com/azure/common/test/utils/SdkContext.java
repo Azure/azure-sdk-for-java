@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.common.utils;
+package com.azure.common.test.utils;
 
 import com.azure.common.TestMode;
 import com.azure.common.models.RecordedData;
