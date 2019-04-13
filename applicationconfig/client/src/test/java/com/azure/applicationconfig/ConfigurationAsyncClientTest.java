@@ -51,7 +51,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
     private String labelPrefix;
 
     public ConfigurationAsyncClientTest() {
-        super(getTestMode());
+        super();
     }
 
     @Rule
@@ -109,23 +109,6 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .blockLast();
 
         logger.info("Finished cleaning up values.");
-    }
-
-    private static TestMode getTestMode() {
-        final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
-        final String azureTestMode = System.getenv("AZURE_TEST_MODE");
-
-        if (azureTestMode != null) {
-            try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
-            } catch (IllegalArgumentException e) {
-                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
-                return TestMode.PLAYBACK;
-            }
-        } else {
-            logger.info("Environment variable 'AZURE_TEST_MODE' has not been set yet. Using 'Playback' mode.");
-            return TestMode.PLAYBACK;
-        }
     }
 
     /**

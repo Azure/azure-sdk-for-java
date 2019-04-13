@@ -11,16 +11,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
  */
 public abstract class TestBase {
+    // Environment variable name used to determine the TestMode.
+    private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
+
     private final Logger logger = LoggerFactory.getLogger(TestBase.class);
     private final TestMode testMode;
 
     protected InterceptorManager interceptorManager;
     protected SdkContext sdkContext;
+
+    /**
+     * Creates a TestBase that determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
+     * variable. If it is not set, {@link TestMode#PLAYBACK} is used.
+     */
+    protected TestBase() {
+        this.testMode = getTestMode();
+    }
 
     /**
      * Creates a TestBase that runs in the specified {@code testMode}.
@@ -82,5 +94,21 @@ public abstract class TestBase {
      * Can be overridden in an inheriting class to add additional functionality during test teardown.
      */
     protected void afterTest() {
+    }
+
+    private TestMode getTestMode() {
+        final String azureTestMode = System.getenv(AZURE_TEST_MODE);
+
+        if (azureTestMode != null) {
+            try {
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException e) {
+                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                return TestMode.PLAYBACK;
+            }
+        } else {
+            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
+            return TestMode.PLAYBACK;
+        }
     }
 }
