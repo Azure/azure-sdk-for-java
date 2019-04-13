@@ -34,6 +34,8 @@ public class NetworkCallRecord {
 
     /**
      * Sets the HTTP method for with this network call
+     *
+     * @param method HTTP method for this network call.
      */
     public void method(String method) {
         this.method = method;

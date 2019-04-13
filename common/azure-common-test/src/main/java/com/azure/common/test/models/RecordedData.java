@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
- * Keeps track of the network calls that were made in a test session.
+ * Keeps track of the network calls and variable names that were made in a test session.
  */
 public class RecordedData {
     @JsonProperty()
@@ -19,6 +19,9 @@ public class RecordedData {
     @JsonProperty()
     private final LinkedList<String> variables;
 
+    /**
+     * Creates a new instance of RecordedData to manage network calls and variables in a test session.
+     */
     public RecordedData() {
         networkCallRecords = new LinkedList<>();
         variables = new LinkedList<>();

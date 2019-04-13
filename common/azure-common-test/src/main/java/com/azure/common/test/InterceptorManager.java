@@ -122,6 +122,8 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Gets a new HTTP pipeline policy that records network calls and its data is managed by {@link InterceptorManager}.
+     *
+     * @return HttpPipelinePolicy to record network calls.
      */
     public HttpPipelinePolicy getRecordPolicy() {
         return new RecordNetworkCallPolicy(recordedData);
