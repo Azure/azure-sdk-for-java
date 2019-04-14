@@ -281,7 +281,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         String certificateIssuerName = "createCertificateJavaPkcs12Issuer01";
         IssuerBundle createdCertificateIssuer = keyVaultClient.setCertificateIssuer(
                 new SetCertificateIssuerRequest
-                    .Builder(getVaultUri(),certificateIssuerName, ISSUER_TEST)
+                    .Builder(getVaultUri(), certificateIssuerName, ISSUER_TEST)
                     .withCredentials(credentials)
                     .withOrganizationDetails(organizationDetails)
                     .build());
@@ -430,8 +430,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 
         try {
             keyVaultClient.getCertificate(deletedCertificateBundle.certificateIdentifier().baseIdentifier());
-        }
-        catch(KeyVaultErrorException e) {
+        } catch (KeyVaultErrorException e) {
             Assert.assertNotNull(e.body().error());
             Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
@@ -704,7 +703,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         HashSet<String> toDelete = new HashSet<String>();
 
         for (CertificateItem item : listResult) {
-            if(item != null) {
+            if (item != null) {
                 CertificateIdentifier id = new CertificateIdentifier(item.id());
                 toDelete.add(id.name());
                 certificates.remove(item.id());
@@ -768,7 +767,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         listResult = keyVaultClient.listCertificateVersions(getVaultUri(), certificateName);
 
         for (CertificateItem item : listResult) {
-            if(item != null) {
+            if (item != null) {
                 certificates.remove(item.id());
             }
         }
@@ -1029,8 +1028,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
     }
 
     private String toHexString(byte[] x5t) {
-
-        if(x5t == null) {
+        if (x5t == null) {
             return "";
         }
 
@@ -1057,7 +1055,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
             Assert.assertNotNull(certificateBundle.policy());
             Assert.assertNotNull(certificateBundle.policy().issuerParameters());
             Assert.assertNotNull(certificateBundle.policy().issuerParameters().name());
-            if(certificatePolicy.issuerParameters() != null) {
+            if (certificatePolicy.issuerParameters() != null) {
                 Assert.assertTrue(certificateBundle.policy().issuerParameters().name().equalsIgnoreCase(certificatePolicy.issuerParameters().name()));
             }
         }
