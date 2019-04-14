@@ -63,7 +63,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
     private static String getKeyName(String recoveryId) {
         String[] idParts = recoveryId.split("/");
-        return idParts[idParts.length-1];
+        return idParts[idParts.length - 1];
     }
 
     @Test
@@ -374,14 +374,13 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertEquals(0, keys.size());
 
         for (String name : toDelete) {
-            try{
+            try {
                 DeletedKeyBundle deletedKey = keyVaultClient.deleteKey(getVaultUri(), name);
                 Assert.assertNotNull(deletedKey);
                 pollOnKeyDeletion(getVaultUri(), name);
-            }
-            catch(KeyVaultErrorException e){
+            } catch(KeyVaultErrorException e) {
                 // Ignore forbidden exception for certificate keys that cannot be deleted
-                if(!e.body().error().code().equals("Forbidden")) {
+                if (!e.body().error().code().equals("Forbidden")) {
                     throw e;
                 }
             }
