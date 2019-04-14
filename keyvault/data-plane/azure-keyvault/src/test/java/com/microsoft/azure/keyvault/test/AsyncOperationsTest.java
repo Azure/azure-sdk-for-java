@@ -47,7 +47,6 @@ import com.microsoft.azure.keyvault.requests.UpdateSecretRequest;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
-import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.rest.ServiceCallback;
 
 public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
@@ -131,8 +130,9 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
             Throwable t = ex.getCause();
             if (t instanceof KeyVaultErrorException) {
                 Assert.assertEquals("KeyNotFound", ((KeyVaultErrorException) t).body().error().code());
-            } else
+            } else {
                 throw ex;
+            }
         }
 
     }
@@ -172,8 +172,9 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
             Throwable t = ex.getCause();
             if (t instanceof KeyVaultErrorException) {
                 Assert.assertEquals("SecretNotFound", ((KeyVaultErrorException) t).body().error().code());
-            } else
+            } else {
                 throw ex;
+            }
         }
         pollOnSecretDeletion(vault, secretname);
         keyVaultClient.purgeDeletedSecretAsync(vault, secretname, null).get();
@@ -248,8 +249,9 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
             Throwable t = ex.getCause();
             if (t instanceof KeyVaultErrorException) {
                 Assert.assertEquals("CertificateNotFound", ((KeyVaultErrorException) t).body().error().code());
-            } else
+            } else {
                 throw ex;
+            }
         }
 
         keyVaultClient.purgeDeletedCertificate(vault, certificateName);
