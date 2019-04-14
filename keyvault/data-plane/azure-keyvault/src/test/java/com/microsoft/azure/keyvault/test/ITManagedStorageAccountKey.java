@@ -123,13 +123,13 @@ public class ITManagedStorageAccountKey {
         printThreadInfo(String.format("%s: %s", "beforeTest", testName.getMethodName()));
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
-        
+
         ServiceClientCredentials keyVaultCredentials = createTestCredentials();
 
         // Due to the nature of the services, we have to use User Authentication for testing
         // You must use a user with 2FA disabled for this to work.
 
-        
+
         if (isRecordMode()) {
             // This needs to be set for playback.
             RESOURCE_GROUP = System.getenv("msak.resourceGroup");
@@ -140,7 +140,7 @@ public class ITManagedStorageAccountKey {
             MSAK_USER_OID = System.getenv("msak.useroid");
             TENANT_ID = System.getenv("arm.tenantid");
             SUBSCRIPTION_ID = System.getenv("arm.subscriptionId");
-            
+
             UserTokenCredentials credentials = new UserTokenCredentials(CLIENT_ID, TENANT_ID, MSAK_USER, MSAK_PASSWORD,
                     AzureEnvironment.AZURE);
             Interceptor interceptor = interceptorManager.initInterceptor();
@@ -155,7 +155,7 @@ public class ITManagedStorageAccountKey {
 
             keyVaultClient = new KeyVaultClient(keyVaultRestClient);
             credentials.withDefaultSubscriptionId(SUBSCRIPTION_ID);
-            
+
             RestClient restClient = new RestClient.Builder().withBaseUrl("https://management.azure.com")
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory()).withCredentials(credentials)
@@ -178,7 +178,7 @@ public class ITManagedStorageAccountKey {
             UserTokenCredentials credentials = new MockUserTokenCredentials();
             keyVaultClient = new KeyVaultClient(buildPlaybackRestClient(keyVaultCredentials, playbackUri ));
             RestClient restClient = buildPlaybackRestClient(credentials, playbackUri );
-            
+
             initializeClients(restClient, ZERO_SUBSCRIPTION, ZERO_TENANT);
         }
 
@@ -278,7 +278,7 @@ public class ITManagedStorageAccountKey {
             obj.addProperty("roleDefUUID", sas_UUID);
             obj.addProperty("storageAccountName", storageAccountName);
             obj.addProperty("vaultName", vaultName);
-            
+
             try {
                 BufferedWriter fileWriter = new BufferedWriter(new FileWriter(fileName));
                 fileWriter.write(obj.toString());
@@ -288,7 +288,7 @@ public class ITManagedStorageAccountKey {
             }
 
         } else {
-            
+
             try {
                 Gson gson = new Gson();
                 BufferedReader br = new BufferedReader(new FileReader(fileName));
@@ -370,7 +370,7 @@ public class ITManagedStorageAccountKey {
     private StorageAccount initStorageAccount(final String storageAccountName, final String roleAccountUUID) {
         StorageAccount storageAccount = storageManager.storageAccounts().define(storageAccountName)
                 .withRegion(VAULT_REGION).withExistingResourceGroup(RESOURCE_GROUP).create();
-        
+
         graphRbacManager.roleAssignments().define(roleAccountUUID).forObjectId("93c27d83-f79b-4cb2-8dd4-4aa716542e74")
                 .withRoleDefinition(KEY_VAULT_ROLE.id()).withScope(storageAccount.id()).create();
 
@@ -472,13 +472,15 @@ public class ITManagedStorageAccountKey {
     }
 
     public static boolean isPlaybackMode() {
-        if (testMode == null)
+        if (testMode == null) {
             try {
                 initTestMode();
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException("Can't init test mode.");
             }
+        }
+
         return testMode == TestBase.TestMode.PLAYBACK;
     }
 
