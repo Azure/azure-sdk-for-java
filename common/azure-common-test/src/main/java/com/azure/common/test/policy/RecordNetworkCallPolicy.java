@@ -74,7 +74,9 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 // Remove pre-added header if this is a waiting or redirection
                 if (body != null && body.contains("<Status>InProgress</Status>")
                     || Integer.parseInt(responseData.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
-                    logger.info("Waiting for a response or redirection.");
+                    if (logger.isInfoEnabled()) {
+                        logger.info("Waiting for a response or redirection.");
+                    }
                 } else {
                     recordedData.addNetworkCall(networkCallRecord);
                 }

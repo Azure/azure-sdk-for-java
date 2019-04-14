@@ -43,12 +43,16 @@ public abstract class TestBase {
     @Before
     public void setupTest() {
         final String testName = testName();
-        logger.info("Test Mode: {}, Name: {}", testMode, testName);
+        if (logger.isInfoEnabled()) {
+            logger.info("Test Mode: {}, Name: {}", testMode, testName);
+        }
 
         try {
             interceptorManager = new InterceptorManager(testName, testMode);
         } catch (IOException e) {
-            logger.error("Could not create interceptor for {}", testName, e);
+            if (logger.isErrorEnabled()) {
+                logger.error("Could not create interceptor for {}", testName, e);
+            }
             Assert.fail();
         }
 
@@ -68,9 +72,10 @@ public abstract class TestBase {
 
     /**
      * Gets the name of the current test being run.
+     * <p>
+     * NOTE: This could not be implemented in the base class using {@link TestName} because it always returns {@code
+     * null}. See https://stackoverflow.com/a/16113631/4220757.
      *
-     * NOTE: This could not be implemented in the base class using {@link TestName} because it always returns
-     * {@code null}. See https://stackoverflow.com/a/16113631/4220757.
      * @return The name of the current test.
      */
     protected abstract String testName();
@@ -83,8 +88,8 @@ public abstract class TestBase {
     }
 
     /**
-     * Dispose of any resources and clean-up after a test case runs.
-     * Can be overridden in an inheriting class to add additional functionality during test teardown.
+     * Dispose of any resources and clean-up after a test case runs. Can be overridden in an inheriting class to add
+     * additional functionality during test teardown.
      */
     protected void afterTest() {
     }
@@ -97,12 +102,17 @@ public abstract class TestBase {
             try {
                 return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
             } catch (IllegalArgumentException e) {
-                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                if (logger.isErrorEnabled()) {
+                    logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                }
                 return TestMode.PLAYBACK;
             }
-        } else {
-            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
-            return TestMode.PLAYBACK;
         }
+
+        if (logger.isInfoEnabled()) {
+            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
+        }
+
+        return TestMode.PLAYBACK;
     }
 }
