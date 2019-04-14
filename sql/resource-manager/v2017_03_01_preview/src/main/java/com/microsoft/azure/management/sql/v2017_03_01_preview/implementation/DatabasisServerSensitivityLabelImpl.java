@@ -43,6 +43,11 @@ class DatabasisServerSensitivityLabelImpl extends WrapperImpl<SensitivityLabelIn
     }
 
     @Override
+    public Boolean isDisabled() {
+        return this.inner().isDisabled();
+    }
+
+    @Override
     public String labelId() {
         return this.inner().labelId();
     }

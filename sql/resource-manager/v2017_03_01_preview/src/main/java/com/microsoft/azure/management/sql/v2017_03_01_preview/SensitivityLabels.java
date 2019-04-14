@@ -20,6 +20,34 @@ import com.microsoft.azure.management.sql.v2017_03_01_preview.DatabasisServerSen
  */
 public interface SensitivityLabels extends SupportsCreating<SensitivityLabel.DefinitionStages.Blank>, HasInner<SensitivityLabelsInner> {
     /**
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable enableRecommendationAsync(String resourceGroupName, String serverName, String databaseName, String schemaName, String tableName, String columnName);
+
+    /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable disableRecommendationAsync(String resourceGroupName, String serverName, String databaseName, String schemaName, String tableName, String columnName);
+
+    /**
      * Gets the sensitivity label of a given column.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.

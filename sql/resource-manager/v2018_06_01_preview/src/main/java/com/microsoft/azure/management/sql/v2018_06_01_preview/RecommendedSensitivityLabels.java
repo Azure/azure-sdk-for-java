@@ -33,6 +33,11 @@ public interface RecommendedSensitivityLabels extends HasInner<SensitivityLabelI
     String informationTypeId();
 
     /**
+     * @return the isDisabled value.
+     */
+    Boolean isDisabled();
+
+    /**
      * @return the labelId value.
      */
     String labelId();

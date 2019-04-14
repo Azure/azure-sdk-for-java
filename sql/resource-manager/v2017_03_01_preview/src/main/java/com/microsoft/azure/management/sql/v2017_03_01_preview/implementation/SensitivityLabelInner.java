@@ -42,6 +42,14 @@ public class SensitivityLabelInner extends ProxyResource {
     private String informationTypeId;
 
     /**
+     * Is sensitivity recommendation disabled. Applicable for recommended
+     * sensitivity label only. Specifies whether the sensitivity recommendation
+     * on this column is disabled (dismissed) or not.
+     */
+    @JsonProperty(value = "properties.isDisabled", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isDisabled;
+
+    /**
      * Get the label name.
      *
      * @return the labelName value
@@ -119,6 +127,15 @@ public class SensitivityLabelInner extends ProxyResource {
     public SensitivityLabelInner withInformationTypeId(String informationTypeId) {
         this.informationTypeId = informationTypeId;
         return this;
+    }
+
+    /**
+     * Get is sensitivity recommendation disabled. Applicable for recommended sensitivity label only. Specifies whether the sensitivity recommendation on this column is disabled (dismissed) or not.
+     *
+     * @return the isDisabled value
+     */
+    public Boolean isDisabled() {
+        return this.isDisabled;
     }
 
 }

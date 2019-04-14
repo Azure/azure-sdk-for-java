@@ -33,6 +33,11 @@ public interface CurrentSensitivityLabels extends HasInner<SensitivityLabelInner
     String informationTypeId();
 
     /**
+     * @return the isDisabled value.
+     */
+    Boolean isDisabled();
+
+    /**
      * @return the labelId value.
      */
     String labelId();
