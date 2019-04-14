@@ -286,25 +286,24 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 
     @Test
     public void certificateContactsAsyncForAsyncOperationsTest() throws Exception {
-
         String vault = getVaultUri();
 
-         Contact contact1 = new Contact();
-            contact1.withName("James");
-            contact1.withEmailAddress("james@contoso.com");
-            contact1.withPhone("7777777777");
+        Contact contact1 = new Contact();
+        contact1.withName("James");
+        contact1.withEmailAddress("james@contoso.com");
+        contact1.withPhone("7777777777");
 
-            Contact contact2 = new Contact();
-            contact2.withName("Ethan");
-            contact2.withEmailAddress("ethan@contoso.com");
-            contact2.withPhone("8888888888");
+        Contact contact2 = new Contact();
+        contact2.withName("Ethan");
+        contact2.withEmailAddress("ethan@contoso.com");
+        contact2.withPhone("8888888888");
 
-            List<Contact> contactList = new ArrayList<Contact>();
-            contactList.add(contact1);
-            contactList.add(contact2);
+        List<Contact> contactList = new ArrayList<Contact>();
+        contactList.add(contact1);
+        contactList.add(contact2);
 
-            Contacts certificateContacts = new Contacts();
-            certificateContacts.withContactList(contactList);
+        Contacts certificateContacts = new Contacts();
+        certificateContacts.withContactList(contactList);
 
         Contacts contacts = keyVaultClient.setCertificateContactsAsync(vault, certificateContacts, (ServiceCallback<Contacts>) null).get();
         Assert.assertNotNull(contacts);
