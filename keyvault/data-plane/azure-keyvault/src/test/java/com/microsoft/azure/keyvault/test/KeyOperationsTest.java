@@ -88,7 +88,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                         .withKeySize(2048)
                         .withTags(tags)
                         .build());
-            
+
             validateRsaKeyBundle(bundle, getVaultUri(), KEY_NAME, JsonWebKeyType.RSA, keyOps, attribute);
         }
 
@@ -120,10 +120,10 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                 .withEnabled(true)
                 .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
                 .withNotBefore(new DateTime().withYear(2000).withMonthOfYear(1));
-        
+
         Map<String, String> tags = new HashMap<String, String>();
         tags.put("foo", "baz");
-        
+
         JsonWebKey importedJwk = keyBundle.key();
         KeyBundle importResultBundle = keyVaultClient.importKey(
                 new ImportKeyRequest
@@ -132,7 +132,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                         .withAttributes(attribute)
                         .withTags(tags)
                         .build());
-        
+
         validateRsaKeyBundle(importResultBundle, getVaultUri(), KEY_NAME, importToHardware ? JsonWebKeyType.RSA_HSM : JsonWebKeyType.RSA, importedJwk.keyOps(), attribute);
         checkEncryptDecryptSequence(importedJwk, importResultBundle);
         Assert.assertTrue(importResultBundle.key().isValid());
@@ -274,7 +274,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                             .withAttributes(createdBundle.attributes())
                             .withTags(createdBundle.tags())
                             .build());
-            
+
             compareKeyBundles(createdBundle, updatedBundle);
         }
 
@@ -294,7 +294,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                 Assert.assertEquals("KeyNotFound", e.body().error().code());
             }
         }
-        
+
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
         SdkContext.sleep(40000);
     }
@@ -324,7 +324,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             keyVaultClient.deleteKey(getVaultUri(), KEY_NAME);
             pollOnKeyDeletion(getVaultUri(), KEY_NAME);
         }
-        
+
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
        	SdkContext.sleep(40000);
 
@@ -333,7 +333,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             KeyBundle restoredBundle = keyVaultClient.restoreKey(getVaultUri(), keyBackup);
             compareKeyBundles(createdBundle, restoredBundle);
         }
-        
+
     }
 
     @Test
@@ -387,15 +387,15 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                     throw e;
             }
         }
-        
+
         PagedList<DeletedKeyItem> deletedListResult = keyVaultClient.getDeletedKeys(getVaultUri());
         for (DeletedKeyItem item : deletedListResult) {
-        	if (item != null) {
-        		KeyIdentifier id = new KeyIdentifier(item.kid());
-        		Assert.assertTrue(toDelete.contains(id.name()));
-        		keyVaultClient.purgeDeletedKey(getVaultUri(), id.name());
-        		SdkContext.sleep(40000);
-        	}
+            if (item != null) {
+                KeyIdentifier id = new KeyIdentifier(item.kid());
+                Assert.assertTrue(toDelete.contains(id.name()));
+                keyVaultClient.purgeDeletedKey(getVaultUri(), id.name());
+                SdkContext.sleep(40000);
+            }
         }
 
     }
@@ -427,7 +427,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         //TODO bug: Assert.assertTrue(PAGELIST_MAX_KEYS >= listResult.currentPage().getItems().size());
 
         listResult = keyVaultClient.listKeyVersions(getVaultUri(), KEY_NAME);
-        
+
         for (KeyItem item : listResult) {
             if(item != null) {
                 keys.remove(item.kid());
@@ -438,7 +438,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         keyVaultClient.deleteKey(getVaultUri(), KEY_NAME);
         pollOnKeyDeletion(getVaultUri(), KEY_NAME);
-        
+
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
         SdkContext.sleep(40000);
     }
@@ -557,7 +557,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                     .Builder(getVaultUri(), KEY_NAME, key)
                         .withHsm(false)
                         .build());
-        
+
         validateRsaKeyBundle(keyBundle, getVaultUri(), KEY_NAME, JsonWebKeyType.RSA, null, null);
 
         return keyBundle.key();
@@ -587,8 +587,8 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     private static void validateRsaKeyBundle(KeyBundle bundle, String vault, String keyName, JsonWebKeyType kty, List<JsonWebKeyOperation> key_ops, Attributes attributes) throws Exception {
         String prefix = vault + "/keys/" + keyName + "/";
         String kid = bundle.key().kid();
-        Assert.assertTrue( 
-                String.format("\"kid\" should start with \"%s\", but instead the value is \"%s\".", prefix, kid), 
+        Assert.assertTrue(
+                String.format("\"kid\" should start with \"%s\", but instead the value is \"%s\".", prefix, kid),
                 kid.startsWith(prefix));
         Assert.assertEquals(kty, bundle.key().kty());
         Assert.assertNotNull("\"n\" should not be null.", bundle.key().n());
@@ -598,7 +598,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
         Assert.assertNotNull("\"created\" should not be null.", bundle.attributes().created());
         Assert.assertNotNull("\"updated\" should not be null.", bundle.attributes().updated());
-                
+
         Assert.assertTrue(bundle.managed() == null || bundle.managed() == false);
         Assert.assertTrue(bundle.key().isValid());
     }
@@ -609,5 +609,4 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         if(expected.tags() != null || actual.tags() != null)
             Assert.assertTrue(expected.tags().equals(actual.tags()));
     }
-
 }
