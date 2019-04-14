@@ -10,6 +10,9 @@ import reactor.core.publisher.Mono;
 
 /**
  * Pipeline policy that adds 'User-Agent' header to a request.
+ *
+ * Format for User-Agent policy is outlined in https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html under "Client
+ * Library Usage Telemetry".
  */
 public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
