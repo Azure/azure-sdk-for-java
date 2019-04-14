@@ -50,10 +50,6 @@ public class ConfigurationAsyncClientTest extends TestBase {
     private String keyPrefix;
     private String labelPrefix;
 
-    public ConfigurationAsyncClientTest() {
-        super();
-    }
-
     @Rule
     public TestName testName = new TestName();
 
@@ -919,7 +915,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
      *
      * @param exceptionThrower Command that should throw the exception
      */
-    private static void assertRunnableThrowsException(Runnable exceptionThrower, Class exception) {
+    private static <T> void assertRunnableThrowsException(Runnable exceptionThrower, Class<T> exception) {
         try {
             exceptionThrower.run();
             fail();
