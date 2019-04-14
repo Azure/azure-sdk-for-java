@@ -924,7 +924,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
             CertificateOperation pendingCertificateOperation = keyVaultClient
                     .getCertificateOperation(getVaultUri(), certificateName);
             if (pendingCertificateOperation.status().equalsIgnoreCase(STATUS_IN_PROGRESS)) {
-            	SdkContext.sleep(10000);
+                SdkContext.sleep(10000);
                 pendingPollCount += 1;
                 continue;
             }
