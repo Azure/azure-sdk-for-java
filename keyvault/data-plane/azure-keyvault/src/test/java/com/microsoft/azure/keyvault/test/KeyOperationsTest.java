@@ -22,7 +22,6 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.models.KeyBundle;
@@ -36,7 +35,6 @@ import com.microsoft.azure.keyvault.requests.CreateKeyRequest;
 import com.microsoft.azure.keyvault.requests.ImportKeyRequest;
 import com.microsoft.azure.keyvault.requests.UpdateKeyRequest;
 import com.microsoft.azure.keyvault.models.Attributes;
-import com.microsoft.azure.keyvault.models.DeletedCertificateBundle;
 import com.microsoft.azure.keyvault.models.DeletedKeyBundle;
 import com.microsoft.azure.keyvault.models.DeletedKeyItem;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
