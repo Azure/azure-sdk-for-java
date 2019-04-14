@@ -19,54 +19,54 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 
 public class AesValidationTests {
     private static final String TRANSFORMATION = "AES";
-    
+
     @Test
     public void aesKeyValidation() throws Exception {
         KeyGenerator keyGen = KeyGenerator.getInstance(TRANSFORMATION);
         keyGen.init(256);
-        
-        SecretKey skey = keyGen.generateKey();        
+
+        SecretKey skey = keyGen.generateKey();
         JsonWebKey key = serializeDeserialize(skey);
         Assert.assertTrue(key.hasPrivateKey());
         Assert.assertTrue(key.isValid());
-        
+
         SecretKey secretKey = key.toAes();
         encryptDecrypt(secretKey);
-        
+
         // Compare equal JSON web keys
         JsonWebKey sameKey = JsonWebKey.fromAes(skey);
         Assert.assertEquals(key, key);
         Assert.assertEquals(key, sameKey);
         Assert.assertEquals(key.hashCode(), sameKey.hashCode());
     }
-    
+
     @Test
     public void invalidKeyOps() throws Exception {
         JsonWebKey key = getAes();
         key.withKeyOps(Arrays.asList(JsonWebKeyOperation.ENCRYPT, new JsonWebKeyOperation("foo")));
         Assert.assertFalse(key.isValid());
     }
-    
+
     @Test
     public void octHashCode() throws Exception {
-        JsonWebKey key = getAes();        
+        JsonWebKey key = getAes();
 
         // Compare hash codes for unequal JWK that would not map to the same hash
         Assert.assertNotEquals(key.hashCode(), new JsonWebKey().withK(key.k()).hashCode());
         Assert.assertNotEquals(key.hashCode(), new JsonWebKey().withKty(key.kty()).hashCode());
-        
+
         // Compare hash codes for unequal JWK that would map to the same hash
         Assert.assertEquals(key.hashCode(), new JsonWebKey().withK(key.k()).withKty(key.kty()).hashCode());
     }
-    
+
     private static JsonWebKey getAes() throws Exception {
         KeyGenerator keyGen = KeyGenerator.getInstance(TRANSFORMATION);
         keyGen.init(256);
-        
-        SecretKey skey = keyGen.generateKey();        
+
+        SecretKey skey = keyGen.generateKey();
         return JsonWebKey.fromAes(skey);
     }
-    
+
     private static JsonWebKey serializeDeserialize(SecretKey skey) throws Exception {
         JsonWebKey webKey = JsonWebKey.fromAes(skey);
         String serializedKey = webKey.toString();
@@ -82,14 +82,14 @@ public class AesValidationTests {
     }
 
     private static byte[] encrypt(SecretKey key, byte[] plaintext) throws Exception {
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);   
+        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.ENCRYPT_MODE, key);
         return cipher.doFinal(plaintext);
     }
 
     private static byte[] decrypt(SecretKey key, byte[] ciphertext) throws Exception {
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);   
-        cipher.init(Cipher.DECRYPT_MODE, key);  
+        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        cipher.init(Cipher.DECRYPT_MODE, key);
         return cipher.doFinal(ciphertext);
     }
 }

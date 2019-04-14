@@ -16,15 +16,15 @@ public class MockUserTokenCredentials extends UserTokenCredentials {
 
     private AuthenticationResult authenticationResult;
 
-    
     public MockUserTokenCredentials(String clientId, String domain, String username, String password,
             AzureEnvironment environment) {
         super(clientId, domain, username, password, environment);
     }
-    
+
     public MockUserTokenCredentials() {
         this("","","","", AzureEnvironment.AZURE);
     }
+
     @Override
     public String getToken(String resource) throws IOException {
         if (authenticationResult != null

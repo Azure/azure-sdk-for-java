@@ -85,23 +85,17 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (swaggerMethod.isAnnotationPresent(GET.class)) {
             setHttpMethodAndRelativePath(HttpMethod.GET, swaggerMethod.getAnnotation(GET.class).value());
-        }
-        else if (swaggerMethod.isAnnotationPresent(PUT.class)) {
+        } else if (swaggerMethod.isAnnotationPresent(PUT.class)) {
             setHttpMethodAndRelativePath(HttpMethod.PUT, swaggerMethod.getAnnotation(PUT.class).value());
-        }
-        else if (swaggerMethod.isAnnotationPresent(HEAD.class)) {
+        } else if (swaggerMethod.isAnnotationPresent(HEAD.class)) {
             setHttpMethodAndRelativePath(HttpMethod.HEAD, swaggerMethod.getAnnotation(HEAD.class).value());
-        }
-        else if (swaggerMethod.isAnnotationPresent(DELETE.class)) {
+        } else if (swaggerMethod.isAnnotationPresent(DELETE.class)) {
             setHttpMethodAndRelativePath(HttpMethod.DELETE, swaggerMethod.getAnnotation(DELETE.class).value());
-        }
-        else if (swaggerMethod.isAnnotationPresent(POST.class)) {
+        } else if (swaggerMethod.isAnnotationPresent(POST.class)) {
             setHttpMethodAndRelativePath(HttpMethod.POST, swaggerMethod.getAnnotation(POST.class).value());
-        }
-        else if (swaggerMethod.isAnnotationPresent(PATCH.class)) {
+        } else if (swaggerMethod.isAnnotationPresent(PATCH.class)) {
             setHttpMethodAndRelativePath(HttpMethod.PATCH, swaggerMethod.getAnnotation(PATCH.class).value());
-        }
-        else {
+        } else {
             final ArrayList<Class<? extends Annotation>> requiredAnnotationOptions = new ArrayList<>();
             requiredAnnotationOptions.add(GET.class);
             requiredAnnotationOptions.add(PUT.class);
@@ -119,10 +113,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
             if (returnValueWireType == Base64Url.class || returnValueWireType == UnixTime.class || returnValueWireType == DateTimeRfc1123.class) {
                 this.returnValueWireType = returnValueWireType;
-            }
-            else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
+            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
                 this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
-            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)){
+            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)) {
                 this.returnValueWireType = returnValueWireType;
             }
         }
@@ -159,20 +152,16 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 if (annotationType.equals(HostParam.class)) {
                     final HostParam hostParamAnnotation = (HostParam) annotation;
                     hostSubstitutions.add(new Substitution(hostParamAnnotation.value(), parameterIndex, !hostParamAnnotation.encoded()));
-                }
-                else if (annotationType.equals(PathParam.class)) {
+                } else if (annotationType.equals(PathParam.class)) {
                     final PathParam pathParamAnnotation = (PathParam) annotation;
                     pathSubstitutions.add(new Substitution(pathParamAnnotation.value(), parameterIndex, !pathParamAnnotation.encoded()));
-                }
-                else if (annotationType.equals(QueryParam.class)) {
+                } else if (annotationType.equals(QueryParam.class)) {
                     final QueryParam queryParamAnnotation = (QueryParam) annotation;
                     querySubstitutions.add(new Substitution(queryParamAnnotation.value(), parameterIndex, !queryParamAnnotation.encoded()));
-                }
-                else if (annotationType.equals(HeaderParam.class)) {
+                } else if (annotationType.equals(HeaderParam.class)) {
                     final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
                     headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex, false));
-                }
-                else if (annotationType.equals(BodyParam.class)) {
+                } else if (annotationType.equals(BodyParam.class)) {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
                     bodyContentType = bodyParamAnnotation.value();
@@ -341,8 +330,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (expectedStatusCodes == null) {
             result = (responseStatusCode < 400);
-        }
-        else {
+        } else {
             result = contains(expectedStatusCodes, responseStatusCode)
                     || contains(additionalAllowedStatusCodes, responseStatusCode);
         }
@@ -453,8 +441,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             result = false;
-        }
-        else if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final ParameterizedType asyncReturnType = (ParameterizedType) returnType;
             final Type syncReturnType = asyncReturnType.getActualTypeArguments()[0];
             if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Void.class)) {
@@ -462,8 +449,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             } else if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Response.class)) {
                 result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(syncReturnType, Response.class));
             }
-        }
-        else if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
             result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) returnType);
         }
 
