@@ -297,7 +297,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             Attributes attributes) throws Exception {
         String prefix = vault + "/secrets/" + name + "/";
         String id = secret.id();
-        Assert.assertTrue( //
+        Assert.assertTrue(
                 String.format("\"id\" should start with \"%s\", but instead the value is \"%s\".", prefix, id), //
                 id.startsWith(prefix));
         Assert.assertEquals(value, secret.value());

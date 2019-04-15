@@ -10,8 +10,6 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 
-
-
 public class MockUserTokenCredentials extends UserTokenCredentials {
 
     private AuthenticationResult authenticationResult;
@@ -22,7 +20,7 @@ public class MockUserTokenCredentials extends UserTokenCredentials {
     }
 
     public MockUserTokenCredentials() {
-        this("","","","", AzureEnvironment.AZURE);
+        this("", "", "", "", AzureEnvironment.AZURE);
     }
 
     @Override
