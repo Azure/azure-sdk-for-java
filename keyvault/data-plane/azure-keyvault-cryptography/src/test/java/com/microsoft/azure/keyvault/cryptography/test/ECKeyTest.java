@@ -236,7 +236,7 @@ public class ECKeyTest {
     private static String getPath(String filename) {
 
         String path =  ECKeyTest.class.getClassLoader().getResource(filename).getPath();
-        if (path.contains(":")){
+        if (path.contains(":")) {
             path = path.substring(1);
         }
         return path;

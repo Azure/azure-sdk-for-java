@@ -160,7 +160,7 @@ public class AesCbcTest {
             encrypted = encryptor.doFinal(PLAIN);
             
             // Assert: we only compare the first 16 bytes as this library uses PKCS7 padding
-            assertArrayEquals(Arrays.copyOfRange(encrypted, 0, 16),ED);
+            assertArrayEquals(Arrays.copyOfRange(encrypted, 0, 16), ED);
         } catch (Exception e) {
             fail(e.getMessage());
         }

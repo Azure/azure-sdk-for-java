@@ -40,7 +40,7 @@ import com.microsoft.azure.keyvault.cryptography.SymmetricKey;
 public class SymmetricKeyTest {
 
     private Provider _provider = null;
-    
+
     private static boolean hasUnlimitedCrypto() {
         try {
             return Cipher.getMaxAllowedKeyLength("RC5") >= 256;
@@ -330,7 +330,7 @@ public class SymmetricKeyTest {
 
         if (unlimited) {
             // Assert
-            assertEquals( "A192KW", algorithm);
+            assertEquals("A192KW", algorithm);
             assertArrayEquals(EK, encrypted);
     
             byte[] decrypted = null;
