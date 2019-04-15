@@ -229,17 +229,17 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                                               .withMonthOfYear(2)
                                               .withDayOfMonth(1)
                                               .withYear(2050));
-            List<JsonWebKeyOperation> key_ops = Arrays.asList(JsonWebKeyOperation.ENCRYPT, JsonWebKeyOperation.DECRYPT);
+            List<JsonWebKeyOperation> keyOps = Arrays.asList(JsonWebKeyOperation.ENCRYPT, JsonWebKeyOperation.DECRYPT);
             Map<String, String> tags = new HashMap<String, String>();
             tags.put("foo", "baz");
-            createdBundle.key().withKeyOps(key_ops);
+            createdBundle.key().withKeyOps(keyOps);
             createdBundle.withTags(tags);
 
             // Perform the operation.
             KeyBundle updatedBundle = keyVaultClient.updateKey(
                         new UpdateKeyRequest
                             .Builder(createdBundle.key().kid())
-                            .withKeyOperations(key_ops)
+                            .withKeyOperations(keyOps)
                             .withAttributes(createdBundle.attributes())
                             .withTags(createdBundle.tags())
                             .build());
@@ -258,8 +258,8 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                                                             .withMonthOfYear(2)
                                                             .withDayOfMonth(1)
                                                             .withYear(2000));
-            List<JsonWebKeyOperation> key_ops = Arrays.asList(JsonWebKeyOperation.SIGN, JsonWebKeyOperation.VERIFY);
-            createdBundle.key().withKeyOps(key_ops);
+            List<JsonWebKeyOperation> keyOps = Arrays.asList(JsonWebKeyOperation.SIGN, JsonWebKeyOperation.VERIFY);
+            createdBundle.key().withKeyOps(keyOps);
             Map<String, String> tags = new HashMap<String, String>();
             tags.put("foo", "baz");
             createdBundle.withTags(tags);
@@ -268,7 +268,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             KeyBundle updatedBundle = keyVaultClient.updateKey(
                         new UpdateKeyRequest
                             .Builder(getVaultUri(), KEY_NAME)
-                            .withKeyOperations(key_ops)
+                            .withKeyOperations(keyOps)
                             .withAttributes(createdBundle.attributes())
                             .withTags(createdBundle.tags())
                             .build());
@@ -582,7 +582,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         return new KeyPair(keyFactory.generatePublic(publicKeySpec), keyFactory.generatePrivate(privateKeySpec));
     }
 
-    private static void validateRsaKeyBundle(KeyBundle bundle, String vault, String keyName, JsonWebKeyType kty, List<JsonWebKeyOperation> key_ops, Attributes attributes) throws Exception {
+    private static void validateRsaKeyBundle(KeyBundle bundle, String vault, String keyName, JsonWebKeyType kty, List<JsonWebKeyOperation> keyOps, Attributes attributes) throws Exception {
         String prefix = vault + "/keys/" + keyName + "/";
         String kid = bundle.key().kid();
         Assert.assertTrue(
@@ -591,8 +591,8 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertEquals(kty, bundle.key().kty());
         Assert.assertNotNull("\"n\" should not be null.", bundle.key().n());
         Assert.assertNotNull("\"e\" should not be null.", bundle.key().e());
-        if (key_ops != null) {
-            Assert.assertTrue(key_ops.equals(bundle.key().keyOps()));
+        if (keyOps != null) {
+            Assert.assertEquals(keyOps, bundle.key().keyOps());
         }
         Assert.assertNotNull("\"created\" should not be null.", bundle.attributes().created());
         Assert.assertNotNull("\"updated\" should not be null.", bundle.attributes().updated());

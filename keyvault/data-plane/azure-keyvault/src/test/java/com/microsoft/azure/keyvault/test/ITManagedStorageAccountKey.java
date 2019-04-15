@@ -377,17 +377,15 @@ public class ITManagedStorageAccountKey {
         return storageAccount;
     }
 
-    private Vault initVault(final String VAULT_NAME) {
-
-        Vault vault = keyVaultManager.vaults().define(VAULT_NAME).withRegion(VAULT_REGION)
+    private Vault initVault(final String vaultName) {
+        Vault vault = keyVaultManager.vaults().define(vaultName).withRegion(VAULT_REGION)
                 .withExistingResourceGroup(RESOURCE_GROUP).defineAccessPolicy()
                 .forObjectId(MSAK_USER_OID).allowSecretAllPermissions()
                 .allowStorageAllPermissions().attach().withDeploymentDisabled().create();
         return vault;
     }
 
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain)
-            throws IOException {
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
 
         keyVaultManager = KeyVaultManager.authenticate(restClient, domain, defaultSubscription);
 
