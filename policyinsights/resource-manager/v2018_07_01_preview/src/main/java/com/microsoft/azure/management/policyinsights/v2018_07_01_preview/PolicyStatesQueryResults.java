@@ -30,6 +30,11 @@ public interface PolicyStatesQueryResults extends HasInner<PolicyStatesQueryResu
     Integer odatacount();
 
     /**
+     * @return the odatanextLink value.
+     */
+    String odatanextLink();
+
+    /**
      * @return the value value.
      */
     List<PolicyStateInner> value();

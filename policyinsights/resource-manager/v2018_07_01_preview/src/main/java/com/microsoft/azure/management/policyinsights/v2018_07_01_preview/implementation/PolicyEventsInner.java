@@ -10,13 +10,18 @@ package com.microsoft.azure.management.policyinsights.v2018_07_01_preview.implem
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.policyinsights.v2018_07_01_preview.QueryFailureException;
 import com.microsoft.azure.management.policyinsights.v2018_07_01_preview.QueryOptions;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
 import retrofit2.http.GET;
@@ -25,6 +30,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -91,6 +97,38 @@ public class PolicyEventsInner {
         @GET("{scope}/providers/Microsoft.PolicyInsights/policyEvents/$metadata")
         Observable<Response<ResponseBody>> getMetadata(@Path(value = "scope", encoded = true) String scope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyEvents listQueryResultsForManagementGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listQueryResultsForManagementGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyEvents listQueryResultsForSubscriptionNext" })
+        @GET
+        Observable<Response<ResponseBody>> listQueryResultsForSubscriptionNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyEvents listQueryResultsForResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listQueryResultsForResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyEvents listQueryResultsForResourceNext" })
+        @GET
+        Observable<Response<ResponseBody>> listQueryResultsForResourceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyEvents listQueryResultsForPolicySetDefinitionNext" })
+        @GET
+        Observable<Response<ResponseBody>> listQueryResultsForPolicySetDefinitionNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyEvents listQueryResultsForPolicyDefinitionNext" })
+        @GET
+        Observable<Response<ResponseBody>> listQueryResultsForPolicyDefinitionNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyEvents listQueryResultsForSubscriptionLevelPolicyAssignmentNext" })
+        @GET
+        Observable<Response<ResponseBody>> listQueryResultsForSubscriptionLevelPolicyAssignmentNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyEvents listQueryResultsForResourceGroupLevelPolicyAssignmentNext" })
+        @GET
+        Observable<Response<ResponseBody>> listQueryResultsForResourceGroupLevelPolicyAssignmentNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -100,10 +138,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForManagementGroup(String managementGroupName) {
-        return listQueryResultsForManagementGroupWithServiceResponseAsync(managementGroupName).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForManagementGroup(final String managementGroupName) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForManagementGroupSinglePageAsync(managementGroupName).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForManagementGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -114,8 +158,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForManagementGroupAsync(String managementGroupName, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForManagementGroupWithServiceResponseAsync(managementGroupName), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForManagementGroupAsync(final String managementGroupName, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForManagementGroupSinglePageAsync(managementGroupName),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForManagementGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -123,15 +175,16 @@ public class PolicyEventsInner {
      *
      * @param managementGroupName Management group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForManagementGroupAsync(String managementGroupName) {
-        return listQueryResultsForManagementGroupWithServiceResponseAsync(managementGroupName).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForManagementGroupAsync(final String managementGroupName) {
+        return listQueryResultsForManagementGroupWithServiceResponseAsync(managementGroupName)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -139,15 +192,38 @@ public class PolicyEventsInner {
      *
      * @param managementGroupName Management group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForManagementGroupWithServiceResponseAsync(String managementGroupName) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForManagementGroupWithServiceResponseAsync(final String managementGroupName) {
+        return listQueryResultsForManagementGroupSinglePageAsync(managementGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForManagementGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the management group.
+     *
+     * @param managementGroupName Management group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForManagementGroupSinglePageAsync(final String managementGroupName) {
         if (managementGroupName == null) {
             throw new IllegalArgumentException("Parameter managementGroupName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String policyEventsResource = "default";
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -156,13 +232,13 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForManagementGroup(policyEventsResource, managementGroupsNamespace, managementGroupName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForManagementGroup(policyEventsResource, managementGroupsNamespace, managementGroupName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForManagementGroupDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForManagementGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -178,10 +254,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForManagementGroup(String managementGroupName, QueryOptions queryOptions) {
-        return listQueryResultsForManagementGroupWithServiceResponseAsync(managementGroupName, queryOptions).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForManagementGroup(final String managementGroupName, final QueryOptions queryOptions) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForManagementGroupSinglePageAsync(managementGroupName, queryOptions).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForManagementGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -193,8 +275,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForManagementGroupAsync(String managementGroupName, QueryOptions queryOptions, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForManagementGroupWithServiceResponseAsync(managementGroupName, queryOptions), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForManagementGroupAsync(final String managementGroupName, final QueryOptions queryOptions, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForManagementGroupSinglePageAsync(managementGroupName, queryOptions),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForManagementGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -203,15 +293,16 @@ public class PolicyEventsInner {
      * @param managementGroupName Management group name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForManagementGroupAsync(String managementGroupName, QueryOptions queryOptions) {
-        return listQueryResultsForManagementGroupWithServiceResponseAsync(managementGroupName, queryOptions).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForManagementGroupAsync(final String managementGroupName, final QueryOptions queryOptions) {
+        return listQueryResultsForManagementGroupWithServiceResponseAsync(managementGroupName, queryOptions)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -220,16 +311,40 @@ public class PolicyEventsInner {
      * @param managementGroupName Management group name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForManagementGroupWithServiceResponseAsync(String managementGroupName, QueryOptions queryOptions) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForManagementGroupWithServiceResponseAsync(final String managementGroupName, final QueryOptions queryOptions) {
+        return listQueryResultsForManagementGroupSinglePageAsync(managementGroupName, queryOptions)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForManagementGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the management group.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param managementGroupName Management group name.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param queryOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForManagementGroupSinglePageAsync(final String managementGroupName, final QueryOptions queryOptions) {
         if (managementGroupName == null) {
             throw new IllegalArgumentException("Parameter managementGroupName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -258,13 +373,13 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForManagementGroup(policyEventsResource, managementGroupsNamespace, managementGroupName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForManagementGroup(policyEventsResource, managementGroupsNamespace, managementGroupName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForManagementGroupDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForManagementGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -272,9 +387,9 @@ public class PolicyEventsInner {
             });
     }
 
-    private ServiceResponse<PolicyEventsQueryResultsInner> listQueryResultsForManagementGroupDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyEventsQueryResultsInner, QueryFailureException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyEventsQueryResultsInner>() { }.getType())
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForManagementGroupDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
                 .registerError(QueryFailureException.class)
                 .build(response);
     }
@@ -286,10 +401,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForSubscription(String subscriptionId) {
-        return listQueryResultsForSubscriptionWithServiceResponseAsync(subscriptionId).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForSubscription(final String subscriptionId) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForSubscriptionSinglePageAsync(subscriptionId).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForSubscriptionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -300,8 +421,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForSubscriptionAsync(String subscriptionId, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForSubscriptionWithServiceResponseAsync(subscriptionId), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForSubscriptionAsync(final String subscriptionId, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForSubscriptionSinglePageAsync(subscriptionId),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForSubscriptionNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -309,15 +438,16 @@ public class PolicyEventsInner {
      *
      * @param subscriptionId Microsoft Azure subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForSubscriptionAsync(String subscriptionId) {
-        return listQueryResultsForSubscriptionWithServiceResponseAsync(subscriptionId).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForSubscriptionAsync(final String subscriptionId) {
+        return listQueryResultsForSubscriptionWithServiceResponseAsync(subscriptionId)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -325,14 +455,37 @@ public class PolicyEventsInner {
      *
      * @param subscriptionId Microsoft Azure subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForSubscriptionWithServiceResponseAsync(String subscriptionId) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionWithServiceResponseAsync(final String subscriptionId) {
+        return listQueryResultsForSubscriptionSinglePageAsync(subscriptionId)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForSubscriptionNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the subscription.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionSinglePageAsync(final String subscriptionId) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String policyEventsResource = "default";
-        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -341,13 +494,13 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForSubscription(policyEventsResource, subscriptionId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForSubscription(policyEventsResource, subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForSubscriptionDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForSubscriptionDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -363,10 +516,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForSubscription(String subscriptionId, QueryOptions queryOptions) {
-        return listQueryResultsForSubscriptionWithServiceResponseAsync(subscriptionId, queryOptions).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForSubscription(final String subscriptionId, final QueryOptions queryOptions) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForSubscriptionSinglePageAsync(subscriptionId, queryOptions).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForSubscriptionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -378,8 +537,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForSubscriptionAsync(String subscriptionId, QueryOptions queryOptions, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForSubscriptionWithServiceResponseAsync(subscriptionId, queryOptions), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForSubscriptionAsync(final String subscriptionId, final QueryOptions queryOptions, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForSubscriptionSinglePageAsync(subscriptionId, queryOptions),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForSubscriptionNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -388,15 +555,16 @@ public class PolicyEventsInner {
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForSubscriptionAsync(String subscriptionId, QueryOptions queryOptions) {
-        return listQueryResultsForSubscriptionWithServiceResponseAsync(subscriptionId, queryOptions).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForSubscriptionAsync(final String subscriptionId, final QueryOptions queryOptions) {
+        return listQueryResultsForSubscriptionWithServiceResponseAsync(subscriptionId, queryOptions)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -405,15 +573,39 @@ public class PolicyEventsInner {
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForSubscriptionWithServiceResponseAsync(String subscriptionId, QueryOptions queryOptions) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionWithServiceResponseAsync(final String subscriptionId, final QueryOptions queryOptions) {
+        return listQueryResultsForSubscriptionSinglePageAsync(subscriptionId, queryOptions)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForSubscriptionNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the subscription.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param subscriptionId Microsoft Azure subscription ID.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param queryOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionSinglePageAsync(final String subscriptionId, final QueryOptions queryOptions) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
-        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -442,13 +634,13 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForSubscription(policyEventsResource, subscriptionId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForSubscription(policyEventsResource, subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForSubscriptionDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForSubscriptionDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -456,9 +648,9 @@ public class PolicyEventsInner {
             });
     }
 
-    private ServiceResponse<PolicyEventsQueryResultsInner> listQueryResultsForSubscriptionDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyEventsQueryResultsInner, QueryFailureException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyEventsQueryResultsInner>() { }.getType())
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForSubscriptionDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
                 .registerError(QueryFailureException.class)
                 .build(response);
     }
@@ -471,10 +663,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForResourceGroup(String subscriptionId, String resourceGroupName) {
-        return listQueryResultsForResourceGroupWithServiceResponseAsync(subscriptionId, resourceGroupName).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForResourceGroup(final String subscriptionId, final String resourceGroupName) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForResourceGroupSinglePageAsync(subscriptionId, resourceGroupName).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -486,8 +684,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForResourceGroupAsync(String subscriptionId, String resourceGroupName, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForResourceGroupWithServiceResponseAsync(subscriptionId, resourceGroupName), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForResourceGroupAsync(final String subscriptionId, final String resourceGroupName, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForResourceGroupSinglePageAsync(subscriptionId, resourceGroupName),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -496,15 +702,16 @@ public class PolicyEventsInner {
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForResourceGroupAsync(String subscriptionId, String resourceGroupName) {
-        return listQueryResultsForResourceGroupWithServiceResponseAsync(subscriptionId, resourceGroupName).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForResourceGroupAsync(final String subscriptionId, final String resourceGroupName) {
+        return listQueryResultsForResourceGroupWithServiceResponseAsync(subscriptionId, resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -513,17 +720,41 @@ public class PolicyEventsInner {
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForResourceGroupWithServiceResponseAsync(String subscriptionId, String resourceGroupName) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupWithServiceResponseAsync(final String subscriptionId, final String resourceGroupName) {
+        return listQueryResultsForResourceGroupSinglePageAsync(subscriptionId, resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the resource group.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupSinglePageAsync(final String subscriptionId, final String resourceGroupName) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String policyEventsResource = "default";
-        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -532,13 +763,13 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForResourceGroup(policyEventsResource, subscriptionId, resourceGroupName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForResourceGroup(policyEventsResource, subscriptionId, resourceGroupName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForResourceGroupDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -555,10 +786,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForResourceGroup(String subscriptionId, String resourceGroupName, QueryOptions queryOptions) {
-        return listQueryResultsForResourceGroupWithServiceResponseAsync(subscriptionId, resourceGroupName, queryOptions).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForResourceGroup(final String subscriptionId, final String resourceGroupName, final QueryOptions queryOptions) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForResourceGroupSinglePageAsync(subscriptionId, resourceGroupName, queryOptions).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -571,8 +808,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForResourceGroupAsync(String subscriptionId, String resourceGroupName, QueryOptions queryOptions, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForResourceGroupWithServiceResponseAsync(subscriptionId, resourceGroupName, queryOptions), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForResourceGroupAsync(final String subscriptionId, final String resourceGroupName, final QueryOptions queryOptions, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForResourceGroupSinglePageAsync(subscriptionId, resourceGroupName, queryOptions),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -582,15 +827,16 @@ public class PolicyEventsInner {
      * @param resourceGroupName Resource group name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForResourceGroupAsync(String subscriptionId, String resourceGroupName, QueryOptions queryOptions) {
-        return listQueryResultsForResourceGroupWithServiceResponseAsync(subscriptionId, resourceGroupName, queryOptions).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForResourceGroupAsync(final String subscriptionId, final String resourceGroupName, final QueryOptions queryOptions) {
+        return listQueryResultsForResourceGroupWithServiceResponseAsync(subscriptionId, resourceGroupName, queryOptions)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -600,18 +846,43 @@ public class PolicyEventsInner {
      * @param resourceGroupName Resource group name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForResourceGroupWithServiceResponseAsync(String subscriptionId, String resourceGroupName, QueryOptions queryOptions) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupWithServiceResponseAsync(final String subscriptionId, final String resourceGroupName, final QueryOptions queryOptions) {
+        return listQueryResultsForResourceGroupSinglePageAsync(subscriptionId, resourceGroupName, queryOptions)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the resource group.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param subscriptionId Microsoft Azure subscription ID.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param resourceGroupName Resource group name.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param queryOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupSinglePageAsync(final String subscriptionId, final String resourceGroupName, final QueryOptions queryOptions) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
-        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -640,13 +911,13 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForResourceGroup(policyEventsResource, subscriptionId, resourceGroupName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForResourceGroup(policyEventsResource, subscriptionId, resourceGroupName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForResourceGroupDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -654,9 +925,9 @@ public class PolicyEventsInner {
             });
     }
 
-    private ServiceResponse<PolicyEventsQueryResultsInner> listQueryResultsForResourceGroupDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyEventsQueryResultsInner, QueryFailureException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyEventsQueryResultsInner>() { }.getType())
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForResourceGroupDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
                 .registerError(QueryFailureException.class)
                 .build(response);
     }
@@ -668,10 +939,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForResource(String resourceId) {
-        return listQueryResultsForResourceWithServiceResponseAsync(resourceId).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForResource(final String resourceId) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForResourceSinglePageAsync(resourceId).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -682,8 +959,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForResourceAsync(String resourceId, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForResourceWithServiceResponseAsync(resourceId), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForResourceAsync(final String resourceId, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForResourceSinglePageAsync(resourceId),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForResourceNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -691,15 +976,16 @@ public class PolicyEventsInner {
      *
      * @param resourceId Resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForResourceAsync(String resourceId) {
-        return listQueryResultsForResourceWithServiceResponseAsync(resourceId).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForResourceAsync(final String resourceId) {
+        return listQueryResultsForResourceWithServiceResponseAsync(resourceId)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -707,14 +993,37 @@ public class PolicyEventsInner {
      *
      * @param resourceId Resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForResourceWithServiceResponseAsync(String resourceId) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceWithServiceResponseAsync(final String resourceId) {
+        return listQueryResultsForResourceSinglePageAsync(resourceId)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForResourceNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resource.
+     *
+     * @param resourceId Resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceSinglePageAsync(final String resourceId) {
         if (resourceId == null) {
             throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String policyEventsResource = "default";
-        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -723,13 +1032,13 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForResource(policyEventsResource, resourceId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForResource(policyEventsResource, resourceId, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForResourceDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForResourceDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -745,10 +1054,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForResource(String resourceId, QueryOptions queryOptions) {
-        return listQueryResultsForResourceWithServiceResponseAsync(resourceId, queryOptions).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForResource(final String resourceId, final QueryOptions queryOptions) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForResourceSinglePageAsync(resourceId, queryOptions).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -760,8 +1075,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForResourceAsync(String resourceId, QueryOptions queryOptions, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForResourceWithServiceResponseAsync(resourceId, queryOptions), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForResourceAsync(final String resourceId, final QueryOptions queryOptions, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForResourceSinglePageAsync(resourceId, queryOptions),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForResourceNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -770,15 +1093,16 @@ public class PolicyEventsInner {
      * @param resourceId Resource ID.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForResourceAsync(String resourceId, QueryOptions queryOptions) {
-        return listQueryResultsForResourceWithServiceResponseAsync(resourceId, queryOptions).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForResourceAsync(final String resourceId, final QueryOptions queryOptions) {
+        return listQueryResultsForResourceWithServiceResponseAsync(resourceId, queryOptions)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -787,15 +1111,39 @@ public class PolicyEventsInner {
      * @param resourceId Resource ID.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForResourceWithServiceResponseAsync(String resourceId, QueryOptions queryOptions) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceWithServiceResponseAsync(final String resourceId, final QueryOptions queryOptions) {
+        return listQueryResultsForResourceSinglePageAsync(resourceId, queryOptions)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForResourceNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resource.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param resourceId Resource ID.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param queryOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceSinglePageAsync(final String resourceId, final QueryOptions queryOptions) {
         if (resourceId == null) {
             throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
-        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -824,13 +1172,13 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForResource(policyEventsResource, resourceId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForResource(policyEventsResource, resourceId, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForResourceDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForResourceDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -838,9 +1186,9 @@ public class PolicyEventsInner {
             });
     }
 
-    private ServiceResponse<PolicyEventsQueryResultsInner> listQueryResultsForResourceDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyEventsQueryResultsInner, QueryFailureException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyEventsQueryResultsInner>() { }.getType())
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForResourceDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
                 .registerError(QueryFailureException.class)
                 .build(response);
     }
@@ -853,10 +1201,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForPolicySetDefinition(String subscriptionId, String policySetDefinitionName) {
-        return listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(subscriptionId, policySetDefinitionName).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForPolicySetDefinition(final String subscriptionId, final String policySetDefinitionName) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForPolicySetDefinitionSinglePageAsync(subscriptionId, policySetDefinitionName).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -868,8 +1222,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForPolicySetDefinitionAsync(String subscriptionId, String policySetDefinitionName, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(subscriptionId, policySetDefinitionName), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForPolicySetDefinitionAsync(final String subscriptionId, final String policySetDefinitionName, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForPolicySetDefinitionSinglePageAsync(subscriptionId, policySetDefinitionName),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -878,15 +1240,16 @@ public class PolicyEventsInner {
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policySetDefinitionName Policy set definition name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForPolicySetDefinitionAsync(String subscriptionId, String policySetDefinitionName) {
-        return listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(subscriptionId, policySetDefinitionName).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForPolicySetDefinitionAsync(final String subscriptionId, final String policySetDefinitionName) {
+        return listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(subscriptionId, policySetDefinitionName)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -895,18 +1258,42 @@ public class PolicyEventsInner {
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policySetDefinitionName Policy set definition name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(String subscriptionId, String policySetDefinitionName) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(final String subscriptionId, final String policySetDefinitionName) {
+        return listQueryResultsForPolicySetDefinitionSinglePageAsync(subscriptionId, policySetDefinitionName)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForPolicySetDefinitionNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy set definition.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param policySetDefinitionName Policy set definition name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicySetDefinitionSinglePageAsync(final String subscriptionId, final String policySetDefinitionName) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (policySetDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -915,13 +1302,13 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForPolicySetDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policySetDefinitionName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForPolicySetDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policySetDefinitionName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForPolicySetDefinitionDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForPolicySetDefinitionDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -938,10 +1325,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForPolicySetDefinition(String subscriptionId, String policySetDefinitionName, QueryOptions queryOptions) {
-        return listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(subscriptionId, policySetDefinitionName, queryOptions).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForPolicySetDefinition(final String subscriptionId, final String policySetDefinitionName, final QueryOptions queryOptions) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForPolicySetDefinitionSinglePageAsync(subscriptionId, policySetDefinitionName, queryOptions).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -954,8 +1347,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForPolicySetDefinitionAsync(String subscriptionId, String policySetDefinitionName, QueryOptions queryOptions, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(subscriptionId, policySetDefinitionName, queryOptions), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForPolicySetDefinitionAsync(final String subscriptionId, final String policySetDefinitionName, final QueryOptions queryOptions, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForPolicySetDefinitionSinglePageAsync(subscriptionId, policySetDefinitionName, queryOptions),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -965,15 +1366,16 @@ public class PolicyEventsInner {
      * @param policySetDefinitionName Policy set definition name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForPolicySetDefinitionAsync(String subscriptionId, String policySetDefinitionName, QueryOptions queryOptions) {
-        return listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(subscriptionId, policySetDefinitionName, queryOptions).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForPolicySetDefinitionAsync(final String subscriptionId, final String policySetDefinitionName, final QueryOptions queryOptions) {
+        return listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(subscriptionId, policySetDefinitionName, queryOptions)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -983,19 +1385,44 @@ public class PolicyEventsInner {
      * @param policySetDefinitionName Policy set definition name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(String subscriptionId, String policySetDefinitionName, QueryOptions queryOptions) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicySetDefinitionWithServiceResponseAsync(final String subscriptionId, final String policySetDefinitionName, final QueryOptions queryOptions) {
+        return listQueryResultsForPolicySetDefinitionSinglePageAsync(subscriptionId, policySetDefinitionName, queryOptions)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForPolicySetDefinitionNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy set definition.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param subscriptionId Microsoft Azure subscription ID.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param policySetDefinitionName Policy set definition name.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param queryOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicySetDefinitionSinglePageAsync(final String subscriptionId, final String policySetDefinitionName, final QueryOptions queryOptions) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (policySetDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1024,13 +1451,13 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForPolicySetDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policySetDefinitionName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForPolicySetDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policySetDefinitionName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForPolicySetDefinitionDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForPolicySetDefinitionDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1038,9 +1465,9 @@ public class PolicyEventsInner {
             });
     }
 
-    private ServiceResponse<PolicyEventsQueryResultsInner> listQueryResultsForPolicySetDefinitionDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyEventsQueryResultsInner, QueryFailureException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyEventsQueryResultsInner>() { }.getType())
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForPolicySetDefinitionDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
                 .registerError(QueryFailureException.class)
                 .build(response);
     }
@@ -1053,10 +1480,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForPolicyDefinition(String subscriptionId, String policyDefinitionName) {
-        return listQueryResultsForPolicyDefinitionWithServiceResponseAsync(subscriptionId, policyDefinitionName).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForPolicyDefinition(final String subscriptionId, final String policyDefinitionName) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForPolicyDefinitionSinglePageAsync(subscriptionId, policyDefinitionName).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -1068,8 +1501,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForPolicyDefinitionAsync(String subscriptionId, String policyDefinitionName, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForPolicyDefinitionWithServiceResponseAsync(subscriptionId, policyDefinitionName), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForPolicyDefinitionAsync(final String subscriptionId, final String policyDefinitionName, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForPolicyDefinitionSinglePageAsync(subscriptionId, policyDefinitionName),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -1078,15 +1519,16 @@ public class PolicyEventsInner {
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyDefinitionName Policy definition name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForPolicyDefinitionAsync(String subscriptionId, String policyDefinitionName) {
-        return listQueryResultsForPolicyDefinitionWithServiceResponseAsync(subscriptionId, policyDefinitionName).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForPolicyDefinitionAsync(final String subscriptionId, final String policyDefinitionName) {
+        return listQueryResultsForPolicyDefinitionWithServiceResponseAsync(subscriptionId, policyDefinitionName)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -1095,18 +1537,42 @@ public class PolicyEventsInner {
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyDefinitionName Policy definition name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForPolicyDefinitionWithServiceResponseAsync(String subscriptionId, String policyDefinitionName) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicyDefinitionWithServiceResponseAsync(final String subscriptionId, final String policyDefinitionName) {
+        return listQueryResultsForPolicyDefinitionSinglePageAsync(subscriptionId, policyDefinitionName)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForPolicyDefinitionNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy definition.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param policyDefinitionName Policy definition name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicyDefinitionSinglePageAsync(final String subscriptionId, final String policyDefinitionName) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (policyDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -1115,13 +1581,13 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForPolicyDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policyDefinitionName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForPolicyDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policyDefinitionName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForPolicyDefinitionDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForPolicyDefinitionDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1138,10 +1604,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForPolicyDefinition(String subscriptionId, String policyDefinitionName, QueryOptions queryOptions) {
-        return listQueryResultsForPolicyDefinitionWithServiceResponseAsync(subscriptionId, policyDefinitionName, queryOptions).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForPolicyDefinition(final String subscriptionId, final String policyDefinitionName, final QueryOptions queryOptions) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForPolicyDefinitionSinglePageAsync(subscriptionId, policyDefinitionName, queryOptions).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -1154,8 +1626,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForPolicyDefinitionAsync(String subscriptionId, String policyDefinitionName, QueryOptions queryOptions, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForPolicyDefinitionWithServiceResponseAsync(subscriptionId, policyDefinitionName, queryOptions), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForPolicyDefinitionAsync(final String subscriptionId, final String policyDefinitionName, final QueryOptions queryOptions, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForPolicyDefinitionSinglePageAsync(subscriptionId, policyDefinitionName, queryOptions),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -1165,15 +1645,16 @@ public class PolicyEventsInner {
      * @param policyDefinitionName Policy definition name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForPolicyDefinitionAsync(String subscriptionId, String policyDefinitionName, QueryOptions queryOptions) {
-        return listQueryResultsForPolicyDefinitionWithServiceResponseAsync(subscriptionId, policyDefinitionName, queryOptions).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForPolicyDefinitionAsync(final String subscriptionId, final String policyDefinitionName, final QueryOptions queryOptions) {
+        return listQueryResultsForPolicyDefinitionWithServiceResponseAsync(subscriptionId, policyDefinitionName, queryOptions)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -1183,19 +1664,44 @@ public class PolicyEventsInner {
      * @param policyDefinitionName Policy definition name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForPolicyDefinitionWithServiceResponseAsync(String subscriptionId, String policyDefinitionName, QueryOptions queryOptions) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicyDefinitionWithServiceResponseAsync(final String subscriptionId, final String policyDefinitionName, final QueryOptions queryOptions) {
+        return listQueryResultsForPolicyDefinitionSinglePageAsync(subscriptionId, policyDefinitionName, queryOptions)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForPolicyDefinitionNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy definition.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param subscriptionId Microsoft Azure subscription ID.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param policyDefinitionName Policy definition name.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param queryOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicyDefinitionSinglePageAsync(final String subscriptionId, final String policyDefinitionName, final QueryOptions queryOptions) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (policyDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1224,13 +1730,13 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForPolicyDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policyDefinitionName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForPolicyDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policyDefinitionName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForPolicyDefinitionDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForPolicyDefinitionDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1238,9 +1744,9 @@ public class PolicyEventsInner {
             });
     }
 
-    private ServiceResponse<PolicyEventsQueryResultsInner> listQueryResultsForPolicyDefinitionDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyEventsQueryResultsInner, QueryFailureException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyEventsQueryResultsInner>() { }.getType())
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForPolicyDefinitionDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
                 .registerError(QueryFailureException.class)
                 .build(response);
     }
@@ -1253,10 +1759,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForSubscriptionLevelPolicyAssignment(String subscriptionId, String policyAssignmentName) {
-        return listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, policyAssignmentName).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForSubscriptionLevelPolicyAssignment(final String subscriptionId, final String policyAssignmentName) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForSubscriptionLevelPolicyAssignmentSinglePageAsync(subscriptionId, policyAssignmentName).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -1268,8 +1780,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(String subscriptionId, String policyAssignmentName, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, policyAssignmentName), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(final String subscriptionId, final String policyAssignmentName, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForSubscriptionLevelPolicyAssignmentSinglePageAsync(subscriptionId, policyAssignmentName),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -1278,15 +1798,16 @@ public class PolicyEventsInner {
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyAssignmentName Policy assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(String subscriptionId, String policyAssignmentName) {
-        return listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, policyAssignmentName).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(final String subscriptionId, final String policyAssignmentName) {
+        return listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, policyAssignmentName)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -1295,18 +1816,42 @@ public class PolicyEventsInner {
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyAssignmentName Policy assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(String subscriptionId, String policyAssignmentName) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(final String subscriptionId, final String policyAssignmentName) {
+        return listQueryResultsForSubscriptionLevelPolicyAssignmentSinglePageAsync(subscriptionId, policyAssignmentName)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForSubscriptionLevelPolicyAssignmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy assignment.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param policyAssignmentName Policy assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionLevelPolicyAssignmentSinglePageAsync(final String subscriptionId, final String policyAssignmentName) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (policyAssignmentName == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -1315,13 +1860,13 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource, subscriptionId, authorizationNamespace, policyAssignmentName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource, subscriptionId, authorizationNamespace, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForSubscriptionLevelPolicyAssignmentDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForSubscriptionLevelPolicyAssignmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1338,10 +1883,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForSubscriptionLevelPolicyAssignment(String subscriptionId, String policyAssignmentName, QueryOptions queryOptions) {
-        return listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, policyAssignmentName, queryOptions).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForSubscriptionLevelPolicyAssignment(final String subscriptionId, final String policyAssignmentName, final QueryOptions queryOptions) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForSubscriptionLevelPolicyAssignmentSinglePageAsync(subscriptionId, policyAssignmentName, queryOptions).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -1354,8 +1905,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(String subscriptionId, String policyAssignmentName, QueryOptions queryOptions, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, policyAssignmentName, queryOptions), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(final String subscriptionId, final String policyAssignmentName, final QueryOptions queryOptions, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForSubscriptionLevelPolicyAssignmentSinglePageAsync(subscriptionId, policyAssignmentName, queryOptions),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -1365,15 +1924,16 @@ public class PolicyEventsInner {
      * @param policyAssignmentName Policy assignment name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(String subscriptionId, String policyAssignmentName, QueryOptions queryOptions) {
-        return listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, policyAssignmentName, queryOptions).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(final String subscriptionId, final String policyAssignmentName, final QueryOptions queryOptions) {
+        return listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, policyAssignmentName, queryOptions)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -1383,19 +1943,44 @@ public class PolicyEventsInner {
      * @param policyAssignmentName Policy assignment name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(String subscriptionId, String policyAssignmentName, QueryOptions queryOptions) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionLevelPolicyAssignmentWithServiceResponseAsync(final String subscriptionId, final String policyAssignmentName, final QueryOptions queryOptions) {
+        return listQueryResultsForSubscriptionLevelPolicyAssignmentSinglePageAsync(subscriptionId, policyAssignmentName, queryOptions)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForSubscriptionLevelPolicyAssignmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy assignment.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param subscriptionId Microsoft Azure subscription ID.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param policyAssignmentName Policy assignment name.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param queryOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionLevelPolicyAssignmentSinglePageAsync(final String subscriptionId, final String policyAssignmentName, final QueryOptions queryOptions) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (policyAssignmentName == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1424,13 +2009,13 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource, subscriptionId, authorizationNamespace, policyAssignmentName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource, subscriptionId, authorizationNamespace, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForSubscriptionLevelPolicyAssignmentDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForSubscriptionLevelPolicyAssignmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1438,9 +2023,9 @@ public class PolicyEventsInner {
             });
     }
 
-    private ServiceResponse<PolicyEventsQueryResultsInner> listQueryResultsForSubscriptionLevelPolicyAssignmentDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyEventsQueryResultsInner, QueryFailureException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyEventsQueryResultsInner>() { }.getType())
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
                 .registerError(QueryFailureException.class)
                 .build(response);
     }
@@ -1454,10 +2039,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForResourceGroupLevelPolicyAssignment(String subscriptionId, String resourceGroupName, String policyAssignmentName) {
-        return listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, resourceGroupName, policyAssignmentName).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForResourceGroupLevelPolicyAssignment(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForResourceGroupLevelPolicyAssignmentSinglePageAsync(subscriptionId, resourceGroupName, policyAssignmentName).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -1470,8 +2061,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(String subscriptionId, String resourceGroupName, String policyAssignmentName, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, resourceGroupName, policyAssignmentName), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForResourceGroupLevelPolicyAssignmentSinglePageAsync(subscriptionId, resourceGroupName, policyAssignmentName),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -1481,15 +2080,16 @@ public class PolicyEventsInner {
      * @param resourceGroupName Resource group name.
      * @param policyAssignmentName Policy assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(String subscriptionId, String resourceGroupName, String policyAssignmentName) {
-        return listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, resourceGroupName, policyAssignmentName).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName) {
+        return listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, resourceGroupName, policyAssignmentName)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -1499,9 +2099,32 @@ public class PolicyEventsInner {
      * @param resourceGroupName Resource group name.
      * @param policyAssignmentName Policy assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(String subscriptionId, String resourceGroupName, String policyAssignmentName) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName) {
+        return listQueryResultsForResourceGroupLevelPolicyAssignmentSinglePageAsync(subscriptionId, resourceGroupName, policyAssignmentName)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForResourceGroupLevelPolicyAssignmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resource group level policy assignment.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @param policyAssignmentName Policy assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupLevelPolicyAssignmentSinglePageAsync(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
@@ -1511,9 +2134,11 @@ public class PolicyEventsInner {
         if (policyAssignmentName == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -1522,13 +2147,13 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource, subscriptionId, resourceGroupName, authorizationNamespace, policyAssignmentName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource, subscriptionId, resourceGroupName, authorizationNamespace, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForResourceGroupLevelPolicyAssignmentDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForResourceGroupLevelPolicyAssignmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1546,10 +2171,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws QueryFailureException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PolicyEventsQueryResultsInner object if successful.
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
      */
-    public PolicyEventsQueryResultsInner listQueryResultsForResourceGroupLevelPolicyAssignment(String subscriptionId, String resourceGroupName, String policyAssignmentName, QueryOptions queryOptions) {
-        return listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, resourceGroupName, policyAssignmentName, queryOptions).toBlocking().single().body();
+    public PagedList<PolicyEventInner> listQueryResultsForResourceGroupLevelPolicyAssignment(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName, final QueryOptions queryOptions) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForResourceGroupLevelPolicyAssignmentSinglePageAsync(subscriptionId, resourceGroupName, policyAssignmentName, queryOptions).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -1563,8 +2194,16 @@ public class PolicyEventsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyEventsQueryResultsInner> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(String subscriptionId, String resourceGroupName, String policyAssignmentName, QueryOptions queryOptions, final ServiceCallback<PolicyEventsQueryResultsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, resourceGroupName, policyAssignmentName, queryOptions), serviceCallback);
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName, final QueryOptions queryOptions, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForResourceGroupLevelPolicyAssignmentSinglePageAsync(subscriptionId, resourceGroupName, policyAssignmentName, queryOptions),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -1575,15 +2214,16 @@ public class PolicyEventsInner {
      * @param policyAssignmentName Policy assignment name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<PolicyEventsQueryResultsInner> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(String subscriptionId, String resourceGroupName, String policyAssignmentName, QueryOptions queryOptions) {
-        return listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, resourceGroupName, policyAssignmentName, queryOptions).map(new Func1<ServiceResponse<PolicyEventsQueryResultsInner>, PolicyEventsQueryResultsInner>() {
-            @Override
-            public PolicyEventsQueryResultsInner call(ServiceResponse<PolicyEventsQueryResultsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<PolicyEventInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName, final QueryOptions queryOptions) {
+        return listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(subscriptionId, resourceGroupName, policyAssignmentName, queryOptions)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -1594,9 +2234,33 @@ public class PolicyEventsInner {
      * @param policyAssignmentName Policy assignment name.
      * @param queryOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyEventsQueryResultsInner object
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
      */
-    public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(String subscriptionId, String resourceGroupName, String policyAssignmentName, QueryOptions queryOptions) {
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupLevelPolicyAssignmentWithServiceResponseAsync(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName, final QueryOptions queryOptions) {
+        return listQueryResultsForResourceGroupLevelPolicyAssignmentSinglePageAsync(subscriptionId, resourceGroupName, policyAssignmentName, queryOptions)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForResourceGroupLevelPolicyAssignmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resource group level policy assignment.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param subscriptionId Microsoft Azure subscription ID.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param resourceGroupName Resource group name.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param policyAssignmentName Policy assignment name.
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param queryOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupLevelPolicyAssignmentSinglePageAsync(final String subscriptionId, final String resourceGroupName, final String policyAssignmentName, final QueryOptions queryOptions) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
@@ -1606,10 +2270,12 @@ public class PolicyEventsInner {
         if (policyAssignmentName == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1638,13 +2304,13 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource, subscriptionId, resourceGroupName, authorizationNamespace, policyAssignmentName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
+        return service.listQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource, subscriptionId, resourceGroupName, authorizationNamespace, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PolicyEventsQueryResultsInner> clientResponse = listQueryResultsForResourceGroupLevelPolicyAssignmentDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForResourceGroupLevelPolicyAssignmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1652,9 +2318,9 @@ public class PolicyEventsInner {
             });
     }
 
-    private ServiceResponse<PolicyEventsQueryResultsInner> listQueryResultsForResourceGroupLevelPolicyAssignmentDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyEventsQueryResultsInner, QueryFailureException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyEventsQueryResultsInner>() { }.getType())
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
                 .registerError(QueryFailureException.class)
                 .build(response);
     }
@@ -1711,8 +2377,10 @@ public class PolicyEventsInner {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
-        final String apiVersion = "2018-04-04";
-        return service.getMetadata(scope, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getMetadata(scope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override
                 public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
@@ -1729,6 +2397,894 @@ public class PolicyEventsInner {
     private ServiceResponse<String> getMetadataDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<String, QueryFailureException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<String>() { }.getType())
+                .registerError(QueryFailureException.class)
+                .build(response);
+    }
+
+    /**
+     * Queries policy events for the resources under the management group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
+     */
+    public PagedList<PolicyEventInner> listQueryResultsForManagementGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForManagementGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForManagementGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Queries policy events for the resources under the management group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForManagementGroupNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyEventInner>> serviceFuture, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForManagementGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForManagementGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Queries policy events for the resources under the management group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<Page<PolicyEventInner>> listQueryResultsForManagementGroupNextAsync(final String nextPageLink) {
+        return listQueryResultsForManagementGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the management group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForManagementGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listQueryResultsForManagementGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForManagementGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the management group.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForManagementGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listQueryResultsForManagementGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForManagementGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForManagementGroupNextDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
+                .registerError(QueryFailureException.class)
+                .build(response);
+    }
+
+    /**
+     * Queries policy events for the resources under the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
+     */
+    public PagedList<PolicyEventInner> listQueryResultsForSubscriptionNext(final String nextPageLink) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForSubscriptionNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForSubscriptionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Queries policy events for the resources under the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForSubscriptionNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyEventInner>> serviceFuture, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForSubscriptionNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForSubscriptionNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Queries policy events for the resources under the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<Page<PolicyEventInner>> listQueryResultsForSubscriptionNextAsync(final String nextPageLink) {
+        return listQueryResultsForSubscriptionNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionNextWithServiceResponseAsync(final String nextPageLink) {
+        return listQueryResultsForSubscriptionNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForSubscriptionNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the subscription.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listQueryResultsForSubscriptionNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForSubscriptionNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForSubscriptionNextDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
+                .registerError(QueryFailureException.class)
+                .build(response);
+    }
+
+    /**
+     * Queries policy events for the resources under the resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
+     */
+    public PagedList<PolicyEventInner> listQueryResultsForResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Queries policy events for the resources under the resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyEventInner>> serviceFuture, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForResourceGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Queries policy events for the resources under the resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<Page<PolicyEventInner>> listQueryResultsForResourceGroupNextAsync(final String nextPageLink) {
+        return listQueryResultsForResourceGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listQueryResultsForResourceGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resources under the resource group.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listQueryResultsForResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForResourceGroupNextDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
+                .registerError(QueryFailureException.class)
+                .build(response);
+    }
+
+    /**
+     * Queries policy events for the resource.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
+     */
+    public PagedList<PolicyEventInner> listQueryResultsForResourceNext(final String nextPageLink) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForResourceNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Queries policy events for the resource.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForResourceNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyEventInner>> serviceFuture, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForResourceNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForResourceNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Queries policy events for the resource.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<Page<PolicyEventInner>> listQueryResultsForResourceNextAsync(final String nextPageLink) {
+        return listQueryResultsForResourceNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resource.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceNextWithServiceResponseAsync(final String nextPageLink) {
+        return listQueryResultsForResourceNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForResourceNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resource.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listQueryResultsForResourceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForResourceNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForResourceNextDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
+                .registerError(QueryFailureException.class)
+                .build(response);
+    }
+
+    /**
+     * Queries policy events for the subscription level policy set definition.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
+     */
+    public PagedList<PolicyEventInner> listQueryResultsForPolicySetDefinitionNext(final String nextPageLink) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Queries policy events for the subscription level policy set definition.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForPolicySetDefinitionNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyEventInner>> serviceFuture, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Queries policy events for the subscription level policy set definition.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<Page<PolicyEventInner>> listQueryResultsForPolicySetDefinitionNextAsync(final String nextPageLink) {
+        return listQueryResultsForPolicySetDefinitionNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy set definition.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicySetDefinitionNextWithServiceResponseAsync(final String nextPageLink) {
+        return listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForPolicySetDefinitionNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy set definition.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicySetDefinitionNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listQueryResultsForPolicySetDefinitionNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForPolicySetDefinitionNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForPolicySetDefinitionNextDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
+                .registerError(QueryFailureException.class)
+                .build(response);
+    }
+
+    /**
+     * Queries policy events for the subscription level policy definition.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
+     */
+    public PagedList<PolicyEventInner> listQueryResultsForPolicyDefinitionNext(final String nextPageLink) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Queries policy events for the subscription level policy definition.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForPolicyDefinitionNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyEventInner>> serviceFuture, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Queries policy events for the subscription level policy definition.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<Page<PolicyEventInner>> listQueryResultsForPolicyDefinitionNextAsync(final String nextPageLink) {
+        return listQueryResultsForPolicyDefinitionNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy definition.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicyDefinitionNextWithServiceResponseAsync(final String nextPageLink) {
+        return listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForPolicyDefinitionNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy definition.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForPolicyDefinitionNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listQueryResultsForPolicyDefinitionNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForPolicyDefinitionNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForPolicyDefinitionNextDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
+                .registerError(QueryFailureException.class)
+                .build(response);
+    }
+
+    /**
+     * Queries policy events for the subscription level policy assignment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
+     */
+    public PagedList<PolicyEventInner> listQueryResultsForSubscriptionLevelPolicyAssignmentNext(final String nextPageLink) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Queries policy events for the subscription level policy assignment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyEventInner>> serviceFuture, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Queries policy events for the subscription level policy assignment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<Page<PolicyEventInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentNextAsync(final String nextPageLink) {
+        return listQueryResultsForSubscriptionLevelPolicyAssignmentNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy assignment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionLevelPolicyAssignmentNextWithServiceResponseAsync(final String nextPageLink) {
+        return listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForSubscriptionLevelPolicyAssignmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the subscription level policy assignment.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listQueryResultsForSubscriptionLevelPolicyAssignmentNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForSubscriptionLevelPolicyAssignmentNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentNextDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
+                .registerError(QueryFailureException.class)
+                .build(response);
+    }
+
+    /**
+     * Queries policy events for the resource group level policy assignment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PolicyEventInner&gt; object if successful.
+     */
+    public PagedList<PolicyEventInner> listQueryResultsForResourceGroupLevelPolicyAssignmentNext(final String nextPageLink) {
+        ServiceResponse<Page<PolicyEventInner>> response = listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PolicyEventInner>(response.body()) {
+            @Override
+            public Page<PolicyEventInner> nextPage(String nextPageLink) {
+                return listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Queries policy events for the resource group level policy assignment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PolicyEventInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyEventInner>> serviceFuture, final ListOperationCallback<PolicyEventInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(String nextPageLink) {
+                    return listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Queries policy events for the resource group level policy assignment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<Page<PolicyEventInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentNextAsync(final String nextPageLink) {
+        return listQueryResultsForResourceGroupLevelPolicyAssignmentNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PolicyEventInner>>, Page<PolicyEventInner>>() {
+                @Override
+                public Page<PolicyEventInner> call(ServiceResponse<Page<PolicyEventInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resource group level policy assignment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PolicyEventInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupLevelPolicyAssignmentNextWithServiceResponseAsync(final String nextPageLink) {
+        return listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PolicyEventInner>>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(ServiceResponse<Page<PolicyEventInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueryResultsForResourceGroupLevelPolicyAssignmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries policy events for the resource group level policy assignment.
+     *
+    ServiceResponse<PageImpl1<PolicyEventInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PolicyEventInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PolicyEventInner>>> listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listQueryResultsForResourceGroupLevelPolicyAssignmentNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyEventInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PolicyEventInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<PolicyEventInner>> result = listQueryResultsForResourceGroupLevelPolicyAssignmentNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PolicyEventInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<PolicyEventInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentNextDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PolicyEventInner>, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<PolicyEventInner>>() { }.getType())
                 .registerError(QueryFailureException.class)
                 .build(response);
     }

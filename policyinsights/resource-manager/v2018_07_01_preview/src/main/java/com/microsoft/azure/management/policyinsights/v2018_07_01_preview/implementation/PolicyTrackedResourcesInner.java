@@ -181,13 +181,15 @@ public class PolicyTrackedResourcesInner {
         if (managementGroupName == null) {
             throw new IllegalArgumentException("Parameter managementGroupName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String managementGroupsNamespace = "Microsoft.Management";
         final String policyTrackedResourcesResource = "default";
-        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String filter = null;
-        return service.listQueryResultsForManagementGroup(managementGroupsNamespace, managementGroupName, policyTrackedResourcesResource, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listQueryResultsForManagementGroup(managementGroupsNamespace, managementGroupName, policyTrackedResourcesResource, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>> call(Response<ResponseBody> response) {
@@ -294,10 +296,12 @@ public class PolicyTrackedResourcesInner {
         if (managementGroupName == null) {
             throw new IllegalArgumentException("Parameter managementGroupName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String managementGroupsNamespace = "Microsoft.Management";
         final String policyTrackedResourcesResource = "default";
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -306,7 +310,7 @@ public class PolicyTrackedResourcesInner {
         if (queryOptions != null) {
             filter = queryOptions.filter();
         }
-        return service.listQueryResultsForManagementGroup(managementGroupsNamespace, managementGroupName, policyTrackedResourcesResource, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listQueryResultsForManagementGroup(managementGroupsNamespace, managementGroupName, policyTrackedResourcesResource, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>> call(Response<ResponseBody> response) {
@@ -415,12 +419,14 @@ public class PolicyTrackedResourcesInner {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String policyTrackedResourcesResource = "default";
-        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String filter = null;
-        return service.listQueryResultsForSubscription(policyTrackedResourcesResource, subscriptionId, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listQueryResultsForSubscription(policyTrackedResourcesResource, subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>> call(Response<ResponseBody> response) {
@@ -527,9 +533,11 @@ public class PolicyTrackedResourcesInner {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String policyTrackedResourcesResource = "default";
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -538,7 +546,7 @@ public class PolicyTrackedResourcesInner {
         if (queryOptions != null) {
             filter = queryOptions.filter();
         }
-        return service.listQueryResultsForSubscription(policyTrackedResourcesResource, subscriptionId, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listQueryResultsForSubscription(policyTrackedResourcesResource, subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>> call(Response<ResponseBody> response) {
@@ -655,12 +663,14 @@ public class PolicyTrackedResourcesInner {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String policyTrackedResourcesResource = "default";
-        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String filter = null;
-        return service.listQueryResultsForResourceGroup(resourceGroupName, policyTrackedResourcesResource, subscriptionId, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listQueryResultsForResourceGroup(resourceGroupName, policyTrackedResourcesResource, subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>> call(Response<ResponseBody> response) {
@@ -775,9 +785,11 @@ public class PolicyTrackedResourcesInner {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String policyTrackedResourcesResource = "default";
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -786,7 +798,7 @@ public class PolicyTrackedResourcesInner {
         if (queryOptions != null) {
             filter = queryOptions.filter();
         }
-        return service.listQueryResultsForResourceGroup(resourceGroupName, policyTrackedResourcesResource, subscriptionId, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listQueryResultsForResourceGroup(resourceGroupName, policyTrackedResourcesResource, subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>> call(Response<ResponseBody> response) {
@@ -895,12 +907,14 @@ public class PolicyTrackedResourcesInner {
         if (resourceId == null) {
             throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String policyTrackedResourcesResource = "default";
-        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String filter = null;
-        return service.listQueryResultsForResource(resourceId, policyTrackedResourcesResource, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listQueryResultsForResource(resourceId, policyTrackedResourcesResource, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>> call(Response<ResponseBody> response) {
@@ -1007,9 +1021,11 @@ public class PolicyTrackedResourcesInner {
         if (resourceId == null) {
             throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(queryOptions);
         final String policyTrackedResourcesResource = "default";
-        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1018,7 +1034,7 @@ public class PolicyTrackedResourcesInner {
         if (queryOptions != null) {
             filter = queryOptions.filter();
         }
-        return service.listQueryResultsForResource(resourceId, policyTrackedResourcesResource, apiVersion, this.client.acceptLanguage(), top, filter, this.client.userAgent())
+        return service.listQueryResultsForResource(resourceId, policyTrackedResourcesResource, this.client.apiVersion(), this.client.acceptLanguage(), top, filter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyTrackedResourceInner>>> call(Response<ResponseBody> response) {

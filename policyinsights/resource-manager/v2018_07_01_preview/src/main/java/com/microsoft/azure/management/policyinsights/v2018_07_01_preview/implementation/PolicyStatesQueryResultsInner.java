@@ -36,6 +36,12 @@ public class PolicyStatesQueryResultsInner {
     private List<PolicyStateInner> value;
 
     /**
+     * Odata next link, used to get the next set of records.
+     */
+    @JsonProperty(value = "@odata\\.nextLink")
+    private String odatanextLink;
+
+    /**
      * Get oData context string; used by OData clients to resolve type information based on metadata.
      *
      * @return the odatacontext value
@@ -92,6 +98,26 @@ public class PolicyStatesQueryResultsInner {
      */
     public PolicyStatesQueryResultsInner withValue(List<PolicyStateInner> value) {
         this.value = value;
+        return this;
+    }
+
+    /**
+     * Get odata next link, used to get the next set of records.
+     *
+     * @return the odatanextLink value
+     */
+    public String odatanextLink() {
+        return this.odatanextLink;
+    }
+
+    /**
+     * Set odata next link, used to get the next set of records.
+     *
+     * @param odatanextLink the odatanextLink value to set
+     * @return the PolicyStatesQueryResultsInner object itself.
+     */
+    public PolicyStatesQueryResultsInner withOdatanextLink(String odatanextLink) {
+        this.odatanextLink = odatanextLink;
         return this;
     }
 

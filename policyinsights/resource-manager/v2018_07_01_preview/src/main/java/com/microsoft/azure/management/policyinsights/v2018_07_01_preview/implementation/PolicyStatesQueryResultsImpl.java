@@ -35,6 +35,11 @@ class PolicyStatesQueryResultsImpl extends WrapperImpl<PolicyStatesQueryResultsI
     }
 
     @Override
+    public String odatanextLink() {
+        return this.inner().odatanextLink();
+    }
+
+    @Override
     public List<PolicyStateInner> value() {
         return this.inner().value();
     }
