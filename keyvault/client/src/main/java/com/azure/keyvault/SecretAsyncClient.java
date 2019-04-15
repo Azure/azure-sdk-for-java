@@ -14,6 +14,7 @@ import com.azure.keyvault.implementation.RestPagedResponseImpl;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretAttributes;
+import org.apache.commons.lang3.Validate;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,6 +28,7 @@ public final class SecretAsyncClient extends ServiceClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
+    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
 
     private String vaultEndPoint;
     private final SecretService service;
@@ -59,13 +61,11 @@ public final class SecretAsyncClient extends ServiceClient {
      * If the named secret already exists, Azure Key Vault creates a new version of that secret.
      * This operation requires the secrets/set permission.
      *
-     * <p>
-     * The {@code secret} is required along with its non-null fields secret.name and secret.value.
-     * The secret.expires, secret.contentType and and secret.notBefore values in {@code secret} are optional.
-     * If not specified, no values are set for the fields.
-     * </p>
+     * <p> The {@code secret} is required along with its non-null fields secret.name and secret.value. The secret.expires,
+     * secret.contentType and secret.notBefore values in {@code secret} are optional. If not specified, no values are set
+     * for the fields. The secret.enabled field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * @param secret The Secret object containing information about the secret and its properties.
+     * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the created {@link Secret}.
      */
@@ -80,12 +80,11 @@ public final class SecretAsyncClient extends ServiceClient {
                                             .contentType(secret.contentType())
                                             .secretAttributes(new SecretRequestAttributes(secret));
 
-        return service.setSecret(vaultEndPoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters);
+        return service.setSecret(vaultEndPoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
-     * The set operation adds a secret to the Azure Key Vault.
-     * If the named secret already exists, Azure Key Vault creates a new version of that secret.
+     * The set operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault creates a new version of that secret.
      * This operation requires the secrets/set permission.
      *
      * @param name The name of the secret. It is required and cannot be null.
@@ -99,16 +98,15 @@ public final class SecretAsyncClient extends ServiceClient {
 
         SecretRequestParameters parameters = new SecretRequestParameters()
                                             .value(value);
-        return service.setSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters);
+        return service.setSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
-     * Get the specified secret with specified version from the key vault.
-     * The get operation is applicable to any secret stored in Azure Key Vault.
+     * Get the specified secret with specified version from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
      * This operation requires the secrets/get permission.
      *
      * @param name The name of the secret, cannot be null
-     * @param version The version of the secret to retrieve. If not specified the latest version will be retrieved.
+     * @param version The version of the secret to retrieve. If this is an empty String or null, this call is equivalent to calling {@link #getSecretAsync(String)}, with the latest version being retrieved.
      * @throws NullPointerException if {@code name} or {@code version} parameter is {@code null}.
      * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the requested {@link Secret}.
      * @throws com.azure.common.http.rest.RestException when a secret with {@code name} and {@code version} doesn't exist in the key vault.
@@ -118,7 +116,7 @@ public final class SecretAsyncClient extends ServiceClient {
         if (version == null) {
             return service.getSecret(vaultEndPoint, name, "", API_VERSION, ACCEPT_LANGUAGE, getHost(), "application/json");
         } else {
-            return service.getSecret(vaultEndPoint, name, version, API_VERSION, ACCEPT_LANGUAGE, getHost(), "application/json");
+            return service.getSecret(vaultEndPoint, name, version, API_VERSION, ACCEPT_LANGUAGE, getHost(), CONTENT_TYPE_HEADER_VALUE);
         }
     }
 
@@ -132,8 +130,7 @@ public final class SecretAsyncClient extends ServiceClient {
     }
 
     /**
-     * Get the latest version of the specified secret from the key vault.
-     * The get operation is applicable to any secret stored in Azure Key Vault.
+     * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
      * This operation requires the secrets/get permission.
      *
      * @param name The name of the secret.
@@ -147,14 +144,11 @@ public final class SecretAsyncClient extends ServiceClient {
     }
 
     /**
-     * Updates the attributes associated with a specified secret in the key vault.
-     * The update operation changes specified attributes of an existing stored secret.
-     * Attributes that are not specified in the request are left unchanged.
+     * Updates the attributes associated with a specified secret in the key vault. The update operation changes specified
+     * attributes of an existing stored secret and attributes that are not specified in the request are left unchanged.
      * The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
      *
-     * <p>
-     * The {@code secretAttributes} is required along with its non-null fields secretAttributes.name and secretAttributes.version.
-     * </p>
+     * <p> The {@code secretAttributes} is required along with its non-null fields secretAttributes.name and secretAttributes.version. </p>
      *
      * @param secretAttributes the {@link SecretAttributes} object with updated properties.
      * @throws NullPointerException if {@code secret} is {@code null}.
@@ -171,13 +165,12 @@ public final class SecretAsyncClient extends ServiceClient {
                 .contentType(secretAttributes.contentType())
                 .secretAttributes(new SecretRequestAttributes(secretAttributes));
 
-        return service.updateSecret(vaultEndPoint, secretAttributes.name(), secretAttributes.version(), API_VERSION, ACCEPT_LANGUAGE, parameters);
+        return service.updateSecret(vaultEndPoint, secretAttributes.name(), secretAttributes.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
-     * Deletes a secret from the key vault.
-     * The delete operation applies to any secret stored in Azure Key Vault.
-     * delete cannot be applied to an individual version of a secret. This operation requires the secrets/delete permission.
+     * Deletes a secret from the key vault. The delete operation applies to any secret stored in Azure Key Vault but
+     * it cannot be applied to an individual version of a secret. This operation requires the secrets/delete permission.
      *
      * @param name The name of the secret to be deleted.
      * @throws NullPointerException if {@code name} is {@code null}.
@@ -186,7 +179,7 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Mono<RestResponse<DeletedSecret>> deleteSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        return service.deleteSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE);
+        return service.deleteSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -200,7 +193,7 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Mono<RestResponse<DeletedSecret>> getDeletedSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        return service.getDeletedSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE);
+        return service.getDeletedSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -214,12 +207,11 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Mono<RestVoidResponse> purgeDeletedSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        return service.purgeDeletedSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE);
+        return service.purgeDeletedSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
-     * Recovers the deleted secret in the key vault to its latest version.
-     * This operation can only be performed on a soft-delete enabled vault.
+     * Recovers the deleted secret in the key vault to its latest version and can only be performed on a soft-delete enabled vault.
      * This operation requires the secrets/recover permission.
      *
      * @param name The name of the deleted secret to be recovered.
@@ -229,7 +221,7 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Mono<RestResponse<Secret>> recoverDeletedSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        return service.recoverDeletedSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE);
+        return service.recoverDeletedSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -243,19 +235,13 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Mono<RestResponse<byte[]>> backupSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        return service.backupSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE)
-                .flatMap(new Function<RestResponse<SecretBackup>, Mono<? extends RestResponse<byte[]>>>() {
-                   @Override
-                   public Mono<? extends RestResponse<byte[]>> apply(RestResponse<SecretBackup> base64URLRestResponse) {
-                        return Mono.just(new SimpleRestResponse<byte[]>(base64URLRestResponse.request(),
-                            base64URLRestResponse.statusCode(), base64URLRestResponse.headers(), base64URLRestResponse.body().value()));
-                    }
-                });
+        return service.backupSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+                .flatMap( base64URLRestResponse ->  Mono.just(new SimpleRestResponse<byte[]>(base64URLRestResponse.request(),
+                base64URLRestResponse.statusCode(), base64URLRestResponse.headers(), base64URLRestResponse.body().value())));
     }
 
     /**
-     * Restores a backed up secret, and all its versions, to a vault.
-     * This operation requires the secrets/restore permission.
+     * Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore permission.
      *
      * @param backup The backup blob associated with the secret.
      * @throws NullPointerException if {@code SecretBackup} is {@code null}.
@@ -266,35 +252,34 @@ public final class SecretAsyncClient extends ServiceClient {
         Objects.requireNonNull(backup, "The Secret backup parameter cannot be null.");
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters()
                                                 .secretBackup(backup);
-        return service.restoreSecret(vaultEndPoint, API_VERSION, ACCEPT_LANGUAGE, parameters);
+        return service.restoreSecret(vaultEndPoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
-     * List {@link Secret secrets} in the key vault.
-     * The list Secrets operation is applicable to the entire vault. However, only the base secret identifier and its attributes are provided in the response.
-     * Individual secret versions are not listed in the response. This operation requires the secrets/list permission.
+     * List secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual secret response
+     * in the flux is represented by {@link SecretAttributes} as only the base secret identifier and its attributes are
+     * provided in the response. The secret values and individual secret versions are not listed in the response. This operation requires the secrets/list permission.
      *
      * @return A {@link Flux} containing {@link SecretAttributes} of all the secrets in the vault.
      */
     public Flux<SecretAttributes> listSecretsAsync() {
-        return getPagedSecrets(service.getSecrets(vaultEndPoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE));
+        return getPagedSecrets(service.getSecrets(vaultEndPoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
     }
 
     /**
-     * Lists {@link DeletedSecret secrets} of the key vault.
-     * The get deleted secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
-     * This operation requires the secrets/list permission.
+     * Lists {@link DeletedSecret secrets} of the key vault. The get deleted secrets operation returns the secrets that
+     * have been deleted for a vault enabled for soft-delete. This operation requires the secrets/list permission.
      *
      * @return A {@link Flux} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public Flux<DeletedSecret> listDeletedSecretsAsync() {
-        return getPagedDeletedSecrets(service.getDeletedSecrets(vaultEndPoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE));
+        return getPagedDeletedSecrets(service.getDeletedSecrets(vaultEndPoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
     }
 
     /**
-     * List all versions of the specified secret. The individual secret version response in the list is represented by {@link SecretAttributes}.
-     * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
-     * This operation requires the secrets/list permission.
+     * List all versions of the specified secret. The individual secret response in the flux is represented by {@link SecretAttributes}
+     * as only the base secret identifier and its attributes are provided in the response. The secret values are
+     * not provided in the response. This operation requires the secrets/list permission.
      *
      * @param name The name of the secret.
      * @throws NullPointerException thrown if name parameter is null
@@ -302,52 +287,56 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Flux<SecretAttributes> listSecretVersionsAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        return getPagedSecrets(service.getSecretVersions(vaultEndPoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE));
+        //TODO: replace this with ImplUtils string is empty or null check, once Issue: Azure/azure-sdk-for-java#3373 is completed and merged.
+        Validate.isTrue(!name.isEmpty(), "The Secret name cannot be empty");
+        return getPagedSecrets(service.getSecretVersions(vaultEndPoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
     }
 
     /**
-     * List secrets in a specified key vault.
-     * The list secrets operation is applicable to the entire vault.
-     * However, only the base secret identifier and its attributes are provided in the response. Individual secret versions are not listed in the response.
-     * This operation requires the secrets/list permission.
+     * List secrets in the key vault. The list secrets operation is applicable to the entire vault.
+     * The individual secret response in the flux is represented by {@link SecretAttributes} as only the base secret identifier
+     * and its attributes are provided in the response. The secret values and individual secret versions are not
+     * provided in the response. This operation requires the secrets/list permission.
      *
-     * @param maxPageResults Maximum number of results to return in a page. If not specified, the service will return up to 25 results.
-     * @throws NullPointerException thrown if maxPageResults parameter is null
+     * @param maxPageResults Maximum number of results to return in a page.
+     * @throws NullPointerException thrown if maxPageResults parameter is 0 or less than 0.
      * @return A {@link Flux} containing {@link SecretAttributes} of all the secrets in the key vault.
      */
     public Flux<SecretAttributes> listSecretsAsync(int maxPageResults) {
-        Objects.requireNonNull(maxPageResults, "The maximum page results parameter cannot be null.");
-        return getPagedSecrets(service.getSecrets(vaultEndPoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE));
+        Validate.isTrue(maxPageResults > 0, "The maximum page results parameter needs to be greater than 0.");
+        return getPagedSecrets(service.getSecrets(vaultEndPoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
     }
 
     /**
-     * Lists {@link DeletedSecret} secrets of the key vault.
-     * The list deleted secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
-     * This operation requires the secrets/list permission.
+     * Lists {@link DeletedSecret} secrets of the key vault. The list deleted secrets operation returns the secrets that
+     * have been deleted for a vault enabled for soft-delete. This operation requires the secrets/list permission.
      *
-     * @param maxPageResults Maximum number of results to return in a page. If not specified, the service will return up to 25 results.
-     * @throws NullPointerException thrown if maxPageResults parameter is null
+     * @param maxPageResults Maximum number of results to return in a page.
+     * @throws NullPointerException thrown if maxPageResults parameter is is 0 or less than 0.
      * @return A {@link Flux} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public Flux<DeletedSecret> listDeletedSecretsAsync(int maxPageResults) {
-        Objects.requireNonNull(maxPageResults, "The maximum page results parameter cannot be null.");
-        return getPagedDeletedSecrets(service.getDeletedSecrets(vaultEndPoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE));
+        Validate.isTrue(maxPageResults > 0, "The maximum page results parameter needs to be greater than 0.");
+        return getPagedDeletedSecrets(service.getDeletedSecrets(vaultEndPoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
     }
 
     /**
-     * List all versions of the specified secret.
-     * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
-     * This operations requires the secrets/list permission.
+     * List all versions of the specified secret. The individual secret response in the flux is represented by {@link SecretAttributes}
+     * as only the base secret identifier and its attributes are provided in the response. The secret values are
+     * not provided in the response. This operations requires the secrets/list permission.
      *
      * @param name The name of the secret.
-     * @param maxPageResults Maximum number of results to return in a page. If not specified, the service will return up to 25 results.
-     * @throws NullPointerException thrown if {@code name} or {@code maxPageResults} is null
+     * @param maxPageResults Maximum number of results to return in a page.
+     * @throws NullPointerException thrown if {@code name} or {@code maxPageResults} is 0 or less than 0.
      * @return A {@link Flux} containing {@link SecretAttributes} of all the versions of the secret in the key vault. Flux is empty if secret with {@code name} does not exist in key vault
      */
     public Flux<SecretAttributes> listSecretVersionsAsync(String name, int maxPageResults) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
+        //TODO: replace this with ImplUtils string is empty or null check, once Issue: Azure/azure-sdk-for-java#3373 is completed and merged.
+        Validate.isTrue(!name.isEmpty(), "The Secret name cannot be empty");
         Objects.requireNonNull(maxPageResults, "The maximum page results parameter cannot be null.");
-        return getPagedSecrets(service.getSecretVersions(vaultEndPoint, name, maxPageResults, API_VERSION, ACCEPT_LANGUAGE));
+        Validate.isTrue(maxPageResults > 0, "The maximum page results parameter needs to be greater than 0.");
+        return getPagedSecrets(service.getSecretVersions(vaultEndPoint, name, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
     }
 
     /**
@@ -358,7 +347,7 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A stream of {@link SecretAttributes} from the next page of results.
      */
     private Flux<SecretAttributes> listSecretsNext(String nextPageLink) {
-        return getPagedSecrets(service.getSecrets(vaultEndPoint, nextPageLink, ACCEPT_LANGUAGE));
+        return getPagedSecrets(service.getSecrets(vaultEndPoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
     }
 
     /**
@@ -370,7 +359,7 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A stream of {@link DeletedSecret} from the next page of results.
      */
     private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink) {
-        return getPagedDeletedSecrets(service.getDeletedSecrets(vaultEndPoint, nextPageLink, ACCEPT_LANGUAGE));
+        return getPagedDeletedSecrets(service.getDeletedSecrets(vaultEndPoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
     }
 
     private Flux<SecretAttributes> getPagedSecrets(Mono<RestResponse<Page<SecretAttributes>>> response) {

@@ -53,10 +53,6 @@ public class DeletedSecret extends SecretAttributes {
      * @return the scheduledPurgeDate value
      */
     public OffsetDateTime scheduledPurgeDate() {
-        if (this.scheduledPurgeDate == null) {
-            return null;
-        }
-
         return scheduledPurgeDate;
     }
 
@@ -66,9 +62,6 @@ public class DeletedSecret extends SecretAttributes {
      * @return the deletedDate value
      */
     public OffsetDateTime deletedDate() {
-        if (this.deletedDate == null) {
-            return null;
-        }
         return this.deletedDate;
     }
 

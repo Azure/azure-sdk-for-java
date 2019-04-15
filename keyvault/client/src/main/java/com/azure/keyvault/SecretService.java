@@ -41,7 +41,8 @@ interface SecretService {
                                          @PathParam("secret-name") String secretName,
                                          @QueryParam("api-version") String apiVersion,
                                          @HeaderParam("accept-language") String acceptLanguage,
-                                         @BodyParam("body") SecretRequestParameters parameters);
+                                         @BodyParam("body") SecretRequestParameters parameters,
+                                         @HeaderParam("Content-Type") String type);
 
     @GET("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
@@ -63,7 +64,8 @@ interface SecretService {
                                                       @PathParam("secret-version") String secretVersion,
                                                       @QueryParam("api-version") String apiVersion,
                                                       @HeaderParam("accept-language") String acceptLanguage,
-                                                      @BodyParam("body") SecretRequestParameters parameters);
+                                                      @BodyParam("body") SecretRequestParameters parameters,
+                                                      @HeaderParam("Content-Type") String type);
 
 
     @DELETE("secrets/{secret-name}")
@@ -72,7 +74,8 @@ interface SecretService {
     Mono<RestResponse<DeletedSecret>> deleteSecret(@HostParam("url") String url,
                                                    @PathParam("secret-name") String secretName,
                                                    @QueryParam("api-version") String apiVersion,
-                                                   @HeaderParam("accept-language") String acceptLanguage);
+                                                   @HeaderParam("accept-language") String acceptLanguage,
+                                                   @HeaderParam("Content-Type") String type);
 
 
     @GET("deletedsecrets/{secret-name}")
@@ -81,7 +84,8 @@ interface SecretService {
     Mono<RestResponse<DeletedSecret>> getDeletedSecret(@HostParam("url") String url,
                                                        @PathParam("secret-name") String secretName,
                                                        @QueryParam("api-version") String apiVersion,
-                                                       @HeaderParam("accept-language") String acceptLanguage);
+                                                       @HeaderParam("accept-language") String acceptLanguage,
+                                                       @HeaderParam("Content-Type") String type);
 
     @DELETE("deletedsecrets/{secret-name}")
     @ExpectedResponses({204})
@@ -89,25 +93,28 @@ interface SecretService {
     Mono<RestVoidResponse> purgeDeletedSecret(@HostParam("url") String url,
                                               @PathParam("secret-name") String secretName,
                                               @QueryParam("api-version") String apiVersion,
-                                              @HeaderParam("accept-language") String acceptLanguage);
+                                              @HeaderParam("accept-language") String acceptLanguage,
+                                              @HeaderParam("Content-Type") String type);
 
 
     @POST("deletedsecrets/{secret-name}/recover")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
     Mono<RestResponse<Secret>> recoverDeletedSecret(@HostParam("url") String url,
-                                          @PathParam("secret-name") String secretName,
-                                          @QueryParam("api-version") String apiVersion,
-                                          @HeaderParam("accept-language") String acceptLanguage);
+                                                    @PathParam("secret-name") String secretName,
+                                                    @QueryParam("api-version") String apiVersion,
+                                                    @HeaderParam("accept-language") String acceptLanguage,
+                                                    @HeaderParam("Content-Type") String type);
 
 
     @POST("secrets/{secret-name}/backup")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
     Mono<RestResponse<SecretBackup>> backupSecret(@HostParam("url") String url,
-                                               @PathParam("secret-name") String secretName,
-                                               @QueryParam("api-version") String apiVersion,
-                                               @HeaderParam("accept-language") String acceptLanguage);
+                                                  @PathParam("secret-name") String secretName,
+                                                  @QueryParam("api-version") String apiVersion,
+                                                  @HeaderParam("accept-language") String acceptLanguage,
+                                                  @HeaderParam("Content-Type") String type);
 
 
 
@@ -117,7 +124,8 @@ interface SecretService {
     Mono<RestResponse<Secret>> restoreSecret(@HostParam("url") String url,
                                              @QueryParam("api-version") String apiVersion,
                                              @HeaderParam("accept-language") String acceptLanguage,
-                                             @BodyParam("application/json") SecretRestoreRequestParameters parameters);
+                                             @BodyParam("application/json") SecretRestoreRequestParameters parameters,
+                                             @HeaderParam("Content-Type") String type);
 
 
     @GET("secrets")
@@ -126,7 +134,8 @@ interface SecretService {
     Mono<RestResponse<Page<SecretAttributes>>> getSecrets(@HostParam("url") String url,
                                                           @QueryParam("maxresults") Integer maxresults,
                                                           @QueryParam("api-version") String apiVersion,
-                                                          @HeaderParam("accept-language") String acceptLanguage);
+                                                          @HeaderParam("accept-language") String acceptLanguage,
+                                                          @HeaderParam("Content-Type") String type);
 
 
     @GET("secrets/{secret-name}/versions")
@@ -136,7 +145,8 @@ interface SecretService {
                                                                  @PathParam("secret-name") String secretName,
                                                                  @QueryParam("maxresults") Integer maxresults,
                                                                  @QueryParam("api-version") String apiVersion,
-                                                                 @HeaderParam("accept-language") String acceptLanguage);
+                                                                 @HeaderParam("accept-language") String acceptLanguage,
+                                                                 @HeaderParam("Content-Type") String type);
 
 
     @GET("{nextUrl}")
@@ -144,23 +154,26 @@ interface SecretService {
     @UnexpectedResponseExceptionType(RestException.class)
     Mono<RestResponse<Page<SecretAttributes>>> getSecrets(@HostParam("url") String url,
                                                           @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                          @HeaderParam("accept-language") String acceptLanguage);
+                                                          @HeaderParam("accept-language") String acceptLanguage,
+                                                          @HeaderParam("Content-Type") String type);
 
 
     @GET("deletedsecrets")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
     Mono<RestResponse<Page<DeletedSecret>>> getDeletedSecrets(@HostParam("url") String url,
-                                                @QueryParam("maxresults") Integer maxresults,
-                                                @QueryParam("api-version") String apiVersion,
-                                                @HeaderParam("accept-language") String acceptLanguage);
+                                                              @QueryParam("maxresults") Integer maxresults,
+                                                              @QueryParam("api-version") String apiVersion,
+                                                              @HeaderParam("accept-language") String acceptLanguage,
+                                                              @HeaderParam("Content-Type") String type);
 
     @GET("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
     Mono<RestResponse<Page<DeletedSecret>>> getDeletedSecrets(@HostParam("url") String url,
                                                               @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                              @HeaderParam("accept-language") String acceptLanguage);
+                                                              @HeaderParam("accept-language") String acceptLanguage,
+                                                              @HeaderParam("Content-Type") String type);
 
 
 }

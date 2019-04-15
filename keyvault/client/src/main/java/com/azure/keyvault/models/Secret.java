@@ -86,9 +86,7 @@ public class Secret extends SecretAttributes {
     /**
      * Set the id value.
      *
-     *<p>
-     * The id value of a {@link Secret secret} follows the following format: http://myvault.azure.net/secrets/{secret-name}/{secret-version}.
-     *</p>
+     *<p> The id value of a {@link Secret secret} follows the following format: http://myvault.azure.net/secrets/{secret-name}/{secret-version}. </p>
      *
      * @param id the id value to set
      * @return the Secret object itself.

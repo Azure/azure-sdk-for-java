@@ -32,11 +32,7 @@ class SecretRestoreRequestParameters {
      * @return the SecretRestoreRequestParameters object itself.
      */
     public SecretRestoreRequestParameters secretBackup(byte[] secretBackup) {
-        if (secretBackup == null) {
-            this.secretBackup = null;
-        } else {
-            this.secretBackup = Base64Url.encode(secretBackup);
-        }
+        this.secretBackup = secretBackup == null ? null : Base64Url.encode(secretBackup);
         return this;
     }
 
