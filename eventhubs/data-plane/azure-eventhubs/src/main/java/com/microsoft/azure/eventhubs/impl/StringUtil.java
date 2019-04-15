@@ -6,7 +6,7 @@ package com.microsoft.azure.eventhubs.impl;
 import java.util.UUID;
 
 public final class StringUtil {
-    public final static String EMPTY = "";
+    public static final String EMPTY = "";
 
     public static boolean isNullOrEmpty(String string) {
         return (string == null || string.isEmpty());

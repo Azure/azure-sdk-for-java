@@ -9,11 +9,11 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
 
-  <version>1.2.0</version>
+  <version>1.2.1</version>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-keyvault-parent</artifactId>
   <packaging>pom</packaging>
@@ -34,7 +34,7 @@
   </scm>
 
   <properties>
-    <azure-keyvault.version>1.2.0</azure-keyvault.version>
+    <azure-keyvault.version>1.2.1</azure-keyvault.version>
   </properties>
 
   <dependencyManagement>
@@ -88,8 +88,8 @@
           <compilerArgument>-Xlint:unchecked</compilerArgument>
         </configuration>
       </plugin>
-      
-      <!-- Now that all checkstyle issues have been resolved, override the 
+
+      <!-- Now that all checkstyle issues have been resolved, override the
              default behavior to make checkstyle fail on error and violation. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

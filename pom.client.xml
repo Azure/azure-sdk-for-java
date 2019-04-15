@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <name>Microsoft Azure SDK for Java</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -90,7 +92,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    <legal>
+      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
     <alternativePlaybackServerPort>11081</alternativePlaybackServerPort>
@@ -112,9 +116,16 @@
     <netty-all.version>4.1.34.Final</netty-all.version>
     <netty-socketio.version>1.7.13</netty-socketio.version>
     <client-runtime.version.v2>2.0.2</client-runtime.version.v2>
+    <slf4j-api.version>1.7.5</slf4j-api.version>
+    <azure-common.version>1.0.0-SNAPSHOT</azure-common.version>
+    <azure-common-auth.version>1.0.0-SNAPSHOT</azure-common-auth.version>
+    <azure-common-mgmt.version>1.0.0-SNAPSHOT</azure-common-mgmt.version>
+    <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
+    <netty.version>4.1.33.Final</netty.version>
 
     <!-- Test Dependency Versions -->
-    <adal4j.version>1.4.0</adal4j.version>
+    <azure-common-test.version>1.0.0-SNAPSHOT</azure-common-test.version>
+    <adal4j.version>1.6.1</adal4j.version>
     <bcprov-jdk15on.version>1.59</bcprov-jdk15on.version>
     <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
     <azure-mgmt-resources.version>1.3.0</azure-mgmt-resources.version>
@@ -126,13 +137,17 @@
     <spock-core.version>1.1-groovy-2.4</spock-core.version>
     <cglib-nodep.version>3.2.7</cglib-nodep.version>
     <slf4j-test.version>1.2.0</slf4j-test.version>
+    <reactor-test.version>3.2.3.RELEASE</reactor-test.version>
+    <wiremock-standalone.version>2.15.0</wiremock-standalone.version>
+    <jetty-http.version>9.4.8.v20171121</jetty-http.version>
+    <jetty-server.version>9.4.8.v20171121</jetty-server.version>
 
     <!-- Maven Tool Versions -->
     <maven-build-tools.version>1.0.1-SNAPSHOT</maven-build-tools.version>
     <maven-javadoc.version>3.0.1</maven-javadoc.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-    <jetty-maven-plugin.version>9.2.22.v20170606</jetty-maven-plugin.version>
+    <jetty-maven-plugin.version>9.3.22.v20171030</jetty-maven-plugin.version>
     <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
     <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version>
     <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
@@ -146,7 +161,7 @@
     <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
     <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
     <commons-io.version>2.4</commons-io.version>
-
+    <checkstyle.version>8.18</checkstyle.version>
   </properties>
 
   <dependencyManagement>
@@ -163,6 +178,18 @@
         <groupId>com.microsoft.azure</groupId>
         <artifactId>adal4j</artifactId>
         <version>${adal4j.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-common</artifactId>
+        <version>${azure-common.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-common-auth</artifactId>
+        <version>${azure-common-auth.version}</version>
       </dependency>
 
       <!-- Other Microsoft Dependencies -->
@@ -182,6 +209,18 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.jackson.dataformat</groupId>
+        <artifactId>jackson-dataformat-xml</artifactId>
         <version>${jackson.version}</version>
       </dependency>
 
@@ -218,7 +257,31 @@
         <version>${client-runtime.version.v2}</version>
       </dependency>
       
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.projectreactor.netty</groupId>
+        <artifactId>reactor-netty</artifactId>
+        <version>${reactor-netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-buffer</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+
       <!-- Test dependencies -->
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-common-test</artifactId>
+        <version>${azure-common-test.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-mgmt-storage</artifactId>
@@ -288,10 +351,24 @@
         <version>${spock-core.version}</version>
       </dependency>
 
-      <dependency>
+     <dependency>
         <groupId>cglib</groupId>
         <artifactId>cglib-nodep</artifactId>
         <version>${cglib-nodep.version}</version>
+        <scope>test</scope>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-test</artifactId>
+        <version>${reactor-test.version}</version>
         <scope>test</scope>
       </dependency>
 
@@ -302,6 +379,26 @@
         <scope>test</scope>
       </dependency>
 
+      <dependency>
+        <groupId>com.github.tomakehurst</groupId>
+        <artifactId>wiremock-standalone</artifactId>
+        <version>${wiremock-standalone.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-http</artifactId>
+        <version>${jetty-http.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>${jetty-server.version}</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -316,6 +413,11 @@
             <groupId>com.azure</groupId>
             <artifactId>sdk-build-tools</artifactId>
             <version>${maven-build-tools.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>${checkstyle.version}</version>
           </dependency>
         </dependencies>
         <configuration>
@@ -411,7 +513,16 @@
         </dependencies>
       </plugin>
 
-      <!-- This plugin scans javadoc issues in the project. -->
+      <!-- Configure the jar plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <outputDirectory>${packageOutputDirectory}</outputDirectory>
+        </configuration>
+      </plugin>
+
+      <!-- Configure the javadoc plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -421,8 +532,54 @@
             <goals>
               <goal>jar</goal>
             </goals>
+            <configuration>
+              <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
+            </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <!-- Configure the source plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${packageOutputDirectory}</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Copy the pom file to output -->
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <copy file="${pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Allows the sample sources to be built during test-compile phase. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
       </plugin>
     </plugins>
 
@@ -440,25 +597,44 @@
             <failOnError>false</failOnError>
             <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
             <linksource>false</linksource>
-            <excludePackageNames>com.microsoft.azure.template</excludePackageNames>
+            <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
             <groups>
               <group>
                 <title>Azure Batch</title>
                 <packages>com.microsoft.azure.batch*</packages>
               </group>
               <group>
+                <title>Azure Event Hubs</title>
+                <packages>com.microsoft.azure.eventhubs*:com.microsoft.azure.eventprocessorhost</packages>
+              </group>
+              <group>
                 <title>Azure Key Vault</title>
                 <packages>com.microsoft.azure.keyvault*</packages>
               </group>
               <group>
-                <title>Azure Event Hubs</title>
-                <packages>com.microsoft.azure.eventhubs*</packages>
+                <title>Azure Common</title>
+                <packages>com.azure.common:com.azure.common.annotations:com.azure.common.credentials:com.azure.common.exception:com.azure.common.http*</packages>
+              </group>
+              <group>
+                <title>Azure Common - Management</title>
+                <packages>com.azure.common.mgmt*</packages>
+              </group>
+              <group>
+                <title>Azure Common - Authentication</title>
+                <packages>com.azure.common.auth*</packages>
               </group>
               <group>
                 <title>Azure Storage</title>
                 <packages>com.microsoft.azure.storage*</packages>
                </group>
             </groups>
+            <links>
+              <link>https://docs.oracle.com/javase/8/docs/api/</link>
+              <link>https://projectreactor.io/docs/core/release/api/</link>
+              <link>https://netty.io/4.1/api/</link>
+              <link>http://reactivex.io/RxJava/javadoc/</link>
+            </links>
+            <isOffline>false</isOffline>
           </configuration>
         </plugin>
 
@@ -873,10 +1049,11 @@
   </profiles>
 
   <modules>
+    <module>./applicationconfig/client</module>
     <module>./batch/data-plane</module>
+    <module>./common</module>
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
     <module>./storage/data-plane</module>
   </modules>
-
 </project>

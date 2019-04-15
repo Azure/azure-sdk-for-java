@@ -23,5 +23,5 @@ public interface EventDataBatch {
      * @return A boolean value indicating if the {@link EventData} addition to this batch/collection was successful or not.
      * @throws PayloadSizeExceededException when a single {@link EventData} instance exceeds maximum allowed size of the batch
      */
-    boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException;
+    boolean tryAdd(EventData eventData) throws PayloadSizeExceededException;
 }

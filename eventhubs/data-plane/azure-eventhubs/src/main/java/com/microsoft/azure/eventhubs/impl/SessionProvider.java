@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 public interface SessionProvider {
     Session getSession(
-            final String path,
-            final Consumer<Session> onSessionOpen,
-            final BiConsumer<ErrorCondition, Exception> onSessionOpenError);
+            String path,
+            Consumer<Session> onSessionOpen,
+            BiConsumer<ErrorCondition, Exception> onSessionOpenError);
 }

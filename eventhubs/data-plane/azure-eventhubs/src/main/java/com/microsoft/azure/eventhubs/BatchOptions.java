@@ -56,7 +56,7 @@ public final class BatchOptions {
      */
     public Integer maxMessageSize = null;
 
-    public final BatchOptions with(Consumer<BatchOptions> builderFunction) {
+    public BatchOptions with(Consumer<BatchOptions> builderFunction) {
         builderFunction.accept(this);
         return this;
     }

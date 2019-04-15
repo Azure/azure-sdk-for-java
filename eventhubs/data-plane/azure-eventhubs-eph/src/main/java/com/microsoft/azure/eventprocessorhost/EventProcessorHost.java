@@ -12,7 +12,14 @@ import org.slf4j.LoggerFactory;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /***
@@ -20,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class EventProcessorHost {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(EventProcessorHost.class);
-    private static final Object uuidSynchronizer = new Object();
+    private static final Object UUID_SYNCHRONIZER = new Object();
     // weOwnExecutor exists to support user-supplied thread pools.
     private final boolean weOwnExecutor;
     private final ScheduledExecutorService executorService;
@@ -323,7 +330,7 @@ public final class EventProcessorHost {
      * @return A string UUID with dashes but no curly brackets.
      */
     public static String safeCreateUUID() {
-        synchronized (EventProcessorHost.uuidSynchronizer) {
+        synchronized (EventProcessorHost.UUID_SYNCHRONIZER) {
             final UUID newUuid = UUID.randomUUID();
             return newUuid.toString();
         }
@@ -500,8 +507,7 @@ public final class EventProcessorHost {
             // If we own the executor, stop it also.
             // Owned executor is also created in constructor.
             if (this.weOwnExecutor) {
-                this.unregistered = this.unregistered.thenRunAsync(() ->
-                {
+                this.unregistered = this.unregistered.thenRunAsync(() -> {
                     // IMPORTANT: run this last stage in the default threadpool!
                     // If a task running in a threadpool waits for that threadpool to terminate, it's going to wait a long time...
 
@@ -524,7 +530,7 @@ public final class EventProcessorHost {
     }
 
     static class EventProcessorHostThreadPoolFactory implements ThreadFactory {
-        private static final AtomicInteger poolNumber = new AtomicInteger(1);
+        private static final AtomicInteger POOL_NUMBER = new AtomicInteger(1);
         private final AtomicInteger threadNumber = new AtomicInteger(1);
         private final ThreadGroup group;
         private final String namePrefix;
@@ -532,7 +538,7 @@ public final class EventProcessorHost {
         private final String entityName;
         private final String consumerGroupName;
 
-        public EventProcessorHostThreadPoolFactory(
+        EventProcessorHostThreadPoolFactory(
                 String hostName,
                 String entityName,
                 String consumerGroupName) {
@@ -555,7 +561,7 @@ public final class EventProcessorHost {
 
         private String getNamePrefix() {
             return String.format("[%s|%s|%s]-%s-",
-                    this.entityName, this.consumerGroupName, this.hostName, poolNumber.getAndIncrement());
+                    this.entityName, this.consumerGroupName, this.hostName, POOL_NUMBER.getAndIncrement());
         }
 
         static class ThreadUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {

@@ -8,7 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ConcurrentHashMap;
 
 /***
  * An ILeaseManager implementation based on an in-memory store. 
@@ -31,7 +34,7 @@ import java.util.concurrent.*;
  * or EventProcessorHost.registerEventProcessorFactory().
  */
 public class InMemoryLeaseManager implements ILeaseManager {
-    private final static Logger TRACE_LOGGER = LoggerFactory.getLogger(InMemoryLeaseManager.class);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(InMemoryLeaseManager.class);
     private HostContext hostContext;
     private long millisecondsLatency = 0;
 
@@ -45,18 +48,18 @@ public class InMemoryLeaseManager implements ILeaseManager {
     }
     
     public void setLatency(long milliseconds) {
-    	this.millisecondsLatency = milliseconds;
+        this.millisecondsLatency = milliseconds;
     }
     
     private void latency(String caller) {
         if (this.millisecondsLatency > 0) {
-        	try {
-        		//TRACE_LOGGER.info("sleep " + caller);
-				Thread.sleep(this.millisecondsLatency);
-			} catch (InterruptedException e) {
-				// Don't care
-        		TRACE_LOGGER.info("sleepFAIL " + caller);
-			}
+            try {
+                //TRACE_LOGGER.info("sleep " + caller);
+                Thread.sleep(this.millisecondsLatency);
+            } catch (InterruptedException e) {
+                // Don't care
+                TRACE_LOGGER.info("sleepFAIL " + caller);
+            }
         }
     }
 
@@ -67,7 +70,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
     @Override
     public CompletableFuture<Boolean> leaseStoreExists() {
-        boolean exists = InMemoryLeaseStore.singleton.existsMap();
+        boolean exists = InMemoryLeaseStore.SINGLETON.existsMap();
         latency("leaseStoreExists");
         TRACE_LOGGER.debug(this.hostContext.withHost("leaseStoreExists() " + exists));
         return CompletableFuture.completedFuture(exists);
@@ -76,7 +79,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
     @Override
     public CompletableFuture<Void> createLeaseStoreIfNotExists() {
         TRACE_LOGGER.debug(this.hostContext.withHost("createLeaseStoreIfNotExists()"));
-        InMemoryLeaseStore.singleton.initializeMap(getLeaseDurationInMilliseconds());
+        InMemoryLeaseStore.SINGLETON.initializeMap(getLeaseDurationInMilliseconds());
         latency("createLeaseStoreIfNotExists");
         return CompletableFuture.completedFuture(null);
     }
@@ -84,65 +87,65 @@ public class InMemoryLeaseManager implements ILeaseManager {
     @Override
     public CompletableFuture<Void> deleteLeaseStore() {
         TRACE_LOGGER.debug(this.hostContext.withHost("deleteLeaseStore()"));
-        InMemoryLeaseStore.singleton.deleteMap();
+        InMemoryLeaseStore.SINGLETON.deleteMap();
         latency("deleteLeaseStore");
         return CompletableFuture.completedFuture(null);
     }
     
     @Override
     public CompletableFuture<CompleteLease> getLease(String partitionId) {
-    	TRACE_LOGGER.debug(this.hostContext.withHost("getLease()"));
-    	latency("getLease");
-    	InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(partitionId);
-    	return CompletableFuture.completedFuture(new InMemoryLease(leaseInStore));
+        TRACE_LOGGER.debug(this.hostContext.withHost("getLease()"));
+        latency("getLease");
+        InMemoryLease leaseInStore = InMemoryLeaseStore.SINGLETON.getLease(partitionId);
+        return CompletableFuture.completedFuture(new InMemoryLease(leaseInStore));
     }
 
     @Override
     public CompletableFuture<List<BaseLease>> getAllLeases() {
-    	ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
-    	for (String id : InMemoryLeaseStore.singleton.getPartitionIds()) {
-    		InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(id);
-    		infos.add(new BaseLease(id, leaseInStore.getOwner(), !leaseInStore.isExpiredSync()));
-    	}
-    	latency("getAllLeasesStateInfo");
-    	return CompletableFuture.completedFuture(infos);
+        ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
+        for (String id : InMemoryLeaseStore.SINGLETON.getPartitionIds()) {
+            InMemoryLease leaseInStore = InMemoryLeaseStore.SINGLETON.getLease(id);
+            infos.add(new BaseLease(id, leaseInStore.getOwner(), !leaseInStore.isExpiredSync()));
+        }
+        latency("getAllLeasesStateInfo");
+        return CompletableFuture.completedFuture(infos);
     }
     
     @Override
     public CompletableFuture<Void> createAllLeasesIfNotExists(List<String> partitionIds) {
-    	ArrayList<CompletableFuture<BaseLease>> createFutures = new ArrayList<CompletableFuture<BaseLease>>();
-    	
-    	// Implemented like this to provide an experience more similar to lease creation in the Storage-based manager.
-    	for (String id : partitionIds) {
-    		final String workingId = id;
-    		CompletableFuture<BaseLease> oneCreate = CompletableFuture.supplyAsync(() -> {
-			        InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(workingId);
-			        InMemoryLease returnLease = null;
-			        if (leaseInStore != null) {
-			            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(workingId, 
-			                    "createLeaseIfNotExists() found existing lease, OK"));
-			            returnLease = new InMemoryLease(leaseInStore);
-			        } else {
-			            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(workingId,
-			                    "createLeaseIfNotExists() creating new lease"));
-			            InMemoryLease newStoreLease = new InMemoryLease(workingId);
-			            InMemoryLeaseStore.singleton.setOrReplaceLease(newStoreLease);
-			            returnLease = new InMemoryLease(newStoreLease);
-			        }
-			        latency("createLeaseIfNotExists " + workingId);
-			        return returnLease;
-	    		}, this.hostContext.getExecutor());
-    		createFutures.add(oneCreate);
-    	}
-    	
-    	CompletableFuture<?> dummy[] = new CompletableFuture<?>[createFutures.size()];
-    	return CompletableFuture.allOf(createFutures.toArray(dummy));
+        ArrayList<CompletableFuture<BaseLease>> createFutures = new ArrayList<CompletableFuture<BaseLease>>();
+
+        // Implemented like this to provide an experience more similar to lease creation in the Storage-based manager.
+        for (String id : partitionIds) {
+            final String workingId = id;
+            CompletableFuture<BaseLease> oneCreate = CompletableFuture.supplyAsync(() -> {
+                InMemoryLease leaseInStore = InMemoryLeaseStore.SINGLETON.getLease(workingId);
+                InMemoryLease returnLease = null;
+                if (leaseInStore != null) {
+                    TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(workingId,
+                            "createLeaseIfNotExists() found existing lease, OK"));
+                    returnLease = new InMemoryLease(leaseInStore);
+                } else {
+                    TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(workingId,
+                            "createLeaseIfNotExists() creating new lease"));
+                    InMemoryLease newStoreLease = new InMemoryLease(workingId);
+                    InMemoryLeaseStore.SINGLETON.setOrReplaceLease(newStoreLease);
+                    returnLease = new InMemoryLease(newStoreLease);
+                }
+                latency("createLeaseIfNotExists " + workingId);
+                return returnLease;
+            }, this.hostContext.getExecutor());
+            createFutures.add(oneCreate);
+        }
+
+        CompletableFuture<?>[] dummy = new CompletableFuture<?>[createFutures.size()];
+        return CompletableFuture.allOf(createFutures.toArray(dummy));
     }
 
     @Override
     public CompletableFuture<Void> deleteLease(CompleteLease lease) {
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "deleteLease()"));
-        InMemoryLeaseStore.singleton.removeLease((InMemoryLease) lease);
+        InMemoryLeaseStore.SINGLETON.removeLease((InMemoryLease) lease);
         latency("deleteLease " + lease.getPartitionId());
         return CompletableFuture.completedFuture(null);
     }
@@ -154,9 +157,9 @@ public class InMemoryLeaseManager implements ILeaseManager {
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(leaseToAcquire, "acquireLease()"));
 
         boolean retval = true;
-        InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(leaseToAcquire.getPartitionId());
+        InMemoryLease leaseInStore = InMemoryLeaseStore.SINGLETON.getLease(leaseToAcquire.getPartitionId());
         if (leaseInStore != null) {
-            InMemoryLease wasUnowned = InMemoryLeaseStore.singleton.atomicAquireUnowned(leaseToAcquire.getPartitionId(), this.hostContext.getHostName());
+            InMemoryLease wasUnowned = InMemoryLeaseStore.SINGLETON.atomicAquireUnowned(leaseToAcquire.getPartitionId(), this.hostContext.getHostName());
             if (wasUnowned != null) {
                 // atomicAcquireUnowned already set ownership of the persisted lease, just update the live lease.
                 leaseToAcquire.setOwner(this.hostContext.getHostName());
@@ -171,7 +174,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
                 } else {
                     String oldOwner = leaseInStore.getOwner();
                     // Make change in both persisted lease and live lease!
-                    InMemoryLeaseStore.singleton.stealLease(leaseInStore, this.hostContext.getHostName());
+                    InMemoryLeaseStore.SINGLETON.stealLease(leaseInStore, this.hostContext.getHostName());
                     leaseToAcquire.setOwner(this.hostContext.getHostName());
                     TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(leaseToAcquire,
                             "acquireLease() stole lease from " + oldOwner));
@@ -198,7 +201,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
     // own the lease for the given partition, then notifier is called immediately, otherwise it is called whenever
     // ownership of the lease changes.
     public void notifyOnSteal(String expectedOwner, String partitionId, Callable<?> notifier) {
-        InMemoryLeaseStore.singleton.notifyOnSteal(expectedOwner, partitionId, notifier);
+        InMemoryLeaseStore.SINGLETON.notifyOnSteal(expectedOwner, partitionId, notifier);
     }
 
     @Override
@@ -208,7 +211,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(leaseToRenew, "renewLease()"));
 
         boolean retval = true;
-        InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(leaseToRenew.getPartitionId());
+        InMemoryLease leaseInStore = InMemoryLeaseStore.SINGLETON.getLease(leaseToRenew.getPartitionId());
         if (leaseInStore != null) {
             // MATCH BEHAVIOR OF AzureStorageCheckpointLeaseManager:
             // Renewing a lease that has expired succeeds unless some other host has grabbed it already.
@@ -241,7 +244,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(leaseToRelease, "releaseLease()"));
 
-        InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(leaseToRelease.getPartitionId());
+        InMemoryLease leaseInStore = InMemoryLeaseStore.SINGLETON.getLease(leaseToRelease.getPartitionId());
         if (leaseInStore != null) {
             if (!leaseInStore.isExpiredSync() && leaseInStore.isOwnedBy(this.hostContext.getHostName())) {
                 TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(leaseToRelease, "releaseLease() released OK"));
@@ -250,8 +253,6 @@ public class InMemoryLeaseManager implements ILeaseManager {
                 leaseToRelease.setOwner("");
                 leaseInStore.setExpirationTime(0);
                 leaseToRelease.setExpirationTime(0);
-            } else {
-                // Lease was lost, intent achieved.
             }
         } else {
             TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(leaseToRelease, "releaseLease() can't find lease in store"));
@@ -269,10 +270,9 @@ public class InMemoryLeaseManager implements ILeaseManager {
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(leaseToUpdate, "updateLease()"));
 
         // Renew lease first so it doesn't expire in the middle.
-        return renewLease(leaseToUpdate).thenApply((retval) ->
-        {
+        return renewLease(leaseToUpdate).thenApply((retval) -> {
             if (retval) {
-                InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(leaseToUpdate.getPartitionId());
+                InMemoryLease leaseInStore = InMemoryLeaseStore.SINGLETON.getLease(leaseToUpdate.getPartitionId());
                 if (leaseInStore != null) {
                     if (!leaseInStore.isExpiredSync() && leaseInStore.isOwnedBy(this.hostContext.getHostName())) {
                         // We are updating with values already in the live lease, so only need to set on the persisted lease.
@@ -296,7 +296,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
 
     private static class InMemoryLeaseStore {
-        final static InMemoryLeaseStore singleton = new InMemoryLeaseStore();
+        static final InMemoryLeaseStore SINGLETON = new InMemoryLeaseStore();
         private static int leaseDurationInMilliseconds;
 
         private ConcurrentHashMap<String, InMemoryLease> inMemoryLeasesPrivate = null;
@@ -323,8 +323,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
         synchronized List<String> getPartitionIds() {
             ArrayList<String> ids = new ArrayList<String>();
-            this.inMemoryLeasesPrivate.keySet().forEach((key) ->
-            {
+            this.inMemoryLeasesPrivate.keySet().forEach((key) -> {
                 ids.add(key);
             });
             return ids;
@@ -377,7 +376,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
 
     private static class InMemoryLease extends CompleteLease {
-        private final static Logger TRACE_LOGGER = LoggerFactory.getLogger(InMemoryLease.class);
+        private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(InMemoryLease.class);
         private long expirationTimeMillis = 0;
 
         InMemoryLease(String partitionId) {
@@ -401,12 +400,6 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
         public boolean isExpiredSync() {
             boolean hasExpired = (System.currentTimeMillis() >= this.expirationTimeMillis);
-            if (hasExpired) {
-                // CHANGE TO MATCH BEHAVIOR OF AzureStorageCheckpointLeaseManager
-                // An expired lease can be renewed by the previous owner. In order to implement that behavior for
-                // InMemory, the owner field has to remain unchanged.
-                //setOwner("");
-            }
             TRACE_LOGGER.debug("isExpired(" + this.getPartitionId() + (hasExpired ? ") expired " : ") leased ") + (this.expirationTimeMillis - System.currentTimeMillis()));
             return hasExpired;
         }

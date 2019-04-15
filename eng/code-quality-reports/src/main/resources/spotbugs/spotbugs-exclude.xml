@@ -1,99 +1,216 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter>
-    <!-- These existing KeyVault Attribute APIs return their super class rather than the actual type. -->
-    <Match>
+      <!-- These existing KeyVault Attribute APIs return their super class rather than the actual type. -->
+      <Match>
         <Class name="~com\.microsoft\.azure\.keyvault\.requests\.\w+Request"/>
         <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-    </Match>
+      </Match>
 
-    <!-- These keyvault models are already publicly released APIs with name
-    matching the simple name of superclass -->
-    <Match>
+      <!-- These keyvault models are already publicly released APIs with name
+      matching the simple name of superclass -->
+      <Match>
         <Class name="~com\.microsoft\.azure\.keyvault\.models\.(CertificateBundle|CertificateOperation|IssuerBundle|KeyBundle|SecretBundle)" />
         <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
-    </Match>
+      </Match>
 
-    <!-- Cryptographic algorithms are publicly released APIs with incorrect name casing. -->
-    <Match>
+      <!-- Cryptographic algorithms are publicly released APIs with incorrect name casing. -->
+      <Match>
         <Or>
-            <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.(Aes|Rsa)(.+)" />
-            <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.(.+)Algorithm" />
+          <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.(Aes|Rsa)(.+)" />
+          <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.(.+)Algorithm" />
         </Or>
         <Method name="~(CreateDecryptor|CreateEncryptor)" />
         <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
-    </Match>
+      </Match>
 
-    <!-- KeyVaultKey.DecryptResultTransform and SignResultTransform were not created with the
-    intention that a null could be passed in. In the original code, it would have thrown a
-    NullReferenceException. -->
-    <Match>
+      <!-- KeyVaultKey.DecryptResultTransform and SignResultTransform were not created with the
+      intention that a null could be passed in. In the original code, it would have thrown a
+      NullReferenceException. -->
+      <Match>
         <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
         <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
-    </Match>
+      </Match>
 
-    <!-- Ignoring dropped exception and catch Exception because it existed in current SDK when migrated. -->
-    <Match>
+      <!-- Ignoring dropped exception and catch Exception because it existed in current SDK when migrated. -->
+      <Match>
         <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.CachingKeyResolver\$[0-9]+" />
         <Method name="run" />
         <Bug pattern="DE_MIGHT_IGNORE"/>
-    </Match>
+      </Match>
 
-    <!-- Protected field already exists in the public API surface area even
-    though it is unused. -->
-    <Match>
+      <!-- Protected field already exists in the public API surface area even
+      though it is unused. -->
+      <Match>
         <Class name="com.microsoft.azure.keyvault.cryptography.EcKey"/>
         <Field name="defaultEncryptionAlgorithm"/>
         <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
-    </Match>
+      </Match>
 
-    <!-- These KeyVault classes are publicly released APIs that intentionally return null rather
-    than an empty array. -->
-    <Match>
+      <!-- Public field already exists in the public API surface area even
+      though it should be final. -->
+      <Match>
+        <Class name="com.microsoft.azure.eventhubs.impl.EventHubClientImpl"/>
+        <Field name="USER_AGENT"/>
+        <Bug pattern="MS_SHOULD_BE_FINAL"/>
+      </Match>
+
+      <!-- Public field already exists in the public API surface. -->
+      <Match>
+        <Class name="com.microsoft.azure.batch.auth.BatchUserTokenCredentials"/>
+        <Method name="username"/>
+        <Bug pattern="NM_CONFUSING"/>
+      </Match>
+
+      <!-- These KeyVault classes are publicly released APIs that intentionally return null rather
+      than an empty array. -->
+      <Match>
         <Class name="~com\.microsoft\.azure\.keyvault\.(cryptography|models|webkey)\.[\w]+"/>
         <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-    </Match>
+      </Match>
 
-    <!-- Suppress non-null warning in the case that we change the code and it is possible for
-    KeyVaultCredentials.getAuthenticationCredentials to return null. -->
-    <Match>
+      <!-- Suppress non-null warning in the case that we change the code and it is possible for
+      KeyVaultCredentials.getAuthenticationCredentials to return null. -->
+      <Match>
         <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
         <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
-    </Match>
+      </Match>
 
-    <!-- These KeyVaultClientBase methods are made synchronous by blocking and
-    waiting for a result. They do not return anything, so it can be ignored. -->
-    <Match>
+      <!-- These KeyVaultClientBase methods are made synchronous by blocking and
+      waiting for a result. They do not return anything, so it can be ignored. -->
+      <Match>
         <Class name="com.microsoft.azure.keyvault.implementation.KeyVaultClientBaseImpl"/>
         <Method name="~(purgeDeletedCertificate|purgeDeletedKey|purgeDeletedSecret|purgeDeletedStorageAccount)"/>
         <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
-    </Match>
+      </Match>
 
-    <!-- These autorest generated APIs for existing Azure SDK components supports Java 7.
-    Suppressing error for using anonymous inner classes. -->
-    <Match>
+      <!-- These autorest generated APIs for existing Azure SDK components supports Java 7.
+      Suppressing error for using anonymous inner classes. -->
+      <Match>
         <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
         <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-    </Match>
+      </Match>
 
-    <!-- KeyVaultCredential values manipulated do not need to be localised. They
-    are base64 encoded or URL encoded.-->
-    <Match>
+      <!-- KeyVaultCredential values manipulated do not need to be localised. They
+      are base64 encoded or URL encoded.-->
+      <Match>
         <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
         <Method name="~(extractChallenge|isValidChallenge|supportsMessageProtection)"/>
         <Bug pattern="DM_CONVERT_CASE"/>
-    </Match>
-    <!-- HTTP header, "content-type" is not localised. -->
-    <Match>
+      </Match>
+
+      <!-- HTTP header, "content-type" is not localised. -->
+      <Match>
         <Class name="com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity"/>
         <Method name="unprotectResponse"/>
         <Bug pattern="DM_CONVERT_CASE"/>
-    </Match>
+      </Match>
 
-    <!-- Known issue in autorest where it will generate a variable with a value of null.
-    https://github.com/Azure/autorest.java/issues/324 -->
-    <Match>
+      <!-- HTTP header, "ocp-date" is not localised. -->
+      <Match>
+        <Class name="com.microsoft.azure.batch.auth.BatchSharedKeyCredentialsInterceptor"/>
+        <Method name="signHeader"/>
+        <Bug pattern="DM_CONVERT_CASE"/>
+      </Match>
+
+      <!-- Known issue in autorest where it will generate a variable with a value of null.
+      https://github.com/Azure/autorest.java/issues/324 -->
+      <Match>
         <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
         <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
-    </Match>
+      </Match>
+
+      <!-- Known issue in autorest where it will generate a variable with a value of null then use it in a not null check.
+      https://github.com/Azure/autorest.java/issues/328 -->
+      <Match>
+        <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
+        <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+      </Match>
+
+      <Match>
+        <Class name="com.microsoft.azure.batch.CreateTasksErrorException"/>
+        <Or>
+          <Field name="failureTaskList"/>
+          <Field name="pendingTaskList"/>
+        </Or>
+        <Bug pattern="SE_BAD_FIELD"/>
+      </Match>
+
+      <!-- No need to implements cloneable. -->
+      <Match>
+        <Class name="com.azure.common.http.HttpPipelineNextPolicy"/>
+        <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+      </Match>
+
+      <Match>
+        <Class name="~com\.azure\.common\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
+        <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+      </Match>
+
+      <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
+      <Match>
+        <Class name="~com\.azure\.common\.implementation\.(Base64Url|util\.ImplUtils|serializer\.HttpResponseDecodeData)"/>
+        <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+      </Match>
+
+      <!-- There is no need to make serializer or deserializer classes serializable. Suppress bugs related to these classes.
+      -->
+      <Match>
+        <Class name="~com\.azure\.common\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
+        <Bug pattern="SE_NO_SERIALVERSIONID"/>
+      </Match>
+
+      <!-- The casting problems do not exist in Azure use cases-->
+      <Match>
+        <Class name="com.azure.common.implementation.util.TypeUtil"/>
+        <Bug pattern="BC_UNCONFIRMED_CAST"/>
+      </Match>
+
+      <!-- These fields are designed to be not written. They are for deserializing. -->
+      <Match>
+        <Class name="com.azure.common.auth.credentials.AzureCliSubscription$UserInfo"/>
+        <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+      </Match>
+
+      <!-- These fields are designed to be not read. They are for deserializing. -->
+      <Match>
+        <Class name="com.azure.common.auth.credentials.AzureCliToken"/>
+        <Bug pattern="URF_UNREAD_FIELD"/>
+      </Match>
+
+      <!-- These fields are designed to be not used. They are for deserializing. -->
+      <Match>
+        <Class name="~com\.azure\.common\.auth\.credentials\.(AzureCliToken|AzureCliSubscription)"/>
+        <Bug pattern="UUF_UNUSED_FIELD"/>
+      </Match>
+
+      <!-- These fields are designed to be anonymous and not static. They are for letting the jackson serializer know what type to use. -->
+      <Match>
+        <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+      </Match>
+
+      <!-- These fields has checked null and initialized in the constructor. -->
+      <Match>
+        <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
+        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+      </Match>
+
+      <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing the class proposed. Suppress the warning for current design. -->
+      <Match>
+        <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+        <Bug pattern="SE_NO_SERIALVERSIONID"/>
+      </Match>
+
+      <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing the class proposed. Suppress the warning for current design. -->
+      <Match>
+        <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+        <Bug pattern="SE_BAD_FIELD"/>
+      </Match>
+
+      <!-- The checked field is always not null. -->
+      <Match>
+        <Class name="com.azure.common.mgmt.AzureProxy"/>
+        <Bug pattern="NP_NULL_PARAM_DEREF"/>
+      </Match>
 </FindBugsFilter>
