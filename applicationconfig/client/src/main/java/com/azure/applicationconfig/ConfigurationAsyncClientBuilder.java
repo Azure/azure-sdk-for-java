@@ -29,47 +29,42 @@ import java.util.Objects;
  * Builds instances of {@link ConfigurationAsyncClient} based on the configuration options stored in the builder when
  * {@link ConfigurationAsyncClientBuilder#build()} is called.
  *
- * <p>
- *     To build ConfigurationAsyncClients that can interact with Azure App Configuration the service endpoint and
- *     authentication {@link HttpHeaders} are required. This information can be passed to the builder using two primary
- *     means, first being a {@link ConfigurationClientCredentials} and second using a {@link HttpPipeline} and the
- *     service endpoint.
- * </p>
+ * <p>To build ConfigurationAsyncClients that can interact with Azure App Configuration the service endpoint and
+ * authentication {@link HttpHeaders} are required. This information can be passed to the builder using two primary
+ * means, first being a {@link ConfigurationClientCredentials} and second using a {@link HttpPipeline} and the
+ * service endpoint.</p>
  *
- * <p>
- *     The ConfigurationClientCredentials object contains the service endpoint and a method to retrieve the authentication
- *     headers. {@link ConfigurationAsyncClientBuilder#credentials(ConfigurationClientCredentials)} sets the
- *     {@code serviceEndpoint} member variable to {@link ConfigurationClientCredentials#baseUri()} and {@code credentials}
- *     member variable to the passed ConfigurationClientCredentials. When building the ConfigurationAsyncClient the
- *     builder will use default {@link HttpPipelinePolicy policies}, including the ConfigurationClientCredentials, to
- *     construct a HttpPipeline that will be used by the client to interact with the service; a new pipeline will be
- *     constructed every build.
+ * <p>The ConfigurationClientCredentials object contains the service endpoint and a method to retrieve the authentication
+ * headers. {@link ConfigurationAsyncClientBuilder#credentials(ConfigurationClientCredentials)} sets the
+ * {@code serviceEndpoint} member variable to {@link ConfigurationClientCredentials#baseUri()} and {@code credentials}
+ * member variable to the passed ConfigurationClientCredentials. When building the ConfigurationAsyncClient the builder
+ * will use default {@link HttpPipelinePolicy policies}, including the ConfigurationClientCredentials, to construct a
+ * HttpPipeline that will be used by the client to interact with the service; a new pipeline will be constructed every
+ * build.</p>
  *
  * <pre>
- * {@code ConfigurationClientCredentials credentials = new ConfigurationClientCredentials(connectionString);
- *    ConfigurationAsyncClient.builder()
- *        .credentials(credentials)
- *        .build();}
+ * ConfigurationClientCredentials credentials = new ConfigurationClientCredentials(connectionString);
+ * ConfigurationAsyncClient.builder()
+ *     .credentials(credentials)
+ *     .build();
  * </pre>
- * </p>
  *
- * <p>
- *     An HttpPipeline performs the communication between the client and service. Using an HttpPipeline to construct a
- *     ConfigurationAsyncClient requires additional setup as it doesn't generate default policies, but it allows for finer
- *     controller. {@link ConfigurationAsyncClientBuilder#pipeline(HttpPipeline)} sets the {@code pipeline} but unlike credentials
- *     doesn't set the service endpoint as a pipeline doesn't have that information, {@link ConfigurationAsyncClientBuilder#serviceEndpoint(String)}
- *     must be called to set the service endpoint. When building the ConfigurationAsyncClient the HttpPipeline and service
- *     endpoint as simply passed into the client constructor.
+ * <p>An HttpPipeline performs the communication between the client and service. Using an HttpPipeline to construct a
+ * ConfigurationAsyncClient requires additional setup as it doesn't generate default policies, but it allows for finer
+ * controller. {@link ConfigurationAsyncClientBuilder#pipeline(HttpPipeline)} sets the {@code pipeline} but unlike
+ * credentials doesn't set the service endpoint as a pipeline doesn't have that information,
+ * {@link ConfigurationAsyncClientBuilder#serviceEndpoint(String)} must be called to set the service endpoint. When
+ * building the ConfigurationAsyncClient the HttpPipeline and service endpoint as simply passed into the client
+ * constructor.</p>
  *
  * <pre>
- * {@code String serviceEndpoint = <App-Configuration-URL>;
- *    HttpPipeline pipeline = new HttpPipeline(<policies>);
- *    ConfigurationAsyncClient.builder()
- *        .pipeline(pipeline)
- *        .serviceEndpoint(serviceEndpoint)
- *        .build();}
+ * String serviceEndpoint = "App-Configuration-URL";
+ * HttpPipeline pipeline = new HttpPipeline(policies);
+ * ConfigurationAsyncClient.builder()
+ *     .pipeline(pipeline)
+ *     .serviceEndpoint(serviceEndpoint)
+ *     .build();
  * </pre>
- * </p>
  *
  * @see ConfigurationAsyncClient
  * @see ConfigurationClientCredentials

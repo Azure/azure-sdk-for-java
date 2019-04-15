@@ -27,71 +27,64 @@ import java.util.stream.Collectors;
  * Client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
  * Store.
  *
- * <p>
- *     Azure Configuration Store operations allowed by the client are adding, retrieving, updating, and deleting
- *     ConfigurationSettings, additionally more complex operations of listing settings or revision of a setting based
- *     on a filter are supported as well.
- * </p>
+ * <p>Azure Configuration Store operations allowed by the client are adding, retrieving, updating, and deleting
+ * ConfigurationSettings, additionally more complex operations of listing settings or revision of a setting based
+ * on a filter are supported as well.</p>
  *
  * Construct the client
  * <pre>
- *     {@code
- *     String connectionString = <connection_string>;
- *     ConfigurationClientCredentials credentials = new ConfigurationClientCredentials(connectionString);
- *     ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
- *          .credentials(credentials)
- *          .build();
- *     }
+ * String connectionString = "connection_string";
+ * ConfigurationClientCredentials credentials = new ConfigurationClientCredentials(connectionString);
+ * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
+ *     .credentials(credentials)
+ *     .build();
  * </pre>
  *
- * Add a Configuration Setting
+ * {@link ConfigurationAsyncClient#addSetting(String, String)} creates a setting only if the setting doesn't
+ * already exist.
  * <pre>
- *     {@code
- *     client.addSetting("prodDBConnection", "<db_connection>").subscribe(result -> {
- *         ConfigurationSetting setting = result.value();
- *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
- *     });
- *
- *     client.setSetting("testDBConnection", "<db_connection>").subscribe(result -> {
- *         ConfigurationSetting setting = result.value();
- *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
- *     });
- *     }
+ * client.addSetting("prodDBConnection", "db_connection").subscribe(result -&gt; {
+ *     ConfigurationSetting setting = result.value();
+ *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * });
  * </pre>
  *
- * Retrieve a Configuration Setting
+ * {@link ConfigurationAsyncClient#getSetting(String)} retrieves a setting only if it already exists.
  * <pre>
- *     {@code
- *     client.getSetting("testDBConnection").subscribe(result -> {
- *         ConfigurationSetting setting = result.value();
- *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
- *     });
- *     }
+ * client.getSetting("prodDBConnection").subscribe(result -&gt; {
+ *     ConfigurationSetting setting = result.value();
+ *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * });
  * </pre>
  *
- * Update an existing Configuration Setting
+ * {@link ConfigurationAsyncClient#updateSetting(String, String)} updates a setting only if it already exists.
  * <pre>
- *     {@code
- *     client.updateSetting("prodDBConnection", "<updated_db_connection").subscribe(result -> {
- *         ConfigurationSetting setting = result.value();
- *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
- *     });
- *
- *     client.setSetting("testDBConnection", "<updated_db_connection>").subscribe(result -> {
- *         ConfigurationSetting setting = result.value();
- *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
- *     });
- *     }
+ * client.updateSetting("prodDBConnection", "updated_db_connection").subscribe(result -&gt; {
+ *     ConfigurationSetting setting = result.value();
+ *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * });
  * </pre>
  *
- * Delete a Configuration Setting
+ * {@link ConfigurationAsyncClient#setSetting(String, String)} creates a setting if it doesn't exists or updates an
+ * already existing setting.
  * <pre>
- *     {@code
- *     client.deleteSetting("testDBConnection").subscribe(result -> {
- *         ConfigurationSetting setting = result.value();
- *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
- *     })
- *     }
+ * client.setSetting("testDBConnection", "db_connection").subscribe(result -&gt; {
+ *     ConfigurationSetting setting = result.value();
+ *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * });
+ *
+ * client.setSetting("testDBConnection", "updated_db_connection").subscribe(result -&gt; {
+ *     ConfigurationSetting setting = result.value();
+ *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * });
+ * </pre>
+ *
+ * {@link ConfigurationAsyncClient#deleteSetting(String)} deletes a setting only if it already exists.
+ * <pre>
+ * client.deleteSetting("testDBConnection").subscribe(result -&gt; {
+ *     ConfigurationSetting setting = result.value();
+ *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * });
  * </pre>
  *
  * @see ConfigurationAsyncClientBuilder
