@@ -422,7 +422,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
 
         PagedList<KeyItem> listResult = keyVaultClient.listKeyVersions(getVaultUri(), KEY_NAME, MAX_KEYS);
-        //TODO bug: Assert.assertTrue(PAGELIST_MAX_KEYS >= listResult.currentPage().getItems().size());
+        //TODO: Fix bug. Assert.assertTrue(PAGELIST_MAX_KEYS >= listResult.currentPage().getItems().size());
 
         listResult = keyVaultClient.listKeyVersions(getVaultUri(), KEY_NAME);
 
