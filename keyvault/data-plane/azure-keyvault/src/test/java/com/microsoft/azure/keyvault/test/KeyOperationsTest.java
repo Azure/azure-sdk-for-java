@@ -364,7 +364,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         HashSet<String> toDelete = new HashSet<String>();
 
         for (KeyItem item : listResult) {
-            if(item != null) {
+            if (item != null) {
                 KeyIdentifier id = new KeyIdentifier(item.kid());
                 toDelete.add(id.name());
                 keys.remove(item.kid());
@@ -378,7 +378,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                 DeletedKeyBundle deletedKey = keyVaultClient.deleteKey(getVaultUri(), name);
                 Assert.assertNotNull(deletedKey);
                 pollOnKeyDeletion(getVaultUri(), name);
-            } catch(KeyVaultErrorException e) {
+            } catch (KeyVaultErrorException e) {
                 // Ignore forbidden exception for certificate keys that cannot be deleted
                 if (!e.body().error().code().equals("Forbidden")) {
                     throw e;
@@ -427,7 +427,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         listResult = keyVaultClient.listKeyVersions(getVaultUri(), KEY_NAME);
 
         for (KeyItem item : listResult) {
-            if(item != null) {
+            if (item != null) {
                 keys.remove(item.kid());
             }
         }
@@ -604,7 +604,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     private void compareKeyBundles(KeyBundle expected, KeyBundle actual) {
         Assert.assertTrue(expected.key().toString().equals(actual.key().toString()));
         Assert.assertEquals(expected.attributes().enabled(), actual.attributes().enabled());
-        if(expected.tags() != null || actual.tags() != null) {
+        if (expected.tags() != null || actual.tags() != null) {
             Assert.assertTrue(expected.tags().equals(actual.tags()));
         }
     }
