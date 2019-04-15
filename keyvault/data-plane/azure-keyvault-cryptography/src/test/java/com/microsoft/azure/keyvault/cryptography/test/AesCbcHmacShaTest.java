@@ -98,7 +98,7 @@ public class AesCbcHmacShaTest {
         }
 
         try {
-            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, provider);
+            transform = (IAuthenticatedCryptoTransform) algo.CreateDecryptor(K, IV, A, T, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -174,7 +174,7 @@ public class AesCbcHmacShaTest {
         }
 
         try {
-            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, provider);
+            transform = (IAuthenticatedCryptoTransform) algo.CreateDecryptor(K, IV, A, T, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -192,6 +192,7 @@ public class AesCbcHmacShaTest {
         assertArrayEquals(P, decrypted);
         assertArrayEquals(T, tag);
     }
+
     @Test
     public void testAes256CbcHmacSha512() {
         // Arrange: These values are taken from Appendix B of the JWE specification at
@@ -249,7 +250,7 @@ public class AesCbcHmacShaTest {
         }
 
         try {
-            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, provider);
+            transform = (IAuthenticatedCryptoTransform) algo.CreateDecryptor(K, IV, A, T, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
