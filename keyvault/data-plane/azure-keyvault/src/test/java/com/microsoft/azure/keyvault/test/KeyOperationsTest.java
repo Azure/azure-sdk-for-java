@@ -139,38 +139,27 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         byte[] cipherText;
 
         // Encrypt in the service.
-        {
-            KeyOperationResult result = keyVaultClient.encrypt(importedKeyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText);
-            cipherText = result.result();
-        }
+        KeyOperationResult result = keyVaultClient.encrypt(importedKeyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText);
+        cipherText = result.result();
 
         // Decrypt in the client, notice OAEP algorithm instance to use.
-        {
-            Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
-            cipher.init(Cipher.DECRYPT_MODE, importedKey.toRSA(true).getPrivate());
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
+        cipher.init(Cipher.DECRYPT_MODE, importedKey.toRSA(true).getPrivate());
 
-            byte[] beforeEncrypt = plainText;
-            byte[] afterDecrypt = cipher.doFinal(cipherText);
-            Assert.assertArrayEquals(beforeEncrypt, afterDecrypt);
-        }
+        byte[] afterDecrypt = cipher.doFinal(cipherText);
+        Assert.assertArrayEquals(plainText, afterDecrypt);
 
         // Encrypt in the client, using the service provided material. Also use
         // standard padding.
-        {
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, importedKeyBundle.key().toRSA().getPublic());
+        Cipher cipher2 = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher2.init(Cipher.ENCRYPT_MODE, importedKeyBundle.key().toRSA().getPublic());
 
-            cipherText = cipher.doFinal(plainText);
-        }
+        cipherText = cipher2.doFinal(plainText);
 
         // Decrypt in the service.
-        {
-            KeyOperationResult result = keyVaultClient.decrypt(importedKeyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA1_5, cipherText);
+        KeyOperationResult result2 = keyVaultClient.decrypt(importedKeyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA1_5, cipherText);
 
-            byte[] beforeEncrypt = plainText;
-            byte[] afterDecrypt = result.result();
-            Assert.assertArrayEquals(beforeEncrypt, afterDecrypt);
-        }
+        Assert.assertArrayEquals(plainText, result2.result());
     }
 
     @Test
