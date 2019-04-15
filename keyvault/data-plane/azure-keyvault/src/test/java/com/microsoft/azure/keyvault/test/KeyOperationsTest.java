@@ -164,117 +164,97 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
     @Test
     public void crudOperationsForKeyOperationsTest() throws Exception {
-
         KeyBundle createdBundle;
-        {
-            // Create key
-            createdBundle = keyVaultClient.createKey(new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build());
-            validateRsaKeyBundle(createdBundle, getVaultUri(), KEY_NAME, JsonWebKeyType.RSA, null, null);
-        }
+
+        // Create key
+        createdBundle = keyVaultClient.createKey(new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build());
+        validateRsaKeyBundle(createdBundle, getVaultUri(), KEY_NAME, JsonWebKeyType.RSA, null, null);
 
         // Key identifier.
         KeyIdentifier keyId = new KeyIdentifier(createdBundle.key().kid());
 
-        {
-            // Get key using kid WO version
-            KeyBundle readBundle = keyVaultClient.getKey(keyId.baseIdentifier());
-            compareKeyBundles(createdBundle, readBundle);
-        }
+        // Get key using kid WO version
+        KeyBundle baseIdentifierBundle = keyVaultClient.getKey(keyId.baseIdentifier());
+        compareKeyBundles(createdBundle, baseIdentifierBundle);
 
-        {
-            // Get key using full kid as defined in the bundle
-            KeyBundle readBundle = keyVaultClient.getKey(createdBundle.key().kid());
-            compareKeyBundles(createdBundle, readBundle);
-        }
+        // Get key using full kid as defined in the bundle
+        KeyBundle kidBundle = keyVaultClient.getKey(createdBundle.key().kid());
+        compareKeyBundles(createdBundle, kidBundle);
 
-        {
-            // Get key using vault and key name.
-            KeyBundle readBundle = keyVaultClient.getKey(getVaultUri(), KEY_NAME);
-            compareKeyBundles(createdBundle, readBundle);
-        }
+        // Get key using vault and key name.
+        KeyBundle keyNameBundle = keyVaultClient.getKey(getVaultUri(), KEY_NAME);
+        compareKeyBundles(createdBundle, keyNameBundle);
 
-        {
-            // Get key using vault, key name and version.
-            KeyBundle readBundle = keyVaultClient.getKey(getVaultUri(), KEY_NAME, keyId.version());
-            compareKeyBundles(createdBundle, readBundle);
-        }
+        // Get key using vault, key name and version.
+        KeyBundle keyNameWithIdBundle = keyVaultClient.getKey(getVaultUri(), KEY_NAME, keyId.version());
+        compareKeyBundles(createdBundle, keyNameWithIdBundle);
 
-        {
-            // Get key using vault, key name and a null version.
-            KeyBundle readBundle = keyVaultClient.getKey(getVaultUri(), KEY_NAME);
-            compareKeyBundles(createdBundle, readBundle);
-        }
+        // Get key using vault, key name and a null version.
+        KeyBundle keyNameNullVersion = keyVaultClient.getKey(getVaultUri(), KEY_NAME);
+        compareKeyBundles(createdBundle, keyNameNullVersion);
 
-        {
-            // Update key using the kid as defined in the bundle
+        // Update key using the kid as defined in the bundle
 
-            // First we create a bundle with the modified attributes.
-            createdBundle.attributes().withExpires(new DateTime()
-                                              .withMonthOfYear(2)
-                                              .withDayOfMonth(1)
-                                              .withYear(2050));
-            List<JsonWebKeyOperation> keyOps = Arrays.asList(JsonWebKeyOperation.ENCRYPT, JsonWebKeyOperation.DECRYPT);
-            Map<String, String> tags = new HashMap<String, String>();
-            tags.put("foo", "baz");
-            createdBundle.key().withKeyOps(keyOps);
-            createdBundle.withTags(tags);
+        // First we create a bundle with the modified attributes.
+        createdBundle.attributes().withExpires(new DateTime()
+                                          .withMonthOfYear(2)
+                                          .withDayOfMonth(1)
+                                          .withYear(2050));
+        List<JsonWebKeyOperation> keyOps = Arrays.asList(JsonWebKeyOperation.ENCRYPT, JsonWebKeyOperation.DECRYPT);
+        Map<String, String> tags = new HashMap<>();
+        tags.put("foo", "baz");
+        createdBundle.key().withKeyOps(keyOps);
+        createdBundle.withTags(tags);
 
-            // Perform the operation.
-            KeyBundle updatedBundle = keyVaultClient.updateKey(
-                        new UpdateKeyRequest
-                            .Builder(createdBundle.key().kid())
-                            .withKeyOperations(keyOps)
-                            .withAttributes(createdBundle.attributes())
-                            .withTags(createdBundle.tags())
-                            .build());
+        // Perform the operation.
+        KeyBundle updatedBundle = keyVaultClient.updateKey(
+                    new UpdateKeyRequest
+                        .Builder(createdBundle.key().kid())
+                        .withKeyOperations(keyOps)
+                        .withAttributes(createdBundle.attributes())
+                        .withTags(createdBundle.tags())
+                        .build());
 
-            compareKeyBundles(createdBundle, updatedBundle);
+        compareKeyBundles(createdBundle, updatedBundle);
 
-            // Subsequent operations must use the updated bundle for comparison.
-            createdBundle = updatedBundle;
-        }
+        // Subsequent operations must use the updated bundle for comparison.
+        createdBundle = updatedBundle;
 
-        {
-            // Update key using vault and key name.
+        // Update key using vault and key name.
 
-            // First we create a bundle with the modified attributes.
-            createdBundle.attributes().withNotBefore(new DateTime()
-                                                            .withMonthOfYear(2)
-                                                            .withDayOfMonth(1)
-                                                            .withYear(2000));
-            List<JsonWebKeyOperation> keyOps = Arrays.asList(JsonWebKeyOperation.SIGN, JsonWebKeyOperation.VERIFY);
-            createdBundle.key().withKeyOps(keyOps);
-            Map<String, String> tags = new HashMap<String, String>();
-            tags.put("foo", "baz");
-            createdBundle.withTags(tags);
+        // First we create a bundle with the modified attributes.
+        createdBundle.attributes().withNotBefore(new DateTime()
+                                                        .withMonthOfYear(2)
+                                                        .withDayOfMonth(1)
+                                                        .withYear(2000));
+        List<JsonWebKeyOperation> keyOps2 = Arrays.asList(JsonWebKeyOperation.SIGN, JsonWebKeyOperation.VERIFY);
+        createdBundle.key().withKeyOps(keyOps2);
+        Map<String, String> tags2 = new HashMap<>();
+        tags2.put("foo", "baz");
+        createdBundle.withTags(tags2);
 
-            // Perform the operation.
-            KeyBundle updatedBundle = keyVaultClient.updateKey(
-                        new UpdateKeyRequest
-                            .Builder(getVaultUri(), KEY_NAME)
-                            .withKeyOperations(keyOps)
-                            .withAttributes(createdBundle.attributes())
-                            .withTags(createdBundle.tags())
-                            .build());
+        // Perform the operation.
+        KeyBundle updatedBundle2 = keyVaultClient.updateKey(
+                    new UpdateKeyRequest
+                        .Builder(getVaultUri(), KEY_NAME)
+                        .withKeyOperations(keyOps2)
+                        .withAttributes(createdBundle.attributes())
+                        .withTags(createdBundle.tags())
+                        .build());
 
-            compareKeyBundles(createdBundle, updatedBundle);
-        }
+        compareKeyBundles(createdBundle, updatedBundle2);
 
-        {
-            // Delete key
-            DeletedKeyBundle deleteBundle = keyVaultClient.deleteKey(getVaultUri(), KEY_NAME);
-            compareKeyBundles(createdBundle, deleteBundle);
-            pollOnKeyDeletion(getVaultUri(), KEY_NAME);
-        }
+        // Delete key
+        DeletedKeyBundle deleteBundle = keyVaultClient.deleteKey(getVaultUri(), KEY_NAME);
+        compareKeyBundles(createdBundle, deleteBundle);
+        pollOnKeyDeletion(getVaultUri(), KEY_NAME);
 
-        {
-            // Expects a key not found
-            try {
-                keyVaultClient.getKey(keyId.baseIdentifier());
-            } catch (KeyVaultErrorException e) {
-                Assert.assertNotNull(e.body().error());
-                Assert.assertEquals("KeyNotFound", e.body().error().code());
-            }
+        // Expects a key not found
+        try {
+            keyVaultClient.getKey(keyId.baseIdentifier());
+        } catch (KeyVaultErrorException e) {
+            Assert.assertNotNull(e.body().error());
+            Assert.assertEquals("KeyNotFound", e.body().error().code());
         }
 
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
