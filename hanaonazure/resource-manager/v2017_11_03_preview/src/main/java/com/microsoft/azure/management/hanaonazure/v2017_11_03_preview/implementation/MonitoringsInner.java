@@ -15,6 +15,7 @@ import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.Monitoring
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -55,11 +56,11 @@ public class MonitoringsInner {
     interface MonitoringsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.Monitorings hanaInstancesMethod" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/monitoring")
-        Observable<Response<ResponseBody>> hanaInstancesMethod(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body MonitoringDetails monitoringParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> hanaInstancesMethod(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Body MonitoringDetails monitoringParameter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.Monitorings beginHanaInstancesMethod" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/monitoring")
-        Observable<Response<ResponseBody>> beginHanaInstancesMethod(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body MonitoringDetails monitoringParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginHanaInstancesMethod(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Body MonitoringDetails monitoringParameter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -68,12 +69,13 @@ public class MonitoringsInner {
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void hanaInstancesMethod(String resourceGroupName, String hanaInstanceName) {
-        hanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().last().body();
+    public void hanaInstancesMethod(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
+        hanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter).toBlocking().last().body();
     }
 
     /**
@@ -81,12 +83,13 @@ public class MonitoringsInner {
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> hanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(hanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    public ServiceFuture<Void> hanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(hanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter), serviceCallback);
     }
 
     /**
@@ -94,11 +97,12 @@ public class MonitoringsInner {
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> hanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName) {
-        return hanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> hanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
+        return hanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -111,10 +115,11 @@ public class MonitoringsInner {
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> hanaInstancesMethodWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+    public Observable<ServiceResponse<Void>> hanaInstancesMethodWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -127,7 +132,11 @@ public class MonitoringsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.hanaInstancesMethod(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), monitoringParameter, this.client.userAgent());
+        if (monitoringParameter == null) {
+            throw new IllegalArgumentException("Parameter monitoringParameter is required and cannot be null.");
+        }
+        Validator.validate(monitoringParameter);
+        Observable<Response<ResponseBody>> observable = service.hanaInstancesMethod(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), monitoringParameter, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
@@ -136,12 +145,13 @@ public class MonitoringsInner {
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void beginHanaInstancesMethod(String resourceGroupName, String hanaInstanceName) {
-        beginHanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().single().body();
+    public void beginHanaInstancesMethod(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
+        beginHanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter).toBlocking().single().body();
     }
 
     /**
@@ -149,12 +159,13 @@ public class MonitoringsInner {
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> beginHanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(beginHanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    public ServiceFuture<Void> beginHanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginHanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter), serviceCallback);
     }
 
     /**
@@ -162,11 +173,12 @@ public class MonitoringsInner {
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> beginHanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName) {
-        return beginHanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> beginHanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
+        return beginHanaInstancesMethodWithServiceResponseAsync(resourceGroupName, hanaInstanceName, monitoringParameter).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -179,10 +191,11 @@ public class MonitoringsInner {
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginHanaInstancesMethodWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+    public Observable<ServiceResponse<Void>> beginHanaInstancesMethodWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -195,7 +208,11 @@ public class MonitoringsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.beginHanaInstancesMethod(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), monitoringParameter, this.client.userAgent())
+        if (monitoringParameter == null) {
+            throw new IllegalArgumentException("Parameter monitoringParameter is required and cannot be null.");
+        }
+        Validator.validate(monitoringParameter);
+        return service.beginHanaInstancesMethod(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), monitoringParameter, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
