@@ -41,6 +41,10 @@ final class ActiveClientTokenManager {
     }
 
     public void cancel() {
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format(Locale.US, "clientEntity[%s] - canceling ActiveClientLinkManager",
+                    clientEntity.getClientId()));
+        }
 
         synchronized (this.timerLock) {
             this.timer.cancel(false);
@@ -62,9 +66,8 @@ final class ActiveClientTokenManager {
             } else {
 
                 if (TRACE_LOGGER.isInfoEnabled()) {
-                    TRACE_LOGGER.info(
-                            String.format(Locale.US,
-                                    "clientEntity[%s] - closing ActiveClientLinkManager", clientEntity.getClientId()));
+                    TRACE_LOGGER.info(String.format(Locale.US, "clientEntity[%s] - closing ActiveClientLinkManager",
+                            clientEntity.getClientId()));
                 }
             }
         }

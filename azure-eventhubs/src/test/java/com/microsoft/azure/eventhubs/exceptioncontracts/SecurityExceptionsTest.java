@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Test;
 
 import java.time.Duration;
+import java.util.Locale;
 import java.util.UUID;
 
 public class SecurityExceptionsTest extends ApiTestBase {
@@ -74,7 +75,7 @@ public class SecurityExceptionsTest extends ApiTestBase {
         final String wrongToken = SharedAccessSignatureTokenProvider.generateSharedAccessSignature(
                 "wrongkey",
                 correctConnectionString.getSasKey(),
-                String.format("amqps://%s/%s", correctConnectionString.getEndpoint().getHost(), correctConnectionString.getEventHubName()),
+                String.format(Locale.US, "amqps://%s/%s", correctConnectionString.getEndpoint().getHost(), correctConnectionString.getEventHubName()),
                 Duration.ofSeconds(10));
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
                 .setEndpoint(correctConnectionString.getEndpoint())

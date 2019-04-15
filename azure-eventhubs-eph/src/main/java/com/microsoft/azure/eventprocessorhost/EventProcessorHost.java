@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -556,7 +557,7 @@ public final class EventProcessorHost {
         }
 
         private String getNamePrefix() {
-            return String.format("[%s|%s|%s]-%s-",
+            return String.format(Locale.US, "[%s|%s|%s]-%s-",
                     this.entityName, this.consumerGroupName, this.hostName, poolNumber.getAndIncrement());
         }
 

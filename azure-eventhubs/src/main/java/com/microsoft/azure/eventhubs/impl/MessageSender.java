@@ -338,7 +338,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
             this.cancelOpenTimer();
 
             if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info(String.format("onOpenComplete - clientId[%s], sendPath[%s], linkName[%s]",
+                TRACE_LOGGER.info(String.format(Locale.US, "onOpenComplete - clientId[%s], sendPath[%s], linkName[%s]",
                         this.getClientId(), this.sendPath, this.getSendLinkName()));
             }
 
@@ -635,7 +635,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
                 sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
 
-                final SendLinkHandler handler = new SendLinkHandler(MessageSender.this);
+                final SendLinkHandler handler = new SendLinkHandler(MessageSender.this, MessageSender.this.getClientId());
                 BaseHandler.setHandler(sender, handler);
 
                 if (MessageSender.this.sendLink != null) {

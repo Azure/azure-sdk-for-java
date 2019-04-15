@@ -4,17 +4,17 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.OperationCancelledException;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-
-import com.microsoft.azure.eventhubs.OperationCancelledException;
-import com.microsoft.azure.eventhubs.TimeoutException;
 
 final class ManagementChannel {
 
@@ -22,7 +22,7 @@ final class ManagementChannel {
     final SessionProvider sessionProvider;
     final AmqpConnection connectionEventDispatcher;
 
-    public ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection) {
+    public ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection, final String clientId) {
         this.sessionProvider = sessionProvider;
         this.connectionEventDispatcher = connection;
 
@@ -30,6 +30,7 @@ final class ManagementChannel {
         this.innerChannel = new FaultTolerantObject<>(
                 new RequestResponseOpener(
                         sessionProvider,
+                        clientId,
                         "mgmt-session",
                         "mgmt",
                         ClientConstants.MANAGEMENT_ADDRESS,
@@ -57,7 +58,7 @@ final class ManagementChannel {
                             final String errorMessage;
                             if (channel != null && channel.getState() == IOObject.IOObjectState.OPENED) {
                                 final String remoteContainerId = channel.getSendLink().getSession().getConnection().getRemoteContainer();
-                                errorMessage = String.format("Management request timed out (%sms), after not receiving response from service. TrackingId: %s",
+                                errorMessage = String.format(Locale.US, "Management request timed out (%sms), after not receiving response from service. TrackingId: %s",
                                         timeoutInMillis, StringUtil.isNullOrEmpty(remoteContainerId) ? "n/a" : remoteContainerId);
                             } else {
                                 errorMessage = "Management request timed out on the client - enable info level tracing to diagnose.";

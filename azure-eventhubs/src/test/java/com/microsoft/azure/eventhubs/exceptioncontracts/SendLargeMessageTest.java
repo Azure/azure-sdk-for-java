@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class SendLargeMessageTest extends ApiTestBase {
@@ -87,7 +88,7 @@ public class SendLargeMessageTest extends ApiTestBase {
         EventData recdMessage = messages.iterator().next();
 
         Assert.assertTrue(
-                String.format("sent msg size: %s, recvd msg size: %s", msgSize, recdMessage.getBytes().length),
+                String.format(Locale.US, "sent msg size: %s, recvd msg size: %s", msgSize, recdMessage.getBytes().length),
                 recdMessage.getBytes().length == msgSize);
     }
 }

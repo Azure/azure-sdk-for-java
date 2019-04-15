@@ -47,7 +47,7 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
                                   final boolean isEpochReceiver,
                                   final ReceiverOptions receiverOptions,
                                   final ScheduledExecutorService executor) {
-        super("PartitionReceiverImpl".concat(StringUtil.getRandomString()), null, executor);
+        super(StringUtil.getRandomString("PR").concat(StringUtil.SEPARATOR + factory.getClientId()), null, executor);
 
         this.underlyingFactory = factory;
         this.eventHubName = eventHubName;
@@ -96,7 +96,7 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
     private CompletableFuture<Void> createInternalReceiver() {
         return MessageReceiver.create(this.underlyingFactory,
                 this.getClientId().concat("-InternalReceiver"),
-                String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId),
+                String.format(Locale.US, "%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId),
                 this.receiverOptions.getPrefetchCount(), this)
                 .thenAcceptAsync(new Consumer<MessageReceiver>() {
                     public void accept(MessageReceiver r) {
@@ -239,7 +239,7 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
             } else {
                 logReceivePath = "receiverPath[" + this.internalReceiver.getReceivePath() + "]";
             }
-            TRACE_LOGGER.info(String.format("%s, action[createReceiveLink], %s", logReceivePath, this.eventPosition));
+            TRACE_LOGGER.info(String.format(Locale.US, "%s, action[createReceiveLink], %s", logReceivePath, this.eventPosition));
         }
 
         return Collections.singletonMap(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER, expression));

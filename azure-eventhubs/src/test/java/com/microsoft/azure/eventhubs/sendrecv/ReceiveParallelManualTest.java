@@ -12,6 +12,7 @@ import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -100,14 +101,14 @@ public class ReceiveParallelManualTest extends ApiTestBase {
                         long batchSize = (1 + IteratorUtil.getLast(receivedEvents.iterator()).getSystemProperties().getSequenceNumber()) -
                                 (IteratorUtil.getFirst(receivedEvents).getSystemProperties().getSequenceNumber());
                         totalEvents += batchSize;
-                        System.out.println(String.format("[partitionId: %s] received %s events; total sofar: %s, begin: %s, end: %s",
+                        System.out.println(String.format(Locale.US, "[partitionId: %s] received %s events; total sofar: %s, begin: %s, end: %s",
                                 sPartitionId,
                                 batchSize,
                                 totalEvents,
                                 IteratorUtil.getLast(receivedEvents.iterator()).getSystemProperties().getSequenceNumber(),
                                 IteratorUtil.getFirst(receivedEvents).getSystemProperties().getSequenceNumber()));
                     } else {
-                        System.out.println(String.format("received null on partition %s", sPartitionId));
+                        System.out.println(String.format(Locale.US, "received null on partition %s", sPartitionId));
                     }
                 } catch (Exception exp) {
                     System.out.println(exp.getMessage() + exp.toString());

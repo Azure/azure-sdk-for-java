@@ -6,6 +6,7 @@ package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.*;
 
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
@@ -19,7 +20,7 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
     private volatile MessageSender internalSender;
 
     private PartitionSenderImpl(final MessagingFactory factory, final String eventHubName, final String partitionId, final ScheduledExecutorService executor) {
-        super("PartitionSenderImpl".concat(StringUtil.getRandomString()), null, executor);
+        super(StringUtil.getRandomString("PS").concat(StringUtil.SEPARATOR + factory.getClientId()), null, executor);
 
         this.partitionId = partitionId;
         this.eventHubName = eventHubName;
@@ -41,7 +42,7 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
 
     private CompletableFuture<Void> createInternalSender() throws EventHubException {
         return MessageSender.create(this.factory, this.getClientId().concat("-InternalSender"),
-                String.format("%s/Partitions/%s", this.eventHubName, this.partitionId))
+                String.format(Locale.US, "%s/Partitions/%s", this.eventHubName, this.partitionId))
                 .thenAcceptAsync(new Consumer<MessageSender>() {
                     public void accept(MessageSender a) {
                         PartitionSenderImpl.this.internalSender = a;

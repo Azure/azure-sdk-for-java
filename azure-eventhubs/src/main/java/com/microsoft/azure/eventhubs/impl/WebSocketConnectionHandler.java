@@ -14,7 +14,7 @@ public class WebSocketConnectionHandler extends ConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketConnectionHandler.class);
 
     public WebSocketConnectionHandler(AmqpConnection amqpConnection) {
-        super(amqpConnection);
+        super(amqpConnection, StringUtil.getRandomString("WS"));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class WebSocketConnectionHandler extends ConnectionHandler {
         transport.addTransportLayer(webSocket);
 
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info("addWebsocketHandshake: hostname[" + hostName +"]");
+            TRACE_LOGGER.info("addWebsocketHandshake: hostname[" + hostName + "]");
         }
 
         super.addTransportLayers(event, transport);

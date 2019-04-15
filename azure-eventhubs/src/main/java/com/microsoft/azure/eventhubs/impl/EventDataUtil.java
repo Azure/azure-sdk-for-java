@@ -11,9 +11,6 @@ import org.apache.qpid.proton.message.Message;
 import java.util.*;
 import java.util.function.Consumer;
 
-/*
- * Internal utility class for EventData
- */
 final class EventDataUtil {
 
     @SuppressWarnings("serial")

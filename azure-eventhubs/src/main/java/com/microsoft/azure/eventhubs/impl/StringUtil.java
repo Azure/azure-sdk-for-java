@@ -4,10 +4,13 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import java.time.Instant;
+import java.util.Locale;
 import java.util.UUID;
 
 public final class StringUtil {
     public final static String EMPTY = "";
+    public static final String SEPARATOR = "_";
 
     public static boolean isNullOrEmpty(String string) {
         return (string == null || string.isEmpty());
@@ -26,7 +29,7 @@ public final class StringUtil {
         return true;
     }
 
-    public static String getRandomString() {
-        return UUID.randomUUID().toString().substring(0, 6);
+    public static String getRandomString(String prefix) {
+        return String.format(Locale.US, "%s_%s_%s", prefix, UUID.randomUUID().toString().substring(0, 6), Instant.now().toEpochMilli());
     }
 }
