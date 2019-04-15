@@ -12,49 +12,51 @@ import java.util.List;
  * Client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
  * Store.
  *
- * <p>
- *     Azure Configuration Store operations allowed by the client are adding, retrieving, updating, and deleting
- *     ConfigurationSettings, additionally more complex operations of listing settings or revision of a setting based
- *     on a filter are supported as well.
- * </p>
+ * <p>Azure Configuration Store operations allowed by the client are adding, retrieving, updating, and deleting
+ * ConfigurationSettings, additionally more complex operations of listing settings or revision of a setting based
+ * on a filter are supported as well.</p>
  *
  * Construct the client
  * <pre>
- * {@code String connectionString = <connection_string>;
- *    ConfigurationClientCredentials credentials = new ConfigurationClientCredentials(connectionString);
- *    ConfigurationClient client = ConfigurationClient.builder()
- *         .credentials(credentials)
- *         .build();}
+ * String connectionString = "connection_string";
+ * ConfigurationClientCredentials credentials = new ConfigurationClientCredentials(connectionString);
+ * ConfigurationClient client = ConfigurationClient.builder()
+ *      .credentials(credentials)
+ *      .build();
  * </pre>
  *
- * Add a Configuration Setting
+ * {@link ConfigurationClient#addSetting(String, String)} creates a setting only if the setting doesn't already exist.
  * <pre>
- * {@code ConfigurationSetting setting = client.addSetting("prodDBConnection", "<db_connection>");
- *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
- *
- *    ConfigurationClient setting = client.setSetting("testDBConnection", "<db_connection>");
- *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());}
+ * ConfigurationSetting setting = client.addSetting("prodDBConnection", "db_connection");
+ * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
  * </pre>
  *
- * Retrieve a Configuration Setting
+ * {@link ConfigurationClient#getSetting(String)} retrieves a setting only if it already exists.
  * <pre>
- * {@code ConfigurationSetting setting = client.getSetting("testDBConnection");
- *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());}
+ * ConfigurationSetting setting = client.getSetting("prodDBConnection");
+ * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
  * </pre>
  *
- * Update an existing Configuration Setting
+ * {@link ConfigurationClient#updateSetting(String, String)} updates a setting only if it already exists.
  * <pre>
- * {@code ConfigurationSetting setting = client.updateSetting("prodDBConnection", "<updated_db_connection");
- *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
- *
- *    ConfigurationSetting setting = client.setSetting("testDBConnection", "<updated_db_connection>");
- *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());}
+ * ConfigurationSetting setting = client.updateSetting("prodDBConnection", "updated_db_connection");
+ * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
  * </pre>
  *
- * Delete a Configuration Setting
+ * {@link ConfigurationClient#setSetting(String, String)} creates a setting if it doesn't exist or updates an already
+ * existing setting.
  * <pre>
- * {@code ConfigurationSetting setting = client.deleteSetting("testDBConnection");
- *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());}
+ * ConfigurationSetting setting = client.setSetting("testDBConnection", "db_connection");
+ * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *
+ * ConfigurationSetting setting = client.setSetting("testDBConnection", "updated_db_connection");
+ * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * </pre>
+ *
+ * {@link ConfigurationClient#deleteSetting(String)} deletes a setting only if it already exists.
+ * <pre>
+ * ConfigurationSetting setting = client.deleteSetting("testDBConnection");
+ * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
  * </pre>
  *
  * @see ConfigurationClientBuilder
