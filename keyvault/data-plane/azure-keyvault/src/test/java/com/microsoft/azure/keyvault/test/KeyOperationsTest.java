@@ -597,7 +597,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertNotNull("\"created\" should not be null.", bundle.attributes().created());
         Assert.assertNotNull("\"updated\" should not be null.", bundle.attributes().updated());
 
-        Assert.assertTrue(bundle.managed() == null || bundle.managed() == false);
+        Assert.assertTrue(bundle.managed() == null || !bundle.managed());
         Assert.assertTrue(bundle.key().isValid());
     }
 
