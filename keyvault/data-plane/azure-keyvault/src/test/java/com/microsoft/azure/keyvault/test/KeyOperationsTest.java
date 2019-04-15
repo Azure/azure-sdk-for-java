@@ -70,33 +70,28 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     public void transparentAuthenticationForKeyOperationsTest() throws Exception {
 
         // Create a key on a vault.
-        {
-            Map<String, String> tags = new HashMap<String, String>();
-            tags.put("foo", "baz");
-            List<JsonWebKeyOperation> keyOps = Arrays.asList(JsonWebKeyOperation.ENCRYPT, JsonWebKeyOperation.DECRYPT);
-            Attributes attribute = new KeyAttributes()
-                    .withEnabled(true)
-                    .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
-                    .withNotBefore(new DateTime().withYear(2000).withMonthOfYear(1));
+        Map<String, String> tags = new HashMap<String, String>();
+        tags.put("foo", "baz");
+        List<JsonWebKeyOperation> keyOps = Arrays.asList(JsonWebKeyOperation.ENCRYPT, JsonWebKeyOperation.DECRYPT);
+        Attributes attribute = new KeyAttributes()
+                .withEnabled(true)
+                .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
+                .withNotBefore(new DateTime().withYear(2000).withMonthOfYear(1));
 
-            KeyBundle bundle = keyVaultClient.createKey(new CreateKeyRequest
-                    .Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA)
-                        .withAttributes(attribute)
-                        .withKeyOperations(keyOps)
-                        .withKeySize(2048)
-                        .withTags(tags)
-                        .build());
+        KeyBundle bundle = keyVaultClient.createKey(new CreateKeyRequest
+                .Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA)
+                    .withAttributes(attribute)
+                    .withKeyOperations(keyOps)
+                    .withKeySize(2048)
+                    .withTags(tags)
+                    .build());
 
-            validateRsaKeyBundle(bundle, getVaultUri(), KEY_NAME, JsonWebKeyType.RSA, keyOps, attribute);
-        }
+        validateRsaKeyBundle(bundle, getVaultUri(), KEY_NAME, JsonWebKeyType.RSA, keyOps, attribute);
 
         // Create a key on a different vault. Key Vault Data Plane returns 401,
         // which must be transparently handled by KeyVaultCredentials.
-        {
-            KeyBundle bundle = alternativeKeyVaultClient.createKey(new CreateKeyRequest.Builder(getSecondaryVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build());
-            validateRsaKeyBundle(bundle, getSecondaryVaultUri(), KEY_NAME, JsonWebKeyType.RSA, null, null);
-        }
-
+        KeyBundle bundle2 = alternativeKeyVaultClient.createKey(new CreateKeyRequest.Builder(getSecondaryVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build());
+        validateRsaKeyBundle(bundle2, getSecondaryVaultUri(), KEY_NAME, JsonWebKeyType.RSA, null, null);
     }
 
     @Test
