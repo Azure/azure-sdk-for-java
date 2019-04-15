@@ -142,8 +142,8 @@ public class RsaKeyTest {
         byte[] crossPlatformSignature = Base64.decodeBase64(CrossPlatformSignature);
 
         // Check the hash
-        assertNotNull( hash );
-        assertEquals(  32, hash.length );
+        assertNotNull(hash);
+        assertEquals(32, hash.length);
         assertArrayEquals(hash, crossPlatformHash);
 
         Pair<byte[], String> signature = key.signAsync(hash, "RS256").get();
@@ -180,7 +180,7 @@ public class RsaKeyTest {
 
         jwk = mapper.readValue(jwkString, JsonWebKey.class);
 
-        return new RsaKey("foo", jwk.toRSA(true, _provider) );
+        return new RsaKey("foo", jwk.toRSA(true, _provider));
     }
 
 }
