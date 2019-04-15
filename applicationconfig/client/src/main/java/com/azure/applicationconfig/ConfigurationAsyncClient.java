@@ -27,6 +27,12 @@ import java.util.stream.Collectors;
  * Client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
  * Store.
  *
+ * <p>
+ *     Azure Configuration Store operations allowed by the client are adding, retrieving, updating, and deleting
+ *     ConfigurationSettings, additionally more complex operations of listing settings or revision of a setting based
+ *     on a filter are supported as well.
+ * </p>
+ *
  * @see ConfigurationAsyncClientBuilder
  * @see ConfigurationClientCredentials
  */
