@@ -92,22 +92,22 @@ public class ITManagedStorageAccountKey {
     // for testing.
     protected static final String CLIENT_ID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
 
-    protected static String MSAK_USER;
-    protected static String MSAK_PASSWORD;
-    protected static String RESOURCE_GROUP;
-    protected static String TENANT_ID;
-    protected static String SUBSCRIPTION_ID;
-    protected static String MSAK_USER_OID;
-    protected static RoleDefinition KEY_VAULT_ROLE;
+    private String MSAK_USER;
+    private String MSAK_PASSWORD;
+    private String RESOURCE_GROUP;
+    private String TENANT_ID;
+    private String SUBSCRIPTION_ID;
+    private String MSAK_USER_OID;
+    private RoleDefinition KEY_VAULT_ROLE;
 
-    protected InterceptorManager interceptorManager = null;
+    private InterceptorManager interceptorManager = null;
 
-    protected static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    protected static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
-    protected static final String ZERO_OID = "00000000-0000-0000-0000-000000000000";
-    protected static final String ZERO_RESOURCE_GROUP = "rg-0";
+    private static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    private static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    private static final String ZERO_OID = "00000000-0000-0000-0000-000000000000";
+    private static final String ZERO_RESOURCE_GROUP = "rg-0";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
-    protected static String playbackUri = null;
+    private static String playbackUri = null;
 
     @Rule
     public TestName testName = new TestName();
@@ -385,7 +385,7 @@ public class ITManagedStorageAccountKey {
         return vault;
     }
 
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    private void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
 
         keyVaultManager = KeyVaultManager.authenticate(restClient, domain, defaultSubscription);
 
@@ -396,7 +396,7 @@ public class ITManagedStorageAccountKey {
     }
 
     // User Auth flow for acquiring token
-    private static AuthenticationResult getAccessToken(String authorization, String resource) throws Exception {
+    private AuthenticationResult getAccessToken(String authorization, String resource) throws Exception {
         AuthenticationResult result = null;
         ExecutorService service = null;
         try {
@@ -416,7 +416,7 @@ public class ITManagedStorageAccountKey {
     }
 
     // Creates serviceClientCredentials based on the credentials passed in.
-    private static ServiceClientCredentials createTestCredentials() throws Exception {
+    private ServiceClientCredentials createTestCredentials() {
         return new KeyVaultCredentials() {
 
             @Override
