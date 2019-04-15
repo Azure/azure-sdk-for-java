@@ -92,18 +92,18 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 
     static final String STATUS_COMPLETED = "Completed";
 
-    static final Base64 _base64 = new Base64(-1, null, true);
+    static final Base64 BASE_64 = new Base64(-1, null, true);
 
-    static final Pattern _privateKey = Pattern.compile("-{5}BEGIN PRIVATE KEY-{5}(?:\\s|\\r|\\n)+"
+    static final Pattern PRIVATE_KEY = Pattern.compile("-{5}BEGIN PRIVATE KEY-{5}(?:\\s|\\r|\\n)+"
             + "([a-zA-Z0-9+/=\r\n]+)" + "-{5}END PRIVATE KEY-{5}(?:\\s|\\r|\\n)+");
 
-    static final Pattern _certificate = Pattern.compile("-{5}BEGIN CERTIFICATE-{5}(?:\\s|\\r|\\n)+"
+    static final Pattern CERTIFICATE = Pattern.compile("-{5}BEGIN CERTIFICATE-{5}(?:\\s|\\r|\\n)+"
             + "([a-zA-Z0-9+/=\r\n]+)" + "-{5}END CERTIFICATE-{5}(?:\\s|\\r|\\n)+");
 
     private static final int MAX_CERTS = 4;
     private static final int PAGELIST_MAX_CERTS = 3;
 
-    private static final Map<String, String> sTags = new HashMap<String, String>();
+    private static final Map<String, String> TAGS = new HashMap<String, String>();
 
     /**
      * Create a self-signed certificate in PKCS12 format (which includes the
@@ -144,7 +144,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .Builder(vaultUri, certificateName)
                         .withPolicy(certificatePolicy)
                         .withAttributes(attribute)
-                        .withTags(sTags)
+                        .withTags(TAGS)
                         .build();
 
         CertificateOperation certificateOperation = keyVaultClient.createCertificate(createCertificateRequest);
@@ -564,7 +564,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withPassword(certificatePassword)
                     .withPolicy(certificatePolicy)
                     .withAttributes(attribute)
-                    .withTags(sTags)
+                    .withTags(TAGS)
                     .build());
 
         // Validate the certificate bundle created
@@ -633,10 +633,10 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                 new UpdateCertificateRequest
                     .Builder(vaultUri, certificateName)
                     .withAttributes(attribute.withEnabled(false))
-                    .withTags(sTags)
+                    .withTags(TAGS)
                     .build());
         Assert.assertEquals(attribute.enabled(), updatedCertBundle.attributes().enabled());
-        Assert.assertEquals(sTags.toString(), updatedCertBundle.tags().toString());
+        Assert.assertEquals(TAGS.toString(), updatedCertBundle.tags().toString());
 
         CertificatePolicy certificatePolicyUpdate = certificatePolicy.withIssuerParameters(new IssuerParameters().withName(ISSUER_SELF));
         CertificatePolicy updatedCertificatePolicy = keyVaultClient.updateCertificatePolicy(
@@ -949,12 +949,12 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
      */
     private static PrivateKey extractPrivateKeyFromPemContents(String pemContents)
             throws InvalidKeySpecException, NoSuchAlgorithmException {
-        Matcher matcher = _privateKey.matcher(pemContents);
+        Matcher matcher = PRIVATE_KEY.matcher(pemContents);
         if (!matcher.find()) {
             throw new IllegalArgumentException("No private key found in PEM contents.");
         }
 
-        byte[] privateKeyBytes = _base64.decode(matcher.group(1));
+        byte[] privateKeyBytes = BASE_64.decode(matcher.group(1));
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(ALGO_RSA);
         PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
@@ -969,7 +969,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
      */
     private static List<X509Certificate> extractCertificatesFromPemContents(String pemContents)
             throws CertificateException, IOException {
-        Matcher matcher = _certificate.matcher(pemContents);
+        Matcher matcher = CERTIFICATE.matcher(pemContents);
         if (!matcher.find()) {
             throw new IllegalArgumentException("No certificate found in PEM contents.");
         }
@@ -980,7 +980,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
             if (!matcher.find(offset)) {
                 break;
             }
-            byte[] certBytes = _base64.decode(matcher.group(1));
+            byte[] certBytes = BASE_64.decode(matcher.group(1));
             ByteArrayInputStream certStream = new ByteArrayInputStream(certBytes);
             CertificateFactory certificateFactory = CertificateFactory.getInstance(X509);
             X509Certificate x509Certificate = (X509Certificate) certificateFactory.generateCertificate(certStream);
@@ -1114,7 +1114,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
     }
 
     private KeyStore loadSecretToKeyStore(SecretBundle secret, String secretPassword) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
-        ByteArrayInputStream secretStream = new ByteArrayInputStream(_base64.decode(secret.value()));
+        ByteArrayInputStream secretStream = new ByteArrayInputStream(BASE_64.decode(secret.value()));
         KeyStore keyStore = KeyStore.getInstance(PKCS12);
         keyStore.load(secretStream, secretPassword.toCharArray());
         secretStream.close();
