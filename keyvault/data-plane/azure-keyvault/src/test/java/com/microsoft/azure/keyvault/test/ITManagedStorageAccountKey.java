@@ -176,8 +176,8 @@ public class ITManagedStorageAccountKey {
             RESOURCE_GROUP = ZERO_RESOURCE_GROUP;
             MSAK_USER_OID = ZERO_OID;
             UserTokenCredentials credentials = new MockUserTokenCredentials();
-            keyVaultClient = new KeyVaultClient(buildPlaybackRestClient(keyVaultCredentials, playbackUri ));
-            RestClient restClient = buildPlaybackRestClient(credentials, playbackUri );
+            keyVaultClient = new KeyVaultClient(buildPlaybackRestClient(keyVaultCredentials, playbackUri));
+            RestClient restClient = buildPlaybackRestClient(credentials, playbackUri);
 
             initializeClients(restClient, ZERO_SUBSCRIPTION, ZERO_TENANT);
         }
