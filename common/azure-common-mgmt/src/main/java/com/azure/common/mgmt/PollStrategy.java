@@ -101,7 +101,7 @@ abstract class PollStrategy {
 
         final String retryAfterSecondsString = httpResponse.headerValue("Retry-After");
         if (retryAfterSecondsString != null && !retryAfterSecondsString.isEmpty()) {
-            result = Long.valueOf(retryAfterSecondsString) * 1000;
+            result = Long.parseLong(retryAfterSecondsString) * 1000;
         }
 
         return result;
@@ -178,10 +178,10 @@ abstract class PollStrategy {
     }
 
     Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
-            return sendPollRequestWithDelay()
-                    .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType))
-                    .repeat()
-                    .takeUntil(operationStatus -> isDone());
+        return sendPollRequestWithDelay()
+                .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType))
+                .repeat()
+                .takeUntil(operationStatus -> isDone());
     }
 
     Mono<HttpResponse> pollUntilDone() {

@@ -83,6 +83,11 @@
           <artifactId>azure-common-auth</artifactId>
           <version>${azure-common-auth.version}</version>
         </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-common-mgmt</artifactId>
+          <version>${azure-common-mgmt.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -100,17 +105,19 @@
                         <configuration>
                             <sources>
                                 <source>..\..\applicationconfig\client\src\main\java</source>
+                                <source>..\..\batch\data-plane\src\main\java</source>
+                                <source>..\..\common\azure-common\src\main\java</source>
+                                <source>..\..\common\azure-common-auth\src\main\java</source>
+                                <source>..\..\common\azure-common-mgmt\src\main\java</source>
+                                <source>..\..\common\azure-common-test\src\main\java</source>
+                                <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
+                                <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
+                                <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-cryptography\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-core\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-extensions\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-webkey\src\main\java</source>
-                                <source>..\..\batch\data-plane\src\main\java</source>
-                                <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
-                                <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
-                                <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
-                                <source>..\..\common\azure-common\src\main\java</source>
-                                <source>..\..\common\azure-common-auth\src\main\java</source>
                             </sources>
                         </configuration>
                     </execution>

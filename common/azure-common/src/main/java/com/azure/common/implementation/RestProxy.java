@@ -169,8 +169,7 @@ public class RestProxy implements InvocationHandler {
         final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
         if (pathUrlBuilder.scheme() != null) {
             urlBuilder = pathUrlBuilder;
-        }
-        else {
+        } else {
             urlBuilder = new UrlBuilder();
 
             // We add path to the UrlBuilder first because this is what is
@@ -229,8 +228,7 @@ public class RestProxy implements InvocationHandler {
             if (contentType == null || contentType.isEmpty()) {
                 if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
                     contentType = ContentType.APPLICATION_OCTET_STREAM;
-                }
-                else {
+                } else {
                     contentType = ContentType.APPLICATION_JSON;
                 }
             }
@@ -249,22 +247,18 @@ public class RestProxy implements InvocationHandler {
             if (isJson) {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.JSON);
                 request.withBody(bodyContentString);
-            }
-            else if (FluxUtil.isFluxByteBuf(methodParser.bodyJavaType())) {
+            } else if (FluxUtil.isFluxByteBuf(methodParser.bodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a Flowable<byte[]> is given for the body.
                 //noinspection ConstantConditions
                 request.withBody((Flux<ByteBuf>) bodyContentObject);
-            }
-            else if (bodyContentObject instanceof byte[]) {
+            } else if (bodyContentObject instanceof byte[]) {
                 request.withBody((byte[]) bodyContentObject);
-            }
-            else if (bodyContentObject instanceof String) {
+            } else if (bodyContentObject instanceof String) {
                 final String bodyContentString = (String) bodyContentObject;
                 if (!bodyContentString.isEmpty()) {
                     request.withBody(bodyContentString);
                 }
-            }
-            else {
+            } else {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.headers()));
                 request.withBody(bodyContentString);
             }
@@ -278,8 +272,7 @@ public class RestProxy implements InvocationHandler {
                 .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, null));
     }
 
-    private static Exception instantiateUnexpectedException(Class<? extends ServiceRequestException> exceptionType,
-                                                            Class<?> exceptionBodyType,
+    private static Exception instantiateUnexpectedException(UnexpectedException exception,
                                                             HttpResponse httpResponse,
                                                             String responseContent,
                                                             Object responseDecodedContent) {
@@ -294,15 +287,15 @@ public class RestProxy implements InvocationHandler {
 
         Exception result;
         try {
-            final Constructor<? extends ServiceRequestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
+            final Constructor<? extends ServiceRequestException> exceptionConstructor = exception.exceptionType().getConstructor(String.class, HttpResponse.class, exception.exceptionBodyType());
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
                     httpResponse,
                     responseDecodedContent);
         } catch (ReflectiveOperationException e) {
             String message = "Status code " + responseStatusCode + ", but an instance of "
-                    + exceptionType.getCanonicalName() + " cannot be created."
+                    + exception.exceptionType().getCanonicalName() + " cannot be created."
                     + " Response body: " + bodyRepresentation;
-            //
+
             result = new IOException(message, e);
         }
         return result;
@@ -334,8 +327,7 @@ public class RestProxy implements InvocationHandler {
                 //
                 return decodedErrorBody.flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> {
                     // decodedBody() emits 'responseDecodedErrorObject' the successfully decoded exception body object
-                    Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
-                            methodParser.exceptionBodyType(),
+                    Throwable exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                             decodedResponse.sourceResponse(),
                             responseContent,
                             responseDecodedErrorObject);
@@ -344,8 +336,7 @@ public class RestProxy implements InvocationHandler {
                 }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
                     // decodedBody() emits empty, indicate unable to decode 'responseContent',
                     // create exception with un-decodable content string and without exception body object.
-                    Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
-                            methodParser.exceptionBodyType(),
+                    Throwable exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                             decodedResponse.sourceResponse(),
                             responseContent,
                             null);
@@ -354,8 +345,7 @@ public class RestProxy implements InvocationHandler {
                 }));
             }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
                 // bodyAsString() emits empty, indicate no body, create exception empty content string no exception body object.
-                Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
-                        methodParser.exceptionBodyType(),
+                Throwable exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                         decodedResponse.sourceResponse(),
                         "",
                         null);
