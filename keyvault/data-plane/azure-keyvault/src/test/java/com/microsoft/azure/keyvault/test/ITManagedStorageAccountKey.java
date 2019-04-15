@@ -81,24 +81,24 @@ public class ITManagedStorageAccountKey {
 
     private static TestBase.TestMode testMode = null;
 
-    KeyVaultManager keyVaultManager;
-    StorageManager storageManager;
-    GraphRbacManager graphRbacManager;
-    protected static KeyVaultClient keyVaultClient;
+    private KeyVaultManager keyVaultManager;
+    private StorageManager storageManager;
+    private GraphRbacManager graphRbacManager;
+    private static KeyVaultClient keyVaultClient;
 
-    protected static final Region VAULT_REGION = Region.US_WEST_CENTRAL;
+    private static final Region VAULT_REGION = Region.US_WEST_CENTRAL;
 
     // This is the default client ID that works across all Azure services - leave in
     // for testing.
-    protected static final String CLIENT_ID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
+    private static final String CLIENT_ID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
 
-    private String MSAK_USER;
-    private String MSAK_PASSWORD;
-    private String RESOURCE_GROUP;
-    private String TENANT_ID;
-    private String SUBSCRIPTION_ID;
-    private String MSAK_USER_OID;
-    private RoleDefinition KEY_VAULT_ROLE;
+    private String msakUser;
+    private String msakPassword;
+    private String resourceGroup;
+    private String tenantId;
+    private String subscriptionId;
+    private String msakUserOid;
+    private RoleDefinition keyVaultRole;
 
     private InterceptorManager interceptorManager = null;
 
@@ -132,16 +132,16 @@ public class ITManagedStorageAccountKey {
 
         if (isRecordMode()) {
             // This needs to be set for playback.
-            RESOURCE_GROUP = System.getenv("msak.resourceGroup");
+            resourceGroup = System.getenv("msak.resourceGroup");
 
             // These need to be set for recording.
-            MSAK_USER = System.getenv("msak.user");
-            MSAK_PASSWORD = System.getenv("msak.password");
-            MSAK_USER_OID = System.getenv("msak.useroid");
-            TENANT_ID = System.getenv("arm.tenantid");
-            SUBSCRIPTION_ID = System.getenv("arm.subscriptionId");
+            msakUser = System.getenv("msak.user");
+            msakPassword = System.getenv("msak.password");
+            msakUserOid = System.getenv("msak.useroid");
+            tenantId = System.getenv("arm.tenantid");
+            subscriptionId = System.getenv("arm.subscriptionId");
 
-            UserTokenCredentials credentials = new UserTokenCredentials(CLIENT_ID, TENANT_ID, MSAK_USER, MSAK_PASSWORD,
+            UserTokenCredentials credentials = new UserTokenCredentials(CLIENT_ID, tenantId, msakUser, msakPassword,
                     AzureEnvironment.AZURE);
             Interceptor interceptor = interceptorManager.initInterceptor();
             Interceptor loggingInterceptor = new LoggingInterceptor(LogLevel.BODY_AND_HEADERS);
@@ -154,7 +154,7 @@ public class ITManagedStorageAccountKey {
                     .build();
 
             keyVaultClient = new KeyVaultClient(keyVaultRestClient);
-            credentials.withDefaultSubscriptionId(SUBSCRIPTION_ID);
+            credentials.withDefaultSubscriptionId(subscriptionId);
 
             RestClient restClient = new RestClient.Builder().withBaseUrl("https://management.azure.com")
                     .withSerializerAdapter(new AzureJacksonAdapter())
@@ -169,12 +169,12 @@ public class ITManagedStorageAccountKey {
             interceptorManager.addTextReplacementRule("https://management.azure.com/", playbackUri + "/");
             interceptorManager.addTextReplacementRule("https://graph.windows.net/", playbackUri + "/");
             interceptorManager.addTextReplacementRule("vault.azure.net/", "vault.azure.net");
-            interceptorManager.addTextReplacementRule(MSAK_USER_OID, ZERO_OID);
-            interceptorManager.addTextReplacementRule(RESOURCE_GROUP, ZERO_RESOURCE_GROUP);
+            interceptorManager.addTextReplacementRule(msakUserOid, ZERO_OID);
+            interceptorManager.addTextReplacementRule(resourceGroup, ZERO_RESOURCE_GROUP);
             initializeClients(restClient, defaultSubscription, credentials.domain());
         } else {
-            RESOURCE_GROUP = ZERO_RESOURCE_GROUP;
-            MSAK_USER_OID = ZERO_OID;
+            resourceGroup = ZERO_RESOURCE_GROUP;
+            msakUserOid = ZERO_OID;
             UserTokenCredentials credentials = new MockUserTokenCredentials();
             keyVaultClient = new KeyVaultClient(buildPlaybackRestClient(keyVaultCredentials, playbackUri));
             RestClient restClient = buildPlaybackRestClient(credentials, playbackUri);
@@ -182,7 +182,7 @@ public class ITManagedStorageAccountKey {
             initializeClients(restClient, ZERO_SUBSCRIPTION, ZERO_TENANT);
         }
 
-        KEY_VAULT_ROLE = getKeyVaultRole();
+        keyVaultRole = getKeyVaultRole();
 
     }
 
@@ -369,18 +369,18 @@ public class ITManagedStorageAccountKey {
     // Creates a new storage account for use with this account
     private StorageAccount initStorageAccount(final String storageAccountName, final String roleAccountUUID) {
         StorageAccount storageAccount = storageManager.storageAccounts().define(storageAccountName)
-                .withRegion(VAULT_REGION).withExistingResourceGroup(RESOURCE_GROUP).create();
+                .withRegion(VAULT_REGION).withExistingResourceGroup(resourceGroup).create();
 
         graphRbacManager.roleAssignments().define(roleAccountUUID).forObjectId("93c27d83-f79b-4cb2-8dd4-4aa716542e74")
-                .withRoleDefinition(KEY_VAULT_ROLE.id()).withScope(storageAccount.id()).create();
+                .withRoleDefinition(keyVaultRole.id()).withScope(storageAccount.id()).create();
 
         return storageAccount;
     }
 
     private Vault initVault(final String vaultName) {
         Vault vault = keyVaultManager.vaults().define(vaultName).withRegion(VAULT_REGION)
-                .withExistingResourceGroup(RESOURCE_GROUP).defineAccessPolicy()
-                .forObjectId(MSAK_USER_OID).allowSecretAllPermissions()
+                .withExistingResourceGroup(resourceGroup).defineAccessPolicy()
+                .forObjectId(msakUserOid).allowSecretAllPermissions()
                 .allowStorageAllPermissions().attach().withDeploymentDisabled().create();
         return vault;
     }
@@ -403,7 +403,7 @@ public class ITManagedStorageAccountKey {
             service = Executors.newFixedThreadPool(1);
             AuthenticationContext context = new AuthenticationContext(authorization, false, service);
             Future<AuthenticationResult> future = null;
-            future = context.acquireToken(resource, CLIENT_ID, MSAK_USER, MSAK_PASSWORD, null);
+            future = context.acquireToken(resource, CLIENT_ID, msakUser, msakPassword, null);
             result = future.get();
         } finally {
             service.shutdown();
