@@ -1,14 +1,11 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.common.annotations.SkipParentValidation;
 import com.azure.common.implementation.util.TypeUtil;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -139,15 +136,13 @@ public final class Validator {
                         for (Object item : items) {
                             Validator.validate(item);
                         }
-                    }
-                    else if (Map.class.isAssignableFrom(propertyType)) {
+                    } else if (Map.class.isAssignableFrom(propertyType)) {
                         Map<?, ?> entries = (Map<?, ?>) property;
                         for (Map.Entry<?, ?> entry : entries.entrySet()) {
                             Validator.validate(entry.getKey());
                             Validator.validate(entry.getValue());
                         }
-                    }
-                    else if (parameter.getClass() != propertyType) {
+                    } else if (parameter.getClass() != propertyType) {
                         Validator.validate(property);
                     }
                 } catch (IllegalArgumentException ex) {

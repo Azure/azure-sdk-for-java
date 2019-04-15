@@ -1,13 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation;
 
-import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.common.annotations.Host;
+import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 
 import java.lang.reflect.Method;
@@ -45,13 +42,11 @@ public class SwaggerInterfaceParser {
 
         if (host != null && !host.isEmpty()) {
             this.host = host;
-        }
-        else {
+        } else {
             final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
             if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
                 this.host = hostAnnotation.value();
-            }
-            else {
+            } else {
                 throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
             }
         }

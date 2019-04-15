@@ -1,13 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation;
 
 import com.azure.common.implementation.util.Base64Util;
+import com.azure.common.implementation.util.ImplUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -29,7 +28,7 @@ public final class Base64Url {
             this.bytes = null;
         } else {
             string = unquote(string);
-            this.bytes = string.getBytes();
+            this.bytes = string.getBytes(StandardCharsets.UTF_8);
         }
     }
 
@@ -44,7 +43,7 @@ public final class Base64Url {
 
     private static byte[] unquote(byte[] bytes) {
         if (bytes != null && bytes.length > 1) {
-            bytes = unquote(new String(bytes)).getBytes();
+            bytes = unquote(new String(bytes, StandardCharsets.UTF_8)).getBytes(StandardCharsets.UTF_8);
         }
         return bytes;
     }
@@ -83,7 +82,7 @@ public final class Base64Url {
      * @return The underlying encoded byte array.
      */
     public byte[] encodedBytes() {
-        return bytes;
+        return ImplUtils.clone(bytes);
     }
 
     /**
@@ -102,7 +101,7 @@ public final class Base64Url {
 
     @Override
     public String toString() {
-        return bytes == null ? null : new String(bytes);
+        return bytes == null ? "" : new String(bytes, StandardCharsets.UTF_8);
     }
 
     @Override

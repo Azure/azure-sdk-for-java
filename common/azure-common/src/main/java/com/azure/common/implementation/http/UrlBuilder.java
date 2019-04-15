@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation.http;
 
@@ -31,8 +28,7 @@ public final class UrlBuilder {
     public UrlBuilder withScheme(String scheme) {
         if (scheme == null || scheme.isEmpty()) {
             this.scheme = null;
-        }
-        else {
+        } else {
             with(scheme, UrlTokenizerState.SCHEME);
         }
         return this;
@@ -54,8 +50,7 @@ public final class UrlBuilder {
     public UrlBuilder withHost(String host) {
         if (host == null || host.isEmpty()) {
             this.host = null;
-        }
-        else {
+        } else {
             with(host, UrlTokenizerState.SCHEME_OR_HOST);
         }
         return this;
@@ -77,8 +72,7 @@ public final class UrlBuilder {
     public UrlBuilder withPort(String port) {
         if (port == null || port.isEmpty()) {
             this.port = null;
-        }
-        else {
+        } else {
             with(port, UrlTokenizerState.PORT);
         }
         return this;
@@ -109,8 +103,7 @@ public final class UrlBuilder {
     public UrlBuilder withPath(String path) {
         if (path == null || path.isEmpty()) {
             this.path = null;
-        }
-        else {
+        } else {
             with(path, UrlTokenizerState.PATH);
         }
         return this;
@@ -144,8 +137,7 @@ public final class UrlBuilder {
     public UrlBuilder withQuery(String query) {
         if (query == null || query.isEmpty()) {
             this.query.clear();
-        }
-        else {
+        } else {
             with(query, UrlTokenizerState.QUERY);
         }
         return this;

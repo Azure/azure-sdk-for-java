@@ -1,20 +1,16 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common;
 
 import com.azure.common.credentials.BasicAuthenticationCredentials;
 import com.azure.common.credentials.TokenCredentials;
-
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.policy.CredentialsPolicy;
-import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.MockHttpClient;
+import com.azure.common.http.policy.CredentialsPolicy;
+import com.azure.common.http.policy.HttpPipelinePolicy;
 import org.junit.Assert;
 import org.junit.Test;
 

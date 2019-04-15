@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation;
 
@@ -17,6 +14,7 @@ import java.util.Map;
  * that can be used to resume the polling of the original operation.
  */
 public class OperationDescription implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Serializable pollStrategyData;
     private Map<String, String> headers;
     private String httpMethod;

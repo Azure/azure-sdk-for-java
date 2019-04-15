@@ -1,15 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation.serializer.jackson;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.azure.common.implementation.serializer.JsonFlatten;
+import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.azure.common.implementation.util.Foo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.Assert;
 import org.junit.Test;
 

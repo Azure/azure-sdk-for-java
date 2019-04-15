@@ -1,18 +1,15 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.mgmt;
 
-import com.azure.common.http.rest.RestException;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpResponse;
 
 /**
  * Exception thrown for an invalid response with custom error information.
  */
-public final class CloudException extends RestException {
+public final class CloudException extends ServiceRequestException {
     /**
      * Initializes a new instance of the CloudException class.
      *
@@ -35,15 +32,15 @@ public final class CloudException extends RestException {
     }
 
     @Override
-    public CloudError body() {
-        return (CloudError) super.body();
+    public CloudError value() {
+        return (CloudError) super.value();
     }
 
     @Override
     public String toString() {
         String message = super.toString();
-        if (body() != null && body().message() != null) {
-            message = message + ": " + body().message();
+        if (value() != null && value().message() != null) {
+            message = message + ": " + value().message();
         }
         return message;
     }
