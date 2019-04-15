@@ -102,10 +102,10 @@ public class ITManagedStorageAccountKey {
 
     protected InterceptorManager interceptorManager = null;
 
-    protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
-    protected final static String ZERO_OID = "00000000-0000-0000-0000-000000000000";
-    protected final static String ZERO_RESOURCE_GROUP = "rg-0";
+    protected static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    protected static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    protected static final String ZERO_OID = "00000000-0000-0000-0000-000000000000";
+    protected static final String ZERO_RESOURCE_GROUP = "rg-0";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     protected static String playbackUri = null;
 
