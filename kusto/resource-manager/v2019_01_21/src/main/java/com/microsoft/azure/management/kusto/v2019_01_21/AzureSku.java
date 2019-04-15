@@ -19,7 +19,7 @@ public class AzureSku {
      * 'Standard_DS13_v2+2TB_PS', 'Standard_DS14_v2+3TB_PS',
      * 'Standard_DS14_v2+4TB_PS', 'Standard_D13_v2', 'Standard_D14_v2',
      * 'Standard_L8s', 'Standard_L16s', 'Standard_D11_v2', 'Standard_D12_v2',
-     * 'Standard_L4s', 'Dev(No SLA)_Standard_D11_v2'.
+     * 'Standard_L4s'.
      */
     @JsonProperty(value = "name", required = true)
     private AzureSkuName name;
@@ -38,14 +38,14 @@ public class AzureSku {
 
     /**
      * Creates an instance of AzureSku class.
-     * @param name sKU name. Possible values include: 'Standard_DS13_v2+1TB_PS', 'Standard_DS13_v2+2TB_PS', 'Standard_DS14_v2+3TB_PS', 'Standard_DS14_v2+4TB_PS', 'Standard_D13_v2', 'Standard_D14_v2', 'Standard_L8s', 'Standard_L16s', 'Standard_D11_v2', 'Standard_D12_v2', 'Standard_L4s', 'Dev(No SLA)_Standard_D11_v2'.
+     * @param name sKU name. Possible values include: 'Standard_DS13_v2+1TB_PS', 'Standard_DS13_v2+2TB_PS', 'Standard_DS14_v2+3TB_PS', 'Standard_DS14_v2+4TB_PS', 'Standard_D13_v2', 'Standard_D14_v2', 'Standard_L8s', 'Standard_L16s', 'Standard_D11_v2', 'Standard_D12_v2', 'Standard_L4s'.
      */
     public AzureSku() {
         tier = "Standard";
     }
 
     /**
-     * Get sKU name. Possible values include: 'Standard_DS13_v2+1TB_PS', 'Standard_DS13_v2+2TB_PS', 'Standard_DS14_v2+3TB_PS', 'Standard_DS14_v2+4TB_PS', 'Standard_D13_v2', 'Standard_D14_v2', 'Standard_L8s', 'Standard_L16s', 'Standard_D11_v2', 'Standard_D12_v2', 'Standard_L4s', 'Dev(No SLA)_Standard_D11_v2'.
+     * Get sKU name. Possible values include: 'Standard_DS13_v2+1TB_PS', 'Standard_DS13_v2+2TB_PS', 'Standard_DS14_v2+3TB_PS', 'Standard_DS14_v2+4TB_PS', 'Standard_D13_v2', 'Standard_D14_v2', 'Standard_L8s', 'Standard_L16s', 'Standard_D11_v2', 'Standard_D12_v2', 'Standard_L4s'.
      *
      * @return the name value
      */
@@ -54,7 +54,7 @@ public class AzureSku {
     }
 
     /**
-     * Set sKU name. Possible values include: 'Standard_DS13_v2+1TB_PS', 'Standard_DS13_v2+2TB_PS', 'Standard_DS14_v2+3TB_PS', 'Standard_DS14_v2+4TB_PS', 'Standard_D13_v2', 'Standard_D14_v2', 'Standard_L8s', 'Standard_L16s', 'Standard_D11_v2', 'Standard_D12_v2', 'Standard_L4s', 'Dev(No SLA)_Standard_D11_v2'.
+     * Set sKU name. Possible values include: 'Standard_DS13_v2+1TB_PS', 'Standard_DS13_v2+2TB_PS', 'Standard_DS14_v2+3TB_PS', 'Standard_DS14_v2+4TB_PS', 'Standard_D13_v2', 'Standard_D14_v2', 'Standard_L8s', 'Standard_L16s', 'Standard_D11_v2', 'Standard_D12_v2', 'Standard_L4s'.
      *
      * @param name the name value to set
      * @return the AzureSku object itself.
