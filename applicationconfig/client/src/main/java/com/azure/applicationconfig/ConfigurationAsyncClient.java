@@ -33,6 +33,16 @@ import java.util.stream.Collectors;
  *     on a filter are supported as well.
  * </p>
  *
+ * <pre>
+ *     {@code
+ *     String connectionString = <connection_string>;
+ *     ConfigurationClientCredentials credentials = new ConfigurationClientCredentials(connectionString);
+ *     ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
+ *          .credentials(credentials)
+ *          .build();
+ *     }
+ * </pre>
+ *
  * @see ConfigurationAsyncClientBuilder
  * @see ConfigurationClientCredentials
  */
