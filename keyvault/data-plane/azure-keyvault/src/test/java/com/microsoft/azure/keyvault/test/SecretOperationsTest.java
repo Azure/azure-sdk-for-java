@@ -297,7 +297,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             Attributes attributes) throws Exception {
         String prefix = vault + "/secrets/" + name + "/";
         String id = secret.id();
-        Assert.assertTrue( //
+        Assert.assertTrue(
                 String.format("\"id\" should start with \"%s\", but instead the value is \"%s\".", prefix, id), //
                 id.startsWith(prefix));
         Assert.assertEquals(value, secret.value());
@@ -309,7 +309,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         DeletionRecoveryLevel deletionRecoveryLevel = secret.attributes().recoveryLevel();
         Assert.assertNotNull(deletionRecoveryLevel);
 
-        Assert.assertTrue(secret.managed() == null || secret.managed() == false);
+        Assert.assertTrue(secret.managed() == null || !secret.managed());
     }
 
     private void compareSecrets(SecretBundle expected, SecretBundle actual) {
@@ -318,7 +318,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertEquals(expected.value(), actual.value());
         Assert.assertEquals(expected.attributes().enabled(), actual.attributes().enabled());
         if (expected.tags() != null || actual.tags() != null) {
-            Assert.assertTrue(expected.tags().equals(actual.tags()));
+            Assert.assertEquals(expected.tags(), actual.tags());
         }
     }
 

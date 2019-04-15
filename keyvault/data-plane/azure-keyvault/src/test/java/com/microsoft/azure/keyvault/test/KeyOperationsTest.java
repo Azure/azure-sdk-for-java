@@ -229,17 +229,17 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                                               .withMonthOfYear(2)
                                               .withDayOfMonth(1)
                                               .withYear(2050));
-            List<JsonWebKeyOperation> key_ops = Arrays.asList(JsonWebKeyOperation.ENCRYPT, JsonWebKeyOperation.DECRYPT);
+            List<JsonWebKeyOperation> keyOps = Arrays.asList(JsonWebKeyOperation.ENCRYPT, JsonWebKeyOperation.DECRYPT);
             Map<String, String> tags = new HashMap<String, String>();
             tags.put("foo", "baz");
-            createdBundle.key().withKeyOps(key_ops);
+            createdBundle.key().withKeyOps(keyOps);
             createdBundle.withTags(tags);
 
             // Perform the operation.
             KeyBundle updatedBundle = keyVaultClient.updateKey(
                         new UpdateKeyRequest
                             .Builder(createdBundle.key().kid())
-                            .withKeyOperations(key_ops)
+                            .withKeyOperations(keyOps)
                             .withAttributes(createdBundle.attributes())
                             .withTags(createdBundle.tags())
                             .build());
@@ -258,8 +258,8 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                                                             .withMonthOfYear(2)
                                                             .withDayOfMonth(1)
                                                             .withYear(2000));
-            List<JsonWebKeyOperation> key_ops = Arrays.asList(JsonWebKeyOperation.SIGN, JsonWebKeyOperation.VERIFY);
-            createdBundle.key().withKeyOps(key_ops);
+            List<JsonWebKeyOperation> keyOps = Arrays.asList(JsonWebKeyOperation.SIGN, JsonWebKeyOperation.VERIFY);
+            createdBundle.key().withKeyOps(keyOps);
             Map<String, String> tags = new HashMap<String, String>();
             tags.put("foo", "baz");
             createdBundle.withTags(tags);
@@ -268,7 +268,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             KeyBundle updatedBundle = keyVaultClient.updateKey(
                         new UpdateKeyRequest
                             .Builder(getVaultUri(), KEY_NAME)
-                            .withKeyOperations(key_ops)
+                            .withKeyOperations(keyOps)
                             .withAttributes(createdBundle.attributes())
                             .withTags(createdBundle.tags())
                             .build());
@@ -324,7 +324,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
 
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
-       	SdkContext.sleep(40000);
+        SdkContext.sleep(40000);
 
         // Restores the key.
         {
@@ -364,7 +364,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         HashSet<String> toDelete = new HashSet<String>();
 
         for (KeyItem item : listResult) {
-            if(item != null) {
+            if (item != null) {
                 KeyIdentifier id = new KeyIdentifier(item.kid());
                 toDelete.add(id.name());
                 keys.remove(item.kid());
@@ -378,7 +378,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                 DeletedKeyBundle deletedKey = keyVaultClient.deleteKey(getVaultUri(), name);
                 Assert.assertNotNull(deletedKey);
                 pollOnKeyDeletion(getVaultUri(), name);
-            } catch(KeyVaultErrorException e) {
+            } catch (KeyVaultErrorException e) {
                 // Ignore forbidden exception for certificate keys that cannot be deleted
                 if (!e.body().error().code().equals("Forbidden")) {
                     throw e;
@@ -422,12 +422,12 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
 
         PagedList<KeyItem> listResult = keyVaultClient.listKeyVersions(getVaultUri(), KEY_NAME, MAX_KEYS);
-        //TODO bug: Assert.assertTrue(PAGELIST_MAX_KEYS >= listResult.currentPage().getItems().size());
+        //TODO: Fix bug. Assert.assertTrue(PAGELIST_MAX_KEYS >= listResult.currentPage().getItems().size());
 
         listResult = keyVaultClient.listKeyVersions(getVaultUri(), KEY_NAME);
 
         for (KeyItem item : listResult) {
-            if(item != null) {
+            if (item != null) {
                 keys.remove(item.kid());
             }
         }
@@ -582,7 +582,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         return new KeyPair(keyFactory.generatePublic(publicKeySpec), keyFactory.generatePrivate(privateKeySpec));
     }
 
-    private static void validateRsaKeyBundle(KeyBundle bundle, String vault, String keyName, JsonWebKeyType kty, List<JsonWebKeyOperation> key_ops, Attributes attributes) throws Exception {
+    private static void validateRsaKeyBundle(KeyBundle bundle, String vault, String keyName, JsonWebKeyType kty, List<JsonWebKeyOperation> keyOps, Attributes attributes) throws Exception {
         String prefix = vault + "/keys/" + keyName + "/";
         String kid = bundle.key().kid();
         Assert.assertTrue(
@@ -591,20 +591,20 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertEquals(kty, bundle.key().kty());
         Assert.assertNotNull("\"n\" should not be null.", bundle.key().n());
         Assert.assertNotNull("\"e\" should not be null.", bundle.key().e());
-        if (key_ops != null) {
-            Assert.assertTrue(key_ops.equals(bundle.key().keyOps()));
+        if (keyOps != null) {
+            Assert.assertEquals(keyOps, bundle.key().keyOps());
         }
         Assert.assertNotNull("\"created\" should not be null.", bundle.attributes().created());
         Assert.assertNotNull("\"updated\" should not be null.", bundle.attributes().updated());
 
-        Assert.assertTrue(bundle.managed() == null || bundle.managed() == false);
+        Assert.assertTrue(bundle.managed() == null || !bundle.managed());
         Assert.assertTrue(bundle.key().isValid());
     }
 
     private void compareKeyBundles(KeyBundle expected, KeyBundle actual) {
         Assert.assertTrue(expected.key().toString().equals(actual.key().toString()));
         Assert.assertEquals(expected.attributes().enabled(), actual.attributes().enabled());
-        if(expected.tags() != null || actual.tags() != null) {
+        if (expected.tags() != null || actual.tags() != null) {
             Assert.assertTrue(expected.tags().equals(actual.tags()));
         }
     }
