@@ -21,7 +21,7 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Aes256CbcHmacSha512;
 
 public class AesCbcHmacShaTest {
 
-    private Provider _provider = null;
+    private Provider provider = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -41,7 +41,7 @@ public class AesCbcHmacShaTest {
     }
     
     protected void setProvider(Provider provider) {
-        _provider = null;
+        this.provider = null;
     }
 
     @Test
@@ -81,7 +81,7 @@ public class AesCbcHmacShaTest {
         byte[] tag = null;
 
         try {
-            transform = (IAuthenticatedCryptoTransform) algo.CreateEncryptor(K, IV, A, _provider);
+            transform = (IAuthenticatedCryptoTransform) algo.CreateEncryptor(K, IV, A, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -98,7 +98,7 @@ public class AesCbcHmacShaTest {
         }
 
         try {
-            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, _provider);
+            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -157,7 +157,7 @@ public class AesCbcHmacShaTest {
         byte[] tag = null;
 
         try {
-            transform = (IAuthenticatedCryptoTransform) algo.CreateEncryptor(K, IV, A, _provider);
+            transform = (IAuthenticatedCryptoTransform) algo.CreateEncryptor(K, IV, A, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -174,7 +174,7 @@ public class AesCbcHmacShaTest {
         }
 
         try {
-            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, _provider);
+            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -232,7 +232,7 @@ public class AesCbcHmacShaTest {
         byte[] tag = null;
 
         try {
-            transform = (IAuthenticatedCryptoTransform) algo.CreateEncryptor(K, IV, A, _provider);
+            transform = (IAuthenticatedCryptoTransform) algo.CreateEncryptor(K, IV, A, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -249,7 +249,7 @@ public class AesCbcHmacShaTest {
         }
 
         try {
-            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, _provider);
+            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
