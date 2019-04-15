@@ -44,7 +44,7 @@ class ServerfarmVnetInfoImpl extends IndexableRefreshableWrapperImpl<ServerfarmV
 
 
     @Override
-    public byte[] certBlob() {
+    public String certBlob() {
         return this.inner().certBlob();
     }
 

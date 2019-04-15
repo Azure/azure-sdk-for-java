@@ -23,7 +23,7 @@ public interface ServerfarmVnetInfo extends HasInner<VnetInfoInner>, Indexable, 
     /**
      * @return the certBlob value.
      */
-    byte[] certBlob();
+    String certBlob();
 
     /**
      * @return the certThumbprint value.
