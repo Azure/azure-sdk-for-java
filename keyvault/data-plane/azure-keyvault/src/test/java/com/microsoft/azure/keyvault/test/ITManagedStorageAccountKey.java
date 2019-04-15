@@ -189,19 +189,18 @@ public class ITManagedStorageAccountKey {
     @Test
     public void testCrudOperationsForManagedStorageAccountKey() {
 
-        String msak_UUID = null;
+        String msakUUID = null;
         String storageAccountName = null;
         String vaultName = null;
         String fileName = System.getProperty("user.dir")
                 + "/src/test/java/com/microsoft/azure/keyvault/test/crudNames.json";
 
         if (isRecordMode()) {
-
-            msak_UUID = UUID.randomUUID().toString();
+            msakUUID = UUID.randomUUID().toString();
             storageAccountName = SdkContext.randomResourceName("sa", 15);
             vaultName = SdkContext.randomResourceName("vault", 15);
             JsonObject obj = new JsonObject();
-            obj.addProperty("roleDefUUID", msak_UUID);
+            obj.addProperty("roleDefUUID", msakUUID);
             obj.addProperty("storageAccountName", storageAccountName);
             obj.addProperty("vaultName", vaultName);
             try {
@@ -217,7 +216,7 @@ public class ITManagedStorageAccountKey {
                 Gson gson = new Gson();
                 BufferedReader br = new BufferedReader(new FileReader(fileName));
                 JsonObject obj = gson.fromJson(br, JsonObject.class);
-                msak_UUID = obj.get("roleDefUUID").getAsString();
+                msakUUID = obj.get("roleDefUUID").getAsString();
                 storageAccountName = obj.get("storageAccountName").getAsString();
                 vaultName = obj.get("vaultName").getAsString();
             } catch (Exception e) {
@@ -225,7 +224,7 @@ public class ITManagedStorageAccountKey {
             }
         }
 
-        StorageAccount storageAccount = initStorageAccount(storageAccountName, msak_UUID);
+        StorageAccount storageAccount = initStorageAccount(storageAccountName, msakUUID);
 
         Vault vault = initVault(vaultName);
 
@@ -263,7 +262,7 @@ public class ITManagedStorageAccountKey {
     public void testSetAndGetSasDefinitionForManagedStorageAccountKey()
             throws ParseException, URISyntaxException, StorageException, InvalidKeyException, IOException {
 
-        String sas_UUID = null;
+        String sasUUID = null;
         String storageAccountName = null;
         String vaultName = null;
         String fileName = System.getProperty("user.dir")
@@ -271,11 +270,11 @@ public class ITManagedStorageAccountKey {
 
         // Write names to file to save it
         if (isRecordMode()) {
-            sas_UUID = UUID.randomUUID().toString();
+            sasUUID = UUID.randomUUID().toString();
             storageAccountName = SdkContext.randomResourceName("sa", 15);
             vaultName = SdkContext.randomResourceName("vault", 15);
             JsonObject obj = new JsonObject();
-            obj.addProperty("roleDefUUID", sas_UUID);
+            obj.addProperty("roleDefUUID", sasUUID);
             obj.addProperty("storageAccountName", storageAccountName);
             obj.addProperty("vaultName", vaultName);
 
@@ -293,7 +292,7 @@ public class ITManagedStorageAccountKey {
                 Gson gson = new Gson();
                 BufferedReader br = new BufferedReader(new FileReader(fileName));
                 JsonObject obj = gson.fromJson(br, JsonObject.class);
-                sas_UUID = obj.get("roleDefUUID").getAsString();
+                sasUUID = obj.get("roleDefUUID").getAsString();
                 storageAccountName = obj.get("storageAccountName").getAsString();
                 vaultName = obj.get("vaultName").getAsString();
 
@@ -302,7 +301,7 @@ public class ITManagedStorageAccountKey {
             }
         }
 
-        StorageAccount storageAccount = initStorageAccount(storageAccountName, sas_UUID);
+        StorageAccount storageAccount = initStorageAccount(storageAccountName, sasUUID);
         Vault vault = initVault(vaultName);
         String vaultUri = vault.vaultUri();
 
