@@ -1,5 +1,6 @@
 package com.azure.applicationconfig;
 
+import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.exception.ServiceRequestException;
@@ -8,11 +9,56 @@ import com.azure.common.http.rest.Response;
 import java.util.List;
 
 /**
- * Synchronous client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
+ * Client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
  * Store.
  *
+ * <p>
+ *     Azure Configuration Store operations allowed by the client are adding, retrieving, updating, and deleting
+ *     ConfigurationSettings, additionally more complex operations of listing settings or revision of a setting based
+ *     on a filter are supported as well.
+ * </p>
+ *
+ * Construct the client
+ * <pre>
+ * {@code String connectionString = <connection_string>;
+ *    ConfigurationClientCredentials credentials = new ConfigurationClientCredentials(connectionString);
+ *    ConfigurationClient client = ConfigurationClient.builder()
+ *         .credentials(credentials)
+ *         .build();}
+ * </pre>
+ *
+ * Add a Configuration Setting
+ * <pre>
+ * {@code ConfigurationSetting setting = client.addSetting("prodDBConnection", "<db_connection>");
+ *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *
+ *    ConfigurationClient setting = client.setSetting("testDBConnection", "<db_connection>");
+ *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());}
+ * </pre>
+ *
+ * Retrieve a Configuration Setting
+ * <pre>
+ * {@code ConfigurationSetting setting = client.getSetting("testDBConnection");
+ *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());}
+ * </pre>
+ *
+ * Update an existing Configuration Setting
+ * <pre>
+ * {@code ConfigurationSetting setting = client.updateSetting("prodDBConnection", "<updated_db_connection");
+ *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *
+ *    ConfigurationSetting setting = client.setSetting("testDBConnection", "<updated_db_connection>");
+ *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());}
+ * </pre>
+ *
+ * Delete a Configuration Setting
+ * <pre>
+ * {@code ConfigurationSetting setting = client.deleteSetting("testDBConnection");
+ *    System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());}
+ * </pre>
+ *
  * @see ConfigurationClientBuilder
- * @see com.azure.applicationconfig.credentials.ConfigurationClientCredentials
+ * @see ConfigurationClientCredentials
  */
 public final class ConfigurationClient {
     private final ConfigurationAsyncClient client;
