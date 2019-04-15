@@ -12,6 +12,7 @@ package com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implement
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.Monitorings;
 import rx.Completable;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.MonitoringDetails;
 
 class MonitoringsImpl extends WrapperImpl<MonitoringsInner> implements Monitorings {
     private final HanaOnAzureManager manager;
@@ -26,9 +27,9 @@ class MonitoringsImpl extends WrapperImpl<MonitoringsInner> implements Monitorin
     }
 
     @Override
-    public Completable hanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName) {
+    public Completable hanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
         MonitoringsInner client = this.inner();
-        return client.hanaInstancesMethodAsync(resourceGroupName, hanaInstanceName).toCompletable();
+        return client.hanaInstancesMethodAsync(resourceGroupName, hanaInstanceName, monitoringParameter).toCompletable();
     }
 
 }

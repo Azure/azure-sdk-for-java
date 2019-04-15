@@ -21,9 +21,10 @@ public interface Monitorings extends HasInner<MonitoringsInner> {
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param monitoringParameter Request body that only contains monitoring attributes
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable hanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName);
+    Completable hanaInstancesMethodAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter);
 
 }
