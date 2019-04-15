@@ -305,7 +305,7 @@ public class ITManagedStorageAccountKey {
         Vault vault = initVault(vaultName);
         String vaultUri = vault.vaultUri();
 
-        final SimpleDateFormat FORMATTER = new SimpleDateFormat("dd-MM-yyyy");
+        final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
         String activeKeyName = "key1";
         String regenerationPeriod = "P30D";
@@ -331,7 +331,7 @@ public class ITManagedStorageAccountKey {
                 SharedAccessAccountResourceType.OBJECT, SharedAccessAccountResourceType.SERVICE)); // all resources
                                                                                                    // service,
                                                                                                    // container, object
-        sharedAccessAccountPolicy.setSharedAccessExpiryTime(FORMATTER.parse("01-01-2020"));
+        sharedAccessAccountPolicy.setSharedAccessExpiryTime(formatter.parse("01-01-2020"));
 
         // Generate a signature based off of the policy and account.
         String sasSignature = account.generateSharedAccessSignature(sharedAccessAccountPolicy);
