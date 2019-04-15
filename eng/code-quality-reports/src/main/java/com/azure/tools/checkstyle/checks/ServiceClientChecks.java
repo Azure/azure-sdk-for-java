@@ -9,6 +9,11 @@ import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Verifies that subclasses of ServiceClient meet a set of guidelines.
  * <ol>
@@ -23,16 +28,21 @@ public class ServiceClientChecks extends AbstractCheck {
     private static final String FAILED_TO_LOAD_MESSAGE = "%s class failed to load, ServiceClientChecks will be ignored.";
     private static final String CONSTRUCTOR_ERROR_MESSAGE = "Descendants of ServiceClient cannot have public or protected constructors.";
     private static final String BUILDER_ERROR_MESSAGE = "Descendants of ServiceClient must have a static method named builder.";
+    private static final String SERVICE_INSTANCE_NAMING_ERR = "ServiceClient instance should be named either <SerivceName>Client or <ServiceName>AsyncClient";
 
     private static final int[] TOKENS = new int[] {
         TokenTypes.PACKAGE_DEF,
         TokenTypes.CTOR_DEF,
-        TokenTypes.METHOD_DEF
+        TokenTypes.METHOD_DEF,
+        TokenTypes.IMPORT,
+        TokenTypes.LITERAL_NEW
     };
 
     private Class<?> serviceClientClass;
     private boolean extendsServiceClient;
     private boolean hasStaticBuilder;
+
+    private static Set<String> castableSet = new HashSet<>();
 
     @Override
     public int[] getDefaultTokens() {
@@ -68,6 +78,7 @@ public class ServiceClientChecks extends AbstractCheck {
      */
     @Override
     public void beginTree(DetailAST rootAST) {
+        castableSet.clear();
         this.extendsServiceClient = false;
         this.hasStaticBuilder = false;
     }
@@ -95,6 +106,12 @@ public class ServiceClientChecks extends AbstractCheck {
                 if (this.extendsServiceClient && !this.hasStaticBuilder && methodIsStaticBuilder(token)) {
                     this.hasStaticBuilder = true;
                 }
+                break;
+            case TokenTypes.IMPORT:
+                collectAllServiceClientSubclass(token);
+                break;
+            case TokenTypes.LITERAL_NEW:
+                isInstanceNamingCorrect(token);
                 break;
         }
     }
@@ -172,5 +189,43 @@ public class ServiceClientChecks extends AbstractCheck {
         }
 
         return methodToken.findFirstToken(TokenTypes.IDENT).getText().equals(BUILDER_METHOD_NAME);
+    }
+
+    /**
+     * All new Service Client instance should be named either as (ServiceName)Client
+     * or (ServiceName)AsyncClient
+     * @param literalNewAST the LITERAL_NEW AST node
+     */
+    private void isInstanceNamingCorrect(DetailAST literalNewAST) {
+        String varName = literalNewAST.getParent().findFirstToken(TokenTypes.IDENT).getText();
+        String varClassName = literalNewAST.findFirstToken(TokenTypes.IDENT).getText();
+        if (castableSet.contains(varClassName)) {
+            int endingIdx = varClassName.indexOf("Client");
+            if (endingIdx == -1) {
+                return;
+            }
+            String serviceName = varClassName.substring(0, endingIdx);
+            if (!varName.startsWith(serviceName)
+                ||!(varName.endsWith("Client") || varName.endsWith("AsyncClient"))) {
+                log(literalNewAST, SERVICE_INSTANCE_NAMING_ERR);
+            }
+        }
+    }
+
+    /**
+     * Collect all implementation or subclass of ServiceClient interface
+     * @param importAST The import AST node
+     */
+    private void collectAllServiceClientSubclass(DetailAST importAST) {
+        FullIdent classNameFI = FullIdent.createFullIdentBelow(importAST);
+        String className = classNameFI.getText();
+        try {
+            Class<?> importClass = Class.forName(className);
+            if (this.serviceClientClass.isInstance(importClass)) {
+                castableSet.add(className);
+            }
+        }  catch (ClassNotFoundException ex) {
+            log(importAST, String.format(FAILED_TO_LOAD_MESSAGE, className));
+        }
     }
 }
