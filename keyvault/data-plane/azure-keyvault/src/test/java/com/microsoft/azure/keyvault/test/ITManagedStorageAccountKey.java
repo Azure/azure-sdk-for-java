@@ -75,7 +75,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.interceptors.LoggingInterceptor;
 
 import okhttp3.Interceptor;
-import resources.MockUserTokenCredentials;
+import com.microsoft.azure.keyvault.test.resources.MockUserTokenCredentials;
 
 public class ITManagedStorageAccountKey {
 
