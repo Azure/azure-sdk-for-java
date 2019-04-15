@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
  *     on a filter are supported as well.
  * </p>
  *
+ * Construct the client
  * <pre>
  *     {@code
  *     String connectionString = <connection_string>;
@@ -40,6 +41,56 @@ import java.util.stream.Collectors;
  *     ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
  *          .credentials(credentials)
  *          .build();
+ *     }
+ * </pre>
+ *
+ * Add a Configuration Setting
+ * <pre>
+ *     {@code
+ *     client.addSetting("prodDBConnection", "<db_connection>").subscribe(result -> {
+ *         ConfigurationSetting setting = result.value();
+ *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     });
+ *
+ *     client.setSetting("testDBConnection", "<db_connection>").subscribe(result -> {
+ *         ConfigurationSetting setting = result.value();
+ *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     });
+ *     }
+ * </pre>
+ *
+ * Retrieve a Configuration Setting
+ * <pre>
+ *     {@code
+ *     client.getSetting("testDBConnection").subscribe(result -> {
+ *         ConfigurationSetting setting = result.value();
+ *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     });
+ *     }
+ * </pre>
+ *
+ * Update an existing Configuration Setting
+ * <pre>
+ *     {@code
+ *     client.updateSetting("prodDBConnection", "<updated_db_connection").subscribe(result -> {
+ *         ConfigurationSetting setting = result.value();
+ *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     });
+ *
+ *     client.setSetting("testDBConnection", "<updated_db_connection>").subscribe(result -> {
+ *         ConfigurationSetting setting = result.value();
+ *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     });
+ *     }
+ * </pre>
+ *
+ * Delete a Configuration Setting
+ * <pre>
+ *     {@code
+ *     client.deleteSetting("testDBConnection").subscribe(result -> {
+ *         ConfigurationSetting setting = result.value();
+ *         System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     })
  *     }
  * </pre>
  *
