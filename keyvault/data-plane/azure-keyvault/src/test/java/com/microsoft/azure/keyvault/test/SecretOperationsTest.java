@@ -243,8 +243,9 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
                 SdkContext.sleep(20000);
             } catch (KeyVaultErrorException e) {
                 // Ignore forbidden exception for certificate secrets that cannot be deleted
-                if (!e.body().error().code().equals("Forbidden"))
+                if (!e.body().error().code().equals("Forbidden")) {
                     throw e;
+                }
             }
         }
     }
@@ -316,9 +317,9 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertEquals(expected.id(), actual.id());
         Assert.assertEquals(expected.value(), actual.value());
         Assert.assertEquals(expected.attributes().enabled(), actual.attributes().enabled());
-        if (expected.tags() != null || actual.tags() != null)
+        if (expected.tags() != null || actual.tags() != null) {
             Assert.assertTrue(expected.tags().equals(actual.tags()));
-
+        }
     }
 
 }

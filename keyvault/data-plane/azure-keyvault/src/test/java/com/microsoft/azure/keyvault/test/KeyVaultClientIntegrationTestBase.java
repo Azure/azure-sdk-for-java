@@ -178,12 +178,12 @@ public class KeyVaultClientIntegrationTestBase {
         // Determine whether to run the test based on the condition the test has been
         // configured with
         switch (this.runCondition) {
-        case MOCK_ONLY:
-            return (!isPlaybackMode) ? "Test configured to run only as mocked, not live." : null;
-        case LIVE_ONLY:
-            return (isPlaybackMode) ? "Test configured to run only as live, not mocked." : null;
-        default:
-            return null;
+            case MOCK_ONLY:
+                return (!isPlaybackMode) ? "Test configured to run only as mocked, not live." : null;
+            case LIVE_ONLY:
+                return (isPlaybackMode) ? "Test configured to run only as live, not mocked." : null;
+            default:
+                return null;
         }
     }
 
@@ -224,13 +224,15 @@ public class KeyVaultClientIntegrationTestBase {
     }
 
     public static boolean isPlaybackMode() {
-        if (testMode == null)
+        if (testMode == null) {
             try {
                 initTestMode();
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException("Can't init test mode.");
             }
+        }
+
         return testMode == TestBase.TestMode.PLAYBACK;
     }
 
