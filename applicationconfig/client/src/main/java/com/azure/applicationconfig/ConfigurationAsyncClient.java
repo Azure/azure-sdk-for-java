@@ -290,7 +290,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         return result.flatMapMany(this::extractAndFetchConfigurationSettings);
     }
 
-    static String getSelectQuery(SettingFields[] set) {
+    private static String getSelectQuery(SettingFields[] set) {
         if (set == null || set.length == 0) {
             return null;
         }

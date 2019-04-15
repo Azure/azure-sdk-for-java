@@ -40,16 +40,16 @@ public final class ConfigurationAsyncClientBuilder {
     private static final String ACCEPT_HEADER = "Accept";
     private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
 
-    final List<HttpPipelinePolicy> policies;
-    final HttpHeaders headers;
+    private final List<HttpPipelinePolicy> policies;
+    private final HttpHeaders headers;
 
-    ConfigurationClientCredentials credentials;
-    URL serviceEndpoint;
-    HttpClient httpClient;
-    HttpLogDetailLevel httpLogDetailLevel;
-    HttpPipeline pipeline;
-    RetryPolicy retryPolicy;
-    String userAgent;
+    private ConfigurationClientCredentials credentials;
+    private URL serviceEndpoint;
+    private HttpClient httpClient;
+    private HttpLogDetailLevel httpLogDetailLevel;
+    private HttpPipeline pipeline;
+    private RetryPolicy retryPolicy;
+    private String userAgent;
 
     ConfigurationAsyncClientBuilder() {
         userAgent = AzureConfiguration.getUserAgentHeader(AzureConfiguration.NAME, AzureConfiguration.VERSION);
