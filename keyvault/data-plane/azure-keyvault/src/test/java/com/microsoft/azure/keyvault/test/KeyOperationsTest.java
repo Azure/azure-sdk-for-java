@@ -324,7 +324,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
 
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
-       	SdkContext.sleep(40000);
+        SdkContext.sleep(40000);
 
         // Restores the key.
         {
