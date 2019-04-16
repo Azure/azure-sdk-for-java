@@ -405,7 +405,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 
-    private static abstract class SimpleMockHttpClient implements HttpClient {
+    private abstract static class SimpleMockHttpClient implements HttpClient {
 
         @Override
         public abstract Mono<HttpResponse> send(HttpRequest request);

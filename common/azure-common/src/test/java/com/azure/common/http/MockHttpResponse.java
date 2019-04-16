@@ -16,7 +16,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class MockHttpResponse extends HttpResponse {
-    private final static SerializerAdapter SERIALIZER = new JacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     private final int statusCode;
 
