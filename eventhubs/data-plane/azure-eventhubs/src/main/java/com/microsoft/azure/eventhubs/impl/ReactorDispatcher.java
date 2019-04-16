@@ -95,7 +95,7 @@ public final class ReactorDispatcher {
         }
     }
 
-    private final class DelayHandler extends BaseHandler {
+    private static final class DelayHandler extends BaseHandler {
         final int delay;
         final BaseHandler timerCallback;
         final Reactor reactor;
@@ -139,8 +139,9 @@ public final class ReactorDispatcher {
         @Override
         public void run(Selectable selectable) {
             try {
-                if (ioSignal.sink().isOpen())
+                if (ioSignal.sink().isOpen()) {
                     ioSignal.sink().close();
+                }
             } catch (IOException ioException) {
                 TRACE_LOGGER.info("CloseHandler.run() sink().close() failed with an error", ioException);
             }
@@ -148,8 +149,9 @@ public final class ReactorDispatcher {
             workScheduler.run(null);
 
             try {
-                if (ioSignal.source().isOpen())
+                if (ioSignal.source().isOpen()) {
                     ioSignal.source().close();
+                }
             } catch (IOException ioException) {
                 TRACE_LOGGER.info("CloseHandler.run() source().close() failed with an error", ioException);
             }

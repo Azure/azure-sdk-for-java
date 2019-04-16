@@ -3,10 +3,7 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
-import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Session;
-
-import java.util.function.BiConsumer;
 
 public class RequestResponseOpener implements Operation<RequestResponseChannel> {
     private final SessionProvider sessionProvider;
@@ -28,21 +25,19 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
     public void run(OperationResult<RequestResponseChannel, Exception> operationCallback) {
 
         final Session session = this.sessionProvider.getSession(
-                this.sessionName,
-                null,
-                new BiConsumer<ErrorCondition, Exception>() {
-                    @Override
-                    public void accept(ErrorCondition error, Exception exception) {
-                        if (error != null)
-                            operationCallback.onError(ExceptionUtil.toException(error));
-                        else if (exception != null)
-                            operationCallback.onError(exception);
-                    }
-                });
+            this.sessionName,
+            null,
+            (error, exception) -> {
+                if (error != null) {
+                    operationCallback.onError(ExceptionUtil.toException(error));
+                } else if (exception != null) {
+                    operationCallback.onError(exception);
+                }
+            });
 
-        if (session == null)
+        if (session == null) {
             return;
-
+        }
         final RequestResponseChannel requestResponseChannel = new RequestResponseChannel(
                 this.linkName,
                 this.endpointAddress,
