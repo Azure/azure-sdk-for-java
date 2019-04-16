@@ -22,6 +22,8 @@ import java.util.Set;
 public class ServiceClientChecks extends AbstractCheck {
     private static final String BUILDER_METHOD_NAME = "builder";
     private static final String SERVICE_CLIENT_CLASS_NAME = "com.azure.common.ServiceClient";
+    private static final String CLIENT = "client";
+    private static final String ASYNC_CLIENT = "AsyncClient";
 
     private static final String FAILED_TO_LOAD_MESSAGE = "%s class failed to load, ServiceClientChecks will be ignored.";
     private static final String CONSTRUCTOR_ERROR_MESSAGE = "Descendants of ServiceClient cannot have public or protected constructors.";
@@ -197,14 +199,14 @@ public class ServiceClientChecks extends AbstractCheck {
     private void isInstanceNamingCorrect(DetailAST literalNewAST) {
         String varName = literalNewAST.getParent().findFirstToken(TokenTypes.IDENT).getText();
         String varClassName = literalNewAST.findFirstToken(TokenTypes.IDENT).getText();
-        if (castableSet.contains(varClassName)) {
-            int endingIdx = varClassName.indexOf("Client");
+        if (varClassName.length() > CLIENT.length() && castableSet.contains(varClassName)) {
+            int endingIdx = varClassName.indexOf(CLIENT);
             if (endingIdx == -1) {
                 return;
             }
             String serviceName = varClassName.substring(0, endingIdx);
             if (!varName.startsWith(serviceName)
-                ||!(varName.endsWith("Client") || varName.endsWith("AsyncClient"))) {
+                ||!(varName.endsWith(CLIENT) || varName.endsWith(ASYNC_CLIENT))) {
                 log(literalNewAST, SERVICE_INSTANCE_NAMING_ERR);
             }
         }
@@ -216,14 +218,14 @@ public class ServiceClientChecks extends AbstractCheck {
      */
     private void collectAllServiceClientSubclass(DetailAST importAST) {
         FullIdent classNameFI = FullIdent.createFullIdentBelow(importAST);
-        String className = classNameFI.getText();
+        String classFullPath = classNameFI.getText();
         try {
-            Class<?> importClass = Class.forName(className);
+            Class<?> importClass = Class.forName(classFullPath);
             if (this.serviceClientClass.isInstance(importClass)) {
-                castableSet.add(className);
+                castableSet.add(importClass.getSimpleName());
             }
         }  catch (ClassNotFoundException ex) {
-            log(importAST, String.format(FAILED_TO_LOAD_MESSAGE, className));
+            log(importAST, String.format(FAILED_TO_LOAD_MESSAGE, classFullPath));
         }
     }
 }
