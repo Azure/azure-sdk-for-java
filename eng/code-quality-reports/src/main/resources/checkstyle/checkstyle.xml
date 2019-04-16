@@ -253,12 +253,16 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <module name="PackageName">
             <property name="format" value="^(?=.{9,80}$)((com.microsoft.azure|com.azure)(\.[a-z]{1,20})*)+$"/>
         </module>
-      
+
         <!-- Javadoc checks                                   -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
         <module name="JavadocMethod">
             <property name="scope" value="protected"/>
         </module>
+
+        <!-- Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown. -->
+        <!-- The check verifies both checked (in the throws clause) and unchecked throws -->
+        <module name="com.azure.tools.checkstyle.checks.JavadocThrowsChecks"/>
 
         <!-- CUSTOM CHECKS -->
         <!-- Verifies that subclasses of ServiceClient meet a set of guidelines.
