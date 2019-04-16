@@ -159,19 +159,6 @@ public class HanaManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The MonitoringsInner object to access its operations.
-     */
-    private MonitoringsInner monitorings;
-
-    /**
-     * Gets the MonitoringsInner object to access its operations.
-     * @return the MonitoringsInner object.
-     */
-    public MonitoringsInner monitorings() {
-        return this.monitorings;
-    }
-
-    /**
      * Initializes an instance of HanaManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -208,7 +195,6 @@ public class HanaManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.hanaInstances = new HanaInstancesInner(restClient().retrofit(), this);
-        this.monitorings = new MonitoringsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
