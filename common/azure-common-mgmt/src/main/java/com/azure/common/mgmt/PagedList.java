@@ -210,7 +210,7 @@ public abstract class PagedList<E> implements List<E> {
             if (i < 0) {
                 throw new NoSuchElementException();
             } else if (i >= items.size()) {
-                    throw new ConcurrentModificationException();
+                throw new ConcurrentModificationException();
             } else {
                 try {
                     this.nextIndex = i;

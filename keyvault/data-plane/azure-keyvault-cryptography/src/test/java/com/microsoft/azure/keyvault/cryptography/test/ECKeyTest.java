@@ -51,8 +51,8 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 
 public class ECKeyTest {
-	
-	private static Provider _provider = null;
+
+    private static Provider _provider = null;
     
     static byte[] CEK;
     static KeyFactory FACTORY;
@@ -78,98 +78,98 @@ public class ECKeyTest {
     
 
     protected static void setProvider(Provider provider) {
-    	_provider = provider;
+        _provider = provider;
     }
        
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-    	setProvider(Security.getProvider("SunEC"));
-    	EC_KEY_GENERATOR = KeyPairGenerator.getInstance("EC", _provider);
+        setProvider(Security.getProvider("SunEC"));
+        EC_KEY_GENERATOR = KeyPairGenerator.getInstance("EC", _provider);
 
-    	Path byte_location = Paths.get(getPath("byte_array.bin"));
+        Path byte_location = Paths.get(getPath("byte_array.bin"));
         CEK = Files.readAllBytes(byte_location);
 
-    	FACTORY = KeyFactory.getInstance("EC", _provider);
-    	
-    	DIGEST_256 = MessageDigest.getInstance("SHA-256");
-    	DIGEST_384 = MessageDigest.getInstance("SHA-384");
-    	DIGEST_512 = MessageDigest.getInstance("SHA-512");
-    	
-    	CURVE_TO_DIGEST = ImmutableMap.<JsonWebKeyCurveName, MessageDigest>builder()
-			.put(JsonWebKeyCurveName.P_256, DIGEST_256)
-			.put(JsonWebKeyCurveName.P_384, DIGEST_384)
-			.put(JsonWebKeyCurveName.P_521, DIGEST_512)
-			.put(JsonWebKeyCurveName.P_256K, DIGEST_256)
-			.build();
-    	//JsonWebKeyCurveName.SECP256K1)
-    	CURVE_LIST = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.P_256K);
+        FACTORY = KeyFactory.getInstance("EC", _provider);
+
+        DIGEST_256 = MessageDigest.getInstance("SHA-256");
+        DIGEST_384 = MessageDigest.getInstance("SHA-384");
+        DIGEST_512 = MessageDigest.getInstance("SHA-512");
+
+        CURVE_TO_DIGEST = ImmutableMap.<JsonWebKeyCurveName, MessageDigest>builder()
+            .put(JsonWebKeyCurveName.P_256, DIGEST_256)
+            .put(JsonWebKeyCurveName.P_384, DIGEST_384)
+            .put(JsonWebKeyCurveName.P_521, DIGEST_512)
+            .put(JsonWebKeyCurveName.P_256K, DIGEST_256)
+            .build();
+        //JsonWebKeyCurveName.SECP256K1)
+        CURVE_LIST = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.P_256K);
     }
     
     @Test
     public void testCurves() throws Exception {
-    	for (JsonWebKeyCurveName crv : CURVE_LIST) {
-    		EcKey key = new EcKey("keyId", crv);
-    		doSignVerify(key, CURVE_TO_DIGEST.get(crv));
-    	}
+        for (JsonWebKeyCurveName crv : CURVE_LIST) {
+            EcKey key = new EcKey("keyId", crv);
+            doSignVerify(key, CURVE_TO_DIGEST.get(crv));
+        }
     }
     
     @Test(expected = NoSuchAlgorithmException.class)
     public void testUnsupportedCurve() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-    	EcKey key = new EcKey("keyId", new JsonWebKeyCurveName("not an algo"));
+        EcKey key = new EcKey("keyId", new JsonWebKeyCurveName("not an algo"));
     }
     
     @Test
     public void testDefaultKey() throws Exception {
-    	EcKey key = new EcKey("keyId");
-    	doSignVerify(key, DIGEST_256);
+        EcKey key = new EcKey("keyId");
+        doSignVerify(key, DIGEST_256);
     }
     
     @Test
     public void testWithKeyPair() throws Exception {
-    	for (JsonWebKeyCurveName crv : CURVE_LIST) {
-        	ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.CURVE_TO_SPEC_NAME.get(crv));
-        	EC_KEY_GENERATOR.initialize(gps);
-        	KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
-        	
-        	final String name = "keyid";
-        	EcKey key = new EcKey(name, keyPair);
-        	assertEquals(name, key.getKid());
-        	assertEquals(crv, key.getCurve());
-        	doSignVerify(key, CURVE_TO_DIGEST.get(crv));
-    	}
+        for (JsonWebKeyCurveName crv : CURVE_LIST) {
+            ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.CURVE_TO_SPEC_NAME.get(crv));
+            EC_KEY_GENERATOR.initialize(gps);
+            KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
+
+            final String name = "keyid";
+            EcKey key = new EcKey(name, keyPair);
+            assertEquals(name, key.getKid());
+            assertEquals(crv, key.getCurve());
+            doSignVerify(key, CURVE_TO_DIGEST.get(crv));
+        }
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void testWithNotCurveKeyPair() throws Exception {
-    	ECGenParameterSpec gps = new ECGenParameterSpec("secp192k1");
-    	EC_KEY_GENERATOR.initialize(gps);
-    	KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
-    	
-    	final String name = "keyid";
-    	EcKey key = new EcKey(name, keyPair);
+        ECGenParameterSpec gps = new ECGenParameterSpec("secp192k1");
+        EC_KEY_GENERATOR.initialize(gps);
+        KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
+
+        final String name = "keyid";
+        EcKey key = new EcKey(name, keyPair);
     }
     
     @Test(expected = UnsupportedOperationException.class)
     public void testFromJsonWebKeyPublicOnly() throws Exception {
-    	ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.P256);
-    	EC_KEY_GENERATOR.initialize(gps);
-    	KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
-    	
-    	ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
-    	ECPoint point = apub.getW();
-    	
-    	JsonWebKey jwk = new JsonWebKey()
-    			.withKid("kid")
-    			.withCrv(JsonWebKeyCurveName.P_256)
-    			.withX(point.getAffineX().toByteArray())
-    			.withY(point.getAffineY().toByteArray())
-    			.withKty(JsonWebKeyType.EC);
+        ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.P256);
+        EC_KEY_GENERATOR.initialize(gps);
+        KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
+
+        ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
+        ECPoint point = apub.getW();
+
+        JsonWebKey jwk = new JsonWebKey()
+                .withKid("kid")
+                .withCrv(JsonWebKeyCurveName.P_256)
+                .withX(point.getAffineX().toByteArray())
+                .withY(point.getAffineY().toByteArray())
+                .withKty(JsonWebKeyType.EC);
     
-    	assertFalse(jwk.hasPrivateKey());
-    	
-    	EcKey newKey = EcKey.fromJsonWebKey(jwk, false);
-    	assertEquals("kid", newKey.getKid());
-    	doSignVerify(newKey, DIGEST_256);
+        assertFalse(jwk.hasPrivateKey());
+
+        EcKey newKey = EcKey.fromJsonWebKey(jwk, false);
+        assertEquals("kid", newKey.getKid());
+        doSignVerify(newKey, DIGEST_256);
     }
     
     @Test
@@ -274,29 +274,29 @@ public class ECKeyTest {
     
     @Test
     public void testToJsonWebKey() throws Exception {
-    	ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.P521);
-    	EC_KEY_GENERATOR.initialize(gps);
-    	KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
-    	
-    	ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
-    	ECPoint point = apub.getW();
-    	ECPrivateKey apriv = (ECPrivateKey) keyPair.getPrivate();
-    	
-    	JsonWebKey jwk = new JsonWebKey()
-    			.withKid("kid")
-    			.withCrv(JsonWebKeyCurveName.P_521)
-    			.withX(point.getAffineX().toByteArray())
-    			.withY(point.getAffineY().toByteArray())
-    			.withD(apriv.getS().toByteArray())
-    			.withKty(JsonWebKeyType.EC);
-    	
-    	EcKey newKey = new EcKey("kid", keyPair);
-    	
-    	JsonWebKey newJwk = newKey.toJsonWebKey();
-    	//set missing parameters
-    	newJwk.withKid("kid");
-    	
-    	assertEquals(jwk, newJwk);	
+        ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.P521);
+        EC_KEY_GENERATOR.initialize(gps);
+        KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
+
+        ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
+        ECPoint point = apub.getW();
+        ECPrivateKey apriv = (ECPrivateKey) keyPair.getPrivate();
+
+        JsonWebKey jwk = new JsonWebKey()
+                .withKid("kid")
+                .withCrv(JsonWebKeyCurveName.P_521)
+                .withX(point.getAffineX().toByteArray())
+                .withY(point.getAffineY().toByteArray())
+                .withD(apriv.getS().toByteArray())
+                .withKty(JsonWebKeyType.EC);
+
+        EcKey newKey = new EcKey("kid", keyPair);
+
+        JsonWebKey newJwk = newKey.toJsonWebKey();
+        //set missing parameters
+        newJwk.withKid("kid");
+
+        assertEquals(jwk, newJwk);
     }
     
     //Checks validity of verify by
@@ -321,20 +321,20 @@ public class ECKeyTest {
     
     private void doSignVerify(EcKey key, MessageDigest digest) throws IOException, NoSuchAlgorithmException, InterruptedException, ExecutionException {
 
-    	byte[] hash = digest.digest(CEK);
+        byte[] hash = digest.digest(CEK);
 
-    	//Use sign and verify to test each other.
-    	Pair<byte[], String> signature = key.signAsync(hash, key.getDefaultSignatureAlgorithm()).get();
-    	boolean result = key.verifyAsync(hash, signature.getLeft(), key.getDefaultSignatureAlgorithm()).get();
-    	assertTrue(result);
-    	    
-    	//Check that key denies invalid digest.
-    	BigInteger bigInt = new BigInteger(hash);
-    	BigInteger shiftInt = bigInt.shiftRight(4);
-       	byte [] shifted = shiftInt.toByteArray();
-    	boolean incorrectResult = key.verifyAsync(shifted, signature.getLeft(), key.getDefaultSignatureAlgorithm()).get();
-    	assertFalse(incorrectResult);
+        //Use sign and verify to test each other.
+        Pair<byte[], String> signature = key.signAsync(hash, key.getDefaultSignatureAlgorithm()).get();
+        boolean result = key.verifyAsync(hash, signature.getLeft(), key.getDefaultSignatureAlgorithm()).get();
+        assertTrue(result);
+
+        //Check that key denies invalid digest.
+        BigInteger bigInt = new BigInteger(hash);
+        BigInteger shiftInt = bigInt.shiftRight(4);
+        byte [] shifted = shiftInt.toByteArray();
+        boolean incorrectResult = key.verifyAsync(shifted, signature.getLeft(), key.getDefaultSignatureAlgorithm()).get();
+        assertFalse(incorrectResult);
    
-    	key.close();
+        key.close();
     }
 }

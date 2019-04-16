@@ -42,13 +42,11 @@ public class SwaggerInterfaceParser {
 
         if (host != null && !host.isEmpty()) {
             this.host = host;
-        }
-        else {
+        } else {
             final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
             if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
                 this.host = hostAnnotation.value();
-            }
-            else {
+            } else {
                 throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
             }
         }

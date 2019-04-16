@@ -18,6 +18,7 @@
         <azure-keyvault.version>1.2.0</azure-keyvault.version>
         <azure-batch.version>5.0.1</azure-batch.version>
         <azure-eventhubs.version>2.0.0</azure-eventhubs.version>
+        <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
     </properties>
 
     <distributionManagement>
@@ -73,6 +74,14 @@
             <artifactId>azure-eventhubs-extensions</artifactId>
             <version>${azure-eventhubs.version}</version>
         </dependency>
+        <!-- Storage is excluded from Spotbugs report as it collides with the storage library
+             dependency in eventhubs code. This issue is under investigation.
+              Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/3096 -->
+        <!--dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-storage-blob</artifactId>
+            <version>${azure-storage-blob.version}</version>
+        </dependency-->
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-common</artifactId>
@@ -82,6 +91,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-common-auth</artifactId>
           <version>${azure-common-auth.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-common-mgmt</artifactId>
+          <version>${azure-common-mgmt.version}</version>
         </dependency>
     </dependencies>
 
@@ -100,17 +114,22 @@
                         <configuration>
                             <sources>
                                 <source>..\..\applicationconfig\client\src\main\java</source>
+                                <source>..\..\batch\data-plane\src\main\java</source>
+                                <source>..\..\common\azure-common\src\main\java</source>
+                                <source>..\..\common\azure-common-auth\src\main\java</source>
+                                <source>..\..\common\azure-common-mgmt\src\main\java</source>
+                                <source>..\..\common\azure-common-test\src\main\java</source>
+                                <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
+                                <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
+                                <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
+                                <!-- Storage is excluded from Spotbugs report as it collides with the storage library
+                                dependency in eventhubs code. This issue is under investigation. -->
+                                <!--source>..\..\storage\data-plane\src\main\java</source-->
                                 <source>..\..\keyvault\data-plane\azure-keyvault\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-cryptography\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-core\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-extensions\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-webkey\src\main\java</source>
-                                <source>..\..\batch\data-plane\src\main\java</source>
-                                <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
-                                <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
-                                <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
-                                <source>..\..\common\azure-common\src\main\java</source>
-                                <source>..\..\common\azure-common-auth\src\main\java</source>
                             </sources>
                         </configuration>
                     </execution>

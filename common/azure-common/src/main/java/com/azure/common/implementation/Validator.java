@@ -136,15 +136,13 @@ public final class Validator {
                         for (Object item : items) {
                             Validator.validate(item);
                         }
-                    }
-                    else if (Map.class.isAssignableFrom(propertyType)) {
+                    } else if (Map.class.isAssignableFrom(propertyType)) {
                         Map<?, ?> entries = (Map<?, ?>) property;
                         for (Map.Entry<?, ?> entry : entries.entrySet()) {
                             Validator.validate(entry.getKey());
                             Validator.validate(entry.getValue());
                         }
-                    }
-                    else if (parameter.getClass() != propertyType) {
+                    } else if (parameter.getClass() != propertyType) {
                         Validator.validate(property);
                     }
                 } catch (IllegalArgumentException ex) {

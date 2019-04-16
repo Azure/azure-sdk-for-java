@@ -38,9 +38,9 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw192;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw256;
 
 public class AesKwTest {
-	
+
     // Always null for the default provider
-	private Provider _provider = null;
+    private Provider _provider = null;
     
     private static boolean hasUnlimitedCrypto() {
         try {
@@ -67,7 +67,7 @@ public class AesKwTest {
     }
 
     protected void setProvider(Provider provider) {
-    	_provider = provider;
+        _provider = provider;
     }
 
     @Test
@@ -204,7 +204,7 @@ public class AesKwTest {
             encryptor = kw.CreateEncryptor(KEK, _provider);
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
-        	if (unlimited) fail("InvalidKeyException");
+            if (unlimited) fail("InvalidKeyException");
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -229,7 +229,7 @@ public class AesKwTest {
             
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
-        	if (unlimited) fail("InvalidKeyException");
+            if (unlimited) fail("InvalidKeyException");
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -382,7 +382,7 @@ public class AesKwTest {
             encryptor = kw.CreateEncryptor(KEK, _provider);
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
-        	if (unlimited) fail("InvalidKeyException");
+            if (unlimited) fail("InvalidKeyException");
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -407,7 +407,7 @@ public class AesKwTest {
             
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
-        	if (unlimited) fail("InvalidKeyException");
+            if (unlimited) fail("InvalidKeyException");
         } catch (Exception e) {
             fail(e.getMessage());
         }

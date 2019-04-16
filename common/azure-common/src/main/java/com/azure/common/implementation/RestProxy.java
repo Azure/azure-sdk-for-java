@@ -169,8 +169,7 @@ public class RestProxy implements InvocationHandler {
         final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
         if (pathUrlBuilder.scheme() != null) {
             urlBuilder = pathUrlBuilder;
-        }
-        else {
+        } else {
             urlBuilder = new UrlBuilder();
 
             // We add path to the UrlBuilder first because this is what is
@@ -229,8 +228,7 @@ public class RestProxy implements InvocationHandler {
             if (contentType == null || contentType.isEmpty()) {
                 if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
                     contentType = ContentType.APPLICATION_OCTET_STREAM;
-                }
-                else {
+                } else {
                     contentType = ContentType.APPLICATION_JSON;
                 }
             }
@@ -249,22 +247,18 @@ public class RestProxy implements InvocationHandler {
             if (isJson) {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.JSON);
                 request.withBody(bodyContentString);
-            }
-            else if (FluxUtil.isFluxByteBuf(methodParser.bodyJavaType())) {
+            } else if (FluxUtil.isFluxByteBuf(methodParser.bodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a Flowable<byte[]> is given for the body.
                 //noinspection ConstantConditions
                 request.withBody((Flux<ByteBuf>) bodyContentObject);
-            }
-            else if (bodyContentObject instanceof byte[]) {
+            } else if (bodyContentObject instanceof byte[]) {
                 request.withBody((byte[]) bodyContentObject);
-            }
-            else if (bodyContentObject instanceof String) {
+            } else if (bodyContentObject instanceof String) {
                 final String bodyContentString = (String) bodyContentObject;
                 if (!bodyContentString.isEmpty()) {
                     request.withBody(bodyContentString);
                 }
-            }
-            else {
+            } else {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.headers()));
                 request.withBody(bodyContentString);
             }
