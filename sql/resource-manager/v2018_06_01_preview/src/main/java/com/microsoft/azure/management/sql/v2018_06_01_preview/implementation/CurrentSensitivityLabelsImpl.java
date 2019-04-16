@@ -43,6 +43,11 @@ class CurrentSensitivityLabelsImpl extends WrapperImpl<SensitivityLabelInner> im
     }
 
     @Override
+    public Boolean isDisabled() {
+        return this.inner().isDisabled();
+    }
+
+    @Override
     public String labelId() {
         return this.inner().labelId();
     }

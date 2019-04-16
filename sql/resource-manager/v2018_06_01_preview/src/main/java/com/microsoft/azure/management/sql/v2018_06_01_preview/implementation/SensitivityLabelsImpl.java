@@ -91,6 +91,11 @@ class SensitivityLabelsImpl extends CreatableUpdatableImpl<SensitivityLabels, Se
     }
 
     @Override
+    public Boolean isDisabled() {
+        return this.inner().isDisabled();
+    }
+
+    @Override
     public String labelId() {
         return this.inner().labelId();
     }

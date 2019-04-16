@@ -33,6 +33,11 @@ public interface DatabasisServerSensitivityLabel extends HasInner<SensitivityLab
     String informationTypeId();
 
     /**
+     * @return the isDisabled value.
+     */
+    Boolean isDisabled();
+
+    /**
      * @return the labelId value.
      */
     String labelId();

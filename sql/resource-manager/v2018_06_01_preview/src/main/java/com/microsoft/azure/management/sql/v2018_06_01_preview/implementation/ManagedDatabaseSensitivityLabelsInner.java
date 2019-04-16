@@ -29,6 +29,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -74,13 +75,21 @@ public class ManagedDatabaseSensitivityLabelsInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Path("columnName") String columnName, @Path("sensitivityLabelSource") String sensitivityLabelSource, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedDatabaseSensitivityLabels disableRecommendation" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/disable")
+        Observable<Response<ResponseBody>> disableRecommendation(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Path("columnName") String columnName, @Path("sensitivityLabelSource") String sensitivityLabelSource, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedDatabaseSensitivityLabels enableRecommendation" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/enable")
+        Observable<Response<ResponseBody>> enableRecommendation(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Path("columnName") String columnName, @Path("sensitivityLabelSource") String sensitivityLabelSource, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedDatabaseSensitivityLabels listCurrentByDatabase" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/currentSensitivityLabels")
         Observable<Response<ResponseBody>> listCurrentByDatabase(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedDatabaseSensitivityLabels listRecommendedByDatabase" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels")
-        Observable<Response<ResponseBody>> listRecommendedByDatabase(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Query("$skipToken") String skipToken, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listRecommendedByDatabase(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Query("includeDisabledRecommendations") Boolean includeDisabledRecommendations, @Query("$skipToken") String skipToken, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedDatabaseSensitivityLabels listCurrentByDatabaseNext" })
         @GET
@@ -445,6 +454,234 @@ public class ManagedDatabaseSensitivityLabelsInner {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void disableRecommendation(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName) {
+        disableRecommendationWithServiceResponseAsync(resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName).toBlocking().single().body();
+    }
+
+    /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> disableRecommendationAsync(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(disableRecommendationWithServiceResponseAsync(resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName), serviceCallback);
+    }
+
+    /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> disableRecommendationAsync(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName) {
+        return disableRecommendationWithServiceResponseAsync(resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> disableRecommendationWithServiceResponseAsync(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (columnName == null) {
+            throw new IllegalArgumentException("Parameter columnName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String sensitivityLabelSource = "recommended";
+        return service.disableRecommendation(resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, sensitivityLabelSource, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = disableRecommendationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> disableRecommendationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void enableRecommendation(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName) {
+        enableRecommendationWithServiceResponseAsync(resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName).toBlocking().single().body();
+    }
+
+    /**
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> enableRecommendationAsync(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(enableRecommendationWithServiceResponseAsync(resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName), serviceCallback);
+    }
+
+    /**
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> enableRecommendationAsync(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName) {
+        return enableRecommendationWithServiceResponseAsync(resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> enableRecommendationWithServiceResponseAsync(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (columnName == null) {
+            throw new IllegalArgumentException("Parameter columnName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String sensitivityLabelSource = "recommended";
+        return service.enableRecommendation(resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, sensitivityLabelSource, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = enableRecommendationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> enableRecommendationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -822,9 +1059,10 @@ public class ManagedDatabaseSensitivityLabelsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+        final Boolean includeDisabledRecommendations = null;
         final String skipToken = null;
         final String filter = null;
-        return service.listRecommendedByDatabase(resourceGroupName, managedInstanceName, databaseName, this.client.subscriptionId(), skipToken, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listRecommendedByDatabase(resourceGroupName, managedInstanceName, databaseName, this.client.subscriptionId(), includeDisabledRecommendations, skipToken, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(Response<ResponseBody> response) {
@@ -844,6 +1082,7 @@ public class ManagedDatabaseSensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
      * @param skipToken the String value
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -851,8 +1090,8 @@ public class ManagedDatabaseSensitivityLabelsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SensitivityLabelInner&gt; object if successful.
      */
-    public PagedList<SensitivityLabelInner> listRecommendedByDatabase(final String resourceGroupName, final String managedInstanceName, final String databaseName, final String skipToken, final String filter) {
-        ServiceResponse<Page<SensitivityLabelInner>> response = listRecommendedByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, skipToken, filter).toBlocking().single();
+    public PagedList<SensitivityLabelInner> listRecommendedByDatabase(final String resourceGroupName, final String managedInstanceName, final String databaseName, final Boolean includeDisabledRecommendations, final String skipToken, final String filter) {
+        ServiceResponse<Page<SensitivityLabelInner>> response = listRecommendedByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, includeDisabledRecommendations, skipToken, filter).toBlocking().single();
         return new PagedList<SensitivityLabelInner>(response.body()) {
             @Override
             public Page<SensitivityLabelInner> nextPage(String nextPageLink) {
@@ -867,15 +1106,16 @@ public class ManagedDatabaseSensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
      * @param skipToken the String value
      * @param filter An OData filter expression that filters elements in the collection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SensitivityLabelInner>> listRecommendedByDatabaseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName, final String skipToken, final String filter, final ListOperationCallback<SensitivityLabelInner> serviceCallback) {
+    public ServiceFuture<List<SensitivityLabelInner>> listRecommendedByDatabaseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName, final Boolean includeDisabledRecommendations, final String skipToken, final String filter, final ListOperationCallback<SensitivityLabelInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listRecommendedByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, skipToken, filter),
+            listRecommendedByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, includeDisabledRecommendations, skipToken, filter),
             new Func1<String, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(String nextPageLink) {
@@ -891,13 +1131,14 @@ public class ManagedDatabaseSensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
      * @param skipToken the String value
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SensitivityLabelInner&gt; object
      */
-    public Observable<Page<SensitivityLabelInner>> listRecommendedByDatabaseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName, final String skipToken, final String filter) {
-        return listRecommendedByDatabaseWithServiceResponseAsync(resourceGroupName, managedInstanceName, databaseName, skipToken, filter)
+    public Observable<Page<SensitivityLabelInner>> listRecommendedByDatabaseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName, final Boolean includeDisabledRecommendations, final String skipToken, final String filter) {
+        return listRecommendedByDatabaseWithServiceResponseAsync(resourceGroupName, managedInstanceName, databaseName, includeDisabledRecommendations, skipToken, filter)
             .map(new Func1<ServiceResponse<Page<SensitivityLabelInner>>, Page<SensitivityLabelInner>>() {
                 @Override
                 public Page<SensitivityLabelInner> call(ServiceResponse<Page<SensitivityLabelInner>> response) {
@@ -912,13 +1153,14 @@ public class ManagedDatabaseSensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
      * @param skipToken the String value
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SensitivityLabelInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listRecommendedByDatabaseWithServiceResponseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName, final String skipToken, final String filter) {
-        return listRecommendedByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, skipToken, filter)
+    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listRecommendedByDatabaseWithServiceResponseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName, final Boolean includeDisabledRecommendations, final String skipToken, final String filter) {
+        return listRecommendedByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, includeDisabledRecommendations, skipToken, filter)
             .concatMap(new Func1<ServiceResponse<Page<SensitivityLabelInner>>, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(ServiceResponse<Page<SensitivityLabelInner>> page) {
@@ -937,12 +1179,13 @@ public class ManagedDatabaseSensitivityLabelsInner {
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param managedInstanceName The name of the managed instance.
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param databaseName The name of the database.
+    ServiceResponse<PageImpl<SensitivityLabelInner>> * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param skipToken the String value
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SensitivityLabelInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listRecommendedByDatabaseSinglePageAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName, final String skipToken, final String filter) {
+    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listRecommendedByDatabaseSinglePageAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName, final Boolean includeDisabledRecommendations, final String skipToken, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -958,7 +1201,7 @@ public class ManagedDatabaseSensitivityLabelsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listRecommendedByDatabase(resourceGroupName, managedInstanceName, databaseName, this.client.subscriptionId(), skipToken, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listRecommendedByDatabase(resourceGroupName, managedInstanceName, databaseName, this.client.subscriptionId(), includeDisabledRecommendations, skipToken, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(Response<ResponseBody> response) {

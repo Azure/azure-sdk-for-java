@@ -54,6 +54,34 @@ public interface ManagedDatabaseSensitivityLabels {
     Completable deleteAsync(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName);
 
     /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable disableRecommendationAsync(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName);
+
+    /**
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable enableRecommendationAsync(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName);
+
+    /**
      * Gets the sensitivity labels of a given database.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.

@@ -83,6 +83,18 @@ class ManagedDatabaseSensitivityLabelsImpl extends WrapperImpl<ManagedDatabaseSe
     }
 
     @Override
+    public Completable disableRecommendationAsync(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName) {
+        ManagedDatabaseSensitivityLabelsInner client = this.inner();
+        return client.disableRecommendationAsync(resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName).toCompletable();
+    }
+
+    @Override
+    public Completable enableRecommendationAsync(String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName, String columnName) {
+        ManagedDatabaseSensitivityLabelsInner client = this.inner();
+        return client.enableRecommendationAsync(resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName).toCompletable();
+    }
+
+    @Override
     public Observable<CurrentSensitivityLabels> listCurrentByDatabaseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName) {
         ManagedDatabaseSensitivityLabelsInner client = this.inner();
         return client.listCurrentByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName)
