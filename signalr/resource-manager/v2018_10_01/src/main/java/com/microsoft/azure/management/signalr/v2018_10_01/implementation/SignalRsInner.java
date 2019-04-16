@@ -44,6 +44,10 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -675,7 +679,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
         RegenerateKeyParameters parameters = new RegenerateKeyParameters();
         parameters.withKeyType(null);
         Observable<Response<ResponseBody>> observable = service.regenerateKey(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<SignalRKeysInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<SignalRKeysInner>() { }.getType());
     }
     /**
      * Regenerate SignalR service access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
@@ -752,7 +756,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             parameters.withKeyType(keyType);
         }
         Observable<Response<ResponseBody>> observable = service.regenerateKey(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<SignalRKeysInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<SignalRKeysInner>() { }.getType());
     }
 
     /**
@@ -1867,7 +1871,7 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.restart(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<Void>() { }.getType());
     }
 
     /**

@@ -11,48 +11,51 @@ package com.microsoft.azure.management.signalr.v2018_10_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The billing information of the resource.(e.g. basic vs. standard).
+ * The billing information of the SignalR resource.
  */
 public class ResourceSku {
     /**
-     * The name of the SKU. This is typically a letter + number code, such as
-     * A0 or P3.  Required (if sku is specified).
+     * The name of the SKU. Required.
+     *
+     * Allowed values: Standard_S1, Free_F1.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
-     * Optional tier of this particular SKU. `Basic` is deprecated, use
-     * `Standard` instead. Possible values include: 'Free', 'Basic',
-     * 'Standard', 'Premium'.
+     * Optional tier of this particular SKU. 'Standard' or 'Free'.
+     *
+     * `Basic` is deprecated, use `Standard` instead. Possible values include:
+     * 'Free', 'Basic', 'Standard', 'Premium'.
      */
     @JsonProperty(value = "tier")
     private SignalRSkuTier tier;
 
     /**
-     * Optional, string. When the name field is the combination of tier and
-     * some other value, this would be the standalone code.
+     * Optional string. For future use.
      */
     @JsonProperty(value = "size")
     private String size;
 
     /**
-     * Optional, string. If the service has different generations of hardware,
-     * for the same SKU, then that can be captured here.
+     * Optional string. For future use.
      */
     @JsonProperty(value = "family")
     private String family;
 
     /**
-     * Optional, integer. If the SKU supports scale out/in then the capacity
-     * integer should be included. If scale out/in is not
-     * possible for the resource this may be omitted.
+     * Optional, integer. The unit count of SignalR resource. 1 by default.
+     *
+     * If present, following values are allowed:
+     * Free: 1
+     * Standard: 1,2,5,10,20,50,100.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /**
-     * Get the name of the SKU. This is typically a letter + number code, such as A0 or P3.  Required (if sku is specified).
+     * Get the name of the SKU. Required.
+     Allowed values: Standard_S1, Free_F1.
      *
      * @return the name value
      */
@@ -61,7 +64,8 @@ public class ResourceSku {
     }
 
     /**
-     * Set the name of the SKU. This is typically a letter + number code, such as A0 or P3.  Required (if sku is specified).
+     * Set the name of the SKU. Required.
+     Allowed values: Standard_S1, Free_F1.
      *
      * @param name the name value to set
      * @return the ResourceSku object itself.
@@ -72,7 +76,8 @@ public class ResourceSku {
     }
 
     /**
-     * Get optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'.
+     * Get optional tier of this particular SKU. 'Standard' or 'Free'.
+     `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'.
      *
      * @return the tier value
      */
@@ -81,7 +86,8 @@ public class ResourceSku {
     }
 
     /**
-     * Set optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'.
+     * Set optional tier of this particular SKU. 'Standard' or 'Free'.
+     `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'.
      *
      * @param tier the tier value to set
      * @return the ResourceSku object itself.
@@ -92,7 +98,7 @@ public class ResourceSku {
     }
 
     /**
-     * Get optional, string. When the name field is the combination of tier and some other value, this would be the standalone code.
+     * Get optional string. For future use.
      *
      * @return the size value
      */
@@ -101,7 +107,7 @@ public class ResourceSku {
     }
 
     /**
-     * Set optional, string. When the name field is the combination of tier and some other value, this would be the standalone code.
+     * Set optional string. For future use.
      *
      * @param size the size value to set
      * @return the ResourceSku object itself.
@@ -112,7 +118,7 @@ public class ResourceSku {
     }
 
     /**
-     * Get optional, string. If the service has different generations of hardware, for the same SKU, then that can be captured here.
+     * Get optional string. For future use.
      *
      * @return the family value
      */
@@ -121,7 +127,7 @@ public class ResourceSku {
     }
 
     /**
-     * Set optional, string. If the service has different generations of hardware, for the same SKU, then that can be captured here.
+     * Set optional string. For future use.
      *
      * @param family the family value to set
      * @return the ResourceSku object itself.
@@ -132,8 +138,10 @@ public class ResourceSku {
     }
 
     /**
-     * Get optional, integer. If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not
-     possible for the resource this may be omitted.
+     * Get optional, integer. The unit count of SignalR resource. 1 by default.
+     If present, following values are allowed:
+         Free: 1
+         Standard: 1,2,5,10,20,50,100.
      *
      * @return the capacity value
      */
@@ -142,8 +150,10 @@ public class ResourceSku {
     }
 
     /**
-     * Set optional, integer. If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not
-     possible for the resource this may be omitted.
+     * Set optional, integer. The unit count of SignalR resource. 1 by default.
+     If present, following values are allowed:
+         Free: 1
+         Standard: 1,2,5,10,20,50,100.
      *
      * @param capacity the capacity value to set
      * @return the ResourceSku object itself.

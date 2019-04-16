@@ -9,6 +9,8 @@
 package com.microsoft.azure.management.signalr.v2018_10_01.implementation;
 
 import com.microsoft.azure.management.signalr.v2018_10_01.ResourceSku;
+import java.util.List;
+import com.microsoft.azure.management.signalr.v2018_10_01.SignalRFeature;
 import com.microsoft.azure.management.signalr.v2018_10_01.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -34,6 +36,20 @@ public class SignalRResourceInner extends Resource {
      */
     @JsonProperty(value = "properties.hostNamePrefix")
     private String hostNamePrefix;
+
+    /**
+     * List of SignalR featureFlags. e.g. ServiceMode.
+     *
+     * When updating featureFlags, if certain featureFlag is not included in
+     * parameters, SignalR service will remain it unchanged.
+     * And when you GET a SignalR resource, the response will include only
+     * those featureFlags explicitly set by you. For other featureFlags,
+     * SignalR service will use its globally default value. Note that, default
+     * value doesn't mean "false". It varies in terms of different
+     * FeatureFlags.
+     */
+    @JsonProperty(value = "properties.features")
+    private List<SignalRFeature> features;
 
     /**
      * Provisioning state of the resource. Possible values include: 'Unknown',
@@ -115,6 +131,32 @@ public class SignalRResourceInner extends Resource {
      */
     public SignalRResourceInner withHostNamePrefix(String hostNamePrefix) {
         this.hostNamePrefix = hostNamePrefix;
+        return this;
+    }
+
+    /**
+     * Get list of SignalR featureFlags. e.g. ServiceMode.
+     When updating featureFlags, if certain featureFlag is not included in parameters, SignalR service will remain it unchanged.
+     And when you GET a SignalR resource, the response will include only those featureFlags explicitly set by you. For other featureFlags,
+     SignalR service will use its globally default value. Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     *
+     * @return the features value
+     */
+    public List<SignalRFeature> features() {
+        return this.features;
+    }
+
+    /**
+     * Set list of SignalR featureFlags. e.g. ServiceMode.
+     When updating featureFlags, if certain featureFlag is not included in parameters, SignalR service will remain it unchanged.
+     And when you GET a SignalR resource, the response will include only those featureFlags explicitly set by you. For other featureFlags,
+     SignalR service will use its globally default value. Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     *
+     * @param features the features value to set
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withFeatures(List<SignalRFeature> features) {
+        this.features = features;
         return this;
     }
 
