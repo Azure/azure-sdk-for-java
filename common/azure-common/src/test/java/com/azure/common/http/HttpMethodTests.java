@@ -9,38 +9,32 @@ import static org.junit.Assert.assertEquals;
 
 public class HttpMethodTests {
     @Test
-    public void getTest()
-    {
+    public void getTest() {
         assertEquals("GET", HttpMethod.GET.toString());
     }
 
     @Test
-    public void putTest()
-    {
+    public void putTest() {
         assertEquals("PUT", HttpMethod.PUT.toString());
     }
 
     @Test
-    public void postTest()
-    {
+    public void postTest() {
         assertEquals("POST", HttpMethod.POST.toString());
     }
 
     @Test
-    public void patchTest()
-    {
+    public void patchTest() {
         assertEquals("PATCH", HttpMethod.PATCH.toString());
     }
 
     @Test
-    public void deleteTest()
-    {
+    public void deleteTest() {
         assertEquals("DELETE", HttpMethod.DELETE.toString());
     }
 
     @Test
-    public void headTest()
-    {
+    public void headTest() {
         assertEquals("HEAD", HttpMethod.HEAD.toString());
     }
 }
