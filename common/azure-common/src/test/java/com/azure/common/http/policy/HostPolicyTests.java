@@ -39,10 +39,10 @@ public class HostPolicyTests {
             }
         },
         new HostPolicy(host),
-        (context, next) -> {
-            assertEquals(expectedUrl, context.httpRequest().url().toString());
-            return next.process();
-        });
+            (context, next) -> {
+                assertEquals(expectedUrl, context.httpRequest().url().toString());
+                return next.process();
+            });
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
