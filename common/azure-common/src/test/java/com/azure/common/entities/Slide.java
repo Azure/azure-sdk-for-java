@@ -8,11 +8,35 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 public class Slide {
     @JacksonXmlProperty(localName = "type", isAttribute = true)
-    public String type;
+    private String type;
 
     @JsonProperty("title")
-    public String title;
+    private String title;
 
     @JsonProperty("item")
-    public String[] items;
+    private String[] items;
+
+    public String type() {
+        return type;
+    }
+
+    public void type(String type) {
+        this.type = type;
+    }
+
+    public String title() {
+        return title;
+    }
+
+    public void title(String title) {
+        this.title = title;
+    }
+
+    public String[] items() {
+        return items;
+    }
+
+    public void items(String[] items) {
+        this.items = items;
+    }
 }
