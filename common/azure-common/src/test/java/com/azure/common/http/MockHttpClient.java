@@ -102,7 +102,7 @@ public class MockHttpClient implements HttpClient {
                     }
                     response = new MockHttpResponse(request, 200, responseHeaders, result);
                 } else if (requestPathLower.equals("/base64urlmapofbytes")) {
-                    final Map<String,String> result = new HashMap<>();
+                    final Map<String, String> result = new HashMap<>();
                     for (int i = 0; i < 2; ++i) {
                         final String key = Integer.toString(i);
 
