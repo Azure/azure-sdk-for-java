@@ -61,6 +61,18 @@ public class SessionHandler extends BaseHandler {
                 }
             }
 
+            if (reactorHandler == null) {
+                this.onRemoteSessionOpenError.accept(
+                    null,
+                    new EventHubException(
+                        false,
+                        String.format("OnSessionLocalOpen entityName[%s], reactorHandler: NULL POINTER exception.")
+                    )
+                );
+                e.getSession().close();
+                return;
+            }
+
             final ReactorDispatcher reactorDispatcher = reactorHandler.getReactorDispatcher();
             final Session session = e.getSession();
 
@@ -96,8 +108,9 @@ public class SessionHandler extends BaseHandler {
         }
 
         sessionCreated = true;
-        if (this.onRemoteSessionOpen != null)
+        if (this.onRemoteSessionOpen != null) {
             this.onRemoteSessionOpen.accept(session);
+        }
     }
 
     @Override
@@ -131,8 +144,9 @@ public class SessionHandler extends BaseHandler {
         }
 
         this.sessionOpenErrorDispatched = true;
-        if (!sessionCreated && this.onRemoteSessionOpenError != null)
+        if (!sessionCreated && this.onRemoteSessionOpenError != null) {
             this.onRemoteSessionOpenError.accept(condition, null);
+        }
     }
 
     @Override
@@ -150,11 +164,9 @@ public class SessionHandler extends BaseHandler {
 
     private class SessionTimeoutHandler extends DispatchHandler {
 
-        private final Session session;
         private final String entityName;
 
         SessionTimeoutHandler(final Session session, final String entityName) {
-            this.session = session;
             this.entityName = entityName;
         }
 
