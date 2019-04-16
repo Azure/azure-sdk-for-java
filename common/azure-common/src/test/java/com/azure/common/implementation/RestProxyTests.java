@@ -496,7 +496,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
-            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
     }
@@ -512,7 +512,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
-            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
     }
@@ -614,7 +614,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
-            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
@@ -632,7 +632,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
-            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
@@ -1542,12 +1542,12 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org/")
     interface Service24 {
         @PUT("put")
-        HttpBinJSON put(@HeaderParam("ABC") Map<String,String> headerCollection);
+        HttpBinJSON put(@HeaderParam("ABC") Map<String, String> headerCollection);
     }
 
     @Test
     public void service24Put() {
-        final Map<String,String> headerCollection = new HashMap<>();
+        final Map<String, String> headerCollection = new HashMap<>();
         headerCollection.put("DEF", "GHIJ");
         headerCollection.put("123", "45");
         final HttpBinJSON result = createService(Service24.class)

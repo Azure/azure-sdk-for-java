@@ -29,8 +29,7 @@ public class RetryPolicyTests {
             public Mono<HttpResponse> send(HttpRequest request) {
                 return Mono.<HttpResponse>just(new MockHttpResponse(request, codes[count++]));
             }
-       },
-       new RetryPolicy(3, Duration.of(0, ChronoUnit.MILLIS)));
+        }, new RetryPolicy(3, Duration.of(0, ChronoUnit.MILLIS)));
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
                         new URL("http://localhost/"))).block();
