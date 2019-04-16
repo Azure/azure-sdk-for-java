@@ -625,7 +625,7 @@ public abstract class AzureProxyToRestProxyTests {
         assertNotNull(result);
         assertMatchWithHttpOrHttps("httpbin.org/put", result.url);
         assertTrue(result.data instanceof String);
-        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5 }, ((String)result.data).getBytes());
+        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5 }, ((String) result.data).getBytes());
     }
 
     @Test
@@ -636,7 +636,7 @@ public abstract class AzureProxyToRestProxyTests {
         assertNotNull(result);
         assertMatchWithHttpOrHttps("httpbin.org/put", result.url);
         assertTrue(result.data instanceof String);
-        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5 }, ((String)result.data).getBytes());
+        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5 }, ((String) result.data).getBytes());
     }
 
     @Host("http://{hostPart1}{hostPart2}.org")
@@ -764,7 +764,7 @@ public abstract class AzureProxyToRestProxyTests {
         if (s2.equalsIgnoreCase(url2)) {
             return;
         }
-        Assert.assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'." , false);
+        Assert.assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.", false);
     }
 
     private static final SerializerAdapter serializer = new JacksonAdapter();
