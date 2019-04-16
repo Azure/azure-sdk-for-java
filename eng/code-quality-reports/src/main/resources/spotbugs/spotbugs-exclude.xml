@@ -10,17 +10,17 @@
   <!-- These keyvault models are already publicly released APIs with name
   matching the simple name of superclass -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.keyvault\.models\.(CertificateBundle|CertificateOperation|IssuerBundle|KeyBundle|SecretBundle)" />
+    <Class name="~com\.microsoft\.azure\.keyvault\.models\.(CertificateBundle|CertificateOperation|IssuerBundle|KeyBundle|SecretBundle)"/>
     <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
   </Match>
 
   <!-- Cryptographic algorithms are publicly released APIs with incorrect name casing. -->
   <Match>
     <Or>
-      <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.(Aes|Rsa)(.+)" />
-      <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.(.+)Algorithm" />
+      <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.(Aes|Rsa)(.+)"/>
+      <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.(.+)Algorithm"/>
     </Or>
-    <Method name="~(CreateDecryptor|CreateEncryptor)" />
+    <Method name="~(CreateDecryptor|CreateEncryptor)"/>
     <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
   </Match>
 
@@ -34,8 +34,8 @@
 
   <!-- Ignoring dropped exception and catch Exception because it existed in current SDK when migrated. -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.CachingKeyResolver\$[0-9]+" />
-    <Method name="run" />
+    <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.CachingKeyResolver\$[0-9]+"/>
+    <Method name="run"/>
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
 
@@ -133,7 +133,7 @@
   <!-- Returning a new copy of the object is not necessary
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L27 -->
   <Match>
-    <class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
+    <Class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
     <Local name="partitionIds"/>
     <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
   </Match>
@@ -141,7 +141,7 @@
   <!-- Returning a new copy of the object is not necessary
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L62 -->
   <Match>
-    <class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
+    <Class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
     <Method name="getPartitionIds"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
@@ -165,7 +165,7 @@
   <!-- Returning a new copy of the object is not necessary
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ReplayableWorkItem.java#L35 -->
   <Match>
-    <class name="com.microsoft.azure.eventhubs.impl.ReplayableWorkItem"/>
+    <Class name="com.microsoft.azure.eventhubs.impl.ReplayableWorkItem"/>
     <Field name="amqpMessage"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
@@ -173,7 +173,7 @@
   <!-- Return value is fine to not check, if add, it will be a redundant step
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/FaultTolerantObject.java#L79 -->
   <Match>
-    <class name="com.microsoft.azure.eventhubs.impl.FaultTolerantObject" />
+    <Class name="com.microsoft.azure.eventhubs.impl.FaultTolerantObject"/>
     <Method name="onEvent"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
   </Match>
@@ -182,7 +182,7 @@
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventDataImpl.java#L135
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/PartitionReceiverImpl.java#L278 -->
   <Match>
-    <class name="~(com\.microsoft\.azure\.eventhubs\.impl\.(EventDataImpl|PartitionReceiverImpl)"/>
+    <Class name="~(com\.microsoft\.azure\.eventhubs\.impl\.(EventDataImpl|PartitionReceiverImpl)"/>
     <Method name="~(getBytes|getDesiredCapabilities)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -209,7 +209,8 @@
     At InMemoryLeaseManager.java:[line 148,155,209,241,268]
       https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/InMemoryLeaseManager.java#L155 -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.eventprocessorhost\.(AzureStorageCheckpointLeaseManager|InMemoryLeaseManager)"/>
+    <Class
+        name="~com\.microsoft\.azure\.eventprocessorhost\.(AzureStorageCheckpointLeaseManager|InMemoryLeaseManager)"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 
@@ -217,7 +218,8 @@
     At EventProcessorOptions.java:[lines 234-237]
       https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/EventProcessorOptions.java#L234 -->
   <Match>
-    <Class name="~com\.microsoft.azure\.eventprocessorhost\.EventProcessorOptions\$(EndOfStreamInitialPositionProvider|StartOfStreamInitialPositionProvider)"/>
+    <Class
+        name="~com\.microsoft.azure\.eventprocessorhost\.EventProcessorOptions\$(EndOfStreamInitialPositionProvider|StartOfStreamInitialPositionProvider)"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>
   </Match>
 
@@ -243,16 +245,16 @@
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
-      <Match>
-        <Class name="~com\.azure\.common\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
-        <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
-      </Match>
+  <Match>
+    <Class name="~com\.azure\.common\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
+    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+  </Match>
 
-      <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
-      <Match>
-        <Class name="~com\.azure\.common\.implementation\.(Base64Url|util\.ImplUtils|serializer\.HttpResponseDecodeData)"/>
-        <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-      </Match>
+  <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
+  <Match>
+    <Class name="~com\.azure\.common\.implementation\.(Base64Url|util\.ImplUtils|serializer\.HttpResponseDecodeData)"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
 
   <!-- There is no need to make serializer or deserializer classes serializable. Suppress bugs related to these classes.
   -->
@@ -261,57 +263,57 @@
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
-      <!-- The casting problems do not exist in Azure use cases-->
-      <Match>
-        <Class name="com.azure.common.implementation.util.TypeUtil"/>
-        <Bug pattern="BC_UNCONFIRMED_CAST"/>
-      </Match>
+  <!-- The casting problems do not exist in Azure use cases-->
+  <Match>
+    <Class name="com.azure.common.implementation.util.TypeUtil"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
 
-      <!-- These fields are designed to be not written. They are for deserializing. -->
-      <Match>
-        <Class name="com.azure.common.auth.credentials.AzureCliSubscription$UserInfo"/>
-        <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-      </Match>
+  <!-- These fields are designed to be not written. They are for deserializing. -->
+  <Match>
+    <Class name="com.azure.common.auth.credentials.AzureCliSubscription$UserInfo"/>
+    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+  </Match>
 
-      <!-- These fields are designed to be not read. They are for deserializing. -->
-      <Match>
-        <Class name="com.azure.common.auth.credentials.AzureCliToken"/>
-        <Bug pattern="URF_UNREAD_FIELD"/>
-      </Match>
+  <!-- These fields are designed to be not read. They are for deserializing. -->
+  <Match>
+    <Class name="com.azure.common.auth.credentials.AzureCliToken"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
 
-      <!-- These fields are designed to be not used. They are for deserializing. -->
-      <Match>
-        <Class name="~com\.azure\.common\.auth\.credentials\.(AzureCliToken|AzureCliSubscription)"/>
-        <Bug pattern="UUF_UNUSED_FIELD"/>
-      </Match>
+  <!-- These fields are designed to be not used. They are for deserializing. -->
+  <Match>
+    <Class name="~com\.azure\.common\.auth\.credentials\.(AzureCliToken|AzureCliSubscription)"/>
+    <Bug pattern="UUF_UNUSED_FIELD"/>
+  </Match>
 
-      <!-- These fields are designed to be anonymous and not static. They are for letting the jackson serializer know what type to use. -->
-      <Match>
-        <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
-        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-      </Match>
+  <!-- These fields are designed to be anonymous and not static. They are for letting the jackson serializer know what type to use. -->
+  <Match>
+    <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
 
-      <!-- These fields has checked null and initialized in the constructor. -->
-      <Match>
-        <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
-        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-      </Match>
+  <!-- These fields has checked null and initialized in the constructor. -->
+  <Match>
+    <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
 
-      <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing the class proposed. Suppress the warning for current design. -->
-      <Match>
-        <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
-        <Bug pattern="SE_NO_SERIALVERSIONID"/>
-      </Match>
+  <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing the class proposed. Suppress the warning for current design. -->
+  <Match>
+    <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
 
-      <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing the class proposed. Suppress the warning for current design. -->
-      <Match>
-        <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
-        <Bug pattern="SE_BAD_FIELD"/>
-      </Match>
+  <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing the class proposed. Suppress the warning for current design. -->
+  <Match>
+    <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
 
-      <!-- The checked field is always not null. -->
-      <Match>
-        <Class name="com.azure.common.mgmt.AzureProxy"/>
-        <Bug pattern="NP_NULL_PARAM_DEREF"/>
-      </Match>
+  <!-- The checked field is always not null. -->
+  <Match>
+    <Class name="com.azure.common.mgmt.AzureProxy"/>
+    <Bug pattern="NP_NULL_PARAM_DEREF"/>
+  </Match>
 </FindBugsFilter>
