@@ -51,7 +51,8 @@ public class FaultTolerantObject<T extends IOObject> {
                         creatingNewInnerObject = true;
 
                         try {
-                            openCallbacks.offer(openCallback);
+                            // We ignore the return value regardless of what it is and run the openTask.
+                            final boolean isAdded = openCallbacks.offer(openCallback);
                             openTask.run(new OperationResult<T, Exception>() {
                                 @Override
                                 public void onComplete(T result) {
@@ -97,7 +98,8 @@ public class FaultTolerantObject<T extends IOObject> {
                         closeCallback.onComplete(null);
                     } else if (!closingInnerObject && (innerObject.getState() == IOObject.IOObjectState.OPENED || innerObject.getState() == IOObject.IOObjectState.OPENING)) {
                         closingInnerObject = true;
-                        closeCallbacks.offer(closeCallback);
+                        // Regardless of whether the closeCallback was added, we start the closing task.
+                        final boolean isAdded = closeCallbacks.offer(closeCallback);
                         closeTask.run(new OperationResult<Void, Exception>() {
                             @Override
                             public void onComplete(Void result) {
