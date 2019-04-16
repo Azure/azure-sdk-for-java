@@ -6,9 +6,9 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * The exception thrown when number of retries exceeds the maximum limit.
+ * The exception thrown when Reached the maximum number of retries attempts..
  */
-public class TooManyRetriesException extends ServiceHttpRequestException {
+public class TooManyRetriesException extends HttpRequestException {
 
     /**
      * Initializes a new instance of the TooManyRetriesException class.
@@ -40,5 +40,16 @@ public class TooManyRetriesException extends ServiceHttpRequestException {
      */
     public TooManyRetriesException(String message, HttpResponse response, Throwable cause) {
         super(message, response, cause);
+    }
+
+    /**
+     * Initializes a new instance of the TooManyRetriesException class.
+     *
+     * @param message the exception message or the response content if a message is not available
+     * @param response the HTTP response
+     * @param httpStatus the HTTP response status code
+     */
+    public TooManyRetriesException(final String message, final HttpResponse response, final int httpStatus) {
+        super(message, response, httpStatus);
     }
 }

@@ -4,20 +4,16 @@
 package com.azure.common.exception;
 
 /**
- * The base exception type for all Azure-related exceptions.
- *
- * @see ServiceRequestException
- * @see ServiceResponseException
- * @see DecodeException
+ * Error raised during response deserialization.
  */
-public class AzureException extends RuntimeException {
+public class DecodeException extends AzureException {
 
     /**
      * Initializes a new instance of the AzureException class.
      *
      * @param message the exception message.
      */
-    public AzureException(String message) {
+    public DecodeException(final String message) {
         super(message);
     }
 
@@ -27,8 +23,7 @@ public class AzureException extends RuntimeException {
      * @param message the exception message.
      * @param cause the Throwable which caused the creation of this AzureException.
      */
-    public AzureException(String message, Throwable cause) {
+    public DecodeException(final String message, final Throwable cause) {
         super(message, cause);
     }
-
 }

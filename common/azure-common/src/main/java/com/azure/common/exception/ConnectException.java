@@ -6,39 +6,40 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * The exception thrown when no response received from service.
+ * The exception occurred while attempting to establish the connection.
+ * These errors are safe to retry.
  */
-public class ConnectionTimeoutException extends ServiceRequestException {
+public class ConnectException extends ServiceRequestException {
 
     /**
-     * Initializes a new instance of the ConnectionTimeoutException class.
+     * Initializes a new instance of the ConnectException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public ConnectionTimeoutException(String message, HttpResponse response) {
+    public ConnectException(String message, HttpResponse response) {
         super(message, response);
     }
 
     /**
-     * Initializes a new instance of the ConnectionTimeoutException class.
+     * Initializes a new instance of the ConnectException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      * @param value the deserialized response value
      */
-    public ConnectionTimeoutException(String message, HttpResponse response, Object value) {
+    public ConnectException(String message, HttpResponse response, Object value) {
         super(message, response, value);
     }
 
     /**
-     * Initializes a new instance of the ConnectionTimeoutException class.
+     * Initializes a new instance of the ConnectException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
-     * @param cause the Throwable which caused the creation of this ConnectionTimeoutException
+     * @param cause the Throwable which caused the creation of this ConnectionException
      */
-    public ConnectionTimeoutException(String message, HttpResponse response, Throwable cause) {
+    public ConnectException(String message, HttpResponse response, Throwable cause) {
         super(message, response, cause);
     }
 }

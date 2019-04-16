@@ -8,8 +8,8 @@ import com.azure.common.http.HttpResponse;
 /**
  * An exception thrown for an invalid response with custom error information.
  *
- * @see ConnectionTimeoutException
- * @see ServiceHttpRequestException
+ * @see ConnectException
+ * @see HttpRequestException
  */
 public class ServiceRequestException extends AzureException {
 

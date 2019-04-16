@@ -6,50 +6,51 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * The exception thrown when Reached the maximum number of redirect attempts..
+ * An error response, typically triggered by a 412 response (for update) or 404 (for get/post)
  */
-public class TooManyRedirectsException extends HttpRequestException {
-
+public class ResourceNotFoundException extends ClientRequestException {
     /**
-     * Initializes a new instance of the TooManyRedirectsException class.
+     * Initializes a new instance of the ResourceNotFoundException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public TooManyRedirectsException(String message, HttpResponse response) {
+    public ResourceNotFoundException(final String message, final HttpResponse response) {
         super(message, response);
     }
 
     /**
-     * Initializes a new instance of the TooManyRedirectsException class.
+     * Initializes a new instance of the ResourceNotFoundException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      * @param value the deserialized response value
      */
-    public TooManyRedirectsException(String message, HttpResponse response, Object value) {
+    public ResourceNotFoundException(final String message, final HttpResponse response, final Object value) {
         super(message, response, value);
     }
 
+
     /**
-     * Initializes a new instance of the TooManyRedirectsException class.
+     * Initializes a new instance of the ResourceNotFoundException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
-     * @param cause the Throwable which caused the creation of this TooManyRedirectsException
+     * @param cause the Throwable which caused the creation of this ResourceNotFoundException
      */
-    public TooManyRedirectsException(String message, HttpResponse response, Throwable cause) {
+    public ResourceNotFoundException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, response, cause);
     }
 
+
     /**
-     * Initializes a new instance of the TooManyRedirectsException class.
+     * Initializes a new instance of the ResourceNotFoundException class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      * @param httpStatus the HTTP response status code
      */
-    public TooManyRedirectsException(final String message, final HttpResponse response, final int httpStatus) {
+    public ResourceNotFoundException(final String message, final HttpResponse response, final int httpStatus) {
         super(message, response, httpStatus);
     }
 }

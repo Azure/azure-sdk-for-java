@@ -11,8 +11,9 @@ import com.azure.common.http.HttpResponse;
  * @see ClientAuthenticationException
  * @see ResourceExistsException
  * @see ResourceModifiedException
+ * @see ResourceNotFoundException
  */
-public class ClientRequestException extends ServiceHttpRequestException {
+public class ClientRequestException extends HttpRequestException {
 
     /**
      * Initializes a new instance of the ClientRequestException class.
@@ -44,5 +45,16 @@ public class ClientRequestException extends ServiceHttpRequestException {
      */
     public ClientRequestException(String message, HttpResponse response, Throwable cause) {
         super(message, response, cause);
+    }
+
+    /**
+     * Initializes a new instance of the ClientRequestException class.
+     *
+     * @param message the exception message or the response content if a message is not available
+     * @param response the HTTP response
+     * @param httpStatus the HTTP response status code
+     */
+    public ClientRequestException(final String message, final HttpResponse response, final int httpStatus) {
+        super(message, response, httpStatus);
     }
 }
