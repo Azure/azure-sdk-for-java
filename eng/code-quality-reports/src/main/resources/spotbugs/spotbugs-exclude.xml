@@ -187,6 +187,14 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
+  <!-- EventHubClientImpl.USER_AGENT is public and can be set by consumers of the SDK to not be null.
+  https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ConnectionHandler.java#L88 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventhubs.impl.ConnectionHandler"/>
+    <Method name="onConnectionInit"/>
+    <Bug pattern="UWF_NULL_FIELD"/>
+  </Match>
+
   <!-- Unchecked cast already exists as inner class of a public class but they are logically correct so it can be ignored.
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/PartitionManager.java#L323 -->
   <Match>
@@ -195,7 +203,7 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
-  <!-- Even thought volatile reference to an array exists in protected API surface area changing it will cause another public API surface to change.
+  <!-- Even though volatile reference to an array exists in protected API surface area changing it will cause another public API surface to change.
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/PartitionManager.java#L29 -->
   <Match>
     <Class name="com.microsoft.azure.eventprocessorhost.PartitionManager"/>
