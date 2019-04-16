@@ -6,29 +6,23 @@ import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
+import com.azure.common.test.TestBase;
+import com.azure.common.test.TestMode;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
-import com.microsoft.azure.core.InterceptorManager;
-import com.microsoft.azure.core.TestMode;
-import com.microsoft.azure.utils.SdkContext;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.experimental.theories.Theories;
 import org.junit.rules.TestName;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
@@ -49,11 +43,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-@RunWith(Theories.class)
-public class ConfigurationAsyncClientTest {
+public class ConfigurationAsyncClientTest extends TestBase {
     private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
 
-    private InterceptorManager interceptorManager;
     private ConfigurationAsyncClient client;
     private String keyPrefix;
     private String labelPrefix;
@@ -61,63 +53,49 @@ public class ConfigurationAsyncClientTest {
     @Rule
     public TestName testName = new TestName();
 
-    @Before
-    public void beforeTest() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
-        final TestMode testMode = getTestMode();
+    @Override
+    protected String testName() {
+        return testName.getMethodName();
+    }
 
-        interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
+    @Override
+    protected void beforeTest() {
+        final String connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+            : System.getenv("AZCONFIG_CONNECTION_STRING");
+
+        Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
+
+        final ConfigurationClientCredentials credentials;
+        try {
+            credentials = new ConfigurationClientCredentials(connectionString);
+        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
+            logger.error("Could not create an configuration client credentials.", e);
+            fail();
+            return;
+        }
 
         if (interceptorManager.isPlaybackMode()) {
-            logger.info("PLAYBACK MODE");
-
-            final String connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
-
             client = ConfigurationAsyncClient.builder()
-                    .credentials(new ConfigurationClientCredentials(connectionString))
+                    .credentials(credentials)
                     .httpClient(interceptorManager.getPlaybackClient())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .build();
         } else {
-            logger.info("RECORD MODE");
-
-            final String connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
-            Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
-
             client = ConfigurationAsyncClient.builder()
-                    .credentials(new ConfigurationClientCredentials(connectionString))
+                    .credentials(credentials)
                     .httpClient(HttpClient.createDefault().wiretap(true))
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .build();
         }
 
-        keyPrefix = SdkContext.randomResourceName("key", 8);
-        labelPrefix = SdkContext.randomResourceName("label", 8);
+        keyPrefix = sdkContext.randomResourceName("key", 8);
+        labelPrefix = sdkContext.randomResourceName("label", 8);
     }
 
-    private TestMode getTestMode() throws IllegalArgumentException {
-        final String azureTestMode = System.getenv("AZURE_TEST_MODE");
-
-        if (azureTestMode != null) {
-            try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
-            } catch (IllegalArgumentException e) {
-                logger.error("Could not parse '{}' into TestEnum.", azureTestMode);
-                throw e;
-            }
-        } else {
-            logger.info("Environment variable 'AZURE_TEST_MODE' has not been set yet. Using 'Playback' mode.");
-            return TestMode.PLAYBACK;
-        }
-    }
-
-    @After
-    public void afterTest() {
-        cleanUpResources();
-        interceptorManager.close();
-    }
-
-    private void cleanUpResources() {
+    @Override
+    protected void afterTest() {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().key(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
@@ -134,8 +112,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void addSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final Map<String, String> tags = new HashMap<>();
         tags.put("MyTag", "TagValue");
         tags.put("AnotherTag", "AnotherTagValue");
@@ -204,8 +182,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void addExistingSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
@@ -223,8 +201,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void setSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting setConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdatedValue");
 
@@ -245,8 +223,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void setSettingIfEtag() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
 
@@ -323,8 +301,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void updateNoExistingSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting expectedFail = new ConfigurationSetting().key(key).value("myFailingUpdate");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
@@ -342,8 +320,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void updateSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final Map<String, String> tags = new HashMap<>();
         tags.put("first tag", "first value");
         tags.put("second tag", "second value");
@@ -393,8 +371,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void updateSettingIfEtag() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
         final ConfigurationSetting finalConfiguration = new ConfigurationSetting().key(key).value("myFinalValue");
@@ -441,7 +419,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void getSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
@@ -459,7 +437,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void getSettingNotFound() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().key(key).value("myNeverRetreivedValue");
         final ConfigurationSetting nonExistentLabel = new ConfigurationSetting().key(key).label("myNonExistentLabel");
 
@@ -482,8 +460,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void deleteSetting() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting deletableConfiguration = new ConfigurationSetting().key(key).value("myValue");
 
         final Consumer<ConfigurationSetting> testRunner = (expected) -> {
@@ -508,7 +486,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void deleteSettingNotFound() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().key(key).value("myNeverDeletedValue");
 
         StepVerifier.create(client.addSetting(neverDeletedConfiguation))
@@ -534,8 +512,8 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void deleteSettingWithETag() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting(newConfiguration).value("myUpdateValue");
 
@@ -578,8 +556,8 @@ public class ConfigurationAsyncClientTest {
     @Test
     public void listWithKeyAndLabel() {
         final String value = "myValue";
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName("lbl", 8);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName("lbl", 8);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value(value).label(label);
 
         StepVerifier.create(client.setSetting(expected))
@@ -660,7 +638,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void listSettingsAcceptDateTime() {
-        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
@@ -695,7 +673,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void listRevisions() {
-        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
@@ -746,7 +724,7 @@ public class ConfigurationAsyncClientTest {
      */
     @Test
     public void listRevisionsAcceptDateTime() {
-        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
@@ -839,7 +817,7 @@ public class ConfigurationAsyncClientTest {
     @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
     @Test
     public void getSettingWhenValueNotUpdated() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().key(key).value("myNewValue");
         final Response<ConfigurationSetting> block = client.addSetting(expected).single().block();
@@ -937,7 +915,7 @@ public class ConfigurationAsyncClientTest {
      *
      * @param exceptionThrower Command that should throw the exception
      */
-    private static void assertRunnableThrowsException(Runnable exceptionThrower, Class exception) {
+    private static <T> void assertRunnableThrowsException(Runnable exceptionThrower, Class<T> exception) {
         try {
             exceptionThrower.run();
             fail();
