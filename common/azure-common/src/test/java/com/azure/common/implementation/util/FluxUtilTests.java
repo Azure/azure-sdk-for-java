@@ -35,7 +35,7 @@ public class FluxUtilTests {
         stream.write("hello there".getBytes(StandardCharsets.UTF_8));
         stream.close();
 
-        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath() , StandardOpenOption.READ)) {
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel, 1, 3)
                     .map(bb -> {
                         byte[] bt = toBytes(bb);
