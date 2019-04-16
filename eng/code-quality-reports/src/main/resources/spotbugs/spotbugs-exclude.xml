@@ -134,7 +134,7 @@
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L27 -->
   <Match>
     <Class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
-    <Local name="partitionIds"/>
+    <Field name="partitionIds"/>
     <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
   </Match>
 
