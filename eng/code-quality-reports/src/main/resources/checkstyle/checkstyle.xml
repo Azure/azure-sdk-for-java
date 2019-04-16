@@ -269,7 +269,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
         <!-- Fluent method should not start with 'with' -->
         <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">
-          <property name="avoidStartWords" value="with"/>
+          <property name="avoidStartWords" value="with, set"/>
+          <property name="modelName" value="model"/>
         </module>
     </module>
 </module>

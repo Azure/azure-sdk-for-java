@@ -15,11 +15,13 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  */
 public class FluentMethodNameCheck extends AbstractCheck {
 
-    private static final String FLUENT_METHOD_ERR = "Fluent Method name should not start with keyword %s.";
+    private static final String FLUENT_METHOD_ERR = "'%s' fluent method name should not start with keyword '%s'.";
 
-    // Specifies valid identifier: default start word is 'with'
-    private String[] avoidStartWords = new String[] {"with"}; // by default
-    private static final String MODEL = ".model";
+    // Specifies valid identifier: default start word is 'with', modelName is model
+    private String[] avoidStartWords = new String[] {"with"};   // by default
+    private String modelName = "model";                         // by default
+
+    private static final String DOT = ".";
     private String className;
     private static boolean isModelClass;
 
@@ -42,7 +44,8 @@ public class FluentMethodNameCheck extends AbstractCheck {
     public int[] getRequiredTokens() {
         return new int[] {
             TokenTypes.CLASS_DEF,
-            TokenTypes.METHOD_DEF
+            TokenTypes.METHOD_DEF,
+            TokenTypes.PACKAGE_DEF
         };
     }
 
@@ -51,7 +54,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
         switch (ast.getType()) {
             case TokenTypes.PACKAGE_DEF:
                 FullIdent packageNameFI = FullIdent.createFullIdentBelow(ast);
-                this.isModelClass = packageNameFI.getText().endsWith(MODEL);
+                this.isModelClass = packageNameFI.getText().endsWith(DOT + modelName);
                 break;
             case TokenTypes.CLASS_DEF:
                 if (isModelClass) {
@@ -60,7 +63,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
                 break;
             case TokenTypes.METHOD_DEF:
                 if (isModelClass) {
-                    isMethodNameStartWith(ast);
+                    checkMethodNameStartWith(ast);
                 }
                 break;
         }
@@ -70,7 +73,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
      * Log the error if the method name is not start with {@code avoidStartWord}
      * @param ast METHOD_DEF AST node
      */
-    private void isMethodNameStartWith(DetailAST ast) {
+    private void checkMethodNameStartWith(DetailAST ast) {
         String methodType = ast.findFirstToken(TokenTypes.TYPE).getFirstChild().getText();
         if (methodType.equals(className)) {
             String methodName = ast.findFirstToken(TokenTypes.IDENT).getText();
@@ -81,10 +84,10 @@ public class FluentMethodNameCheck extends AbstractCheck {
             for (String avoidStartWord : avoidStartWords) {
                 if (methodName.length() >= avoidStartWord.length()
                     && methodName.substring(0, avoidStartWord.length()).equals(avoidStartWord)) {
-                    log(ast.getLineNo(), String.format(FLUENT_METHOD_ERR, avoidStartWord));
+                    log(ast.getLineNo(), String.format(FLUENT_METHOD_ERR, methodName, avoidStartWord));
+                    break;
                 }
             }
-
         }
     }
 
@@ -98,5 +101,15 @@ public class FluentMethodNameCheck extends AbstractCheck {
         }
         this.avoidStartWords = avoidStartWords;
     }
-}
 
+    /**
+     * Setter to specifies valid identifiers
+     * @param modelName the model package name that model class stores at
+     */
+    public void setModelName(String modelName) {
+        if (modelName == null || modelName.isEmpty()) {
+            return;
+        }
+        this.modelName = modelName;
+    }
+}
