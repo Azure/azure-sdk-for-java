@@ -5,12 +5,11 @@ package com.azure.keyvault;
 
 import com.azure.common.ServiceClient;
 import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.rest.RestResponse;
-import com.azure.common.http.rest.RestVoidResponse;
-import com.azure.common.http.rest.SimpleRestResponse;
+import com.azure.common.http.rest.PagedResponse;
+import com.azure.common.http.rest.Response;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.RestProxy;
-import com.azure.keyvault.implementation.Page;
-import com.azure.keyvault.implementation.RestPagedResponseImpl;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretAttributes;
@@ -22,7 +21,6 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
-import java.util.function.Function;
 
 public final class SecretAsyncClient extends ServiceClient {
     static final String API_VERSION = "7.0";
@@ -30,19 +28,19 @@ public final class SecretAsyncClient extends ServiceClient {
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
 
-    private String vaultEndPoint;
+    private String vaultEndpoint;
     private final SecretService service;
 
     /**
      * Creates a SecretAsyncClient that uses {@code pipeline} to
      * service requests
      *
-     * @param vaultEndPoint URL for the Azure KeyVault service.
+     * @param vaultEndpoint URL for the Azure KeyVault service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
-    SecretAsyncClient(URL vaultEndPoint, HttpPipeline pipeline) {
+    SecretAsyncClient(URL vaultEndpoint, HttpPipeline pipeline) {
         super(pipeline);
-        this.vaultEndPoint = vaultEndPoint.toString();
+        this.vaultEndpoint = vaultEndpoint.toString();
         this.service = RestProxy.create(SecretService.class, this);
     }
 
@@ -67,9 +65,9 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @throws NullPointerException if {@code secret} is {@code null}.
-     * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the created {@link Secret}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value()} contains the created {@link Secret}.
      */
-    public Mono<RestResponse<Secret>> setSecretAsync(Secret secret) {
+    public Mono<Response<Secret>> setSecretAsync(Secret secret) {
         Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
         Objects.requireNonNull(secret.name(), "The Secret name cannot be null.");
         Objects.requireNonNull(secret.value(), "The Secret value cannot be null.");
@@ -80,7 +78,7 @@ public final class SecretAsyncClient extends ServiceClient {
                                             .contentType(secret.contentType())
                                             .secretAttributes(new SecretRequestAttributes(secret));
 
-        return service.setSecret(vaultEndPoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
+        return service.setSecret(vaultEndpoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -90,15 +88,15 @@ public final class SecretAsyncClient extends ServiceClient {
      * @param name The name of the secret. It is required and cannot be null.
      * @param value The value of the secret. It is required and cannot be null.
      * @throws NullPointerException if {@code name} or {@code value} parameter is {@code null}.
-     * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the created {@link Secret}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value()} contains the created {@link Secret}.
      */
-    public Mono<RestResponse<Secret>> setSecretAsync(String name, String value) {
+    public Mono<Response<Secret>> setSecretAsync(String name, String value) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
         Objects.requireNonNull(value, "The Secret value cannot be null.");
 
         SecretRequestParameters parameters = new SecretRequestParameters()
                                             .value(value);
-        return service.setSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
+        return service.setSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -108,21 +106,21 @@ public final class SecretAsyncClient extends ServiceClient {
      * @param name The name of the secret, cannot be null
      * @param version The version of the secret to retrieve. If this is an empty String or null, this call is equivalent to calling {@link #getSecretAsync(String)}, with the latest version being retrieved.
      * @throws NullPointerException if {@code name} or {@code version} parameter is {@code null}.
-     * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the requested {@link Secret}.
-     * @throws com.azure.common.http.rest.RestException when a secret with {@code name} and {@code version} doesn't exist in the key vault.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
+     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} and {@code version} doesn't exist in the key vault.
      */
-    public Mono<RestResponse<Secret>> getSecretAsync(String name, String version) {
+    public Mono<Response<Secret>> getSecretAsync(String name, String version) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
         if (version == null) {
-            return service.getSecret(vaultEndPoint, name, "", API_VERSION, ACCEPT_LANGUAGE, getHost(), "application/json");
+            return service.getSecret(vaultEndpoint, name, "", API_VERSION, ACCEPT_LANGUAGE, getHost(), "application/json");
         } else {
-            return service.getSecret(vaultEndPoint, name, version, API_VERSION, ACCEPT_LANGUAGE, getHost(), CONTENT_TYPE_HEADER_VALUE);
+            return service.getSecret(vaultEndpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, getHost(), CONTENT_TYPE_HEADER_VALUE);
         }
     }
 
     private String getHost(){
         try{
-            return (new URL(vaultEndPoint).getHost());
+            return (new URL(vaultEndpoint).getHost());
         } catch (MalformedURLException e){
             e.printStackTrace();
         }
@@ -135,10 +133,10 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param name The name of the secret.
      * @throws NullPointerException if {@code name} parameter is {@code null}.
-     * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the requested {@link Secret}.
-     * @throws com.azure.common.http.rest.RestException when a secret with {@code name} doesn't exist in the key vault.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
+     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
-    public Mono<RestResponse<Secret>> getSecretAsync(String name) {
+    public Mono<Response<Secret>> getSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
         return getSecretAsync(name, "");
     }
@@ -152,10 +150,10 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param secretAttributes the {@link SecretAttributes} object with updated properties.
      * @throws NullPointerException if {@code secret} is {@code null}.
-     * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the updated {@link SecretAttributes}.
-     * @throws com.azure.common.http.rest.RestException when a secret with secretAttributes.name and secretAttributes.version doesn't exist in the key vault.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value()} contains the updated {@link SecretAttributes}.
+     * @throws com.azure.common.exception.ServiceRequestException when a secret with secretAttributes.name and secretAttributes.version doesn't exist in the key vault.
      */
-    public Mono<RestResponse<SecretAttributes>> updateSecretAttributesAsync(SecretAttributes secretAttributes) {
+    public Mono<Response<SecretAttributes>> updateSecretAttributesAsync(SecretAttributes secretAttributes) {
         Objects.requireNonNull(secretAttributes, "The secretAttributes input parameter cannot be null.");
         Objects.requireNonNull(secretAttributes.name(), "The Secret name cannot be null.");
         Objects.requireNonNull(secretAttributes.version(), "The Secret version cannot be null.");
@@ -165,7 +163,7 @@ public final class SecretAsyncClient extends ServiceClient {
                 .contentType(secretAttributes.contentType())
                 .secretAttributes(new SecretRequestAttributes(secretAttributes));
 
-        return service.updateSecret(vaultEndPoint, secretAttributes.name(), secretAttributes.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
+        return service.updateSecret(vaultEndpoint, secretAttributes.name(), secretAttributes.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -174,12 +172,12 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param name The name of the secret to be deleted.
      * @throws NullPointerException if {@code name} is {@code null}.
-     * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the deleted {@link DeletedSecret}.
-     * @throws com.azure.common.http.rest.RestException when a secret with {@code name} doesn't exist in the key vault.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value()} contains the deleted {@link DeletedSecret}.
+     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
-    public Mono<RestResponse<DeletedSecret>> deleteSecretAsync(String name) {
+    public Mono<Response<DeletedSecret>> deleteSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        return service.deleteSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return service.deleteSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -188,12 +186,12 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param name The name of the deleted secret.
      * @throws NullPointerException if {@code name} is {@code null}.
-     * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the deleted {@link DeletedSecret}.
-     * @throws com.azure.common.http.rest.RestException when a deleted secret with {@code name} doesn't exist in the key vault.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value()} contains the deleted {@link DeletedSecret}.
+     * @throws com.azure.common.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
      */
-    public Mono<RestResponse<DeletedSecret>> getDeletedSecretAsync(String name) {
+    public Mono<Response<DeletedSecret>> getDeletedSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        return service.getDeletedSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return service.getDeletedSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -202,12 +200,12 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param name The name of the secret.
      * @throws NullPointerException if {@code name} is {@code null}.
-     * @return A {@link Mono} containing a {@link RestVoidResponse}.
-     * @throws com.azure.common.http.rest.RestException when a deleted secret with {@code name} doesn't exist in the key vault.
+     * @return A {@link Mono} containing a {@link com.azure.common.http.rest.VoidResponse}.
+     * @throws com.azure.common.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
      */
-    public Mono<RestVoidResponse> purgeDeletedSecretAsync(String name) {
+    public Mono<VoidResponse> purgeDeletedSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        return service.purgeDeletedSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return service.purgeDeletedSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -216,12 +214,12 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param name The name of the deleted secret to be recovered.
      * @throws NullPointerException if {@code name} is {@code null}.
-     * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the recovered {@link Secret}.
-     * @throws com.azure.common.http.rest.RestException when a deleted secret with {@code name} doesn't exist in the key vault.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value()} contains the recovered {@link Secret}.
+     * @throws com.azure.common.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
      */
-    public Mono<RestResponse<Secret>> recoverDeletedSecretAsync(String name) {
+    public Mono<Response<Secret>> recoverDeletedSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        return service.recoverDeletedSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return service.recoverDeletedSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -230,14 +228,14 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param name The name of the secret.
      * @throws NullPointerException if {@code name} is {@code null}.
-     * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the backed up secret blob.
-     * @throws com.azure.common.http.rest.RestException when a secret with {@code name} doesn't exist in the key vault.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value()} contains the backed up secret blob.
+     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
-    public Mono<RestResponse<byte[]>> backupSecretAsync(String name) {
+    public Mono<Response<byte[]>> backupSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
-        return service.backupSecret(vaultEndPoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .flatMap( base64URLRestResponse ->  Mono.just(new SimpleRestResponse<byte[]>(base64URLRestResponse.request(),
-                base64URLRestResponse.statusCode(), base64URLRestResponse.headers(), base64URLRestResponse.body().value())));
+        return service.backupSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+                .flatMap( base64URLResponse ->  Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
+                base64URLResponse.statusCode(), base64URLResponse.headers(), base64URLResponse.value().value())));
     }
 
     /**
@@ -245,14 +243,14 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param backup The backup blob associated with the secret.
      * @throws NullPointerException if {@code SecretBackup} is {@code null}.
-     * @return A {@link Mono} containing a {@link RestResponse} whose {@link RestResponse#body()} contains the restored {@link Secret}.
-     * @throws com.azure.common.http.rest.RestException when the {@code backup} is corrupted.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value()} contains the restored {@link Secret}.
+     * @throws com.azure.common.exception.ServiceRequestException when the {@code backup} is corrupted.
      */
-    public Mono<RestResponse<Secret>> restoreSecretAsync(byte[] backup) {
+    public Mono<Response<Secret>> restoreSecretAsync(byte[] backup) {
         Objects.requireNonNull(backup, "The Secret backup parameter cannot be null.");
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters()
                                                 .secretBackup(backup);
-        return service.restoreSecret(vaultEndPoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
+        return service.restoreSecret(vaultEndpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -263,7 +261,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A {@link Flux} containing {@link SecretAttributes} of all the secrets in the vault.
      */
     public Flux<SecretAttributes> listSecretsAsync() {
-        return getPagedSecrets(service.getSecrets(vaultEndPoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
+        Mono<PagedResponse<SecretAttributes>> result = service.getSecrets(vaultEndpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return result.flatMapMany(this::extractAndFetchSecrets);
     }
 
     /**
@@ -273,7 +272,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A {@link Flux} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public Flux<DeletedSecret> listDeletedSecretsAsync() {
-        return getPagedDeletedSecrets(service.getDeletedSecrets(vaultEndPoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
+        Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return result.flatMapMany(this::extractAndFetchSecrets);
     }
 
     /**
@@ -282,14 +282,16 @@ public final class SecretAsyncClient extends ServiceClient {
      * not provided in the response. This operation requires the secrets/list permission.
      *
      * @param name The name of the secret.
-     * @throws NullPointerException thrown if name parameter is null
+     * @throws NullPointerException thrown if name parameter is null.
+     * @throws IllegalArgumentException thrown if name parameter is empty.
      * @return A {@link Flux} containing {@link SecretAttributes} of all the versions of the specified secret in the vault. Flux is empty if secret with {@code name} does not exist in key vault
      */
     public Flux<SecretAttributes> listSecretVersionsAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
         //TODO: replace this with ImplUtils string is empty or null check, once Issue: Azure/azure-sdk-for-java#3373 is completed and merged.
         Validate.isTrue(!name.isEmpty(), "The Secret name cannot be empty");
-        return getPagedSecrets(service.getSecretVersions(vaultEndPoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
+        Mono<PagedResponse<SecretAttributes>> result = service.getSecretVersions(vaultEndpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return result.flatMapMany(this::extractAndFetchSecrets);
     }
 
     /**
@@ -299,12 +301,13 @@ public final class SecretAsyncClient extends ServiceClient {
      * provided in the response. This operation requires the secrets/list permission.
      *
      * @param maxPageResults Maximum number of results to return in a page.
-     * @throws NullPointerException thrown if maxPageResults parameter is 0 or less than 0.
+     * @throws IllegalArgumentException thrown if maxPageResults parameter is 0 or less than 0.
      * @return A {@link Flux} containing {@link SecretAttributes} of all the secrets in the key vault.
      */
     public Flux<SecretAttributes> listSecretsAsync(int maxPageResults) {
         Validate.isTrue(maxPageResults > 0, "The maximum page results parameter needs to be greater than 0.");
-        return getPagedSecrets(service.getSecrets(vaultEndPoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
+        Mono<PagedResponse<SecretAttributes>> result = service.getSecrets(vaultEndpoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return result.flatMapMany(this::extractAndFetchSecrets);
     }
 
     /**
@@ -312,12 +315,13 @@ public final class SecretAsyncClient extends ServiceClient {
      * have been deleted for a vault enabled for soft-delete. This operation requires the secrets/list permission.
      *
      * @param maxPageResults Maximum number of results to return in a page.
-     * @throws NullPointerException thrown if maxPageResults parameter is is 0 or less than 0.
+     * @throws IllegalArgumentException thrown if maxPageResults parameter is is 0 or less than 0.
      * @return A {@link Flux} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public Flux<DeletedSecret> listDeletedSecretsAsync(int maxPageResults) {
         Validate.isTrue(maxPageResults > 0, "The maximum page results parameter needs to be greater than 0.");
-        return getPagedDeletedSecrets(service.getDeletedSecrets(vaultEndPoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
+        Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return result.flatMapMany(this::extractAndFetchSecrets);
     }
 
     /**
@@ -327,7 +331,7 @@ public final class SecretAsyncClient extends ServiceClient {
      *
      * @param name The name of the secret.
      * @param maxPageResults Maximum number of results to return in a page.
-     * @throws NullPointerException thrown if {@code name} or {@code maxPageResults} is 0 or less than 0.
+     * @throws IllegalArgumentException thrown if {@code name} or {@code maxPageResults} is 0 or less than 0.
      * @return A {@link Flux} containing {@link SecretAttributes} of all the versions of the secret in the key vault. Flux is empty if secret with {@code name} does not exist in key vault
      */
     public Flux<SecretAttributes> listSecretVersionsAsync(String name, int maxPageResults) {
@@ -336,56 +340,28 @@ public final class SecretAsyncClient extends ServiceClient {
         Validate.isTrue(!name.isEmpty(), "The Secret name cannot be empty");
         Objects.requireNonNull(maxPageResults, "The maximum page results parameter cannot be null.");
         Validate.isTrue(maxPageResults > 0, "The maximum page results parameter needs to be greater than 0.");
-        return getPagedSecrets(service.getSecretVersions(vaultEndPoint, name, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
+        Mono<PagedResponse<SecretAttributes>> result = service.getSecretVersions(vaultEndpoint, name, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return result.flatMapMany(this::extractAndFetchSecrets);
     }
 
     /**
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listSecretsAsync()} or {@link SecretAsyncClient#listSecretsAsync(int)}.
+     * Gets {@link T type secrets} given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretClient#listSecrets()} or {@link SecretClient#listSecrets(int)} or {@link SecretClient#listDeletedSecrets()}
+     * or {@link SecretClient#listDeletedSecrets(int)}.
      *
-     * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link SecretAttributes} from the next page of results.
+     * @param nextPageLink The {@link com.azure.keyvault.implementation.SecretsPage#nextLink()} from a previous, successful call to one of the list operations.
+     * @return A stream of {@link T type secrets} from the next page of results.
      */
-    private Flux<SecretAttributes> listSecretsNext(String nextPageLink) {
-        return getPagedSecrets(service.getSecrets(vaultEndPoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
+    private <T> Flux<T> listSecretsNext(String nextPageLink) {
+        Mono<PagedResponse<T>> result = service.getSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return result.flatMapMany(this::extractAndFetchSecrets);
     }
 
-    /**
-     * Gets all deleted secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listDeletedSecretsAsync()} or {@link SecretAsyncClient#listDeletedSecretsAsync(int)}.
-     *
-     * @param nextPageLink The {@link Page#nextPageLink()} from a previous, successful call to one of the list operations.
-     * @return A {@link Flux} containing {@link SecretAttributes} of all the versions of the secret in the key vault.
-     * @return A stream of {@link DeletedSecret} from the next page of results.
-     */
-    private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink) {
-        return getPagedDeletedSecrets(service.getDeletedSecrets(vaultEndPoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE));
-    }
-
-    private Flux<SecretAttributes> getPagedSecrets(Mono<RestResponse<Page<SecretAttributes>>> response) {
-        return response.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-                .concatMap(this::extractAndFetchSecrets);
-    }
-
-    private Flux<DeletedSecret> getPagedDeletedSecrets(Mono<RestResponse<Page<DeletedSecret>>> response) {
-        return response.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-                .concatMap(this::extractAndFetchDeletedSecrets);
-    }
-
-    private Publisher<SecretAttributes> extractAndFetchSecrets(RestPagedResponseImpl<SecretAttributes> page) {
+    private <T> Publisher<T> extractAndFetchSecrets(PagedResponse<T> page) {
         String nextPageLink = page.nextLink();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
         return Flux.fromIterable(page.items()).concatWith(listSecretsNext(nextPageLink));
     }
-
-    private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(RestPagedResponseImpl<DeletedSecret> page) {
-        String nextPageLink = page.nextLink();
-        if (nextPageLink == null) {
-            return Flux.fromIterable(page.items());
-        }
-        return Flux.fromIterable(page.items()).concatWith(listDeletedSecretsNext(nextPageLink));
-    }
-
 }

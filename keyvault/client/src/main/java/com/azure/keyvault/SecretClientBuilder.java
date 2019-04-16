@@ -23,12 +23,12 @@ import java.util.Objects;
  * fields are auto assigned when the secret is created in the key vault. </p>
  *
  * <p> Minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build {@link SecretAsyncClient}
- * are {@link String vaultEndPoint} and {@link ServiceClientCredentials credentials}. If a custom {@link HttpPipeline pipeline}
+ * are {@link String vaultEndpoint} and {@link ServiceClientCredentials credentials}. If a custom {@link HttpPipeline pipeline}
  * is specified as configuration option, then no other configuration option needs to be specified. </p>
  *
  * <pre>
  *    SecretClient secretClient = SecretClient.builder()
- *                                .vaultEndPoint("https://myvault.vault.azure.net/")
+ *                                .vaultEndpoint("https://myvault.vault.azure.net/")
  *                                .credentials(keyVaultCredentials)
  *                                .build()
  *
@@ -42,7 +42,7 @@ import java.util.Objects;
  *
  * <pre>
  *    SecretClient secretClient = SecretClient.builder()
- *                                .vaultEndPoint("https://myvault.vault.azure.net/")
+ *                                .vaultEndpoint("https://myvault.vault.azure.net/")
  *                                .credentials(keyVaultCredentials)
  *                                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
  *                                .addPolicy(customPolicyOne)
@@ -55,7 +55,7 @@ public final class SecretClientBuilder {
     private final List<HttpPipelinePolicy> policies;
     private ServiceClientCredentials credentials;
     private HttpPipeline pipeline;
-    private URL vaultEndPoint;
+    private URL vaultEndpoint;
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
     private RetryPolicy retryPolicy;
@@ -73,24 +73,24 @@ public final class SecretClientBuilder {
      * Every time {@code build()} is called, a new instance of {@link SecretClient} is created.
      *
      * <p> If {@link SecretClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link SecretClientBuilder#vaultEndPoint(String) serviceEndpoint} are used to create the
+     * {@link SecretClientBuilder#vaultEndpoint(String) serviceEndpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. </p>
      *
      * @return A SecretClient with the options set from the builder.
      * @throws IllegalStateException If {@link SecretClientBuilder#credentials(ServiceClientCredentials)} or
-     * {@link SecretClientBuilder#vaultEndPoint(String)} have not been set.
+     * {@link SecretClientBuilder#vaultEndpoint(String)} have not been set.
      */
     public SecretClient build() {
 
         if (pipeline != null) {
-            return new SecretClient(vaultEndPoint, pipeline);
+            return new SecretClient(vaultEndpoint, pipeline);
         }
 
         if (credentials == null) {
             throw new IllegalStateException(KeyVaultErrorCodeStrings.getCredentialsRequired());
         }
 
-        if (vaultEndPoint == null) {
+        if (vaultEndpoint == null) {
             throw new IllegalStateException(KeyVaultErrorCodeStrings.getVaultEndPointRequired());
         }
 
@@ -107,7 +107,7 @@ public final class SecretClientBuilder {
             ? new HttpPipeline(policies)
             : new HttpPipeline(httpClient, policies);
 
-        return new SecretClient(vaultEndPoint, pipeline);
+        return new SecretClient(vaultEndpoint, pipeline);
     }
 
     /**
@@ -115,10 +115,10 @@ public final class SecretClientBuilder {
      *
      * @param vaultEndPoint The vault endpoint url is used as destination on Azure to send requests to.
      * @return The updated Builder object.
-     * @throws MalformedURLException if {@code vaultEndPoint} is null or it cannot be parsed into a valid URL.
+     * @throws MalformedURLException if {@code vaultEndpoint} is null or it cannot be parsed into a valid URL.
      */
-    public SecretClientBuilder vaultEndPoint(String vaultEndPoint) throws MalformedURLException {
-        this.vaultEndPoint = new URL(vaultEndPoint);
+    public SecretClientBuilder vaultEndpoint(String vaultEndPoint) throws MalformedURLException {
+        this.vaultEndpoint = new URL(vaultEndPoint);
         return this;
     }
 
@@ -181,7 +181,7 @@ public final class SecretClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link SecretClientBuilder#vaultEndPoint(String) vaultEndPoint} to build {@link SecretClient}.
+     * {@link SecretClientBuilder#vaultEndpoint(String) vaultEndpoint} to build {@link SecretClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link SecretClientBuilder} object.
@@ -195,7 +195,7 @@ public final class SecretClientBuilder {
     private TokenCredentials getTokenCredentials(){
         String token = "";
         try{
-            token = credentials.authorizationHeaderValue(vaultEndPoint.toString());
+            token = credentials.authorizationHeaderValue(vaultEndpoint.toString());
         } catch (IOException e){
             e.printStackTrace();
         }

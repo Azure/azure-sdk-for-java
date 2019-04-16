@@ -5,7 +5,7 @@ package com.azure.keyvault.implementation;
 
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpRequest;
-import com.azure.common.http.rest.RestPagedResponse;
+import com.azure.common.http.rest.PagedResponse;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @param <T> the type items in the page
  */
-public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
+public class RestPagedResponseImpl<T> implements PagedResponse<T> {
     /**
      * The link to the next page.
      */

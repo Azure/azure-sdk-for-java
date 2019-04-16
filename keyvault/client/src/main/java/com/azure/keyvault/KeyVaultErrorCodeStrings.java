@@ -42,7 +42,7 @@ class KeyVaultErrorCodeStrings {
         if(errorStrings != null) {
             return;
         }
-        try (InputStream fileInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(ERROR_STRINGS_FILE_NAME)) {
+        try (InputStream fileInputStream = KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()){
             errorStrings = new Properties();
             errorStrings.load(fileInputStream);
         } catch (IOException ex) {

@@ -1,7 +1,6 @@
 package com.azure.keyvault;
 
 import com.azure.common.credentials.AsyncServiceClientCredentials;
-import com.azure.common.credentials.ServiceClientCredentials;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpPipeline;
@@ -26,12 +25,12 @@ import java.util.function.Function;
  * fields are auto assigned when the secret is created in the key vault. </p>
  *
  * <p> Minimal configuration options required by {@link SecretAsyncClientBuilder secretClientBuilder} to build {@link SecretAsyncClient}
- * are {@link String vaultEndPoint} and {@link AsyncServiceClientCredentials credentials}. If a custom {@link HttpPipeline pipeline}
+ * are {@link String vaultEndpoint} and {@link AsyncServiceClientCredentials credentials}. If a custom {@link HttpPipeline pipeline}
  * is specified as configuration option, then no other configuration option needs to be specified. </p>
  *
  * <pre>
  *    SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
- *                                .vaultEndPoint("https://myvault.vault.azure.net/")
+ *                                .vaultEndpoint("https://myvault.vault.azure.net/")
  *                                .credentials(keyVaultCredentials)
  *                                .build()
  *
@@ -45,7 +44,7 @@ import java.util.function.Function;
  *
  * <pre>
  *    SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
- *                                .vaultEndPoint("https://myvault.vault.azure.net/")
+ *                                .vaultEndpoint("https://myvault.vault.azure.net/")
  *                                .credentials(keyVaultCredentials)
  *                                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
  *                                .addPolicy(customPolicyOne)
@@ -58,14 +57,12 @@ public final class SecretAsyncClientBuilder {
     private final List<HttpPipelinePolicy> policies;
     private AsyncServiceClientCredentials credentials;
     private HttpPipeline pipeline;
-    private URL vaultEndPoint;
+    private URL vaultEndpoint;
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
     private RetryPolicy retryPolicy;
-    private String userAgent;
 
     SecretAsyncClientBuilder() {
-        userAgent = String.format("Azure-SDK-For-Java/%s (%s)", AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION);
         retryPolicy = new RetryPolicy();
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
@@ -76,31 +73,30 @@ public final class SecretAsyncClientBuilder {
      * Every time {@code build()} is called, a new instance of {@link SecretAsyncClient} is created.
      *
      * <p> If {@link SecretAsyncClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link SecretAsyncClientBuilder#vaultEndPoint(String) serviceEndpoint} are used to create the
+     * {@link SecretAsyncClientBuilder#vaultEndpoint(String) serviceEndpoint} are used to create the
      * {@link SecretAsyncClientBuilder client}. All other builder settings are ignored. </p>
      *
      * @return A SecretAsyncClient with the options set from the builder.
      * @throws IllegalStateException If {@link SecretAsyncClientBuilder#credentials(AsyncServiceClientCredentials)} or
-     * {@link SecretAsyncClientBuilder#vaultEndPoint(String)} have not been set.
+     * {@link SecretAsyncClientBuilder#vaultEndpoint(String)} have not been set.
      */
     public SecretAsyncClient build() {
 
         if (pipeline != null) {
-            return new SecretAsyncClient(vaultEndPoint, pipeline);
+            return new SecretAsyncClient(vaultEndpoint, pipeline);
         }
 
         if (credentials == null) {
             throw new IllegalStateException(KeyVaultErrorCodeStrings.getCredentialsRequired());
         }
 
-        if (vaultEndPoint == null) {
+        if (vaultEndpoint == null) {
             throw new IllegalStateException(KeyVaultErrorCodeStrings.getVaultEndPointRequired());
         }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new UserAgentPolicy(userAgent));
+        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION));
         policies.add(retryPolicy);
         policies.add(new AsyncCredentialsPolicy(getAsyncTokenCredentials()));
         policies.addAll(this.policies);
@@ -110,7 +106,7 @@ public final class SecretAsyncClientBuilder {
             ? new HttpPipeline(policies)
             : new HttpPipeline(httpClient, policies);
 
-        return new SecretAsyncClient(vaultEndPoint, pipeline);
+        return new SecretAsyncClient(vaultEndpoint, pipeline);
     }
 
     /**
@@ -118,10 +114,10 @@ public final class SecretAsyncClientBuilder {
      *
      * @param vaultEndPoint The vault endpoint url is used as destination on Azure to send requests to.
      * @return The updated Builder object.
-     * @throws MalformedURLException if {@code vaultEndPoint} is null or it cannot be parsed into a valid URL.
+     * @throws MalformedURLException if {@code vaultEndpoint} is null or it cannot be parsed into a valid URL.
      */
-    public SecretAsyncClientBuilder vaultEndPoint(String vaultEndPoint) throws MalformedURLException {
-        this.vaultEndPoint = new URL(vaultEndPoint);
+    public SecretAsyncClientBuilder vaultEndpoint(String vaultEndPoint) throws MalformedURLException {
+        this.vaultEndpoint = new URL(vaultEndPoint);
         return this;
     }
 
@@ -184,7 +180,7 @@ public final class SecretAsyncClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link SecretAsyncClientBuilder#vaultEndPoint(String) vaultEndPoint} to build {@link SecretAsyncClient}.
+     * {@link SecretAsyncClientBuilder#vaultEndpoint(String) vaultEndpoint} to build {@link SecretAsyncClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link SecretAsyncClientBuilder} object.
@@ -196,7 +192,7 @@ public final class SecretAsyncClientBuilder {
     }
 
     private AsyncTokenCredentials getAsyncTokenCredentials(){
-        return new AsyncTokenCredentials("Bearer",credentials.authorizationHeaderValueAsync(new HttpRequest(HttpMethod.POST,vaultEndPoint)));
+        return new AsyncTokenCredentials("Bearer",credentials.authorizationHeaderValueAsync(new HttpRequest(HttpMethod.POST, vaultEndpoint)));
     }
 
 

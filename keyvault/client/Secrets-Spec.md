@@ -69,7 +69,7 @@ public class SecretClient extends ServiceClient
            //Validate and Build the Client
         }
 
-        public Builder vaultEndPoint(String vaultEndPoint) {}
+        public Builder vaultEndpoint(String vaultEndpoint) {}
 
         public Builder credentials(ServiceClientCredentials credentials) {}
 
@@ -92,7 +92,7 @@ public Mono<RestResponse<Secret>> setSecretAsync(Secret secret);
 #### Usage:
 ~~~ java
 SecretClient secretClient = SecretClient.builder()
-                            .vaultEndPoint("https://myvault.vault.azure.net/")
+                            .vaultEndpoint("https://myvault.vault.azure.net/")
                             .credentials(new KeyvaultCredentials())
                             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                             .build();            
