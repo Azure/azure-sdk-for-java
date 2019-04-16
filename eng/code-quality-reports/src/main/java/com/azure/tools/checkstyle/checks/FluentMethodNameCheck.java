@@ -1,7 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 /**
@@ -14,9 +18,15 @@ public class FluentMethodNameCheck extends AbstractCheck {
     private static final String FLUENT_METHOD_ERR = "Fluent Method name should not start with keyword %s.";
 
     // Specifies valid identifier: default start word is 'with'
-    private String avoidStartWord = "with";
-
+    private String[] avoidStartWords = new String[] {"with"}; // by default
+    private static final String MODEL = ".model";
     private String className;
+    private static boolean isModelClass;
+
+    @Override
+    public void beginTree(DetailAST ast) {
+        this.isModelClass = false;
+    }
 
     @Override
     public int[] getDefaultTokens() {
@@ -38,39 +48,55 @@ public class FluentMethodNameCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST ast) {
-
         switch (ast.getType()) {
+            case TokenTypes.PACKAGE_DEF:
+                FullIdent packageNameFI = FullIdent.createFullIdentBelow(ast);
+                this.isModelClass = packageNameFI.getText().endsWith(MODEL);
+                break;
             case TokenTypes.CLASS_DEF:
-                className = ast.findFirstToken(TokenTypes.IDENT).getText();
+                if (isModelClass) {
+                    className = ast.findFirstToken(TokenTypes.IDENT).getText();
+                }
                 break;
             case TokenTypes.METHOD_DEF:
-                isMethodNameStartWith(ast);
+                if (isModelClass) {
+                    isMethodNameStartWith(ast);
+                }
                 break;
         }
     }
 
     /**
+     * Log the error if the method name is not start with {@code avoidStartWord}
      * @param ast METHOD_DEF AST node
-     * @return
      */
     private void isMethodNameStartWith(DetailAST ast) {
         String methodType = ast.findFirstToken(TokenTypes.TYPE).getFirstChild().getText();
-
         if (methodType.equals(className)) {
             String methodName = ast.findFirstToken(TokenTypes.IDENT).getText();
             int paramtersCount = ast.findFirstToken(TokenTypes.PARAMETERS).getChildCount();
-            if (methodName.contains(avoidStartWord) && methodName.substring(0, avoidStartWord.length()).equals(avoidStartWord)
-                && paramtersCount == 1) {
-                log(ast.getLineNo(), String.format(FLUENT_METHOD_ERR, avoidStartWord));
+            if (paramtersCount != 1) {
+                return;
             }
+            for (String avoidStartWord : avoidStartWords) {
+                if (methodName.length() >= avoidStartWord.length()
+                    && methodName.substring(0, avoidStartWord.length()).equals(avoidStartWord)) {
+                    log(ast.getLineNo(), String.format(FLUENT_METHOD_ERR, avoidStartWord));
+                }
+            }
+
         }
     }
 
     /**
      * Setter to specifies valid identifiers
-     * @param word the starting string that should not start with in fluent method
+     * @param avoidStartWords the starting strings that should not start with in fluent method
      */
-    public void setAvoidStartWord(String word) {
-        this.avoidStartWord = word;
+    public void setAvoidStartWord(String[] avoidStartWords) {
+        if (avoidStartWords == null || avoidStartWords.length == 0) {
+            return;
+        }
+        this.avoidStartWords = avoidStartWords;
     }
 }
+
