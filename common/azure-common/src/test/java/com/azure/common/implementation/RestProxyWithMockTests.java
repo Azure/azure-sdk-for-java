@@ -69,7 +69,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         @GET("Base64UrlMapOfBytes")
         @ReturnValueWireType(Base64Url.class)
-        Map<String,byte[]> getBase64UrlMapOfBytes();
+        Map<String, byte[]> getBase64UrlMapOfBytes();
 
         @GET("DateTimeRfc1123")
         @ReturnValueWireType(DateTimeRfc1123.class)
@@ -87,7 +87,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertNotNull(bytes);
         assertEquals(10, bytes.length);
         for (int i = 0; i < 10; ++i) {
-            assertEquals((byte)i, bytes[i]);
+            assertEquals((byte) i, bytes[i]);
         }
     }
 
@@ -103,7 +103,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
             assertNotNull(bytes);
             assertEquals((i + 1) * 10, bytes.length);
             for (int j = 0; j < bytes.length; ++j) {
-                assertEquals((byte)j, bytes[j]);
+                assertEquals((byte) j, bytes[j]);
             }
         }
     }
@@ -132,7 +132,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     @Test
     public void service1GetBase64UrlMapOfBytes() {
-        final Map<String,byte[]> bytesMap = createService(Service1.class)
+        final Map<String, byte[]> bytesMap = createService(Service1.class)
                 .getBase64UrlMapOfBytes();
         assertNotNull(bytesMap);
         assertEquals(2, bytesMap.size());
@@ -143,7 +143,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
             final int expectedArrayLength = (i + 1) * 10;
             assertEquals(expectedArrayLength, bytes.length);
             for (int j = 0; j < expectedArrayLength; ++j) {
-                assertEquals((byte)j, bytes[j]);
+                assertEquals((byte) j, bytes[j]);
             }
         }
     }
@@ -272,43 +272,43 @@ public class RestProxyWithMockTests extends RestProxyTests {
         public String name;
 
         @HeaderCollection("header-collection-prefix-")
-        public Map<String,String> headerCollection;
+        public Map<String, String> headerCollection;
     }
 
     private static class HeaderCollectionTypeProtectedFields {
         protected String name;
 
         @HeaderCollection("header-collection-prefix-")
-        protected Map<String,String> headerCollection;
+        protected Map<String, String> headerCollection;
     }
 
     private static class HeaderCollectionTypePrivateFields {
         private String name;
 
         @HeaderCollection("header-collection-prefix-")
-        private Map<String,String> headerCollection;
+        private Map<String, String> headerCollection;
     }
 
     private static class HeaderCollectionTypePackagePrivateFields {
         String name;
 
         @HeaderCollection("header-collection-prefix-")
-        Map<String,String> headerCollection;
+        Map<String, String> headerCollection;
     }
 
     @Host("https://www.example.com")
     interface ServiceHeaderCollections {
         @GET("url/path")
-        ResponseBase<HeaderCollectionTypePublicFields,Void> publicFields();
+        ResponseBase<HeaderCollectionTypePublicFields, Void> publicFields();
 
         @GET("url/path")
-        ResponseBase<HeaderCollectionTypeProtectedFields,Void> protectedFields();
+        ResponseBase<HeaderCollectionTypeProtectedFields, Void> protectedFields();
 
         @GET("url/path")
-        ResponseBase<HeaderCollectionTypePrivateFields,Void> privateFields();
+        ResponseBase<HeaderCollectionTypePrivateFields, Void> privateFields();
 
         @GET("url/path")
-        ResponseBase<HeaderCollectionTypePackagePrivateFields,Void> packagePrivateFields();
+        ResponseBase<HeaderCollectionTypePackagePrivateFields, Void> packagePrivateFields();
     }
 
     private static final HttpClient headerCollectionHttpClient = new MockHttpClient() {
@@ -337,8 +337,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertEquals(4, responseRawHeaders.size());
     }
 
-    private static void assertHeaderCollections(Map<String,String> headerCollections) {
-        final Map<String,String> expectedHeaderCollections = new HashMap<>();
+    private static void assertHeaderCollections(Map<String, String> headerCollections) {
+        final Map<String, String> expectedHeaderCollections = new HashMap<>();
         expectedHeaderCollections.put("one", "1");
         expectedHeaderCollections.put("two", "2");
         expectedHeaderCollections.put("three", "3");
@@ -351,7 +351,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     @Test
     public void serviceHeaderCollectionPublicFields() {
-        final ResponseBase<HeaderCollectionTypePublicFields,Void> response = createHeaderCollectionsService()
+        final ResponseBase<HeaderCollectionTypePublicFields, Void> response = createHeaderCollectionsService()
             .publicFields();
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
@@ -364,7 +364,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     @Test
     public void serviceHeaderCollectionProtectedFields() {
-        final ResponseBase<HeaderCollectionTypeProtectedFields,Void> response = createHeaderCollectionsService()
+        final ResponseBase<HeaderCollectionTypeProtectedFields, Void> response = createHeaderCollectionsService()
             .protectedFields();
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
@@ -377,7 +377,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     @Test
     public void serviceHeaderCollectionPrivateFields() {
-        final ResponseBase<HeaderCollectionTypePrivateFields,Void> response = createHeaderCollectionsService()
+        final ResponseBase<HeaderCollectionTypePrivateFields, Void> response = createHeaderCollectionsService()
             .privateFields();
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
@@ -390,7 +390,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     @Test
     public void serviceHeaderCollectionPackagePrivateFields() {
-        final ResponseBase<HeaderCollectionTypePackagePrivateFields,Void> response = createHeaderCollectionsService()
+        final ResponseBase<HeaderCollectionTypePackagePrivateFields, Void> response = createHeaderCollectionsService()
             .packagePrivateFields();
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
