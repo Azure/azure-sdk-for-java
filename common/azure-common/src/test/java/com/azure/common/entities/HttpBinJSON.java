@@ -10,6 +10,6 @@ import java.util.Map;
  */
 public class HttpBinJSON {
     public String url;
-    public Map<String,String> headers;
+    public Map<String, String> headers;
     public Object data;
 }
