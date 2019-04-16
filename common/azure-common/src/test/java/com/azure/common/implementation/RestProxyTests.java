@@ -4,7 +4,6 @@
 package com.azure.common.implementation;
 
 import com.azure.common.MyRestException;
-import com.azure.common.ServiceClient;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
@@ -23,7 +22,6 @@ import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
 import com.azure.common.entities.HttpBinHeaders;
 import com.azure.common.entities.HttpBinJSON;
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipeline;
@@ -185,7 +183,7 @@ public abstract class RestProxyTests {
 
         @GET("anything/{path}")
         @ExpectedResponses({200})
-        HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value="path", encoded=true) String pathParam);
+        HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value = "path", encoded = true) String pathParam);
 
         @GET("anything")
         @ExpectedResponses({200})
