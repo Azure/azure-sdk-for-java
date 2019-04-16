@@ -22,7 +22,7 @@ import java.util.Set;
 public class ServiceClientChecks extends AbstractCheck {
     private static final String BUILDER_METHOD_NAME = "builder";
     private static final String SERVICE_CLIENT_CLASS_NAME = "com.azure.common.ServiceClient";
-    private static final String CLIENT = "client";
+    private static final String CLIENT = "Client";
     private static final String ASYNC_CLIENT = "AsyncClient";
 
     private static final String FAILED_TO_LOAD_MESSAGE = "%s class failed to load, ServiceClientChecks will be ignored.";
@@ -222,10 +222,22 @@ public class ServiceClientChecks extends AbstractCheck {
         try {
             Class<?> importClass = Class.forName(classFullPath);
             if (this.serviceClientClass.isInstance(importClass)) {
-                castableSet.add(importClass.getSimpleName());
+                String className = lowerFirstLetter(importClass.getSimpleName());
+                if (!className.isEmpty()) {
+                    castableSet.add(className);
+                }
             }
         }  catch (ClassNotFoundException ex) {
             log(importAST, String.format(FAILED_TO_LOAD_MESSAGE, classFullPath));
         }
+    }
+
+    private String lowerFirstLetter(String str) {
+        StringBuilder sb = new StringBuilder();
+        if (str != null && str.length() > 0) {
+            sb.append(Character.toLowerCase(str.charAt(0)));
+            sb.append(str.substring(1));
+        }
+        return sb.toString();
     }
 }
