@@ -11,17 +11,57 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class HttpBinHeaders {
     @JsonProperty(value = "Date")
-    public DateTimeRfc1123 date;
+    private DateTimeRfc1123 date;
 
     @JsonProperty(value = "Via")
-    public String via;
+    private String via;
 
     @JsonProperty(value = "Connection")
-    public String connection;
+    private String connection;
 
     @JsonProperty(value = "X-Processed-Time")
-    public double xProcessedTime;
+    private double xProcessedTime;
 
     @JsonProperty(value = "Access-Control-Allow-Credentials")
-    public boolean accessControlAllowCredentials;
+    private boolean accessControlAllowCredentials;
+
+    public DateTimeRfc1123 date() {
+        return date;
+    }
+
+    public void date(DateTimeRfc1123 date) {
+        this.date = date;
+    }
+
+    public String via() {
+        return via;
+    }
+
+    public void via(String via) {
+        this.via = via;
+    }
+
+    public String connection() {
+        return connection;
+    }
+
+    public void connection(String connection) {
+        this.connection = connection;
+    }
+
+    public double xProcessedTime() {
+        return xProcessedTime;
+    }
+
+    public void xProcessedTime(double xProcessedTime) {
+        this.xProcessedTime = xProcessedTime;
+    }
+
+    public boolean accessControlAllowCredentials() {
+        return accessControlAllowCredentials;
+    }
+
+    public void accessControlAllowCredentials(boolean accessControlAllowCredentials) {
+        this.accessControlAllowCredentials = accessControlAllowCredentials;
+    }
 }
