@@ -1306,11 +1306,11 @@ public abstract class RestProxyTests {
 
         final HttpBinHeaders headers = response.deserializedHeaders();
         assertNotNull(headers);
-        assertEquals(true, headers.accessControlAllowCredentials);
-        assertEquals("keep-alive", headers.connection.toLowerCase());
-        assertNotNull(headers.date);
+        assertEquals(true, headers.accessControlAllowCredentials());
+        assertEquals("keep-alive", headers.connection().toLowerCase());
+        assertNotNull(headers.date());
         // assertEquals("1.1 vegur", headers.via);
-        assertNotEquals(0, headers.xProcessedTime);
+        assertNotEquals(0, headers.xProcessedTime());
     }
 
     @Test
@@ -1327,10 +1327,10 @@ public abstract class RestProxyTests {
 
         final HttpBinHeaders headers = response.deserializedHeaders();
         assertNotNull(headers);
-        assertEquals(true, headers.accessControlAllowCredentials);
-        assertNotNull(headers.date);
+        assertEquals(true, headers.accessControlAllowCredentials());
+        assertNotNull(headers.date());
         // assertEquals("1.1 vegur", headers.via);
-        assertNotEquals(0, headers.xProcessedTime);
+        assertNotEquals(0, headers.xProcessedTime());
     }
 
     @Test
@@ -1362,11 +1362,11 @@ public abstract class RestProxyTests {
 
         final HttpBinHeaders headers = response.deserializedHeaders();
         assertNotNull(headers);
-        assertEquals(true, headers.accessControlAllowCredentials);
-        assertEquals("keep-alive", headers.connection.toLowerCase());
-        assertNotNull(headers.date);
+        assertEquals(true, headers.accessControlAllowCredentials());
+        assertEquals("keep-alive", headers.connection().toLowerCase());
+        assertNotNull(headers.date());
         // assertEquals("1.1 vegur", headers.via);
-        assertNotEquals(0, headers.xProcessedTime);
+        assertNotEquals(0, headers.xProcessedTime());
     }
 
     @Test
@@ -1384,11 +1384,11 @@ public abstract class RestProxyTests {
 
         final HttpBinHeaders headers = response.deserializedHeaders();
         assertNotNull(headers);
-        assertEquals(true, headers.accessControlAllowCredentials);
-        assertEquals("keep-alive", headers.connection.toLowerCase());
-        assertNotNull(headers.date);
+        assertEquals(true, headers.accessControlAllowCredentials());
+        assertEquals("keep-alive", headers.connection().toLowerCase());
+        assertNotNull(headers.date());
         // assertEquals("1.1 vegur", headers.via);
-        assertNotEquals(0, headers.xProcessedTime);
+        assertNotEquals(0, headers.xProcessedTime());
     }
 
     @Test
