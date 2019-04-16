@@ -155,7 +155,7 @@ public abstract class AzureProxyToRestProxyTests {
 
         @GET("anything/{path}")
         @ExpectedResponses({200})
-        HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value="path", encoded=true) String pathParam);
+        HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value = "path", encoded = true) String pathParam);
 
         @GET("anything")
         @ExpectedResponses({200})
@@ -243,7 +243,7 @@ public abstract class AzureProxyToRestProxyTests {
 
         @GET("anything")
         @ExpectedResponses({200})
-        HttpBinJSON getAnythingWithEncoded(@QueryParam(value="a", encoded=true) String a, @QueryParam("b") int b);
+        HttpBinJSON getAnythingWithEncoded(@QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
 
         @GET("anything")
         @ExpectedResponses({200})
@@ -398,7 +398,7 @@ public abstract class AzureProxyToRestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
-            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
     }
