@@ -8,14 +8,46 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 public class Slideshow {
     @JacksonXmlProperty(localName = "title", isAttribute = true)
-    public String title;
+    private String title;
 
     @JacksonXmlProperty(localName = "date", isAttribute = true)
-    public String date;
+    private String date;
 
     @JacksonXmlProperty(localName = "author", isAttribute = true)
-    public String author;
+    private String author;
 
     @JsonProperty("slide")
-    public Slide[] slides;
+    private Slide[] slides;
+
+    public String title() {
+        return title;
+    }
+
+    public void title(String title) {
+        this.title = title;
+    }
+
+    public String date() {
+        return date;
+    }
+
+    public void date(String date) {
+        this.date = date;
+    }
+
+    public String author() {
+        return author;
+    }
+
+    public void author(String author) {
+        this.author = author;
+    }
+
+    public Slide[] slides() {
+        return slides;
+    }
+
+    public void slides(Slide[] slides) {
+        this.slides = slides;
+    }
 }
