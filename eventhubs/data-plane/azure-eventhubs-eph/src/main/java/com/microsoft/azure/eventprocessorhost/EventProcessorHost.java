@@ -270,12 +270,12 @@ public final class EventProcessorHost {
         }
         // executorService argument is allowed to be null, that is the indication to use an internal threadpool.
 
-        if (this.partitionManagerOptions == null) {
-            // Normally will not be null because we're using the AzureStorage implementation.
-            // If it is null, we're using user-supplied implementation. Establish generic defaults
-            // in case the user doesn't provide an options object.
-            this.partitionManagerOptions = new PartitionManagerOptions();
-        }
+
+        // Normally will not be null because we're using the AzureStorage implementation.
+        // If it is null, we're using user-supplied implementation. Establish generic defaults
+        // in case the user doesn't provide an options object.
+        this.partitionManagerOptions = new PartitionManagerOptions();
+
 
         if (executorService != null) {
             // User has supplied an ExecutorService, so use that.
