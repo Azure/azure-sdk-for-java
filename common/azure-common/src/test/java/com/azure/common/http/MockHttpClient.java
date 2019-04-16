@@ -50,10 +50,10 @@ public class MockHttpClient implements HttpClient {
                         response = new MockHttpResponse(request, 200, new byte[0]);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
-                        json.url = request.url().toString()
+                        json.url(request.url().toString()
                                 // This is just to mimic the behavior we've seen with httpbin.org.
-                                .replace("%20", " ");
-                        json.headers = toMap(request.headers());
+                                .replace("%20", " "));
+                        json.headers(toMap(request.headers()));
                         response = new MockHttpResponse(request, 200, json);
                     }
                 } else if (requestPathLower.startsWith("/bytes/")) {
@@ -124,30 +124,30 @@ public class MockHttpClient implements HttpClient {
                     response = new MockHttpResponse(request, 200, responseHeaders, 0);
                 } else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url().toString();
-                    json.data = createHttpBinResponseDataForRequest(request);
+                    json.url(request.url().toString());
+                    json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url().toString();
-                    json.headers = toMap(request.headers());
+                    json.url(request.url().toString());
+                    json.headers(toMap(request.headers()));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url().toString();
-                    json.data = createHttpBinResponseDataForRequest(request);
+                    json.url(request.url().toString());
+                    json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url().toString();
-                    json.data = createHttpBinResponseDataForRequest(request);
-                    json.headers = toMap(request.headers());
+                    json.url(request.url().toString());
+                    json.data(createHttpBinResponseDataForRequest(request));
+                    json.headers(toMap(request.headers()));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url().toString();
-                    json.data = createHttpBinResponseDataForRequest(request);
-                    json.headers = toMap(request.headers());
+                    json.url(request.url().toString());
+                    json.data(createHttpBinResponseDataForRequest(request));
+                    json.headers(toMap(request.headers()));
                     response = new MockHttpResponse(request, 200, responseHeaders, json);
                 } else if (requestPathLower.startsWith("/status/")) {
                     final String statusCodeString = requestPathLower.substring("/status/".length());

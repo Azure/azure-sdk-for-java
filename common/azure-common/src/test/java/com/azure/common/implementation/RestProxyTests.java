@@ -195,7 +195,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnything();
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
     }
 
     @Test
@@ -203,7 +203,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnythingWithPlus();
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/with+plus", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything/with+plus", json.url());
     }
 
     @Test
@@ -211,7 +211,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnythingWithPathParam("withpathparam");
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/withpathparam", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything/withpathparam", json.url());
     }
 
     @Test
@@ -219,7 +219,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnythingWithPathParam("with path param");
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/with path param", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything/with path param", json.url());
     }
 
     @Test
@@ -227,7 +227,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnythingWithPathParam("with+path+param");
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/with+path+param", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything/with+path+param", json.url());
     }
 
     @Test
@@ -235,7 +235,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnythingWithEncodedPathParam("withpathparam");
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/withpathparam", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything/withpathparam", json.url());
     }
 
     @Test
@@ -243,7 +243,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnythingWithEncodedPathParam("with%20path%20param");
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/with path param", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything/with path param", json.url());
     }
 
     @Test
@@ -251,7 +251,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnythingWithEncodedPathParam("with+path+param");
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/with+path+param", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything/with+path+param", json.url());
     }
 
     @Test
@@ -260,7 +260,7 @@ public abstract class RestProxyTests {
                 .getAnythingAsync()
                 .block();
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
     }
 
     @Host("http://httpbin.org")
@@ -283,7 +283,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service6.class)
                 .getAnything("A", 15);
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything?a=A&b=15", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything?a=A&b=15", json.url());
     }
 
     @Test
@@ -291,7 +291,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service6.class)
                 .getAnything("A%20Z", 15);
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything?a=A%2520Z&b=15", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything?a=A%2520Z&b=15", json.url());
     }
 
     @Test
@@ -299,7 +299,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service6.class)
                 .getAnythingWithEncoded("x%20y", 15);
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything?a=x y&b=15", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything?a=x y&b=15", json.url());
     }
 
     @Test
@@ -308,7 +308,7 @@ public abstract class RestProxyTests {
                 .getAnythingAsync("A", 15)
                 .block();
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything?a=A&b=15", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything?a=A&b=15", json.url());
     }
 
     @Test
@@ -316,7 +316,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service6.class)
                 .getAnything(null, 15);
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything?b=15", json.url);
+        assertMatchWithHttpOrHttps("httpbin.org/anything?b=15", json.url());
     }
 
     @Host("http://httpbin.org")
@@ -335,9 +335,9 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service7.class)
                 .getAnything("A", 15);
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url);
-        assertNotNull(json.headers);
-        final HttpHeaders headers = new HttpHeaders(json.headers);
+        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
+        assertNotNull(json.headers());
+        final HttpHeaders headers = new HttpHeaders(json.headers());
         assertEquals("A", headers.value("A"));
         assertArrayEquals(new String[]{"A"}, headers.values("A"));
         assertEquals("15", headers.value("B"));
@@ -350,9 +350,9 @@ public abstract class RestProxyTests {
                 .getAnythingAsync("A", 15)
                 .block();
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url);
-        assertNotNull(json.headers);
-        final HttpHeaders headers = new HttpHeaders(json.headers);
+        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
+        assertNotNull(json.headers());
+        final HttpHeaders headers = new HttpHeaders(json.headers());
         assertEquals("A", headers.value("A"));
         assertArrayEquals(new String[]{"A"}, headers.values("A"));
         assertEquals("15", headers.value("B"));
@@ -364,7 +364,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service7.class)
                 .getAnything(null, 15);
 
-        final HttpHeaders headers = new HttpHeaders(json.headers);
+        final HttpHeaders headers = new HttpHeaders(json.headers());
 
         assertEquals(null, headers.value("A"));
         assertArrayEquals(null, headers.values("A"));
@@ -387,8 +387,8 @@ public abstract class RestProxyTests {
     public void SyncPostRequestWithStringBody() {
         final HttpBinJSON json = createService(Service8.class)
                 .post("I'm a post body!");
-        assertEquals(String.class, json.data.getClass());
-        assertEquals("I'm a post body!", json.data);
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("I'm a post body!", json.data());
     }
 
     @Test
@@ -396,14 +396,14 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service8.class)
                 .postAsync("I'm a post body!")
                 .block();
-        assertEquals(String.class, json.data.getClass());
-        assertEquals("I'm a post body!", json.data);
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("I'm a post body!", json.data());
     }
 
     @Test
     public void SyncPostRequestWithNullBody() {
         final HttpBinJSON result = createService(Service8.class).post(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Host("http://httpbin.org")
@@ -473,8 +473,8 @@ public abstract class RestProxyTests {
     public void SyncPutRequestWithIntBody() {
         final HttpBinJSON json = createService(Service9.class)
                 .put(42);
-        assertEquals(String.class, json.data.getClass());
-        assertEquals("42", json.data);
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("42", json.data());
     }
 
     @Test
@@ -482,8 +482,8 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service9.class)
                 .putAsync(42)
                 .block();
-        assertEquals(String.class, json.data.getClass());
-        assertEquals("42", json.data);
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("42", json.data());
     }
 
     @Test
@@ -525,7 +525,7 @@ public abstract class RestProxyTests {
             fail("Expected ServiceRequestException would be thrown.");
         } catch (MyRestException e) {
             assertNotNull(e.value());
-            Assert.assertEquals("I'm the body!", e.value().data);
+            Assert.assertEquals("I'm the body!", e.value().data());
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
         }
@@ -540,7 +540,7 @@ public abstract class RestProxyTests {
             fail("Expected ServiceRequestException would be thrown.");
         } catch (MyRestException e) {
             assertNotNull(e.value());
-            Assert.assertEquals("I'm the body!", e.value().data);
+            Assert.assertEquals("I'm the body!", e.value().data());
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
         }
@@ -554,7 +554,7 @@ public abstract class RestProxyTests {
             fail("Expected ServiceRequestException would be thrown.");
         } catch (MyRestException e) {
             assertNotNull(e.value());
-            Assert.assertEquals("I'm the body!", e.value().data);
+            Assert.assertEquals("I'm the body!", e.value().data());
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
         }
@@ -569,7 +569,7 @@ public abstract class RestProxyTests {
             fail("Expected ServiceRequestException would be thrown.");
         } catch (MyRestException e) {
             assertNotNull(e.value());
-            Assert.assertEquals("I'm the body!", e.value().data);
+            Assert.assertEquals("I'm the body!", e.value().data());
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
         }
@@ -583,7 +583,7 @@ public abstract class RestProxyTests {
             fail("Expected ServiceRequestException would be thrown.");
         } catch (MyRestException e) {
             assertNotNull(e.value());
-            Assert.assertEquals("I'm the body!", e.value().data);
+            Assert.assertEquals("I'm the body!", e.value().data());
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
         }
@@ -598,7 +598,7 @@ public abstract class RestProxyTests {
             fail("Expected ServiceRequestException would be thrown.");
         } catch (MyRestException e) {
             assertNotNull(e.value());
-            Assert.assertEquals("I'm the body!", e.value().data);
+            Assert.assertEquals("I'm the body!", e.value().data());
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
         }
@@ -724,8 +724,8 @@ public abstract class RestProxyTests {
     public void SyncDeleteRequest() {
         final HttpBinJSON json = createService(Service11.class)
                 .delete(false);
-        assertEquals(String.class, json.data.getClass());
-        assertEquals("false", json.data);
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("false", json.data());
     }
 
     @Test
@@ -733,8 +733,8 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service11.class)
                 .deleteAsync(false)
                 .block();
-        assertEquals(String.class, json.data.getClass());
-        assertEquals("false", json.data);
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("false", json.data());
     }
 
     @Host("http://httpbin.org")
@@ -752,8 +752,8 @@ public abstract class RestProxyTests {
     public void SyncPatchRequest() {
         final HttpBinJSON json = createService(Service12.class)
                 .patch("body-contents");
-        assertEquals(String.class, json.data.getClass());
-        assertEquals("body-contents", json.data);
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("body-contents", json.data());
     }
 
     @Test
@@ -761,8 +761,8 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service12.class)
                 .patchAsync("body-contents")
                 .block();
-        assertEquals(String.class, json.data.getClass());
-        assertEquals("body-contents", json.data);
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("body-contents", json.data());
     }
 
     @Host("http://httpbin.org")
@@ -783,9 +783,9 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service13.class)
                 .get();
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url);
-        assertNotNull(json.headers);
-        final HttpHeaders headers = new HttpHeaders(json.headers);
+        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
+        assertNotNull(json.headers());
+        final HttpHeaders headers = new HttpHeaders(json.headers());
         assertEquals("MyHeaderValue", headers.value("MyHeader"));
         assertArrayEquals(new String[]{"MyHeaderValue"}, headers.values("MyHeader"));
         assertEquals("My,Header,Value", headers.value("MyOtherHeader"));
@@ -798,9 +798,9 @@ public abstract class RestProxyTests {
                 .getAsync()
                 .block();
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url);
-        assertNotNull(json.headers);
-        final HttpHeaders headers = new HttpHeaders(json.headers);
+        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
+        assertNotNull(json.headers());
+        final HttpHeaders headers = new HttpHeaders(json.headers());
         assertEquals("MyHeaderValue", headers.value("MyHeader"));
         assertArrayEquals(new String[]{"MyHeaderValue"}, headers.values("MyHeader"));
     }
@@ -824,9 +824,9 @@ public abstract class RestProxyTests {
                 .getAsync()
                 .block();
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url);
-        assertNotNull(json.headers);
-        final HttpHeaders headers = new HttpHeaders(json.headers);
+        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
+        assertNotNull(json.headers());
+        final HttpHeaders headers = new HttpHeaders(json.headers());
         assertEquals("MyHeaderValue", headers.value("MyHeader"));
     }
 
@@ -848,9 +848,9 @@ public abstract class RestProxyTests {
         final HttpBinJSON httpBinJSON = service16.putByteArray(expectedBytes);
 
         // httpbin sends the data back as a string like "\u0001\u0002\u0003\u0004"
-        assertTrue(httpBinJSON.data instanceof String);
+        assertTrue(httpBinJSON.data() instanceof String);
 
-        final String base64String = (String) httpBinJSON.data;
+        final String base64String = (String) httpBinJSON.data();
         final byte[] actualBytes = base64String.getBytes();
         assertArrayEquals(expectedBytes, actualBytes);
     }
@@ -861,9 +861,9 @@ public abstract class RestProxyTests {
         final byte[] expectedBytes = new byte[] { 1, 2, 3, 4 };
         final HttpBinJSON httpBinJSON = service16.putByteArrayAsync(expectedBytes)
                 .block();
-        assertTrue(httpBinJSON.data instanceof String);
+        assertTrue(httpBinJSON.data() instanceof String);
 
-        final String base64String = (String) httpBinJSON.data;
+        final String base64String = (String) httpBinJSON.data();
         final byte[] actualBytes = base64String.getBytes();
         assertArrayEquals(expectedBytes, actualBytes);
     }
@@ -884,7 +884,7 @@ public abstract class RestProxyTests {
         final Service17 service17 = createService(Service17.class);
         final HttpBinJSON result = service17.get("http", "bin");
         assertNotNull(result);
-        assertMatchWithHttpOrHttps("httpbin.org/get", result.url);
+        assertMatchWithHttpOrHttps("httpbin.org/get", result.url());
     }
 
     @Test
@@ -892,7 +892,7 @@ public abstract class RestProxyTests {
         final Service17 service17 = createService(Service17.class);
         final HttpBinJSON result = service17.getAsync("http", "bin").block();
         assertNotNull(result);
-        assertMatchWithHttpOrHttps("httpbin.org/get", result.url);
+        assertMatchWithHttpOrHttps("httpbin.org/get", result.url());
     }
 
     @Host("https://httpbin.org")
@@ -1021,252 +1021,252 @@ public abstract class RestProxyTests {
     public void service19PutWithNoContentTypeAndStringBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithNoContentTypeAndStringBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithNoContentTypeAndStringBody("");
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithNoContentTypeAndStringBody("hello");
-        assertEquals("hello", result.data);
+        assertEquals("hello", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithNoContentTypeAndByteArrayBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithNoContentTypeAndByteArrayBody(new byte[0]);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithNoContentTypeAndByteArrayBody(new byte[] { 0, 1, 2, 3, 4 });
-        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data);
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndStringBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndStringBody("");
-        assertEquals("\"\"", result.data);
+        assertEquals("\"\"", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndStringBody("soups and stuff");
-        assertEquals("\"soups and stuff\"", result.data);
+        assertEquals("\"soups and stuff\"", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(new byte[0]);
-        assertEquals("\"\"", result.data);
+        assertEquals("\"\"", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(new byte[] { 0, 1, 2, 3, 4 });
-        assertEquals("\"AAECAwQ=\"", result.data);
+        assertEquals("\"AAECAwQ=\"", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody("");
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody("soups and stuff");
-        assertEquals("soups and stuff", result.data);
+        assertEquals("soups and stuff", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationOctetStreamContentTypeAndStringBody("");
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationOctetStreamContentTypeAndStringBody("penguins");
-        assertEquals("penguins", result.data);
+        assertEquals("penguins", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(new byte[0]);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(new byte[] { 0, 1, 2, 3, 4 });
-        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data);
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndStringBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndStringBody("");
-        assertEquals("\"\"", result.data);
+        assertEquals("\"\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndStringBody("soups and stuff");
-        assertEquals("\"soups and stuff\"", result.data);
+        assertEquals("\"soups and stuff\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody("");
-        assertEquals("\"\"", result.data);
+        assertEquals("\"\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody("soups and stuff");
-        assertEquals("\"soups and stuff\"", result.data);
+        assertEquals("\"soups and stuff\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(new byte[0]);
-        assertEquals("\"\"", result.data);
+        assertEquals("\"\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(new byte[] { 0, 1, 2, 3, 4 });
-        assertEquals("\"AAECAwQ=\"", result.data);
+        assertEquals("\"AAECAwQ=\"", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody("");
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody("penguins");
-        assertEquals("penguins", result.data);
+        assertEquals("penguins", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(null);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(new byte[0]);
-        assertEquals("", result.data);
+        assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(new byte[] { 0, 1, 2, 3, 4 });
-        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data);
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
     }
 
     @Host("http://httpbin.org")
@@ -1379,8 +1379,8 @@ public abstract class RestProxyTests {
 
         final HttpBinJSON body = response.value();
         assertNotNull(body);
-        assertMatchWithHttpOrHttps("httpbin.org/put", body.url);
-        assertEquals("body string", body.data);
+        assertMatchWithHttpOrHttps("httpbin.org/put", body.url());
+        assertEquals("body string", body.data());
 
         final HttpBinHeaders headers = response.deserializedHeaders();
         assertNotNull(headers);
@@ -1406,8 +1406,8 @@ public abstract class RestProxyTests {
 
         final HttpBinJSON body = response.value();
         assertNotNull(body);
-        assertMatchWithHttpOrHttps("httpbin.org/put", body.url);
-        assertEquals("body string", body.data);
+        assertMatchWithHttpOrHttps("httpbin.org/put", body.url());
+        assertEquals("body string", body.data());
 
         final HttpHeaders headers = response.headers();
         assertNotNull(headers);
@@ -1499,7 +1499,7 @@ public abstract class RestProxyTests {
         //
         Response<HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream, Files.size(filePath));
 
-        assertEquals("The quick brown fox jumps over the lazy dog", response.value().data);
+        assertEquals("The quick brown fox jumps over the lazy dog", response.value().data());
     }
 
     @Test
@@ -1509,7 +1509,7 @@ public abstract class RestProxyTests {
         Response<HttpBinJSON> response = createService(FlowableUploadService.class)
                 .put(FluxUtil.byteBufStreamFromFile(fileChannel, 4, 15), 15);
 
-        assertEquals("quick brown fox", response.value().data);
+        assertEquals("quick brown fox", response.value().data());
     }
 
     @Host("{url}")
@@ -1552,8 +1552,8 @@ public abstract class RestProxyTests {
         headerCollection.put("123", "45");
         final HttpBinJSON result = createService(Service24.class)
             .put(headerCollection);
-        assertNotNull(result.headers);
-        final HttpHeaders resultHeaders = new HttpHeaders(result.headers);
+        assertNotNull(result.headers());
+        final HttpHeaders resultHeaders = new HttpHeaders(result.headers());
         assertEquals("GHIJ", resultHeaders.value("ABCDEF"));
         assertEquals("45", resultHeaders.value("ABC123"));
     }
