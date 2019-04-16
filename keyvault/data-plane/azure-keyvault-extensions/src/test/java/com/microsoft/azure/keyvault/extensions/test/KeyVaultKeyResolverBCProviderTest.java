@@ -71,31 +71,31 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
 
     private static final String KEY_NAME    = "JavaExtensionKey";
     private static final String SECRET_NAME = "JavaExtensionSecret";
-    
+
     private static final Base64 _base64 = new Base64(-1, null, true);
 
     @Test
     public void KeyVault_KeyVaultKeyResolver_Key_KeyVaultKeyResolverBCProviderTest() throws InterruptedException, ExecutionException
     {
-    	String TEST_KEY_NAME = KEY_NAME + "1";
+        String TEST_KEY_NAME = KEY_NAME + "1";
         try {
             // Create a key on a vault.
             CreateKeyRequest           request  = new CreateKeyRequest.Builder(getVaultUri(), TEST_KEY_NAME, JsonWebKeyType.RSA).build();
             KeyBundle bundle = keyVaultClient.createKey(request);
-    
+
             if ( bundle != null )
             {
                 try
                 {
                     // ctor with client
                     KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient, _provider );
-    
+
                     Future<IKey> baseKeyFuture    = resolver.resolveKeyAsync( bundle.keyIdentifier().baseIdentifier() );
                     Future<IKey> versionKeyFuture = resolver.resolveKeyAsync( bundle.keyIdentifier().identifier() );
-    
+
                     IKey baseKey    = baseKeyFuture.get();
                     IKey versionKey = versionKeyFuture.get();
-    
+
                     Assert.assertEquals( baseKey.getKid(), versionKey.getKid() );
                 }
                 finally
@@ -114,7 +114,7 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
         }
     }
 
-     /* 
+     /*
       * Test resolving a key from a 128bit secret encoded as base64 in a vault using various KeyVaultKeyResolver constructors.
       */
      @Test
@@ -130,37 +130,37 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
 
              SetSecretRequest request      = new SetSecretRequest.Builder(getVaultUri(), TEST_SECRET_NAME, _base64.encodeAsString(keyBytes)).withContentType("application/octet-stream").build();
              SecretBundle     secretBundle = keyVaultClient.setSecret( request );
-    
+
              if ( secretBundle != null )
              {
                  try {
                      // ctor with client
                      KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient );
-    
+
                      IKey baseKey    = resolver.resolveKeyAsync( secretBundle.secretIdentifier().baseIdentifier() ).get();
                      IKey versionKey = resolver.resolveKeyAsync( secretBundle.secretIdentifier().identifier() ).get();
-    
+
                      // Check for correct key identifiers
                      Assert.assertEquals( baseKey.getKid(), versionKey.getKid() );
-    
+
                      // Ensure key operations give the expected results
                      byte[] encrypted = null;
-    
+
                      try {
                          encrypted = baseKey.wrapKeyAsync(CEK, "A128KW").get().getLeft();
                      } catch (Exception e) {
                          fail(e.getMessage());
                      }
-    
+
                      // Assert
                      assertArrayEquals(EK, encrypted);
-    
+
                      try {
                          encrypted = versionKey.wrapKeyAsync(CEK, "A128KW").get().getLeft();
                      } catch (Exception e) {
                          fail(e.getMessage());
                      }
-    
+
                      // Assert
                      assertArrayEquals(EK, encrypted);
                  }
@@ -170,7 +170,7 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
                      keyVaultClient.deleteSecret( getVaultUri(), TEST_SECRET_NAME );
                      pollOnSecretDeletion( getVaultUri(), TEST_SECRET_NAME );
                      keyVaultClient.purgeDeletedSecret( getVaultUri(), TEST_SECRET_NAME );
-                     
+
                  }
              }
          }
@@ -179,7 +179,7 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
          }
      }
 
-     /* 
+     /*
       * Test resolving a key from a 128bit secret encoded as base64 in a vault using various KeyVaultKeyResolver constructors.
       */
      @Test
@@ -194,38 +194,38 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
          try {
              SetSecretRequest request      = new SetSecretRequest.Builder(getVaultUri(), TEST_SECRET_NAME, _base64.encodeAsString(keyBytes)).withContentType("application/octet-stream").build();
              SecretBundle     secretBundle = keyVaultClient.setSecret( request );
-    
+
              if ( secretBundle != null )
              {
                  try
                  {
                      // ctor with client
                      KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient, _provider );
-    
+
                      IKey baseKey    = resolver.resolveKeyAsync( secretBundle.secretIdentifier().baseIdentifier() ).get();
                      IKey versionKey = resolver.resolveKeyAsync( secretBundle.secretIdentifier().identifier() ).get();
-    
+
                      // Check for correct key identifiers
                      Assert.assertEquals( baseKey.getKid(), versionKey.getKid() );
-    
+
                      // Ensure key operations give the expected results
                      byte[] encrypted = null;
-    
+
                      try {
                          encrypted = baseKey.wrapKeyAsync(CEK, "A192KW").get().getLeft();
                      } catch (Exception e) {
                          fail(e.getMessage());
                      }
-    
+
                      // Assert
                      assertArrayEquals(EK, encrypted);
-    
+
                      try {
                          encrypted = versionKey.wrapKeyAsync(CEK, "A192KW").get().getLeft();
                      } catch (Exception e) {
                          fail(e.getMessage());
                      }
-    
+
                      // Assert
                      assertArrayEquals(EK, encrypted);
                  }
@@ -242,7 +242,7 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
          }
      }
 
-     /* 
+     /*
       * Test resolving a key from a 256bit secret encoded as base64 in a vault using various KeyVaultKeyResolver constructors.
       */
      @Test
@@ -254,42 +254,42 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
          byte[] EK       = { 0x64, (byte) 0xE8, (byte) 0xC3, (byte) 0xF9, (byte) 0xCE, 0x0F, 0x5B, (byte) 0xA2, 0x63, (byte) 0xE9, 0x77, 0x79, 0x05, (byte) 0x81, (byte) 0x8A, 0x2A, (byte) 0x93, (byte) 0xC8, 0x19, 0x1E, 0x7D, 0x6E, (byte) 0x8A, (byte) 0xE7 };
 
          String TEST_SECRET_NAME = SECRET_NAME + "3";
-         
+
          try {
              SetSecretRequest request      = new SetSecretRequest.Builder(getVaultUri(), TEST_SECRET_NAME, _base64.encodeAsString(keyBytes)).withContentType("application/octet-stream").build();
              SecretBundle     secretBundle = keyVaultClient.setSecret( request );
-    
+
              if ( secretBundle != null )
              {
                  try
                  {
                      // ctor with client
                      KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient, _provider );
-    
+
                      IKey baseKey    = resolver.resolveKeyAsync( secretBundle.secretIdentifier().baseIdentifier() ).get();
                      IKey versionKey = resolver.resolveKeyAsync( secretBundle.secretIdentifier().identifier() ).get();
-    
+
                      // Check for correct key identifiers
                      Assert.assertEquals( baseKey.getKid(), versionKey.getKid() );
-    
+
                      // Ensure key operations give the expected results
                      byte[] encrypted = null;
-    
+
                      try {
                          encrypted = baseKey.wrapKeyAsync(CEK, "A256KW").get().getLeft();
                      } catch (Exception e) {
                          fail(e.getMessage());
                      }
-    
+
                      // Assert
                      assertArrayEquals(EK, encrypted);
-    
+
                      try {
                          encrypted = versionKey.wrapKeyAsync(CEK, "A256KW").get().getLeft();
                      } catch (Exception e) {
                          fail(e.getMessage());
                      }
-    
+
                      // Assert
                      assertArrayEquals(EK, encrypted);
                  }

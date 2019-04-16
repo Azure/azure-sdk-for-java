@@ -48,8 +48,9 @@ final class EventDataBatchImpl implements EventDataBatch {
             throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", this.maxMessageSize / 1024));
         }
 
-        if (this.currentSize + size > this.maxMessageSize)
+        if (this.currentSize + size > this.maxMessageSize) {
             return false;
+        }
 
         this.events.add(eventDataImpl);
         this.currentSize += size;

@@ -66,9 +66,9 @@ abstract class ClientEntity {
 
     public final CompletableFuture<Void> close() {
         synchronized (this.syncClose) {
-            if (this.isClosed || this.isClosing)
+            if (this.isClosed || this.isClosing) {
                 return this.closeTask == null ? CompletableFuture.completedFuture(null) : this.closeTask;
-
+            }
             this.isClosing = true;
         }
 

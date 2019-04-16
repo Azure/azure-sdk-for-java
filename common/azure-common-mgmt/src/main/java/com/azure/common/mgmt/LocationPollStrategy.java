@@ -1,22 +1,20 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.mgmt;
 
-import com.azure.common.implementation.RestProxy;
-import com.azure.common.implementation.SwaggerMethodParser;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.SwaggerMethodParser;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 
 /**
  * A PollStrategy type that uses the Location header value to check the status of a long running
@@ -40,6 +38,7 @@ public final class LocationPollStrategy extends PollStrategy {
      * The LocationPollStrategy data.
      */
     public static class LocationPollStrategyData extends PollStrategyData {
+        private static final long serialVersionUID = 1L;
         URL locationUrl;
         boolean done;
 
@@ -95,8 +94,7 @@ public final class LocationPollStrategy extends PollStrategy {
                                 throw Exceptions.propagate(mfue);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         data.done = true;
                     }
                     return response;
@@ -131,9 +129,8 @@ public final class LocationPollStrategy extends PollStrategy {
                     pollUrl = new URL(originalRequestUrl, locationUrl);
                 } catch (MalformedURLException ignored) {
                 }
-            }
-            else {
-                final String locationUrlLower = locationUrl.toLowerCase();
+            } else {
+                final String locationUrlLower = locationUrl.toLowerCase(Locale.ROOT);
                 if (locationUrlLower.startsWith("http://") || locationUrlLower.startsWith("https://")) {
                     try {
                         pollUrl = new URL(locationUrl);

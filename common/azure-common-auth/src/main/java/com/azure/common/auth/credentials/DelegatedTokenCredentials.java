@@ -1,17 +1,14 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.auth.credentials;
 
+import com.azure.common.annotations.Beta;
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationException;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
-import com.azure.common.annotations.Beta;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -20,6 +17,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -207,8 +205,8 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
                 return Mono.error(use);
             }
             AsymmetricKeyCredential keyCredential = AsymmetricKeyCredential.create(clientId(),
-                    Util.privateKeyFromPem(new String(applicationCredentials.clientCertificate())),
-                    Util.publicKeyFromPem(new String(applicationCredentials.clientCertificate())));
+                    Util.privateKeyFromPem(new String(applicationCredentials.clientCertificate(), StandardCharsets.UTF_8)),
+                    Util.publicKeyFromPem(new String(applicationCredentials.clientCertificate(), StandardCharsets.UTF_8)));
             authMono = Mono.create(callback -> {
                 context.acquireTokenByAuthorizationCode(
                         authorizationCode,

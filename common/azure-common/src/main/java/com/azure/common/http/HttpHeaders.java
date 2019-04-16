@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.http;
 
@@ -14,6 +11,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -72,11 +70,10 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      * @return this HttpHeaders
      */
     public HttpHeaders set(String name, String value) {
-        final String headerKey = name.toLowerCase();
+        final String headerKey = name.toLowerCase(Locale.ROOT);
         if (value == null) {
             headers.remove(headerKey);
-        }
-        else {
+        } else {
             headers.put(headerKey, new HttpHeader(name, value));
         }
         return this;
@@ -107,7 +104,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     }
 
     private HttpHeader getHeader(String headerName) {
-        final String headerKey = headerName.toLowerCase();
+        final String headerKey = headerName.toLowerCase(Locale.ROOT);
         return headers.get(headerKey);
     }
 

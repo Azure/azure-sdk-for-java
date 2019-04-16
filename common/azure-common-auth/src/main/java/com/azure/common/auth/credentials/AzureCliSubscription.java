@@ -1,13 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.auth.credentials;
 
-import com.azure.common.annotations.Beta;
 import com.azure.common.AzureEnvironment;
+import com.azure.common.annotations.Beta;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -47,7 +44,7 @@ final class AzureCliSubscription {
         return clientId;
     }
 
-    AzureCliSubscription withToken(AzureCliToken token) {
+    synchronized AzureCliSubscription withToken(AzureCliToken token) {
         if (isServicePrincipal()) {
             this.servicePrincipalToken = token;
         } else {
@@ -85,7 +82,7 @@ final class AzureCliSubscription {
         return user.type.equalsIgnoreCase("ServicePrincipal");
     }
 
-    String userName() {
+    String getUserName() {
         return user.name;
     }
 
@@ -93,7 +90,7 @@ final class AzureCliSubscription {
         if (credentialInstance != null) {
             return credentialInstance;
         }
-        if (isServicePrincipal()) {
+        if (isServicePrincipal() && servicePrincipalToken != null) {
             credentialInstance = new ApplicationTokenCredentials(
                 clientId(),
                 tenant(),
@@ -106,8 +103,8 @@ final class AzureCliSubscription {
                 public synchronized Mono<String> getToken(String resource) {
                     AzureCliToken token = userTokens.get(resource);
                     // Management endpoint also works for resource manager
-                    if (token == null && (resource.equalsIgnoreCase(environment().resourceManagerEndpoint()))) {
-                        token = userTokens.get(environment().managementEndpoint());
+                    if (token == null && (resource.equalsIgnoreCase(super.environment().resourceManagerEndpoint()))) {
+                        token = userTokens.get(super.environment().managementEndpoint());
                     }
                     // Exact match and token hasn't expired
                     if (token != null && !token.expired()) {
@@ -133,7 +130,7 @@ final class AzureCliSubscription {
                                     }
                                 });
                     } else {
-                        return Mono.error(new RuntimeException("No refresh token available for user " + userName()));
+                        return Mono.error(new RuntimeException("No refresh token available for user " + getUserName()));
                     }
                 }
             };

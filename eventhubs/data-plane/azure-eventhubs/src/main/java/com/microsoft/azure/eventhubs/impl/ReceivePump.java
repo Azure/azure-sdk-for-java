@@ -162,7 +162,7 @@ public class ReceivePump implements Runnable {
                 // don't invoke user call back - if stop is already raised / pump is unhealthy
                 if (ReceivePump.this.shouldContinue()
                         && (receivedEvents != null
-                                || (receivedEvents == null && ReceivePump.this.invokeOnTimeout))) {
+                                || ReceivePump.this.invokeOnTimeout)) {
                     ReceivePump.this.onReceiveHandler.onReceive(receivedEvents);
                 }
             } catch (final Throwable userCodeError) {

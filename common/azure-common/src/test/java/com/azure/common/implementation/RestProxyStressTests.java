@@ -1,13 +1,9 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation;
 
 import com.azure.common.MockServer;
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
@@ -16,20 +12,21 @@ import com.azure.common.annotations.HeaderParam;
 import com.azure.common.annotations.Host;
 import com.azure.common.annotations.PUT;
 import com.azure.common.annotations.PathParam;
-import com.azure.common.implementation.http.ContentType;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.HttpPipelineCallContext;
 import com.azure.common.http.HttpPipelineNextPolicy;
-import com.azure.common.http.policy.HttpLoggingPolicy;
-import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.policy.AddDatePolicy;
 import com.azure.common.http.policy.AddHeadersPolicy;
 import com.azure.common.http.policy.HostPolicy;
 import com.azure.common.http.policy.HttpLogDetailLevel;
+import com.azure.common.http.policy.HttpLoggingPolicy;
+import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.rest.StreamResponse;
 import com.azure.common.http.rest.VoidResponse;
+import com.azure.common.implementation.http.ContentType;
 import com.azure.common.implementation.util.FlowableUtils;
 import com.azure.common.implementation.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
@@ -39,7 +36,6 @@ import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;

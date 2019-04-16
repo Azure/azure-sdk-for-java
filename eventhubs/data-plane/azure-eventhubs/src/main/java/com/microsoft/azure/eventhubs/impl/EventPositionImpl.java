@@ -12,6 +12,7 @@ import java.time.Instant;
 public final class EventPositionImpl implements EventPosition {
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(EventPositionImpl.class);
+    private static final long serialVersionUID = 7304813338251422629L;
 
     private final String offset;
     private final Long sequenceNumber;

@@ -1,16 +1,13 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.mgmt;
 
-import com.azure.common.implementation.SwaggerMethodParser;
-import com.azure.common.implementation.RestProxy;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.SwaggerMethodParser;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -45,6 +42,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      * The AzureAsyncOperationPollStrategy data.
      */
     private static class AzureAsyncOperationPollStrategyData extends PollStrategyData {
+        private static final long serialVersionUID = 1L;
         private boolean pollingCompleted;
         private boolean pollingSucceeded;
         private boolean gotResourceResponse;

@@ -1,17 +1,14 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.mgmt;
 
 import com.azure.common.exception.ServiceRequestException;
-import com.azure.common.implementation.RestProxy;
-import com.azure.common.implementation.SwaggerMethodParser;
 import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.SwaggerMethodParser;
 import com.azure.common.implementation.serializer.HttpResponseDecoder;
 import com.azure.common.implementation.serializer.SerializerEncoding;
 import reactor.core.publisher.Flux;
@@ -104,7 +101,7 @@ abstract class PollStrategy {
 
         final String retryAfterSecondsString = httpResponse.headerValue("Retry-After");
         if (retryAfterSecondsString != null && !retryAfterSecondsString.isEmpty()) {
-            result = Long.valueOf(retryAfterSecondsString) * 1000;
+            result = Long.parseLong(retryAfterSecondsString) * 1000;
         }
 
         return result;
@@ -181,10 +178,10 @@ abstract class PollStrategy {
     }
 
     Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
-            return sendPollRequestWithDelay()
-                    .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType))
-                    .repeat()
-                    .takeUntil(operationStatus -> isDone());
+        return sendPollRequestWithDelay()
+                .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType))
+                .repeat()
+                .takeUntil(operationStatus -> isDone());
     }
 
     Mono<HttpResponse> pollUntilDone() {

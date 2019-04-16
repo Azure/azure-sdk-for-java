@@ -1,20 +1,17 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.http.policy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipelineCallContext;
+import com.azure.common.http.HttpPipelineNextPolicy;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
-import com.azure.common.http.HttpPipelineNextPolicy;
 import com.azure.common.implementation.util.FluxUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,7 +101,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                         reqBodyLoggingMono = collectedBytes.flatMap(bytes -> {
                             String bodyString = new String(bytes, StandardCharsets.UTF_8);
                             bodyString = prettyPrintIfNeeded(logger, request.headers().value("Content-Type"), bodyString);
-                            log(logger, String.format("%s-byte body:\n%s", contentLength, bodyString));
+                            log(logger, String.format("%s-byte body:%n%s", contentLength, bodyString));
                             log(logger, "--> END " + request.httpMethod());
                             return Mono.empty();
                         });
