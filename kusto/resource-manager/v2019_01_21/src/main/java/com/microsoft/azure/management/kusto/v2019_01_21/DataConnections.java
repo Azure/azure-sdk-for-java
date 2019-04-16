@@ -65,4 +65,16 @@ public interface DataConnections extends SupportsCreating<DataConnection.Definit
      */
     Observable<DataConnectionValidationListResult> dataConnectionValidationMethodAsync(String resourceGroupName, String clusterName, String databaseName, DataConnectionValidation parameters);
 
+    /**
+     * Checks that the data connection name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param name Data Connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String resourceGroupName, String clusterName, String databaseName, String name);
+
 }
