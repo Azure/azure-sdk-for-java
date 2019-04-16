@@ -1272,19 +1272,19 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service20 {
         @GET("bytes/100")
-        ResponseBase<HttpBinHeaders,Void> getBytes100OnlyHeaders();
+        ResponseBase<HttpBinHeaders, Void> getBytes100OnlyHeaders();
 
         @GET("bytes/100")
-        ResponseBase<HttpHeaders,Void> getBytes100OnlyRawHeaders();
+        ResponseBase<HttpHeaders, Void> getBytes100OnlyRawHeaders();
 
         @GET("bytes/100")
-        ResponseBase<HttpBinHeaders,byte[]> getBytes100BodyAndHeaders();
+        ResponseBase<HttpBinHeaders, byte[]> getBytes100BodyAndHeaders();
 
         @PUT("put")
-        ResponseBase<HttpBinHeaders,Void> putOnlyHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+        ResponseBase<HttpBinHeaders, Void> putOnlyHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @PUT("put")
-        ResponseBase<HttpBinHeaders,HttpBinJSON> putBodyAndHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+        ResponseBase<HttpBinHeaders, HttpBinJSON> putBodyAndHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @GET("bytes/100")
         ResponseBase<Void, Void> getBytesOnlyStatus();
@@ -1298,7 +1298,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service20GetBytes100OnlyHeaders() {
-        final ResponseBase<HttpBinHeaders,Void> response = createService(Service20.class)
+        final ResponseBase<HttpBinHeaders, Void> response = createService(Service20.class)
                 .getBytes100OnlyHeaders();
         assertNotNull(response);
 
@@ -1315,7 +1315,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service20GetBytes100BodyAndHeaders() {
-        final ResponseBase<HttpBinHeaders,byte[]> response = createService(Service20.class)
+        final ResponseBase<HttpBinHeaders, byte[]> response = createService(Service20.class)
                 .getBytes100BodyAndHeaders();
         assertNotNull(response);
 
@@ -1354,7 +1354,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service20PutOnlyHeaders() {
-        final ResponseBase<HttpBinHeaders,Void> response = createService(Service20.class)
+        final ResponseBase<HttpBinHeaders, Void> response = createService(Service20.class)
                 .putOnlyHeaders("body string");
         assertNotNull(response);
 
@@ -1371,7 +1371,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service20PutBodyAndHeaders() {
-        final ResponseBase<HttpBinHeaders,HttpBinJSON> response = createService(Service20.class)
+        final ResponseBase<HttpBinHeaders, HttpBinJSON> response = createService(Service20.class)
                 .putBodyAndHeaders("body string");
         assertNotNull(response);
 
