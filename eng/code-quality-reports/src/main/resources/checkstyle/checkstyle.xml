@@ -266,7 +266,16 @@ page at http://checkstyle.sourceforge.net/config.html -->
         2) They must implement a public static method named builder
         -->
         <module name="com.azure.tools.checkstyle.checks.ServiceClientChecks"/>
-        <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck"/>
+
+        <!-- Good Logging Practice
+        1) Logger instance should named as logger
+        2) Only checks for slf4j.Logger
+        3) Always guard with conditional block whenever a log function called.
+        -->
+        <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck">
+          <property name="loggerName" value="logger"/>
+          <property name="loggerClass" value="org.slf4j.Logger"/>
+        </module>
 
     </module>
 </module>
