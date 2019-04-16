@@ -271,7 +271,7 @@ public abstract class RestProxyTests {
 
         @GET("anything")
         @ExpectedResponses({200})
-        HttpBinJSON getAnythingWithEncoded(@QueryParam(value="a", encoded=true) String a, @QueryParam("b") int b);
+        HttpBinJSON getAnythingWithEncoded(@QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
 
         @GET("anything")
         @ExpectedResponses({200})
@@ -388,7 +388,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service8.class)
                 .post("I'm a post body!");
         assertEquals(String.class, json.data.getClass());
-        assertEquals("I'm a post body!", (String)json.data);
+        assertEquals("I'm a post body!", json.data);
     }
 
     @Test
@@ -397,7 +397,7 @@ public abstract class RestProxyTests {
                 .postAsync("I'm a post body!")
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("I'm a post body!", (String)json.data);
+        assertEquals("I'm a post body!", json.data);
     }
 
     @Test
@@ -474,7 +474,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service9.class)
                 .put(42);
         assertEquals(String.class, json.data.getClass());
-        assertEquals("42", (String)json.data);
+        assertEquals("42", json.data);
     }
 
     @Test
@@ -483,7 +483,7 @@ public abstract class RestProxyTests {
                 .putAsync(42)
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("42", (String)json.data);
+        assertEquals("42", json.data);
     }
 
     @Test
@@ -725,7 +725,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service11.class)
                 .delete(false);
         assertEquals(String.class, json.data.getClass());
-        assertEquals("false", (String)json.data);
+        assertEquals("false", json.data);
     }
 
     @Test
@@ -734,7 +734,7 @@ public abstract class RestProxyTests {
                 .deleteAsync(false)
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("false", (String)json.data);
+        assertEquals("false", json.data);
     }
 
     @Host("http://httpbin.org")
@@ -753,7 +753,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service12.class)
                 .patch("body-contents");
         assertEquals(String.class, json.data.getClass());
-        assertEquals("body-contents", (String)json.data);
+        assertEquals("body-contents", json.data);
     }
 
     @Test
@@ -762,7 +762,7 @@ public abstract class RestProxyTests {
                 .patchAsync("body-contents")
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("body-contents", (String)json.data);
+        assertEquals("body-contents", json.data);
     }
 
     @Host("http://httpbin.org")
