@@ -8,12 +8,8 @@ import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
-import com.microsoft.azure.core.InterceptorManager;
-import com.microsoft.azure.core.TestMode;
-import com.microsoft.azure.utils.SdkContext;
+import com.azure.common.test.TestBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,17 +17,12 @@ import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -39,10 +30,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class ConfigurationClientTest {
+public class ConfigurationClientTest extends TestBase {
     private final Logger logger = LoggerFactory.getLogger(ConfigurationClientTest.class);
 
-    private InterceptorManager interceptorManager;
     private ConfigurationClient client;
     private String keyPrefix;
     private String labelPrefix;
@@ -50,68 +40,53 @@ public class ConfigurationClientTest {
     @Rule
     public TestName testName = new TestName();
 
-    @Before
-    public void beforeTest() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
-        final TestMode testMode = getTestMode();
+    @Override
+    public String testName() {
+        return testName.getMethodName();
+    }
 
-        interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
+    @Override
+    protected void beforeTest() {
+        final String connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+            : System.getenv("AZCONFIG_CONNECTION_STRING");
+
+        Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
+
+        final ConfigurationClientCredentials credentials;
+        try {
+            credentials = new ConfigurationClientCredentials(connectionString);
+        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
+            logger.error("Could not create an configuration client credentials.", e);
+            fail();
+            return;
+        }
 
         if (interceptorManager.isPlaybackMode()) {
-            logger.info("PLAYBACK MODE");
-
-            final String connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
-
             client = ConfigurationClient.builder()
-                .credentials(new ConfigurationClientCredentials(connectionString))
+                .credentials(credentials)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .build();
         } else {
-            logger.info("RECORD MODE");
-
-            final String connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
-            Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
-
             client = ConfigurationClient.builder()
-                .credentials(new ConfigurationClientCredentials(connectionString))
+                .credentials(credentials)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .build();
         }
 
-        keyPrefix = SdkContext.randomResourceName("key", 8);
-        labelPrefix = SdkContext.randomResourceName("label", 8);
+        keyPrefix = sdkContext.randomResourceName("key", 8);
+        labelPrefix = sdkContext.randomResourceName("label", 8);
     }
 
-    private TestMode getTestMode() throws IllegalArgumentException {
-        final String azureTestMode = System.getenv("AZURE_TEST_MODE");
-
-        if (azureTestMode != null) {
-            try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
-            } catch (IllegalArgumentException e) {
-                logger.error("Could not parse '{}' into TestEnum.", azureTestMode);
-                throw e;
-            }
-        } else {
-            logger.info("Environment variable 'AZURE_TEST_MODE' has not been set yet. Using 'Playback' mode.");
-            return TestMode.PLAYBACK;
-        }
-    }
-
-    @After
-    public void afterTest() {
-        cleanUpResources();
-        interceptorManager.close();
-    }
-
-    // TODO (alzimmer): Remove the try/catch sleep when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
-    private void cleanUpResources() {
+    @Override
+    protected void afterTest() {
         logger.info("Cleaning up created key values.");
 
-        List<ConfigurationSetting> settingsToDelete = client.listSettings(new SettingSelector().key(keyPrefix + "*"));
-        for (ConfigurationSetting configurationSetting : settingsToDelete) {
+        // TODO (alzimmer): Remove the try/catch sleep when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
+        for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().key(keyPrefix + "*"))) {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
             try {
                 client.deleteSetting(configurationSetting);
@@ -130,14 +105,20 @@ public class ConfigurationClientTest {
         logger.info("Finished cleaning up values.");
     }
 
+    String getKey() {
+        return sdkContext.randomResourceName(keyPrefix, ConfigurationClientTestBase.RESOURCE_LENGTH);
+    }
+
+    String getLabel() {
+        return sdkContext.randomResourceName(labelPrefix, ConfigurationClientTestBase.RESOURCE_LENGTH);
+    }
+
     /**
      * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label identifier.
      */
     @Test
     public void addSetting() {
-        ConfigurationClientTestBase.addSetting(keyPrefix, labelPrefix, (expected) -> {
-            assertConfigurationEquals(expected, client.addSetting(expected));
-        });
+        ConfigurationClientTestBase.addSetting(getKey(), getLabel(), (expected) -> assertConfigurationEquals(expected, client.addSetting(expected)));
     }
 
     /**
@@ -153,7 +134,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void addSettingEmptyValue() {
-        ConfigurationClientTestBase.addSettingEmptyValue(keyPrefix, (setting) -> {
+        ConfigurationClientTestBase.addSettingEmptyValue(getKey(), (setting) -> {
             assertConfigurationEquals(setting, client.addSetting(setting.key(), setting.value()));
             assertConfigurationEquals(setting, client.getSetting(setting.key()));
         });
@@ -173,7 +154,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void addExistingSetting() {
-        ConfigurationClientTestBase.addExistingSetting(keyPrefix, labelPrefix, (expected) -> {
+        ConfigurationClientTestBase.addExistingSetting(getKey(), getLabel(), (expected) -> {
             client.addSetting(expected);
             assertRestException(() -> client.addSetting(expected), HttpResponseStatus.PRECONDITION_FAILED.code());
         });
@@ -185,9 +166,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void setSetting() {
-        ConfigurationClientTestBase.setSetting(keyPrefix, labelPrefix, (expected, update) -> {
-            assertConfigurationEquals(expected, client.setSetting(expected));
-        });
+        ConfigurationClientTestBase.setSetting(getKey(), getLabel(), (expected, update) -> assertConfigurationEquals(expected, client.setSetting(expected)));
     }
 
     /**
@@ -197,7 +176,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void setSettingIfEtag() {
-        ConfigurationClientTestBase.setSettingIfEtag(keyPrefix, labelPrefix, (initial, update) -> {
+        ConfigurationClientTestBase.setSettingIfEtag(getKey(), getLabel(), (initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
             assertRestException(() -> client.setSetting(initial.etag("badEtag")), HttpResponseStatus.PRECONDITION_FAILED.code());
 
@@ -223,7 +202,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void setSettingEmptyValue() {
-        ConfigurationClientTestBase.setSettingEmptyValue(keyPrefix, (setting) -> {
+        ConfigurationClientTestBase.setSettingEmptyValue(getKey(), (setting) -> {
             assertConfigurationEquals(setting, client.setSetting(setting.key(), setting.value()));
             assertConfigurationEquals(setting, client.getSetting(setting.key()));
         });
@@ -244,7 +223,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void updateNoExistingSetting() {
-        ConfigurationClientTestBase.updateNoExistingSetting(keyPrefix, labelPrefix, (expected) -> {
+        ConfigurationClientTestBase.updateNoExistingSetting(getKey(), getLabel(), (expected) -> {
             assertRestException(() -> client.updateSetting(expected), HttpResponseStatus.PRECONDITION_FAILED.code());
         });
     }
@@ -255,9 +234,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void updateSetting() {
-        ConfigurationClientTestBase.updateSetting(keyPrefix, labelPrefix, (initial, update) -> {
-            assertConfigurationEquals(initial, client.addSetting(initial));
-        });
+        ConfigurationClientTestBase.updateSetting(getKey(), getLabel(), (initial, update) -> assertConfigurationEquals(initial, client.addSetting(initial)));
     }
 
     /**
@@ -266,7 +243,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void updateSettingOverload() {
-        ConfigurationClientTestBase.updateSettingOverload(keyPrefix, (original, updated) -> {
+        ConfigurationClientTestBase.updateSettingOverload(getKey(), (original, updated) -> {
             assertConfigurationEquals(original, client.addSetting(original.key(), original.value()));
             assertConfigurationEquals(updated, client.updateSetting(updated.key(), updated.value()));
         });
@@ -278,8 +255,8 @@ public class ConfigurationClientTest {
      */
     @Test
     public void updateSettingIfEtag() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName(labelPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
         final ConfigurationSetting finalConfiguration = new ConfigurationSetting().key(key).value("myFinalValue");
@@ -316,7 +293,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void getSetting() {
-        ConfigurationClientTestBase.getSetting(keyPrefix, (expected) -> {
+        ConfigurationClientTestBase.getSetting(getKey(), (expected) -> {
             client.addSetting(expected);
             assertConfigurationEquals(expected, client.getSetting(expected));
         });
@@ -327,7 +304,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void getSettingNotFound() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().key(key).value("myNeverRetreivedValue");
         final ConfigurationSetting nonExistentLabel = new ConfigurationSetting().key(key).label("myNonExistentLabel");
 
@@ -344,7 +321,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void deleteSetting() {
-        ConfigurationClientTestBase.deleteSetting(keyPrefix, labelPrefix, (expected) -> {
+        ConfigurationClientTestBase.deleteSetting(getKey(), getLabel(), (expected) -> {
             client.addSetting(expected);
             assertConfigurationEquals(expected, client.getSetting(expected));
 
@@ -358,7 +335,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void deleteSettingNotFound() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().key(key).value("myNeverDeletedValue");
         final ConfigurationSetting notFoundDelete = new ConfigurationSetting().key(key).label("myNonExistentLabel");
 
@@ -376,7 +353,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void deleteSettingWithETag() {
-        ConfigurationClientTestBase.deleteSettingWithETag(keyPrefix, labelPrefix, (initial, update) -> {
+        ConfigurationClientTestBase.deleteSettingWithETag(getKey(), getLabel(), (initial, update) -> {
             final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial).value();
             final ConfigurationSetting updatedConfig = client.updateSetting(update).value();
 
@@ -403,8 +380,8 @@ public class ConfigurationClientTest {
     @Test
     public void listWithKeyAndLabel() {
         final String value = "myValue";
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final String label = SdkContext.randomResourceName("lbl", 8);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName("lbl", 8);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value(value).label(label);
 
         assertConfigurationEquals(expected, client.setSetting(expected));
@@ -428,17 +405,11 @@ public class ConfigurationClientTest {
             .label("*-second*")
             .key(keyPrefix + "-fetch-*")
             .fields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
-        final List<ConfigurationSetting> settings = IntStream.range(0, numberToCreate)
-            .mapToObj(value -> {
-                String key = value % 2 == 0 ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
-                String lbl = value / 4 == 0 ? label : label2;
-                return new ConfigurationSetting().key(key).value("myValue2").label(lbl).tags(tags);
-            })
-            .collect(Collectors.toList());
 
-        final List<Response<ConfigurationSetting>> results = new ArrayList<>();
-        for (ConfigurationSetting setting : settings) {
-            results.add(client.setSetting(setting));
+        for (int value = 0; value < numberToCreate; value++) {
+            String key = value % 2 == 0 ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
+            String lbl = value / 4 == 0 ? label : label2;
+            client.setSetting(new ConfigurationSetting().key(key).value("myValue2").label(lbl).tags(tags));
         }
 
         for (ConfigurationSetting setting : client.listSettings(secondLabelOptions)) {
@@ -460,15 +431,21 @@ public class ConfigurationClientTest {
      */
     @Test
     public void listSettingsAcceptDateTime() {
-        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
 
         // Create 3 revisions of the same key.
-        assertConfigurationEquals(original, client.setSetting(original));
-        assertConfigurationEquals(updated, client.setSetting(updated));
-        assertConfigurationEquals(updated2, client.setSetting(updated2));
+        try {
+            assertConfigurationEquals(original, client.setSetting(original));
+            Thread.sleep(2000);
+            assertConfigurationEquals(updated, client.setSetting(updated));
+            Thread.sleep(2000);
+            assertConfigurationEquals(updated2, client.setSetting(updated2));
+        } catch (InterruptedException e) {
+
+        }
 
         // Gets all versions of this value so we can get the one we want at that particular date.
         List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().key(keyName));
@@ -487,7 +464,7 @@ public class ConfigurationClientTest {
      */
     @Test
     public void listRevisions() {
-        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
@@ -529,15 +506,21 @@ public class ConfigurationClientTest {
      */
     @Test
     public void listRevisionsAcceptDateTime() {
-        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
 
         // Create 3 revisions of the same key.
-        assertConfigurationEquals(original, client.setSetting(original));
-        assertConfigurationEquals(updated, client.setSetting(updated));
-        assertConfigurationEquals(updated2, client.setSetting(updated2));
+        try {
+            assertConfigurationEquals(original, client.setSetting(original));
+            Thread.sleep(2000);
+            assertConfigurationEquals(updated, client.setSetting(updated));
+            Thread.sleep(2000);
+            assertConfigurationEquals(updated2, client.setSetting(updated2));
+        } catch (InterruptedException e) {
+
+        }
 
         // Gets all versions of this value.
         List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().key(keyName));
@@ -556,21 +539,12 @@ public class ConfigurationClientTest {
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
-     *
-     * TODO (alzimmer): Remove the sleep when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
     @Test
     public void listRevisionsWithPagination() {
         final int numberExpected = 50;
-        List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
-            .mapToObj(value -> new ConfigurationSetting()
-                .key(keyPrefix)
-                .value("myValue" + value)
-                .label(labelPrefix))
-            .collect(Collectors.toList());
-
-        for (ConfigurationSetting setting : settings) {
-            client.setSetting(setting);
+        for (int value = 0; value < numberExpected; value++) {
+            client.setSetting(new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix));
         }
 
         SettingSelector filter = new SettingSelector().key(keyPrefix).label(labelPrefix);
@@ -584,16 +558,8 @@ public class ConfigurationClientTest {
     @Test
     public void listSettingsWithPagination() {
         final int numberExpected = 50;
-        List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
-            .mapToObj(value -> new ConfigurationSetting()
-                .key(keyPrefix + "-" + value)
-                .value("myValue")
-                .label(labelPrefix))
-            .collect(Collectors.toList());
-
-        List<Response<ConfigurationSetting>> results = new ArrayList<>();
-        for (ConfigurationSetting setting : settings) {
-            results.add(client.setSetting(setting));
+        for (int value = 0; value < numberExpected; value++) {
+            client.setSetting(new ConfigurationSetting().key(keyPrefix + "-" + value).value("myValue").label(labelPrefix));
         }
 
         SettingSelector filter = new SettingSelector().key(keyPrefix + "-*").label(labelPrefix);
@@ -607,7 +573,7 @@ public class ConfigurationClientTest {
     @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
     @Test
     public void getSettingWhenValueNotUpdated() {
-        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().key(key).value("myNewValue");
         final Response<ConfigurationSetting> block = client.addSetting(expected);

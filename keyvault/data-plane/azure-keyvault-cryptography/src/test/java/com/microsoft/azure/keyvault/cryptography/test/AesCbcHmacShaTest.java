@@ -20,8 +20,8 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Aes192CbcHmacSha384;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Aes256CbcHmacSha512;
 
 public class AesCbcHmacShaTest {
-	
-	private Provider _provider = null;
+
+    private Provider _provider = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -33,7 +33,7 @@ public class AesCbcHmacShaTest {
 
     @Before
     public void setUp() throws Exception {
-    	setProvider(null);
+        setProvider(null);
     }
 
     @After
@@ -41,7 +41,7 @@ public class AesCbcHmacShaTest {
     }
     
     protected void setProvider(Provider provider) {
-    	_provider = null;
+        _provider = null;
     }
 
     @Test
@@ -49,7 +49,7 @@ public class AesCbcHmacShaTest {
         // Arrange: These values are taken from Appendix B of the JWE specification at
         // https://tools.ietf.org/html/draft-ietf-jose-json-web-encryption-40#appendix-B
         byte[] K  = { (byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03, (byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07, (byte)0x08, (byte)0x09, (byte)0x0a, (byte)0x0b, (byte)0x0c, (byte)0x0d, (byte)0x0e, (byte)0x0f,
-                	  (byte)0x10, (byte)0x11, (byte)0x12, (byte)0x13, (byte)0x14, (byte)0x15, (byte)0x16, (byte)0x17, (byte)0x18, (byte)0x19, (byte)0x1a, (byte)0x1b, (byte)0x1c, (byte)0x1d, (byte)0x1e, (byte)0x1f };
+                      (byte)0x10, (byte)0x11, (byte)0x12, (byte)0x13, (byte)0x14, (byte)0x15, (byte)0x16, (byte)0x17, (byte)0x18, (byte)0x19, (byte)0x1a, (byte)0x1b, (byte)0x1c, (byte)0x1d, (byte)0x1e, (byte)0x1f };
         byte[] P  = { (byte)0x41, (byte)0x20, (byte)0x63, (byte)0x69, (byte)0x70, (byte)0x68, (byte)0x65, (byte)0x72, (byte)0x20, (byte)0x73, (byte)0x79, (byte)0x73, (byte)0x74, (byte)0x65, (byte)0x6d, (byte)0x20,
                       (byte)0x6d, (byte)0x75, (byte)0x73, (byte)0x74, (byte)0x20, (byte)0x6e, (byte)0x6f, (byte)0x74, (byte)0x20, (byte)0x62, (byte)0x65, (byte)0x20, (byte)0x72, (byte)0x65, (byte)0x71, (byte)0x75,
                       (byte)0x69, (byte)0x72, (byte)0x65, (byte)0x64, (byte)0x20, (byte)0x74, (byte)0x6f, (byte)0x20, (byte)0x62, (byte)0x65, (byte)0x20, (byte)0x73, (byte)0x65, (byte)0x63, (byte)0x72, (byte)0x65,
@@ -149,7 +149,7 @@ public class AesCbcHmacShaTest {
         byte[] T  = { (byte)0x84, (byte)0x90, (byte)0xac, (byte)0x0e, (byte)0x58, (byte)0x94, (byte)0x9b, (byte)0xfe, (byte)0x51, (byte)0x87, (byte)0x5d, (byte)0x73, (byte)0x3f, (byte)0x93, (byte)0xac, (byte)0x20,
                       (byte)0x75, (byte)0x16, (byte)0x80, (byte)0x39, (byte)0xcc, (byte)0xc7, (byte)0x33, (byte)0xd7 };
 
-		Aes192CbcHmacSha384 algo = new Aes192CbcHmacSha384();
+        Aes192CbcHmacSha384 algo = new Aes192CbcHmacSha384();
 
         IAuthenticatedCryptoTransform transform = null;
 
@@ -224,7 +224,7 @@ public class AesCbcHmacShaTest {
         byte[] T  = { (byte)0x4d, (byte)0xd3, (byte)0xb4, (byte)0xc0, (byte)0x88, (byte)0xa7, (byte)0xf4, (byte)0x5c, (byte)0x21, (byte)0x68, (byte)0x39, (byte)0x64, (byte)0x5b, (byte)0x20, (byte)0x12, (byte)0xbf,
                       (byte)0x2e, (byte)0x62, (byte)0x69, (byte)0xa8, (byte)0xc5, (byte)0x6a, (byte)0x81, (byte)0x6d, (byte)0xbc, (byte)0x1b, (byte)0x26, (byte)0x77, (byte)0x61, (byte)0x95, (byte)0x5b, (byte)0xc5 };
 
-		Aes256CbcHmacSha512 algo = new Aes256CbcHmacSha512();
+        Aes256CbcHmacSha512 algo = new Aes256CbcHmacSha512();
 
         IAuthenticatedCryptoTransform transform = null;
 

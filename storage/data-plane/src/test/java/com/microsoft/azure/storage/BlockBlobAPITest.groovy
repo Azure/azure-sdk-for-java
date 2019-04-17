@@ -1,17 +1,5 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved. 
+// Licensed under the MIT License.
 
 package com.microsoft.azure.storage
 
@@ -21,6 +9,7 @@ import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
+import org.junit.Assume
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -59,22 +48,6 @@ class BlockBlobAPITest extends APISpec {
         bu.stageBlock(getBlockID(), defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
     }
 
-    @Unroll
-    def "Stage block illegal arguments"() {
-        when:
-        bu.stageBlock(blockID, data, dataSize, null, null).blockingGet()
-
-        then:
-        def e = thrown(Exception)
-        exceptionType.isInstance(e)
-
-        where:
-        blockID      | data            | dataSize            | exceptionType
-        null         | defaultFlowable | defaultDataSize     | IllegalArgumentException
-        getBlockID() | null            | defaultDataSize     | IllegalArgumentException
-        getBlockID() | defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
-        getBlockID() | defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
-    }
 
     def "Stage block empty body"() {
         when:
@@ -586,22 +559,6 @@ class BlockBlobAPITest extends APISpec {
     def "Upload min"() {
         expect:
         bu.upload(defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
-    }
-
-    @Unroll
-    def "Upload illegal argument"() {
-        when:
-        bu.upload(data, dataSize, null, null, null, null).blockingGet()
-
-        then:
-        def e = thrown(Exception)
-        exceptionType.isInstance(e)
-
-        where:
-        data            | dataSize            | exceptionType
-        null            | defaultDataSize     | IllegalArgumentException
-        defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
-        defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Upload empty body"() {
