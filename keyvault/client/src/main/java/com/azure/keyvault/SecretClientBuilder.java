@@ -1,12 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.keyvault;
 
 import com.azure.common.credentials.ServiceClientCredentials;
 import com.azure.common.credentials.TokenCredentials;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.policy.*;
 import com.azure.keyvault.models.Secret;
-
+import com.azure.common.http.policy.HttpLogDetailLevel;
+import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.common.http.policy.RetryPolicy;
+import com.azure.common.http.policy.UserAgentPolicy;
+import com.azure.common.http.policy.CredentialsPolicy;
+import com.azure.common.http.policy.HttpLoggingPolicy;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -192,13 +199,13 @@ public final class SecretClientBuilder {
         return this;
     }
 
-    private TokenCredentials getTokenCredentials(){
+    private TokenCredentials getTokenCredentials() {
         String token = "";
-        try{
+        try {
             token = credentials.authorizationHeaderValue(vaultEndpoint.toString());
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return new TokenCredentials("Bearer",token);
+        return new TokenCredentials("Bearer", token);
     }
 }

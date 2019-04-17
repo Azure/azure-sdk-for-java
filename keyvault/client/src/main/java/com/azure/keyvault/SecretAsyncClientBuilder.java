@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.keyvault;
 
 import com.azure.common.credentials.AsyncServiceClientCredentials;
@@ -5,7 +8,12 @@ import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.HttpRequest;
-import com.azure.common.http.policy.*;
+import com.azure.common.http.policy.HttpLogDetailLevel;
+import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.common.http.policy.RetryPolicy;
+import com.azure.common.http.policy.UserAgentPolicy;
+import com.azure.common.http.policy.AsyncCredentialsPolicy;
+import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.keyvault.models.Secret;
 import reactor.core.publisher.Mono;
 
@@ -191,8 +199,8 @@ public final class SecretAsyncClientBuilder {
         return this;
     }
 
-    private AsyncTokenCredentials getAsyncTokenCredentials(){
-        return new AsyncTokenCredentials("Bearer",credentials.authorizationHeaderValueAsync(new HttpRequest(HttpMethod.POST, vaultEndpoint)));
+    private AsyncTokenCredentials getAsyncTokenCredentials() {
+        return new AsyncTokenCredentials("Bearer", credentials.authorizationHeaderValueAsync(new HttpRequest(HttpMethod.POST, vaultEndpoint)));
     }
 
 
@@ -201,14 +209,14 @@ public final class SecretAsyncClientBuilder {
         private String scheme;
         private Mono<String> token;
 
-        public AsyncTokenCredentials(String scheme, Mono<String> token){
+        AsyncTokenCredentials(String scheme, Mono<String> token) {
             this.scheme = scheme;
             this.token = token;
         }
 
         @Override
         public Mono<String> authorizationHeaderValueAsync(HttpRequest httpRequest) {
-            if(scheme == null){
+            if (scheme == null) {
                 scheme = "Bearer";
             }
             return token.flatMap(new Function<String, Mono<? extends String>>() {
@@ -219,8 +227,4 @@ public final class SecretAsyncClientBuilder {
             });
         }
     }
-
-
-
-
 }

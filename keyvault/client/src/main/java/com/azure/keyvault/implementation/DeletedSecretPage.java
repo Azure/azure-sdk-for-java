@@ -5,7 +5,6 @@ package com.azure.keyvault.implementation;
 
 import com.azure.common.http.rest.Page;
 import com.azure.keyvault.models.DeletedSecret;
-import com.azure.keyvault.models.SecretAttributes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

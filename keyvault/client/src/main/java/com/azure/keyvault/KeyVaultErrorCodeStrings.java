@@ -3,7 +3,6 @@
 
 package com.azure.keyvault;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -32,17 +31,17 @@ class KeyVaultErrorCodeStrings {
      * @return The {@link String value} containing the error message for Azure key vault end point url requirement.
      */
     static String getVaultEndPointRequired() {
-        if(errorStrings == null){
+        if (errorStrings == null) {
             loadProperties();
         }
         return errorStrings.getProperty(VAULT_ENDPOINT_REQUIRED_PROPERTY);
     }
 
-    private static void loadProperties(){
-        if(errorStrings != null) {
+    private static void loadProperties() {
+        if (errorStrings != null) {
             return;
         }
-        try (InputStream fileInputStream = KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()){
+        try (InputStream fileInputStream = KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
             errorStrings = new Properties();
             errorStrings.load(fileInputStream);
         } catch (IOException ex) {

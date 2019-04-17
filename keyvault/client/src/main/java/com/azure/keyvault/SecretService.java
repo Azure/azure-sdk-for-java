@@ -3,7 +3,20 @@
 
 package com.azure.keyvault;
 
-import com.azure.common.annotations.*;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.PUT;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.HeaderParam;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.DELETE;
+import com.azure.common.annotations.PATCH;
+import com.azure.common.annotations.ReturnValueWireType;
+import com.azure.common.annotations.POST;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;

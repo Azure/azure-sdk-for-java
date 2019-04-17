@@ -120,10 +120,10 @@ public final class SecretAsyncClient extends ServiceClient {
         }
     }
 
-    private String getHost(){
-        try{
+    private String getHost() {
+        try {
             return (new URL(vaultEndpoint).getHost());
-        } catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         return null;
@@ -236,7 +236,7 @@ public final class SecretAsyncClient extends ServiceClient {
     public Mono<Response<byte[]>> backupSecretAsync(String name) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
         return service.backupSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .flatMap( base64URLResponse ->  Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
+                .flatMap(base64URLResponse ->  Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
                 base64URLResponse.statusCode(), base64URLResponse.headers(), base64URLResponse.value().value())));
     }
 
