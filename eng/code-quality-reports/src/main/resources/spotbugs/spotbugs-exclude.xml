@@ -134,6 +134,15 @@
     <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
   </Match>
 
+  <!-- EventHubRuntimeInformation is populated by the service. There is no user input. Copying partitionId contents is
+    not necessary.
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L27 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
+    <Field name="partitionIds"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
   <!-- Public field already exists in the public API surface area even though it should be final.
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventHubClientImpl.java#L41 -->
   <Match>
