@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * Store. Operations allowed by the client are adding, retrieving, updating, and deleting ConfigurationSettings, and
  * listing settings or revision of a setting based on a filter.
  *
- * <h4>Construct the client, for additional ways to build a client see {@link ConfigurationAsyncClientBuilder here}.</h4>
+ * <p><strong>Construct the client, for additional ways to build a client see {@link ConfigurationAsyncClientBuilder here}.</strong></p>
  *
  * <pre>
  * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
