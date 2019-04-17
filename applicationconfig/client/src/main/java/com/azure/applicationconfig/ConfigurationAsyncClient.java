@@ -33,10 +33,8 @@ import java.util.stream.Collectors;
  *
  * Construct the client
  * <pre>
- * String connectionString = "connection_string";
- * ConfigurationClientCredentials credentials = new ConfigurationClientCredentials(connectionString);
  * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
- *     .credentials(credentials)
+ *     .credentials(new ConfigurationClientCredentials(connectionString))
  *     .build();
  * </pre>
  *
@@ -45,7 +43,7 @@ import java.util.stream.Collectors;
  * <pre>
  * client.addSetting("prodDBConnection", "db_connection").subscribe(result -&gt; {
  *     ConfigurationSetting setting = result.value();
- *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  * });
  * </pre>
  *
@@ -53,7 +51,7 @@ import java.util.stream.Collectors;
  * <pre>
  * client.getSetting("prodDBConnection").subscribe(result -&gt; {
  *     ConfigurationSetting setting = result.value();
- *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  * });
  * </pre>
  *
@@ -61,7 +59,7 @@ import java.util.stream.Collectors;
  * <pre>
  * client.updateSetting("prodDBConnection", "updated_db_connection").subscribe(result -&gt; {
  *     ConfigurationSetting setting = result.value();
- *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  * });
  * </pre>
  *
@@ -70,12 +68,12 @@ import java.util.stream.Collectors;
  * <pre>
  * client.setSetting("testDBConnection", "db_connection").subscribe(result -&gt; {
  *     ConfigurationSetting setting = result.value();
- *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  * });
  *
  * client.setSetting("testDBConnection", "updated_db_connection").subscribe(result -&gt; {
  *     ConfigurationSetting setting = result.value();
- *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  * });
  * </pre>
  *
@@ -83,7 +81,7 @@ import java.util.stream.Collectors;
  * <pre>
  * client.deleteSetting("testDBConnection").subscribe(result -&gt; {
  *     ConfigurationSetting setting = result.value();
- *     System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  * });
  * </pre>
  *
