@@ -18,45 +18,43 @@ import java.util.List;
  *
  * Construct the client
  * <pre>
- * String connectionString = "connection_string";
- * ConfigurationClientCredentials credentials = new ConfigurationClientCredentials(connectionString);
  * ConfigurationClient client = ConfigurationClient.builder()
- *      .credentials(credentials)
+ *      .credentials(new ConfigurationClientCredentials(connectionString))
  *      .build();
  * </pre>
  *
  * {@link ConfigurationClient#addSetting(String, String)} creates a setting only if the setting doesn't already exist.
  * <pre>
  * ConfigurationSetting setting = client.addSetting("prodDBConnection", "db_connection");
- * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  * </pre>
  *
  * {@link ConfigurationClient#getSetting(String)} retrieves a setting only if it already exists.
  * <pre>
  * ConfigurationSetting setting = client.getSetting("prodDBConnection");
- * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  * </pre>
  *
  * {@link ConfigurationClient#updateSetting(String, String)} updates a setting only if it already exists.
  * <pre>
  * ConfigurationSetting setting = client.updateSetting("prodDBConnection", "updated_db_connection");
- * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  * </pre>
  *
  * {@link ConfigurationClient#setSetting(String, String)} creates a setting if it doesn't exist or updates an already
  * existing setting.
  * <pre>
  * ConfigurationSetting setting = client.setSetting("testDBConnection", "db_connection");
- * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  *
  * ConfigurationSetting setting = client.setSetting("testDBConnection", "updated_db_connection");
- * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  * </pre>
  *
  * {@link ConfigurationClient#deleteSetting(String)} deletes a setting only if it already exists.
  * <pre>
  * ConfigurationSetting setting = client.deleteSetting("testDBConnection");
- * System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value());
+ * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
  * </pre>
  *
  * @see ConfigurationClientBuilder
