@@ -13,7 +13,7 @@ import java.util.List;
  * A page of Azure App Configuration {@link SecretAttributes} resources and a link to get the next page of
  * resources, if any.
  */
-public final class SecretAttributesPage implements Page {
+public final class SecretAttributesPage implements Page<SecretAttributes> {
     /**
      * The link to the next page.
      */
