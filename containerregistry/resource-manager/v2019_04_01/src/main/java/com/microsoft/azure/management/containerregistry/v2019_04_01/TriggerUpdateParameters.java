@@ -16,6 +16,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TriggerUpdateParameters {
     /**
+     * The collection of scheduler triggers.
+     */
+    @JsonProperty(value = "schedulerTriggers")
+    private List<SchedulerTrigger> schedulerTriggers;
+
+    /**
      * The collection of triggers based on source code repository.
      */
     @JsonProperty(value = "sourceTriggers")
@@ -26,6 +32,26 @@ public class TriggerUpdateParameters {
      */
     @JsonProperty(value = "baseImageTrigger")
     private BaseImageTriggerUpdateParameters baseImageTrigger;
+
+    /**
+     * Get the collection of scheduler triggers.
+     *
+     * @return the schedulerTriggers value
+     */
+    public List<SchedulerTrigger> schedulerTriggers() {
+        return this.schedulerTriggers;
+    }
+
+    /**
+     * Set the collection of scheduler triggers.
+     *
+     * @param schedulerTriggers the schedulerTriggers value to set
+     * @return the TriggerUpdateParameters object itself.
+     */
+    public TriggerUpdateParameters withSchedulerTriggers(List<SchedulerTrigger> schedulerTriggers) {
+        this.schedulerTriggers = schedulerTriggers;
+        return this;
+    }
 
     /**
      * Get the collection of triggers based on source code repository.
