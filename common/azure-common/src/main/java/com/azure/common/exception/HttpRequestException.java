@@ -11,7 +11,6 @@ import com.azure.common.http.HttpResponse;
  * @see ClientRequestException
  * @see ServerException
  * @see TooManyRedirectsException
- * @see TooManyRetriesException
  */
 public class HttpRequestException extends ServiceRequestException {
 
