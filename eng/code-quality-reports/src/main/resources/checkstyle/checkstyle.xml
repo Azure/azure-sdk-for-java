@@ -267,10 +267,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
         -->
         <module name="com.azure.tools.checkstyle.checks.ServiceClientChecks"/>
 
-        <!-- Fluent method should not start with 'with' -->
+        <!-- Fluent method checks -->
+        <!-- A method returns an instance of the class, and that have one parameter, should not start with 'with'.-->
         <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">
           <property name="avoidStartWords" value="with"/>
-          <property name="packageSuffixes" value="models,model"/>
         </module>
     </module>
 </module>
