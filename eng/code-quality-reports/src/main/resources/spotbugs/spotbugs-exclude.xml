@@ -229,6 +229,14 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>
   </Match>
 
+  <!-- EventProcessorHost and ExceptionReceivedEventArgs are shipped with method in its public surface area.
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/EventProcessorHost.java#L346 -->
+  <Match>
+    <Class name="com.microsoft.azure.eventprocessorhost.EventProcessorHost"/>
+    <Method name="getHostName"/>
+    <Bug pattern="NM_CONFUSING"/>
+  </Match>
+
   <!-- Known issue in autorest where it will generate a variable with a value of null then use it in a not null check.
   https://github.com/Azure/autorest.java/issues/328 -->
   <Match>
