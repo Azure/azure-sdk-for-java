@@ -283,8 +283,7 @@ public final class ConfigurationClient {
      *     .label("westUS");
      *
      * ConfigurationSetting result = client.deleteSetting(setting);
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * </pre>
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The ConfigurationSetting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
@@ -333,8 +332,7 @@ public final class ConfigurationClient {
      * List&lt;ConfigurationSetting&gt; revisions = client.listSettingRevisions(new SettingSelector().key("prodDBConnection"));
      * for (ConfigurationSetting revision : revisions) {
      *     System.out.printf("Key: %s, Value: %s", revision.key(), revision.value());
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
