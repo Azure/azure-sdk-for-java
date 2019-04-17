@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for EntropyMode.
  */
-public enum EntropyMode {
-    /** Context Adaptive Binary Arithmetic Coder (CABAC) entropy encoding. */
-    CABAC("Cabac"),
+public final class EntropyMode extends ExpandableStringEnum<EntropyMode> {
+    /** Static value Cabac for EntropyMode. */
+    public static final EntropyMode CABAC = fromString("Cabac");
 
-    /** Context Adaptive Variable Length Coder (CAVLC) entropy encoding. */
-    CAVLC("Cavlc");
+    /** Static value Cavlc for EntropyMode. */
+    public static final EntropyMode CAVLC = fromString("Cavlc");
 
-    /** The actual serialized value for a EntropyMode instance. */
-    private String value;
-
-    EntropyMode(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a EntropyMode from its string representation.
+     * @param name a name to look for
+     * @return the corresponding EntropyMode
+     */
+    @JsonCreator
+    public static EntropyMode fromString(String name) {
+        return fromString(name, EntropyMode.class);
     }
 
     /**
-     * Parses a serialized value to a EntropyMode instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed EntropyMode object, or null if unable to parse.
+     * @return known EntropyMode values
      */
-    @JsonCreator
-    public static EntropyMode fromString(String value) {
-        EntropyMode[] items = EntropyMode.values();
-        for (EntropyMode item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<EntropyMode> values() {
+        return values(EntropyMode.class);
     }
 }
