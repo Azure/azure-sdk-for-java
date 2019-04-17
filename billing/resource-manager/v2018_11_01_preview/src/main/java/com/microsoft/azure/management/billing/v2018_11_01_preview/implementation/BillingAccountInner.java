@@ -42,8 +42,14 @@ public class BillingAccountInner extends ProxyResource {
     /**
      * Company Name.
      */
-    @JsonProperty(value = "properties.company")
+    @JsonProperty(value = "properties.company", access = JsonProperty.Access.WRITE_ONLY)
     private String company;
+
+    /**
+     * Country Name.
+     */
+    @JsonProperty(value = "properties.country", access = JsonProperty.Access.WRITE_ONLY)
+    private String country;
 
     /**
      * The invoice sections associated to the billing account. By default this
@@ -132,14 +138,12 @@ public class BillingAccountInner extends ProxyResource {
     }
 
     /**
-     * Set company Name.
+     * Get country Name.
      *
-     * @param company the company value to set
-     * @return the BillingAccountInner object itself.
+     * @return the country value
      */
-    public BillingAccountInner withCompany(String company) {
-        this.company = company;
-        return this;
+    public String country() {
+        return this.country;
     }
 
     /**

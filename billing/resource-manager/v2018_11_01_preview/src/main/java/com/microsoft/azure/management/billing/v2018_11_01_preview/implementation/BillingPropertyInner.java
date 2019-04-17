@@ -18,12 +18,6 @@ import com.microsoft.azure.ProxyResource;
 @JsonFlatten
 public class BillingPropertyInner extends ProxyResource {
     /**
-     * Product Id.
-     */
-    @JsonProperty(value = "properties.productId", access = JsonProperty.Access.WRITE_ONLY)
-    private String productId;
-
-    /**
      * Billing tenant Id.
      */
     @JsonProperty(value = "properties.billingTenantId", access = JsonProperty.Access.WRITE_ONLY)
@@ -54,6 +48,12 @@ public class BillingPropertyInner extends ProxyResource {
     private String billingProfileName;
 
     /**
+     * Cost center name.
+     */
+    @JsonProperty(value = "properties.costCenter", access = JsonProperty.Access.WRITE_ONLY)
+    private String costCenter;
+
+    /**
      * Invoice Section Id.
      */
     @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
@@ -66,6 +66,18 @@ public class BillingPropertyInner extends ProxyResource {
     private String invoiceSectionName;
 
     /**
+     * Product Id.
+     */
+    @JsonProperty(value = "properties.productId", access = JsonProperty.Access.WRITE_ONLY)
+    private String productId;
+
+    /**
+     * Product name.
+     */
+    @JsonProperty(value = "properties.productName", access = JsonProperty.Access.WRITE_ONLY)
+    private String productName;
+
+    /**
      * SKU Id.
      */
     @JsonProperty(value = "properties.skuId", access = JsonProperty.Access.WRITE_ONLY)
@@ -76,15 +88,6 @@ public class BillingPropertyInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.skuDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String skuDescription;
-
-    /**
-     * Get product Id.
-     *
-     * @return the productId value
-     */
-    public String productId() {
-        return this.productId;
-    }
 
     /**
      * Get billing tenant Id.
@@ -132,6 +135,15 @@ public class BillingPropertyInner extends ProxyResource {
     }
 
     /**
+     * Get cost center name.
+     *
+     * @return the costCenter value
+     */
+    public String costCenter() {
+        return this.costCenter;
+    }
+
+    /**
      * Get invoice Section Id.
      *
      * @return the invoiceSectionId value
@@ -147,6 +159,24 @@ public class BillingPropertyInner extends ProxyResource {
      */
     public String invoiceSectionName() {
         return this.invoiceSectionName;
+    }
+
+    /**
+     * Get product Id.
+     *
+     * @return the productId value
+     */
+    public String productId() {
+        return this.productId;
+    }
+
+    /**
+     * Get product name.
+     *
+     * @return the productName value
+     */
+    public String productName() {
+        return this.productName;
     }
 
     /**
