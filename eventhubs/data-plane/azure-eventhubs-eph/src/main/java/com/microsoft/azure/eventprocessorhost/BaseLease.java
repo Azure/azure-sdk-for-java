@@ -3,6 +3,8 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import java.util.Objects;
+
 /**
  * BaseLease class is public so that advanced users can implement an ILeaseManager.
  * Unless you are implementing ILeaseManager you should not have to deal with objects
@@ -34,6 +36,10 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param partitionId Partition id for this lease.
      */
     public BaseLease(String partitionId) {
+        Objects.requireNonNull(partitionId);
+        if (partitionId.isEmpty()) {
+            throw new IllegalArgumentException("partitionId is Empty");
+        }
         this.partitionId = partitionId;
     }
     
@@ -45,6 +51,10 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param isOwned True if the lease is owned, false if not.
      */
     public BaseLease(String partitionId, String owner, boolean isOwned) {
+        Objects.requireNonNull(partitionId);
+        if (partitionId.isEmpty()) {
+            throw new IllegalArgumentException("partitionId is Empty");
+        }
         this.partitionId = partitionId;
         this.owner = owner;
         this.isOwned = isOwned;
@@ -56,6 +66,10 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param source BaseLease to clone.
      */
     public BaseLease(BaseLease source) {
+        Objects.requireNonNull(source.partitionId);
+        if (source.partitionId.isEmpty()) {
+            throw new IllegalArgumentException("partitionId is Empty");
+        }
         this.partitionId = source.partitionId;
         this.owner = source.owner;
         this.isOwned = source.isOwned;
@@ -124,6 +138,23 @@ public class BaseLease implements Comparable<BaseLease> {
     @Override
     public int compareTo(BaseLease other) {
         return this.partitionId.compareTo(other.getPartitionId());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        BaseLease baseLease = (BaseLease) o;
+        return Objects.equals(partitionId, baseLease.partitionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(partitionId);
     }
 
     String getStateDebug() {
