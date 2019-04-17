@@ -11,53 +11,18 @@ import com.azure.common.http.rest.Response;
 
 import java.util.List;
 
+
 /**
  * Client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
- * Store.
+ * Store. Operations allowed by the client are adding, retrieving, updating, and deleting ConfigurationSettings, and
+ * listing settings or revision of a setting based on a filter.
  *
- * <p>Azure Configuration Store operations allowed by the client are adding, retrieving, updating, and deleting
- * ConfigurationSettings, additionally more complex operations of listing settings or revision of a setting based
- * on a filter are supported as well.</p>
+ * <p><strong>Construct the client, for additional ways to build a client see {@link ConfigurationClientBuilder here}.</strong></p>
  *
- * Construct the client
  * <pre>
  * ConfigurationClient client = ConfigurationClient.builder()
- *      .credentials(new ConfigurationClientCredentials(connectionString))
- *      .build();
- * </pre>
- *
- * {@link ConfigurationClient#addSetting(String, String)} creates a setting only if the setting doesn't already exist.
- * <pre>
- * ConfigurationSetting setting = client.addSetting("prodDBConnection", "db_connection");
- * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
- * </pre>
- *
- * {@link ConfigurationClient#getSetting(String)} retrieves a setting only if it already exists.
- * <pre>
- * ConfigurationSetting setting = client.getSetting("prodDBConnection");
- * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
- * </pre>
- *
- * {@link ConfigurationClient#updateSetting(String, String)} updates a setting only if it already exists.
- * <pre>
- * ConfigurationSetting setting = client.updateSetting("prodDBConnection", "updated_db_connection");
- * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
- * </pre>
- *
- * {@link ConfigurationClient#setSetting(String, String)} creates a setting if it doesn't exist or updates an already
- * existing setting.
- * <pre>
- * ConfigurationSetting setting = client.setSetting("testDBConnection", "db_connection");
- * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
- *
- * ConfigurationSetting setting = client.setSetting("testDBConnection", "updated_db_connection");
- * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
- * </pre>
- *
- * {@link ConfigurationClient#deleteSetting(String)} deletes a setting only if it already exists.
- * <pre>
- * ConfigurationSetting setting = client.deleteSetting("testDBConnection");
- * System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+ *     .credentials(new ConfigurationClientCredentials(connectionString))
+ *     .build();
  * </pre>
  *
  * @see ConfigurationClientBuilder
@@ -88,6 +53,12 @@ public final class ConfigurationClient {
     /**
      * Adds a configuration value in the service if that key does not exist.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * ConfigurationSetting result = client.addSetting("prodDBConnection", "db_connection");
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
@@ -104,6 +75,16 @@ public final class ConfigurationClient {
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * ConfigurationSetting setting = new ConfigurationSetting().key("prodDBConnection")
+     *     .label("westUS")
+     *     .value("db_connection");
+     *
+     * ConfigurationSetting result = client.addSetting(setting);
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     *
      * @param setting The setting to add to the configuration service.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
      * is an invalid value (which will also throw ServiceRequestException described below).
@@ -118,6 +99,15 @@ public final class ConfigurationClient {
 
     /**
      * Creates or updates a configuration value in the service with the given key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * ConfigurationSetting result = client.setSetting('prodDBConnection", "db_connection");
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *
+     * result = client.setSetting("prodDBConnection", "updated_db_connection");
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
@@ -138,6 +128,20 @@ public final class ConfigurationClient {
      * setting's etag matches. If the etag's value is equal to the wildcard character ({@code "*"}), the setting
      * will always be updated.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * ConfigurationSetting setting = new ConfigurationSetting().key("prodDBConnection")
+     *     .label("westUS")
+     *     .value("db_connection");
+     *
+     * ConfigurationSetting result = client.setSetting(setting);
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *
+     * setting = setting.value("updated_db_connection");
+     * result = client.setSetting(setting);
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     *
      * @param setting The configuration setting to create or update.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
      * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
@@ -154,6 +158,12 @@ public final class ConfigurationClient {
 
     /**
      * Updates an existing configuration value in the service with the given key. The setting must already exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * ConfigurationSetting result = client.updateSetting("prodDCConnection", "db_connection");
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
@@ -173,6 +183,16 @@ public final class ConfigurationClient {
      *
      * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is only updated if it matches.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * ConfigurationSetting setting = new ConfigurationSetting().key("prodDBConnection")
+     *     .label("westUS")
+     *     .value("db_connection");
+     *
+     * ConfigurationSetting result = client.updateSetting(setting);
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     *
      * @param setting The setting to add or update in the service.
      * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
      * exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described below).
@@ -189,6 +209,12 @@ public final class ConfigurationClient {
     /**
      * Attempts to get a ConfigurationSetting that matches the {@code key}.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * ConfigurationSetting result = client.get("prodDBConnection");
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     *
      * @param key The key of the setting to retrieve.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
@@ -202,6 +228,15 @@ public final class ConfigurationClient {
 
     /**
      * Attempts to get the ConfigurationSetting given the {@code key}, optional {@code label}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * ConfigurationSetting setting = new ConfigurationSetting().key("prodDBConnection")
+     *     .label("westUS");
+     *
+     * ConfigurationSetting result = client.getSetting(setting);
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
@@ -217,6 +252,12 @@ public final class ConfigurationClient {
 
     /**
      * Deletes the ConfigurationSetting with a matching {@code key}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * ConfigurationSetting result = client.deleteSetting("prodDBConnection");
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param key The key of the setting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if
@@ -235,6 +276,16 @@ public final class ConfigurationClient {
      * then the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated
      * the ConfigurationSetting yet.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * ConfigurationSetting setting = new ConfigurationSetting().key("prodDBConnection")
+     *     .label("westUS");
+     *
+     * ConfigurationSetting result = client.deleteSetting(setting);
+     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     * </pre>
+     *
      * @param setting The ConfigurationSetting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
      * the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
@@ -252,6 +303,14 @@ public final class ConfigurationClient {
      * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all
      * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * List&lt;ConfigurationSetting&gt; settings = client.listSettings(new SettingSelector().key("prodDBConnection"));
+     * for (ConfigurationSetting setting : settings) {
+     *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+     * }</pre>
+     *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
@@ -267,6 +326,15 @@ public final class ConfigurationClient {
      *
      * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
      * in their current state. Otherwise, the results returned match the parameters given in {@code options}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>
+     * List&lt;ConfigurationSetting&gt; revisions = client.listSettingRevisions(new SettingSelector().key("prodDBConnection"));
+     * for (ConfigurationSetting revision : revisions) {
+     *     System.out.printf("Key: %s, Value: %s", revision.key(), revision.value());
+     * }
+     * </pre>
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting

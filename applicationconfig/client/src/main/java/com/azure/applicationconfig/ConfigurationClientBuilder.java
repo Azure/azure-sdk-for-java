@@ -13,15 +13,12 @@ import com.azure.common.http.policy.HttpPipelinePolicy;
 import java.net.MalformedURLException;
 
 /**
-
  * Builds instances of {@link ConfigurationClient} based on the configuration options stored in the builder when
- * {@link ConfigurationClientBuilder#build()} is called.
- *
- * <p>Preparing the builder has two primary options, using {@link ConfigurationClientCredentials} or using a
- * {@link HttpPipeline} and the service endpoint.</p>
+ * {@link ConfigurationClientBuilder#build() build} is called. Preparing the builder has two primary options, using
+ * {@link ConfigurationClientCredentials} or using a {@link HttpPipeline} and the service endpoint.
  *
  * <p>ConfigurationClientCredentials has the service endpoint and authorization information built into it. Use
- * {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials)} to configure the builder.</p>
+ * {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials) credentials} to configure the builder.</p>
  *
  * <pre>
  * ConfigurationClient client = ConfigurationClient.builder()
@@ -30,14 +27,13 @@ import java.net.MalformedURLException;
  * </pre>
  *
  * <p>HttpPipeline is constructed using the authorization information but doesn't have the service endpoint built into
- * it. Use {@link ConfigurationClientBuilder#pipeline(HttpPipeline)} and {@link ConfigurationClientBuilder#serviceEndpoint(String)}
+ * it. Use {@link ConfigurationClientBuilder#pipeline(HttpPipeline) pipeline} and {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint}
  * to configure the builder. The HttpPipeline requires additional configuration over using ConfigurationClientCredentials
  * but it allows for finer control on how the ConfigurationClient is built.</p>
  *
  * <pre>
- * HttpPipeline pipeline = new HttpPipeline(policies);
  * ConfigurationClient.builder()
- *     .pipeline(pipeline)
+ *     .pipeline(new HttpPipeline(policies))
  *     .serviceEndpoint(serviceEndpoint)
  *     .build();
  * </pre>
