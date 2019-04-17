@@ -27,13 +27,11 @@ import java.util.Objects;
 
 /**
  * Builds instances of {@link ConfigurationAsyncClient} based on the configuration options stored in the builder when
- * {@link ConfigurationAsyncClientBuilder#build()} is called.
- *
- * <p>Preparing the builder has two primary options, using {@link ConfigurationClientCredentials} or using a
- * {@link HttpPipeline} and the service endpoint.</p>
+ * {@link ConfigurationAsyncClientBuilder#build() build} is called. Preparing the builder has two primary options, using
+ * {@link ConfigurationClientCredentials} or using a {@link HttpPipeline} and the service endpoint.
  *
  * <p>ConfigurationClientCredentials has the service endpoint and authorization information built into it. Use
- * {@link ConfigurationAsyncClientBuilder#credentials(ConfigurationClientCredentials)} to configure the builder.</p>
+ * {@link ConfigurationAsyncClientBuilder#credentials(ConfigurationClientCredentials) credentials} to configure the builder.</p>
  *
  * <pre>
  * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
@@ -42,14 +40,13 @@ import java.util.Objects;
  * </pre>
  *
  * <p>HttpPipeline is constructed using the authorization information but doesn't have the service endpoint built into
- * it. Use {@link ConfigurationAsyncClientBuilder#pipeline(HttpPipeline)} and {@link ConfigurationAsyncClientBuilder#serviceEndpoint(String)}
+ * it. Use {@link ConfigurationAsyncClientBuilder#pipeline(HttpPipeline) pipeline} and {@link ConfigurationAsyncClientBuilder#serviceEndpoint(String) serviceEndpoint}
  * to configure the builder. The HttpPipeline requires additional configuration over using ConfigurationClientCredentials
  * but it allows for finer control on how the ConfigurationAsyncClient is built.</p>
  *
  * <pre>
- * HttpPipeline pipeline = new HttpPipeline(policies);
  * ConfigurationAsyncClient.builder()
- *     .pipeline(pipeline)
+ *     .pipeline(new HttpPipeline(policies))
  *     .serviceEndpoint(serviceEndpoint)
  *     .build();
  * </pre>
