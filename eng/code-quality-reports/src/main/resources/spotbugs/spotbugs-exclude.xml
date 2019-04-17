@@ -215,8 +215,7 @@
     At InMemoryLeaseManager.java:[line 148,155,209,241,268]
       https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/InMemoryLeaseManager.java#L155 -->
   <Match>
-    <Class
-        name="~com\.microsoft\.azure\.eventprocessorhost\.(AzureStorageCheckpointLeaseManager|InMemoryLeaseManager)"/>
+    <Class name="~com\.microsoft\.azure\.eventprocessorhost\.(AzureStorageCheckpointLeaseManager|InMemoryLeaseManager)"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 
@@ -224,8 +223,7 @@
     At EventProcessorOptions.java:[lines 234-237]
       https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs-eph/src/main/java/com/microsoft/azure/eventprocessorhost/EventProcessorOptions.java#L234 -->
   <Match>
-    <Class
-        name="~com\.microsoft.azure\.eventprocessorhost\.EventProcessorOptions\$(EndOfStreamInitialPositionProvider|StartOfStreamInitialPositionProvider)"/>
+    <Class name="~com\.microsoft.azure\.eventprocessorhost\.EventProcessorOptions\$(EndOfStreamInitialPositionProvider|StartOfStreamInitialPositionProvider)"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>
   </Match>
 
