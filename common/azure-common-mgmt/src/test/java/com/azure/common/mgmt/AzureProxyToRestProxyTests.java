@@ -155,7 +155,7 @@ public abstract class AzureProxyToRestProxyTests {
 
         @GET("anything/{path}")
         @ExpectedResponses({200})
-        HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value="path", encoded=true) String pathParam);
+        HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value = "path", encoded = true) String pathParam);
 
         @GET("anything")
         @ExpectedResponses({200})
@@ -243,7 +243,7 @@ public abstract class AzureProxyToRestProxyTests {
 
         @GET("anything")
         @ExpectedResponses({200})
-        HttpBinJSON getAnythingWithEncoded(@QueryParam(value="a", encoded=true) String a, @QueryParam("b") int b);
+        HttpBinJSON getAnythingWithEncoded(@QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
 
         @GET("anything")
         @ExpectedResponses({200})
@@ -339,7 +339,7 @@ public abstract class AzureProxyToRestProxyTests {
         final HttpBinJSON json = createService(Service8.class)
                 .post("I'm a post body!");
         assertEquals(String.class, json.data.getClass());
-        assertEquals("I'm a post body!", (String)json.data);
+        assertEquals("I'm a post body!", json.data);
     }
 
     @Test
@@ -348,7 +348,7 @@ public abstract class AzureProxyToRestProxyTests {
                 .postAsync("I'm a post body!")
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("I'm a post body!", (String)json.data);
+        assertEquals("I'm a post body!", json.data);
     }
 
     @Host("http://httpbin.org")
@@ -376,7 +376,7 @@ public abstract class AzureProxyToRestProxyTests {
         final HttpBinJSON json = createService(Service9.class)
                 .put(42);
         assertEquals(String.class, json.data.getClass());
-        assertEquals("42", (String)json.data);
+        assertEquals("42", json.data);
     }
 
     @Test
@@ -385,7 +385,7 @@ public abstract class AzureProxyToRestProxyTests {
                 .putAsync(42)
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("42", (String)json.data);
+        assertEquals("42", json.data);
     }
 
     @Test
@@ -398,7 +398,7 @@ public abstract class AzureProxyToRestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
-            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
     }
@@ -482,7 +482,7 @@ public abstract class AzureProxyToRestProxyTests {
         final HttpBinJSON json = createService(Service11.class)
                 .delete(false);
         assertEquals(String.class, json.data.getClass());
-        assertEquals("false", (String)json.data);
+        assertEquals("false", json.data);
     }
 
     @Test
@@ -491,7 +491,7 @@ public abstract class AzureProxyToRestProxyTests {
                 .deleteAsync(false)
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("false", (String)json.data);
+        assertEquals("false", json.data);
     }
 
     @Host("http://httpbin.org")
@@ -510,7 +510,7 @@ public abstract class AzureProxyToRestProxyTests {
         final HttpBinJSON json = createService(Service12.class)
                 .patch("body-contents");
         assertEquals(String.class, json.data.getClass());
-        assertEquals("body-contents", (String)json.data);
+        assertEquals("body-contents", json.data);
     }
 
     @Test
@@ -519,7 +519,7 @@ public abstract class AzureProxyToRestProxyTests {
                 .patchAsync("body-contents")
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("body-contents", (String)json.data);
+        assertEquals("body-contents", json.data);
     }
 
     @Host("http://httpbin.org")
@@ -625,7 +625,7 @@ public abstract class AzureProxyToRestProxyTests {
         assertNotNull(result);
         assertMatchWithHttpOrHttps("httpbin.org/put", result.url);
         assertTrue(result.data instanceof String);
-        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5 }, ((String)result.data).getBytes());
+        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5 }, ((String) result.data).getBytes());
     }
 
     @Test
@@ -636,7 +636,7 @@ public abstract class AzureProxyToRestProxyTests {
         assertNotNull(result);
         assertMatchWithHttpOrHttps("httpbin.org/put", result.url);
         assertTrue(result.data instanceof String);
-        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5 }, ((String)result.data).getBytes());
+        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5 }, ((String) result.data).getBytes());
     }
 
     @Host("http://{hostPart1}{hostPart2}.org")
@@ -764,7 +764,7 @@ public abstract class AzureProxyToRestProxyTests {
         if (s2.equalsIgnoreCase(url2)) {
             return;
         }
-        Assert.assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'." , false);
+        Assert.assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.", false);
     }
 
     private static final SerializerAdapter serializer = new JacksonAdapter();

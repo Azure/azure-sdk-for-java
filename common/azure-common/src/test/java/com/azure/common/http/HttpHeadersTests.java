@@ -10,8 +10,7 @@ import static org.junit.Assert.assertNull;
 
 public class HttpHeadersTests {
     @Test
-    public void testSet()
-    {
+    public void testSet() {
         final HttpHeaders headers = new HttpHeaders();
 
         headers.set("a", "b");

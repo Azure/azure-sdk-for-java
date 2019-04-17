@@ -278,14 +278,14 @@ public class RestProxyStressTests {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
         Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
-        .map(integer -> {
-            final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
-            try {
-                return Files.readAllBytes(filePath);
-            } catch (IOException ioe) {
-                throw Exceptions.propagate(ioe);
-            }
-        });
+            .map(integer -> {
+                final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
+                try {
+                    return Files.readAllBytes(filePath);
+                } catch (IOException ioe) {
+                    throw Exceptions.propagate(ioe);
+                }
+            });
         //
         Instant uploadStart = Instant.now();
         //

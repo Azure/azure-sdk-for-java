@@ -405,7 +405,7 @@ public class AzureProxyTests {
                 .createAsyncWithAzureAsyncOperationAndPolls("1", "mine", "c", pollsUntilResource)
                 .subscribe();
 
-        Thread.sleep((long)(delayInMilliseconds * 0.75));
+        Thread.sleep((long) (delayInMilliseconds * 0.75));
 
         for (int i = 0; i < pollsUntilResource; ++i) {
             assertEquals(0, httpClient.getRequests());
@@ -570,7 +570,7 @@ public class AzureProxyTests {
         PollStrategy.PollStrategyData pollData = null;
         try {
             operationDescription = mapper.readValue(data.toString(), OperationDescription.class);
-            pollData = (PollStrategy.PollStrategyData)operationDescription.pollStrategyData();
+            pollData = (PollStrategy.PollStrategyData) operationDescription.pollStrategyData();
         } catch (IOException e) {
             fail("Error deserializing OperationDescription object");
             e.printStackTrace();

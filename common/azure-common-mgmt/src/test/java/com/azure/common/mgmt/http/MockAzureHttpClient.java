@@ -131,7 +131,7 @@ public class MockAzureHttpClient implements HttpClient {
                     else if (requestPathLower.contains("/mockprovider/mockoperations/")) {
                         ++pollRequests;
 
-                        final Map<String,String> requestQueryMap = queryToMap(requestUrl.getQuery());
+                        final Map<String, String> requestQueryMap = queryToMap(requestUrl.getQuery());
 
                         final String pollType = requestQueryMap.get("PollType");
 
@@ -228,7 +228,7 @@ public class MockAzureHttpClient implements HttpClient {
                 else if (request.httpMethod() == HttpMethod.DELETE) {
                     ++deleteRequests;
 
-                    final Map<String,String> requestQueryMap = queryToMap(requestUrl.getQuery());
+                    final Map<String, String> requestQueryMap = queryToMap(requestUrl.getQuery());
 
                     final String pollType = requestQueryMap.get("PollType");
                     String pollsRemainingString = requestQueryMap.get("PollsRemaining");
@@ -290,8 +290,8 @@ public class MockAzureHttpClient implements HttpClient {
         throw new IllegalStateException("MockHttpClient.port");
     }
 
-    private static Map<String,String> queryToMap(String url) {
-        final Map<String,String> result = new HashMap<>();
+    private static Map<String, String> queryToMap(String url) {
+        final Map<String, String> result = new HashMap<>();
 
         if (url != null) {
             final int questionMarkIndex = url.indexOf('?');

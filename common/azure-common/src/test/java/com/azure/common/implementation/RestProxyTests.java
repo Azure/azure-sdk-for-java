@@ -4,7 +4,6 @@
 package com.azure.common.implementation;
 
 import com.azure.common.MyRestException;
-import com.azure.common.ServiceClient;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
@@ -23,7 +22,6 @@ import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
 import com.azure.common.entities.HttpBinHeaders;
 import com.azure.common.entities.HttpBinJSON;
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipeline;
@@ -185,7 +183,7 @@ public abstract class RestProxyTests {
 
         @GET("anything/{path}")
         @ExpectedResponses({200})
-        HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value="path", encoded=true) String pathParam);
+        HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value = "path", encoded = true) String pathParam);
 
         @GET("anything")
         @ExpectedResponses({200})
@@ -273,7 +271,7 @@ public abstract class RestProxyTests {
 
         @GET("anything")
         @ExpectedResponses({200})
-        HttpBinJSON getAnythingWithEncoded(@QueryParam(value="a", encoded=true) String a, @QueryParam("b") int b);
+        HttpBinJSON getAnythingWithEncoded(@QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
 
         @GET("anything")
         @ExpectedResponses({200})
@@ -390,7 +388,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service8.class)
                 .post("I'm a post body!");
         assertEquals(String.class, json.data.getClass());
-        assertEquals("I'm a post body!", (String)json.data);
+        assertEquals("I'm a post body!", json.data);
     }
 
     @Test
@@ -399,7 +397,7 @@ public abstract class RestProxyTests {
                 .postAsync("I'm a post body!")
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("I'm a post body!", (String)json.data);
+        assertEquals("I'm a post body!", json.data);
     }
 
     @Test
@@ -476,7 +474,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service9.class)
                 .put(42);
         assertEquals(String.class, json.data.getClass());
-        assertEquals("42", (String)json.data);
+        assertEquals("42", json.data);
     }
 
     @Test
@@ -485,7 +483,7 @@ public abstract class RestProxyTests {
                 .putAsync(42)
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("42", (String)json.data);
+        assertEquals("42", json.data);
     }
 
     @Test
@@ -498,7 +496,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
-            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
     }
@@ -514,7 +512,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
-            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
     }
@@ -616,7 +614,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
-            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
@@ -634,7 +632,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
-            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.value();
+            final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
@@ -727,7 +725,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service11.class)
                 .delete(false);
         assertEquals(String.class, json.data.getClass());
-        assertEquals("false", (String)json.data);
+        assertEquals("false", json.data);
     }
 
     @Test
@@ -736,7 +734,7 @@ public abstract class RestProxyTests {
                 .deleteAsync(false)
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("false", (String)json.data);
+        assertEquals("false", json.data);
     }
 
     @Host("http://httpbin.org")
@@ -755,7 +753,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service12.class)
                 .patch("body-contents");
         assertEquals(String.class, json.data.getClass());
-        assertEquals("body-contents", (String)json.data);
+        assertEquals("body-contents", json.data);
     }
 
     @Test
@@ -764,7 +762,7 @@ public abstract class RestProxyTests {
                 .patchAsync("body-contents")
                 .block();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("body-contents", (String)json.data);
+        assertEquals("body-contents", json.data);
     }
 
     @Host("http://httpbin.org")
@@ -1274,19 +1272,19 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service20 {
         @GET("bytes/100")
-        ResponseBase<HttpBinHeaders,Void> getBytes100OnlyHeaders();
+        ResponseBase<HttpBinHeaders, Void> getBytes100OnlyHeaders();
 
         @GET("bytes/100")
-        ResponseBase<HttpHeaders,Void> getBytes100OnlyRawHeaders();
+        ResponseBase<HttpHeaders, Void> getBytes100OnlyRawHeaders();
 
         @GET("bytes/100")
-        ResponseBase<HttpBinHeaders,byte[]> getBytes100BodyAndHeaders();
+        ResponseBase<HttpBinHeaders, byte[]> getBytes100BodyAndHeaders();
 
         @PUT("put")
-        ResponseBase<HttpBinHeaders,Void> putOnlyHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+        ResponseBase<HttpBinHeaders, Void> putOnlyHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @PUT("put")
-        ResponseBase<HttpBinHeaders,HttpBinJSON> putBodyAndHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+        ResponseBase<HttpBinHeaders, HttpBinJSON> putBodyAndHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @GET("bytes/100")
         ResponseBase<Void, Void> getBytesOnlyStatus();
@@ -1300,7 +1298,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service20GetBytes100OnlyHeaders() {
-        final ResponseBase<HttpBinHeaders,Void> response = createService(Service20.class)
+        final ResponseBase<HttpBinHeaders, Void> response = createService(Service20.class)
                 .getBytes100OnlyHeaders();
         assertNotNull(response);
 
@@ -1317,7 +1315,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service20GetBytes100BodyAndHeaders() {
-        final ResponseBase<HttpBinHeaders,byte[]> response = createService(Service20.class)
+        final ResponseBase<HttpBinHeaders, byte[]> response = createService(Service20.class)
                 .getBytes100BodyAndHeaders();
         assertNotNull(response);
 
@@ -1356,7 +1354,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service20PutOnlyHeaders() {
-        final ResponseBase<HttpBinHeaders,Void> response = createService(Service20.class)
+        final ResponseBase<HttpBinHeaders, Void> response = createService(Service20.class)
                 .putOnlyHeaders("body string");
         assertNotNull(response);
 
@@ -1373,7 +1371,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service20PutBodyAndHeaders() {
-        final ResponseBase<HttpBinHeaders,HttpBinJSON> response = createService(Service20.class)
+        final ResponseBase<HttpBinHeaders, HttpBinJSON> response = createService(Service20.class)
                 .putBodyAndHeaders("body string");
         assertNotNull(response);
 
@@ -1544,12 +1542,12 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org/")
     interface Service24 {
         @PUT("put")
-        HttpBinJSON put(@HeaderParam("ABC") Map<String,String> headerCollection);
+        HttpBinJSON put(@HeaderParam("ABC") Map<String, String> headerCollection);
     }
 
     @Test
     public void service24Put() {
-        final Map<String,String> headerCollection = new HashMap<>();
+        final Map<String, String> headerCollection = new HashMap<>();
         headerCollection.put("DEF", "GHIJ");
         headerCollection.put("123", "45");
         final HttpBinJSON result = createService(Service24.class)
@@ -1619,7 +1617,7 @@ public abstract class RestProxyTests {
         if (s2.equalsIgnoreCase(url2)) {
             return;
         }
-        Assert.assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'." , false);
+        Assert.assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.", false);
     }
 
     private static final SerializerAdapter serializer = new JacksonAdapter();
