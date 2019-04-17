@@ -7,8 +7,7 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
-  <!-- These keyvault models are already publicly released APIs with name
-  matching the simple name of superclass -->
+  <!-- These keyvault models are already publicly released APIs with name matching the simple name of superclass -->
   <Match>
     <Class name="~com\.microsoft\.azure\.keyvault\.models\.(CertificateBundle|CertificateOperation|IssuerBundle|KeyBundle|SecretBundle)"/>
     <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
@@ -39,8 +38,7 @@
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
 
-  <!-- Protected field already exists in the public API surface area even
-  though it is unused. -->
+  <!-- Protected field already exists in the public API surface area even though it is unused. -->
   <Match>
     <Class name="com.microsoft.azure.keyvault.cryptography.EcKey"/>
     <Field name="defaultEncryptionAlgorithm"/>
@@ -54,8 +52,7 @@
     <Bug pattern="NM_CONFUSING"/>
   </Match>
 
-  <!-- These KeyVault classes are publicly released APIs that intentionally return null rather
-  than an empty array. -->
+  <!-- These KeyVault classes are publicly released APIs that intentionally return null rather than an empty array. -->
   <Match>
     <Class name="~com\.microsoft\.azure\.keyvault\.(cryptography|models|webkey)\.[\w]+"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
@@ -68,23 +65,22 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
-  <!-- These KeyVaultClientBase methods are made synchronous by blocking and
-  waiting for a result. They do not return anything, so it can be ignored. -->
+  <!-- These KeyVaultClientBase methods are made synchronous by blocking and waiting for a result. They do not return
+  anything, so it can be ignored. -->
   <Match>
     <Class name="com.microsoft.azure.keyvault.implementation.KeyVaultClientBaseImpl"/>
     <Method name="~(purgeDeletedCertificate|purgeDeletedKey|purgeDeletedSecret|purgeDeletedStorageAccount)"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
   </Match>
 
-  <!-- These autorest generated APIs for existing Azure SDK components supports Java 7.
-  Suppressing error for using anonymous inner classes. -->
+  <!-- These autorest generated APIs for existing Azure SDK components supports Java 7. Suppressing error for using
+  anonymous inner classes. -->
   <Match>
     <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
-  <!-- KeyVaultCredential values manipulated do not need to be localised. They
-  are base64 encoded or URL encoded.-->
+  <!-- KeyVaultCredential values manipulated do not need to be localised. They are base64 encoded or URL encoded.-->
   <Match>
     <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
     <Method name="~(extractChallenge|isValidChallenge|supportsMessageProtection)"/>
@@ -263,7 +259,7 @@
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
-  <!-- The casting problems do not exist in Azure use cases-->
+  <!-- The casting problems do not exist in Azure use cases -->
   <Match>
     <Class name="com.azure.common.implementation.util.TypeUtil"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
@@ -287,7 +283,8 @@
     <Bug pattern="UUF_UNUSED_FIELD"/>
   </Match>
 
-  <!-- These fields are designed to be anonymous and not static. They are for letting the jackson serializer know what type to use. -->
+  <!-- These fields are designed to be anonymous and not static. They are for letting the jackson serializer know what
+  type to use. -->
   <Match>
     <Class name="com.azure.common.auth.credentials.AzureCliCredentials"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
@@ -299,13 +296,15 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
-  <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing the class proposed. Suppress the warning for current design. -->
+  <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
+  the class proposed. Suppress the warning for current design. -->
   <Match>
     <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
-  <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing the class proposed. Suppress the warning for current design. -->
+  <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
+  the class proposed. Suppress the warning for current design. -->
   <Match>
     <Class name="~com\.azure\.common\.mgmt\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
     <Bug pattern="SE_BAD_FIELD"/>
