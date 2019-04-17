@@ -13,7 +13,7 @@ import java.util.List;
  * A page of Azure App Configuration {@link SecretAttributes} resources and a link to get the next page of
  * resources, if any.
  */
-public final class SecretsPage<T> implements Page<T> {
+public final class SecretAttributesPage implements Page {
     /**
      * The link to the next page.
      */
@@ -24,7 +24,7 @@ public final class SecretsPage<T> implements Page<T> {
      * The list of items.
      */
     @JsonProperty("value")
-    private List<T> items;
+    private List<SecretAttributes> items;
 
     /**
      * Gets the link to the next page. Or {@code null} if there are no more resources to fetch.
@@ -42,7 +42,7 @@ public final class SecretsPage<T> implements Page<T> {
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<T> items() {
+    public List<SecretAttributes> items() {
         return items;
     }
 }

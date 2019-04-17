@@ -10,6 +10,7 @@ import com.azure.common.http.rest.Response;
 import com.azure.common.http.rest.SimpleResponse;
 import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.RestProxy;
+import com.azure.keyvault.implementation.SecretAttributesPage;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretAttributes;
@@ -21,6 +22,7 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.function.Function;
 
 public final class SecretAsyncClient extends ServiceClient {
     static final String API_VERSION = "7.0";
@@ -258,6 +260,17 @@ public final class SecretAsyncClient extends ServiceClient {
      * in the flux is represented by {@link SecretAttributes} as only the base secret identifier and its attributes are
      * provided in the response. The secret values and individual secret versions are not listed in the response. This operation requires the secrets/list permission.
      *
+     * <p> It is possible to get full Secrets with values from this information. Convert the {@link Flux} containing {@link SecretAttributes secretAttributes} to
+     * {@link Flux} containing {@link Secret secrets} using {@link SecretAsyncClient#getSecretAsync(String secretName)} within {@link Flux#flatMap(Function)}. </p>
+     *
+     * <pre>
+     *   Flux<SecretAttributes> secretAttributes = secretAsyncClient.listSecretsAsync();
+     *   Flux<Secret> secrets = secretAttributes.flatMap(secretAttr -> Flux.just(secretAsyncClient.getSecretAsync(secretAttr.name())))
+     *           .flatMap(secretMonoResponse -> secretMonoResponse.flatMap(secretResponse -> Mono.just(secretResponse.value())));
+     *
+     *   secrets.subscribe(secret -> System.out.println((secret.value())));
+     * </pre>
+     *
      * @return A {@link Flux} containing {@link SecretAttributes} of all the secrets in the vault.
      */
     public Flux<SecretAttributes> listSecretsAsync() {
@@ -273,13 +286,25 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Flux<DeletedSecret> listDeletedSecretsAsync() {
         Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchSecrets);
+        return result.flatMapMany(this::extractAndFetchDeletedSecrets);
     }
 
     /**
      * List all versions of the specified secret. The individual secret response in the flux is represented by {@link SecretAttributes}
      * as only the base secret identifier and its attributes are provided in the response. The secret values are
      * not provided in the response. This operation requires the secrets/list permission.
+     *
+     * <p> It is possible to get the Secret with value of all the versions from this information. Convert the {@link Flux}
+     * containing {@link SecretAttributes secretAttributes} to {@link Flux} containing {@link Secret secrets} using
+     * {@link SecretAsyncClient#getSecretAsync(String secretName, String secretVersion)} within {@link Flux#flatMap(Function)}. </p>
+     *
+     * <pre>
+     *   Flux<SecretAttributes> secretAttributes = secretAsyncClient.listSecretVersionsAsync("secretName");
+     *   Flux<Secret> secrets = secretAttributes.flatMap(secretAttr -> Flux.just(secretAsyncClient.getSecretAsync(secretAttr.name(), secretAttr.version())))
+     *           .flatMap(secretMonoResponse -> secretMonoResponse.flatMap(secretResponse -> Mono.just(secretResponse.value())));
+     *
+     *   secrets.subscribe(secret -> System.out.println((secret.value())));
+     * </pre>
      *
      * @param name The name of the secret.
      * @throws NullPointerException thrown if name parameter is null.
@@ -299,6 +324,17 @@ public final class SecretAsyncClient extends ServiceClient {
      * The individual secret response in the flux is represented by {@link SecretAttributes} as only the base secret identifier
      * and its attributes are provided in the response. The secret values and individual secret versions are not
      * provided in the response. This operation requires the secrets/list permission.
+     *
+     * <p> It is possible to get full Secrets with values from this information. Convert the {@link Flux} containing {@link SecretAttributes secretAttributes} to
+     * {@link Flux} containing {@link Secret secrets} using {@link SecretAsyncClient#getSecretAsync(String secretName)} within {@link Flux#flatMap(Function)}. </p>
+     *
+     * <pre>
+     *   Flux<SecretAttributes> secretAttributes = secretAsyncClient.listSecretsAsync(25);
+     *   Flux<Secret> secrets = secretAttributes.flatMap(secretAttr -> Flux.just(secretAsyncClient.getSecretAsync(secretAttr.name())))
+     *           .flatMap(secretMonoResponse -> secretMonoResponse.flatMap(secretResponse -> Mono.just(secretResponse.value())));
+     *
+     *   secrets.subscribe(secret -> System.out.println((secret.value())));
+     * </pre>
      *
      * @param maxPageResults Maximum number of results to return in a page.
      * @throws IllegalArgumentException thrown if maxPageResults parameter is 0 or less than 0.
@@ -321,13 +357,25 @@ public final class SecretAsyncClient extends ServiceClient {
     public Flux<DeletedSecret> listDeletedSecretsAsync(int maxPageResults) {
         Validate.isTrue(maxPageResults > 0, "The maximum page results parameter needs to be greater than 0.");
         Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchSecrets);
+        return result.flatMapMany(this::extractAndFetchDeletedSecrets);
     }
 
     /**
      * List all versions of the specified secret. The individual secret response in the flux is represented by {@link SecretAttributes}
      * as only the base secret identifier and its attributes are provided in the response. The secret values are
      * not provided in the response. This operations requires the secrets/list permission.
+     *
+     * <p> It is possible to get the Secret with value of all the versions from this information. Convert the {@link Flux}
+     * containing {@link SecretAttributes secretAttributes} to {@link Flux} containing {@link Secret secrets} using
+     * {@link SecretAsyncClient#getSecretAsync(String secretName, String secretVersion)} within {@link Flux#flatMap(Function)}. </p>
+     *
+     * <pre>
+     *   Flux<SecretAttributes> secretAttributes = secretAsyncClient.listSecretVersionsAsync("secretName", 25);
+     *   Flux<Secret> secrets = secretAttributes.flatMap(secretAttr -> Flux.just(secretAsyncClient.getSecretAsync(secretAttr.name(), secretAttr.version())))
+     *           .flatMap(secretMonoResponse -> secretMonoResponse.flatMap(secretResponse -> Mono.just(secretResponse.value())));
+     *
+     *   secrets.subscribe(secret -> System.out.println((secret.value())));
+     * </pre>
      *
      * @param name The name of the secret.
      * @param maxPageResults Maximum number of results to return in a page.
@@ -345,23 +393,42 @@ public final class SecretAsyncClient extends ServiceClient {
     }
 
     /**
-     * Gets {@link T type secrets} given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretClient#listSecrets()} or {@link SecretClient#listSecrets(int)} or {@link SecretClient#listDeletedSecrets()}
-     * or {@link SecretClient#listDeletedSecrets(int)}.
+     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretAsyncClient#listSecretsAsync()} or {@link SecretAsyncClient#listSecretsAsync(int)}.
      *
-     * @param nextPageLink The {@link com.azure.keyvault.implementation.SecretsPage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link T type secrets} from the next page of results.
+     * @param nextPageLink The {@link SecretAttributesPage#nextLink()} from a previous, successful call to one of the list operations.
+     * @return A stream of {@link SecretAttributes} from the next page of results.
      */
-    private <T> Flux<T> listSecretsNext(String nextPageLink) {
-        Mono<PagedResponse<T>> result = service.getSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+    private Flux<SecretAttributes> listSecretsNext(String nextPageLink) {
+        Mono<PagedResponse<SecretAttributes>> result = service.getSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
         return result.flatMapMany(this::extractAndFetchSecrets);
     }
 
-    private <T> Publisher<T> extractAndFetchSecrets(PagedResponse<T> page) {
+    private Publisher<SecretAttributes> extractAndFetchSecrets(PagedResponse<SecretAttributes> page) {
         String nextPageLink = page.nextLink();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
         return Flux.fromIterable(page.items()).concatWith(listSecretsNext(nextPageLink));
+    }
+
+    /**
+     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretAsyncClient#listDeletedSecretsAsync()} or {@link SecretAsyncClient#listDeletedSecretsAsync(int)}.
+     *
+     * @param nextPageLink The {@link com.azure.keyvault.implementation.DeletedSecretPage#nextLink()} from a previous, successful call to one of the list operations.
+     * @return A stream of {@link SecretAttributes} from the next page of results.
+     */
+    private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink) {
+        Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return result.flatMapMany(this::extractAndFetchDeletedSecrets);
+    }
+
+    private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(PagedResponse<DeletedSecret> page) {
+        String nextPageLink = page.nextLink();
+        if (nextPageLink == null) {
+            return Flux.fromIterable(page.items());
+        }
+        return Flux.fromIterable(page.items()).concatWith(listDeletedSecretsNext(nextPageLink));
     }
 }

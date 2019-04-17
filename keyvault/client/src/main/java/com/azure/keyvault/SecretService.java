@@ -8,7 +8,8 @@ import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.http.rest.VoidResponse;
-import com.azure.keyvault.implementation.SecretsPage;
+import com.azure.keyvault.implementation.DeletedSecretPage;
+import com.azure.keyvault.implementation.SecretAttributesPage;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretAttributes;
@@ -120,7 +121,7 @@ interface SecretService {
     @GET("secrets")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(ServiceRequestException.class)
-    @ReturnValueWireType(SecretsPage.class)
+    @ReturnValueWireType(SecretAttributesPage.class)
     Mono<PagedResponse<SecretAttributes>> getSecrets(@HostParam("url") String url,
                                                           @QueryParam("maxresults") Integer maxresults,
                                                           @QueryParam("api-version") String apiVersion,
@@ -131,7 +132,7 @@ interface SecretService {
     @GET("secrets/{secret-name}/versions")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(ServiceRequestException.class)
-    @ReturnValueWireType(SecretsPage.class)
+    @ReturnValueWireType(SecretAttributesPage.class)
     Mono<PagedResponse<SecretAttributes>> getSecretVersions(@HostParam("url") String url,
                                                                  @PathParam("secret-name") String secretName,
                                                                  @QueryParam("maxresults") Integer maxresults,
@@ -143,8 +144,8 @@ interface SecretService {
     @GET("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(ServiceRequestException.class)
-    @ReturnValueWireType(SecretsPage.class)
-    <T> Mono<PagedResponse<T>> getSecrets(@HostParam("url") String url,
+    @ReturnValueWireType(SecretAttributesPage.class)
+    Mono<PagedResponse<SecretAttributes>> getSecrets(@HostParam("url") String url,
                                                       @PathParam(value = "nextUrl", encoded = true) String nextUrl,
                                                       @HeaderParam("accept-language") String acceptLanguage,
                                                       @HeaderParam("Content-Type") String type);
@@ -153,10 +154,19 @@ interface SecretService {
     @GET("deletedsecrets")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(ServiceRequestException.class)
-    @ReturnValueWireType(SecretsPage.class)
+    @ReturnValueWireType(DeletedSecretPage.class)
     Mono<PagedResponse<DeletedSecret>> getDeletedSecrets(@HostParam("url") String url,
                                                               @QueryParam("maxresults") Integer maxresults,
                                                               @QueryParam("api-version") String apiVersion,
                                                               @HeaderParam("accept-language") String acceptLanguage,
                                                               @HeaderParam("Content-Type") String type);
+
+    @GET("{nextUrl}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(ServiceRequestException.class)
+    @ReturnValueWireType(DeletedSecretPage.class)
+    Mono<PagedResponse<DeletedSecret>> getDeletedSecrets(@HostParam("url") String url,
+                                                     @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                                     @HeaderParam("accept-language") String acceptLanguage,
+                                                     @HeaderParam("Content-Type") String type);
 }

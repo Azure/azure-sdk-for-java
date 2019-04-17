@@ -10,6 +10,7 @@ import com.azure.common.http.rest.Response;
 import com.azure.common.http.rest.SimpleResponse;
 import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.RestProxy;
+import com.azure.keyvault.implementation.SecretAttributesPage;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretAttributes;
@@ -261,11 +262,11 @@ public final class SecretClient extends ServiceClient {
      * call {@link SecretClient#getSecret(String secretName)} . This will return the {@link Secret} secrets with values included of its latest version. </p>
      *
      * <pre>
-     * List<SecretAttributes> secretAttributes = secretClient.listSecrets();
-     * List<Secret> secrets = new ArrayList();
-     * for (SecretAttributes secretAttr : secretAttributes) {
-     *     secretVersions.add(secretClient.getSecret(secretAttr.name());
-     * }
+     *   List<SecretAttributes> secretAttributes = secretClient.listSecrets();
+     *   List<Secret> secrets = new ArrayList();
+     *   for (SecretAttributes secretAttr : secretAttributes) {
+     *       secrets.add(secretClient.getSecret(secretAttr.name()).value());
+     *   }
      * </pre>
      *
      * @return A {@link List} containing {@link SecretAttributes} of all the secrets in the vault. The {@link SecretAttributes} contains all the information about the secret, except its value.
@@ -283,7 +284,7 @@ public final class SecretClient extends ServiceClient {
      */
     public List<DeletedSecret> listDeletedSecrets() {
         Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchSecrets).collectList().block();
+        return result.flatMapMany(this::extractAndFetchDeletedSecrets).collectList().block();
     }
 
     /**
@@ -295,11 +296,11 @@ public final class SecretClient extends ServiceClient {
      * call {@link SecretClient#getSecret(String secretName, String secretVersion)} . This will return the {@link Secret} secrets with values included of the specified versions. </p>
      *
      * <pre>
-     * List<SecretAttributes> secretAttributes = secretClient.listSecretVersions("secretName");
-     * List<Secret> secretVersions = new ArrayList();
-     * for (SecretAttributes secretAttr : secretAttributes) {
-     *     secretVersions.add(secretClient.getSecret(secretAttr.name(), secretAttr.version());
-     * }
+     *   List<SecretAttributes> secretAttributes = secretClient.listSecretVersions("secretName");
+     *   List<Secret> secretVersions = new ArrayList();
+     *   for (SecretAttributes secretAttr : secretAttributes) {
+     *       secretVersions.add(secretClient.getSecret(secretAttr.name(), secretAttr.version()).value());
+     *   }
      * </pre>
      *
      * @param name The name of the secret.
@@ -316,7 +317,7 @@ public final class SecretClient extends ServiceClient {
     }
 
     /**
-     * List secrets in a specified key vault. The list secrets operation is applicable to the entire vault.
+     * List secrets in the key vault. The list secrets operation is applicable to the entire vault.
      * The individual secret response in the list is represented by {@link SecretAttributes} as only the base secret identifier
      * and its attributes are provided in the response. The secret values and individual secret versions are not
      * provided in the response. This operation requires the secrets/list permission.
@@ -325,11 +326,11 @@ public final class SecretClient extends ServiceClient {
      * call {@link SecretClient#getSecret(String secretName)} . This will return the {@link Secret} secrets with values included of its latest version. </p>
      *
      * <pre>
-     * List<SecretAttributes> secretAttributes = secretClient.listSecrets(25);
-     * List<Secret> secrets = new ArrayList();
-     * for (SecretAttributes secretAttr : secretAttributes) {
-     *     secretVersions.add(secretClient.getSecret(secretAttr.name());
-     * }
+     *   List<SecretAttributes> secretAttributes = secretClient.listSecrets(25);
+     *   List<Secret> secrets = new ArrayList();
+     *   for (SecretAttributes secretAttr : secretAttributes) {
+     *       secrets.add(secretClient.getSecret(secretAttr.name()).value());
+     *   }
      * </pre>
      *
      * @param maxPageResults Maximum number of results to return in a page.
@@ -353,7 +354,7 @@ public final class SecretClient extends ServiceClient {
     public List<DeletedSecret> listDeletedSecrets(int maxPageResults) {
         Validate.isTrue(maxPageResults > 0, "The maximum page results parameter needs to be greater than 0.");
         Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchSecrets).collectList().block();
+        return result.flatMapMany(this::extractAndFetchDeletedSecrets).collectList().block();
     }
 
     /**
@@ -365,11 +366,11 @@ public final class SecretClient extends ServiceClient {
      * call {@link SecretClient#getSecret(String secretName, String secretVersion)} . This will return the {@link Secret} secrets with values included of the specified versions. </p>
      *
      * <pre>
-     * List<SecretAttributes> secretAttributes = secretClient.listSecretVersions("secretName", 25);
-     * List<Secret> secretVersions = new ArrayList();
-     * for (SecretAttributes secretAttr : secretAttributes) {
-     *     secretVersions.add(secretClient.getSecret(secretAttr.name(), secretAttr.version());
-     * }
+     *   List<SecretAttributes> secretAttributes = secretClient.listSecretVersions("secretName", 25);
+     *   List<Secret> secretVersions = new ArrayList();
+     *   for (SecretAttributes secretAttr : secretAttributes) {
+     *         secretVersions.add(secretClient.getSecret(secretAttr.name(), secretAttr.version()).value());
+     *   }
      * </pre>
      *
      * @param name The name of the secret.
@@ -388,23 +389,42 @@ public final class SecretClient extends ServiceClient {
     }
 
     /**
-     * Gets {@link T type secrets} given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretClient#listSecrets()} or {@link SecretClient#listSecrets(int)} or {@link SecretClient#listDeletedSecrets()}
-     * or {@link SecretClient#listDeletedSecrets(int)}.
+     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretClient#listSecrets()} or {@link SecretClient#listSecrets(int)}.
      *
-     * @param nextPageLink The {@link com.azure.keyvault.implementation.SecretsPage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link T type secrets} from the next page of results.
+     * @param nextPageLink The {@link SecretAttributesPage#nextLink()} from a previous, successful call to one of the list operations.
+     * @return A stream of {@link SecretAttributes} from the next page of results.
      */
-    private <T> Flux<T> listSecretsNext(String nextPageLink) {
-        Mono<PagedResponse<T>> result = service.getSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+    private Flux<SecretAttributes> listSecretsNext(String nextPageLink) {
+        Mono<PagedResponse<SecretAttributes>> result = service.getSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
         return result.flatMapMany(this::extractAndFetchSecrets);
     }
 
-    private <T> Publisher<T> extractAndFetchSecrets(PagedResponse<T> page) {
+    private Publisher<SecretAttributes> extractAndFetchSecrets(PagedResponse<SecretAttributes> page) {
         String nextPageLink = page.nextLink();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
         return Flux.fromIterable(page.items()).concatWith(listSecretsNext(nextPageLink));
+    }
+
+    /**
+     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretClient#listDeletedSecrets()} or {@link SecretClient#listDeletedSecrets(int)}.
+     *
+     * @param nextPageLink The {@link com.azure.keyvault.implementation.DeletedSecretPage#nextLink()} from a previous, successful call to one of the list operations.
+     * @return A stream of {@link SecretAttributes} from the next page of results.
+     */
+    private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink) {
+        Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+        return result.flatMapMany(this::extractAndFetchDeletedSecrets);
+    }
+
+    private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(PagedResponse<DeletedSecret> page) {
+        String nextPageLink = page.nextLink();
+        if (nextPageLink == null) {
+            return Flux.fromIterable(page.items());
+        }
+        return Flux.fromIterable(page.items()).concatWith(listDeletedSecretsNext(nextPageLink));
     }
 }
