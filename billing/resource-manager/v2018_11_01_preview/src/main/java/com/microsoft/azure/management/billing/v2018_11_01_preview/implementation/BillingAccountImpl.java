@@ -47,11 +47,6 @@ class BillingAccountImpl extends WrapperImpl<BillingAccountInner> implements Bil
     }
 
     @Override
-    public String country() {
-        return this.inner().country();
-    }
-
-    @Override
     public List<DepartmentInner> departments() {
         return this.inner().departments();
     }
@@ -69,6 +64,11 @@ class BillingAccountImpl extends WrapperImpl<BillingAccountInner> implements Bil
     @Override
     public Enrollment enrollmentDetails() {
         return this.inner().enrollmentDetails();
+    }
+
+    @Override
+    public Boolean hasReadAccess() {
+        return this.inner().hasReadAccess();
     }
 
     @Override

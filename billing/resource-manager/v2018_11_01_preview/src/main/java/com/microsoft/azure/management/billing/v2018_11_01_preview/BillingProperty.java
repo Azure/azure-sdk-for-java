@@ -43,6 +43,11 @@ public interface BillingProperty extends HasInner<BillingPropertyInner>, HasMana
     String billingTenantId();
 
     /**
+     * @return the id value.
+     */
+    String id();
+
+    /**
      * @return the invoiceSectionId value.
      */
     String invoiceSectionId();
@@ -51,6 +56,11 @@ public interface BillingProperty extends HasInner<BillingPropertyInner>, HasMana
      * @return the invoiceSectionName value.
      */
     String invoiceSectionName();
+
+    /**
+     * @return the name value.
+     */
+    String name();
 
     /**
      * @return the productId value.
@@ -66,5 +76,10 @@ public interface BillingProperty extends HasInner<BillingPropertyInner>, HasMana
      * @return the skuId value.
      */
     String skuId();
+
+    /**
+     * @return the type value.
+     */
+    String type();
 
 }

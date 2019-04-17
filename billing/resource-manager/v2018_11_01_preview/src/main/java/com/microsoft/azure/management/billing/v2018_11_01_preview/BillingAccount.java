@@ -43,11 +43,6 @@ public interface BillingAccount extends HasInner<BillingAccountInner>, HasManage
     String company();
 
     /**
-     * @return the country value.
-     */
-    String country();
-
-    /**
      * @return the departments value.
      */
     List<DepartmentInner> departments();
@@ -66,6 +61,11 @@ public interface BillingAccount extends HasInner<BillingAccountInner>, HasManage
      * @return the enrollmentDetails value.
      */
     Enrollment enrollmentDetails();
+
+    /**
+     * @return the hasReadAccess value.
+     */
+    Boolean hasReadAccess();
 
     /**
      * @return the id value.

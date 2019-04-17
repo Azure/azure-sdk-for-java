@@ -92,6 +92,11 @@ class TransactionsSummaryImpl extends WrapperImpl<TransactionsSummaryInner> impl
     }
 
     @Override
+    public String productFamily() {
+        return this.inner().productFamily();
+    }
+
+    @Override
     public String productType() {
         return this.inner().productType();
     }

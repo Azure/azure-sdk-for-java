@@ -11,7 +11,6 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionBillingAccountBillingSubscriptionSummary;
 import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
 import rx.Observable;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccountContext;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Amount;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionStatusType;
 import java.util.UUID;
@@ -60,13 +59,18 @@ class InvoiceSectionBillingAccountBillingSubscriptionSummaryImpl extends Indexab
     }
 
     @Override
-    public EnrollmentAccountContext enrollmentAccountContext() {
-        return this.inner().enrollmentAccountContext();
+    public String id() {
+        return this.inner().id();
     }
 
     @Override
-    public String id() {
-        return this.inner().id();
+    public String invoiceSectionId() {
+        return this.inner().invoiceSectionId();
+    }
+
+    @Override
+    public String invoiceSectionName() {
+        return this.inner().invoiceSectionName();
     }
 
     @Override

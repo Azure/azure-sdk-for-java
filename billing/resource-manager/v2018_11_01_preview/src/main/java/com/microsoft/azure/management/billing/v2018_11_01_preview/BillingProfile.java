@@ -24,9 +24,9 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation
  */
 public interface BillingProfile extends HasInner<BillingProfileInner>, Indexable, Refreshable<BillingProfile>, Updatable<BillingProfile.Update>, HasManager<BillingManager> {
     /**
-     * @return the billingAddress value.
+     * @return the address value.
      */
-    Address billingAddress();
+    Address address();
 
     /**
      * @return the currency value.
@@ -86,7 +86,7 @@ public interface BillingProfile extends HasInner<BillingProfileInner>, Indexable
     /**
      * The template for a BillingProfile update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<BillingProfile>, UpdateStages.WithBillingAddress, UpdateStages.WithDisplayName, UpdateStages.WithEnabledAzureSKUs, UpdateStages.WithInvoiceSections, UpdateStages.WithPoNumber {
+    interface Update extends Appliable<BillingProfile>, UpdateStages.WithAddress, UpdateStages.WithDisplayName, UpdateStages.WithEnabledAzureSKUs, UpdateStages.WithInvoiceSections, UpdateStages.WithPoNumber {
     }
 
     /**
@@ -94,15 +94,15 @@ public interface BillingProfile extends HasInner<BillingProfileInner>, Indexable
      */
     interface UpdateStages {
         /**
-         * The stage of the billingprofile update allowing to specify BillingAddress.
+         * The stage of the billingprofile update allowing to specify Address.
          */
-        interface WithBillingAddress {
+        interface WithAddress {
             /**
-             * Specifies billingAddress.
-             * @param billingAddress Billing address
+             * Specifies address.
+             * @param address Billing address
              * @return the next update stage
              */
-            Update withBillingAddress(Address billingAddress);
+            Update withAddress(Address address);
         }
 
         /**

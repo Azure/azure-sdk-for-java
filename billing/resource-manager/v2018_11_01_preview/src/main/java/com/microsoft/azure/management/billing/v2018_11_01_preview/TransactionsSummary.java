@@ -79,6 +79,11 @@ public interface TransactionsSummary extends HasInner<TransactionsSummaryInner>,
     String productDescription();
 
     /**
+     * @return the productFamily value.
+     */
+    String productFamily();
+
+    /**
      * @return the productType value.
      */
     String productType();

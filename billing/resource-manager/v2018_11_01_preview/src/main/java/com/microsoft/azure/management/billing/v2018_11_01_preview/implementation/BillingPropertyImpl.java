@@ -49,6 +49,11 @@ class BillingPropertyImpl extends WrapperImpl<BillingPropertyInner> implements B
     }
 
     @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
     public String invoiceSectionId() {
         return this.inner().invoiceSectionId();
     }
@@ -56,6 +61,11 @@ class BillingPropertyImpl extends WrapperImpl<BillingPropertyInner> implements B
     @Override
     public String invoiceSectionName() {
         return this.inner().invoiceSectionName();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
@@ -71,6 +81,11 @@ class BillingPropertyImpl extends WrapperImpl<BillingPropertyInner> implements B
     @Override
     public String skuId() {
         return this.inner().skuId();
+    }
+
+    @Override
+    public String type() {
+        return this.inner().type();
     }
 
 }

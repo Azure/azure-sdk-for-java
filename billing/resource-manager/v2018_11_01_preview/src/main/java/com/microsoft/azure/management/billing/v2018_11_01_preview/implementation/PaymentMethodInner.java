@@ -22,8 +22,8 @@ public class PaymentMethodInner extends ProxyResource {
     /**
      * Payment method type. Possible values include: 'Credits', 'ChequeWire'.
      */
-    @JsonProperty(value = "properties.methodType")
-    private PaymentMethodType methodType;
+    @JsonProperty(value = "properties.paymentMethodType")
+    private PaymentMethodType paymentMethodType;
 
     /**
      * Details about the payment method.
@@ -46,20 +46,20 @@ public class PaymentMethodInner extends ProxyResource {
     /**
      * Get payment method type. Possible values include: 'Credits', 'ChequeWire'.
      *
-     * @return the methodType value
+     * @return the paymentMethodType value
      */
-    public PaymentMethodType methodType() {
-        return this.methodType;
+    public PaymentMethodType paymentMethodType() {
+        return this.paymentMethodType;
     }
 
     /**
      * Set payment method type. Possible values include: 'Credits', 'ChequeWire'.
      *
-     * @param methodType the methodType value to set
+     * @param paymentMethodType the paymentMethodType value to set
      * @return the PaymentMethodInner object itself.
      */
-    public PaymentMethodInner withMethodType(PaymentMethodType methodType) {
-        this.methodType = methodType;
+    public PaymentMethodInner withPaymentMethodType(PaymentMethodType paymentMethodType) {
+        this.paymentMethodType = paymentMethodType;
         return this;
     }
 

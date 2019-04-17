@@ -9,69 +9,72 @@
 package com.microsoft.azure.management.billing.v2018_11_01_preview.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
- * The billing property.
+ * A billing property resource.
  */
-public class BillingPropertyInner {
+@JsonFlatten
+public class BillingPropertyInner extends ProxyResource {
     /**
      * Product Id.
      */
-    @JsonProperty(value = "productId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.productId", access = JsonProperty.Access.WRITE_ONLY)
     private String productId;
 
     /**
      * Billing tenant Id.
      */
-    @JsonProperty(value = "billingTenantId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.billingTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingTenantId;
 
     /**
      * Billing account Id.
      */
-    @JsonProperty(value = "billingAccountId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.billingAccountId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingAccountId;
 
     /**
      * Billing account name.
      */
-    @JsonProperty(value = "billingAccountName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.billingAccountName", access = JsonProperty.Access.WRITE_ONLY)
     private String billingAccountName;
 
     /**
      * Billing profile Id.
      */
-    @JsonProperty(value = "billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileId;
 
     /**
      * Billing profile name.
      */
-    @JsonProperty(value = "billingProfileName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.billingProfileName", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileName;
 
     /**
      * Invoice Section Id.
      */
-    @JsonProperty(value = "invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceSectionId;
 
     /**
      * Invoice Section name.
      */
-    @JsonProperty(value = "invoiceSectionName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.invoiceSectionName", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceSectionName;
 
     /**
      * SKU Id.
      */
-    @JsonProperty(value = "skuId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.skuId", access = JsonProperty.Access.WRITE_ONLY)
     private String skuId;
 
     /**
      * SKU description.
      */
-    @JsonProperty(value = "skuDescription", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.skuDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String skuDescription;
 
     /**

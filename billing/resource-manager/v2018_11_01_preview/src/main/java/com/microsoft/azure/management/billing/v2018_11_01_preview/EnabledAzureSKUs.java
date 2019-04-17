@@ -11,13 +11,13 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Details about the product.
+ * Details about the enable azure sku.
  */
 public class EnabledAzureSKUs {
     /**
      * The sku id.
      */
-    @JsonProperty(value = "skuId")
+    @JsonProperty(value = "skuId", access = JsonProperty.Access.WRITE_ONLY)
     private String skuId;
 
     /**
@@ -33,17 +33,6 @@ public class EnabledAzureSKUs {
      */
     public String skuId() {
         return this.skuId;
-    }
-
-    /**
-     * Set the sku id.
-     *
-     * @param skuId the skuId value to set
-     * @return the EnabledAzureSKUs object itself.
-     */
-    public EnabledAzureSKUs withSkuId(String skuId) {
-        this.skuId = skuId;
-        return this;
     }
 
     /**

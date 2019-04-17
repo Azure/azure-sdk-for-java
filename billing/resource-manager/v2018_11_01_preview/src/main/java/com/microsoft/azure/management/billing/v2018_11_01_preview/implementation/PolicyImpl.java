@@ -44,6 +44,11 @@ class PolicyImpl extends WrapperImpl<PolicyInner> implements Policy {
     }
 
     @Override
+    public Boolean subscriptionOwnerCanViewCharges() {
+        return this.inner().subscriptionOwnerCanViewCharges();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
     }

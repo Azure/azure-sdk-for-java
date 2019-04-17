@@ -18,16 +18,42 @@ import com.microsoft.azure.ProxyResource;
 @JsonFlatten
 public class PolicyInner extends ProxyResource {
     /**
+     * The marketplacePurchasesAllowed flag.
+     */
+    @JsonProperty(value = "properties.marketplacePurchasesAllowed")
+    private Boolean marketplacePurchasesAllowed;
+
+    /**
      * The reservationPurchasesAllowed flag.
      */
     @JsonProperty(value = "properties.reservationPurchasesAllowed")
     private Boolean reservationPurchasesAllowed;
 
     /**
-     * The marketplacePurchasesAllowed flag.
+     * The subscriptionOwnerCanViewCharges flag.
      */
-    @JsonProperty(value = "properties.marketplacePurchasesAllowed")
-    private Boolean marketplacePurchasesAllowed;
+    @JsonProperty(value = "properties.subscriptionOwnerCanViewCharges")
+    private Boolean subscriptionOwnerCanViewCharges;
+
+    /**
+     * Get the marketplacePurchasesAllowed flag.
+     *
+     * @return the marketplacePurchasesAllowed value
+     */
+    public Boolean marketplacePurchasesAllowed() {
+        return this.marketplacePurchasesAllowed;
+    }
+
+    /**
+     * Set the marketplacePurchasesAllowed flag.
+     *
+     * @param marketplacePurchasesAllowed the marketplacePurchasesAllowed value to set
+     * @return the PolicyInner object itself.
+     */
+    public PolicyInner withMarketplacePurchasesAllowed(Boolean marketplacePurchasesAllowed) {
+        this.marketplacePurchasesAllowed = marketplacePurchasesAllowed;
+        return this;
+    }
 
     /**
      * Get the reservationPurchasesAllowed flag.
@@ -50,22 +76,22 @@ public class PolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the marketplacePurchasesAllowed flag.
+     * Get the subscriptionOwnerCanViewCharges flag.
      *
-     * @return the marketplacePurchasesAllowed value
+     * @return the subscriptionOwnerCanViewCharges value
      */
-    public Boolean marketplacePurchasesAllowed() {
-        return this.marketplacePurchasesAllowed;
+    public Boolean subscriptionOwnerCanViewCharges() {
+        return this.subscriptionOwnerCanViewCharges;
     }
 
     /**
-     * Set the marketplacePurchasesAllowed flag.
+     * Set the subscriptionOwnerCanViewCharges flag.
      *
-     * @param marketplacePurchasesAllowed the marketplacePurchasesAllowed value to set
+     * @param subscriptionOwnerCanViewCharges the subscriptionOwnerCanViewCharges value to set
      * @return the PolicyInner object itself.
      */
-    public PolicyInner withMarketplacePurchasesAllowed(Boolean marketplacePurchasesAllowed) {
-        this.marketplacePurchasesAllowed = marketplacePurchasesAllowed;
+    public PolicyInner withSubscriptionOwnerCanViewCharges(Boolean subscriptionOwnerCanViewCharges) {
+        this.subscriptionOwnerCanViewCharges = subscriptionOwnerCanViewCharges;
         return this;
     }
 

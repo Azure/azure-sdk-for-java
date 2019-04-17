@@ -39,14 +39,14 @@ public interface PaymentMethod extends HasInner<PaymentMethodInner>, HasManager<
     String id();
 
     /**
-     * @return the methodType value.
-     */
-    PaymentMethodType methodType();
-
-    /**
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the paymentMethodType value.
+     */
+    PaymentMethodType paymentMethodType();
 
     /**
      * @return the type value.

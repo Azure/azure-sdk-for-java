@@ -72,8 +72,8 @@ class BillingProfileImpl extends CreatableUpdatableImpl<BillingProfile, BillingP
 
 
     @Override
-    public Address billingAddress() {
-        return this.inner().billingAddress();
+    public Address address() {
+        return this.inner().address();
     }
 
     @Override
@@ -138,8 +138,8 @@ class BillingProfileImpl extends CreatableUpdatableImpl<BillingProfile, BillingP
     }
 
     @Override
-    public BillingProfileImpl withBillingAddress(Address billingAddress) {
-        this.inner().withBillingAddress(billingAddress);
+    public BillingProfileImpl withAddress(Address address) {
+        this.inner().withAddress(address);
         return this;
     }
 

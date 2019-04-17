@@ -35,8 +35,8 @@ public class BillingProfileInner extends ProxyResource {
     /**
      * Billing address.
      */
-    @JsonProperty(value = "properties.billingAddress")
-    private Address billingAddress;
+    @JsonProperty(value = "properties.address")
+    private Address address;
 
     /**
      * If the billing profile is opted in to receive invoices via email.
@@ -117,20 +117,20 @@ public class BillingProfileInner extends ProxyResource {
     /**
      * Get billing address.
      *
-     * @return the billingAddress value
+     * @return the address value
      */
-    public Address billingAddress() {
-        return this.billingAddress;
+    public Address address() {
+        return this.address;
     }
 
     /**
      * Set billing address.
      *
-     * @param billingAddress the billingAddress value to set
+     * @param address the address value to set
      * @return the BillingProfileInner object itself.
      */
-    public BillingProfileInner withBillingAddress(Address billingAddress) {
-        this.billingAddress = billingAddress;
+    public BillingProfileInner withAddress(Address address) {
+        this.address = address;
         return this;
     }
 
