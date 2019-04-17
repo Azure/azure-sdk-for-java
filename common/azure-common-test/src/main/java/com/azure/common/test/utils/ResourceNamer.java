@@ -1,25 +1,28 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.utils;
+package com.azure.common.test.utils;
 
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
 /**
- * The ResourceNamer to generate random name.
+ * A random string generator used in tests.
  */
 public class ResourceNamer {
-    private final String randName;
     private static final Random RANDOM = new Random();
+    private static final Locale LOCALE = Locale.US;
+
+    private final String randName;
 
     /**
-     * Creates ResourceNamer.
+     * Creates a ResourceNameGenerator that prefixes its strings with the name.
      *
-     * @param name the randName
+     * @param name The prefix for generated strings.
      */
     public ResourceNamer(String name) {
-        this.randName = name.toLowerCase() + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase();
+        this.randName = name.toLowerCase(LOCALE) + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase(LOCALE);
     }
 
     /**
@@ -30,7 +33,7 @@ public class ResourceNamer {
      * @return the random name
      */
     public String randomName(String prefix, int maxLen) {
-        prefix = prefix.toLowerCase();
+        prefix = prefix.toLowerCase(LOCALE);
         int minRandomnessLength = 5;
         if (maxLen <= minRandomnessLength) {
             return randomString(maxLen);
@@ -60,13 +63,13 @@ public class ResourceNamer {
     }
 
     private String randomString(int length) {
-        String str = "";
+        StringBuilder str = new StringBuilder();
         while (str.length() < length) {
-            str += UUID.randomUUID()
-                    .toString()
-                    .replace("-", "")
-                    .substring(0, Math.min(32, length)).toLowerCase();
+            str.append(UUID.randomUUID()
+                .toString()
+                .replace("-", "")
+                .substring(0, Math.min(32, length)).toLowerCase(LOCALE));
         }
-        return str;
+        return str.toString();
     }
 }

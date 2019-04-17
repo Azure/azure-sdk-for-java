@@ -319,12 +319,10 @@ public final class AzureProxy extends RestProxy {
                                     pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                     if (pollStrategy != null) {
                                         result = Mono.just(pollStrategy);
-                                    }
-                                    else {
+                                    } else {
                                         result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
                                     }
-                                }
-                                else if (originalHttpRequestMethod == HttpMethod.PUT || originalHttpRequestMethod == HttpMethod.PATCH) {
+                                } else if (originalHttpRequestMethod == HttpMethod.PUT || originalHttpRequestMethod == HttpMethod.PATCH) {
                                     if (httpStatusCode == 201) {
                                         pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                         if (pollStrategy == null) {
@@ -336,8 +334,7 @@ public final class AzureProxy extends RestProxy {
                                             pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpDecodedResponse.sourceResponse(), delayInMilliseconds);
                                         }
                                     }
-                                }
-                                else {
+                                } else {
                                     if (httpStatusCode == 202) {
                                         pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                         if (pollStrategy == null) {

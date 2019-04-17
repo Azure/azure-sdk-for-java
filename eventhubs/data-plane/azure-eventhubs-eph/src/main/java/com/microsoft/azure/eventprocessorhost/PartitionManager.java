@@ -271,7 +271,7 @@ class PartitionManager extends Closable {
                     throw new FinalException(LoggingUtils.wrapExceptionWithMessage(LoggingUtils.unwrapException(e, null), finalFailureMessage, action));
                 }
             }
-            return (e == null) ? r : null;
+            return r;
         }, this.hostContext.getExecutor());
 
         return retryChain;
@@ -312,7 +312,7 @@ class PartitionManager extends Closable {
     // built by buildRetries() normally swallows exceptions via odd-numbered stages so that the retries in
     // even-numbered stages will execute. If multiple chains are concatenated, FinalException short-circuits
     // the exceptional swallowing and allows fatal errors in earlier chains to be propagated all the way to the end.
-    class FinalException extends CompletionException {
+    static class FinalException extends CompletionException {
         private static final long serialVersionUID = -4600271981700687166L;
 
         FinalException(CompletionException e) {

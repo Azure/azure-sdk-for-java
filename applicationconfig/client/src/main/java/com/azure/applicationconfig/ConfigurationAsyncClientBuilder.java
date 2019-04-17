@@ -72,10 +72,8 @@ public final class ConfigurationAsyncClientBuilder {
     private HttpLogDetailLevel httpLogDetailLevel;
     private HttpPipeline pipeline;
     private RetryPolicy retryPolicy;
-    private String userAgent;
 
     ConfigurationAsyncClientBuilder() {
-        userAgent = AzureConfiguration.getUserAgentHeader(AzureConfiguration.NAME, AzureConfiguration.VERSION);
         retryPolicy = new RetryPolicy();
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
@@ -117,7 +115,7 @@ public final class ConfigurationAsyncClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(userAgent));
+        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
