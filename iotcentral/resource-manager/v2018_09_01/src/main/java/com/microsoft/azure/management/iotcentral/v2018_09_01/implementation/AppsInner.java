@@ -112,6 +112,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/checkSubdomainAvailability")
         Observable<Response<ResponseBody>> checkSubdomainAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body OperationInputs operationInputs, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listTemplates" })
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/appTemplates")
+        Observable<Response<ResponseBody>> listTemplates(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -119,6 +123,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listByResourceGroupNext" })
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listTemplatesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listTemplatesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -1091,6 +1099,113 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     }
 
     /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AppTemplateInner&gt; object if successful.
+     */
+    public PagedList<AppTemplateInner> listTemplates() {
+        ServiceResponse<Page<AppTemplateInner>> response = listTemplatesSinglePageAsync().toBlocking().single();
+        return new PagedList<AppTemplateInner>(response.body()) {
+            @Override
+            public Page<AppTemplateInner> nextPage(String nextPageLink) {
+                return listTemplatesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AppTemplateInner>> listTemplatesAsync(final ListOperationCallback<AppTemplateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listTemplatesSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(String nextPageLink) {
+                    return listTemplatesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppTemplateInner&gt; object
+     */
+    public Observable<Page<AppTemplateInner>> listTemplatesAsync() {
+        return listTemplatesWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<AppTemplateInner>>, Page<AppTemplateInner>>() {
+                @Override
+                public Page<AppTemplateInner> call(ServiceResponse<Page<AppTemplateInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppTemplateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AppTemplateInner>>> listTemplatesWithServiceResponseAsync() {
+        return listTemplatesSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<AppTemplateInner>>, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(ServiceResponse<Page<AppTemplateInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listTemplatesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AppTemplateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AppTemplateInner>>> listTemplatesSinglePageAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listTemplates(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AppTemplateInner>> result = listTemplatesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AppTemplateInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AppTemplateInner>> listTemplatesDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppTemplateInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AppTemplateInner>>() { }.getType())
+                .registerError(ErrorDetailsException.class)
+                .build(response);
+    }
+
+    /**
      * Get all IoT Central Applications in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -1308,6 +1423,117 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     private ServiceResponse<PageImpl<AppInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppInner>>() { }.getType())
+                .registerError(ErrorDetailsException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AppTemplateInner&gt; object if successful.
+     */
+    public PagedList<AppTemplateInner> listTemplatesNext(final String nextPageLink) {
+        ServiceResponse<Page<AppTemplateInner>> response = listTemplatesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<AppTemplateInner>(response.body()) {
+            @Override
+            public Page<AppTemplateInner> nextPage(String nextPageLink) {
+                return listTemplatesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AppTemplateInner>> listTemplatesNextAsync(final String nextPageLink, final ServiceFuture<List<AppTemplateInner>> serviceFuture, final ListOperationCallback<AppTemplateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listTemplatesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(String nextPageLink) {
+                    return listTemplatesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppTemplateInner&gt; object
+     */
+    public Observable<Page<AppTemplateInner>> listTemplatesNextAsync(final String nextPageLink) {
+        return listTemplatesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<AppTemplateInner>>, Page<AppTemplateInner>>() {
+                @Override
+                public Page<AppTemplateInner> call(ServiceResponse<Page<AppTemplateInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppTemplateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AppTemplateInner>>> listTemplatesNextWithServiceResponseAsync(final String nextPageLink) {
+        return listTemplatesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<AppTemplateInner>>, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(ServiceResponse<Page<AppTemplateInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listTemplatesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all available application templates.
+     *
+    ServiceResponse<PageImpl<AppTemplateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AppTemplateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AppTemplateInner>>> listTemplatesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listTemplatesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AppTemplateInner>> result = listTemplatesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AppTemplateInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AppTemplateInner>> listTemplatesNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppTemplateInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AppTemplateInner>>() { }.getType())
                 .registerError(ErrorDetailsException.class)
                 .build(response);
     }
