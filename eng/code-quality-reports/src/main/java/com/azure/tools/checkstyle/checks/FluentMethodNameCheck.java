@@ -7,27 +7,32 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Model Class Method:
- *  Fluent Methods: All methods that return an instance of the class, and with one parameter.
- *  The method name should not start with {@code avoidStartWord}.
+ *  Fluent Methods: All methods that return an instance of the class in the {@code packageSuffixes} packages, and with one parameter.
+ *  The method name should not start with {@code avoidStartWords}.
  */
 public class FluentMethodNameCheck extends AbstractCheck {
 
-    private static final String FLUENT_METHOD_ERR = "'%s' fluent method name should not start with keyword '%s'.";
+    private static final String FLUENT_METHOD_ERR = "\"%s\" fluent method name should not start with keyword \"%s\".";
 
-    // Specifies valid identifier: default start word is 'with', modelName is model
-    private String[] avoidStartWords = new String[] {"with"};   // by default
-    private String modelName = "model";                         // by default
+    private Set<String> avoidStartWords = new HashSet<>();
+    private Set<String> packageSuffixes = new HashSet<>();
 
     private static final String DOT = ".";
     private String className;
-    private static boolean isModelClass;
+    private static boolean isAcceptPackage;
 
     @Override
     public void beginTree(DetailAST ast) {
-        this.isModelClass = false;
+        this.isAcceptPackage = false;
     }
 
     @Override
@@ -43,9 +48,9 @@ public class FluentMethodNameCheck extends AbstractCheck {
     @Override
     public int[] getRequiredTokens() {
         return new int[] {
+            TokenTypes.PACKAGE_DEF,
             TokenTypes.CLASS_DEF,
-            TokenTypes.METHOD_DEF,
-            TokenTypes.PACKAGE_DEF
+            TokenTypes.METHOD_DEF
         };
     }
 
@@ -53,16 +58,21 @@ public class FluentMethodNameCheck extends AbstractCheck {
     public void visitToken(DetailAST ast) {
         switch (ast.getType()) {
             case TokenTypes.PACKAGE_DEF:
-                FullIdent packageNameFI = FullIdent.createFullIdentBelow(ast);
-                this.isModelClass = packageNameFI.getText().endsWith(DOT + modelName);
+                String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
+                for (String packageSuffixes : packageSuffixes) {
+                    if (packageName.endsWith(DOT + packageSuffixes)) {
+                        this.isAcceptPackage = true;
+                        break;
+                    }
+                }
                 break;
             case TokenTypes.CLASS_DEF:
-                if (isModelClass) {
+                if (isAcceptPackage) {
                     className = ast.findFirstToken(TokenTypes.IDENT).getText();
                 }
                 break;
             case TokenTypes.METHOD_DEF:
-                if (isModelClass) {
+                if (isAcceptPackage) {
                     checkMethodNameStartWith(ast);
                 }
                 break;
@@ -74,18 +84,25 @@ public class FluentMethodNameCheck extends AbstractCheck {
      * @param ast METHOD_DEF AST node
      */
     private void checkMethodNameStartWith(DetailAST ast) {
-        String methodType = ast.findFirstToken(TokenTypes.TYPE).getFirstChild().getText();
-        if (methodType.equals(className)) {
-            String methodName = ast.findFirstToken(TokenTypes.IDENT).getText();
-            int paramtersCount = ast.findFirstToken(TokenTypes.PARAMETERS).getChildCount();
-            if (paramtersCount != 1) {
-                return;
-            }
-            for (String avoidStartWord : avoidStartWords) {
-                if (methodName.length() >= avoidStartWord.length()
-                    && methodName.substring(0, avoidStartWord.length()).equals(avoidStartWord)) {
-                    log(ast.getLineNo(), String.format(FLUENT_METHOD_ERR, methodName, avoidStartWord));
-                    break;
+        // 1, parameter count should be 1
+        Optional<DetailAST> parametersASTOption = TokenUtil.findFirstTokenByPredicate(ast, c -> c.getType() == TokenTypes.PARAMETERS && c.getChildCount() == 1);
+        if (parametersASTOption.isPresent()) { // one param method
+            // 2, method type should be matched with class name
+            Optional<DetailAST> typeASTOption = TokenUtil.findFirstTokenByPredicate(ast, c -> c.getType() == TokenTypes.TYPE);
+            if (typeASTOption.isPresent()) {
+                Optional<DetailAST> identASTOption = TokenUtil.findFirstTokenByPredicate(typeASTOption.get(), c -> c.getType() == TokenTypes.IDENT && c.getText().equals(className));
+                if (identASTOption.isPresent()) { // return type is self class type
+                    Optional<DetailAST> isIdentFound = TokenUtil.findFirstTokenByPredicate(ast, c -> c.getType() == TokenTypes.IDENT);
+                    if (isIdentFound.isPresent()) {
+                        String methodName = isIdentFound.get().getText();
+                        // 3, log if the method name start with avoid substring
+                        for (String avoidStartWord : avoidStartWords) {
+                            if (methodName.length() >= avoidStartWord.length() && methodName.substring(0, avoidStartWord.length()).equals(avoidStartWord)) {
+                                log(ast.getLineNo(), String.format(FLUENT_METHOD_ERR, methodName, avoidStartWord));
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -95,21 +112,15 @@ public class FluentMethodNameCheck extends AbstractCheck {
      * Setter to specifies valid identifiers
      * @param avoidStartWords the starting strings that should not start with in fluent method
      */
-    public void setAvoidStartWord(String[] avoidStartWords) {
-        if (avoidStartWords == null || avoidStartWords.length == 0) {
-            return;
-        }
-        this.avoidStartWords = avoidStartWords;
+    public final void setAvoidStartWords(String... avoidStartWords) {
+        Collections.addAll(this.avoidStartWords, avoidStartWords);
     }
 
     /**
      * Setter to specifies valid identifiers
-     * @param modelName the model package name that model class stores at
+     * @param packageSuffixes the model package name that model class stores at
      */
-    public void setModelName(String modelName) {
-        if (modelName == null || modelName.isEmpty()) {
-            return;
-        }
-        this.modelName = modelName;
+    public void setPackageSuffixes(String... packageSuffixes) {
+        Collections.addAll(this.packageSuffixes, packageSuffixes);
     }
 }
