@@ -130,7 +130,7 @@
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/EventHubRuntimeInformation.java#L62 -->
   <Match>
     <Class name="com.microsoft.azure.eventhubs.EventHubRuntimeInformation"/>
-    <Method name="getPartitionIds"/>
+    <Method name="~(getPartitionIds|onConnectionInit)"/>
     <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
   </Match>
 
@@ -159,10 +159,11 @@
   </Match>
 
   <!-- Return value is fine to not check, if add, it will be a redundant step
-    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/FaultTolerantObject.java#L79 -->
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/FaultTolerantObject.java#L80
+    https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/FaultTolerantObject.java#L123 -->
   <Match>
-    <Class name="com.microsoft.azure.eventhubs.impl.FaultTolerantObject"/>
-    <Method name="onEvent"/>
+    <Class name="~com\.microsoft\.azure\.eventhubs\.impl\.FaultTolerantObject(\$(1|2))?"/>
+    <Method name="~(onEvent|runOnOpenedObject|close)"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
   </Match>
 
@@ -170,7 +171,7 @@
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/EventDataImpl.java#L150
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/PartitionReceiverImpl.java#L278 -->
   <Match>
-    <Class name="~(com\.microsoft\.azure\.eventhubs\.impl\.(EventDataImpl|PartitionReceiverImpl)"/>
+    <Class name="~com\.microsoft\.azure\.eventhubs\.impl\.(EventDataImpl|PartitionReceiverImpl)"/>
     <Method name="~(getBytes|getDesiredCapabilities)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
