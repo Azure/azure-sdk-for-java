@@ -328,7 +328,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         ResponseBase<HeaderCollectionTypePackagePrivateFields, Void> packagePrivateFields();
     }
 
-    private static final HttpClient headerCollectionHttpClient = new MockHttpClient() {
+    private static final HttpClient HEADER_COLLECTION_HTTP_CLIENT = new MockHttpClient() {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             final HttpHeaders headers = new HttpHeaders();
@@ -342,7 +342,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     };
 
     private ServiceHeaderCollections createHeaderCollectionsService() {
-        return createService(ServiceHeaderCollections.class, headerCollectionHttpClient);
+        return createService(ServiceHeaderCollections.class, HEADER_COLLECTION_HTTP_CLIENT);
     }
 
     private static void assertHeaderCollectionsRawHeaders(Response<Void> response) {
