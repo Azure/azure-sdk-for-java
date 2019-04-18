@@ -8,61 +8,49 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for JobState.
  */
-public enum JobState {
-    /** The job was canceled. This is a final state for the job. */
-    CANCELED("Canceled"),
+public final class JobState extends ExpandableStringEnum<JobState> {
+    /** Static value Canceled for JobState. */
+    public static final JobState CANCELED = fromString("Canceled");
 
-    /** The job is in the process of being canceled. This is a transient state for the job. */
-    CANCELING("Canceling"),
+    /** Static value Canceling for JobState. */
+    public static final JobState CANCELING = fromString("Canceling");
 
-    /** The job has encountered an error. This is a final state for the job. */
-    ERROR("Error"),
+    /** Static value Error for JobState. */
+    public static final JobState ERROR = fromString("Error");
 
-    /** The job is finished. This is a final state for the job. */
-    FINISHED("Finished"),
+    /** Static value Finished for JobState. */
+    public static final JobState FINISHED = fromString("Finished");
 
-    /** The job is processing. This is a transient state for the job. */
-    PROCESSING("Processing"),
+    /** Static value Processing for JobState. */
+    public static final JobState PROCESSING = fromString("Processing");
 
-    /** The job is in a queued state, waiting for resources to become available. This is a transient state. */
-    QUEUED("Queued"),
+    /** Static value Queued for JobState. */
+    public static final JobState QUEUED = fromString("Queued");
 
-    /** The job is being scheduled to run on an available resource. This is a transient state, between queued and processing states. */
-    SCHEDULED("Scheduled");
+    /** Static value Scheduled for JobState. */
+    public static final JobState SCHEDULED = fromString("Scheduled");
 
-    /** The actual serialized value for a JobState instance. */
-    private String value;
-
-    JobState(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a JobState from its string representation.
+     * @param name a name to look for
+     * @return the corresponding JobState
+     */
+    @JsonCreator
+    public static JobState fromString(String name) {
+        return fromString(name, JobState.class);
     }
 
     /**
-     * Parses a serialized value to a JobState instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed JobState object, or null if unable to parse.
+     * @return known JobState values
      */
-    @JsonCreator
-    public static JobState fromString(String value) {
-        JobState[] items = JobState.values();
-        for (JobState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<JobState> values() {
+        return values(JobState.class);
     }
 }
