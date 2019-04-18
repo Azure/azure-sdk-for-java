@@ -66,13 +66,13 @@ public class InvoiceSummaryInner extends ProxyResource {
     private DateTime invoicePeriodEndDate;
 
     /**
-     * The profile id which invoice belongs to.
+     * The billing profile id this invoice belongs to.
      */
-    @JsonProperty(value = "properties.billingProfile", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfile;
+    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
+    private String billingProfileId;
 
     /**
-     * The profile name which invoice belongs to.
+     * The profile name this invoice belongs to.
      */
     @JsonProperty(value = "properties.billingProfileName", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileName;
@@ -160,16 +160,16 @@ public class InvoiceSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the profile id which invoice belongs to.
+     * Get the billing profile id this invoice belongs to.
      *
-     * @return the billingProfile value
+     * @return the billingProfileId value
      */
-    public String billingProfile() {
-        return this.billingProfile;
+    public String billingProfileId() {
+        return this.billingProfileId;
     }
 
     /**
-     * Get the profile name which invoice belongs to.
+     * Get the profile name this invoice belongs to.
      *
      * @return the billingProfileName value
      */

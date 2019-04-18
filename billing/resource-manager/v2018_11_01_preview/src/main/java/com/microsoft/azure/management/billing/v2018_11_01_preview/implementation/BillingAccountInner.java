@@ -27,12 +27,6 @@ public class BillingAccountInner extends ProxyResource {
     private String displayName;
 
     /**
-     * The Company this billing account belongs to.
-     */
-    @JsonProperty(value = "properties.company", access = JsonProperty.Access.WRITE_ONLY)
-    private String company;
-
-    /**
      * The billing account Type. Possible values include: 'Organization',
      * 'Enrollment'.
      */
@@ -46,19 +40,27 @@ public class BillingAccountInner extends ProxyResource {
     private Address address;
 
     /**
-     * The country associated with billing account..
+     * Company Name.
+     */
+    @JsonProperty(value = "properties.company", access = JsonProperty.Access.WRITE_ONLY)
+    private String company;
+
+    /**
+     * Country Name.
      */
     @JsonProperty(value = "properties.country", access = JsonProperty.Access.WRITE_ONLY)
     private String country;
 
     /**
-     * The invoice sections associated to the billing account.
+     * The invoice sections associated to the billing account. By default this
+     * is not populated, unless it's specified in $expand.
      */
     @JsonProperty(value = "properties.invoiceSections")
     private List<InvoiceSectionInner> invoiceSections;
 
     /**
-     * The billing profiles associated to the billing account.
+     * The billing profiles associated to the billing account. By default this
+     * is not populated, unless it's specified in $expand.
      */
     @JsonProperty(value = "properties.billingProfiles")
     private List<BillingProfileInner> billingProfiles;
@@ -83,21 +85,18 @@ public class BillingAccountInner extends ProxyResource {
     private List<EnrollmentAccountInner> enrollmentAccounts;
 
     /**
+     * Specifies whether the user has read access on billing account.
+     */
+    @JsonProperty(value = "properties.hasReadAccess", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean hasReadAccess;
+
+    /**
      * Get the billing account name.
      *
      * @return the displayName value
      */
     public String displayName() {
         return this.displayName;
-    }
-
-    /**
-     * Get the Company this billing account belongs to.
-     *
-     * @return the company value
-     */
-    public String company() {
-        return this.company;
     }
 
     /**
@@ -130,7 +129,16 @@ public class BillingAccountInner extends ProxyResource {
     }
 
     /**
-     * Get the country associated with billing account..
+     * Get company Name.
+     *
+     * @return the company value
+     */
+    public String company() {
+        return this.company;
+    }
+
+    /**
+     * Get country Name.
      *
      * @return the country value
      */
@@ -139,7 +147,7 @@ public class BillingAccountInner extends ProxyResource {
     }
 
     /**
-     * Get the invoice sections associated to the billing account.
+     * Get the invoice sections associated to the billing account. By default this is not populated, unless it's specified in $expand.
      *
      * @return the invoiceSections value
      */
@@ -148,7 +156,7 @@ public class BillingAccountInner extends ProxyResource {
     }
 
     /**
-     * Set the invoice sections associated to the billing account.
+     * Set the invoice sections associated to the billing account. By default this is not populated, unless it's specified in $expand.
      *
      * @param invoiceSections the invoiceSections value to set
      * @return the BillingAccountInner object itself.
@@ -159,7 +167,7 @@ public class BillingAccountInner extends ProxyResource {
     }
 
     /**
-     * Get the billing profiles associated to the billing account.
+     * Get the billing profiles associated to the billing account. By default this is not populated, unless it's specified in $expand.
      *
      * @return the billingProfiles value
      */
@@ -168,7 +176,7 @@ public class BillingAccountInner extends ProxyResource {
     }
 
     /**
-     * Set the billing profiles associated to the billing account.
+     * Set the billing profiles associated to the billing account. By default this is not populated, unless it's specified in $expand.
      *
      * @param billingProfiles the billingProfiles value to set
      * @return the BillingAccountInner object itself.
@@ -225,6 +233,15 @@ public class BillingAccountInner extends ProxyResource {
     public BillingAccountInner withEnrollmentAccounts(List<EnrollmentAccountInner> enrollmentAccounts) {
         this.enrollmentAccounts = enrollmentAccounts;
         return this;
+    }
+
+    /**
+     * Get specifies whether the user has read access on billing account.
+     *
+     * @return the hasReadAccess value
+     */
+    public Boolean hasReadAccess() {
+        return this.hasReadAccess;
     }
 
 }

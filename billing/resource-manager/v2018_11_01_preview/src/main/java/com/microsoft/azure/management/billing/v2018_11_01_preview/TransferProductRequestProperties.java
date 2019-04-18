@@ -17,26 +17,26 @@ public class TransferProductRequestProperties {
     /**
      * Destination invoice section id.
      */
-    @JsonProperty(value = "destinationInvoiceSectionName")
-    private String destinationInvoiceSectionName;
+    @JsonProperty(value = "destinationInvoiceSectionId")
+    private String destinationInvoiceSectionId;
 
     /**
      * Get destination invoice section id.
      *
-     * @return the destinationInvoiceSectionName value
+     * @return the destinationInvoiceSectionId value
      */
-    public String destinationInvoiceSectionName() {
-        return this.destinationInvoiceSectionName;
+    public String destinationInvoiceSectionId() {
+        return this.destinationInvoiceSectionId;
     }
 
     /**
      * Set destination invoice section id.
      *
-     * @param destinationInvoiceSectionName the destinationInvoiceSectionName value to set
+     * @param destinationInvoiceSectionId the destinationInvoiceSectionId value to set
      * @return the TransferProductRequestProperties object itself.
      */
-    public TransferProductRequestProperties withDestinationInvoiceSectionName(String destinationInvoiceSectionName) {
-        this.destinationInvoiceSectionName = destinationInvoiceSectionName;
+    public TransferProductRequestProperties withDestinationInvoiceSectionId(String destinationInvoiceSectionId) {
+        this.destinationInvoiceSectionId = destinationInvoiceSectionId;
         return this;
     }
 

@@ -17,7 +17,6 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccounts;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountsWithCreateInvoiceSectionPermissions;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.AvailableBalanceByBillingProfiles;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethodsByBillingProfiles;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfilesByBillingAccountNames;
@@ -66,7 +65,6 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class BillingManager extends ManagerCore<BillingManager, BillingManagementClientImpl> {
     private BillingAccounts billingAccounts;
-    private BillingAccountsWithCreateInvoiceSectionPermissions billingAccountsWithCreateInvoiceSectionPermissions;
     private AvailableBalanceByBillingProfiles availableBalanceByBillingProfiles;
     private PaymentMethodsByBillingProfiles paymentMethodsByBillingProfiles;
     private BillingProfilesByBillingAccountNames billingProfilesByBillingAccountNames;
@@ -162,16 +160,6 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.billingAccounts = new BillingAccountsImpl(this);
         }
         return this.billingAccounts;
-    }
-
-    /**
-     * @return Entry point to manage BillingAccountsWithCreateInvoiceSectionPermissions.
-     */
-    public BillingAccountsWithCreateInvoiceSectionPermissions billingAccountsWithCreateInvoiceSectionPermissions() {
-        if (this.billingAccountsWithCreateInvoiceSectionPermissions == null) {
-            this.billingAccountsWithCreateInvoiceSectionPermissions = new BillingAccountsWithCreateInvoiceSectionPermissionsImpl(this);
-        }
-        return this.billingAccountsWithCreateInvoiceSectionPermissions;
     }
 
     /**

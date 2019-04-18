@@ -56,8 +56,8 @@ class InvoiceSummaryImpl extends IndexableRefreshableWrapperImpl<InvoiceSummary,
     }
 
     @Override
-    public String billingProfile() {
-        return this.inner().billingProfile();
+    public String billingProfileId() {
+        return this.inner().billingProfileId();
     }
 
     @Override

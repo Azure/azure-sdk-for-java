@@ -32,9 +32,9 @@ public interface InvoiceSummary extends HasInner<InvoiceSummaryInner>, Indexable
     Amount billedAmount();
 
     /**
-     * @return the billingProfile value.
+     * @return the billingProfileId value.
      */
-    String billingProfile();
+    String billingProfileId();
 
     /**
      * @return the billingProfileName value.

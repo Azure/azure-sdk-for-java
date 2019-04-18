@@ -72,6 +72,11 @@ class BillingAccountImpl extends WrapperImpl<BillingAccountInner> implements Bil
     }
 
     @Override
+    public Boolean hasReadAccess() {
+        return this.inner().hasReadAccess();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }

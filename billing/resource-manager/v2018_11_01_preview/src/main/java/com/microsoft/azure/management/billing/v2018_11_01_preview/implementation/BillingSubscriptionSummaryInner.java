@@ -11,7 +11,6 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 import java.util.UUID;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionStatusType;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Amount;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccountContext;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -53,12 +52,6 @@ public class BillingSubscriptionSummaryInner extends ProxyResource {
     private Amount monthToDateCharges;
 
     /**
-     * The enrollment account context.
-     */
-    @JsonProperty(value = "properties.enrollmentAccountContext", access = JsonProperty.Access.WRITE_ONLY)
-    private EnrollmentAccountContext enrollmentAccountContext;
-
-    /**
      * Billing Profile id to which this product belongs.
      */
     @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
@@ -69,6 +62,18 @@ public class BillingSubscriptionSummaryInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.billingProfileName", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileName;
+
+    /**
+     * Invoice section id to which this product belongs.
+     */
+    @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
+    private String invoiceSectionId;
+
+    /**
+     * Invoice section name to which this product belongs.
+     */
+    @JsonProperty(value = "properties.invoiceSectionName", access = JsonProperty.Access.WRITE_ONLY)
+    private String invoiceSectionName;
 
     /**
      * The sku id.
@@ -139,15 +144,6 @@ public class BillingSubscriptionSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the enrollment account context.
-     *
-     * @return the enrollmentAccountContext value
-     */
-    public EnrollmentAccountContext enrollmentAccountContext() {
-        return this.enrollmentAccountContext;
-    }
-
-    /**
      * Get billing Profile id to which this product belongs.
      *
      * @return the billingProfileId value
@@ -163,6 +159,24 @@ public class BillingSubscriptionSummaryInner extends ProxyResource {
      */
     public String billingProfileName() {
         return this.billingProfileName;
+    }
+
+    /**
+     * Get invoice section id to which this product belongs.
+     *
+     * @return the invoiceSectionId value
+     */
+    public String invoiceSectionId() {
+        return this.invoiceSectionId;
+    }
+
+    /**
+     * Get invoice section name to which this product belongs.
+     *
+     * @return the invoiceSectionName value
+     */
+    public String invoiceSectionName() {
+        return this.invoiceSectionName;
     }
 
     /**

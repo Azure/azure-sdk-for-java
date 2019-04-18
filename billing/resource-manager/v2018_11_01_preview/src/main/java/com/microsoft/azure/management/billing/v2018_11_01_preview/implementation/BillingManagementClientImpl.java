@@ -166,19 +166,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The BillingAccountsWithCreateInvoiceSectionPermissionsInner object to access its operations.
-     */
-    private BillingAccountsWithCreateInvoiceSectionPermissionsInner billingAccountsWithCreateInvoiceSectionPermissions;
-
-    /**
-     * Gets the BillingAccountsWithCreateInvoiceSectionPermissionsInner object to access its operations.
-     * @return the BillingAccountsWithCreateInvoiceSectionPermissionsInner object.
-     */
-    public BillingAccountsWithCreateInvoiceSectionPermissionsInner billingAccountsWithCreateInvoiceSectionPermissions() {
-        return this.billingAccountsWithCreateInvoiceSectionPermissions;
-    }
-
-    /**
      * The AvailableBalanceByBillingProfilesInner object to access its operations.
      */
     private AvailableBalanceByBillingProfilesInner availableBalanceByBillingProfiles;
@@ -734,7 +721,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.billingAccounts = new BillingAccountsInner(restClient().retrofit(), this);
-        this.billingAccountsWithCreateInvoiceSectionPermissions = new BillingAccountsWithCreateInvoiceSectionPermissionsInner(restClient().retrofit(), this);
         this.availableBalanceByBillingProfiles = new AvailableBalanceByBillingProfilesInner(restClient().retrofit(), this);
         this.paymentMethodsByBillingProfiles = new PaymentMethodsByBillingProfilesInner(restClient().retrofit(), this);
         this.billingProfilesByBillingAccountNames = new BillingProfilesByBillingAccountNamesInner(restClient().retrofit(), this);

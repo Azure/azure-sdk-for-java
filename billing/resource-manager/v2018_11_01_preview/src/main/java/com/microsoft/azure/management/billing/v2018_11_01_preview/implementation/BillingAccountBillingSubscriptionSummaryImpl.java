@@ -11,7 +11,6 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountBillingSubscriptionSummary;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccountContext;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Amount;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionStatusType;
 import java.util.UUID;
@@ -47,13 +46,18 @@ class BillingAccountBillingSubscriptionSummaryImpl extends WrapperImpl<BillingSu
     }
 
     @Override
-    public EnrollmentAccountContext enrollmentAccountContext() {
-        return this.inner().enrollmentAccountContext();
+    public String id() {
+        return this.inner().id();
     }
 
     @Override
-    public String id() {
-        return this.inner().id();
+    public String invoiceSectionId() {
+        return this.inner().invoiceSectionId();
+    }
+
+    @Override
+    public String invoiceSectionName() {
+        return this.inner().invoiceSectionName();
     }
 
     @Override

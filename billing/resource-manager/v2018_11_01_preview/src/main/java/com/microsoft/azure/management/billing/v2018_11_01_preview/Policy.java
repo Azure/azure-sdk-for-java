@@ -38,6 +38,11 @@ public interface Policy extends HasInner<PolicyInner>, HasManager<BillingManager
     Boolean reservationPurchasesAllowed();
 
     /**
+     * @return the subscriptionOwnerCanViewCharges value.
+     */
+    Boolean subscriptionOwnerCanViewCharges();
+
+    /**
      * @return the type value.
      */
     String type();

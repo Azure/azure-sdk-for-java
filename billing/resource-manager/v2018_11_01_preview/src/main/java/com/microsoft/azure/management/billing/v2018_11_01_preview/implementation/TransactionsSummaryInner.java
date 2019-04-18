@@ -53,6 +53,12 @@ public class TransactionsSummaryInner extends ProxyResource {
     private String orderName;
 
     /**
+     * The product family.
+     */
+    @JsonProperty(value = "properties.productFamily", access = JsonProperty.Access.WRITE_ONLY)
+    private String productFamily;
+
+    /**
      * The product type id.
      */
     @JsonProperty(value = "properties.productTypeId", access = JsonProperty.Access.WRITE_ONLY)
@@ -178,6 +184,15 @@ public class TransactionsSummaryInner extends ProxyResource {
      */
     public String orderName() {
         return this.orderName;
+    }
+
+    /**
+     * Get the product family.
+     *
+     * @return the productFamily value
+     */
+    public String productFamily() {
+        return this.productFamily;
     }
 
     /**

@@ -50,13 +50,13 @@ class PaymentMethodImpl extends WrapperImpl<PaymentMethodInner> implements Payme
     }
 
     @Override
-    public PaymentMethodType methodType() {
-        return this.inner().methodType();
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
-    public String name() {
-        return this.inner().name();
+    public PaymentMethodType paymentMethodType() {
+        return this.inner().paymentMethodType();
     }
 
     @Override

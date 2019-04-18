@@ -34,14 +34,19 @@ public interface BillingAccountBillingSubscriptionSummary extends HasInner<Billi
     String displayName();
 
     /**
-     * @return the enrollmentAccountContext value.
-     */
-    EnrollmentAccountContext enrollmentAccountContext();
-
-    /**
      * @return the id value.
      */
     String id();
+
+    /**
+     * @return the invoiceSectionId value.
+     */
+    String invoiceSectionId();
+
+    /**
+     * @return the invoiceSectionName value.
+     */
+    String invoiceSectionName();
 
     /**
      * @return the lastMonthCharges value.

@@ -9,79 +9,85 @@
 package com.microsoft.azure.management.billing.v2018_11_01_preview.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
- * The billing property.
+ * A billing property resource.
  */
-public class BillingPropertyInner {
-    /**
-     * Product Id.
-     */
-    @JsonProperty(value = "productId", access = JsonProperty.Access.WRITE_ONLY)
-    private String productId;
-
+@JsonFlatten
+public class BillingPropertyInner extends ProxyResource {
     /**
      * Billing tenant Id.
      */
-    @JsonProperty(value = "billingTenantId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.billingTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingTenantId;
 
     /**
      * Billing account Id.
      */
-    @JsonProperty(value = "billingAccountId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.billingAccountId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingAccountId;
 
     /**
      * Billing account name.
      */
-    @JsonProperty(value = "billingAccountName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.billingAccountName", access = JsonProperty.Access.WRITE_ONLY)
     private String billingAccountName;
 
     /**
      * Billing profile Id.
      */
-    @JsonProperty(value = "billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileId;
 
     /**
      * Billing profile name.
      */
-    @JsonProperty(value = "billingProfileName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.billingProfileName", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileName;
+
+    /**
+     * Cost center name.
+     */
+    @JsonProperty(value = "properties.costCenter", access = JsonProperty.Access.WRITE_ONLY)
+    private String costCenter;
 
     /**
      * Invoice Section Id.
      */
-    @JsonProperty(value = "invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceSectionId;
 
     /**
      * Invoice Section name.
      */
-    @JsonProperty(value = "invoiceSectionName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.invoiceSectionName", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceSectionName;
+
+    /**
+     * Product Id.
+     */
+    @JsonProperty(value = "properties.productId", access = JsonProperty.Access.WRITE_ONLY)
+    private String productId;
+
+    /**
+     * Product name.
+     */
+    @JsonProperty(value = "properties.productName", access = JsonProperty.Access.WRITE_ONLY)
+    private String productName;
 
     /**
      * SKU Id.
      */
-    @JsonProperty(value = "skuId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.skuId", access = JsonProperty.Access.WRITE_ONLY)
     private String skuId;
 
     /**
      * SKU description.
      */
-    @JsonProperty(value = "skuDescription", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.skuDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String skuDescription;
-
-    /**
-     * Get product Id.
-     *
-     * @return the productId value
-     */
-    public String productId() {
-        return this.productId;
-    }
 
     /**
      * Get billing tenant Id.
@@ -129,6 +135,15 @@ public class BillingPropertyInner {
     }
 
     /**
+     * Get cost center name.
+     *
+     * @return the costCenter value
+     */
+    public String costCenter() {
+        return this.costCenter;
+    }
+
+    /**
      * Get invoice Section Id.
      *
      * @return the invoiceSectionId value
@@ -144,6 +159,24 @@ public class BillingPropertyInner {
      */
     public String invoiceSectionName() {
         return this.invoiceSectionName;
+    }
+
+    /**
+     * Get product Id.
+     *
+     * @return the productId value
+     */
+    public String productId() {
+        return this.productId;
+    }
+
+    /**
+     * Get product name.
+     *
+     * @return the productName value
+     */
+    public String productName() {
+        return this.productName;
     }
 
     /**

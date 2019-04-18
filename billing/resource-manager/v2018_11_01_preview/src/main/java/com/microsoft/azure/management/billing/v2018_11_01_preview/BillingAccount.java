@@ -68,6 +68,11 @@ public interface BillingAccount extends HasInner<BillingAccountInner>, HasManage
     Enrollment enrollmentDetails();
 
     /**
+     * @return the hasReadAccess value.
+     */
+    Boolean hasReadAccess();
+
+    /**
      * @return the id value.
      */
     String id();
