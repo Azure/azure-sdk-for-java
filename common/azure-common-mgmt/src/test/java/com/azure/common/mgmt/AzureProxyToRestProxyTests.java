@@ -600,8 +600,7 @@ public abstract class AzureProxyToRestProxyTests {
         try {
             service.get();
             fail("Expected exception.");
-        }
-        catch (InvalidReturnTypeException e) {
+        } catch (InvalidReturnTypeException e) {
             assertContains(e.getMessage(), "reactor.core.publisher.Flux<com.azure.common.mgmt.HttpBinJSON>");
             assertContains(e.getMessage(), "AzureProxyToRestProxyTests$Service15.get()");
         }
@@ -748,7 +747,7 @@ public abstract class AzureProxyToRestProxyTests {
     private <T> T createService(Class<T> serviceClass) {
         HttpPipeline pipeline = new HttpPipeline(createHttpClient());
         //
-        return AzureProxy.create(serviceClass, null, pipeline, serializer);
+        return AzureProxy.create(serviceClass, null, pipeline, SERIALIZER);
     }
 
     private static void assertContains(String value, String expectedSubstring) {
@@ -767,5 +766,5 @@ public abstract class AzureProxyToRestProxyTests {
         Assert.assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.", false);
     }
 
-    private static final SerializerAdapter serializer = new JacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 }
