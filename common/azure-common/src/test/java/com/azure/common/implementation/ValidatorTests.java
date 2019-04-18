@@ -20,18 +20,18 @@ public class ValidatorTests {
     @Test
     public void validateInt() throws Exception {
         IntWrapper body = new IntWrapper();
-        body.value = 2;
-        body.nullable = null;
+        body.value(2);
+        body.nullable(null);
         Validator.validate(body); // pass
     }
 
     @Test
     public void validateInteger() throws Exception {
         IntegerWrapper body = new IntegerWrapper();
-        body.value = 3;
+        body.value(3);
         Validator.validate(body); // pass
         try {
-            body.value = null;
+            body.value(null);
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
@@ -135,39 +135,89 @@ public class ValidatorTests {
 
     public final class IntWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 2 LINES
-        public int value;
-        public Object nullable;
+        private int value;
+        private Object nullable;
+
+        public int value() {
+            return value;
+        }
+
+        public void value(int value) {
+            this.value = value;
+        }
+
+        public Object nullable() {
+            return nullable;
+        }
+
+        public void nullable(Object nullable) {
+            this.nullable = nullable;
+        }
     }
 
     public final class IntegerWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public Integer value;
+        private Integer value;
+
+        public Integer value() {
+            return value;
+        }
+
+        public void value(Integer value) {
+            this.value = value;
+        }
     }
 
     public final class StringWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public String value;
+        private String value;
+
+        public String value() {
+            return value;
+        }
+
+        public void value(String value) {
+            this.value = value;
+        }
     }
 
     public final class LocalDateWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public LocalDate value;
+        private LocalDate value;
+
+        public LocalDate value() {
+            return value;
+        }
+
+        public void value(LocalDate value) {
+            this.value = value;
+        }
     }
 
     public final class ListWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public List<StringWrapper> list;
+        private List<StringWrapper> list;
+
+        public List<StringWrapper> list() {
+            return list;
+        }
+
+        public void list(List<StringWrapper> list) {
+            this.list = list;
+        }
     }
 
     public final class MapWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public Map<LocalDate, StringWrapper> map;
+        private Map<LocalDate, StringWrapper> map;
+
+        public Map<LocalDate, StringWrapper> map() {
+            return map;
+        }
+
+        public void map(Map<LocalDate, StringWrapper> map) {
+            this.map = map;
+        }
     }
 
     public enum Color {
@@ -178,13 +228,35 @@ public class ValidatorTests {
 
     public final class EnumWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public Color color;
+        private Color color;
+
+        public Color color() {
+            return color;
+        }
+
+        public void color(Color color) {
+            this.color = color;
+        }
     }
 
     public final class Product {
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 2 LINES
-        public String id;
-        public String tag;
+        private String id;
+        private String tag;
+
+        public String id() {
+            return id;
+        }
+
+        public void id(String id) {
+            this.id = id;
+        }
+
+        public String tag() {
+            return tag;
+        }
+
+        public void tag(String tag) {
+            this.tag = tag;
+        }
     }
 }
