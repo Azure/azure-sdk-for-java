@@ -11,7 +11,7 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Details about the enable azure sku.
+ * Details about the enabled azure sku.
  */
 public class EnabledAzureSKUs {
     /**
