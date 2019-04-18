@@ -462,8 +462,7 @@ public class AzureProxyTests {
         try {
             service.beginCreateAsyncWithBadReturnType("1", "mine", "c", 2);
             fail("Expected exception.");
-        }
-        catch (InvalidReturnTypeException e) {
+        } catch (InvalidReturnTypeException e) {
             assertContains(e.getMessage(), "AzureProxyTests$MockResourceService.beginCreateAsyncWithBadReturnType()");
             assertContains(e.getMessage(), "reactor.core.publisher.Flux<com.azure.common.mgmt.MockResource>");
         }
@@ -482,11 +481,11 @@ public class AzureProxyTests {
                 .beginCreateAsyncWithLocationAndPollsAndUnexpectedStatusCode("1", "mine", "c")
                 .subscribe(
                         new Consumer<OperationStatus<MockResource>>() {
-                           @Override
-                           public void accept(OperationStatus<MockResource> mockResourceOperationStatus) {
+                            @Override
+                            public void accept(OperationStatus<MockResource> mockResourceOperationStatus) {
                                 fail();
                            }
-                       },
+                        },
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) {
@@ -515,8 +514,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -559,8 +557,7 @@ public class AzureProxyTests {
                                 e.printStackTrace();
                             }
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -593,8 +590,7 @@ public class AzureProxyTests {
                                 e.printStackTrace();
                             }
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -616,8 +612,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -647,8 +642,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -678,8 +672,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -790,8 +783,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<Void> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             completed.set(true);
                         }
                     }
@@ -821,8 +813,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<Void> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             completed.set(true);
                         }
                     }
@@ -851,8 +842,7 @@ public class AzureProxyTests {
         try {
             service.deleteAsyncWithForbiddenResponse().block();
             fail("Expected RestException to be thrown.");
-        }
-        catch (ServiceRequestException e) {
+        } catch (ServiceRequestException e) {
             assertEquals(403, e.response().statusCode());
             assertEquals("Status code 403, (empty body)", e.getMessage());
         }
