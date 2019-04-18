@@ -173,7 +173,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Test
-    public void ServiceErrorWithResponseContentType() {
+    public void serviceErrorWithResponseContentType() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
                 new HttpPipeline(new SimpleMockHttpClient() {
@@ -197,7 +197,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Test
-    public void ServiceErrorWithResponseContentTypeBadJSON() {
+    public void serviceErrorWithResponseContentTypeBadJSON() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
                 new HttpPipeline(new SimpleMockHttpClient() {
@@ -221,7 +221,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Test
-    public void ServiceErrorWithResponseContentTypeCharset() {
+    public void serviceErrorWithResponseContentTypeCharset() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
                 new HttpPipeline(new SimpleMockHttpClient() {
@@ -245,7 +245,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Test
-    public void ServiceErrorWithResponseContentTypeCharsetBadJSON() {
+    public void serviceErrorWithResponseContentTypeCharsetBadJSON() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
                 new HttpPipeline(new SimpleMockHttpClient() {
