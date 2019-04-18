@@ -19,7 +19,7 @@ import com.azure.common.implementation.exception.InvalidReturnTypeException;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.common.mgmt.http.MockAzureHttpClient;
-import com.azure.common.mgmt.http.MockAzureHttpResponse;
+import com.azure.common.test.http.MockHttpResponse;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -227,7 +227,8 @@ public class AzureProxyTests {
     public void createWithLocation() {
         final MockAzureHttpClient httpClient = new MockAzureHttpClient();
 
-        final MockResource resource = createMockService(MockResourceService.class, httpClient)
+        final MockResourceService mockService = createMockService(MockResourceService.class, httpClient);
+        final MockResource resource = mockService
                 .createWithLocation("1", "mine", "c");
         assertNotNull(resource);
         assertEquals("c", resource.name);
@@ -834,7 +835,7 @@ public class AzureProxyTests {
         final MockAzureHttpClient httpClient = new MockAzureHttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.<HttpResponse>just(new MockAzureHttpResponse(request, 403, MockAzureHttpClient.responseHeaders()));
+                return Mono.<HttpResponse>just(new MockHttpResponse(request, 403, MockAzureHttpClient.responseHeaders(), new byte[0]));
             }
         };
 
