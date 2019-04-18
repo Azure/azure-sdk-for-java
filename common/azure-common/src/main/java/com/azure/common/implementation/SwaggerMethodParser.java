@@ -6,6 +6,7 @@ package com.azure.common.implementation;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.FormParam;
 import com.azure.common.annotations.GET;
 import com.azure.common.annotations.HEAD;
 import com.azure.common.annotations.HeaderParam;
@@ -26,6 +27,7 @@ import com.azure.common.http.HttpMethod;
 import com.azure.common.http.rest.Page;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
+import com.azure.common.implementation.http.ContentType;
 import com.azure.common.implementation.serializer.HttpResponseDecodeData;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.util.ImplUtils;
@@ -41,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The type to parse details of a specific Swagger REST API call from a provided Swagger interface
@@ -55,6 +58,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final List<Substitution> hostSubstitutions = new ArrayList<>();
     private final List<Substitution> pathSubstitutions = new ArrayList<>();
     private final List<Substitution> querySubstitutions = new ArrayList<>();
+    private final List<Substitution> formSubstitutions = new ArrayList<>();
     private final List<Substitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders();
     private Integer bodyContentMethodParameterIndex;
@@ -166,6 +170,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     bodyContentMethodParameterIndex = parameterIndex;
                     bodyContentType = bodyParamAnnotation.value();
                     bodyJavaType = swaggerMethod.getGenericParameterTypes()[parameterIndex];
+                } else if (annotationType.equals(FormParam.class)) {
+                    final FormParam formParamAnnotation = (FormParam) annotation;
+                    formSubstitutions.add(new Substitution(formParamAnnotation.value(), parameterIndex, !formParamAnnotation.encoded()));
+                    bodyContentType = ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
+                    bodyJavaType = String.class;
                 }
             }
         }
@@ -260,6 +269,37 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         }
 
                         result.add(new EncodedParameter(querySubstitution.urlParameterName(), parameterValue));
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Get the encoded form parameters that have been added to this value based on the provided
+     * method arguments.
+     *
+     * @param swaggerMethodArguments the arguments that will be used to create the form parameters'
+     *                               values
+     * @return an Iterable with the encoded form parameters
+     */
+    public Iterable<EncodedParameter> encodedFormParameters(Object[] swaggerMethodArguments) {
+        final List<EncodedParameter> result = new ArrayList<>();
+        if (formSubstitutions != null) {
+            final PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
+
+            for (Substitution formSubstitution : formSubstitutions) {
+                final int parameterIndex = formSubstitution.methodParameterIndex();
+                if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
+                    final Object methodArgument = swaggerMethodArguments[formSubstitution.methodParameterIndex()];
+                    String parameterValue = serialize(methodArgument);
+                    if (parameterValue != null) {
+                        if (formSubstitution.shouldEncode() && escaper != null) {
+                            parameterValue = escaper.escape(parameterValue);
+                        }
+
+                        result.add(new EncodedParameter(formSubstitution.urlParameterName(), parameterValue));
                     }
                 }
             }
@@ -387,6 +427,14 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             result = swaggerMethodArguments[bodyContentMethodParameterIndex];
         }
 
+        if (formSubstitutions != null
+                && !formSubstitutions.isEmpty()
+                && swaggerMethodArguments != null) {
+            result = formSubstitutions.stream()
+                .map(s -> serializeFormData(s.urlParameterName(), swaggerMethodArguments[s.methodParameterIndex()]))
+                .collect(Collectors.joining("&"));
+        }
+
         return result;
     }
 
@@ -469,13 +517,27 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.relativePath = relativePath;
     }
 
-    String serialize(Object value) {
+    private String serialize(Object value) {
         String result = null;
         if (value != null) {
             if (value instanceof String) {
                 result = (String) value;
             } else {
                 result = serializer.serializeRaw(value);
+            }
+        }
+        return result;
+    }
+
+    private String serializeFormData(String key, Object value) {
+        String result = null;
+        if (value != null) {
+            if (value instanceof List<?>) {
+                result = ((List<?>) value).stream()
+                    .map(el -> String.format("%s=%s", key, serialize(el)))
+                    .collect(Collectors.joining("&"));
+            } else {
+                result = String.format("%s=%s", key, serializer.serializeRaw(value));
             }
         }
         return result;
