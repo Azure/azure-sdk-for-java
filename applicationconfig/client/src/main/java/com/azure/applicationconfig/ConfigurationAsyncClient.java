@@ -24,17 +24,19 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings} in Azure Configuration
- * Store. Operations allowed by the client are adding, retrieving, updating, and deleting ConfigurationSettings, and
- * listing settings or revision of a setting based on a filter.
+ * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
+ * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, updating, and deleting
+ * ConfigurationSettings, and listing settings or revision of a setting based on a {@link SettingSelector filter}.
  *
- * <p><strong>Construct the client, for additional ways to build a client see {@link ConfigurationAsyncClientBuilder here}.</strong></p>
+ * <p><strong>Instantiating an Asynchronous Configuration Client</strong></p>
  *
  * <pre>
  * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
  *     .credentials(new ConfigurationClientCredentials(connectionString))
  *     .build();
  * </pre>
+ *
+ * <p>View {@link ConfigurationAsyncClientBuilder this} for additional ways to construct the client.</p>
  *
  * @see ConfigurationAsyncClientBuilder
  * @see ConfigurationClientCredentials
@@ -62,7 +64,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     /**
      * Creates a builder that can configure options for the ConfigurationAsyncClient before creating an instance of it.
      *
-     * @return A new ConfigurationAsyncClientBuilder to create a ConfigurationAsyncClient from.
+     * @return A new {@link ConfigurationAsyncClientBuilder} to create a ConfigurationAsyncClient from.
      */
     public static ConfigurationAsyncClientBuilder builder() {
         return new ConfigurationAsyncClientBuilder();
@@ -72,11 +74,15 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * Adds a configuration value in the service if that key does not exist.
      *
      * <p><strong>Code Samples</strong></p>
+     *
      * <pre>
-     * client.addSetting("prodDBConnection", "db_connection").subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });</pre>
+     * client.addSetting("prodDBConnection", "db_connection")
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * <p>A setting with the key "prodDBConnection" and value "db_connection" is added.</p>
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
@@ -95,15 +101,16 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * ConfigurationSetting is optional.
      *
      * <p><strong>Code Samples</strong></p>
-     * <pre>
-     * ConfigurationSetting setting = new ConfigurationSetting().key("prodDBConnection")
-     *     .label("westUS")
-     *     .value("db_connection");
      *
-     * client.addSetting(setting).subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });</pre>
+     * <pre>
+     * client
+     *     .addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * <p>A setting with the key "prodDBConnection", label "westUS", and value "db_connection" is added.</p>
      *
      * @param setting The setting to add to the configuration service.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
@@ -128,15 +135,22 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <pre>
-     * client.setSetting("prodDBConnection", "db_connection").subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });
+     * client.setSetting("prodDBConnection", "db_connection")
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
      *
-     * client.setSetting("prodDBConnection", "updated_db_connection").subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });</pre>
+     * <p>A setting with the key "prodDBConnection" and value "db_connection" is added.</p>
+     *
+     * <pre>
+     * client.setSetting("prodDBConnection", "updated_db_connection")
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * <p>The value of the setting is updated to "updated_db_connection".</p>
      *
      * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
@@ -160,20 +174,24 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <pre>
-     * ConfigurationSetting setting = new ConfigurationSetting().key("prodDBConnection")
-     *     .label("westUS")
-     *     .value("db_connection");
+     * client
+     *     .setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
      *
-     * client.setSetting(setting).subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });
+     * <p>A setting with the key "prodDBConnection", label "westUS", and value "db_connection" is added.</p>
      *
-     * setting = setting.value("updated_db_connection");
-     * client.setSetting(setting).subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });</pre>
+     * <pre>
+     * client
+     *     .setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * <p>The value of the setting is updated to "updated_db_connection".</p>
      *
      * @param setting The configuration setting to create or update.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
@@ -204,10 +222,13 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <pre>
-     * client.updateSetting("prodDBConnection", "updated_db_connection").subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });</pre>
+     * client.updateSetting("prodDBConnection", "updated_db_connection")
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * <p>The setting with the key "prodDBConnection" has its value updated to "updated_db_connection".</p>
      *
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
@@ -230,14 +251,14 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <pre>
-     * ConfigurationSetting setting = new ConfigurationSetting().key("prodDBConnection")
-     *     .label("westUS")
-     *     .value("db_connection");
+     * client
+     *     .updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
      *
-     * client.updateSetting(setting).subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });</pre>
+     * <p>The setting with the key-label pair "prodDBConnection"-"westUS" has its value updated to "updated_db_connection".</p>
      *
      * @param setting The setting to add or update in the service.
      * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
@@ -263,10 +284,13 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <pre>
-     * client.getSetting("prodDBConnection").subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });</pre>
+     * client.getSetting("prodDBConnection")
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * <p>ConfigurationSetting information for the setting with the key "prodDBConnection" is retrieved.</p>
      *
      * @param key The key of the setting to retrieve.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
@@ -285,13 +309,14 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <pre>
-     * ConfigurationSetting setting = new ConfigurationSetting().key("prodDBConnection")
-     *     .label("westUS");
+     * client
+     *     .getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
      *
-     * client.getSetting(setting).subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });</pre>
+     * <p>ConfigurationSetting information for the setting with the key-label "prodDBConnection"-"westUS" is retrieved.</p>
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
@@ -314,10 +339,13 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <pre>
-     * client.deleteSetting("prodDBConnection").subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });</pre>
+     * client.deleteSetting("prodDBConnection")
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * <p>The setting with the key "prodDBConnection" is deleted.</p>
      *
      * @param key The key of the setting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if
@@ -339,14 +367,14 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <pre>
-     * ConfigurationSetting setting = new ConfigurationSetting().key("prodDBConnection")
-     *     .label("westUS");
+     * client
+     *     .deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
      *
-     * client.deleteSetting(setting).subscribe(response -&gt; {
-     *     ConfigurationSetting result = response.value();
-     *     System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     * });
-     * </pre>
+     * <p>The setting with the key-label "prodDBConnection"-"westUS" is deleted.</p>
      *
      * @param setting The ConfigurationSetting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
@@ -371,9 +399,11 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <pre>
-     * client.listSettings(new SettingSelector().key("prodDBConnection")).subscribe(setting -&gt; {
-     *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
-     * });</pre>
+     * client
+     *     .listSettings(new SettingSelector().key("prodDBConnection"))
+     *     .subscribe(setting -&gt; System.out.printf("Key: %s, Value: %s", setting.key(), setting.value()));</pre>
+     *
+     * <p>All the settings the use the key "prodDBConnection" have their ConfigurationSetting information retrieved.</p>
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
@@ -402,9 +432,11 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <pre>
-     * client.listSettingRevisions(new SettingSelector().key("prodDBConnection")).subscribe(setting -&gt; {
-     *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
-     * });</pre>
+     * client
+     *     .listSettingRevisions(new SettingSelector().key("prodDBConnection"))
+     *     .subscribe(setting -&gt; System.out.printf("Key: %s, Value: %s", setting.key(), setting.value()));</pre>
+     *
+     * <p>All revisions of the setting the uses the key "prodDBConnection" are retrieved.</p>
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting

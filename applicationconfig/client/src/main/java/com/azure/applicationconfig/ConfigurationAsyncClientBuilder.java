@@ -26,12 +26,12 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Builds instances of {@link ConfigurationAsyncClient} based on the configuration options stored in the builder when
- * {@link ConfigurationAsyncClientBuilder#build() build} is called. Preparing the builder has two primary options, using
- * {@link ConfigurationClientCredentials} or using a {@link HttpPipeline} and the service endpoint.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ConfigurationAsyncClient},
+ * calling {@link ConfigurationAsyncClientBuilder#build() build} constructs an instance of the client.
  *
- * <p>ConfigurationClientCredentials has the service endpoint and authorization information built into it. Use
- * {@link ConfigurationAsyncClientBuilder#credentials(ConfigurationClientCredentials) credentials} to configure the builder.</p>
+ * <p>The client needs the service endpoint and access credentials to interact with Azure App Configuration. {@link ConfigurationClientCredentials}
+ * gives the builder the service endpoint and access credentials it required to construct a client, set the ConfigurationClientCredentials
+ * with {@link ConfigurationAsyncClientBuilder#credentials(ConfigurationClientCredentials) credentials}.</p>
  *
  * <pre>
  * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
@@ -39,10 +39,9 @@ import java.util.Objects;
  *     .build();
  * </pre>
  *
- * <p>HttpPipeline is constructed using the authorization information but doesn't have the service endpoint built into
- * it. Use {@link ConfigurationAsyncClientBuilder#pipeline(HttpPipeline) pipeline} and {@link ConfigurationAsyncClientBuilder#serviceEndpoint(String) serviceEndpoint}
- * to configure the builder. The HttpPipeline requires additional configuration over using ConfigurationClientCredentials
- * but it allows for finer control on how the ConfigurationAsyncClient is built.</p>
+ * <p>{@link HttpPipeline} gives the builder the access credentials it requires, set the HttpPipeline with {@link ConfigurationAsyncClientBuilder#pipeline(HttpPipeline) pipeline}.
+ * Using a HttpPipeline requires additional setup but allows for finer control on how the ConfigurationAsyncClient it built.
+ * Additionally, the service endpoint is also required, set the service endpoint with {@link ConfigurationAsyncClientBuilder#serviceEndpoint(String) serviceEndpoint}.</p>
  *
  * <pre>
  * ConfigurationAsyncClient.builder()
