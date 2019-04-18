@@ -19,18 +19,35 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The {@link SecretClient secretAsyncClient} provides synchronous methods to manage to {@link Secret secrets} in the Azure Key Vault.
+ *
+ * <p>A {@link Secret secret} is a resource managed by Key Vault. It is represented by non-null fields secret.name and secret.value.
+ * The secret.expires, secret.contentType and secret.notBefore values in the {@link Secret secret} are optional. The secret.enabled
+ * field is set to true by default in Azure Key Vault, if not specified. The secret.id, secret.created, secret.updated, secret.recoveryLevel
+ * fields are auto assigned when the secret is created in the key vault.</p>
+ *
+ * <p>Samples to construct {@link SecretClient}</p>
+ * <pre>
+ *    SecretClient secretClient = SecretClient.builder()
+ *                                .vaultEndpoint("https://myvault.vault.azure.net/")
+ *                                .credentials(keyVaultCredentials)
+ *                                .build()
+ *
+ *    SecretClient secretClientWithCustomPipeline = SecretClient.builder()
+ *                                                  .pipeline(customHttpPipeline)
+ *                                                  .build()
+ * </pre>
+ */
 public final class SecretClient extends ServiceClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-
-
     private String vaultEndpoint;
     private final SecretService service;
 
@@ -43,13 +60,14 @@ public final class SecretClient extends ServiceClient {
      */
     SecretClient(URL vaultEndpoint, HttpPipeline pipeline) {
         super(pipeline);
+        Objects.requireNonNull(vaultEndpoint, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.vaultEndpoint = vaultEndpoint.toString();
         this.service = RestProxy.create(SecretService.class, this);
     }
 
     /**
      * Creates a builder that can configure options for the SecretClient before creating an instance of it.
-     * @return A new Builder to create a SecretClient from.
+     * @return A new builder to create a SecretClient from.
      */
     public static SecretClientBuilder builder() {
         return new SecretClientBuilder();
@@ -59,9 +77,18 @@ public final class SecretClient extends ServiceClient {
      * The set operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault creates a new version of that secret.
      * This operation requires the secrets/set permission.
      *
-     * <p> The {@code secret} is required along with its non-null fields secret.name and secret.value. The secret.expires,
+     * <p>The {@code secret} is required along with its non-null fields secret.name and secret.value. The secret.expires,
      * secret.contentType and secret.notBefore values in {@code secret} are optional. If not specified, no values are set
      * for the fields. The secret.enabled field is set to true by Azure Key Vault, if not specified.</p>
+     *
+     * <p>Code Samples</p>
+     * <pre>
+     *   Secret keySecret = new Secret("secretName", "secretValue")
+     *             .notBefore(OffsetDateTime.of(LocalDateTime.parse("2000-01-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),ZoneOffset.UTC))
+     *             .expires(OffsetDateTime.of(LocalDateTime.parse("2050-01-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),ZoneOffset.UTC));
+     *
+     *   Secret retKeySecret = secretClient.setSecret(keySecret).value();
+     * </pre>
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @throws NullPointerException if {@code secret} is {@code null}.
@@ -85,6 +112,11 @@ public final class SecretClient extends ServiceClient {
      * The set operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault creates a new version of that secret.
      * This operation requires the secrets/set permission.
      *
+     * <p>Code Samples</p>
+     * <pre>
+     *   Secret secret = secretClient.setSecret("secretName", "secretValue").value();
+     * </pre>
+     *
      * @param name The name of the secret. It is required and cannot be null.
      * @param value The value of the secret. It is required and cannot be null.
      * @throws NullPointerException if {@code name} or {@code value} parameter is {@code null}.
@@ -103,6 +135,13 @@ public final class SecretClient extends ServiceClient {
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
      * This operation requires the secrets/get permission.
      *
+     * <p>Code Samples</p>
+     * <pre>
+     *    Secret secret = secretClient.getSecret("secretName").value();
+     *    String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
+     *    Secret secretWithVersion = secretClient.getSecret("secretName",secretVersion).value();
+     * </pre>
+     *
      * @param name The name of the secret, cannot be null.
      * @param version The version of the secret to retrieve. If this is an empty String or null, this call is equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @throws NullPointerException if {@code name} or {@code version} parameter is {@code null}.
@@ -112,24 +151,20 @@ public final class SecretClient extends ServiceClient {
     public Response<Secret> getSecret(String name, String version) {
         Objects.requireNonNull(name, "The Secret name cannot be null.");
         if (version == null) {
-            return service.getSecret(vaultEndpoint, name, "", API_VERSION, ACCEPT_LANGUAGE, getHost(), CONTENT_TYPE_HEADER_VALUE).block();
+            return service.getSecret(vaultEndpoint, name, "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
         } else {
-            return service.getSecret(vaultEndpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, getHost(), CONTENT_TYPE_HEADER_VALUE).block();
+            return service.getSecret(vaultEndpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
         }
-    }
-
-    private String getHost() {
-        try {
-            return (new URL(vaultEndpoint).getHost());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
      * This operation requires the secrets/get permission.
+     *
+     * <p>Code Samples</p>
+     * <pre>
+     *    Secret secretWithVersion = secretClient.getSecret("user1pass","6A385B124DEF4096AF1361A85B16C204").value();
+     * </pre>
      *
      * @param name The name of the secret.
      * @throws NullPointerException if {@code name} parameter is {@code null}.
@@ -146,7 +181,14 @@ public final class SecretClient extends ServiceClient {
      * attributes of an existing stored secret and attributes that are not specified in the request are left unchanged.
      * The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
      *
-     * <p> The {@code secretAttributes} is required along with its non-null fields secretAttributes.name and secretAttributes.version. </p>
+     * <p>The {@code secretAttributes} is required along with its non-null fields secretAttributes.name and secretAttributes.version.</p>
+     *
+     * <p>Code Samples</p>
+     * <pre>
+     *   Secret secret = secretClient.getSecret("secretName").value();
+     *   secret.notBefore(OffsetDateTime.of(LocalDateTime.parse("2020-01-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),ZoneOffset.UTC));
+     *   SecretAttributes updatedSecretAttributes = secretClient.updateSecretAttributes(secret).value();
+     * </pre>
      *
      * @param secretAttributes the {@link SecretAttributes} object with updated properties.
      * @throws NullPointerException if {@code secretAttributes} is {@code null}.
@@ -170,6 +212,11 @@ public final class SecretClient extends ServiceClient {
      * Deletes a secret from the key vault. The delete operation applies to any secret stored in Azure Key Vault but
      * it cannot be applied to an individual version of a secret. This operation requires the secrets/delete permission.
      *
+     * <p>Code Samples</p>
+     * <pre>
+     *     DeletedSecret deletedSecret =  secretClient.deleteSecret("secretName").value();
+     * </pre>
+     *
      * @param name The name of the secret to be deleted.
      * @throws NullPointerException if {@code name} is {@code null}.
      * @return A {@link Response} whose {@link Response#value()} contains the deleted {@link DeletedSecret}.
@@ -183,6 +230,11 @@ public final class SecretClient extends ServiceClient {
     /**
      * The get deleted secret operation returns the secrets that have been deleted for a vault enabled for soft-delete.
      * This operation requires the secrets/list permission.
+     *
+     * <p>Code Samples</p>
+     * <pre>
+     *   DeletedSecret deletedSecret = secretClient.getDeletedSecret("secretName").value();
+     * </pre>
      *
      * @param name The name of the deleted secret.
      * @throws NullPointerException if {@code name} is {@code null}.
@@ -258,9 +310,8 @@ public final class SecretClient extends ServiceClient {
      * in the list is represented by {@link SecretAttributes} as only the base secret identifier and its attributes are
      * provided in the response. The secret values and individual secret versions are not listed in the response. This operation requires the secrets/list permission.
      *
-     * <p> It is possible to get full Secrets with values from this information. Loop over the {@link SecretAttributes secretAttributes} and
-     * call {@link SecretClient#getSecret(String secretName)} . This will return the {@link Secret} secrets with values included of its latest version. </p>
-     *
+     * <p>It is possible to get full Secrets with values from this information. Loop over the {@link SecretAttributes secretAttributes} and
+     * call {@link SecretClient#getSecret(String secretName)} . This will return the {@link Secret} secrets with values included of its latest version.</p>
      * <pre>
      *   List<SecretAttributes> secretAttributes = secretClient.listSecrets();
      *   List<Secret> secrets = new ArrayList();
@@ -292,9 +343,8 @@ public final class SecretClient extends ServiceClient {
      * as only the base secret identifier and its attributes are provided in the response. The secret values are
      * not provided in the response. This operation requires the secrets/list permission.
      *
-     * <p> It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretAttributes secretAttributes} and
-     * call {@link SecretClient#getSecret(String secretName, String secretVersion)} . This will return the {@link Secret} secrets with values included of the specified versions. </p>
-     *
+     * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretAttributes secretAttributes} and
+     * call {@link SecretClient#getSecret(String secretName, String secretVersion)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
      * <pre>
      *   List<SecretAttributes> secretAttributes = secretClient.listSecretVersions("secretName");
      *   List<Secret> secretVersions = new ArrayList();
@@ -322,9 +372,8 @@ public final class SecretClient extends ServiceClient {
      * and its attributes are provided in the response. The secret values and individual secret versions are not
      * provided in the response. This operation requires the secrets/list permission.
      *
-     * <p> It is possible to get full Secrets with values from this information. Loop over the {@link SecretAttributes secretAttributes} and
-     * call {@link SecretClient#getSecret(String secretName)} . This will return the {@link Secret} secrets with values included of its latest version. </p>
-     *
+     * <p>It is possible to get full Secrets with values from this information. Loop over the {@link SecretAttributes secretAttributes} and
+     * call {@link SecretClient#getSecret(String secretName)} . This will return the {@link Secret} secrets with values included of its latest version.</p>
      * <pre>
      *   List<SecretAttributes> secretAttributes = secretClient.listSecrets(25);
      *   List<Secret> secrets = new ArrayList();
@@ -362,9 +411,8 @@ public final class SecretClient extends ServiceClient {
      * as only the base secret identifier and its attributes are provided in the response. The secret values are
      * not provided in the response. This operations requires the secrets/list permission.
      *
-     * <p> It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretAttributes secretAttributes} and
-     * call {@link SecretClient#getSecret(String secretName, String secretVersion)} . This will return the {@link Secret} secrets with values included of the specified versions. </p>
-     *
+     * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretAttributes secretAttributes} and
+     * call {@link SecretClient#getSecret(String secretName, String secretVersion)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
      * <pre>
      *   List<SecretAttributes> secretAttributes = secretClient.listSecretVersions("secretName", 25);
      *   List<Secret> secretVersions = new ArrayList();

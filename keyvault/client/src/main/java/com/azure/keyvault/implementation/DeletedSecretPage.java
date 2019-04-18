@@ -14,6 +14,7 @@ import java.util.List;
  * resources, if any.
  */
 public final class DeletedSecretPage implements Page<DeletedSecret> {
+
     /**
      * The link to the next page.
      */

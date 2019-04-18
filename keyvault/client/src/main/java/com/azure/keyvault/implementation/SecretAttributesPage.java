@@ -14,6 +14,7 @@ import java.util.List;
  * resources, if any.
  */
 public final class SecretAttributesPage implements Page<SecretAttributes> {
+
     /**
      * The link to the next page.
      */

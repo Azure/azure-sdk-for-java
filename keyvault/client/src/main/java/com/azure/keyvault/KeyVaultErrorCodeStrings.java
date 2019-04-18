@@ -5,51 +5,57 @@ package com.azure.keyvault;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Properties;
 
 
 class KeyVaultErrorCodeStrings {
-
-    static final String CREDENTIALS_REQUIRED_PROPERTY = "credentials_required";
     static final String ERROR_STRINGS_FILE_NAME = "kvErrorStrings.properties";
-    static final String VAULT_ENDPOINT_REQUIRED_PROPERTY = "vault_endpoint_required";
     private static Properties errorStrings;
+    private static HashMap<String, String> errorStringsDefault;
 
     /**
-     *  Gets the error String to indicate Azure key vault credentials requirement.
-     *
-     * @return The {@link String value} containing the error message for Azure key vault credentials requirement.
+     * The property name of Azure Key Vault Credentials required error string.
      */
-    static String getCredentialsRequired() {
+    static final String CREDENTIALS_REQUIRED = "credentials_required";
+
+    /**
+     * The property name of Azure Key Vault Endpoint required error string.
+     */
+    static final String VAULT_END_POINT_REQUIRED = "vault_endpoint_required";
+
+    /**
+     *  Gets the error String for the specified property.
+     *
+     * @param propertyName the property name for which error string is required.
+     * @return The {@link String value} containing the error message.
+     */
+    static String getErrorString(String propertyName) {
         loadProperties();
-        return errorStrings.getProperty(CREDENTIALS_REQUIRED_PROPERTY);
-    }
-
-    /**
-     *  Gets the error String to indicate Azure key vault end point url requirement.
-     *
-     * @return The {@link String value} containing the error message for Azure key vault end point url requirement.
-     */
-    static String getVaultEndPointRequired() {
-        if (errorStrings == null) {
-            loadProperties();
+        if (errorStrings.contains(propertyName)) {
+            return errorStrings.getProperty(propertyName);
+        } else {
+            loadDefaults();
+            return errorStringsDefault.get(propertyName);
         }
-        return errorStrings.getProperty(VAULT_ENDPOINT_REQUIRED_PROPERTY);
     }
 
     private static void loadProperties() {
-        if (errorStrings != null) {
-            return;
-        }
         try (InputStream fileInputStream = KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
             errorStrings = new Properties();
             errorStrings.load(fileInputStream);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 
+    private static void loadDefaults() {
+        if (errorStringsDefault == null) {
+            errorStringsDefault = new HashMap<>();
+            errorStringsDefault.put(CREDENTIALS_REQUIRED, "Azure Key Vault Credentials are Required");
+            errorStringsDefault.put(VAULT_END_POINT_REQUIRED, "Azure Key Vault's Endpoint Url' is required.");
+        }
+    }
 }
 
 

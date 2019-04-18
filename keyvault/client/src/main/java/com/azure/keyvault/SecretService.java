@@ -55,7 +55,6 @@ interface SecretService {
                                          @PathParam("secret-version") String secretVersion,
                                          @QueryParam("api-version") String apiVersion,
                                          @HeaderParam("accept-language") String acceptLanguage,
-                                         @HeaderParam("Host") String host,
                                          @HeaderParam("Content-Type") String type);
 
 

@@ -68,13 +68,11 @@ public class SecretAttributes {
      */
     private String recoveryLevel;
 
-
     /**
      * The content type of the secret.
      */
     @JsonProperty(value = "contentType")
     private String contentType;
-
 
     /**
      * Application specific metadata in the form of key-value pairs.
@@ -104,7 +102,6 @@ public class SecretAttributes {
     public String name() {
         return this.name;
     }
-
 
     /**
      * Get the recovery level of the secret.
@@ -283,7 +280,6 @@ public class SecretAttributes {
     public String version() {
         return this.version;
     }
-
 
     @JsonProperty(value = "id")
     private void unpackId(String id) {

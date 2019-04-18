@@ -27,14 +27,9 @@ import java.util.function.Function;
 /**
  * Configures and builds instance of {@link SecretAsyncClient client} to manage {@link Secret secrets} in the specified key vault.
  *
- * <p> A {@link Secret secret} is a resource managed by Key Vault. It is represented by non-null fields secret.name and secret.value.
- * The secret.expires, secret.contentType and secret.notBefore values in {@code secret} are optional. The secret.enabled
- * field is set to true by Azure Key Vault, if not specified. The secret.id, secret.created, secret.updated, secret.recoveryLevel
- * fields are auto assigned when the secret is created in the key vault. </p>
- *
- * <p> Minimal configuration options required by {@link SecretAsyncClientBuilder secretClientBuilder} to build {@link SecretAsyncClient}
+ * <p>Minimal configuration options required by {@link SecretAsyncClientBuilder secretClientBuilder} to build {@link SecretAsyncClient}
  * are {@link String vaultEndpoint} and {@link AsyncServiceClientCredentials credentials}. If a custom {@link HttpPipeline pipeline}
- * is specified as configuration option, then no other configuration option needs to be specified. </p>
+ * is specified as configuration option, then no other configuration option needs to be specified.</p>
  *
  * <pre>
  *    SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
@@ -47,8 +42,8 @@ import java.util.function.Function;
  *                                                  .build()
  * </pre>
  *
- * <p> The {@link HttpLogDetailLevel logdetailLevel}, multiple custom {@link HttpPipeline policies} and custom
- * {@link HttpClient httpClient} be optionally configured in the {@link SecretAsyncClientBuilder}.</p>
+ * <p>The {@link HttpLogDetailLevel logdetailLevel}, multiple custom {@link HttpPipeline policies} and custom
+ * {@link HttpClient httpClient} can be optionally configured in the {@link SecretAsyncClientBuilder}.</p>
  *
  * <pre>
  *    SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
@@ -80,9 +75,9 @@ public final class SecretAsyncClientBuilder {
      * Creates a {@link SecretAsyncClient} based on options set in the builder.
      * Every time {@code build()} is called, a new instance of {@link SecretAsyncClient} is created.
      *
-     * <p> If {@link SecretAsyncClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * <p>If {@link SecretAsyncClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link SecretAsyncClientBuilder#vaultEndpoint(String) serviceEndpoint} are used to create the
-     * {@link SecretAsyncClientBuilder client}. All other builder settings are ignored. </p>
+     * {@link SecretAsyncClientBuilder client}. All other builder settings are ignored.</p>
      *
      * @return A SecretAsyncClient with the options set from the builder.
      * @throws IllegalStateException If {@link SecretAsyncClientBuilder#credentials(AsyncServiceClientCredentials)} or
@@ -95,11 +90,11 @@ public final class SecretAsyncClientBuilder {
         }
 
         if (credentials == null) {
-            throw new IllegalStateException(KeyVaultErrorCodeStrings.getCredentialsRequired());
+            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIALS_REQUIRED));
         }
 
         if (vaultEndpoint == null) {
-            throw new IllegalStateException(KeyVaultErrorCodeStrings.getVaultEndPointRequired());
+            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -145,7 +140,7 @@ public final class SecretAsyncClientBuilder {
     /**
      * Sets the logging level for HTTP requests and responses.
      *
-     * <p> logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set. </p>
+     * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
      * @return The updated Builder object.
@@ -202,7 +197,6 @@ public final class SecretAsyncClientBuilder {
     private AsyncTokenCredentials getAsyncTokenCredentials() {
         return new AsyncTokenCredentials("Bearer", credentials.authorizationHeaderValueAsync(new HttpRequest(HttpMethod.POST, vaultEndpoint)));
     }
-
 
     private class AsyncTokenCredentials implements AsyncServiceClientCredentials {
 
