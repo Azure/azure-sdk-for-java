@@ -269,10 +269,27 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     private static class HeaderCollectionTypePublicFields {
-        public String name;
+        @JsonProperty()
+        private String name;
 
         @HeaderCollection("header-collection-prefix-")
-        public Map<String, String> headerCollection;
+        private Map<String, String> headerCollection;
+
+        public String name() {
+            return name;
+        }
+
+        public void name(String name) {
+            this.name = name;
+        }
+
+        public Map<String, String> headerCollection() {
+            return headerCollection;
+        }
+
+        public void headerCollection(Map<String, String> headerCollection) {
+            this.headerCollection = headerCollection;
+        }
     }
 
     private static class HeaderCollectionTypeProtectedFields {
@@ -358,8 +375,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         final HeaderCollectionTypePublicFields responseHeaders = response.deserializedHeaders();
         assertNotNull(responseHeaders);
-        assertEquals("Phillip", responseHeaders.name);
-        assertHeaderCollections(responseHeaders.headerCollection);
+        assertEquals("Phillip", responseHeaders.name());
+        assertHeaderCollections(responseHeaders.headerCollection());
     }
 
     @Test
