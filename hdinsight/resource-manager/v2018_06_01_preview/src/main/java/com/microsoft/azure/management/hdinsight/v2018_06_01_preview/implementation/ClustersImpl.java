@@ -22,7 +22,9 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.GatewaySettings;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterDiskEncryptionParameters;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.UpdateGatewaySettingsParameters;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ExecuteScriptActionParameters;
 
 class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, ClusterInner, ClustersInner, HDInsightManager>  implements Clusters {
@@ -131,6 +133,24 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
     public Completable rotateDiskEncryptionKeyAsync(String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters) {
         ClustersInner client = this.inner();
         return client.rotateDiskEncryptionKeyAsync(resourceGroupName, clusterName, parameters).toCompletable();
+    }
+
+    @Override
+    public Observable<GatewaySettings> getGatewaySettingsAsync(String resourceGroupName, String clusterName) {
+        ClustersInner client = this.inner();
+        return client.getGatewaySettingsAsync(resourceGroupName, clusterName)
+        .map(new Func1<GatewaySettingsInner, GatewaySettings>() {
+            @Override
+            public GatewaySettings call(GatewaySettingsInner inner) {
+                return new GatewaySettingsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable updateGatewaySettingsAsync(String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters) {
+        ClustersInner client = this.inner();
+        return client.updateGatewaySettingsAsync(resourceGroupName, clusterName, parameters).toCompletable();
     }
 
     @Override
