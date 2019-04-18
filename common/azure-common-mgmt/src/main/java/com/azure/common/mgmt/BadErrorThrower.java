@@ -99,5 +99,5 @@ public abstract class BadErrorThrower {
         int i = 1;
     }
 
-    abstract void test();
+    public abstract void test();
 }

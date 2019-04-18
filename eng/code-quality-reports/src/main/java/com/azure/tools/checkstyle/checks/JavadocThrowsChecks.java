@@ -6,17 +6,26 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.utils.BlockCommentPosition;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
-import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 public class JavadocThrowsChecks extends AbstractCheck {
-    private static final String MISSING_DESCRIPTION_MESSAGE = "Expected @throws tag to have a description explaining when the error is thrown.";
-    private static final String MISSING_THROWS_TAG_MESSAGE = "Expected Javadoc @throws tag explaining when the error is thrown.";
-    private static final int[] TOKENS = new int[] { TokenTypes.METHOD_DEF };
+    private static final String MISSING_DESCRIPTION_MESSAGE = "@throws tag requires a description explaining when the error is thrown.";
+    private static final String MISSING_THROWS_TAG_MESSAGE = "Javadoc @throws tag required for unchecked throw.";
+    private static final int[] TOKENS = new int[] {
+        TokenTypes.BLOCK_COMMENT_BEGIN,
+        TokenTypes.METHOD_DEF,
+        TokenTypes.LITERAL_THROW,
+        TokenTypes.LITERAL_CATCH,
+    };
+
+    private Map<String, HashSet<String>> methodJavadocThrowsMapping;
+    private String currentMethodIdentifier;
+    private boolean currentMethodNeedsChecking;
 
     @Override
     public int[] getDefaultTokens() {
@@ -39,46 +48,80 @@ public class JavadocThrowsChecks extends AbstractCheck {
     }
 
     @Override
-    public void visitToken(DetailAST methodToken) {
-        DetailAST modifierToken = methodToken.findFirstToken(TokenTypes.MODIFIERS);
-
-        // Only check throws documentation when the method is part of the public API and is implemented.
-        if (!visibilityIsPublicOrProtected(modifierToken) || modifierToken.findFirstToken(TokenTypes.ABSTRACT) != null) {
-            return;
-        }
-
-        verifyDocumentedMethodThrows(methodToken, findJavadocThrows(modifierToken));
+    public void beginTree(DetailAST rootToken) {
+        methodJavadocThrowsMapping = new HashMap<>();
+        currentMethodNeedsChecking = false;
+        currentMethodIdentifier = "";
     }
 
-    private boolean visibilityIsPublicOrProtected(DetailAST modifierToken) {
-        if (modifierToken == null) {
-            return false;
-        }
+    @Override
+    public void visitToken(DetailAST token) {
+        switch (token.getType()) {
+            case TokenTypes.BLOCK_COMMENT_BEGIN:
+                findJavadocThrows(token);
+                break;
 
-        return TokenUtil.findFirstTokenByPredicate(modifierToken,
-            node -> node.getType() == TokenTypes.LITERAL_PUBLIC || node.getType() == TokenTypes.LITERAL_PROTECTED)
-            .isPresent();
+            case TokenTypes.METHOD_DEF:
+                setMethodIdentifierAndCheckStatus(token);
+                break;
+
+            case TokenTypes.LITERAL_THROW:
+                if (currentMethodNeedsChecking) {
+                    verifyThrowJavadoc(token);
+                }
+                break;
+        }
     }
 
     /**
-     * Attempts to find and parse the Javadoc for the method then finds all the documented @throws statements.
-     * @param modifierToken Modifier token of the method that contains the Javadoc.
-     * @return Set of throws that are documented for the method.
+     * Gets the current method identifier and determines if it needs to be checked.
+     * @param methodDefToken Method definition token.
      */
-    private Set<String> findJavadocThrows(DetailAST modifierToken) {
-        HashSet<String> javadocThrows = new HashSet<>();
+    private void setMethodIdentifierAndCheckStatus(DetailAST methodDefToken) {
+        currentMethodIdentifier = methodDefToken.findFirstToken(TokenTypes.IDENT).getText() + methodDefToken.getLineNo();
+        currentMethodNeedsChecking = visibilityIsPublicOrProtectedAndNotAbstract(methodDefToken.findFirstToken(TokenTypes.MODIFIERS));
+    }
 
-        // Check for the block comment begin, this contains the Javadoc for the method.
-        DetailAST blockCommentToken = modifierToken.findFirstToken(TokenTypes.BLOCK_COMMENT_BEGIN);
-        if (blockCommentToken == null) {
-            return javadocThrows;
+    /**
+     * Determines if the modifiers contains either public or protected and isn't abstract.
+     * @param modifiersToken Modifiers token.
+     * @return True if the method if public or protected and isn't abstract.
+     */
+    private boolean visibilityIsPublicOrProtectedAndNotAbstract(DetailAST modifiersToken) {
+        if (modifiersToken == null) {
+            return false;
+        }
+
+        for (DetailAST modifier = modifiersToken.getFirstChild(); modifier != null; modifier = modifier.getNextSibling()) {
+            if (modifier.getType() == TokenTypes.ABSTRACT) {
+                return false;
+            }
+
+            if (modifier.getType() == TokenTypes.LITERAL_PUBLIC || modifier.getType() == TokenTypes.LITERAL_PROTECTED) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if the comment is on a method, if so it searches for the documented Javadoc @throws statements.
+     * @param blockCommentToken Block comment token.
+     */
+    private void findJavadocThrows(DetailAST blockCommentToken) {
+        if (!BlockCommentPosition.isOnMethod(blockCommentToken)) {
+            return;
         }
 
         // Turn the DetailAST into a Javadoc DetailNode.
         DetailNode javadocNode = DetailNodeTreeStringPrinter.parseJavadocAsDetailNode(blockCommentToken);
         if (javadocNode == null) {
-            return  javadocThrows;
+            return;
         }
+
+        // Append the line number to differentiate overloads.
+        HashSet<String> javadocThrows = methodJavadocThrowsMapping.getOrDefault(currentMethodIdentifier, new HashSet<>());
 
         // Iterate through all the top level nodes in the Javadoc, looking for the @throws statements.
         for (DetailNode node : javadocNode.getChildren()) {
@@ -94,37 +137,39 @@ public class JavadocThrowsChecks extends AbstractCheck {
             }
         }
 
-        return javadocThrows;
+        methodJavadocThrowsMapping.put(currentMethodIdentifier, javadocThrows);
     }
 
     /**
-     * Traverses the method looking for all throw instances and verifies that the Javadoc has the throw type documented.
-     * @param methodToken Method definition node.
-     * @param javadocThrows Set of throws documented in the Javadoc.
+     * Checks if the throw statement has documentation in the Javadoc.
+     * @param throwToken Throw statement token.
      */
-    private void verifyDocumentedMethodThrows(DetailAST methodToken, Set<String> javadocThrows) {
-        HashMap<String, String> exceptionInstantiationTypes = new HashMap<>();
+    private void verifyThrowJavadoc(DetailAST throwToken) {
+        // Early out check for method that don't have Javadocs, they cannot have @throws documented.
+        HashSet<String> methodJavadocThrows = methodJavadocThrowsMapping.get(currentMethodIdentifier);
+        if (methodJavadocThrows == null) {
+            log(throwToken, MISSING_THROWS_TAG_MESSAGE);
+            return;
+        }
 
-        DetailAST methodBodyToken = methodToken.findFirstToken(TokenTypes.SLIST);
-        TokenUtil.forEachChild(methodBodyToken, TokenTypes.LITERAL_THROW, (throwToken) -> {
-            DetailAST throwingToken = throwToken.findFirstToken(TokenTypes.EXPR).getFirstChild();
-            if (throwingToken.getType() == TokenTypes.LITERAL_NEW) {
-                if (!javadocThrows.contains(throwingToken.getFirstChild().getText())) {
-                    log(throwingToken, MISSING_THROWS_TAG_MESSAGE);
-                }
-            } else {
-                log(throwToken, String.format("I'm throwing %s", throwingToken.getText()));
-            }
-        });
+        String throwType;
+        DetailAST throwExpression = throwToken.findFirstToken(TokenTypes.EXPR);
 
-        // The structure of the throw is LITERAL_THROW then EXPR
-        // If the EXPR has a LITERAL_NEW the first child of the new is the exception type.
-        // If the EXPR doesn't have a LITERAL_NEW the first child is the IDENT which is the name of the variable.
-        // - This is the trickier situation as the AST needs to get traversed upwards to find all instantiations of the exception.
+        // Check if the throw is constructing the exception or throwing an instantiated exception.
+        DetailAST literalNewToken = throwExpression.findFirstToken(TokenTypes.LITERAL_NEW);
+        if (literalNewToken != null) {
+            throwType = literalNewToken.findFirstToken(TokenTypes.IDENT).getText();
+        } else {
+            // Traverse back up the tree to find the type
+            throwType = findInstantiatedThrow(throwExpression.findFirstToken(TokenTypes.IDENT).getText());
+        }
 
+        if (!methodJavadocThrows.contains(throwType)) {
+            log(throwToken, MISSING_THROWS_TAG_MESSAGE);
+        }
     }
 
-    private void verifyDocumentMethodThrowsHelper(DetailAST node, Set<String> javadocThrows) {
-
+    private String findInstantiatedThrow(String variableName) {
+        return "";
     }
 }
