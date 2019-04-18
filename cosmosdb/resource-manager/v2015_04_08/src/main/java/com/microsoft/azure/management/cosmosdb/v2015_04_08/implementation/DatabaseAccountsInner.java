@@ -14,14 +14,22 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraKeyspaceCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraTableCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.ContainerCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountPatchParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountRegenerateKeyParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.ErrorResponseException;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.FailoverPolicies;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.FailoverPolicy;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabaseCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.KeyKind;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoCollectionCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDatabaseCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.RegionForOnlineOffline;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.TableCreateUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -171,6 +179,222 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listMetricDefinitions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/metricDefinitions")
         Observable<Response<ResponseBody>> listMetricDefinitions(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listSqlDatabases" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases")
+        Observable<Response<ResponseBody>> listSqlDatabases(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getSqlDatabase" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}")
+        Observable<Response<ResponseBody>> getSqlDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateSqlDatabase" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}")
+        Observable<Response<ResponseBody>> createUpdateSqlDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Body SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateSqlDatabase" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}")
+        Observable<Response<ResponseBody>> beginCreateUpdateSqlDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Body SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteSqlDatabase" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteSqlDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteSqlDatabase" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteSqlDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listSqlContainers" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}/containers")
+        Observable<Response<ResponseBody>> listSqlContainers(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getSqlContainer" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}/containers/{containerRid}")
+        Observable<Response<ResponseBody>> getSqlContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateSqlContainer" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}/containers/{containerRid}")
+        Observable<Response<ResponseBody>> createUpdateSqlContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Body ContainerCreateUpdateParameters createUpdateSqlContainerParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateSqlContainer" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}/containers/{containerRid}")
+        Observable<Response<ResponseBody>> beginCreateUpdateSqlContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Body ContainerCreateUpdateParameters createUpdateSqlContainerParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteSqlContainer" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}/containers/{containerRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteSqlContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteSqlContainer" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}/containers/{containerRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteSqlContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listMongoDatabases" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases")
+        Observable<Response<ResponseBody>> listMongoDatabases(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getMongoDatabase" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases/{databaseRid}")
+        Observable<Response<ResponseBody>> getMongoDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateMongoDatabase" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases/{databaseRid}")
+        Observable<Response<ResponseBody>> createUpdateMongoDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Body MongoDatabaseCreateUpdateParameters createUpdateMongoDatabaseParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateMongoDatabase" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases/{databaseRid}")
+        Observable<Response<ResponseBody>> beginCreateUpdateMongoDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Body MongoDatabaseCreateUpdateParameters createUpdateMongoDatabaseParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteMongoDatabase" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases/{databaseRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteMongoDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteMongoDatabase" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases/{databaseRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteMongoDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listMongoCollections" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases/{databaseRid}/collections")
+        Observable<Response<ResponseBody>> listMongoCollections(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getMongoCollection" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases/{databaseRid}/collections/{collectionRid}")
+        Observable<Response<ResponseBody>> getMongoCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("collectionRid") String collectionRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateMongoCollection" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases/{databaseRid}/collections/{collectionRid}")
+        Observable<Response<ResponseBody>> createUpdateMongoCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("collectionRid") String collectionRid, @Query("api-version") String apiVersion, @Body MongoCollectionCreateUpdateParameters createUpdateMongoCollectionParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateMongoCollection" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases/{databaseRid}/collections/{collectionRid}")
+        Observable<Response<ResponseBody>> beginCreateUpdateMongoCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("collectionRid") String collectionRid, @Query("api-version") String apiVersion, @Body MongoCollectionCreateUpdateParameters createUpdateMongoCollectionParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteMongoCollection" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases/{databaseRid}/collections/{collectionRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteMongoCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("collectionRid") String collectionRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteMongoCollection" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongo/databases/{databaseRid}/collections/{collectionRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteMongoCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("collectionRid") String collectionRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listTables" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables")
+        Observable<Response<ResponseBody>> listTables(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getTable" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables/{tableRid}")
+        Observable<Response<ResponseBody>> getTable(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("tableRid") String tableRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateTable" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables/{tableRid}")
+        Observable<Response<ResponseBody>> createUpdateTable(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("tableRid") String tableRid, @Query("api-version") String apiVersion, @Body TableCreateUpdateParameters createUpdateTableParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateTable" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables/{tableRid}")
+        Observable<Response<ResponseBody>> beginCreateUpdateTable(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("tableRid") String tableRid, @Query("api-version") String apiVersion, @Body TableCreateUpdateParameters createUpdateTableParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteTable" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables/{tableRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteTable(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("tableRid") String tableRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteTable" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables/{tableRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteTable(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("tableRid") String tableRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listCassandraKeyspaces" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces")
+        Observable<Response<ResponseBody>> listCassandraKeyspaces(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getCassandraKeyspace" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceRid}")
+        Observable<Response<ResponseBody>> getCassandraKeyspace(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceRid") String keyspaceRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateCassandraKeyspace" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceRid}")
+        Observable<Response<ResponseBody>> createUpdateCassandraKeyspace(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceRid") String keyspaceRid, @Query("api-version") String apiVersion, @Body CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateCassandraKeyspace" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceRid}")
+        Observable<Response<ResponseBody>> beginCreateUpdateCassandraKeyspace(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceRid") String keyspaceRid, @Query("api-version") String apiVersion, @Body CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteCassandraKeyspace" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteCassandraKeyspace(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceRid") String keyspaceRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteCassandraKeyspace" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteCassandraKeyspace(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceRid") String keyspaceRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listCassandraTables" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceRid}/tables")
+        Observable<Response<ResponseBody>> listCassandraTables(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceRid") String keyspaceRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getCassandraTable" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceRid}/tables/{tableRid}")
+        Observable<Response<ResponseBody>> getCassandraTable(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceRid") String keyspaceRid, @Path("tableRid") String tableRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateCassandraTable" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceRid}/tables/{tableRid}")
+        Observable<Response<ResponseBody>> createUpdateCassandraTable(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceRid") String keyspaceRid, @Path("tableRid") String tableRid, @Query("api-version") String apiVersion, @Body CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateCassandraTable" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceRid}/tables/{tableRid}")
+        Observable<Response<ResponseBody>> beginCreateUpdateCassandraTable(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceRid") String keyspaceRid, @Path("tableRid") String tableRid, @Query("api-version") String apiVersion, @Body CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteCassandraTable" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceRid}/tables/{tableRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteCassandraTable(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceRid") String keyspaceRid, @Path("tableRid") String tableRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteCassandraTable" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceRid}/tables/{tableRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteCassandraTable(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("keyspaceRid") String keyspaceRid, @Path("tableRid") String tableRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listGremlinDatabases" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases")
+        Observable<Response<ResponseBody>> listGremlinDatabases(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getGremlinDatabase" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}")
+        Observable<Response<ResponseBody>> getGremlinDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateGremlinDatabase" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}")
+        Observable<Response<ResponseBody>> createUpdateGremlinDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Body GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateGremlinDatabase" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}")
+        Observable<Response<ResponseBody>> beginCreateUpdateGremlinDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Body GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteGremlinDatabase" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteGremlinDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteGremlinDatabase" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteGremlinDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listGremlinContainers" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers")
+        Observable<Response<ResponseBody>> listGremlinContainers(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getGremlinContainer" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}")
+        Observable<Response<ResponseBody>> getGremlinContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateGremlinContainer" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}")
+        Observable<Response<ResponseBody>> createUpdateGremlinContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Body ContainerCreateUpdateParameters createUpdateGremlinContainerParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateGremlinContainer" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}")
+        Observable<Response<ResponseBody>> beginCreateUpdateGremlinContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Body ContainerCreateUpdateParameters createUpdateGremlinContainerParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteGremlinContainer" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteGremlinContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteGremlinContainer" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteGremlinContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -2315,7 +2539,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Retrieves metric defintions for the given database account.
+     * Retrieves metric definitions for the given database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -2329,7 +2553,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Retrieves metric defintions for the given database account.
+     * Retrieves metric definitions for the given database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -2342,7 +2566,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Retrieves metric defintions for the given database account.
+     * Retrieves metric definitions for the given database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -2359,7 +2583,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Retrieves metric defintions for the given database account.
+     * Retrieves metric definitions for the given database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -2401,6 +2625,5016 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     private ServiceResponse<PageImpl<MetricDefinitionInner>> listMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<MetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the SQL databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;SqlDatabaseInner&gt; object if successful.
+     */
+    public List<SqlDatabaseInner> listSqlDatabases(String resourceGroupName, String accountName) {
+        return listSqlDatabasesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the SQL databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SqlDatabaseInner>> listSqlDatabasesAsync(String resourceGroupName, String accountName, final ServiceCallback<List<SqlDatabaseInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listSqlDatabasesWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Lists the SQL databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SqlDatabaseInner&gt; object
+     */
+    public Observable<List<SqlDatabaseInner>> listSqlDatabasesAsync(String resourceGroupName, String accountName) {
+        return listSqlDatabasesWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<List<SqlDatabaseInner>>, List<SqlDatabaseInner>>() {
+            @Override
+            public List<SqlDatabaseInner> call(ServiceResponse<List<SqlDatabaseInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the SQL databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SqlDatabaseInner&gt; object
+     */
+    public Observable<ServiceResponse<List<SqlDatabaseInner>>> listSqlDatabasesWithServiceResponseAsync(String resourceGroupName, String accountName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSqlDatabases(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SqlDatabaseInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<SqlDatabaseInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SqlDatabaseInner>> result = listSqlDatabasesDelegate(response);
+                        List<SqlDatabaseInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<SqlDatabaseInner>> clientResponse = new ServiceResponse<List<SqlDatabaseInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SqlDatabaseInner>> listSqlDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlDatabaseInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SqlDatabaseInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the SQL databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlDatabaseInner object if successful.
+     */
+    public SqlDatabaseInner getSqlDatabase(String resourceGroupName, String accountName, String databaseRid) {
+        return getSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the SQL databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlDatabaseInner> getSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<SqlDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Gets the SQL databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlDatabaseInner object
+     */
+    public Observable<SqlDatabaseInner> getSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return getSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<SqlDatabaseInner>, SqlDatabaseInner>() {
+            @Override
+            public SqlDatabaseInner call(ServiceResponse<SqlDatabaseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the SQL databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlDatabaseInner object
+     */
+    public Observable<ServiceResponse<SqlDatabaseInner>> getSqlDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getSqlDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SqlDatabaseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SqlDatabaseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SqlDatabaseInner> clientResponse = getSqlDatabaseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SqlDatabaseInner> getSqlDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlDatabaseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SqlDatabaseInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlDatabaseInner object if successful.
+     */
+    public SqlDatabaseInner createUpdateSqlDatabase(String resourceGroupName, String accountName, String databaseRid, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+        return createUpdateSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateSqlDatabaseParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlDatabaseInner> createUpdateSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, final ServiceCallback<SqlDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateSqlDatabaseParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<SqlDatabaseInner> createUpdateSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+        return createUpdateSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateSqlDatabaseParameters).map(new Func1<ServiceResponse<SqlDatabaseInner>, SqlDatabaseInner>() {
+            @Override
+            public SqlDatabaseInner call(ServiceResponse<SqlDatabaseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SqlDatabaseInner>> createUpdateSqlDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateSqlDatabaseParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateSqlDatabaseParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateSqlDatabaseParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateSqlDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), createUpdateSqlDatabaseParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<SqlDatabaseInner>() { }.getType());
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlDatabaseInner object if successful.
+     */
+    public SqlDatabaseInner beginCreateUpdateSqlDatabase(String resourceGroupName, String accountName, String databaseRid, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+        return beginCreateUpdateSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateSqlDatabaseParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlDatabaseInner> beginCreateUpdateSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, final ServiceCallback<SqlDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateSqlDatabaseParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlDatabaseInner object
+     */
+    public Observable<SqlDatabaseInner> beginCreateUpdateSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+        return beginCreateUpdateSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateSqlDatabaseParameters).map(new Func1<ServiceResponse<SqlDatabaseInner>, SqlDatabaseInner>() {
+            @Override
+            public SqlDatabaseInner call(ServiceResponse<SqlDatabaseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateSqlDatabaseParameters The parameters to provide for the current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlDatabaseInner object
+     */
+    public Observable<ServiceResponse<SqlDatabaseInner>> beginCreateUpdateSqlDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateSqlDatabaseParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateSqlDatabaseParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateSqlDatabaseParameters);
+        return service.beginCreateUpdateSqlDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), createUpdateSqlDatabaseParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SqlDatabaseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SqlDatabaseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SqlDatabaseInner> clientResponse = beginCreateUpdateSqlDatabaseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SqlDatabaseInner> beginCreateUpdateSqlDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlDatabaseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SqlDatabaseInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteSqlDatabase(String resourceGroupName, String accountName, String databaseRid) {
+        deleteSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return deleteSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteSqlDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteSqlDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteSqlDatabase(String resourceGroupName, String accountName, String databaseRid) {
+        beginDeleteSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return beginDeleteSqlDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteSqlDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDeleteSqlDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteSqlDatabaseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteSqlDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;ContainerInner&gt; object if successful.
+     */
+    public List<ContainerInner> listSqlContainers(String resourceGroupName, String accountName, String databaseRid) {
+        return listSqlContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ContainerInner>> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<List<ContainerInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listSqlContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Lists the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;ContainerInner&gt; object
+     */
+    public Observable<List<ContainerInner>> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return listSqlContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<List<ContainerInner>>, List<ContainerInner>>() {
+            @Override
+            public List<ContainerInner> call(ServiceResponse<List<ContainerInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;ContainerInner&gt; object
+     */
+    public Observable<ServiceResponse<List<ContainerInner>>> listSqlContainersWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSqlContainers(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ContainerInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<ContainerInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ContainerInner>> result = listSqlContainersDelegate(response);
+                        List<ContainerInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<ContainerInner>> clientResponse = new ServiceResponse<List<ContainerInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ContainerInner>> listSqlContainersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ContainerInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ContainerInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ContainerInner object if successful.
+     */
+    public ContainerInner getSqlContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        return getSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ContainerInner> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, final ServiceCallback<ContainerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid), serviceCallback);
+    }
+
+    /**
+     * Gets the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ContainerInner object
+     */
+    public Observable<ContainerInner> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        return getSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+            @Override
+            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ContainerInner object
+     */
+    public Observable<ServiceResponse<ContainerInner>> getSqlContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (containerRid == null) {
+            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getSqlContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ContainerInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ContainerInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ContainerInner> clientResponse = getSqlContainerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ContainerInner> getSqlContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ContainerInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ContainerInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ContainerInner object if successful.
+     */
+    public ContainerInner createUpdateSqlContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return createUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ContainerInner> createUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters, final ServiceCallback<ContainerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ContainerInner> createUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return createUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+            @Override
+            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ContainerInner>> createUpdateSqlContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (containerRid == null) {
+            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateSqlContainerParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateSqlContainerParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateSqlContainerParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateSqlContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), createUpdateSqlContainerParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ContainerInner>() { }.getType());
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ContainerInner object if successful.
+     */
+    public ContainerInner beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return beginCreateUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ContainerInner> beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters, final ServiceCallback<ContainerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ContainerInner object
+     */
+    public Observable<ContainerInner> beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return beginCreateUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+            @Override
+            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ContainerInner object
+     */
+    public Observable<ServiceResponse<ContainerInner>> beginCreateUpdateSqlContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (containerRid == null) {
+            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateSqlContainerParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateSqlContainerParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateSqlContainerParameters);
+        return service.beginCreateUpdateSqlContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), createUpdateSqlContainerParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ContainerInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ContainerInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ContainerInner> clientResponse = beginCreateUpdateSqlContainerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ContainerInner> beginCreateUpdateSqlContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ContainerInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ContainerInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteSqlContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        deleteSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        return deleteSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteSqlContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (containerRid == null) {
+            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteSqlContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteSqlContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        beginDeleteSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        return beginDeleteSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteSqlContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (containerRid == null) {
+            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDeleteSqlContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteSqlContainerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteSqlContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the Mongo databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;MongoDatabaseInner&gt; object if successful.
+     */
+    public List<MongoDatabaseInner> listMongoDatabases(String resourceGroupName, String accountName) {
+        return listMongoDatabasesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the Mongo databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<MongoDatabaseInner>> listMongoDatabasesAsync(String resourceGroupName, String accountName, final ServiceCallback<List<MongoDatabaseInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listMongoDatabasesWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Lists the Mongo databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;MongoDatabaseInner&gt; object
+     */
+    public Observable<List<MongoDatabaseInner>> listMongoDatabasesAsync(String resourceGroupName, String accountName) {
+        return listMongoDatabasesWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<List<MongoDatabaseInner>>, List<MongoDatabaseInner>>() {
+            @Override
+            public List<MongoDatabaseInner> call(ServiceResponse<List<MongoDatabaseInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the Mongo databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;MongoDatabaseInner&gt; object
+     */
+    public Observable<ServiceResponse<List<MongoDatabaseInner>>> listMongoDatabasesWithServiceResponseAsync(String resourceGroupName, String accountName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listMongoDatabases(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<MongoDatabaseInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<MongoDatabaseInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MongoDatabaseInner>> result = listMongoDatabasesDelegate(response);
+                        List<MongoDatabaseInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<MongoDatabaseInner>> clientResponse = new ServiceResponse<List<MongoDatabaseInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MongoDatabaseInner>> listMongoDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<MongoDatabaseInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<MongoDatabaseInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Mongo databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MongoDatabaseInner object if successful.
+     */
+    public MongoDatabaseInner getMongoDatabase(String resourceGroupName, String accountName, String databaseRid) {
+        return getMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Mongo databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MongoDatabaseInner> getMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<MongoDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Gets the Mongo databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MongoDatabaseInner object
+     */
+    public Observable<MongoDatabaseInner> getMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return getMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<MongoDatabaseInner>, MongoDatabaseInner>() {
+            @Override
+            public MongoDatabaseInner call(ServiceResponse<MongoDatabaseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Mongo databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MongoDatabaseInner object
+     */
+    public Observable<ServiceResponse<MongoDatabaseInner>> getMongoDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getMongoDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongoDatabaseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MongoDatabaseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MongoDatabaseInner> clientResponse = getMongoDatabaseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MongoDatabaseInner> getMongoDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MongoDatabaseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MongoDatabaseInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateMongoDatabaseParameters The parameters to provide for the current Mongo database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MongoDatabaseInner object if successful.
+     */
+    public MongoDatabaseInner createUpdateMongoDatabase(String resourceGroupName, String accountName, String databaseRid, MongoDatabaseCreateUpdateParameters createUpdateMongoDatabaseParameters) {
+        return createUpdateMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateMongoDatabaseParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateMongoDatabaseParameters The parameters to provide for the current Mongo database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MongoDatabaseInner> createUpdateMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, MongoDatabaseCreateUpdateParameters createUpdateMongoDatabaseParameters, final ServiceCallback<MongoDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateMongoDatabaseParameters), serviceCallback);
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateMongoDatabaseParameters The parameters to provide for the current Mongo database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<MongoDatabaseInner> createUpdateMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, MongoDatabaseCreateUpdateParameters createUpdateMongoDatabaseParameters) {
+        return createUpdateMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateMongoDatabaseParameters).map(new Func1<ServiceResponse<MongoDatabaseInner>, MongoDatabaseInner>() {
+            @Override
+            public MongoDatabaseInner call(ServiceResponse<MongoDatabaseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateMongoDatabaseParameters The parameters to provide for the current Mongo database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<MongoDatabaseInner>> createUpdateMongoDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, MongoDatabaseCreateUpdateParameters createUpdateMongoDatabaseParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateMongoDatabaseParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateMongoDatabaseParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateMongoDatabaseParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateMongoDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), createUpdateMongoDatabaseParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<MongoDatabaseInner>() { }.getType());
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateMongoDatabaseParameters The parameters to provide for the current Mongo database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MongoDatabaseInner object if successful.
+     */
+    public MongoDatabaseInner beginCreateUpdateMongoDatabase(String resourceGroupName, String accountName, String databaseRid, MongoDatabaseCreateUpdateParameters createUpdateMongoDatabaseParameters) {
+        return beginCreateUpdateMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateMongoDatabaseParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateMongoDatabaseParameters The parameters to provide for the current Mongo database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MongoDatabaseInner> beginCreateUpdateMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, MongoDatabaseCreateUpdateParameters createUpdateMongoDatabaseParameters, final ServiceCallback<MongoDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateMongoDatabaseParameters), serviceCallback);
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateMongoDatabaseParameters The parameters to provide for the current Mongo database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MongoDatabaseInner object
+     */
+    public Observable<MongoDatabaseInner> beginCreateUpdateMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, MongoDatabaseCreateUpdateParameters createUpdateMongoDatabaseParameters) {
+        return beginCreateUpdateMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateMongoDatabaseParameters).map(new Func1<ServiceResponse<MongoDatabaseInner>, MongoDatabaseInner>() {
+            @Override
+            public MongoDatabaseInner call(ServiceResponse<MongoDatabaseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateMongoDatabaseParameters The parameters to provide for the current Mongo database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MongoDatabaseInner object
+     */
+    public Observable<ServiceResponse<MongoDatabaseInner>> beginCreateUpdateMongoDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, MongoDatabaseCreateUpdateParameters createUpdateMongoDatabaseParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateMongoDatabaseParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateMongoDatabaseParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateMongoDatabaseParameters);
+        return service.beginCreateUpdateMongoDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), createUpdateMongoDatabaseParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongoDatabaseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MongoDatabaseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MongoDatabaseInner> clientResponse = beginCreateUpdateMongoDatabaseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MongoDatabaseInner> beginCreateUpdateMongoDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MongoDatabaseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MongoDatabaseInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteMongoDatabase(String resourceGroupName, String accountName, String databaseRid) {
+        deleteMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return deleteMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteMongoDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteMongoDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteMongoDatabase(String resourceGroupName, String accountName, String databaseRid) {
+        beginDeleteMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return beginDeleteMongoDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteMongoDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDeleteMongoDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteMongoDatabaseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteMongoDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the Mongo collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;MongoCollectionInner&gt; object if successful.
+     */
+    public List<MongoCollectionInner> listMongoCollections(String resourceGroupName, String accountName, String databaseRid) {
+        return listMongoCollectionsWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the Mongo collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<MongoCollectionInner>> listMongoCollectionsAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<List<MongoCollectionInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listMongoCollectionsWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Lists the Mongo collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;MongoCollectionInner&gt; object
+     */
+    public Observable<List<MongoCollectionInner>> listMongoCollectionsAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return listMongoCollectionsWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<List<MongoCollectionInner>>, List<MongoCollectionInner>>() {
+            @Override
+            public List<MongoCollectionInner> call(ServiceResponse<List<MongoCollectionInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the Mongo collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;MongoCollectionInner&gt; object
+     */
+    public Observable<ServiceResponse<List<MongoCollectionInner>>> listMongoCollectionsWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listMongoCollections(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<MongoCollectionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<MongoCollectionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MongoCollectionInner>> result = listMongoCollectionsDelegate(response);
+                        List<MongoCollectionInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<MongoCollectionInner>> clientResponse = new ServiceResponse<List<MongoCollectionInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MongoCollectionInner>> listMongoCollectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<MongoCollectionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<MongoCollectionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Mongo collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MongoCollectionInner object if successful.
+     */
+    public MongoCollectionInner getMongoCollection(String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+        return getMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Mongo collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MongoCollectionInner> getMongoCollectionAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, final ServiceCallback<MongoCollectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid), serviceCallback);
+    }
+
+    /**
+     * Gets the Mongo collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MongoCollectionInner object
+     */
+    public Observable<MongoCollectionInner> getMongoCollectionAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+        return getMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid).map(new Func1<ServiceResponse<MongoCollectionInner>, MongoCollectionInner>() {
+            @Override
+            public MongoCollectionInner call(ServiceResponse<MongoCollectionInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Mongo collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MongoCollectionInner object
+     */
+    public Observable<ServiceResponse<MongoCollectionInner>> getMongoCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (collectionRid == null) {
+            throw new IllegalArgumentException("Parameter collectionRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getMongoCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, collectionRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongoCollectionInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MongoCollectionInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MongoCollectionInner> clientResponse = getMongoCollectionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MongoCollectionInner> getMongoCollectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MongoCollectionInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MongoCollectionInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param createUpdateMongoCollectionParameters The parameters to provide for the current Mongo Collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MongoCollectionInner object if successful.
+     */
+    public MongoCollectionInner createUpdateMongoCollection(String resourceGroupName, String accountName, String databaseRid, String collectionRid, MongoCollectionCreateUpdateParameters createUpdateMongoCollectionParameters) {
+        return createUpdateMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid, createUpdateMongoCollectionParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param createUpdateMongoCollectionParameters The parameters to provide for the current Mongo Collection.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MongoCollectionInner> createUpdateMongoCollectionAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, MongoCollectionCreateUpdateParameters createUpdateMongoCollectionParameters, final ServiceCallback<MongoCollectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid, createUpdateMongoCollectionParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param createUpdateMongoCollectionParameters The parameters to provide for the current Mongo Collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<MongoCollectionInner> createUpdateMongoCollectionAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, MongoCollectionCreateUpdateParameters createUpdateMongoCollectionParameters) {
+        return createUpdateMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid, createUpdateMongoCollectionParameters).map(new Func1<ServiceResponse<MongoCollectionInner>, MongoCollectionInner>() {
+            @Override
+            public MongoCollectionInner call(ServiceResponse<MongoCollectionInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param createUpdateMongoCollectionParameters The parameters to provide for the current Mongo Collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<MongoCollectionInner>> createUpdateMongoCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, MongoCollectionCreateUpdateParameters createUpdateMongoCollectionParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (collectionRid == null) {
+            throw new IllegalArgumentException("Parameter collectionRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateMongoCollectionParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateMongoCollectionParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateMongoCollectionParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateMongoCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, collectionRid, this.client.apiVersion(), createUpdateMongoCollectionParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<MongoCollectionInner>() { }.getType());
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param createUpdateMongoCollectionParameters The parameters to provide for the current Mongo Collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MongoCollectionInner object if successful.
+     */
+    public MongoCollectionInner beginCreateUpdateMongoCollection(String resourceGroupName, String accountName, String databaseRid, String collectionRid, MongoCollectionCreateUpdateParameters createUpdateMongoCollectionParameters) {
+        return beginCreateUpdateMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid, createUpdateMongoCollectionParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param createUpdateMongoCollectionParameters The parameters to provide for the current Mongo Collection.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MongoCollectionInner> beginCreateUpdateMongoCollectionAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, MongoCollectionCreateUpdateParameters createUpdateMongoCollectionParameters, final ServiceCallback<MongoCollectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid, createUpdateMongoCollectionParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param createUpdateMongoCollectionParameters The parameters to provide for the current Mongo Collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MongoCollectionInner object
+     */
+    public Observable<MongoCollectionInner> beginCreateUpdateMongoCollectionAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, MongoCollectionCreateUpdateParameters createUpdateMongoCollectionParameters) {
+        return beginCreateUpdateMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid, createUpdateMongoCollectionParameters).map(new Func1<ServiceResponse<MongoCollectionInner>, MongoCollectionInner>() {
+            @Override
+            public MongoCollectionInner call(ServiceResponse<MongoCollectionInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param createUpdateMongoCollectionParameters The parameters to provide for the current Mongo Collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MongoCollectionInner object
+     */
+    public Observable<ServiceResponse<MongoCollectionInner>> beginCreateUpdateMongoCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, MongoCollectionCreateUpdateParameters createUpdateMongoCollectionParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (collectionRid == null) {
+            throw new IllegalArgumentException("Parameter collectionRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateMongoCollectionParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateMongoCollectionParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateMongoCollectionParameters);
+        return service.beginCreateUpdateMongoCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, collectionRid, this.client.apiVersion(), createUpdateMongoCollectionParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongoCollectionInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MongoCollectionInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MongoCollectionInner> clientResponse = beginCreateUpdateMongoCollectionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MongoCollectionInner> beginCreateUpdateMongoCollectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MongoCollectionInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MongoCollectionInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteMongoCollection(String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+        deleteMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteMongoCollectionAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteMongoCollectionAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+        return deleteMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteMongoCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (collectionRid == null) {
+            throw new IllegalArgumentException("Parameter collectionRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteMongoCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, collectionRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteMongoCollection(String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+        beginDeleteMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteMongoCollectionAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteMongoCollectionAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+        return beginDeleteMongoCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, collectionRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Mongo Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteMongoCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (collectionRid == null) {
+            throw new IllegalArgumentException("Parameter collectionRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDeleteMongoCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, collectionRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteMongoCollectionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteMongoCollectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the Tables under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;TableInner&gt; object if successful.
+     */
+    public List<TableInner> listTables(String resourceGroupName, String accountName) {
+        return listTablesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the Tables under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<TableInner>> listTablesAsync(String resourceGroupName, String accountName, final ServiceCallback<List<TableInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listTablesWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Lists the Tables under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;TableInner&gt; object
+     */
+    public Observable<List<TableInner>> listTablesAsync(String resourceGroupName, String accountName) {
+        return listTablesWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<List<TableInner>>, List<TableInner>>() {
+            @Override
+            public List<TableInner> call(ServiceResponse<List<TableInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the Tables under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;TableInner&gt; object
+     */
+    public Observable<ServiceResponse<List<TableInner>>> listTablesWithServiceResponseAsync(String resourceGroupName, String accountName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listTables(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<TableInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<TableInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<TableInner>> result = listTablesDelegate(response);
+                        List<TableInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<TableInner>> clientResponse = new ServiceResponse<List<TableInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<TableInner>> listTablesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TableInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<TableInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Tables under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TableInner object if successful.
+     */
+    public TableInner getTable(String resourceGroupName, String accountName, String tableRid) {
+        return getTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Tables under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<TableInner> getTableAsync(String resourceGroupName, String accountName, String tableRid, final ServiceCallback<TableInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid), serviceCallback);
+    }
+
+    /**
+     * Gets the Tables under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TableInner object
+     */
+    public Observable<TableInner> getTableAsync(String resourceGroupName, String accountName, String tableRid) {
+        return getTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid).map(new Func1<ServiceResponse<TableInner>, TableInner>() {
+            @Override
+            public TableInner call(ServiceResponse<TableInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Tables under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TableInner object
+     */
+    public Observable<ServiceResponse<TableInner>> getTableWithServiceResponseAsync(String resourceGroupName, String accountName, String tableRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (tableRid == null) {
+            throw new IllegalArgumentException("Parameter tableRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getTable(this.client.subscriptionId(), resourceGroupName, accountName, tableRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TableInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TableInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TableInner> clientResponse = getTableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<TableInner> getTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TableInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<TableInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TableInner object if successful.
+     */
+    public TableInner createUpdateTable(String resourceGroupName, String accountName, String tableRid, TableCreateUpdateParameters createUpdateTableParameters) {
+        return createUpdateTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid, createUpdateTableParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<TableInner> createUpdateTableAsync(String resourceGroupName, String accountName, String tableRid, TableCreateUpdateParameters createUpdateTableParameters, final ServiceCallback<TableInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid, createUpdateTableParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<TableInner> createUpdateTableAsync(String resourceGroupName, String accountName, String tableRid, TableCreateUpdateParameters createUpdateTableParameters) {
+        return createUpdateTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid, createUpdateTableParameters).map(new Func1<ServiceResponse<TableInner>, TableInner>() {
+            @Override
+            public TableInner call(ServiceResponse<TableInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<TableInner>> createUpdateTableWithServiceResponseAsync(String resourceGroupName, String accountName, String tableRid, TableCreateUpdateParameters createUpdateTableParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (tableRid == null) {
+            throw new IllegalArgumentException("Parameter tableRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateTableParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateTableParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateTableParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateTable(this.client.subscriptionId(), resourceGroupName, accountName, tableRid, this.client.apiVersion(), createUpdateTableParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<TableInner>() { }.getType());
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TableInner object if successful.
+     */
+    public TableInner beginCreateUpdateTable(String resourceGroupName, String accountName, String tableRid, TableCreateUpdateParameters createUpdateTableParameters) {
+        return beginCreateUpdateTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid, createUpdateTableParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<TableInner> beginCreateUpdateTableAsync(String resourceGroupName, String accountName, String tableRid, TableCreateUpdateParameters createUpdateTableParameters, final ServiceCallback<TableInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid, createUpdateTableParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TableInner object
+     */
+    public Observable<TableInner> beginCreateUpdateTableAsync(String resourceGroupName, String accountName, String tableRid, TableCreateUpdateParameters createUpdateTableParameters) {
+        return beginCreateUpdateTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid, createUpdateTableParameters).map(new Func1<ServiceResponse<TableInner>, TableInner>() {
+            @Override
+            public TableInner call(ServiceResponse<TableInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateTableParameters The parameters to provide for the current Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TableInner object
+     */
+    public Observable<ServiceResponse<TableInner>> beginCreateUpdateTableWithServiceResponseAsync(String resourceGroupName, String accountName, String tableRid, TableCreateUpdateParameters createUpdateTableParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (tableRid == null) {
+            throw new IllegalArgumentException("Parameter tableRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateTableParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateTableParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateTableParameters);
+        return service.beginCreateUpdateTable(this.client.subscriptionId(), resourceGroupName, accountName, tableRid, this.client.apiVersion(), createUpdateTableParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TableInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TableInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TableInner> clientResponse = beginCreateUpdateTableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<TableInner> beginCreateUpdateTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TableInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<TableInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteTable(String resourceGroupName, String accountName, String tableRid) {
+        deleteTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteTableAsync(String resourceGroupName, String accountName, String tableRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteTableAsync(String resourceGroupName, String accountName, String tableRid) {
+        return deleteTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteTableWithServiceResponseAsync(String resourceGroupName, String accountName, String tableRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (tableRid == null) {
+            throw new IllegalArgumentException("Parameter tableRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteTable(this.client.subscriptionId(), resourceGroupName, accountName, tableRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteTable(String resourceGroupName, String accountName, String tableRid) {
+        beginDeleteTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteTableAsync(String resourceGroupName, String accountName, String tableRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteTableAsync(String resourceGroupName, String accountName, String tableRid) {
+        return beginDeleteTableWithServiceResponseAsync(resourceGroupName, accountName, tableRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteTableWithServiceResponseAsync(String resourceGroupName, String accountName, String tableRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (tableRid == null) {
+            throw new IllegalArgumentException("Parameter tableRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDeleteTable(this.client.subscriptionId(), resourceGroupName, accountName, tableRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteTableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;CassandraKeyspaceInner&gt; object if successful.
+     */
+    public List<CassandraKeyspaceInner> listCassandraKeyspaces(String resourceGroupName, String accountName) {
+        return listCassandraKeyspacesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CassandraKeyspaceInner>> listCassandraKeyspacesAsync(String resourceGroupName, String accountName, final ServiceCallback<List<CassandraKeyspaceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listCassandraKeyspacesWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;CassandraKeyspaceInner&gt; object
+     */
+    public Observable<List<CassandraKeyspaceInner>> listCassandraKeyspacesAsync(String resourceGroupName, String accountName) {
+        return listCassandraKeyspacesWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<List<CassandraKeyspaceInner>>, List<CassandraKeyspaceInner>>() {
+            @Override
+            public List<CassandraKeyspaceInner> call(ServiceResponse<List<CassandraKeyspaceInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;CassandraKeyspaceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<CassandraKeyspaceInner>>> listCassandraKeyspacesWithServiceResponseAsync(String resourceGroupName, String accountName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listCassandraKeyspaces(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<CassandraKeyspaceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<CassandraKeyspaceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CassandraKeyspaceInner>> result = listCassandraKeyspacesDelegate(response);
+                        List<CassandraKeyspaceInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<CassandraKeyspaceInner>> clientResponse = new ServiceResponse<List<CassandraKeyspaceInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<CassandraKeyspaceInner>> listCassandraKeyspacesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CassandraKeyspaceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<CassandraKeyspaceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CassandraKeyspaceInner object if successful.
+     */
+    public CassandraKeyspaceInner getCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceRid) {
+        return getCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CassandraKeyspaceInner> getCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid, final ServiceCallback<CassandraKeyspaceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid), serviceCallback);
+    }
+
+    /**
+     * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CassandraKeyspaceInner object
+     */
+    public Observable<CassandraKeyspaceInner> getCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid) {
+        return getCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid).map(new Func1<ServiceResponse<CassandraKeyspaceInner>, CassandraKeyspaceInner>() {
+            @Override
+            public CassandraKeyspaceInner call(ServiceResponse<CassandraKeyspaceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CassandraKeyspaceInner object
+     */
+    public Observable<ServiceResponse<CassandraKeyspaceInner>> getCassandraKeyspaceWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceRid == null) {
+            throw new IllegalArgumentException("Parameter keyspaceRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getCassandraKeyspace(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CassandraKeyspaceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CassandraKeyspaceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CassandraKeyspaceInner> clientResponse = getCassandraKeyspaceDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CassandraKeyspaceInner> getCassandraKeyspaceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CassandraKeyspaceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CassandraKeyspaceInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CassandraKeyspaceInner object if successful.
+     */
+    public CassandraKeyspaceInner createUpdateCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceRid, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
+        return createUpdateCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, createUpdateCassandraKeyspaceParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CassandraKeyspaceInner> createUpdateCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters, final ServiceCallback<CassandraKeyspaceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, createUpdateCassandraKeyspaceParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<CassandraKeyspaceInner> createUpdateCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
+        return createUpdateCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, createUpdateCassandraKeyspaceParameters).map(new Func1<ServiceResponse<CassandraKeyspaceInner>, CassandraKeyspaceInner>() {
+            @Override
+            public CassandraKeyspaceInner call(ServiceResponse<CassandraKeyspaceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<CassandraKeyspaceInner>> createUpdateCassandraKeyspaceWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceRid, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceRid == null) {
+            throw new IllegalArgumentException("Parameter keyspaceRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateCassandraKeyspaceParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateCassandraKeyspaceParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateCassandraKeyspaceParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateCassandraKeyspace(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceRid, this.client.apiVersion(), createUpdateCassandraKeyspaceParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<CassandraKeyspaceInner>() { }.getType());
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CassandraKeyspaceInner object if successful.
+     */
+    public CassandraKeyspaceInner beginCreateUpdateCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceRid, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
+        return beginCreateUpdateCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, createUpdateCassandraKeyspaceParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CassandraKeyspaceInner> beginCreateUpdateCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters, final ServiceCallback<CassandraKeyspaceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, createUpdateCassandraKeyspaceParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CassandraKeyspaceInner object
+     */
+    public Observable<CassandraKeyspaceInner> beginCreateUpdateCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
+        return beginCreateUpdateCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, createUpdateCassandraKeyspaceParameters).map(new Func1<ServiceResponse<CassandraKeyspaceInner>, CassandraKeyspaceInner>() {
+            @Override
+            public CassandraKeyspaceInner call(ServiceResponse<CassandraKeyspaceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CassandraKeyspaceInner object
+     */
+    public Observable<ServiceResponse<CassandraKeyspaceInner>> beginCreateUpdateCassandraKeyspaceWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceRid, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceRid == null) {
+            throw new IllegalArgumentException("Parameter keyspaceRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateCassandraKeyspaceParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateCassandraKeyspaceParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateCassandraKeyspaceParameters);
+        return service.beginCreateUpdateCassandraKeyspace(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceRid, this.client.apiVersion(), createUpdateCassandraKeyspaceParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CassandraKeyspaceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CassandraKeyspaceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CassandraKeyspaceInner> clientResponse = beginCreateUpdateCassandraKeyspaceDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CassandraKeyspaceInner> beginCreateUpdateCassandraKeyspaceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CassandraKeyspaceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CassandraKeyspaceInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceRid) {
+        deleteCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid) {
+        return deleteCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteCassandraKeyspaceWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceRid == null) {
+            throw new IllegalArgumentException("Parameter keyspaceRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteCassandraKeyspace(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceRid) {
+        beginDeleteCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid) {
+        return beginDeleteCassandraKeyspaceWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteCassandraKeyspaceWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceRid == null) {
+            throw new IllegalArgumentException("Parameter keyspaceRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDeleteCassandraKeyspace(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteCassandraKeyspaceDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteCassandraKeyspaceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the Cassandra table under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;CassandraTableInner&gt; object if successful.
+     */
+    public List<CassandraTableInner> listCassandraTables(String resourceGroupName, String accountName, String keyspaceRid) {
+        return listCassandraTablesWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the Cassandra table under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CassandraTableInner>> listCassandraTablesAsync(String resourceGroupName, String accountName, String keyspaceRid, final ServiceCallback<List<CassandraTableInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listCassandraTablesWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid), serviceCallback);
+    }
+
+    /**
+     * Lists the Cassandra table under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;CassandraTableInner&gt; object
+     */
+    public Observable<List<CassandraTableInner>> listCassandraTablesAsync(String resourceGroupName, String accountName, String keyspaceRid) {
+        return listCassandraTablesWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid).map(new Func1<ServiceResponse<List<CassandraTableInner>>, List<CassandraTableInner>>() {
+            @Override
+            public List<CassandraTableInner> call(ServiceResponse<List<CassandraTableInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the Cassandra table under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;CassandraTableInner&gt; object
+     */
+    public Observable<ServiceResponse<List<CassandraTableInner>>> listCassandraTablesWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceRid == null) {
+            throw new IllegalArgumentException("Parameter keyspaceRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listCassandraTables(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<CassandraTableInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<CassandraTableInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CassandraTableInner>> result = listCassandraTablesDelegate(response);
+                        List<CassandraTableInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<CassandraTableInner>> clientResponse = new ServiceResponse<List<CassandraTableInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<CassandraTableInner>> listCassandraTablesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CassandraTableInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<CassandraTableInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Cassandra table under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CassandraTableInner object if successful.
+     */
+    public CassandraTableInner getCassandraTable(String resourceGroupName, String accountName, String keyspaceRid, String tableRid) {
+        return getCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Cassandra table under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CassandraTableInner> getCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, final ServiceCallback<CassandraTableInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid), serviceCallback);
+    }
+
+    /**
+     * Gets the Cassandra table under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CassandraTableInner object
+     */
+    public Observable<CassandraTableInner> getCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid) {
+        return getCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid).map(new Func1<ServiceResponse<CassandraTableInner>, CassandraTableInner>() {
+            @Override
+            public CassandraTableInner call(ServiceResponse<CassandraTableInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Cassandra table under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CassandraTableInner object
+     */
+    public Observable<ServiceResponse<CassandraTableInner>> getCassandraTableWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceRid == null) {
+            throw new IllegalArgumentException("Parameter keyspaceRid is required and cannot be null.");
+        }
+        if (tableRid == null) {
+            throw new IllegalArgumentException("Parameter tableRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getCassandraTable(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceRid, tableRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CassandraTableInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CassandraTableInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CassandraTableInner> clientResponse = getCassandraTableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CassandraTableInner> getCassandraTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CassandraTableInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CassandraTableInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CassandraTableInner object if successful.
+     */
+    public CassandraTableInner createUpdateCassandraTable(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
+        return createUpdateCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid, createUpdateCassandraTableParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CassandraTableInner> createUpdateCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters, final ServiceCallback<CassandraTableInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid, createUpdateCassandraTableParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<CassandraTableInner> createUpdateCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
+        return createUpdateCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid, createUpdateCassandraTableParameters).map(new Func1<ServiceResponse<CassandraTableInner>, CassandraTableInner>() {
+            @Override
+            public CassandraTableInner call(ServiceResponse<CassandraTableInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<CassandraTableInner>> createUpdateCassandraTableWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceRid == null) {
+            throw new IllegalArgumentException("Parameter keyspaceRid is required and cannot be null.");
+        }
+        if (tableRid == null) {
+            throw new IllegalArgumentException("Parameter tableRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateCassandraTableParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateCassandraTableParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateCassandraTableParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateCassandraTable(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceRid, tableRid, this.client.apiVersion(), createUpdateCassandraTableParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<CassandraTableInner>() { }.getType());
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CassandraTableInner object if successful.
+     */
+    public CassandraTableInner beginCreateUpdateCassandraTable(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
+        return beginCreateUpdateCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid, createUpdateCassandraTableParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CassandraTableInner> beginCreateUpdateCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters, final ServiceCallback<CassandraTableInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid, createUpdateCassandraTableParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CassandraTableInner object
+     */
+    public Observable<CassandraTableInner> beginCreateUpdateCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
+        return beginCreateUpdateCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid, createUpdateCassandraTableParameters).map(new Func1<ServiceResponse<CassandraTableInner>, CassandraTableInner>() {
+            @Override
+            public CassandraTableInner call(ServiceResponse<CassandraTableInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CassandraTableInner object
+     */
+    public Observable<ServiceResponse<CassandraTableInner>> beginCreateUpdateCassandraTableWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceRid == null) {
+            throw new IllegalArgumentException("Parameter keyspaceRid is required and cannot be null.");
+        }
+        if (tableRid == null) {
+            throw new IllegalArgumentException("Parameter tableRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateCassandraTableParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateCassandraTableParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateCassandraTableParameters);
+        return service.beginCreateUpdateCassandraTable(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceRid, tableRid, this.client.apiVersion(), createUpdateCassandraTableParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CassandraTableInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CassandraTableInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CassandraTableInner> clientResponse = beginCreateUpdateCassandraTableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CassandraTableInner> beginCreateUpdateCassandraTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CassandraTableInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CassandraTableInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteCassandraTable(String resourceGroupName, String accountName, String keyspaceRid, String tableRid) {
+        deleteCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid) {
+        return deleteCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteCassandraTableWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceRid == null) {
+            throw new IllegalArgumentException("Parameter keyspaceRid is required and cannot be null.");
+        }
+        if (tableRid == null) {
+            throw new IllegalArgumentException("Parameter tableRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteCassandraTable(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceRid, tableRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteCassandraTable(String resourceGroupName, String accountName, String keyspaceRid, String tableRid) {
+        beginDeleteCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid) {
+        return beginDeleteCassandraTableWithServiceResponseAsync(resourceGroupName, accountName, keyspaceRid, tableRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceRid Cosmos DB keyspace rid.
+     * @param tableRid Cosmos DB table rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteCassandraTableWithServiceResponseAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (keyspaceRid == null) {
+            throw new IllegalArgumentException("Parameter keyspaceRid is required and cannot be null.");
+        }
+        if (tableRid == null) {
+            throw new IllegalArgumentException("Parameter tableRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDeleteCassandraTable(this.client.subscriptionId(), resourceGroupName, accountName, keyspaceRid, tableRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteCassandraTableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteCassandraTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;GremlinDatabaseInner&gt; object if successful.
+     */
+    public List<GremlinDatabaseInner> listGremlinDatabases(String resourceGroupName, String accountName) {
+        return listGremlinDatabasesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<GremlinDatabaseInner>> listGremlinDatabasesAsync(String resourceGroupName, String accountName, final ServiceCallback<List<GremlinDatabaseInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listGremlinDatabasesWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;GremlinDatabaseInner&gt; object
+     */
+    public Observable<List<GremlinDatabaseInner>> listGremlinDatabasesAsync(String resourceGroupName, String accountName) {
+        return listGremlinDatabasesWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<List<GremlinDatabaseInner>>, List<GremlinDatabaseInner>>() {
+            @Override
+            public List<GremlinDatabaseInner> call(ServiceResponse<List<GremlinDatabaseInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;GremlinDatabaseInner&gt; object
+     */
+    public Observable<ServiceResponse<List<GremlinDatabaseInner>>> listGremlinDatabasesWithServiceResponseAsync(String resourceGroupName, String accountName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listGremlinDatabases(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<GremlinDatabaseInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<GremlinDatabaseInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<GremlinDatabaseInner>> result = listGremlinDatabasesDelegate(response);
+                        List<GremlinDatabaseInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<GremlinDatabaseInner>> clientResponse = new ServiceResponse<List<GremlinDatabaseInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<GremlinDatabaseInner>> listGremlinDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<GremlinDatabaseInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<GremlinDatabaseInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the GremlinDatabaseInner object if successful.
+     */
+    public GremlinDatabaseInner getGremlinDatabase(String resourceGroupName, String accountName, String databaseRid) {
+        return getGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<GremlinDatabaseInner> getGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<GremlinDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the GremlinDatabaseInner object
+     */
+    public Observable<GremlinDatabaseInner> getGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return getGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<GremlinDatabaseInner>, GremlinDatabaseInner>() {
+            @Override
+            public GremlinDatabaseInner call(ServiceResponse<GremlinDatabaseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided id.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the GremlinDatabaseInner object
+     */
+    public Observable<ServiceResponse<GremlinDatabaseInner>> getGremlinDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getGremlinDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GremlinDatabaseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<GremlinDatabaseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<GremlinDatabaseInner> clientResponse = getGremlinDatabaseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<GremlinDatabaseInner> getGremlinDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<GremlinDatabaseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<GremlinDatabaseInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateGremlinDatabaseParameters The parameters to provide for the current Gremlin database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the GremlinDatabaseInner object if successful.
+     */
+    public GremlinDatabaseInner createUpdateGremlinDatabase(String resourceGroupName, String accountName, String databaseRid, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters) {
+        return createUpdateGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateGremlinDatabaseParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateGremlinDatabaseParameters The parameters to provide for the current Gremlin database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<GremlinDatabaseInner> createUpdateGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters, final ServiceCallback<GremlinDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateGremlinDatabaseParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateGremlinDatabaseParameters The parameters to provide for the current Gremlin database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<GremlinDatabaseInner> createUpdateGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters) {
+        return createUpdateGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateGremlinDatabaseParameters).map(new Func1<ServiceResponse<GremlinDatabaseInner>, GremlinDatabaseInner>() {
+            @Override
+            public GremlinDatabaseInner call(ServiceResponse<GremlinDatabaseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateGremlinDatabaseParameters The parameters to provide for the current Gremlin database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<GremlinDatabaseInner>> createUpdateGremlinDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateGremlinDatabaseParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateGremlinDatabaseParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateGremlinDatabaseParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateGremlinDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), createUpdateGremlinDatabaseParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<GremlinDatabaseInner>() { }.getType());
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateGremlinDatabaseParameters The parameters to provide for the current Gremlin database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the GremlinDatabaseInner object if successful.
+     */
+    public GremlinDatabaseInner beginCreateUpdateGremlinDatabase(String resourceGroupName, String accountName, String databaseRid, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters) {
+        return beginCreateUpdateGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateGremlinDatabaseParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateGremlinDatabaseParameters The parameters to provide for the current Gremlin database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<GremlinDatabaseInner> beginCreateUpdateGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters, final ServiceCallback<GremlinDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateGremlinDatabaseParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateGremlinDatabaseParameters The parameters to provide for the current Gremlin database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the GremlinDatabaseInner object
+     */
+    public Observable<GremlinDatabaseInner> beginCreateUpdateGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters) {
+        return beginCreateUpdateGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, createUpdateGremlinDatabaseParameters).map(new Func1<ServiceResponse<GremlinDatabaseInner>, GremlinDatabaseInner>() {
+            @Override
+            public GremlinDatabaseInner call(ServiceResponse<GremlinDatabaseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param createUpdateGremlinDatabaseParameters The parameters to provide for the current Gremlin database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the GremlinDatabaseInner object
+     */
+    public Observable<ServiceResponse<GremlinDatabaseInner>> beginCreateUpdateGremlinDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateGremlinDatabaseParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateGremlinDatabaseParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateGremlinDatabaseParameters);
+        return service.beginCreateUpdateGremlinDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), createUpdateGremlinDatabaseParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GremlinDatabaseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<GremlinDatabaseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<GremlinDatabaseInner> clientResponse = beginCreateUpdateGremlinDatabaseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<GremlinDatabaseInner> beginCreateUpdateGremlinDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<GremlinDatabaseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<GremlinDatabaseInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteGremlinDatabase(String resourceGroupName, String accountName, String databaseRid) {
+        deleteGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return deleteGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteGremlinDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteGremlinDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteGremlinDatabase(String resourceGroupName, String accountName, String databaseRid) {
+        beginDeleteGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return beginDeleteGremlinDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteGremlinDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDeleteGremlinDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteGremlinDatabaseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteGremlinDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the Gremlin container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;ContainerInner&gt; object if successful.
+     */
+    public List<ContainerInner> listGremlinContainers(String resourceGroupName, String accountName, String databaseRid) {
+        return listGremlinContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the Gremlin container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ContainerInner>> listGremlinContainersAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<List<ContainerInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listGremlinContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    }
+
+    /**
+     * Lists the Gremlin container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;ContainerInner&gt; object
+     */
+    public Observable<List<ContainerInner>> listGremlinContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return listGremlinContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<List<ContainerInner>>, List<ContainerInner>>() {
+            @Override
+            public List<ContainerInner> call(ServiceResponse<List<ContainerInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the Gremlin container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;ContainerInner&gt; object
+     */
+    public Observable<ServiceResponse<List<ContainerInner>>> listGremlinContainersWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listGremlinContainers(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ContainerInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<ContainerInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ContainerInner>> result = listGremlinContainersDelegate(response);
+                        List<ContainerInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<ContainerInner>> clientResponse = new ServiceResponse<List<ContainerInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ContainerInner>> listGremlinContainersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ContainerInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ContainerInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Gremlin container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ContainerInner object if successful.
+     */
+    public ContainerInner getGremlinContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        return getGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Gremlin container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ContainerInner> getGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, final ServiceCallback<ContainerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid), serviceCallback);
+    }
+
+    /**
+     * Gets the Gremlin container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ContainerInner object
+     */
+    public Observable<ContainerInner> getGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        return getGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+            @Override
+            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Gremlin container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ContainerInner object
+     */
+    public Observable<ServiceResponse<ContainerInner>> getGremlinContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (containerRid == null) {
+            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getGremlinContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ContainerInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ContainerInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ContainerInner> clientResponse = getGremlinContainerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ContainerInner> getGremlinContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ContainerInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ContainerInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ContainerInner object if successful.
+     */
+    public ContainerInner createUpdateGremlinContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
+        return createUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ContainerInner> createUpdateGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters, final ServiceCallback<ContainerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ContainerInner> createUpdateGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
+        return createUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+            @Override
+            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ContainerInner>> createUpdateGremlinContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (containerRid == null) {
+            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateGremlinContainerParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateGremlinContainerParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateGremlinContainerParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateGremlinContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), createUpdateGremlinContainerParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ContainerInner>() { }.getType());
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ContainerInner object if successful.
+     */
+    public ContainerInner beginCreateUpdateGremlinContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
+        return beginCreateUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ContainerInner> beginCreateUpdateGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters, final ServiceCallback<ContainerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ContainerInner object
+     */
+    public Observable<ContainerInner> beginCreateUpdateGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
+        return beginCreateUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+            @Override
+            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ContainerInner object
+     */
+    public Observable<ServiceResponse<ContainerInner>> beginCreateUpdateGremlinContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (containerRid == null) {
+            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateGremlinContainerParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateGremlinContainerParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateGremlinContainerParameters);
+        return service.beginCreateUpdateGremlinContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), createUpdateGremlinContainerParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ContainerInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ContainerInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ContainerInner> clientResponse = beginCreateUpdateGremlinContainerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ContainerInner> beginCreateUpdateGremlinContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ContainerInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ContainerInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteGremlinContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        deleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        return deleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteGremlinContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (containerRid == null) {
+            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteGremlinContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteGremlinContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        beginDeleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        return beginDeleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin container.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param containerRid Cosmos DB container rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteGremlinContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseRid == null) {
+            throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
+        }
+        if (containerRid == null) {
+            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDeleteGremlinContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteGremlinContainerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteGremlinContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
