@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TransferBillingSubscriptionRequestProperties {
     /**
-     * The destination invoiceSectionName.
+     * The destination invoice section id.
      */
     @JsonProperty(value = "destinationInvoiceSectionId")
     private String destinationInvoiceSectionId;
 
     /**
-     * Get the destination invoiceSectionName.
+     * Get the destination invoice section id.
      *
      * @return the destinationInvoiceSectionId value
      */
@@ -30,7 +30,7 @@ public class TransferBillingSubscriptionRequestProperties {
     }
 
     /**
-     * Set the destination invoiceSectionName.
+     * Set the destination invoice section id.
      *
      * @param destinationInvoiceSectionId the destinationInvoiceSectionId value to set
      * @return the TransferBillingSubscriptionRequestProperties object itself.

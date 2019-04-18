@@ -238,7 +238,7 @@ public class BillingSubscriptionsInner {
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
-     * @param destinationInvoiceSectionId The destination invoiceSectionName.
+     * @param destinationInvoiceSectionId The destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -254,7 +254,7 @@ public class BillingSubscriptionsInner {
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
-     * @param destinationInvoiceSectionId The destination invoiceSectionName.
+     * @param destinationInvoiceSectionId The destination invoice section id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -269,7 +269,7 @@ public class BillingSubscriptionsInner {
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
-     * @param destinationInvoiceSectionId The destination invoiceSectionName.
+     * @param destinationInvoiceSectionId The destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -288,7 +288,7 @@ public class BillingSubscriptionsInner {
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
-     * @param destinationInvoiceSectionId The destination invoiceSectionName.
+     * @param destinationInvoiceSectionId The destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -397,7 +397,7 @@ public class BillingSubscriptionsInner {
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
-     * @param destinationInvoiceSectionId The destination invoiceSectionName.
+     * @param destinationInvoiceSectionId The destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -413,7 +413,7 @@ public class BillingSubscriptionsInner {
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
-     * @param destinationInvoiceSectionId The destination invoiceSectionName.
+     * @param destinationInvoiceSectionId The destination invoice section id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -428,7 +428,7 @@ public class BillingSubscriptionsInner {
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
-     * @param destinationInvoiceSectionId The destination invoiceSectionName.
+     * @param destinationInvoiceSectionId The destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TransferBillingSubscriptionResultInner object
      */
@@ -447,7 +447,7 @@ public class BillingSubscriptionsInner {
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @param billingSubscriptionName Billing Subscription Id.
-     * @param destinationInvoiceSectionId The destination invoiceSectionName.
+     * @param destinationInvoiceSectionId The destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TransferBillingSubscriptionResultInner object
      */

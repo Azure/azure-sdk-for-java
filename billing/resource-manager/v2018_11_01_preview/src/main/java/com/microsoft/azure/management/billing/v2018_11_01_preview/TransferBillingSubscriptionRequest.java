@@ -17,13 +17,13 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class TransferBillingSubscriptionRequest {
     /**
-     * The destination invoiceSectionName.
+     * The destination invoice section id.
      */
     @JsonProperty(value = "properties.destinationInvoiceSectionId")
     private String destinationInvoiceSectionId;
 
     /**
-     * Get the destination invoiceSectionName.
+     * Get the destination invoice section id.
      *
      * @return the destinationInvoiceSectionId value
      */
@@ -32,7 +32,7 @@ public class TransferBillingSubscriptionRequest {
     }
 
     /**
-     * Set the destination invoiceSectionName.
+     * Set the destination invoice section id.
      *
      * @param destinationInvoiceSectionId the destinationInvoiceSectionId value to set
      * @return the TransferBillingSubscriptionRequest object itself.
