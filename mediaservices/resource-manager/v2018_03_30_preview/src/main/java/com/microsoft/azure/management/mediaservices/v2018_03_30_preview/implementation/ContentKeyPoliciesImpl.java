@@ -77,10 +77,14 @@ class ContentKeyPoliciesImpl extends WrapperImpl<ContentKeyPoliciesInner> implem
     public Observable<ContentKeyPolicy> getAsync(String resourceGroupName, String accountName, String contentKeyPolicyName) {
         ContentKeyPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, accountName, contentKeyPolicyName)
-        .map(new Func1<ContentKeyPolicyInner, ContentKeyPolicy>() {
+        .flatMap(new Func1<ContentKeyPolicyInner, Observable<ContentKeyPolicy>>() {
             @Override
-            public ContentKeyPolicy call(ContentKeyPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<ContentKeyPolicy> call(ContentKeyPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ContentKeyPolicy)wrapModel(inner));
+                }
             }
        });
     }

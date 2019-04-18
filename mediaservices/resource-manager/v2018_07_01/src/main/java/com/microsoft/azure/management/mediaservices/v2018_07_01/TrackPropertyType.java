@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for TrackPropertyType.
  */
-public enum TrackPropertyType {
-    /** Unknown track property. */
-    UNKNOWN("Unknown"),
+public final class TrackPropertyType extends ExpandableStringEnum<TrackPropertyType> {
+    /** Static value Unknown for TrackPropertyType. */
+    public static final TrackPropertyType UNKNOWN = fromString("Unknown");
 
-    /** Track FourCC. */
-    FOUR_CC("FourCC");
+    /** Static value FourCC for TrackPropertyType. */
+    public static final TrackPropertyType FOUR_CC = fromString("FourCC");
 
-    /** The actual serialized value for a TrackPropertyType instance. */
-    private String value;
-
-    TrackPropertyType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a TrackPropertyType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding TrackPropertyType
+     */
+    @JsonCreator
+    public static TrackPropertyType fromString(String name) {
+        return fromString(name, TrackPropertyType.class);
     }
 
     /**
-     * Parses a serialized value to a TrackPropertyType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed TrackPropertyType object, or null if unable to parse.
+     * @return known TrackPropertyType values
      */
-    @JsonCreator
-    public static TrackPropertyType fromString(String value) {
-        TrackPropertyType[] items = TrackPropertyType.values();
-        for (TrackPropertyType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<TrackPropertyType> values() {
+        return values(TrackPropertyType.class);
     }
 }

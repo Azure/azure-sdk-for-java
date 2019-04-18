@@ -8,64 +8,55 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for EncoderNamedPreset.
  */
-public enum EncoderNamedPreset {
-    /** Produces an MP4 file where the video is encoded with H.264 codec at 2200 kbps and a picture height of 480 pixels, and the stereo audio is encoded with AAC-LC codec at 64 kbps. */
-    H264SINGLE_BITRATE_SD("H264SingleBitrateSD"),
+public final class EncoderNamedPreset extends ExpandableStringEnum<EncoderNamedPreset> {
+    /** Static value H264SingleBitrateSD for EncoderNamedPreset. */
+    public static final EncoderNamedPreset H264SINGLE_BITRATE_SD = fromString("H264SingleBitrateSD");
 
-    /** Produces an MP4 file where the video is encoded with H.264 codec at 4500 kbps and a picture height of 720 pixels, and the stereo audio is encoded with AAC-LC codec at 64 kbps. */
-    H264SINGLE_BITRATE720P("H264SingleBitrate720p"),
+    /** Static value H264SingleBitrate720p for EncoderNamedPreset. */
+    public static final EncoderNamedPreset H264SINGLE_BITRATE720P = fromString("H264SingleBitrate720p");
 
-    /** Produces an MP4 file where the video is encoded with H.264 codec at 6750 kbps and a picture height of 1080 pixels, and the stereo audio is encoded with AAC-LC codec at 64 kbps. */
-    H264SINGLE_BITRATE1080P("H264SingleBitrate1080p"),
+    /** Static value H264SingleBitrate1080p for EncoderNamedPreset. */
+    public static final EncoderNamedPreset H264SINGLE_BITRATE1080P = fromString("H264SingleBitrate1080p");
 
-    /** Produces a set of GOP aligned MP4 files with H.264 video and stereo AAC audio. Auto-generates a bitrate ladder based on the input resolution and bitrate. The auto-generated preset will never exceed the input resolution and bitrate. For example, if the input is 720p at 3 Mbps, output will remain 720p at best, and will start at rates lower than 3 Mbps. The output will will have video and audio in separate MP4 files, which is optimal for adaptive streaming. */
-    ADAPTIVE_STREAMING("AdaptiveStreaming"),
+    /** Static value AdaptiveStreaming for EncoderNamedPreset. */
+    public static final EncoderNamedPreset ADAPTIVE_STREAMING = fromString("AdaptiveStreaming");
 
-    /** Produces a single MP4 file containing only stereo audio encoded at 192 kbps. */
-    AACGOOD_QUALITY_AUDIO("AACGoodQualityAudio"),
+    /** Static value AACGoodQualityAudio for EncoderNamedPreset. */
+    public static final EncoderNamedPreset AACGOOD_QUALITY_AUDIO = fromString("AACGoodQualityAudio");
 
-    /** Produces a set of 8 GOP-aligned MP4 files, ranging from 6000 kbps to 400 kbps, and stereo AAC audio. Resolution starts at 1080p and goes down to 360p. */
-    H264MULTIPLE_BITRATE1080P("H264MultipleBitrate1080p"),
+    /** Static value ContentAwareEncodingExperimental for EncoderNamedPreset. */
+    public static final EncoderNamedPreset CONTENT_AWARE_ENCODING_EXPERIMENTAL = fromString("ContentAwareEncodingExperimental");
 
-    /** Produces a set of 6 GOP-aligned MP4 files, ranging from 3400 kbps to 400 kbps, and stereo AAC audio. Resolution starts at 720p and goes down to 360p. */
-    H264MULTIPLE_BITRATE720P("H264MultipleBitrate720p"),
+    /** Static value H264MultipleBitrate1080p for EncoderNamedPreset. */
+    public static final EncoderNamedPreset H264MULTIPLE_BITRATE1080P = fromString("H264MultipleBitrate1080p");
 
-    /** Produces a set of 5 GOP-aligned MP4 files, ranging from 1600kbps to 400 kbps, and stereo AAC audio. Resolution starts at 480p and goes down to 360p. */
-    H264MULTIPLE_BITRATE_SD("H264MultipleBitrateSD");
+    /** Static value H264MultipleBitrate720p for EncoderNamedPreset. */
+    public static final EncoderNamedPreset H264MULTIPLE_BITRATE720P = fromString("H264MultipleBitrate720p");
 
-    /** The actual serialized value for a EncoderNamedPreset instance. */
-    private String value;
+    /** Static value H264MultipleBitrateSD for EncoderNamedPreset. */
+    public static final EncoderNamedPreset H264MULTIPLE_BITRATE_SD = fromString("H264MultipleBitrateSD");
 
-    EncoderNamedPreset(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a EncoderNamedPreset from its string representation.
+     * @param name a name to look for
+     * @return the corresponding EncoderNamedPreset
+     */
+    @JsonCreator
+    public static EncoderNamedPreset fromString(String name) {
+        return fromString(name, EncoderNamedPreset.class);
     }
 
     /**
-     * Parses a serialized value to a EncoderNamedPreset instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed EncoderNamedPreset object, or null if unable to parse.
+     * @return known EncoderNamedPreset values
      */
-    @JsonCreator
-    public static EncoderNamedPreset fromString(String value) {
-        EncoderNamedPreset[] items = EncoderNamedPreset.values();
-        for (EncoderNamedPreset item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<EncoderNamedPreset> values() {
+        return values(EncoderNamedPreset.class);
     }
 }

@@ -8,58 +8,46 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for FilterTrackPropertyType.
  */
-public enum FilterTrackPropertyType {
-    /** The unknown track property type. */
-    UNKNOWN("Unknown"),
+public final class FilterTrackPropertyType extends ExpandableStringEnum<FilterTrackPropertyType> {
+    /** Static value Unknown for FilterTrackPropertyType. */
+    public static final FilterTrackPropertyType UNKNOWN = fromString("Unknown");
 
-    /** The type. */
-    TYPE("Type"),
+    /** Static value Type for FilterTrackPropertyType. */
+    public static final FilterTrackPropertyType TYPE = fromString("Type");
 
-    /** The name. */
-    NAME("Name"),
+    /** Static value Name for FilterTrackPropertyType. */
+    public static final FilterTrackPropertyType NAME = fromString("Name");
 
-    /** The language. */
-    LANGUAGE("Language"),
+    /** Static value Language for FilterTrackPropertyType. */
+    public static final FilterTrackPropertyType LANGUAGE = fromString("Language");
 
-    /** The fourCC. */
-    FOUR_CC("FourCC"),
+    /** Static value FourCC for FilterTrackPropertyType. */
+    public static final FilterTrackPropertyType FOUR_CC = fromString("FourCC");
 
-    /** The bitrate. */
-    BITRATE("Bitrate");
+    /** Static value Bitrate for FilterTrackPropertyType. */
+    public static final FilterTrackPropertyType BITRATE = fromString("Bitrate");
 
-    /** The actual serialized value for a FilterTrackPropertyType instance. */
-    private String value;
-
-    FilterTrackPropertyType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a FilterTrackPropertyType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding FilterTrackPropertyType
+     */
+    @JsonCreator
+    public static FilterTrackPropertyType fromString(String name) {
+        return fromString(name, FilterTrackPropertyType.class);
     }
 
     /**
-     * Parses a serialized value to a FilterTrackPropertyType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed FilterTrackPropertyType object, or null if unable to parse.
+     * @return known FilterTrackPropertyType values
      */
-    @JsonCreator
-    public static FilterTrackPropertyType fromString(String value) {
-        FilterTrackPropertyType[] items = FilterTrackPropertyType.values();
-        for (FilterTrackPropertyType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<FilterTrackPropertyType> values() {
+        return values(FilterTrackPropertyType.class);
     }
 }
