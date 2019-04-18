@@ -109,11 +109,6 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     }
 
     @Override
-    public String _self() {
-        return this.inner()._self();
-    }
-
-    @Override
     public Object _ts() {
         return this.inner()._ts();
     }

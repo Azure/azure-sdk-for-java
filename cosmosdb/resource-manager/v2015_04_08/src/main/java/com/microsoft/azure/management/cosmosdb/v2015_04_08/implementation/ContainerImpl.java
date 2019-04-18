@@ -110,11 +110,6 @@ class ContainerImpl extends CreatableUpdatableImpl<Container, ContainerInner, Co
     }
 
     @Override
-    public String _self() {
-        return this.inner()._self();
-    }
-
-    @Override
     public Object _ts() {
         return this.inner()._ts();
     }

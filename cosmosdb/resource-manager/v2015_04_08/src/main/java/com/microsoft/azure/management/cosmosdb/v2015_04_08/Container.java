@@ -34,11 +34,6 @@ public interface Container extends HasInner<ContainerInner>, Indexable, Refresha
     String _rid();
 
     /**
-     * @return the _self value.
-     */
-    String _self();
-
-    /**
      * @return the _ts value.
      */
     Object _ts();

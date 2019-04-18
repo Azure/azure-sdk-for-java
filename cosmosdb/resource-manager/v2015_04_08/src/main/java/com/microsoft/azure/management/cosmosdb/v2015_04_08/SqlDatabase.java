@@ -38,11 +38,6 @@ public interface SqlDatabase extends HasInner<SqlDatabaseInner>, Indexable, Upda
     String _rid();
 
     /**
-     * @return the _self value.
-     */
-    String _self();
-
-    /**
      * @return the _ts value.
      */
     Object _ts();

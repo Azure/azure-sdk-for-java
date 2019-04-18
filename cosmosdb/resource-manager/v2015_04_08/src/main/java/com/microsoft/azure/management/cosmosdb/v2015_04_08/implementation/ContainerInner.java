@@ -14,12 +14,14 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.UniqueKeyPolicy;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.ConflictResolutionPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.rest.SkipParentValidation;
 import com.microsoft.azure.Resource;
 
 /**
  * An Azure Cosmos DB container.
  */
 @JsonFlatten
+@SkipParentValidation
 public class ContainerInner extends Resource {
     /**
      * Name of the Cosmos DB container.
@@ -73,13 +75,6 @@ public class ContainerInner extends Resource {
      */
     @JsonProperty(value = "properties._ts")
     private Object _ts;
-
-    /**
-     * A system generated property. It is the unique addressable URI for the
-     * resource.
-     */
-    @JsonProperty(value = "properties._self")
-    private String _self;
 
     /**
      * A system generated property representing the resource etag required for
@@ -245,26 +240,6 @@ public class ContainerInner extends Resource {
      */
     public ContainerInner with_ts(Object _ts) {
         this._ts = _ts;
-        return this;
-    }
-
-    /**
-     * Get a system generated property. It is the unique addressable URI for the resource.
-     *
-     * @return the _self value
-     */
-    public String _self() {
-        return this._self;
-    }
-
-    /**
-     * Set a system generated property. It is the unique addressable URI for the resource.
-     *
-     * @param _self the _self value to set
-     * @return the ContainerInner object itself.
-     */
-    public ContainerInner with_self(String _self) {
-        this._self = _self;
         return this;
     }
 

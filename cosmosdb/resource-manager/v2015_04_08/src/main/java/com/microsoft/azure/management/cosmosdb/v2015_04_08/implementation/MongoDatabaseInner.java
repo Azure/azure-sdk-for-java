@@ -10,12 +10,14 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.rest.SkipParentValidation;
 import com.microsoft.azure.Resource;
 
 /**
  * An Azure Cosmos DB Mongo database.
  */
 @JsonFlatten
+@SkipParentValidation
 public class MongoDatabaseInner extends Resource {
     /**
      * Name of the Cosmos DB Mongo database.

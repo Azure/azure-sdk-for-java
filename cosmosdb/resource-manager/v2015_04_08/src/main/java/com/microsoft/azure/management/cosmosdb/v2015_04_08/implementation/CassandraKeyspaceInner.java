@@ -10,12 +10,14 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.rest.SkipParentValidation;
 import com.microsoft.azure.Resource;
 
 /**
  * An Azure Cosmos DB Cassandra keyspace.
  */
 @JsonFlatten
+@SkipParentValidation
 public class CassandraKeyspaceInner extends Resource {
     /**
      * Name of the Cosmos DB Cassandra keyspace.

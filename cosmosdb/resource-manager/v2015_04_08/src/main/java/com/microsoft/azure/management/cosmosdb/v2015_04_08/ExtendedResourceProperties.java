@@ -29,13 +29,6 @@ public class ExtendedResourceProperties {
     private Object _ts;
 
     /**
-     * A system generated property. It is the unique addressable URI for the
-     * resource.
-     */
-    @JsonProperty(value = "_self")
-    private String _self;
-
-    /**
      * A system generated property representing the resource etag required for
      * optimistic concurrency control.
      */
@@ -79,26 +72,6 @@ public class ExtendedResourceProperties {
      */
     public ExtendedResourceProperties with_ts(Object _ts) {
         this._ts = _ts;
-        return this;
-    }
-
-    /**
-     * Get a system generated property. It is the unique addressable URI for the resource.
-     *
-     * @return the _self value
-     */
-    public String _self() {
-        return this._self;
-    }
-
-    /**
-     * Set a system generated property. It is the unique addressable URI for the resource.
-     *
-     * @param _self the _self value to set
-     * @return the ExtendedResourceProperties object itself.
-     */
-    public ExtendedResourceProperties with_self(String _self) {
-        this._self = _self;
         return this;
     }
 

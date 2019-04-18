@@ -11,12 +11,14 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.rest.SkipParentValidation;
 import com.microsoft.azure.Resource;
 
 /**
  * Parameters to create and update Cosmos DB database accounts.
  */
 @JsonFlatten
+@SkipParentValidation
 public class DatabaseAccountCreateUpdateParameters extends Resource {
     /**
      * Indicates the type of database account. This can only be set at database
