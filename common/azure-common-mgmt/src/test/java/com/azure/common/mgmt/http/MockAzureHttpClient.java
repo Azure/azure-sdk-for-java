@@ -74,49 +74,41 @@ public class MockAzureHttpClient implements HttpClient {
                         json.headers = toMap(request.headers());
                         response = new MockAzureHttpResponse(request, 200, responseHeaders(), json);
                     }
-                }
-                else if (requestPathLower.startsWith("/bytes/")) {
+                } else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
                     response = new MockAzureHttpResponse(request, 200, responseHeaders(), new byte[byteCount]);
-                }
-                else if (requestPathLower.equals("/delete")) {
+                } else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url().toString();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(request, 200, responseHeaders(), json);
-                }
-                else if (requestPathLower.equals("/get")) {
+                } else if (requestPathLower.equals("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url().toString();
                     json.headers = toMap(request.headers());
                     response = new MockAzureHttpResponse(request, 200, responseHeaders(), json);
-                }
-                else if (requestPathLower.equals("/patch")) {
+                } else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url().toString();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(request, 200, responseHeaders(), json);
-                }
-                else if (requestPathLower.equals("/post")) {
+                } else if (requestPathLower.equals("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url().toString();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(request, 200, responseHeaders(), json);
-                }
-                else if (requestPathLower.equals("/put")) {
+                } else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url().toString();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(request, 200, responseHeaders(), json);
-                }
-                else if (requestPathLower.startsWith("/status/")) {
+                } else if (requestPathLower.startsWith("/status/")) {
                     final String statusCodeString = requestPathLower.substring("/status/".length());
                     final int statusCode = Integer.valueOf(statusCodeString);
                     response = new MockAzureHttpResponse(request, statusCode, responseHeaders());
                 }
-            }
-            else if (requestHost.equalsIgnoreCase("mock.azure.com")) {
+            } else if (requestHost.equalsIgnoreCase("mock.azure.com")) {
                 if (request.httpMethod() == HttpMethod.GET) {
                     if (requestPathLower.contains("/mockprovider/mockresources/")) {
                         ++getRequests;
@@ -127,8 +119,7 @@ public class MockAzureHttpClient implements HttpClient {
                         resource.properties = new MockResource.Properties();
                         resource.properties.provisioningState = (pollsRemaining <= 0 ? OperationState.SUCCEEDED : OperationState.IN_PROGRESS);
                         response = new MockAzureHttpResponse(request, 200, responseHeaders(), resource);
-                    }
-                    else if (requestPathLower.contains("/mockprovider/mockoperations/")) {
+                    } else if (requestPathLower.contains("/mockprovider/mockoperations/")) {
                         ++pollRequests;
 
                         final Map<String, String> requestQueryMap = queryToMap(requestUrl.getQuery());
@@ -139,32 +130,28 @@ public class MockAzureHttpClient implements HttpClient {
                             String operationStatus;
                             if (pollsRemaining <= 1) {
                                 operationStatus = OperationState.SUCCEEDED;
-                            }
-                            else {
+                            } else {
                                 --pollsRemaining;
                                 operationStatus = OperationState.IN_PROGRESS;
                             }
                             final AsyncOperationResource operationResource = new AsyncOperationResource();
                             operationResource.setStatus(operationStatus);
                             response = new MockAzureHttpResponse(request, 200, responseHeaders(), operationResource);
-                        }
-                        else if (pollType.equalsIgnoreCase(LocationPollStrategy.HEADER_NAME)) {
+                        } else if (pollType.equalsIgnoreCase(LocationPollStrategy.HEADER_NAME)) {
                             if (pollsRemaining <= 1) {
                                 final MockResource mockResource = new MockResource();
                                 mockResource.name = "c";
                                 mockResource.properties = new MockResource.Properties();
                                 mockResource.properties.provisioningState = OperationState.SUCCEEDED;
                                 response = new MockAzureHttpResponse(request, 200, responseHeaders(), mockResource);
-                            }
-                            else {
+                            } else {
                                 --pollsRemaining;
                                 response = new MockAzureHttpResponse(request, 202, responseHeaders())
                                         .withHeader(LocationPollStrategy.HEADER_NAME, request.url().toString());
                             }
                         }
                     }
-                }
-                else if (request.httpMethod() == HttpMethod.PUT) {
+                } else if (request.httpMethod() == HttpMethod.PUT) {
                     ++createRequests;
 
                     final Map<String, String> requestQueryMap = queryToMap(requestUrl.getQuery());
@@ -178,13 +165,11 @@ public class MockAzureHttpClient implements HttpClient {
                         resource.properties = new MockResource.Properties();
                         resource.properties.provisioningState = OperationState.SUCCEEDED;
                         response = new MockAzureHttpResponse(request, 200, responseHeaders(), resource);
-                    }
-                    else if (pollType.equalsIgnoreCase("ProvisioningState")) {
+                    } else if (pollType.equalsIgnoreCase("ProvisioningState")) {
 
                         if (pollsRemainingString == null) {
                             pollsRemaining = 1;
-                        }
-                        else {
+                        } else {
                             pollsRemaining = Integer.valueOf(pollsRemainingString);
                         }
 
@@ -193,12 +178,10 @@ public class MockAzureHttpClient implements HttpClient {
                         resource.properties = new MockResource.Properties();
                         resource.properties.provisioningState = (pollsRemaining <= 0 ? OperationState.SUCCEEDED : OperationState.IN_PROGRESS);
                         response = new MockAzureHttpResponse(request, 200, responseHeaders(), resource);
-                    }
-                    else {
+                    } else {
                         if (pollsRemainingString == null) {
                             pollsRemaining = 1;
-                        }
-                        else {
+                        } else {
                             pollsRemaining = Integer.valueOf(pollsRemainingString);
                         }
 
@@ -206,11 +189,9 @@ public class MockAzureHttpClient implements HttpClient {
                         int initialResponseStatusCode;
                         if (initialResponseStatusCodeString != null) {
                             initialResponseStatusCode = Integer.valueOf(initialResponseStatusCodeString);
-                        }
-                        else if (pollType.equalsIgnoreCase(LocationPollStrategy.HEADER_NAME)) {
+                        } else if (pollType.equalsIgnoreCase(LocationPollStrategy.HEADER_NAME)) {
                             initialResponseStatusCode = 202;
-                        }
-                        else {
+                        } else {
                             initialResponseStatusCode = 201;
                         }
 
@@ -224,8 +205,7 @@ public class MockAzureHttpClient implements HttpClient {
                             response.withHeader(LocationPollStrategy.HEADER_NAME, pollUrl + "?PollType=" + LocationPollStrategy.HEADER_NAME);
                         }
                     }
-                }
-                else if (request.httpMethod() == HttpMethod.DELETE) {
+                } else if (request.httpMethod() == HttpMethod.DELETE) {
                     ++deleteRequests;
 
                     final Map<String, String> requestQueryMap = queryToMap(requestUrl.getQuery());
@@ -235,12 +215,10 @@ public class MockAzureHttpClient implements HttpClient {
 
                     if (pollType == null || "0".equals(pollsRemainingString)) {
                         response = new MockAzureHttpResponse(request, 200, responseHeaders());
-                    }
-                    else if (pollType.equals(LocationPollStrategy.HEADER_NAME)) {
+                    } else if (pollType.equals(LocationPollStrategy.HEADER_NAME)) {
                         if (pollsRemainingString == null) {
                             pollsRemaining = 1;
-                        }
-                        else {
+                        } else {
                             pollsRemaining = Integer.valueOf(pollsRemainingString);
                         }
 
@@ -248,11 +226,9 @@ public class MockAzureHttpClient implements HttpClient {
                         int initialResponseStatusCode;
                         if (initialResponseStatusCodeString != null) {
                             initialResponseStatusCode = Integer.valueOf(initialResponseStatusCodeString);
-                        }
-                        else if (pollType.equalsIgnoreCase(LocationPollStrategy.HEADER_NAME)) {
+                        } else if (pollType.equalsIgnoreCase(LocationPollStrategy.HEADER_NAME)) {
                             initialResponseStatusCode = 202;
-                        }
-                        else {
+                        } else {
                             initialResponseStatusCode = 201;
                         }
 
@@ -268,8 +244,7 @@ public class MockAzureHttpClient implements HttpClient {
                     }
                 }
             }
-        }
-        catch (Exception ignored) {
+        } catch (Exception ignored) {
         }
 
         return Mono.<HttpResponse>just(response);
