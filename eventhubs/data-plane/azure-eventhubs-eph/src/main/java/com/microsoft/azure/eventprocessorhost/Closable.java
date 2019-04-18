@@ -51,7 +51,7 @@ class Closable {
         }
     }
     
-    class ClosingException extends RuntimeException {
+    static class ClosingException extends RuntimeException {
         private static final long serialVersionUID = 1138985585921317036L;
 
         ClosingException(String message) {

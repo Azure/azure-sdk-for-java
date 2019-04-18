@@ -1,17 +1,5 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved. 
+// Licensed under the MIT License.
 
 package com.microsoft.azure.storage
 
@@ -21,9 +9,11 @@ import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
+import org.junit.Assume
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.channels.AsynchronousFileChannel
 import java.security.MessageDigest
 
 class AppendBlobAPITest extends APISpec {
@@ -306,4 +296,176 @@ class AppendBlobAPITest extends APISpec {
         then:
         notThrown(RuntimeException)
     }
+
+
+    // Grouping the below tests from PageBlobAPITest and BlockBlobAPITest together to prevent Concurrent modification exception.
+    @Unroll
+    def "Stage block illegal arguments"() {
+        setup:
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        bu.upload(defaultFlowable, defaultDataSize, null, null,
+                null, null).blockingGet()
+
+        when:
+        bu.stageBlock(blockID, data, dataSize, null, null).blockingGet()
+
+        then:
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
+
+        where:
+        blockID      | data            | dataSize            | exceptionType
+        null         | defaultFlowable | defaultDataSize     | IllegalArgumentException
+        getBlockID() | null            | defaultDataSize     | IllegalArgumentException
+        getBlockID() | defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
+        getBlockID() | defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
+    }
+
+
+    @Unroll
+    def "Upload page IA"() {
+        setup:
+        PageBlobURL bu = cu.createPageBlobURL(generateBlobName())
+        bu.create(PageBlobURL.PAGE_BYTES, null, null, null, null, null).blockingGet()
+
+        when:
+        bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES * 2 - 1), data,
+                null, null).blockingGet()
+
+        then:
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
+
+        where:
+        data                                                     | exceptionType
+        null                                                     | IllegalArgumentException
+        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))     | UnexpectedLengthException
+        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES * 3)) | UnexpectedLengthException
+    }
+
+
+    @Unroll
+    def "Upload illegal argument"() {
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        bu.upload(defaultFlowable, defaultDataSize, null, null,
+                null, null).blockingGet()
+
+        when:
+        bu.upload(data, dataSize, null, null, null, null).blockingGet()
+
+        then:
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
+
+        where:
+        data            | dataSize            | exceptionType
+        null            | defaultDataSize     | IllegalArgumentException
+        defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
+        defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
+    }
+
+    def getBlockID() {
+        return new String(Base64.encoder.encode(UUID.randomUUID().toString().bytes))
+    }
+
+    //Grouping the below tests together to prevent GroovyCastException.
+    @Unroll
+    def "Upload file headers"() {
+        setup:
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        // We have to use the defaultData here so we can calculate the MD5 on the uploadBlob case.
+        File file = File.createTempFile("testUpload", ".txt")
+        file.deleteOnExit()
+        if (fileSize == "small") {
+            FileOutputStream fos = new FileOutputStream(file)
+            fos.write(defaultData.array())
+            fos.close()
+        } else {
+            file = getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10)
+        }
+
+        def channel = AsynchronousFileChannel.open(file.toPath())
+
+        when:
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
+            new TransferManagerUploadToBlockBlobOptions(null, new BlobHTTPHeaders()
+                .withBlobCacheControl(cacheControl).withBlobContentDisposition(contentDisposition)
+                .withBlobContentEncoding(contentEncoding).withBlobContentLanguage(contentLanguage)
+                .withBlobContentMD5(contentMD5).withBlobContentType(contentType), null, null, null))
+            .blockingGet()
+
+        def response = bu.getProperties(null, null).blockingGet()
+
+        then:
+        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
+            fileSize == "small" ? MessageDigest.getInstance("MD5").digest(defaultData.array()) : contentMD5,
+            contentType == null ? "application/octet-stream" : contentType)
+        // For uploading a block blob single-shot, the service will auto calculate an MD5 hash if not present.
+        // HTTP default content type is application/octet-stream.
+
+        cleanup:
+        channel.close()
+
+        where:
+        // The MD5 is simply set on the blob for commitBlockList, not validated.
+        fileSize | cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
+        "small"  | null         | null               | null            | null            | null                                                         | null
+        "small"  | "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+        "large"  | null         | null               | null            | null            | null                                                         | null
+        "large"  | "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+    }
+
+    @Unroll
+    def "Upload file metadata"() {
+        setup:
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        Metadata metadata = new Metadata()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+        def channel = AsynchronousFileChannel.open(getRandomFile(dataSize).toPath())
+
+        when:
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
+            new TransferManagerUploadToBlockBlobOptions(null, null, metadata, null, null)).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
+
+        then:
+        response.statusCode() == 200
+        response.headers().metadata() == metadata
+
+        cleanup:
+        channel.close()
+
+        where:
+        dataSize                                | key1  | value1 | key2   | value2
+        10                                      | null  | null   | null   | null
+        10                                      | "foo" | "bar"  | "fizz" | "buzz"
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null  | null   | null   | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    def "Undelete"() {
+        setup:
+        BlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        bu.upload(defaultFlowable, defaultDataSize, null, null,
+            null, null).blockingGet()
+        enableSoftDelete()
+        bu.delete(null, null, null).blockingGet()
+        when:
+        BlobUndeleteResponse response = bu.undelete(null).blockingGet()
+        bu.getProperties(null, null).blockingGet()
+
+        then:
+        notThrown(StorageException)
+        response.headers().requestId() != null
+        response.headers().version() != null
+        response.headers().date() != null
+
+        disableSoftDelete() == null
+    }
+
 }
