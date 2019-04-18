@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for Priority.
  */
-public enum Priority {
-    /** Used for TransformOutputs that can be generated after Normal and High priority TransformOutputs. */
-    LOW("Low"),
+public final class Priority extends ExpandableStringEnum<Priority> {
+    /** Static value Low for Priority. */
+    public static final Priority LOW = fromString("Low");
 
-    /** Used for TransformOutputs that can be generated at Normal priority. */
-    NORMAL("Normal"),
+    /** Static value Normal for Priority. */
+    public static final Priority NORMAL = fromString("Normal");
 
-    /** Used for TransformOutputs that should take precedence over others. */
-    HIGH("High");
+    /** Static value High for Priority. */
+    public static final Priority HIGH = fromString("High");
 
-    /** The actual serialized value for a Priority instance. */
-    private String value;
-
-    Priority(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a Priority from its string representation.
+     * @param name a name to look for
+     * @return the corresponding Priority
+     */
+    @JsonCreator
+    public static Priority fromString(String name) {
+        return fromString(name, Priority.class);
     }
 
     /**
-     * Parses a serialized value to a Priority instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed Priority object, or null if unable to parse.
+     * @return known Priority values
      */
-    @JsonCreator
-    public static Priority fromString(String value) {
-        Priority[] items = Priority.values();
-        for (Priority item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<Priority> values() {
+        return values(Priority.class);
     }
 }

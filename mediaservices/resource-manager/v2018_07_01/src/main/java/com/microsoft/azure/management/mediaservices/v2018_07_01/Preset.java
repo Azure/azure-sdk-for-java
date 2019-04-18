@@ -16,9 +16,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Base type for all Presets, which define the recipe or instructions on how
  * the input media files should be processed.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("Preset")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "#Microsoft.Media.FaceDetectorPreset", value = FaceDetectorPreset.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.AudioAnalyzerPreset", value = AudioAnalyzerPreset.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.BuiltInStandardEncoderPreset", value = BuiltInStandardEncoderPreset.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.StandardEncoderPreset", value = StandardEncoderPreset.class)
