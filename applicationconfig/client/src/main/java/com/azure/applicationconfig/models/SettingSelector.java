@@ -14,7 +14,7 @@ import java.util.Arrays;
  *
  * <ul>
  *     <li>
- *         Providing {@link SettingSelector#label() label} will filter
+ *         Providing {@link SettingSelector#labels() labels} will filter
  *         {@link ConfigurationSetting ConfigurationSettings} that match that label name in conjunction with the key
  *         that is passed in to the service request.
  *     </li>
@@ -31,8 +31,8 @@ import java.util.Arrays;
  * @see ConfigurationAsyncClient
  */
 public class SettingSelector {
-    private String key;
-    private String label;
+    private String[] keys;
+    private String[] labels;
     private SettingFields[] fields;
     private String acceptDatetime;
 
@@ -50,16 +50,16 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ol>
-     *     <li>If key = "*", settings with any key are returned.</li>
-     *     <li>If key = "abc1234", settings with a key equal to "abc1234" are returned.</li>
-     *     <li>If key = "abc*", settings with a key starting with "abc" are returned.</li>
-     *     <li>If key = "*abc*", settings with a key containing "abc" are returned.</li>
+     *     <li>If keys = "*", settings with any key are returned.</li>
+     *     <li>If keys = "abc1234", settings with a key equal to "abc1234" are returned.</li>
+     *     <li>If keys = "abc*", settings with a key starting with "abc" are returned.</li>
+     *     <li>If keys = "*abc*", settings with a key containing "abc" are returned.</li>
      * </ol>
      *
      * @return The expression to filter ConfigurationSetting keys on.
      */
-    public String key() {
-        return key;
+    public String[] keys() {
+        return (keys == null) ? new String[0] : Arrays.copyOf(keys, keys.length);
     }
 
     /**
@@ -68,22 +68,22 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code key = "*"}, settings with any key are returned.</li>
-     *     <li>If {@code key = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
-     *     <li>If {@code key = "abc*"}, settings with a key starting with "abc" are returned.</li>
-     *     <li>If {@code key = "*abc*"}, settings with a key containing "abc" are returned.</li>
+     *     <li>If {@code keys = "*"}, settings with any key are returned.</li>
+     *     <li>If {@code keys = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
+     *     <li>If {@code keys = "abc*"}, settings with a key starting with "abc" are returned.</li>
+     *     <li>If {@code keys = "*abc*"}, settings with a key containing "abc" are returned.</li>
      * </ul>
      *
-     * @param key The expression to filter ConfigurationSetting keys on.
+     * @param keys The expression to filter ConfigurationSetting keys on.
      * @return The updated SettingSelector object
      */
-    public SettingSelector key(String key) {
-        this.key = key;
+    public SettingSelector keys(String... keys) {
+        this.keys = keys;
         return this;
     }
 
     /**
-     * Gets the label used to filter settings based on their {@link ConfigurationSetting#label() label} in the service.
+     * Gets the labels used to filter settings based on their {@link ConfigurationSetting#label() label} in the service.
      *
      * If the value is {@code null} or an empty string, all ConfigurationSettings with
      * {@link ConfigurationSetting#NO_LABEL} are returned.
@@ -98,12 +98,13 @@ public class SettingSelector {
      *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
      *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
      *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     *     <li>If {@code label = abc,def}, settings with labels "abc" or "def" are returned.</li>
      * </ul>
      *
-     * @return label The label used to filter GET requests from the service.
+     * @return labels The labels used to filter GET requests from the service.
      */
-    public String label() {
-        return label;
+    public String[] labels() {
+        return (labels == null) ? new String[0] : Arrays.copyOf(labels, labels.length);
     }
 
     /**
@@ -117,14 +118,15 @@ public class SettingSelector {
      *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
      *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
      *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     *     <li>If {@code label = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
      * </ul>
      *
-     * @param label The ConfigurationSetting label to match. If the provided value is {@code null} or {@code ""}, all
+     * @param labels The ConfigurationSetting labels to match. If the provided value is {@code null} or {@code ""}, all
      * ConfigurationSettings will be returned regardless of their label.
      * @return SettingSelector The updated SettingSelector object.
      */
-    public SettingSelector label(String label) {
-        this.label = label;
+    public SettingSelector labels(String... labels) {
+        this.labels = labels;
         return this;
     }
 
@@ -158,9 +160,7 @@ public class SettingSelector {
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
     public SettingFields[] fields() {
-        return fields == null
-            ? new SettingFields[0]
-            : Arrays.copyOf(fields, fields.length);
+        return (fields == null) ? new SettingFields[0] : Arrays.copyOf(fields, fields.length);
     }
 
     /**

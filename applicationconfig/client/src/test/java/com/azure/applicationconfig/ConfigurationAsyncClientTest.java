@@ -97,7 +97,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
     @Override
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
-        client.listSettings(new SettingSelector().key(keyPrefix + "*"))
+        client.listSettings(new SettingSelector().keys(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
                     return client.deleteSetting(configurationSetting).retryBackoff(3, Duration.ofSeconds(10));
@@ -564,12 +564,34 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
-        StepVerifier.create(client.listSettings(new SettingSelector().key(key).label(label)))
+        StepVerifier.create(client.listSettings(new SettingSelector().keys(key).labels(label)))
                 .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
                 .verifyComplete();
 
-        StepVerifier.create(client.listSettings(new SettingSelector().key(key)))
+        StepVerifier.create(client.listSettings(new SettingSelector().keys(key)))
                 .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
+                .verifyComplete();
+    }
+
+    @Test
+    public void listWithKeyAndMultipleLabels() {
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
+        final String label2 = sdkContext.randomResourceName(labelPrefix, 16);
+        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value(label).label(label);
+        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value(label2).label(label2);
+
+        StepVerifier.create(client.addSetting(setting))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+
+        StepVerifier.create(client.addSetting(setting2))
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .verifyComplete();
+
+        StepVerifier.create(client.listSettings(new SettingSelector().keys(key).labels(label, label2)))
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
                 .verifyComplete();
     }
 
@@ -586,8 +608,8 @@ public class ConfigurationAsyncClientTest extends TestBase {
         tags.put("tag2", "value2");
 
         final SettingSelector secondLabelOptions = new SettingSelector()
-                .label("*-second*")
-                .key(keyPrefix + "-fetch-*")
+                .labels("*-second*")
+                .keys(keyPrefix + "-fetch-*")
                 .fields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
         final List<ConfigurationSetting> settings = IntStream.range(0, numberToCreate)
                 .mapToObj(value -> {
@@ -655,13 +677,13 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .verifyComplete();
 
         // Gets all versions of this value so we can get the one we want at that particular date.
-        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().key(keyName)).collectList().block();
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collectList().block();
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
 
         // We want to fetch the configuration setting when we first updated its value.
-        SettingSelector options = new SettingSelector().key(keyName).acceptDatetime(revisions.get(1).lastModified());
+        SettingSelector options = new SettingSelector().keys(keyName).acceptDatetime(revisions.get(1).lastModified());
         StepVerifier.create(client.listSettings(options))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .verifyComplete();
@@ -690,14 +712,14 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .verifyComplete();
 
         // Get all revisions for a key, they are listed in descending order.
-        StepVerifier.create(client.listSettingRevisions(new SettingSelector().key(keyName)))
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(keyName)))
                 .assertNext(response -> assertConfigurationEquals(updated2, response))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .assertNext(response -> assertConfigurationEquals(original, response))
                 .verifyComplete();
 
         // Verifies that we can select specific fields.
-        StepVerifier.create(client.listSettingRevisions(new SettingSelector().key(keyName).fields(SettingFields.KEY, SettingFields.ETAG)))
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(keyName).fields(SettingFields.KEY, SettingFields.ETAG)))
                 .assertNext(response -> {
                     assertEquals(updated2.key(), response.key());
                     assertNotNull(response.etag());
@@ -719,6 +741,27 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .verifyComplete();
     }
 
+    @Test
+    public void listRevisionsMultipleLabels() {
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String label = sdkContext.randomResourceName(labelPrefix, 16);
+        final String label2 = sdkContext.randomResourceName(labelPrefix, 16);
+        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value(label).label(label);
+        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value(label2).label(label2);
+
+        StepVerifier.create(client.addSetting(setting))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.addSetting(setting2))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.listSettings(new SettingSelector().keys(key).labels(label, label2)))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
+    }
     /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
@@ -741,14 +784,14 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .verifyComplete();
 
         // Gets all versions of this value.
-        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().key(keyName)).collectList().block();
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collectList().block();
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
 
         // We want to fetch all the revisions that existed up and including when the first revision was created.
         // Revisions are returned in descending order from creation date.
-        SettingSelector options = new SettingSelector().key(keyName).acceptDatetime(revisions.get(1).lastModified());
+        SettingSelector options = new SettingSelector().keys(keyName).acceptDatetime(revisions.get(1).lastModified());
         StepVerifier.create(client.listSettingRevisions(options))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
                 .assertNext(response -> assertConfigurationEquals(original, response))
@@ -775,7 +818,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
             client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)).block();
         }
 
-        SettingSelector filter = new SettingSelector().key(keyPrefix).label(labelPrefix);
+        SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
         StepVerifier.create(client.listSettingRevisions(filter))
                 .expectNextCount(numberExpected)
                 .verifyComplete();
@@ -802,7 +845,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
             results.add(client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)));
         }
 
-        SettingSelector filter = new SettingSelector().key(keyPrefix + "-*").label(labelPrefix);
+        SettingSelector filter = new SettingSelector().keys(keyPrefix + "-*").labels(labelPrefix);
 
         Flux.merge(results).blockLast();
         StepVerifier.create(client.listSettings(filter))
@@ -833,7 +876,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
     @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test
     public void deleteAllSettings() {
-        client.listSettings(new SettingSelector().key("*"))
+        client.listSettings(new SettingSelector().keys("*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
                     return client.deleteSetting(configurationSetting);

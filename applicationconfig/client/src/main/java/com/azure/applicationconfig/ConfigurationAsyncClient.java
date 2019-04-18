@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
  */
 public final class ConfigurationAsyncClient extends ServiceClient {
     private static final String ETAG_ANY = "*";
+    private static final String COMMA = ",";
 
     private final String serviceEndpoint;
     private final ConfigurationService service;
@@ -259,7 +260,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (options != null) {
             String fields = getSelectQuery(options.fields());
-            result = service.listKeyValues(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime());
+            result = service.listKeyValues(serviceEndpoint, String.join(COMMA, options.keys()), String.join(COMMA, options.labels()), fields, options.acceptDateTime());
         } else {
             result = service.listKeyValues(serviceEndpoint, null, null, null, null);
         }
@@ -282,7 +283,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (selector != null) {
             String fields = getSelectQuery(selector.fields());
-            result = service.listKeyValueRevisions(serviceEndpoint, selector.key(), selector.label(), fields, selector.acceptDateTime(), null);
+            result = service.listKeyValueRevisions(serviceEndpoint, String.join(COMMA, selector.keys()), String.join(COMMA, selector.labels()), fields, selector.acceptDateTime(), null);
         } else {
             result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
         }
