@@ -20,33 +20,35 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DynamicThresholdCriterion")
 public class DynamicMetricCriteria extends MultiMetricCriteria {
     /**
-     * The condition used to compare the metric value against the threshold.
+     * The operator used to compare the metric value against the threshold.
      */
     @JsonProperty(value = "operator", required = true)
     private Object operator;
 
     /**
-     * The sensitivity of the threshold.
+     * The extent of deviation required to trigger an alert. This will affect
+     * how tight the threshold is to the metric series pattern.
      */
     @JsonProperty(value = "alertSensitivity", required = true)
     private Object alertSensitivity;
 
     /**
-     * Select minimum number of violations within the selected lookback time
-     * window required to raise an alert.
+     * The minimum number of violations required within the selected lookback
+     * time window required to raise an alert.
      */
     @JsonProperty(value = "failingPeriods", required = true)
     private DynamicThresholdFailingPeriods failingPeriods;
 
     /**
      * Use this option to set the date from which to start learning the metric
-     * historical data and calculate the dynamic thresholds.
+     * historical data and calculate the dynamic thresholds (in ISO8601
+     * format).
      */
     @JsonProperty(value = "ignoreDataBefore")
     private DateTime ignoreDataBefore;
 
     /**
-     * Get the condition used to compare the metric value against the threshold.
+     * Get the operator used to compare the metric value against the threshold.
      *
      * @return the operator value
      */
@@ -55,7 +57,7 @@ public class DynamicMetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Set the condition used to compare the metric value against the threshold.
+     * Set the operator used to compare the metric value against the threshold.
      *
      * @param operator the operator value to set
      * @return the DynamicMetricCriteria object itself.
@@ -66,7 +68,7 @@ public class DynamicMetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Get the sensitivity of the threshold.
+     * Get the extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric series pattern.
      *
      * @return the alertSensitivity value
      */
@@ -75,7 +77,7 @@ public class DynamicMetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Set the sensitivity of the threshold.
+     * Set the extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric series pattern.
      *
      * @param alertSensitivity the alertSensitivity value to set
      * @return the DynamicMetricCriteria object itself.
@@ -86,7 +88,7 @@ public class DynamicMetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Get select minimum number of violations within the selected lookback time window required to raise an alert.
+     * Get the minimum number of violations required within the selected lookback time window required to raise an alert.
      *
      * @return the failingPeriods value
      */
@@ -95,7 +97,7 @@ public class DynamicMetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Set select minimum number of violations within the selected lookback time window required to raise an alert.
+     * Set the minimum number of violations required within the selected lookback time window required to raise an alert.
      *
      * @param failingPeriods the failingPeriods value to set
      * @return the DynamicMetricCriteria object itself.
@@ -106,7 +108,7 @@ public class DynamicMetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Get use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds.
+     * Get use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds (in ISO8601 format).
      *
      * @return the ignoreDataBefore value
      */
@@ -115,7 +117,7 @@ public class DynamicMetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Set use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds.
+     * Set use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds (in ISO8601 format).
      *
      * @param ignoreDataBefore the ignoreDataBefore value to set
      * @return the DynamicMetricCriteria object itself.

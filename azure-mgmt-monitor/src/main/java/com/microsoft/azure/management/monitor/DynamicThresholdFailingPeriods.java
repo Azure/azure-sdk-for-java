@@ -11,24 +11,27 @@ package com.microsoft.azure.management.monitor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Select minimum number of violations within the selected lookback time window
- * required to raise an alert.
+ * The minimum number of violations required within the selected lookback time
+ * window required to raise an alert.
  */
 public class DynamicThresholdFailingPeriods {
     /**
-     * Select how many t the lookback time window,.
+     * The number of aggregated lookback points. The lookback time window is
+     * calculated based on the aggregation granularity (windowSize) and the
+     * selected number of aggregated points.
      */
     @JsonProperty(value = "numberOfEvaluationPeriods", required = true)
     private double numberOfEvaluationPeriods;
 
     /**
-     * The least number of violations.
+     * The number of violations to trigger an alert. Should be smaller or equal
+     * to numberOfEvaluationPeriods.
      */
     @JsonProperty(value = "minFailingPeriodsToAlert", required = true)
     private double minFailingPeriodsToAlert;
 
     /**
-     * Get select how many t the lookback time window,.
+     * Get the number of aggregated lookback points. The lookback time window is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
      *
      * @return the numberOfEvaluationPeriods value
      */
@@ -37,7 +40,7 @@ public class DynamicThresholdFailingPeriods {
     }
 
     /**
-     * Set select how many t the lookback time window,.
+     * Set the number of aggregated lookback points. The lookback time window is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
      *
      * @param numberOfEvaluationPeriods the numberOfEvaluationPeriods value to set
      * @return the DynamicThresholdFailingPeriods object itself.
@@ -48,7 +51,7 @@ public class DynamicThresholdFailingPeriods {
     }
 
     /**
-     * Get the least number of violations.
+     * Get the number of violations to trigger an alert. Should be smaller or equal to numberOfEvaluationPeriods.
      *
      * @return the minFailingPeriodsToAlert value
      */
@@ -57,7 +60,7 @@ public class DynamicThresholdFailingPeriods {
     }
 
     /**
-     * Set the least number of violations.
+     * Set the number of violations to trigger an alert. Should be smaller or equal to numberOfEvaluationPeriods.
      *
      * @param minFailingPeriodsToAlert the minFailingPeriodsToAlert value to set
      * @return the DynamicThresholdFailingPeriods object itself.
