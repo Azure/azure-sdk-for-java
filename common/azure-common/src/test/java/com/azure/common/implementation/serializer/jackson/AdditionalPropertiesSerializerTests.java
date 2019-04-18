@@ -17,7 +17,7 @@ public class AdditionalPropertiesSerializerTests {
     public void canSerializeAdditionalProperties() throws Exception {
         Foo foo = new Foo();
         foo.bar("hello.world");
-        foo.baz( new ArrayList<>());
+        foo.baz(new ArrayList<>());
         foo.baz().add("hello");
         foo.baz().add("hello.world");
         foo.qux(new HashMap<>());
@@ -48,7 +48,7 @@ public class AdditionalPropertiesSerializerTests {
     public void canSerializeAdditionalPropertiesThroughInheritance() throws Exception {
         Foo foo = new FooChild();
         foo.bar("hello.world");
-        foo.baz( new ArrayList<>());
+        foo.baz(new ArrayList<>());
         foo.baz().add("hello");
         foo.baz().add("hello.world");
         foo.qux(new HashMap<>());
