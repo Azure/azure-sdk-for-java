@@ -6,7 +6,7 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * The exception thrown when Reached the maximum number of redirect attempts..
+ * This exception is thrown when an HTTP request has reached the maximum number of redirect attempts.
  */
 public class TooManyRedirectsException extends HttpRequestException {
 
