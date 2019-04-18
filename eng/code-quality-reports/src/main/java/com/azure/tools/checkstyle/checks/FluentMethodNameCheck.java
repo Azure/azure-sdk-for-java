@@ -15,7 +15,7 @@ import java.util.Set;
 
 /**
  * Model Class Method:
- *  Fluent Methods: All methods that return an instance of the class, and that have one parameter, should not start with 'with'.
+ *  Fluent Methods: All methods that return an instance of the class, and that have one parameter.
  *  The method name should not start with {@code avoidStartWords}.
  */
 public class FluentMethodNameCheck extends AbstractCheck {
