@@ -18,7 +18,7 @@ import static org.junit.Assert.fail;
 
 public class ValidatorTests {
     @Test
-    public void validateInt() throws Exception {
+    public void validateInt() {
         IntWrapper body = new IntWrapper();
         body.value(2);
         body.nullable(null);
@@ -26,7 +26,7 @@ public class ValidatorTests {
     }
 
     @Test
-    public void validateInteger() throws Exception {
+    public void validateInteger() {
         IntegerWrapper body = new IntegerWrapper();
         body.value(3);
         Validator.validate(body); // pass
@@ -40,12 +40,12 @@ public class ValidatorTests {
     }
 
     @Test
-    public void validateString() throws Exception {
+    public void validateString() {
         StringWrapper body = new StringWrapper();
-        body.value = "";
+        body.value("");
         Validator.validate(body); // pass
         try {
-            body.value = null;
+            body.value(null);
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
@@ -54,12 +54,12 @@ public class ValidatorTests {
     }
 
     @Test
-    public void validateLocalDate() throws Exception {
+    public void validateLocalDate() {
         LocalDateWrapper body = new LocalDateWrapper();
-        body.value = LocalDate.of(1, 2, 3);
+        body.value(LocalDate.of(1, 2, 3));
         Validator.validate(body); // pass
         try {
-            body.value = null;
+            body.value(null);
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
@@ -68,19 +68,19 @@ public class ValidatorTests {
     }
 
     @Test
-    public void validateList() throws Exception {
+    public void validateList() {
         ListWrapper body = new ListWrapper();
         try {
-            body.list = null;
+            body.list(null);
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
             Assert.assertTrue(ex.getMessage().contains("list is required"));
         }
-        body.list = new ArrayList<StringWrapper>();
+        body.list(new ArrayList<>());
         Validator.validate(body); // pass
         StringWrapper wrapper = new StringWrapper();
-        wrapper.value = "valid";
+        wrapper.value("valid");
         body.list.add(wrapper);
         Validator.validate(body); // pass
         body.list.add(null);
@@ -95,19 +95,19 @@ public class ValidatorTests {
     }
 
     @Test
-    public void validateMap() throws Exception {
+    public void validateMap() {
         MapWrapper body = new MapWrapper();
         try {
-            body.map = null;
+            body.map(null);
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
             Assert.assertTrue(ex.getMessage().contains("map is required"));
         }
-        body.map = new HashMap<LocalDate, StringWrapper>();
+        body.map(new HashMap<>());
         Validator.validate(body); // pass
         StringWrapper wrapper = new StringWrapper();
-        wrapper.value = "valid";
+        wrapper.value("valid");
         body.map.put(LocalDate.of(1, 2, 3), wrapper);
         Validator.validate(body); // pass
         body.map.put(LocalDate.of(1, 2, 3), null);
@@ -122,13 +122,13 @@ public class ValidatorTests {
     }
 
     @Test
-    public void validateObject() throws Exception {
+    public void validateObject() {
         Product product = new Product();
         Validator.validate(product);
     }
 
     @Test
-    public void validateRecursive() throws Exception {
+    public void validateRecursive() {
         TextNode textNode = new TextNode("\"\"");
         Validator.validate(textNode);
     }
