@@ -1497,7 +1497,7 @@ public abstract class RestProxyTests {
         final HttpPipeline httpPipeline = new HttpPipeline(httpClient,
                 new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true));
         //
-        Response<HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream, Files.size(filePath));
+        Response<HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, SERIALIZER).put(stream, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.value().data());
     }
@@ -1601,7 +1601,7 @@ public abstract class RestProxyTests {
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
         final HttpPipeline httpPipeline = new HttpPipeline(httpClient);
 
-        return RestProxy.create(serviceClass, httpPipeline, serializer);
+        return RestProxy.create(serviceClass, httpPipeline, SERIALIZER);
     }
 
     private static void assertContains(String value, String expectedSubstring) {
@@ -1620,5 +1620,5 @@ public abstract class RestProxyTests {
         Assert.assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.", false);
     }
 
-    private static final SerializerAdapter serializer = new JacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 }
