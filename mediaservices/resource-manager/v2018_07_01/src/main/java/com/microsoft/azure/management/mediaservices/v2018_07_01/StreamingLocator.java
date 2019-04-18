@@ -56,6 +56,11 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
     DateTime endTime();
 
     /**
+     * @return the filters value.
+     */
+    List<String> filters();
+
+    /**
      * @return the id value.
      */
     String id();
@@ -187,6 +192,18 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         }
 
         /**
+         * The stage of the streaminglocator definition allowing to specify Filters.
+         */
+        interface WithFilters {
+            /**
+             * Specifies filters.
+             * @param filters A list of asset or account filters which apply to this streaming locator
+             * @return the next definition stage
+             */
+            WithCreate withFilters(List<String> filters);
+        }
+
+        /**
          * The stage of the streaminglocator definition allowing to specify StartTime.
          */
         interface WithStartTime {
@@ -215,13 +232,13 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<StreamingLocator>, DefinitionStages.WithAlternativeMediaId, DefinitionStages.WithContentKeys, DefinitionStages.WithDefaultContentKeyPolicyName, DefinitionStages.WithEndTime, DefinitionStages.WithStartTime, DefinitionStages.WithStreamingLocatorId {
+        interface WithCreate extends Creatable<StreamingLocator>, DefinitionStages.WithAlternativeMediaId, DefinitionStages.WithContentKeys, DefinitionStages.WithDefaultContentKeyPolicyName, DefinitionStages.WithEndTime, DefinitionStages.WithFilters, DefinitionStages.WithStartTime, DefinitionStages.WithStreamingLocatorId {
         }
     }
     /**
      * The template for a StreamingLocator update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<StreamingLocator>, UpdateStages.WithAlternativeMediaId, UpdateStages.WithContentKeys, UpdateStages.WithDefaultContentKeyPolicyName, UpdateStages.WithEndTime, UpdateStages.WithStartTime, UpdateStages.WithStreamingLocatorId {
+    interface Update extends Appliable<StreamingLocator>, UpdateStages.WithAlternativeMediaId, UpdateStages.WithContentKeys, UpdateStages.WithDefaultContentKeyPolicyName, UpdateStages.WithEndTime, UpdateStages.WithFilters, UpdateStages.WithStartTime, UpdateStages.WithStreamingLocatorId {
     }
 
     /**
@@ -274,6 +291,18 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
              * @return the next update stage
              */
             Update withEndTime(DateTime endTime);
+        }
+
+        /**
+         * The stage of the streaminglocator update allowing to specify Filters.
+         */
+        interface WithFilters {
+            /**
+             * Specifies filters.
+             * @param filters A list of asset or account filters which apply to this streaming locator
+             * @return the next update stage
+             */
+            Update withFilters(List<String> filters);
         }
 
         /**
