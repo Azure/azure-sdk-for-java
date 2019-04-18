@@ -13,14 +13,15 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.TableCreateUpdateParameters;
 import java.util.Map;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.TableResource;
 import rx.functions.Func1;
 
-class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> implements Table, Table.Update {
+class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> implements Table, Table.Definition, Table.Update {
     private final DocumentDBManager manager;
     private String resourceGroupName;
     private String accountName;
     private String tableRid;
-    private TableCreateUpdateParameters updateParameter;
+    private TableCreateUpdateParameters createOrUpdateParameter;
 
     TableImpl(String name, DocumentDBManager manager) {
         super(name, new TableInner());
@@ -28,7 +29,7 @@ class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> imp
         // Set resource name
         this.tableRid = name;
         //
-        this.updateParameter = new TableCreateUpdateParameters();
+        this.createOrUpdateParameter = new TableCreateUpdateParameters();
     }
 
     TableImpl(TableInner inner, DocumentDBManager manager) {
@@ -41,7 +42,7 @@ class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> imp
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "databaseAccounts");
         this.tableRid = IdParsingUtils.getValueFromIdByName(inner.id(), "tables");
         //
-        this.updateParameter = new TableCreateUpdateParameters();
+        this.createOrUpdateParameter = new TableCreateUpdateParameters();
     }
 
     @Override
@@ -52,13 +53,21 @@ class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> imp
     @Override
     public Observable<Table> createResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return null; // NOP createResourceAsync implementation as create is not supported
+        return client.createUpdateTableAsync(this.resourceGroupName, this.accountName, this.tableRid, this.createOrUpdateParameter)
+            .map(new Func1<TableInner, TableInner>() {
+               @Override
+               public TableInner call(TableInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<Table> updateResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.updateTableAsync(this.resourceGroupName, this.accountName, this.tableRid, this.updateParameter)
+        return client.createUpdateTableAsync(this.resourceGroupName, this.accountName, this.tableRid, this.createOrUpdateParameter)
             .map(new Func1<TableInner, TableInner>() {
                @Override
                public TableInner call(TableInner resource) {
@@ -81,7 +90,7 @@ class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> imp
     }
 
     private void resetCreateUpdateParameters() {
-        this.updateParameter = new TableCreateUpdateParameters();
+        this.createOrUpdateParameter = new TableCreateUpdateParameters();
     }
 
     @Override
@@ -112,6 +121,25 @@ class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> imp
     @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public TableImpl withExistingApi(String resourceGroupName, String accountName) {
+        this.resourceGroupName = resourceGroupName;
+        this.accountName = accountName;
+        return this;
+    }
+
+    @Override
+    public TableImpl withOptions(Map<String, String> options) {
+        this.createOrUpdateParameter.withOptions(options);
+        return this;
+    }
+
+    @Override
+    public TableImpl withResource(TableResource resource) {
+        this.createOrUpdateParameter.withResource(resource);
+        return this;
     }
 
 }

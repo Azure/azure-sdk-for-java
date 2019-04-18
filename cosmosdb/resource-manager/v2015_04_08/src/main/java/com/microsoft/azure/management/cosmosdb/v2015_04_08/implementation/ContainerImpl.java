@@ -8,41 +8,47 @@
 
 package com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation;
 
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabase;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.Container;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.ContainerCreateUpdateParameters;
 import java.util.Map;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseResource;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.ConflictResolutionPolicy;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.IndexingPolicy;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.ContainerPartitionKey;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.UniqueKeyPolicy;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.ContainerResource;
 import rx.functions.Func1;
 
-class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInner, SqlDatabaseImpl> implements SqlDatabase, SqlDatabase.Definition, SqlDatabase.Update {
+class ContainerImpl extends CreatableUpdatableImpl<Container, ContainerInner, ContainerImpl> implements Container, Container.Definition, Container.Update {
     private final DocumentDBManager manager;
     private String resourceGroupName;
     private String accountName;
     private String databaseRid;
-    private SqlDatabaseCreateUpdateParameters createOrUpdateParameter;
+    private String containerRid;
+    private ContainerCreateUpdateParameters createOrUpdateParameter;
 
-    SqlDatabaseImpl(String name, DocumentDBManager manager) {
-        super(name, new SqlDatabaseInner());
+    ContainerImpl(String name, DocumentDBManager manager) {
+        super(name, new ContainerInner());
         this.manager = manager;
         // Set resource name
-        this.databaseRid = name;
+        this.containerRid = name;
         //
-        this.createOrUpdateParameter = new SqlDatabaseCreateUpdateParameters();
+        this.createOrUpdateParameter = new ContainerCreateUpdateParameters();
     }
 
-    SqlDatabaseImpl(SqlDatabaseInner inner, DocumentDBManager manager) {
+    ContainerImpl(ContainerInner inner, DocumentDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.databaseRid = inner.name();
+        this.containerRid = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "databaseAccounts");
         this.databaseRid = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
+        this.containerRid = IdParsingUtils.getValueFromIdByName(inner.id(), "containers");
         //
-        this.createOrUpdateParameter = new SqlDatabaseCreateUpdateParameters();
+        this.createOrUpdateParameter = new ContainerCreateUpdateParameters();
     }
 
     @Override
@@ -51,12 +57,12 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     }
 
     @Override
-    public Observable<SqlDatabase> createResourceAsync() {
+    public Observable<Container> createResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateSqlDatabaseAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.createOrUpdateParameter)
-            .map(new Func1<SqlDatabaseInner, SqlDatabaseInner>() {
+        return client.createUpdateSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.containerRid, this.createOrUpdateParameter)
+            .map(new Func1<ContainerInner, ContainerInner>() {
                @Override
-               public SqlDatabaseInner call(SqlDatabaseInner resource) {
+               public ContainerInner call(ContainerInner resource) {
                    resetCreateUpdateParameters();
                    return resource;
                }
@@ -65,12 +71,12 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     }
 
     @Override
-    public Observable<SqlDatabase> updateResourceAsync() {
+    public Observable<Container> updateResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateSqlDatabaseAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.createOrUpdateParameter)
-            .map(new Func1<SqlDatabaseInner, SqlDatabaseInner>() {
+        return client.createUpdateSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.containerRid, this.createOrUpdateParameter)
+            .map(new Func1<ContainerInner, ContainerInner>() {
                @Override
-               public SqlDatabaseInner call(SqlDatabaseInner resource) {
+               public ContainerInner call(ContainerInner resource) {
                    resetCreateUpdateParameters();
                    return resource;
                }
@@ -79,9 +85,9 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     }
 
     @Override
-    protected Observable<SqlDatabaseInner> getInnerAsync() {
+    protected Observable<ContainerInner> getInnerAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return null; // NOP getInnerAsync implementation as get is not supported
+        return client.getSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.containerRid);
     }
 
     @Override
@@ -90,12 +96,7 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     }
 
     private void resetCreateUpdateParameters() {
-        this.createOrUpdateParameter = new SqlDatabaseCreateUpdateParameters();
-    }
-
-    @Override
-    public String _colls() {
-        return this.inner()._colls();
+        this.createOrUpdateParameter = new ContainerCreateUpdateParameters();
     }
 
     @Override
@@ -119,13 +120,28 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     }
 
     @Override
-    public String _users() {
-        return this.inner()._users();
+    public ConflictResolutionPolicy conflictResolutionPolicy() {
+        return this.inner().conflictResolutionPolicy();
+    }
+
+    @Override
+    public String containerId() {
+        return this.inner().containerId();
+    }
+
+    @Override
+    public Integer defaultTtl() {
+        return this.inner().defaultTtl();
     }
 
     @Override
     public String id() {
         return this.inner().id();
+    }
+
+    @Override
+    public IndexingPolicy indexingPolicy() {
+        return this.inner().indexingPolicy();
     }
 
     @Override
@@ -139,8 +155,8 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     }
 
     @Override
-    public String sqlDatabaseId() {
-        return this.inner().sqlDatabaseId();
+    public ContainerPartitionKey partitionKey() {
+        return this.inner().partitionKey();
     }
 
     @Override
@@ -154,20 +170,26 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     }
 
     @Override
-    public SqlDatabaseImpl withExistingApi(String resourceGroupName, String accountName) {
+    public UniqueKeyPolicy uniqueKeyPolicy() {
+        return this.inner().uniqueKeyPolicy();
+    }
+
+    @Override
+    public ContainerImpl withExistingDatabasis(String resourceGroupName, String accountName, String databaseRid) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
+        this.databaseRid = databaseRid;
         return this;
     }
 
     @Override
-    public SqlDatabaseImpl withOptions(Map<String, String> options) {
+    public ContainerImpl withOptions(Map<String, String> options) {
         this.createOrUpdateParameter.withOptions(options);
         return this;
     }
 
     @Override
-    public SqlDatabaseImpl withResource(SqlDatabaseResource resource) {
+    public ContainerImpl withResource(ContainerResource resource) {
         this.createOrUpdateParameter.withResource(resource);
         return this;
     }

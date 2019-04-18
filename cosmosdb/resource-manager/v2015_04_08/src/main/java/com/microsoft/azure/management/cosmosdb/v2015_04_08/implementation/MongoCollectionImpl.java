@@ -15,15 +15,16 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoCollectionCreate
 import java.util.Map;
 import java.util.List;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoIndex;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoCollectionResource;
 import rx.functions.Func1;
 
-class MongoCollectionImpl extends CreatableUpdatableImpl<MongoCollection, MongoCollectionInner, MongoCollectionImpl> implements MongoCollection, MongoCollection.Update {
+class MongoCollectionImpl extends CreatableUpdatableImpl<MongoCollection, MongoCollectionInner, MongoCollectionImpl> implements MongoCollection, MongoCollection.Definition, MongoCollection.Update {
     private final DocumentDBManager manager;
     private String resourceGroupName;
     private String accountName;
     private String databaseRid;
     private String collectionRid;
-    private MongoCollectionCreateUpdateParameters updateParameter;
+    private MongoCollectionCreateUpdateParameters createOrUpdateParameter;
 
     MongoCollectionImpl(String name, DocumentDBManager manager) {
         super(name, new MongoCollectionInner());
@@ -31,7 +32,7 @@ class MongoCollectionImpl extends CreatableUpdatableImpl<MongoCollection, MongoC
         // Set resource name
         this.collectionRid = name;
         //
-        this.updateParameter = new MongoCollectionCreateUpdateParameters();
+        this.createOrUpdateParameter = new MongoCollectionCreateUpdateParameters();
     }
 
     MongoCollectionImpl(MongoCollectionInner inner, DocumentDBManager manager) {
@@ -45,7 +46,7 @@ class MongoCollectionImpl extends CreatableUpdatableImpl<MongoCollection, MongoC
         this.databaseRid = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
         this.collectionRid = IdParsingUtils.getValueFromIdByName(inner.id(), "collections");
         //
-        this.updateParameter = new MongoCollectionCreateUpdateParameters();
+        this.createOrUpdateParameter = new MongoCollectionCreateUpdateParameters();
     }
 
     @Override
@@ -56,13 +57,21 @@ class MongoCollectionImpl extends CreatableUpdatableImpl<MongoCollection, MongoC
     @Override
     public Observable<MongoCollection> createResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return null; // NOP createResourceAsync implementation as create is not supported
+        return client.createUpdateMongoCollectionAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.collectionRid, this.createOrUpdateParameter)
+            .map(new Func1<MongoCollectionInner, MongoCollectionInner>() {
+               @Override
+               public MongoCollectionInner call(MongoCollectionInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<MongoCollection> updateResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.updateMongoCollectionAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.collectionRid, this.updateParameter)
+        return client.createUpdateMongoCollectionAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.collectionRid, this.createOrUpdateParameter)
             .map(new Func1<MongoCollectionInner, MongoCollectionInner>() {
                @Override
                public MongoCollectionInner call(MongoCollectionInner resource) {
@@ -85,7 +94,7 @@ class MongoCollectionImpl extends CreatableUpdatableImpl<MongoCollection, MongoC
     }
 
     private void resetCreateUpdateParameters() {
-        this.updateParameter = new MongoCollectionCreateUpdateParameters();
+        this.createOrUpdateParameter = new MongoCollectionCreateUpdateParameters();
     }
 
     @Override
@@ -126,6 +135,26 @@ class MongoCollectionImpl extends CreatableUpdatableImpl<MongoCollection, MongoC
     @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public MongoCollectionImpl withExistingDatabasis(String resourceGroupName, String accountName, String databaseRid) {
+        this.resourceGroupName = resourceGroupName;
+        this.accountName = accountName;
+        this.databaseRid = databaseRid;
+        return this;
+    }
+
+    @Override
+    public MongoCollectionImpl withOptions(Map<String, String> options) {
+        this.createOrUpdateParameter.withOptions(options);
+        return this;
+    }
+
+    @Override
+    public MongoCollectionImpl withResource(MongoCollectionResource resource) {
+        this.createOrUpdateParameter.withResource(resource);
+        return this;
     }
 
 }

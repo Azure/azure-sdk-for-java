@@ -33,18 +33,16 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountUsage;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetricDefinition;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabase;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDatabase;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabase;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDatabaseCreateUpdateParameters;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainer;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabaseCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.Container;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.ContainerCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoCollection;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoCollectionCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.Table;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraTable;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.TableCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraTableCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraKeyspace;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraKeyspaceCreateUpdateParameters;
 
 class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, DatabaseAccountImpl, DatabaseAccountInner, DatabaseAccountsInner, DocumentDBManager>  implements DatabaseAccounts {
     protected DatabaseAccountsImpl(DocumentDBManager manager) {
@@ -218,6 +216,51 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return new DatabaseAccountImpl(name, new DatabaseAccountInner(), this.manager());
     }
 
+    @Override
+    public SqlDatabaseImpl defineDatabasis(String name) {
+        return wrapDatabasisModel(name);
+    }
+
+    @Override
+    public ContainerImpl defineContainer(String name) {
+        return wrapContainerModel(name);
+    }
+
+    @Override
+    public MongoCollectionImpl defineCollection(String name) {
+        return wrapCollectionModel(name);
+    }
+
+    @Override
+    public TableImpl defineTable(String name) {
+        return wrapTableModel(name);
+    }
+
+    @Override
+    public CassandraKeyspaceImpl defineKeyspace(String name) {
+        return wrapKeyspaceModel(name);
+    }
+
+    private SqlDatabaseImpl wrapDatabasisModel(String name) {
+        return new SqlDatabaseImpl(name, this.manager());
+    }
+
+    private ContainerImpl wrapContainerModel(String name) {
+        return new ContainerImpl(name, this.manager());
+    }
+
+    private MongoCollectionImpl wrapCollectionModel(String name) {
+        return new MongoCollectionImpl(name, this.manager());
+    }
+
+    private TableImpl wrapTableModel(String name) {
+        return new TableImpl(name, this.manager());
+    }
+
+    private CassandraKeyspaceImpl wrapKeyspaceModel(String name) {
+        return new CassandraKeyspaceImpl(name, this.manager());
+    }
+
     private DatabaseAccountMetricImpl wrapDatabaseAccountMetricModel(MetricInner inner) {
         return  new DatabaseAccountMetricImpl(inner, manager());
     }
@@ -234,8 +277,8 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return  new SqlDatabaseImpl(inner, manager());
     }
 
-    private SqlContainerImpl wrapSqlContainerModel(SqlContainerInner inner) {
-        return  new SqlContainerImpl(inner, manager());
+    private ContainerImpl wrapContainerModel(ContainerInner inner) {
+        return  new ContainerImpl(inner, manager());
     }
 
     private MongoCollectionImpl wrapMongoCollectionModel(MongoCollectionInner inner) {
@@ -250,7 +293,7 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return  new CassandraKeyspaceImpl(inner, manager());
     }
 
-    private Observable<SqlContainerInner> getSqlContainerInnerUsingDatabaseAccountsInnerAsync(String id) {
+    private Observable<ContainerInner> getContainerInnerUsingDatabaseAccountsInnerAsync(String id) {
         String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
         String accountName = IdParsingUtils.getValueFromIdByName(id, "databaseAccounts");
         String databaseRid = IdParsingUtils.getValueFromIdByName(id, "databases");
@@ -359,18 +402,6 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<SqlDatabase> createSqlDatabaseAsync(String resourceGroupName, String accountName, SqlDatabaseCreateUpdateParameters createSqlDatabaseParameters) {
-        DatabaseAccountsInner client = this.inner();
-        return client.createSqlDatabaseAsync(resourceGroupName, accountName, createSqlDatabaseParameters)
-        .map(new Func1<SqlDatabaseInner, SqlDatabase>() {
-            @Override
-            public SqlDatabase call(SqlDatabaseInner inner) {
-                return new SqlDatabaseImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
     public Observable<SqlDatabase> getSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
         DatabaseAccountsInner client = this.inner();
         return client.getSqlDatabaseAsync(resourceGroupName, accountName, databaseRid)
@@ -407,18 +438,6 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<MongoDatabase> createMongoDatabaseAsync(String resourceGroupName, String accountName, MongoDatabaseCreateUpdateParameters createMongoDatabaseParameters) {
-        DatabaseAccountsInner client = this.inner();
-        return client.createMongoDatabaseAsync(resourceGroupName, accountName, createMongoDatabaseParameters)
-        .map(new Func1<MongoDatabaseInner, MongoDatabase>() {
-            @Override
-            public MongoDatabase call(MongoDatabaseInner inner) {
-                return new MongoDatabaseImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
     public Observable<MongoDatabase> getMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
         DatabaseAccountsInner client = this.inner();
         return client.getMongoDatabaseAsync(resourceGroupName, accountName, databaseRid)
@@ -431,9 +450,9 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<MongoDatabase> updateMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, MongoDatabaseCreateUpdateParameters updateMongoDatabaseParameters) {
+    public Observable<MongoDatabase> createUpdateMongoDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, MongoDatabaseCreateUpdateParameters createUpdateMongoDatabaseParameters) {
         DatabaseAccountsInner client = this.inner();
-        return client.updateMongoDatabaseAsync(resourceGroupName, accountName, databaseRid, updateMongoDatabaseParameters)
+        return client.createUpdateMongoDatabaseAsync(resourceGroupName, accountName, databaseRid, createUpdateMongoDatabaseParameters)
         .map(new Func1<MongoDatabaseInner, MongoDatabase>() {
             @Override
             public MongoDatabase call(MongoDatabaseInner inner) {
@@ -449,31 +468,79 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<SqlContainer> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+    public Observable<GremlinDatabase> listGremlinDatabasesAsync(String resourceGroupName, String accountName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.listGremlinDatabasesAsync(resourceGroupName, accountName)
+        .flatMap(new Func1<List<GremlinDatabaseInner>, Observable<GremlinDatabaseInner>>() {
+            @Override
+            public Observable<GremlinDatabaseInner> call(List<GremlinDatabaseInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<GremlinDatabaseInner, GremlinDatabase>() {
+            @Override
+            public GremlinDatabase call(GremlinDatabaseInner inner) {
+                return new GremlinDatabaseImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<GremlinDatabase> getGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getGremlinDatabaseAsync(resourceGroupName, accountName, databaseRid)
+        .map(new Func1<GremlinDatabaseInner, GremlinDatabase>() {
+            @Override
+            public GremlinDatabase call(GremlinDatabaseInner inner) {
+                return new GremlinDatabaseImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<GremlinDatabase> createUpdateGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters) {
+        DatabaseAccountsInner client = this.inner();
+        return client.createUpdateGremlinDatabaseAsync(resourceGroupName, accountName, databaseRid, createUpdateGremlinDatabaseParameters)
+        .map(new Func1<GremlinDatabaseInner, GremlinDatabase>() {
+            @Override
+            public GremlinDatabase call(GremlinDatabaseInner inner) {
+                return new GremlinDatabaseImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseRid) {
+        DatabaseAccountsInner client = this.inner();
+        return client.deleteGremlinDatabaseAsync(resourceGroupName, accountName, databaseRid).toCompletable();
+    }
+
+    @Override
+    public Observable<Container> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
         DatabaseAccountsInner client = this.inner();
         return client.getSqlContainerAsync(resourceGroupName, accountName, databaseRid, containerRid)
-        .map(new Func1<SqlContainerInner, SqlContainer>() {
+        .map(new Func1<ContainerInner, Container>() {
             @Override
-            public SqlContainer call(SqlContainerInner inner) {
-                return wrapSqlContainerModel(inner);
+            public Container call(ContainerInner inner) {
+                return wrapContainerModel(inner);
             }
        });
     }
 
     @Override
-    public Observable<SqlContainer> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
+    public Observable<Container> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
         DatabaseAccountsInner client = this.inner();
         return client.listSqlContainersAsync(resourceGroupName, accountName, databaseRid)
-        .flatMap(new Func1<List<SqlContainerInner>, Observable<SqlContainerInner>>() {
+        .flatMap(new Func1<List<ContainerInner>, Observable<ContainerInner>>() {
             @Override
-            public Observable<SqlContainerInner> call(List<SqlContainerInner> innerList) {
+            public Observable<ContainerInner> call(List<ContainerInner> innerList) {
                 return Observable.from(innerList);
             }
         })
-        .map(new Func1<SqlContainerInner, SqlContainer>() {
+        .map(new Func1<ContainerInner, Container>() {
             @Override
-            public SqlContainer call(SqlContainerInner inner) {
-                return wrapSqlContainerModel(inner);
+            public Container call(ContainerInner inner) {
+                return wrapContainerModel(inner);
             }
         });
     }
@@ -485,15 +552,51 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<SqlContainer> createSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, SqlContainerCreateUpdateParameters createSqlContainerParameters) {
+    public Observable<Container> listGremlinContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
         DatabaseAccountsInner client = this.inner();
-        return client.createSqlContainerAsync(resourceGroupName, accountName, databaseRid, createSqlContainerParameters)
-        .map(new Func1<SqlContainerInner, SqlContainer>() {
+        return client.listGremlinContainersAsync(resourceGroupName, accountName, databaseRid)
+        .flatMap(new Func1<List<ContainerInner>, Observable<ContainerInner>>() {
             @Override
-            public SqlContainer call(SqlContainerInner inner) {
-                return new SqlContainerImpl(inner, manager());
+            public Observable<ContainerInner> call(List<ContainerInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<ContainerInner, Container>() {
+            @Override
+            public Container call(ContainerInner inner) {
+                return new ContainerImpl(inner, manager());
             }
         });
+    }
+
+    @Override
+    public Observable<Container> getGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getGremlinContainerAsync(resourceGroupName, accountName, databaseRid, containerRid)
+        .map(new Func1<ContainerInner, Container>() {
+            @Override
+            public Container call(ContainerInner inner) {
+                return new ContainerImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<Container> createUpdateGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
+        DatabaseAccountsInner client = this.inner();
+        return client.createUpdateGremlinContainerAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters)
+        .map(new Func1<ContainerInner, Container>() {
+            @Override
+            public Container call(ContainerInner inner) {
+                return new ContainerImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        DatabaseAccountsInner client = this.inner();
+        return client.deleteGremlinContainerAsync(resourceGroupName, accountName, databaseRid, containerRid).toCompletable();
     }
 
     @Override
@@ -533,18 +636,6 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<MongoCollection> createMongoCollectionAsync(String resourceGroupName, String accountName, String databaseRid, MongoCollectionCreateUpdateParameters createMongoCollectionParameters) {
-        DatabaseAccountsInner client = this.inner();
-        return client.createMongoCollectionAsync(resourceGroupName, accountName, databaseRid, createMongoCollectionParameters)
-        .map(new Func1<MongoCollectionInner, MongoCollection>() {
-            @Override
-            public MongoCollection call(MongoCollectionInner inner) {
-                return new MongoCollectionImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
     public Observable<Table> listTablesAsync(String resourceGroupName, String accountName) {
         DatabaseAccountsInner client = this.inner();
         return client.listTablesAsync(resourceGroupName, accountName)
@@ -554,18 +645,6 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
                 return Observable.from(innerList);
             }
         })
-        .map(new Func1<TableInner, Table>() {
-            @Override
-            public Table call(TableInner inner) {
-                return new TableImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<Table> createTableAsync(String resourceGroupName, String accountName, TableCreateUpdateParameters createTableParameters) {
-        DatabaseAccountsInner client = this.inner();
-        return client.createTableAsync(resourceGroupName, accountName, createTableParameters)
         .map(new Func1<TableInner, Table>() {
             @Override
             public Table call(TableInner inner) {
@@ -611,18 +690,6 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<CassandraTable> createCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, CassandraTableCreateUpdateParameters createCassandraTableParameters) {
-        DatabaseAccountsInner client = this.inner();
-        return client.createCassandraTableAsync(resourceGroupName, accountName, keyspaceRid, createCassandraTableParameters)
-        .map(new Func1<CassandraTableInner, CassandraTable>() {
-            @Override
-            public CassandraTable call(CassandraTableInner inner) {
-                return new CassandraTableImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
     public Observable<CassandraTable> getCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid) {
         DatabaseAccountsInner client = this.inner();
         return client.getCassandraTableAsync(resourceGroupName, accountName, keyspaceRid, tableRid)
@@ -635,9 +702,9 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<CassandraTable> updateCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, CassandraTableCreateUpdateParameters updateCassandraTableParameters) {
+    public Observable<CassandraTable> createUpdateCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceRid, String tableRid, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
         DatabaseAccountsInner client = this.inner();
-        return client.updateCassandraTableAsync(resourceGroupName, accountName, keyspaceRid, tableRid, updateCassandraTableParameters)
+        return client.createUpdateCassandraTableAsync(resourceGroupName, accountName, keyspaceRid, tableRid, createUpdateCassandraTableParameters)
         .map(new Func1<CassandraTableInner, CassandraTable>() {
             @Override
             public CassandraTable call(CassandraTableInner inner) {
@@ -662,18 +729,6 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
                 return Observable.from(innerList);
             }
         })
-        .map(new Func1<CassandraKeyspaceInner, CassandraKeyspace>() {
-            @Override
-            public CassandraKeyspace call(CassandraKeyspaceInner inner) {
-                return new CassandraKeyspaceImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<CassandraKeyspace> createCassandraKeyspaceAsync(String resourceGroupName, String accountName, CassandraKeyspaceCreateUpdateParameters createCassandraKeyspaceParameters) {
-        DatabaseAccountsInner client = this.inner();
-        return client.createCassandraKeyspaceAsync(resourceGroupName, accountName, createCassandraKeyspaceParameters)
         .map(new Func1<CassandraKeyspaceInner, CassandraKeyspace>() {
             @Override
             public CassandraKeyspace call(CassandraKeyspaceInner inner) {

@@ -9,8 +9,9 @@
 package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.SqlDatabaseInner;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.ContainerInner;
 import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
@@ -19,14 +20,9 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.Docume
 import java.util.Map;
 
 /**
- * Type representing SqlDatabase.
+ * Type representing Container.
  */
-public interface SqlDatabase extends HasInner<SqlDatabaseInner>, Indexable, Updatable<SqlDatabase.Update>, HasManager<DocumentDBManager> {
-    /**
-     * @return the _colls value.
-     */
-    String _colls();
-
+public interface Container extends HasInner<ContainerInner>, Indexable, Refreshable<Container>, Updatable<Container.Update>, HasManager<DocumentDBManager> {
     /**
      * @return the _etag value.
      */
@@ -48,14 +44,29 @@ public interface SqlDatabase extends HasInner<SqlDatabaseInner>, Indexable, Upda
     Object _ts();
 
     /**
-     * @return the _users value.
+     * @return the conflictResolutionPolicy value.
      */
-    String _users();
+    ConflictResolutionPolicy conflictResolutionPolicy();
+
+    /**
+     * @return the containerId value.
+     */
+    String containerId();
+
+    /**
+     * @return the defaultTtl value.
+     */
+    Integer defaultTtl();
 
     /**
      * @return the id value.
      */
     String id();
+
+    /**
+     * @return the indexingPolicy value.
+     */
+    IndexingPolicy indexingPolicy();
 
     /**
      * @return the location value.
@@ -68,9 +79,9 @@ public interface SqlDatabase extends HasInner<SqlDatabaseInner>, Indexable, Upda
     String name();
 
     /**
-     * @return the sqlDatabaseId value.
+     * @return the partitionKey value.
      */
-    String sqlDatabaseId();
+    ContainerPartitionKey partitionKey();
 
     /**
      * @return the tags value.
@@ -83,36 +94,42 @@ public interface SqlDatabase extends HasInner<SqlDatabaseInner>, Indexable, Upda
     String type();
 
     /**
-     * The entirety of the SqlDatabase definition.
+     * @return the uniqueKeyPolicy value.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithApi, DefinitionStages.WithOptions, DefinitionStages.WithResource, DefinitionStages.WithCreate {
+    UniqueKeyPolicy uniqueKeyPolicy();
+
+    /**
+     * The entirety of the Container definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithDatabasis, DefinitionStages.WithOptions, DefinitionStages.WithResource, DefinitionStages.WithCreate {
     }
 
     /**
-     * Grouping of SqlDatabase definition stages.
+     * Grouping of Container definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a SqlDatabase definition.
+         * The first stage of a Container definition.
          */
-        interface Blank extends WithApi {
+        interface Blank extends WithDatabasis {
         }
 
         /**
-         * The stage of the sqldatabase definition allowing to specify Api.
+         * The stage of the container definition allowing to specify Databasis.
          */
-        interface WithApi {
+        interface WithDatabasis {
            /**
-            * Specifies resourceGroupName, accountName.
+            * Specifies resourceGroupName, accountName, databaseRid.
             * @param resourceGroupName Name of an Azure resource group
             * @param accountName Cosmos DB database account name
+            * @param databaseRid Cosmos DB database rid
             * @return the next definition stage
             */
-            WithOptions withExistingApi(String resourceGroupName, String accountName);
+            WithOptions withExistingDatabasis(String resourceGroupName, String accountName, String databaseRid);
         }
 
         /**
-         * The stage of the sqldatabase definition allowing to specify Options.
+         * The stage of the container definition allowing to specify Options.
          */
         interface WithOptions {
            /**
@@ -124,15 +141,15 @@ public interface SqlDatabase extends HasInner<SqlDatabaseInner>, Indexable, Upda
         }
 
         /**
-         * The stage of the sqldatabase definition allowing to specify Resource.
+         * The stage of the container definition allowing to specify Resource.
          */
         interface WithResource {
            /**
             * Specifies resource.
-            * @param resource The standard JSON format of a SQL database
+            * @param resource The standard JSON format of a container
             * @return the next definition stage
             */
-            WithCreate withResource(SqlDatabaseResource resource);
+            WithCreate withResource(ContainerResource resource);
         }
 
         /**
@@ -140,17 +157,17 @@ public interface SqlDatabase extends HasInner<SqlDatabaseInner>, Indexable, Upda
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<SqlDatabase> {
+        interface WithCreate extends Creatable<Container> {
         }
     }
     /**
-     * The template for a SqlDatabase update operation, containing all the settings that can be modified.
+     * The template for a Container update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SqlDatabase> {
+    interface Update extends Appliable<Container> {
     }
 
     /**
-     * Grouping of SqlDatabase update stages.
+     * Grouping of Container update stages.
      */
     interface UpdateStages {
     }

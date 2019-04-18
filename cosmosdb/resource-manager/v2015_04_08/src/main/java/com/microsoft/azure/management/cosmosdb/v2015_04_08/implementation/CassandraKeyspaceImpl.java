@@ -13,14 +13,15 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraKeyspaceCreateUpdateParameters;
 import java.util.Map;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraKeyspaceResource;
 import rx.functions.Func1;
 
-class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, CassandraKeyspaceInner, CassandraKeyspaceImpl> implements CassandraKeyspace, CassandraKeyspace.Update {
+class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, CassandraKeyspaceInner, CassandraKeyspaceImpl> implements CassandraKeyspace, CassandraKeyspace.Definition, CassandraKeyspace.Update {
     private final DocumentDBManager manager;
     private String resourceGroupName;
     private String accountName;
     private String keyspaceRid;
-    private CassandraKeyspaceCreateUpdateParameters updateParameter;
+    private CassandraKeyspaceCreateUpdateParameters createOrUpdateParameter;
 
     CassandraKeyspaceImpl(String name, DocumentDBManager manager) {
         super(name, new CassandraKeyspaceInner());
@@ -28,7 +29,7 @@ class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, Ca
         // Set resource name
         this.keyspaceRid = name;
         //
-        this.updateParameter = new CassandraKeyspaceCreateUpdateParameters();
+        this.createOrUpdateParameter = new CassandraKeyspaceCreateUpdateParameters();
     }
 
     CassandraKeyspaceImpl(CassandraKeyspaceInner inner, DocumentDBManager manager) {
@@ -41,7 +42,7 @@ class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, Ca
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "databaseAccounts");
         this.keyspaceRid = IdParsingUtils.getValueFromIdByName(inner.id(), "keyspaces");
         //
-        this.updateParameter = new CassandraKeyspaceCreateUpdateParameters();
+        this.createOrUpdateParameter = new CassandraKeyspaceCreateUpdateParameters();
     }
 
     @Override
@@ -52,13 +53,21 @@ class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, Ca
     @Override
     public Observable<CassandraKeyspace> createResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return null; // NOP createResourceAsync implementation as create is not supported
+        return client.createUpdateCassandraKeyspaceAsync(this.resourceGroupName, this.accountName, this.keyspaceRid, this.createOrUpdateParameter)
+            .map(new Func1<CassandraKeyspaceInner, CassandraKeyspaceInner>() {
+               @Override
+               public CassandraKeyspaceInner call(CassandraKeyspaceInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<CassandraKeyspace> updateResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.updateCassandraKeyspaceAsync(this.resourceGroupName, this.accountName, this.keyspaceRid, this.updateParameter)
+        return client.createUpdateCassandraKeyspaceAsync(this.resourceGroupName, this.accountName, this.keyspaceRid, this.createOrUpdateParameter)
             .map(new Func1<CassandraKeyspaceInner, CassandraKeyspaceInner>() {
                @Override
                public CassandraKeyspaceInner call(CassandraKeyspaceInner resource) {
@@ -81,7 +90,7 @@ class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, Ca
     }
 
     private void resetCreateUpdateParameters() {
-        this.updateParameter = new CassandraKeyspaceCreateUpdateParameters();
+        this.createOrUpdateParameter = new CassandraKeyspaceCreateUpdateParameters();
     }
 
     @Override
@@ -112,6 +121,25 @@ class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, Ca
     @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public CassandraKeyspaceImpl withExistingApi(String resourceGroupName, String accountName) {
+        this.resourceGroupName = resourceGroupName;
+        this.accountName = accountName;
+        return this;
+    }
+
+    @Override
+    public CassandraKeyspaceImpl withOptions(Map<String, String> options) {
+        this.createOrUpdateParameter.withOptions(options);
+        return this;
+    }
+
+    @Override
+    public CassandraKeyspaceImpl withResource(CassandraKeyspaceResource resource) {
+        this.createOrUpdateParameter.withResource(resource);
+        return this;
     }
 
 }

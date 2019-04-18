@@ -32,13 +32,13 @@ public class IndexingPolicy {
      * List of paths to include in the indexing.
      */
     @JsonProperty(value = "includedPaths")
-    private List<IncludedPaths> includedPaths;
+    private List<IncludedPath> includedPaths;
 
     /**
      * List of paths to exclude from indexing.
      */
     @JsonProperty(value = "excludedPaths")
-    private List<String> excludedPaths;
+    private List<ExcludedPath> excludedPaths;
 
     /**
      * Get indicates if the indexing policy is automatic.
@@ -85,7 +85,7 @@ public class IndexingPolicy {
      *
      * @return the includedPaths value
      */
-    public List<IncludedPaths> includedPaths() {
+    public List<IncludedPath> includedPaths() {
         return this.includedPaths;
     }
 
@@ -95,7 +95,7 @@ public class IndexingPolicy {
      * @param includedPaths the includedPaths value to set
      * @return the IndexingPolicy object itself.
      */
-    public IndexingPolicy withIncludedPaths(List<IncludedPaths> includedPaths) {
+    public IndexingPolicy withIncludedPaths(List<IncludedPath> includedPaths) {
         this.includedPaths = includedPaths;
         return this;
     }
@@ -105,7 +105,7 @@ public class IndexingPolicy {
      *
      * @return the excludedPaths value
      */
-    public List<String> excludedPaths() {
+    public List<ExcludedPath> excludedPaths() {
         return this.excludedPaths;
     }
 
@@ -115,7 +115,7 @@ public class IndexingPolicy {
      * @param excludedPaths the excludedPaths value to set
      * @return the IndexingPolicy object itself.
      */
-    public IndexingPolicy withExcludedPaths(List<String> excludedPaths) {
+    public IndexingPolicy withExcludedPaths(List<ExcludedPath> excludedPaths) {
         this.excludedPaths = excludedPaths;
         return this;
     }

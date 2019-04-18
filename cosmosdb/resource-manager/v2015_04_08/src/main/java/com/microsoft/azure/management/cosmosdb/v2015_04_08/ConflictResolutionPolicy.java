@@ -11,7 +11,7 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The conflict resolution policy for the SQL container.
+ * The conflict resolution policy for the container.
  */
 public class ConflictResolutionPolicy {
     /**
