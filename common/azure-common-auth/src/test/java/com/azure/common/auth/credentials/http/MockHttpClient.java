@@ -7,6 +7,7 @@ import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.ProxyOptions;
+import com.azure.common.test.http.MockHttpResponse;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import java.util.function.Supplier;
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient implements HttpClient {
-    private static final HttpResponse MOCK_RESPONSE = new MockHttpResponse(200);
     private final List<HttpRequest> requests;
 
     /**
@@ -40,7 +40,7 @@ public class MockHttpClient implements HttpClient {
     public Mono<HttpResponse> send(HttpRequest request) {
         requests.add(request);
 
-        return Mono.just(MOCK_RESPONSE);
+        return Mono.just(new MockHttpResponse(request, 200));
     }
 
     @Override
