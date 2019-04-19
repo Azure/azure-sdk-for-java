@@ -8,6 +8,13 @@ import com.azure.common.http.HttpResponse;
 import com.azure.common.exception.ServiceRequestException;
 
 public class MyOtherRestException extends ServiceRequestException {
+    /**
+     * Creates a service request exception.
+     *
+     * @param message Message associated with exception.
+     * @param response HttpResponse associated with the exception.
+     * @param body Deserialized body of {@code response}.
+     */
     public MyOtherRestException(String message, HttpResponse response, HttpBinJSON body) {
         super(message, response, body);
     }
