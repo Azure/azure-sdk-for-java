@@ -91,7 +91,7 @@ public final class SpellCheckClientImpl extends ServiceClient implements SpellCh
         @POST("spellcheck")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<SpellCheck>> spellChecker(@HostParam("Endpoint") String endpoint, @HeaderParam("X-BingApis-SDK") String xBingApisSDK, @FormParam("Mode") String mode, @FormParam("PreContextText") String preContextText, @FormParam("PostContextText") String postContextText, @FormParam("Text") String text, @HeaderParam("Accept-Language") String acceptLanguage, @HeaderParam("Pragma") String pragma, @HeaderParam("User-Agent") String userAgent, @HeaderParam("X-MSEdge-ClientID") String clientId, @HeaderParam("X-MSEdge-ClientIP") String clientIp, @HeaderParam("X-Search-Location") String location, @QueryParam("ActionType") ActionType actionType, @QueryParam("AppName") String appName, @QueryParam("cc") String countryCode, @QueryParam("ClientMachineName") String clientMachineName, @QueryParam("DocId") String docId, @QueryParam("mkt") String market, @QueryParam("SessionId") String sessionId, @QueryParam("SetLang") String setLang, @QueryParam("UserId") String userId);
+        Mono<SimpleResponse<SpellCheck>> spellChecker(@HostParam("Endpoint") String endpoint, @HeaderParam("X-BingApis-SDK") String xBingApisSDK, @FormParam("Text") String text, @HeaderParam("Accept-Language") String acceptLanguage, @HeaderParam("Pragma") String pragma, @HeaderParam("User-Agent") String userAgent, @HeaderParam("X-MSEdge-ClientID") String clientId, @HeaderParam("X-MSEdge-ClientIP") String clientIp, @HeaderParam("X-Search-Location") String location, @QueryParam("ActionType") ActionType actionType, @QueryParam("AppName") String appName, @QueryParam("cc") String countryCode, @QueryParam("ClientMachineName") String clientMachineName, @QueryParam("DocId") String docId, @QueryParam("mkt") String market, @QueryParam("SessionId") String sessionId, @QueryParam("SetLang") String setLang, @QueryParam("UserId") String userId, @FormParam("Mode") String mode, @FormParam("PreContextText") String preContextText, @FormParam("PostContextText") String postContextText);
     }
 
     /**
@@ -122,9 +122,6 @@ public final class SpellCheckClientImpl extends ServiceClient implements SpellCh
             throw new IllegalArgumentException("Parameter text is required and cannot be null.");
         }
         final String xBingApisSDK = "true";
-        final String mode = null;
-        final String preContextText = null;
-        final String postContextText = null;
         final String acceptLanguage = null;
         final String pragma = null;
         final String userAgent = null;
@@ -140,7 +137,10 @@ public final class SpellCheckClientImpl extends ServiceClient implements SpellCh
         final String sessionId = null;
         final String setLang = null;
         final String userId = null;
-        return service.spellChecker(this.endpoint(), xBingApisSDK, mode, preContextText, postContextText, text, acceptLanguage, pragma, userAgent, clientId, clientIp, location, actionType, appName, countryCode, clientMachineName, docId, market, sessionId, setLang, userId);
+        final String mode = null;
+        final String preContextText = null;
+        final String postContextText = null;
+        return service.spellChecker(this.endpoint(), xBingApisSDK, text, acceptLanguage, pragma, userAgent, clientId, clientIp, location, actionType, appName, countryCode, clientMachineName, docId, market, sessionId, setLang, userId, mode, preContextText, postContextText);
     }
 
     /**
@@ -159,31 +159,25 @@ public final class SpellCheckClientImpl extends ServiceClient implements SpellCh
      * The Bing Spell Check API lets you perform contextual grammar and spell checking. Bing has developed a web-based spell-checker that leverages machine learning and statistical machine translation to dynamically train a constantly evolving and highly contextual algorithm. The spell-checker is based on a massive corpus of web searches and documents.
      *
      * @param text The text string to check for spelling and grammar errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request. Because of the query string length limit, you'll typically use a POST request unless you're checking only short strings.
-     * @param mode The type of spelling and grammar checks to perform. The following are the possible values (the values are case insensitive). The default is Proof. 1) Proof—Finds most spelling and grammar mistakes. 2) Spell—Finds most spelling mistakes but does not find some of the grammar errors that Proof catches (for example, capitalization and repeated words). Possible values include: 'proof', 'spell'.
-     * @param preContextText A string that gives context to the text string. For example, the text string petal is valid. However, if you set preContextText to bike, the context changes and the text string becomes not valid. In this case, the API suggests that you change petal to pedal (as in bike pedal). This text is not checked for grammar or spelling errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request.
-     * @param postContextText A string that gives context to the text string. For example, the text string read is valid. However, if you set postContextText to carpet, the context changes and the text string becomes not valid. In this case, the API suggests that you change read to red (as in red carpet). This text is not checked for grammar or spelling errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request.
      * @param spellCheckOptionalParameters Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SpellCheck object if successful.
      */
-    public SpellCheck spellChecker(@NonNull String text, String mode, String preContextText, String postContextText, SpellCheckOptionalParameters spellCheckOptionalParameters) {
-        return spellCheckerAsync(text, mode, preContextText, postContextText, spellCheckOptionalParameters).block();
+    public SpellCheck spellChecker(@NonNull String text, SpellCheckOptionalParameters spellCheckOptionalParameters) {
+        return spellCheckerAsync(text, spellCheckOptionalParameters).block();
     }
 
     /**
      * The Bing Spell Check API lets you perform contextual grammar and spell checking. Bing has developed a web-based spell-checker that leverages machine learning and statistical machine translation to dynamically train a constantly evolving and highly contextual algorithm. The spell-checker is based on a massive corpus of web searches and documents.
      *
      * @param text The text string to check for spelling and grammar errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request. Because of the query string length limit, you'll typically use a POST request unless you're checking only short strings.
-     * @param mode The type of spelling and grammar checks to perform. The following are the possible values (the values are case insensitive). The default is Proof. 1) Proof—Finds most spelling and grammar mistakes. 2) Spell—Finds most spelling mistakes but does not find some of the grammar errors that Proof catches (for example, capitalization and repeated words). Possible values include: 'proof', 'spell'.
-     * @param preContextText A string that gives context to the text string. For example, the text string petal is valid. However, if you set preContextText to bike, the context changes and the text string becomes not valid. In this case, the API suggests that you change petal to pedal (as in bike pedal). This text is not checked for grammar or spelling errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request.
-     * @param postContextText A string that gives context to the text string. For example, the text string read is valid. However, if you set postContextText to carpet, the context changes and the text string becomes not valid. In this case, the API suggests that you change read to red (as in red carpet). This text is not checked for grammar or spelling errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request.
      * @param spellCheckOptionalParameters Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<SpellCheck>> spellCheckerWithRestResponseAsync(@NonNull String text, String mode, String preContextText, String postContextText, SpellCheckOptionalParameters spellCheckOptionalParameters) {
+    public Mono<SimpleResponse<SpellCheck>> spellCheckerWithRestResponseAsync(@NonNull String text, SpellCheckOptionalParameters spellCheckOptionalParameters) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -252,22 +246,31 @@ public final class SpellCheckClientImpl extends ServiceClient implements SpellCh
         if (spellCheckOptionalParameters != null) {
             userId = spellCheckOptionalParameters.userId();
         }
-        return service.spellChecker(this.endpoint(), xBingApisSDK, mode, preContextText, postContextText, text, acceptLanguage, pragma, userAgent, clientId, clientIp, location, actionType, appName, countryCode, clientMachineName, docId, market, sessionId, setLang, userId);
+        String mode = null;
+        if (spellCheckOptionalParameters != null) {
+            mode = spellCheckOptionalParameters.mode();
+        }
+        String preContextText = null;
+        if (spellCheckOptionalParameters != null) {
+            preContextText = spellCheckOptionalParameters.preContextText();
+        }
+        String postContextText = null;
+        if (spellCheckOptionalParameters != null) {
+            postContextText = spellCheckOptionalParameters.postContextText();
+        }
+        return service.spellChecker(this.endpoint(), xBingApisSDK, text, acceptLanguage, pragma, userAgent, clientId, clientIp, location, actionType, appName, countryCode, clientMachineName, docId, market, sessionId, setLang, userId, mode, preContextText, postContextText);
     }
 
     /**
      * The Bing Spell Check API lets you perform contextual grammar and spell checking. Bing has developed a web-based spell-checker that leverages machine learning and statistical machine translation to dynamically train a constantly evolving and highly contextual algorithm. The spell-checker is based on a massive corpus of web searches and documents.
      *
      * @param text The text string to check for spelling and grammar errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request. Because of the query string length limit, you'll typically use a POST request unless you're checking only short strings.
-     * @param mode The type of spelling and grammar checks to perform. The following are the possible values (the values are case insensitive). The default is Proof. 1) Proof—Finds most spelling and grammar mistakes. 2) Spell—Finds most spelling mistakes but does not find some of the grammar errors that Proof catches (for example, capitalization and repeated words). Possible values include: 'proof', 'spell'.
-     * @param preContextText A string that gives context to the text string. For example, the text string petal is valid. However, if you set preContextText to bike, the context changes and the text string becomes not valid. In this case, the API suggests that you change petal to pedal (as in bike pedal). This text is not checked for grammar or spelling errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request.
-     * @param postContextText A string that gives context to the text string. For example, the text string read is valid. However, if you set postContextText to carpet, the context changes and the text string becomes not valid. In this case, the API suggests that you change read to red (as in red carpet). This text is not checked for grammar or spelling errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request.
      * @param spellCheckOptionalParameters Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SpellCheck> spellCheckerAsync(@NonNull String text, String mode, String preContextText, String postContextText, SpellCheckOptionalParameters spellCheckOptionalParameters) {
-        return spellCheckerWithRestResponseAsync(text, mode, preContextText, postContextText, spellCheckOptionalParameters)
+    public Mono<SpellCheck> spellCheckerAsync(@NonNull String text, SpellCheckOptionalParameters spellCheckOptionalParameters) {
+        return spellCheckerWithRestResponseAsync(text, spellCheckOptionalParameters)
             .flatMap((SimpleResponse<SpellCheck> res) -> Mono.just(res.value()));
     }
 }

@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.CreateReviewBodyItem;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.CreateVideoReviewsBodyItem;
@@ -19,7 +19,7 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.JobI
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Review;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.TranscriptModerationBodyItem;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.VideoFrameBodyItem;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -743,7 +743,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> addVideoFrameWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId);
+    Mono<VoidResponse> addVideoFrameWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId);
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
@@ -845,7 +845,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> addVideoFrameWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId, Integer timescale);
+    Mono<VoidResponse> addVideoFrameWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId, Integer timescale);
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
@@ -1111,7 +1111,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> publishVideoReviewWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId);
+    Mono<VoidResponse> publishVideoReviewWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId);
 
     /**
      * Publish video review to make it available for review.
@@ -1146,7 +1146,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> addVideoTranscriptModerationResultWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<TranscriptModerationBodyItem> transcriptModerationBody);
+    Mono<VoidResponse> addVideoTranscriptModerationResultWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<TranscriptModerationBodyItem> transcriptModerationBody);
 
     /**
      * This API adds a transcript screen text result file for a video review. Transcript screen text result file is a result of Screen Text API . In order to generate transcript screen text result file , a transcript file has to be screened for profanity using Screen Text API.
@@ -1171,7 +1171,7 @@ public interface Reviews {
      * @throws APIErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void addVideoTranscript(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> vTTfile);
+    void addVideoTranscript(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuf> vTTfile);
 
     /**
      * This API adds a transcript file (text version of all the words spoken in a video) to a video review. The file should be a valid WebVTT format.
@@ -1183,7 +1183,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> addVideoTranscriptWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> vTTfile);
+    Mono<VoidResponse> addVideoTranscriptWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuf> vTTfile);
 
     /**
      * This API adds a transcript file (text version of all the words spoken in a video) to a video review. The file should be a valid WebVTT format.
@@ -1195,7 +1195,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Void> addVideoTranscriptAsync(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> vTTfile);
+    Mono<Void> addVideoTranscriptAsync(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuf> vTTfile);
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
@@ -1431,7 +1431,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> addVideoFrameUrlWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody);
+    Mono<VoidResponse> addVideoFrameUrlWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody);
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
@@ -1470,7 +1470,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> addVideoFrameUrlWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody, Integer timescale);
+    Mono<VoidResponse> addVideoFrameUrlWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody, Integer timescale);
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
@@ -1497,7 +1497,7 @@ public interface Reviews {
      * @throws APIErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void addVideoFrameStream(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata);
+    void addVideoFrameStream(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata);
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
@@ -1510,7 +1510,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> addVideoFrameStreamWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata);
+    Mono<VoidResponse> addVideoFrameStreamWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata);
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
@@ -1523,7 +1523,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Void> addVideoFrameStreamAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata);
+    Mono<Void> addVideoFrameStreamAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata);
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
@@ -1538,7 +1538,7 @@ public interface Reviews {
      * @throws APIErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void addVideoFrameStream(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata, Integer timescale);
+    void addVideoFrameStream(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata, Integer timescale);
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
@@ -1552,7 +1552,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> addVideoFrameStreamWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata, Integer timescale);
+    Mono<VoidResponse> addVideoFrameStreamWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata, Integer timescale);
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
@@ -1566,5 +1566,5 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Void> addVideoFrameStreamAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata, Integer timescale);
+    Mono<Void> addVideoFrameStreamAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata, Integer timescale);
 }

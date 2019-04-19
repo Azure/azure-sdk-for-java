@@ -19,7 +19,7 @@ import com.azure.common.http.rest.SimpleResponse;
 import com.azure.common.implementation.CollectionFormat;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.Validator;
-import com.microsoft.azure.cognitiveservices.search.imagesearch.Images;
+import com.microsoft.azure.cognitiveservices.search.imagesearch.ImagesOperations;
 import com.microsoft.azure.cognitiveservices.search.imagesearch.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.search.imagesearch.models.Freshness;
 import com.microsoft.azure.cognitiveservices.search.imagesearch.models.ImageAspect;
@@ -41,13 +41,13 @@ import reactor.util.annotation.NonNull;
 
 /**
  * An instance of this class provides access to all the operations defined in
- * Images.
+ * ImagesOperations.
  */
-public final class ImagesImpl implements Images {
+public final class ImagesOperationsImpl implements ImagesOperations {
     /**
      * The proxy service used to perform REST calls.
      */
-    private ImagesService service;
+    private ImagesOperationsService service;
 
     /**
      * The service client containing this operation class.
@@ -55,21 +55,21 @@ public final class ImagesImpl implements Images {
     private ImageSearchClientImpl client;
 
     /**
-     * Initializes an instance of ImagesImpl.
+     * Initializes an instance of ImagesOperationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public ImagesImpl(ImageSearchClientImpl client) {
-        this.service = RestProxy.create(ImagesService.class, client);
+    public ImagesOperationsImpl(ImageSearchClientImpl client) {
+        this.service = RestProxy.create(ImagesOperationsService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Images to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for ImagesOperations to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{Endpoint}/bing/v7.0")
-    private interface ImagesService {
+    private interface ImagesOperationsService {
         @GET("images/search")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

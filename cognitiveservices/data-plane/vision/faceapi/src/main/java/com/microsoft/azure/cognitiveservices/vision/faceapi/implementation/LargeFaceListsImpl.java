@@ -21,8 +21,8 @@ import com.azure.common.annotations.POST;
 import com.azure.common.annotations.PUT;
 import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.CollectionFormat;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.Validator;
@@ -36,7 +36,7 @@ import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersistedFace
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.TrainingStatus;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceRequest;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -78,7 +78,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
         @PUT("largefacelists/{largeFaceListId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> create(@PathParam("largeFaceListId") String largeFaceListId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") MetaDataContract body);
+        Mono<VoidResponse> create(@PathParam("largeFaceListId") String largeFaceListId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") MetaDataContract body);
 
         @GET("largefacelists/{largeFaceListId}")
         @ExpectedResponses({200})
@@ -88,12 +88,12 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
         @PATCH("largefacelists/{largeFaceListId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> update(@PathParam("largeFaceListId") String largeFaceListId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") NameAndUserDataContract body);
+        Mono<VoidResponse> update(@PathParam("largeFaceListId") String largeFaceListId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") NameAndUserDataContract body);
 
         @DELETE("largefacelists/{largeFaceListId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> delete(@PathParam("largeFaceListId") String largeFaceListId, @HostParam("Endpoint") String endpoint);
+        Mono<VoidResponse> delete(@PathParam("largeFaceListId") String largeFaceListId, @HostParam("Endpoint") String endpoint);
 
         @GET("largefacelists/{largeFaceListId}/training")
         @ExpectedResponses({200})
@@ -108,12 +108,12 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
         @POST("largefacelists/{largeFaceListId}/train")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> train(@PathParam("largeFaceListId") String largeFaceListId, @HostParam("Endpoint") String endpoint);
+        Mono<VoidResponse> train(@PathParam("largeFaceListId") String largeFaceListId, @HostParam("Endpoint") String endpoint);
 
         @DELETE("largefacelists/{largeFaceListId}/persistedfaces/{persistedFaceId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> deleteFace(@PathParam("largeFaceListId") String largeFaceListId, @PathParam("persistedFaceId") UUID persistedFaceId, @HostParam("Endpoint") String endpoint);
+        Mono<VoidResponse> deleteFace(@PathParam("largeFaceListId") String largeFaceListId, @PathParam("persistedFaceId") UUID persistedFaceId, @HostParam("Endpoint") String endpoint);
 
         @GET("largefacelists/{largeFaceListId}/persistedfaces/{persistedFaceId}")
         @ExpectedResponses({200})
@@ -123,7 +123,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
         @PATCH("largefacelists/{largeFaceListId}/persistedfaces/{persistedFaceId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> updateFace(@PathParam("largeFaceListId") String largeFaceListId, @PathParam("persistedFaceId") UUID persistedFaceId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") UpdateFaceRequest body);
+        Mono<VoidResponse> updateFace(@PathParam("largeFaceListId") String largeFaceListId, @PathParam("persistedFaceId") UUID persistedFaceId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") UpdateFaceRequest body);
 
         @POST("largefacelists/{largeFaceListId}/persistedfaces")
         @ExpectedResponses({200})
@@ -138,7 +138,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
         @POST("largefacelists/{largeFaceListId}/persistedfaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<SimpleResponse<PersistedFace>> addFaceFromStream(@PathParam("largeFaceListId") String largeFaceListId, @HostParam("Endpoint") String endpoint, @QueryParam("userData") String userData, @QueryParam("targetFace") String targetFace, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image);
+        Mono<SimpleResponse<PersistedFace>> addFaceFromStream(@PathParam("largeFaceListId") String largeFaceListId, @HostParam("Endpoint") String endpoint, @QueryParam("userData") String userData, @QueryParam("targetFace") String targetFace, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image);
     }
 
     /**
@@ -176,7 +176,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String largeFaceListId) {
+    public Mono<VoidResponse> createWithRestResponseAsync(@NonNull String largeFaceListId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -207,7 +207,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      */
     public Mono<Void> createAsync(@NonNull String largeFaceListId) {
         return createWithRestResponseAsync(largeFaceListId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -251,7 +251,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String largeFaceListId, String name, String userData, RecognitionModel recognitionModel) {
+    public Mono<VoidResponse> createWithRestResponseAsync(@NonNull String largeFaceListId, String name, String userData, RecognitionModel recognitionModel) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -285,7 +285,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      */
     public Mono<Void> createAsync(@NonNull String largeFaceListId, String name, String userData, RecognitionModel recognitionModel) {
         return createWithRestResponseAsync(largeFaceListId, name, userData, recognitionModel)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -395,7 +395,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String largeFaceListId) {
+    public Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String largeFaceListId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -417,7 +417,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      */
     public Mono<Void> updateAsync(@NonNull String largeFaceListId) {
         return updateWithRestResponseAsync(largeFaceListId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -443,7 +443,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String largeFaceListId, String name, String userData) {
+    public Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String largeFaceListId, String name, String userData) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -467,7 +467,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      */
     public Mono<Void> updateAsync(@NonNull String largeFaceListId, String name, String userData) {
         return updateWithRestResponseAsync(largeFaceListId, name, userData)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -489,7 +489,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String largeFaceListId) {
+    public Mono<VoidResponse> deleteWithRestResponseAsync(@NonNull String largeFaceListId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -508,7 +508,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      */
     public Mono<Void> deleteAsync(@NonNull String largeFaceListId) {
         return deleteWithRestResponseAsync(largeFaceListId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -699,7 +699,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> trainWithRestResponseAsync(@NonNull String largeFaceListId) {
+    public Mono<VoidResponse> trainWithRestResponseAsync(@NonNull String largeFaceListId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -718,7 +718,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      */
     public Mono<Void> trainAsync(@NonNull String largeFaceListId) {
         return trainWithRestResponseAsync(largeFaceListId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -742,7 +742,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId) {
+    public Mono<VoidResponse> deleteFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -765,7 +765,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      */
     public Mono<Void> deleteFaceAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId) {
         return deleteFaceWithRestResponseAsync(largeFaceListId, persistedFaceId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -837,7 +837,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> updateFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId) {
+    public Mono<VoidResponse> updateFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -862,7 +862,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      */
     public Mono<Void> updateFaceAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId) {
         return updateFaceWithRestResponseAsync(largeFaceListId, persistedFaceId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -888,7 +888,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> updateFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId, String userData) {
+    public Mono<VoidResponse> updateFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId, String userData) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -914,7 +914,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      */
     public Mono<Void> updateFaceAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId, String userData) {
         return updateFaceWithRestResponseAsync(largeFaceListId, persistedFaceId, userData)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1131,7 +1131,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addFaceFromStream(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public PersistedFace addFaceFromStream(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return addFaceFromStreamAsync(largeFaceListId, contentLength, image).block();
     }
 
@@ -1144,7 +1144,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1169,7 +1169,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return addFaceFromStreamWithRestResponseAsync(largeFaceListId, contentLength, image)
             .flatMap((SimpleResponse<PersistedFace> res) -> Mono.just(res.value()));
     }
@@ -1187,7 +1187,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addFaceFromStream(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace) {
+    public PersistedFace addFaceFromStream(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace) {
         return addFaceFromStreamAsync(largeFaceListId, contentLength, image, userData, targetFace).block();
     }
 
@@ -1202,7 +1202,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace) {
+    public Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1228,7 +1228,7 @@ public final class LargeFaceListsImpl implements LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace) {
+    public Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace) {
         return addFaceFromStreamWithRestResponseAsync(largeFaceListId, contentLength, image, userData, targetFace)
             .flatMap((SimpleResponse<PersistedFace> res) -> Mono.just(res.value()));
     }

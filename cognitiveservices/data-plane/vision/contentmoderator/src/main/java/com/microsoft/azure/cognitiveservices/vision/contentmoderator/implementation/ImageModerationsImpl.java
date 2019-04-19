@@ -26,7 +26,7 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Eval
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.FoundFaces;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.MatchResponse;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.OCR;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
@@ -85,7 +85,7 @@ public final class ImageModerationsImpl implements ImageModerations {
         @POST("contentmoderator/moderate/v1.0/ProcessImage/FindFaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<SimpleResponse<FoundFaces>> findFacesFileInput(@HostParam("Endpoint") String endpoint, @QueryParam("CacheImage") Boolean cacheImage, @HeaderParam("Content-Length") long contentLength, @BodyParam("image/gif") Flux<ByteBuffer> imageStream);
+        Mono<SimpleResponse<FoundFaces>> findFacesFileInput(@HostParam("Endpoint") String endpoint, @QueryParam("CacheImage") Boolean cacheImage, @HeaderParam("Content-Length") long contentLength, @BodyParam("image/gif") Flux<ByteBuf> imageStream);
 
         @POST("contentmoderator/moderate/v1.0/ProcessImage/FindFaces")
         @ExpectedResponses({200})
@@ -100,12 +100,12 @@ public final class ImageModerationsImpl implements ImageModerations {
         @POST("contentmoderator/moderate/v1.0/ProcessImage/OCR")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<SimpleResponse<OCR>> oCRFileInput(@HostParam("Endpoint") String endpoint, @QueryParam("language") String language, @QueryParam("CacheImage") Boolean cacheImage, @QueryParam("enhanced") Boolean enhanced, @HeaderParam("Content-Length") long contentLength, @BodyParam("image/gif") Flux<ByteBuffer> imageStream);
+        Mono<SimpleResponse<OCR>> oCRFileInput(@HostParam("Endpoint") String endpoint, @QueryParam("language") String language, @QueryParam("CacheImage") Boolean cacheImage, @QueryParam("enhanced") Boolean enhanced, @HeaderParam("Content-Length") long contentLength, @BodyParam("image/gif") Flux<ByteBuf> imageStream);
 
         @POST("contentmoderator/moderate/v1.0/ProcessImage/Evaluate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<SimpleResponse<Evaluate>> evaluateFileInput(@HostParam("Endpoint") String endpoint, @QueryParam("CacheImage") Boolean cacheImage, @HeaderParam("Content-Length") long contentLength, @BodyParam("image/gif") Flux<ByteBuffer> imageStream);
+        Mono<SimpleResponse<Evaluate>> evaluateFileInput(@HostParam("Endpoint") String endpoint, @QueryParam("CacheImage") Boolean cacheImage, @HeaderParam("Content-Length") long contentLength, @BodyParam("image/gif") Flux<ByteBuf> imageStream);
 
         @POST("contentmoderator/moderate/v1.0/ProcessImage/Evaluate")
         @ExpectedResponses({200})
@@ -120,7 +120,7 @@ public final class ImageModerationsImpl implements ImageModerations {
         @POST("contentmoderator/moderate/v1.0/ProcessImage/Match")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<SimpleResponse<MatchResponse>> matchFileInput(@HostParam("Endpoint") String endpoint, @QueryParam("listId") String listId, @QueryParam("CacheImage") Boolean cacheImage, @HeaderParam("Content-Length") long contentLength, @BodyParam("image/gif") Flux<ByteBuffer> imageStream);
+        Mono<SimpleResponse<MatchResponse>> matchFileInput(@HostParam("Endpoint") String endpoint, @QueryParam("listId") String listId, @QueryParam("CacheImage") Boolean cacheImage, @HeaderParam("Content-Length") long contentLength, @BodyParam("image/gif") Flux<ByteBuf> imageStream);
     }
 
     /**
@@ -484,7 +484,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the FoundFaces object if successful.
      */
-    public FoundFaces findFacesFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public FoundFaces findFacesFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         return findFacesFileInputAsync(contentLength, imageStream).block();
     }
 
@@ -496,7 +496,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<FoundFaces>> findFacesFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Mono<SimpleResponse<FoundFaces>> findFacesFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -515,7 +515,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FoundFaces> findFacesFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Mono<FoundFaces> findFacesFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         return findFacesFileInputWithRestResponseAsync(contentLength, imageStream)
             .flatMap((SimpleResponse<FoundFaces> res) -> Mono.just(res.value()));
     }
@@ -531,7 +531,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the FoundFaces object if successful.
      */
-    public FoundFaces findFacesFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage) {
+    public FoundFaces findFacesFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage) {
         return findFacesFileInputAsync(contentLength, imageStream, cacheImage).block();
     }
 
@@ -544,7 +544,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<FoundFaces>> findFacesFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage) {
+    public Mono<SimpleResponse<FoundFaces>> findFacesFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -563,7 +563,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FoundFaces> findFacesFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage) {
+    public Mono<FoundFaces> findFacesFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage) {
         return findFacesFileInputWithRestResponseAsync(contentLength, imageStream, cacheImage)
             .flatMap((SimpleResponse<FoundFaces> res) -> Mono.just(res.value()));
     }
@@ -811,7 +811,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OCR object if successful.
      */
-    public OCR oCRFileInput(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public OCR oCRFileInput(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         return oCRFileInputAsync(language, contentLength, imageStream).block();
     }
 
@@ -824,7 +824,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<OCR>> oCRFileInputWithRestResponseAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Mono<SimpleResponse<OCR>> oCRFileInputWithRestResponseAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -848,7 +848,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<OCR> oCRFileInputAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Mono<OCR> oCRFileInputAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         return oCRFileInputWithRestResponseAsync(language, contentLength, imageStream)
             .flatMap((SimpleResponse<OCR> res) -> Mono.just(res.value()));
     }
@@ -870,7 +870,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OCR object if successful.
      */
-    public OCR oCRFileInput(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage, Boolean enhanced) {
+    public OCR oCRFileInput(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage, Boolean enhanced) {
         return oCRFileInputAsync(language, contentLength, imageStream, cacheImage, enhanced).block();
     }
 
@@ -889,7 +889,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<OCR>> oCRFileInputWithRestResponseAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage, Boolean enhanced) {
+    public Mono<SimpleResponse<OCR>> oCRFileInputWithRestResponseAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage, Boolean enhanced) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -917,7 +917,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<OCR> oCRFileInputAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage, Boolean enhanced) {
+    public Mono<OCR> oCRFileInputAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage, Boolean enhanced) {
         return oCRFileInputWithRestResponseAsync(language, contentLength, imageStream, cacheImage, enhanced)
             .flatMap((SimpleResponse<OCR> res) -> Mono.just(res.value()));
     }
@@ -932,7 +932,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Evaluate object if successful.
      */
-    public Evaluate evaluateFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Evaluate evaluateFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         return evaluateFileInputAsync(contentLength, imageStream).block();
     }
 
@@ -944,7 +944,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<Evaluate>> evaluateFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Mono<SimpleResponse<Evaluate>> evaluateFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -963,7 +963,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Evaluate> evaluateFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Mono<Evaluate> evaluateFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         return evaluateFileInputWithRestResponseAsync(contentLength, imageStream)
             .flatMap((SimpleResponse<Evaluate> res) -> Mono.just(res.value()));
     }
@@ -979,7 +979,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Evaluate object if successful.
      */
-    public Evaluate evaluateFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage) {
+    public Evaluate evaluateFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage) {
         return evaluateFileInputAsync(contentLength, imageStream, cacheImage).block();
     }
 
@@ -992,7 +992,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<Evaluate>> evaluateFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage) {
+    public Mono<SimpleResponse<Evaluate>> evaluateFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1011,7 +1011,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Evaluate> evaluateFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage) {
+    public Mono<Evaluate> evaluateFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage) {
         return evaluateFileInputWithRestResponseAsync(contentLength, imageStream, cacheImage)
             .flatMap((SimpleResponse<Evaluate> res) -> Mono.just(res.value()));
     }
@@ -1262,7 +1262,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the MatchResponse object if successful.
      */
-    public MatchResponse matchFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public MatchResponse matchFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         return matchFileInputAsync(contentLength, imageStream).block();
     }
 
@@ -1278,7 +1278,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<MatchResponse>> matchFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Mono<SimpleResponse<MatchResponse>> matchFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1302,7 +1302,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MatchResponse> matchFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Mono<MatchResponse> matchFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         return matchFileInputWithRestResponseAsync(contentLength, imageStream)
             .flatMap((SimpleResponse<MatchResponse> res) -> Mono.just(res.value()));
     }
@@ -1323,7 +1323,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the MatchResponse object if successful.
      */
-    public MatchResponse matchFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, String listId, Boolean cacheImage) {
+    public MatchResponse matchFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, String listId, Boolean cacheImage) {
         return matchFileInputAsync(contentLength, imageStream, listId, cacheImage).block();
     }
 
@@ -1341,7 +1341,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<MatchResponse>> matchFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, String listId, Boolean cacheImage) {
+    public Mono<SimpleResponse<MatchResponse>> matchFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, String listId, Boolean cacheImage) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1365,7 +1365,7 @@ public final class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MatchResponse> matchFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, String listId, Boolean cacheImage) {
+    public Mono<MatchResponse> matchFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, String listId, Boolean cacheImage) {
         return matchFileInputWithRestResponseAsync(contentLength, imageStream, listId, cacheImage)
             .flatMap((SimpleResponse<MatchResponse> res) -> Mono.just(res.value()));
     }

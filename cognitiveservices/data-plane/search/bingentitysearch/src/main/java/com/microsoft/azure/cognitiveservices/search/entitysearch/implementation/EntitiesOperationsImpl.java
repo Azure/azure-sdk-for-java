@@ -19,7 +19,7 @@ import com.azure.common.http.rest.SimpleResponse;
 import com.azure.common.implementation.CollectionFormat;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.Validator;
-import com.microsoft.azure.cognitiveservices.search.entitysearch.Entities;
+import com.microsoft.azure.cognitiveservices.search.entitysearch.EntitiesOperations;
 import com.microsoft.azure.cognitiveservices.search.entitysearch.models.AnswerType;
 import com.microsoft.azure.cognitiveservices.search.entitysearch.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.search.entitysearch.models.ResponseFormat;
@@ -32,13 +32,13 @@ import reactor.util.annotation.NonNull;
 
 /**
  * An instance of this class provides access to all the operations defined in
- * Entities.
+ * EntitiesOperations.
  */
-public final class EntitiesImpl implements Entities {
+public final class EntitiesOperationsImpl implements EntitiesOperations {
     /**
      * The proxy service used to perform REST calls.
      */
-    private EntitiesService service;
+    private EntitiesOperationsService service;
 
     /**
      * The service client containing this operation class.
@@ -46,21 +46,21 @@ public final class EntitiesImpl implements Entities {
     private EntitySearchClientImpl client;
 
     /**
-     * Initializes an instance of EntitiesImpl.
+     * Initializes an instance of EntitiesOperationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public EntitiesImpl(EntitySearchClientImpl client) {
-        this.service = RestProxy.create(EntitiesService.class, client);
+    public EntitiesOperationsImpl(EntitySearchClientImpl client) {
+        this.service = RestProxy.create(EntitiesOperationsService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Entities to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for EntitiesOperations to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{Endpoint}/bing/v7.0")
-    private interface EntitiesService {
+    private interface EntitiesOperationsService {
         @GET("entities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

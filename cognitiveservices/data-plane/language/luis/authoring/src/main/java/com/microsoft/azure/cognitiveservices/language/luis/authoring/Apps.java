@@ -27,7 +27,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Preb
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ProductionOrStagingEndpointInfo;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PublishSettings;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PublishSettingUpdateObject;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -354,9 +354,9 @@ public interface Apps {
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    Flux<ByteBuffer> downloadQueryLogs(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
+    Flux<ByteBuf> downloadQueryLogs(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
 
     /**
      * Gets the logs of the past month's endpoint queries for the application.
@@ -378,7 +378,7 @@ public interface Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Flux<ByteBuffer>> downloadQueryLogsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
+    Mono<Flux<ByteBuf>> downloadQueryLogsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
 
     /**
      * Gets the application info.
@@ -893,9 +893,9 @@ public interface Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    Flux<ByteBuffer> packagePublishedApplicationAsGzip(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String slotName);
+    Flux<ByteBuf> packagePublishedApplicationAsGzip(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String slotName);
 
     /**
      * package - Gets published LUIS application package in binary stream GZip format
@@ -921,7 +921,7 @@ public interface Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Flux<ByteBuffer>> packagePublishedApplicationAsGzipAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String slotName);
+    Mono<Flux<ByteBuf>> packagePublishedApplicationAsGzipAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String slotName);
 
     /**
      * package - Gets trained LUIS application package in binary stream GZip format
@@ -934,9 +934,9 @@ public interface Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    Flux<ByteBuffer> packageTrainedApplicationAsGzip(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+    Flux<ByteBuf> packageTrainedApplicationAsGzip(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
      * package - Gets trained LUIS application package in binary stream GZip format
@@ -962,5 +962,5 @@ public interface Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Flux<ByteBuffer>> packageTrainedApplicationAsGzipAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+    Mono<Flux<ByteBuf>> packageTrainedApplicationAsGzipAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 }

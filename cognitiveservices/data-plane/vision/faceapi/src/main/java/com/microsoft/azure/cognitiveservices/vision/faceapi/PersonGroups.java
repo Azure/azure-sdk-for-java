@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersonGroup;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
@@ -58,7 +58,7 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String personGroupId);
+    Mono<VoidResponse> createWithRestResponseAsync(@NonNull String personGroupId);
 
     /**
      * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
@@ -119,7 +119,7 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String personGroupId, String name, String userData, RecognitionModel recognitionModel);
+    Mono<VoidResponse> createWithRestResponseAsync(@NonNull String personGroupId, String name, String userData, RecognitionModel recognitionModel);
 
     /**
      * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
@@ -159,7 +159,7 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String personGroupId);
+    Mono<VoidResponse> deleteWithRestResponseAsync(@NonNull String personGroupId);
 
     /**
      * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
@@ -248,7 +248,7 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId);
+    Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId);
 
     /**
      * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
@@ -280,7 +280,7 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId, String name, String userData);
+    Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId, String name, String userData);
 
     /**
      * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
@@ -445,7 +445,7 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> trainWithRestResponseAsync(@NonNull String personGroupId);
+    Mono<VoidResponse> trainWithRestResponseAsync(@NonNull String personGroupId);
 
     /**
      * Queue a person group training task, the training task may not be started immediately.

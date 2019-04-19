@@ -11,8 +11,8 @@ package com.microsoft.azure.cognitiveservices.search.imagesearch.implementation;
 import com.azure.common.ServiceClient;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.implementation.RestProxy;
-import com.microsoft.azure.cognitiveservices.search.imagesearch.Images;
 import com.microsoft.azure.cognitiveservices.search.imagesearch.ImageSearchClient;
+import com.microsoft.azure.cognitiveservices.search.imagesearch.ImagesOperations;
 import reactor.util.annotation.NonNull;
 
 /**
@@ -45,17 +45,17 @@ public final class ImageSearchClientImpl extends ServiceClient implements ImageS
     }
 
     /**
-     * The Images object to access its operations.
+     * The ImagesOperations object to access its operations.
      */
-    private Images images;
+    private ImagesOperations imagesOperations;
 
     /**
-     * Gets the Images object to access its operations.
+     * Gets the ImagesOperations object to access its operations.
      *
-     * @return the Images object.
+     * @return the ImagesOperations object.
      */
-    public Images images() {
-        return this.images;
+    public ImagesOperations imagesOperations() {
+        return this.imagesOperations;
     }
 
     /**
@@ -73,6 +73,6 @@ public final class ImageSearchClientImpl extends ServiceClient implements ImageS
     public ImageSearchClientImpl(@NonNull HttpPipeline httpPipeline) {
         super(httpPipeline);
         this.endpoint = "https://api.cognitive.microsoft.com";
-        this.images = new ImagesImpl(this);
+        this.imagesOperations = new ImagesOperationsImpl(this);
     }
 }

@@ -18,7 +18,7 @@ import com.microsoft.azure.cognitiveservices.vision.faceapi.models.IdentifyResul
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.SimilarFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.VerifyResult;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
@@ -540,7 +540,7 @@ public interface Faces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    List<DetectedFace> detectWithStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    List<DetectedFace> detectWithStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
@@ -550,7 +550,7 @@ public interface Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<List<DetectedFace>>> detectWithStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<SimpleResponse<List<DetectedFace>>> detectWithStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
@@ -560,7 +560,7 @@ public interface Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<List<DetectedFace>> detectWithStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<List<DetectedFace>> detectWithStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
@@ -577,7 +577,7 @@ public interface Faces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    List<DetectedFace> detectWithStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
+    List<DetectedFace> detectWithStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
@@ -592,7 +592,7 @@ public interface Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<List<DetectedFace>>> detectWithStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
+    Mono<SimpleResponse<List<DetectedFace>>> detectWithStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
@@ -607,5 +607,5 @@ public interface Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<List<DetectedFace>> detectWithStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
+    Mono<List<DetectedFace>> detectWithStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 }

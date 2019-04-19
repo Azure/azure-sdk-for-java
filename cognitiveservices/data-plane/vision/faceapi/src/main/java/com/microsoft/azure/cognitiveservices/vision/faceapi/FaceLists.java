@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.FaceList;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersistedFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
@@ -51,7 +51,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String faceListId);
+    Mono<VoidResponse> createWithRestResponseAsync(@NonNull String faceListId);
 
     /**
      * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
@@ -97,7 +97,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String faceListId, String name, String userData, RecognitionModel recognitionModel);
+    Mono<VoidResponse> createWithRestResponseAsync(@NonNull String faceListId, String name, String userData, RecognitionModel recognitionModel);
 
     /**
      * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
@@ -193,7 +193,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String faceListId);
+    Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String faceListId);
 
     /**
      * Update information of a face list.
@@ -225,7 +225,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String faceListId, String name, String userData);
+    Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String faceListId, String name, String userData);
 
     /**
      * Update information of a face list.
@@ -255,7 +255,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String faceListId);
+    Mono<VoidResponse> deleteWithRestResponseAsync(@NonNull String faceListId);
 
     /**
      * Delete an existing face list according to faceListId. Persisted face images in the face list will also be deleted.
@@ -343,7 +343,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteFaceWithRestResponseAsync(@NonNull String faceListId, @NonNull UUID persistedFaceId);
+    Mono<VoidResponse> deleteFaceWithRestResponseAsync(@NonNull String faceListId, @NonNull UUID persistedFaceId);
 
     /**
      * Delete an existing face from a face list (given by a persistedFaceId and a faceListId). Persisted image related to the face will also be deleted.
@@ -436,7 +436,7 @@ public interface FaceLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addFaceFromStream(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    PersistedFace addFaceFromStream(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
@@ -447,7 +447,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
@@ -458,7 +458,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
@@ -473,7 +473,7 @@ public interface FaceLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addFaceFromStream(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace);
+    PersistedFace addFaceFromStream(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace);
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
@@ -486,7 +486,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace);
+    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace);
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
@@ -499,5 +499,5 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace);
+    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace);
 }

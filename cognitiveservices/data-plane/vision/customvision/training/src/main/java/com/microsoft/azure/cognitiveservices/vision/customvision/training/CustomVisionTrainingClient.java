@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training;
 
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.CustomVisionErrorException;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Domain;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Export;
@@ -31,7 +31,7 @@ import com.microsoft.azure.cognitiveservices.vision.customvision.training.models
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.PredictionQueryToken;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Project;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Tag;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
@@ -355,7 +355,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteImageTagsWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> imageIds, @NonNull List<UUID> tagIds);
+    Mono<VoidResponse> deleteImageTagsWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> imageIds, @NonNull List<UUID> tagIds);
 
     /**
      * Remove a set of tags from a set of images.
@@ -460,7 +460,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteImageRegionsWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> regionIds);
+    Mono<VoidResponse> deleteImageRegionsWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> regionIds);
 
     /**
      * Delete a set of image regions.
@@ -739,7 +739,7 @@ public interface CustomVisionTrainingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageCreateSummary object if successful.
      */
-    ImageCreateSummary createImagesFromData(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData);
+    ImageCreateSummary createImagesFromData(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData);
 
     /**
      * Add the provided images to the set of training images.
@@ -751,7 +751,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<ImageCreateSummary>> createImagesFromDataWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData);
+    Mono<SimpleResponse<ImageCreateSummary>> createImagesFromDataWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData);
 
     /**
      * Add the provided images to the set of training images.
@@ -763,7 +763,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<ImageCreateSummary> createImagesFromDataAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData);
+    Mono<ImageCreateSummary> createImagesFromDataAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData);
 
     /**
      * Add the provided images to the set of training images.
@@ -778,7 +778,7 @@ public interface CustomVisionTrainingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageCreateSummary object if successful.
      */
-    ImageCreateSummary createImagesFromData(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, List<UUID> tagIds);
+    ImageCreateSummary createImagesFromData(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, List<UUID> tagIds);
 
     /**
      * Add the provided images to the set of training images.
@@ -791,7 +791,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<ImageCreateSummary>> createImagesFromDataWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, List<UUID> tagIds);
+    Mono<SimpleResponse<ImageCreateSummary>> createImagesFromDataWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, List<UUID> tagIds);
 
     /**
      * Add the provided images to the set of training images.
@@ -804,7 +804,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<ImageCreateSummary> createImagesFromDataAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, List<UUID> tagIds);
+    Mono<ImageCreateSummary> createImagesFromDataAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, List<UUID> tagIds);
 
     /**
      * Delete images from the set of training images.
@@ -825,7 +825,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteImagesWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> imageIds);
+    Mono<VoidResponse> deleteImagesWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> imageIds);
 
     /**
      * Delete images from the set of training images.
@@ -996,7 +996,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deletePredictionWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> ids);
+    Mono<VoidResponse> deletePredictionWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> ids);
 
     /**
      * Delete a set of predicted images and their associated prediction results.
@@ -1088,7 +1088,7 @@ public interface CustomVisionTrainingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction quickTestImage(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData);
+    ImagePrediction quickTestImage(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData);
 
     /**
      * Quick test an image.
@@ -1098,7 +1098,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<ImagePrediction>> quickTestImageWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData);
+    Mono<SimpleResponse<ImagePrediction>> quickTestImageWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData);
 
     /**
      * Quick test an image.
@@ -1108,7 +1108,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<ImagePrediction> quickTestImageAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData);
+    Mono<ImagePrediction> quickTestImageAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData);
 
     /**
      * Quick test an image.
@@ -1122,7 +1122,7 @@ public interface CustomVisionTrainingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction quickTestImage(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, UUID iterationId);
+    ImagePrediction quickTestImage(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, UUID iterationId);
 
     /**
      * Quick test an image.
@@ -1134,7 +1134,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<ImagePrediction>> quickTestImageWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, UUID iterationId);
+    Mono<SimpleResponse<ImagePrediction>> quickTestImageWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, UUID iterationId);
 
     /**
      * Quick test an image.
@@ -1146,7 +1146,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<ImagePrediction> quickTestImageAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, UUID iterationId);
+    Mono<ImagePrediction> quickTestImageAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, UUID iterationId);
 
     /**
      * Get images that were sent to your prediction endpoint.
@@ -1574,7 +1574,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteProjectWithRestResponseAsync(@NonNull UUID projectId);
+    Mono<VoidResponse> deleteProjectWithRestResponseAsync(@NonNull UUID projectId);
 
     /**
      * Delete a specific project.
@@ -1767,7 +1767,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteIterationWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID iterationId);
+    Mono<VoidResponse> deleteIterationWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID iterationId);
 
     /**
      * Delete a specific iteration of a project.
@@ -1871,7 +1871,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> unpublishIterationWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID iterationId);
+    Mono<VoidResponse> unpublishIterationWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID iterationId);
 
     /**
      * Unpublish a specific iteration.
@@ -2074,7 +2074,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteTagWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID tagId);
+    Mono<VoidResponse> deleteTagWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID tagId);
 
     /**
      * Delete a tag from the project.

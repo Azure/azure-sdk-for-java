@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models;
 
+import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.rest.ResponseBase;
 import java.util.Map;
@@ -25,16 +26,8 @@ public final class OperationsGetDetailsResponse extends ResponseBase<OperationsG
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      */
-    public OperationsGetDetailsResponse(HttpRequest request, int statusCode, OperationsGetDetailsHeaders headers, Map<String, String> rawHeaders, Operation value) {
-        super(request, statusCode, headers, rawHeaders, value);
-    }
-
-    /**
-     * @return the deserialized response headers.
-     */
-    @Override
-    public OperationsGetDetailsHeaders headers() {
-        return super.headers();
+    public OperationsGetDetailsResponse(HttpRequest request, int statusCode, OperationsGetDetailsHeaders headers, HttpHeaders rawHeaders, Operation value) {
+        super(request, statusCode, rawHeaders, value, headers);
     }
 
     /**

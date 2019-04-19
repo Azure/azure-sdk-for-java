@@ -28,51 +28,6 @@ public interface LuisRuntimeAPI {
     LuisRuntimeAPI withEndpoint(String endpoint);
 
     /**
-     * Gets The preferred language for the response.
-     *
-     * @return the acceptLanguage value.
-     */
-    String acceptLanguage();
-
-    /**
-     * Sets The preferred language for the response.
-     *
-     * @param acceptLanguage the acceptLanguage value.
-     * @return the service client itself.
-     */
-    LuisRuntimeAPI withAcceptLanguage(String acceptLanguage);
-
-    /**
-     * Gets The retry timeout in seconds for Long Running Operations. Default value is 30.
-     *
-     * @return the longRunningOperationRetryTimeout value.
-     */
-    Integer longRunningOperationRetryTimeout();
-
-    /**
-     * Sets The retry timeout in seconds for Long Running Operations. Default value is 30.
-     *
-     * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
-     * @return the service client itself.
-     */
-    LuisRuntimeAPI withLongRunningOperationRetryTimeout(Integer longRunningOperationRetryTimeout);
-
-    /**
-     * Gets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
-     *
-     * @return the generateClientRequestId value.
-     */
-    Boolean generateClientRequestId();
-
-    /**
-     * Sets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
-     *
-     * @param generateClientRequestId the generateClientRequestId value.
-     * @return the service client itself.
-     */
-    LuisRuntimeAPI withGenerateClientRequestId(Boolean generateClientRequestId);
-
-    /**
      * Gets the Predictions object to access its operations.
      *
      * @return the Predictions object.

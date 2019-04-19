@@ -28,9 +28,9 @@ public interface ImageSearchClient {
     ImageSearchClient withEndpoint(String endpoint);
 
     /**
-     * Gets the Images object to access its operations.
+     * Gets the ImagesOperations object to access its operations.
      *
-     * @return the Images object.
+     * @return the ImagesOperations object.
      */
-    Images images();
+    ImagesOperations imagesOperations();
 }

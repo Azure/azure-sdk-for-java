@@ -23,8 +23,8 @@ import com.azure.common.annotations.POST;
 import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
 import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.CollectionFormat;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.Validator;
@@ -53,7 +53,7 @@ import com.microsoft.azure.cognitiveservices.vision.customvision.training.models
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.PredictionQueryToken;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Project;
 import com.microsoft.azure.cognitiveservices.vision.customvision.training.models.Tag;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -171,7 +171,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
         @DELETE("projects/{projectId}/images/tags")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CustomVisionErrorException.class)
-        Mono<RestVoidResponse> deleteImageTags(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("imageIds") String imageIds, @QueryParam("tagIds") String tagIds, @HeaderParam("Training-Key") String apiKey);
+        Mono<VoidResponse> deleteImageTags(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("imageIds") String imageIds, @QueryParam("tagIds") String tagIds, @HeaderParam("Training-Key") String apiKey);
 
         @POST("projects/{projectId}/images/regions")
         @ExpectedResponses({200})
@@ -181,7 +181,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
         @DELETE("projects/{projectId}/images/regions")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CustomVisionErrorException.class)
-        Mono<RestVoidResponse> deleteImageRegions(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("regionIds") String regionIds, @HeaderParam("Training-Key") String apiKey);
+        Mono<VoidResponse> deleteImageRegions(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("regionIds") String regionIds, @HeaderParam("Training-Key") String apiKey);
 
         @GET("projects/{projectId}/images/tagged")
         @ExpectedResponses({200})
@@ -202,12 +202,12 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
         @POST("projects/{projectId}/images")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CustomVisionErrorException.class)
-        Mono<SimpleResponse<ImageCreateSummary>> createImagesFromData(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("tagIds") String tagIds, @FormParam("imageData") Flux<ByteBuffer> imageData, @HeaderParam("Training-Key") String apiKey);
+        Mono<SimpleResponse<ImageCreateSummary>> createImagesFromData(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("tagIds") String tagIds, @FormParam("imageData") Flux<ByteBuf> imageData, @HeaderParam("Training-Key") String apiKey);
 
         @DELETE("projects/{projectId}/images")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CustomVisionErrorException.class)
-        Mono<RestVoidResponse> deleteImages(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("imageIds") String imageIds, @HeaderParam("Training-Key") String apiKey);
+        Mono<VoidResponse> deleteImages(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("imageIds") String imageIds, @HeaderParam("Training-Key") String apiKey);
 
         @POST("projects/{projectId}/images/files")
         @ExpectedResponses({200})
@@ -232,7 +232,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
         @DELETE("projects/{projectId}/predictions")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CustomVisionErrorException.class)
-        Mono<RestVoidResponse> deletePrediction(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("ids") String ids, @HeaderParam("Training-Key") String apiKey);
+        Mono<VoidResponse> deletePrediction(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("ids") String ids, @HeaderParam("Training-Key") String apiKey);
 
         @POST("projects/{projectId}/quicktest/url")
         @ExpectedResponses({200})
@@ -243,7 +243,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
         @POST("projects/{projectId}/quicktest/image")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CustomVisionErrorException.class)
-        Mono<SimpleResponse<ImagePrediction>> quickTestImage(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("iterationId") UUID iterationId, @FormParam("imageData") Flux<ByteBuffer> imageData, @HeaderParam("Training-Key") String apiKey);
+        Mono<SimpleResponse<ImagePrediction>> quickTestImage(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @QueryParam("iterationId") UUID iterationId, @FormParam("imageData") Flux<ByteBuf> imageData, @HeaderParam("Training-Key") String apiKey);
 
         @POST("projects/{projectId}/predictions/query")
         @ExpectedResponses({200})
@@ -283,7 +283,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
         @DELETE("projects/{projectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CustomVisionErrorException.class)
-        Mono<RestVoidResponse> deleteProject(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @HeaderParam("Training-Key") String apiKey);
+        Mono<VoidResponse> deleteProject(@PathParam("projectId") UUID projectId, @HostParam("Endpoint") String endpoint, @HeaderParam("Training-Key") String apiKey);
 
         @PATCH("projects/{projectId}")
         @ExpectedResponses({200})
@@ -308,7 +308,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
         @DELETE("projects/{projectId}/iterations/{iterationId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CustomVisionErrorException.class)
-        Mono<RestVoidResponse> deleteIteration(@PathParam("projectId") UUID projectId, @PathParam("iterationId") UUID iterationId, @HostParam("Endpoint") String endpoint, @HeaderParam("Training-Key") String apiKey);
+        Mono<VoidResponse> deleteIteration(@PathParam("projectId") UUID projectId, @PathParam("iterationId") UUID iterationId, @HostParam("Endpoint") String endpoint, @HeaderParam("Training-Key") String apiKey);
 
         @PATCH("projects/{projectId}/iterations/{iterationId}")
         @ExpectedResponses({200})
@@ -323,7 +323,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
         @DELETE("projects/{projectId}/iterations/{iterationId}/publish")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CustomVisionErrorException.class)
-        Mono<RestVoidResponse> unpublishIteration(@PathParam("projectId") UUID projectId, @PathParam("iterationId") UUID iterationId, @HostParam("Endpoint") String endpoint, @HeaderParam("Training-Key") String apiKey);
+        Mono<VoidResponse> unpublishIteration(@PathParam("projectId") UUID projectId, @PathParam("iterationId") UUID iterationId, @HostParam("Endpoint") String endpoint, @HeaderParam("Training-Key") String apiKey);
 
         @GET("projects/{projectId}/iterations/{iterationId}/export")
         @ExpectedResponses({200})
@@ -343,7 +343,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
         @DELETE("projects/{projectId}/tags/{tagId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CustomVisionErrorException.class)
-        Mono<RestVoidResponse> deleteTag(@PathParam("projectId") UUID projectId, @PathParam("tagId") UUID tagId, @HostParam("Endpoint") String endpoint, @HeaderParam("Training-Key") String apiKey);
+        Mono<VoidResponse> deleteTag(@PathParam("projectId") UUID projectId, @PathParam("tagId") UUID tagId, @HostParam("Endpoint") String endpoint, @HeaderParam("Training-Key") String apiKey);
 
         @PATCH("projects/{projectId}/tags/{tagId}")
         @ExpectedResponses({200})
@@ -782,7 +782,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteImageTagsWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> imageIds, @NonNull List<UUID> tagIds) {
+    public Mono<VoidResponse> deleteImageTagsWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> imageIds, @NonNull List<UUID> tagIds) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -816,7 +816,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      */
     public Mono<Void> deleteImageTagsAsync(@NonNull UUID projectId, @NonNull List<UUID> imageIds, @NonNull List<UUID> tagIds) {
         return deleteImageTagsWithRestResponseAsync(projectId, imageIds, tagIds)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -950,7 +950,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteImageRegionsWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> regionIds) {
+    public Mono<VoidResponse> deleteImageRegionsWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> regionIds) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -978,7 +978,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      */
     public Mono<Void> deleteImageRegionsAsync(@NonNull UUID projectId, @NonNull List<UUID> regionIds) {
         return deleteImageRegionsWithRestResponseAsync(projectId, regionIds)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1361,7 +1361,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageCreateSummary object if successful.
      */
-    public ImageCreateSummary createImagesFromData(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData) {
+    public ImageCreateSummary createImagesFromData(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData) {
         return createImagesFromDataAsync(projectId, imageData).block();
     }
 
@@ -1375,7 +1375,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<ImageCreateSummary>> createImagesFromDataWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData) {
+    public Mono<SimpleResponse<ImageCreateSummary>> createImagesFromDataWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1403,7 +1403,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ImageCreateSummary> createImagesFromDataAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData) {
+    public Mono<ImageCreateSummary> createImagesFromDataAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData) {
         return createImagesFromDataWithRestResponseAsync(projectId, imageData)
             .flatMap((SimpleResponse<ImageCreateSummary> res) -> Mono.just(res.value()));
     }
@@ -1421,7 +1421,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageCreateSummary object if successful.
      */
-    public ImageCreateSummary createImagesFromData(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, List<UUID> tagIds) {
+    public ImageCreateSummary createImagesFromData(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, List<UUID> tagIds) {
         return createImagesFromDataAsync(projectId, imageData, tagIds).block();
     }
 
@@ -1436,7 +1436,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<ImageCreateSummary>> createImagesFromDataWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, List<UUID> tagIds) {
+    public Mono<SimpleResponse<ImageCreateSummary>> createImagesFromDataWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, List<UUID> tagIds) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1465,7 +1465,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ImageCreateSummary> createImagesFromDataAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, List<UUID> tagIds) {
+    public Mono<ImageCreateSummary> createImagesFromDataAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, List<UUID> tagIds) {
         return createImagesFromDataWithRestResponseAsync(projectId, imageData, tagIds)
             .flatMap((SimpleResponse<ImageCreateSummary> res) -> Mono.just(res.value()));
     }
@@ -1491,7 +1491,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteImagesWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> imageIds) {
+    public Mono<VoidResponse> deleteImagesWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> imageIds) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1519,7 +1519,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      */
     public Mono<Void> deleteImagesAsync(@NonNull UUID projectId, @NonNull List<UUID> imageIds) {
         return deleteImagesWithRestResponseAsync(projectId, imageIds)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1762,7 +1762,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deletePredictionWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> ids) {
+    public Mono<VoidResponse> deletePredictionWithRestResponseAsync(@NonNull UUID projectId, @NonNull List<UUID> ids) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1790,7 +1790,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      */
     public Mono<Void> deletePredictionAsync(@NonNull UUID projectId, @NonNull List<UUID> ids) {
         return deletePredictionWithRestResponseAsync(projectId, ids)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1916,7 +1916,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction quickTestImage(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData) {
+    public ImagePrediction quickTestImage(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData) {
         return quickTestImageAsync(projectId, imageData).block();
     }
 
@@ -1928,7 +1928,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<ImagePrediction>> quickTestImageWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData) {
+    public Mono<SimpleResponse<ImagePrediction>> quickTestImageWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1953,7 +1953,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ImagePrediction> quickTestImageAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData) {
+    public Mono<ImagePrediction> quickTestImageAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData) {
         return quickTestImageWithRestResponseAsync(projectId, imageData)
             .flatMap((SimpleResponse<ImagePrediction> res) -> Mono.just(res.value()));
     }
@@ -1970,7 +1970,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction quickTestImage(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, UUID iterationId) {
+    public ImagePrediction quickTestImage(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, UUID iterationId) {
         return quickTestImageAsync(projectId, imageData, iterationId).block();
     }
 
@@ -1984,7 +1984,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<ImagePrediction>> quickTestImageWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, UUID iterationId) {
+    public Mono<SimpleResponse<ImagePrediction>> quickTestImageWithRestResponseAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, UUID iterationId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2010,7 +2010,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ImagePrediction> quickTestImageAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuffer> imageData, UUID iterationId) {
+    public Mono<ImagePrediction> quickTestImageAsync(@NonNull UUID projectId, @NonNull Flux<ByteBuf> imageData, UUID iterationId) {
         return quickTestImageWithRestResponseAsync(projectId, imageData, iterationId)
             .flatMap((SimpleResponse<ImagePrediction> res) -> Mono.just(res.value()));
     }
@@ -2658,7 +2658,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteProjectWithRestResponseAsync(@NonNull UUID projectId) {
+    public Mono<VoidResponse> deleteProjectWithRestResponseAsync(@NonNull UUID projectId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2680,7 +2680,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      */
     public Mono<Void> deleteProjectAsync(@NonNull UUID projectId) {
         return deleteProjectWithRestResponseAsync(projectId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -2958,7 +2958,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteIterationWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID iterationId) {
+    public Mono<VoidResponse> deleteIterationWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID iterationId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2984,7 +2984,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      */
     public Mono<Void> deleteIterationAsync(@NonNull UUID projectId, @NonNull UUID iterationId) {
         return deleteIterationWithRestResponseAsync(projectId, iterationId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -3130,7 +3130,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> unpublishIterationWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID iterationId) {
+    public Mono<VoidResponse> unpublishIterationWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID iterationId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -3156,7 +3156,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      */
     public Mono<Void> unpublishIterationAsync(@NonNull UUID projectId, @NonNull UUID iterationId) {
         return unpublishIterationWithRestResponseAsync(projectId, iterationId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -3455,7 +3455,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteTagWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID tagId) {
+    public Mono<VoidResponse> deleteTagWithRestResponseAsync(@NonNull UUID projectId, @NonNull UUID tagId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -3481,7 +3481,7 @@ public final class CustomVisionTrainingClientImpl extends ServiceClient implemen
      */
     public Mono<Void> deleteTagAsync(@NonNull UUID projectId, @NonNull UUID tagId) {
         return deleteTagWithRestResponseAsync(projectId, tagId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**

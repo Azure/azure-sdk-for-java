@@ -28,9 +28,9 @@ public interface EntitySearchClient {
     EntitySearchClient withEndpoint(String endpoint);
 
     /**
-     * Gets the Entities object to access its operations.
+     * Gets the EntitiesOperations object to access its operations.
      *
-     * @return the Entities object.
+     * @return the EntitiesOperations object.
      */
-    Entities entities();
+    EntitiesOperations entitiesOperations();
 }

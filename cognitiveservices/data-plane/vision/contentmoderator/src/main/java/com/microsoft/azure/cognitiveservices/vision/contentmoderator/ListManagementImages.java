@@ -13,7 +13,7 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIE
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Image;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ImageIds;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
@@ -264,7 +264,7 @@ public interface ListManagementImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Image object if successful.
      */
-    Image addImageFileInput(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Image addImageFileInput(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -275,7 +275,7 @@ public interface ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<Image>> addImageFileInputWithRestResponseAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Mono<SimpleResponse<Image>> addImageFileInputWithRestResponseAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -286,7 +286,7 @@ public interface ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Image> addImageFileInputAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Mono<Image> addImageFileInputAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -301,7 +301,7 @@ public interface ListManagementImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Image object if successful.
      */
-    Image addImageFileInput(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Integer tag, String label);
+    Image addImageFileInput(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Integer tag, String label);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -314,7 +314,7 @@ public interface ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<Image>> addImageFileInputWithRestResponseAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Integer tag, String label);
+    Mono<SimpleResponse<Image>> addImageFileInputWithRestResponseAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Integer tag, String label);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -327,5 +327,5 @@ public interface ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Image> addImageFileInputAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Integer tag, String label);
+    Mono<Image> addImageFileInputAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Integer tag, String label);
 }

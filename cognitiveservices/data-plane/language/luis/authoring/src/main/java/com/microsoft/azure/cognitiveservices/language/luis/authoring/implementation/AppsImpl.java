@@ -42,7 +42,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Preb
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ProductionOrStagingEndpointInfo;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PublishSettings;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PublishSettingUpdateObject;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -639,9 +639,9 @@ public final class AppsImpl implements Apps {
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    public Flux<ByteBuffer> downloadQueryLogs(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+    public Flux<ByteBuf> downloadQueryLogs(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
         return downloadQueryLogsAsync(azureRegion, azureCloud, appId).block();
     }
 
@@ -676,7 +676,7 @@ public final class AppsImpl implements Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Flux<ByteBuffer>> downloadQueryLogsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+    public Mono<Flux<ByteBuf>> downloadQueryLogsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
         return downloadQueryLogsWithRestResponseAsync(azureRegion, azureCloud, appId)
             .flatMap((StreamResponse res) -> Mono.just(res.value()));
     }
@@ -1040,7 +1040,7 @@ public final class AppsImpl implements Apps {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         ApplicationSettingUpdateObject applicationSettingUpdateObject = new ApplicationSettingUpdateObject();
-        applicationSettingUpdateObject.withIsPublic(null);
+        applicationSettingUpdateObject.withIsPublic(false);
         return service.updateSettings(appId, azureRegion, azureCloud, applicationSettingUpdateObject);
     }
 
@@ -1433,9 +1433,9 @@ public final class AppsImpl implements Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    public Flux<ByteBuffer> packagePublishedApplicationAsGzip(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String slotName) {
+    public Flux<ByteBuf> packagePublishedApplicationAsGzip(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String slotName) {
         return packagePublishedApplicationAsGzipAsync(azureRegion, azureCloud, appId, slotName).block();
     }
 
@@ -1477,7 +1477,7 @@ public final class AppsImpl implements Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Flux<ByteBuffer>> packagePublishedApplicationAsGzipAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String slotName) {
+    public Mono<Flux<ByteBuf>> packagePublishedApplicationAsGzipAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String slotName) {
         return packagePublishedApplicationAsGzipWithRestResponseAsync(azureRegion, azureCloud, appId, slotName)
             .flatMap((StreamResponse res) -> Mono.just(res.value()));
     }
@@ -1493,9 +1493,9 @@ public final class AppsImpl implements Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    public Flux<ByteBuffer> packageTrainedApplicationAsGzip(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+    public Flux<ByteBuf> packageTrainedApplicationAsGzip(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
         return packageTrainedApplicationAsGzipAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
@@ -1537,7 +1537,7 @@ public final class AppsImpl implements Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Flux<ByteBuffer>> packageTrainedApplicationAsGzipAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+    public Mono<Flux<ByteBuf>> packageTrainedApplicationAsGzipAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
         return packageTrainedApplicationAsGzipWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
             .flatMap((StreamResponse res) -> Mono.just(res.value()));
     }

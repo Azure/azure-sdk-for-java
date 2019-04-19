@@ -27,7 +27,7 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIE
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Image;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ImageIds;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
@@ -91,7 +91,7 @@ public final class ListManagementImagesImpl implements ListManagementImages {
         @POST("contentmoderator/lists/v1.0/imagelists/{listId}/images")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<SimpleResponse<Image>> addImageFileInput(@PathParam("listId") String listId, @HostParam("Endpoint") String endpoint, @QueryParam("tag") Integer tag, @QueryParam("label") String label, @HeaderParam("Content-Length") long contentLength, @BodyParam("image/gif") Flux<ByteBuffer> imageStream);
+        Mono<SimpleResponse<Image>> addImageFileInput(@PathParam("listId") String listId, @HostParam("Endpoint") String endpoint, @QueryParam("tag") Integer tag, @QueryParam("label") String label, @HeaderParam("Content-Length") long contentLength, @BodyParam("image/gif") Flux<ByteBuf> imageStream);
     }
 
     /**
@@ -447,7 +447,7 @@ public final class ListManagementImagesImpl implements ListManagementImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Image object if successful.
      */
-    public Image addImageFileInput(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Image addImageFileInput(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         return addImageFileInputAsync(listId, contentLength, imageStream).block();
     }
 
@@ -460,7 +460,7 @@ public final class ListManagementImagesImpl implements ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<Image>> addImageFileInputWithRestResponseAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Mono<SimpleResponse<Image>> addImageFileInputWithRestResponseAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -484,7 +484,7 @@ public final class ListManagementImagesImpl implements ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Image> addImageFileInputAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream) {
+    public Mono<Image> addImageFileInputAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream) {
         return addImageFileInputWithRestResponseAsync(listId, contentLength, imageStream)
             .flatMap((SimpleResponse<Image> res) -> Mono.just(res.value()));
     }
@@ -502,7 +502,7 @@ public final class ListManagementImagesImpl implements ListManagementImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Image object if successful.
      */
-    public Image addImageFileInput(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Integer tag, String label) {
+    public Image addImageFileInput(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Integer tag, String label) {
         return addImageFileInputAsync(listId, contentLength, imageStream, tag, label).block();
     }
 
@@ -517,7 +517,7 @@ public final class ListManagementImagesImpl implements ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<Image>> addImageFileInputWithRestResponseAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Integer tag, String label) {
+    public Mono<SimpleResponse<Image>> addImageFileInputWithRestResponseAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Integer tag, String label) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -541,7 +541,7 @@ public final class ListManagementImagesImpl implements ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Image> addImageFileInputAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Integer tag, String label) {
+    public Mono<Image> addImageFileInputAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Integer tag, String label) {
         return addImageFileInputWithRestResponseAsync(listId, contentLength, imageStream, tag, label)
             .flatMap((SimpleResponse<Image> res) -> Mono.just(res.value()));
     }

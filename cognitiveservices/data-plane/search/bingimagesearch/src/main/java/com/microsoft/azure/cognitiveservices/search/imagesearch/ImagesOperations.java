@@ -29,9 +29,9 @@ import reactor.util.annotation.NonNull;
 
 /**
  * An instance of this class provides access to all the operations defined in
- * Images.
+ * ImagesOperations.
  */
-public interface Images {
+public interface ImagesOperations {
     /**
      * The Image Search API lets you send a search query to Bing and get back a list of relevant images. This section provides technical details about the query parameters and headers that you use to request images and the JSON response objects that contain them. For examples that show how to make requests, see [Searching the Web for Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
      *

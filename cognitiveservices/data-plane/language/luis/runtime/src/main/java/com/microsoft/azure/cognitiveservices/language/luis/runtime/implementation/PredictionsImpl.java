@@ -10,7 +10,6 @@ package com.microsoft.azure.cognitiveservices.language.luis.runtime.implementati
 
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.ExpectedResponses;
-import com.azure.common.annotations.HeaderParam;
 import com.azure.common.annotations.Host;
 import com.azure.common.annotations.HostParam;
 import com.azure.common.annotations.PathParam;
@@ -18,10 +17,10 @@ import com.azure.common.annotations.POST;
 import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.Predictions;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.LuisResult;
-import com.microsoft.azure.v3.AzureProxy;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
 
@@ -46,7 +45,7 @@ public final class PredictionsImpl implements Predictions {
      * @param client the instance of the service client containing this operation class.
      */
     public PredictionsImpl(LuisRuntimeAPIImpl client) {
-        this.service = AzureProxy.create(PredictionsService.class, client);
+        this.service = RestProxy.create(PredictionsService.class, client);
         this.client = client;
     }
 
@@ -59,7 +58,7 @@ public final class PredictionsImpl implements Predictions {
         @POST("apps/{appId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<SimpleResponse<LuisResult>> resolve(@PathParam("appId") String appId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") String query, @QueryParam("timezoneOffset") Double timezoneOffset, @QueryParam("verbose") Boolean verbose, @QueryParam("staging") Boolean staging, @QueryParam("spellCheck") Boolean spellCheck, @QueryParam("bing-spell-check-subscription-key") String bingSpellCheckSubscriptionKey, @QueryParam("log") Boolean log, @HeaderParam("accept-language") String acceptLanguage);
+        Mono<SimpleResponse<LuisResult>> resolve(@PathParam("appId") String appId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") String query, @QueryParam("timezoneOffset") Double timezoneOffset, @QueryParam("verbose") Boolean verbose, @QueryParam("staging") Boolean staging, @QueryParam("spellCheck") Boolean spellCheck, @QueryParam("bing-spell-check-subscription-key") String bingSpellCheckSubscriptionKey, @QueryParam("log") Boolean log);
     }
 
     /**
@@ -100,7 +99,7 @@ public final class PredictionsImpl implements Predictions {
         final Boolean spellCheck = null;
         final String bingSpellCheckSubscriptionKey = null;
         final Boolean log = null;
-        return service.resolve(appId, this.client.endpoint(), query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, log, this.client.acceptLanguage());
+        return service.resolve(appId, this.client.endpoint(), query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, log);
     }
 
     /**
@@ -160,7 +159,7 @@ public final class PredictionsImpl implements Predictions {
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        return service.resolve(appId, this.client.endpoint(), query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, log, this.client.acceptLanguage());
+        return service.resolve(appId, this.client.endpoint(), query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, log);
     }
 
     /**

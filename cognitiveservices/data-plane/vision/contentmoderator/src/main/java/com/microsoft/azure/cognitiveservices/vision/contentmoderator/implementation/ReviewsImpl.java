@@ -20,8 +20,8 @@ import com.azure.common.annotations.POST;
 import com.azure.common.annotations.PUT;
 import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews;
@@ -35,7 +35,7 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.JobI
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Review;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.TranscriptModerationBodyItem;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.VideoFrameBodyItem;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 import reactor.core.publisher.Flux;
@@ -96,7 +96,7 @@ public final class ReviewsImpl implements Reviews {
         @POST("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> addVideoFrame(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @QueryParam("timescale") Integer timescale);
+        Mono<VoidResponse> addVideoFrame(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @QueryParam("timescale") Integer timescale);
 
         @GET("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames")
         @ExpectedResponses({200})
@@ -106,17 +106,17 @@ public final class ReviewsImpl implements Reviews {
         @POST("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/publish")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> publishVideoReview(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint);
+        Mono<VoidResponse> publishVideoReview(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint);
 
         @PUT("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/transcriptmoderationresult")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> addVideoTranscriptModerationResult(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @BodyParam("application/json; charset=utf-8") List<TranscriptModerationBodyItem> transcriptModerationBody);
+        Mono<VoidResponse> addVideoTranscriptModerationResult(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @BodyParam("application/json; charset=utf-8") List<TranscriptModerationBodyItem> transcriptModerationBody);
 
         @PUT("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/transcript")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> addVideoTranscript(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") long contentLength, @BodyParam("text/plain") Flux<ByteBuffer> vTTfile);
+        Mono<VoidResponse> addVideoTranscript(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") long contentLength, @BodyParam("text/plain") Flux<ByteBuf> vTTfile);
 
         @POST("contentmoderator/review/v1.0/teams/{teamName}/reviews")
         @ExpectedResponses({200})
@@ -126,13 +126,13 @@ public final class ReviewsImpl implements Reviews {
         @POST("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> addVideoFrameUrl(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @QueryParam("timescale") Integer timescale, @BodyParam("application/json; charset=utf-8") List<VideoFrameBodyItem> videoFrameBody);
+        Mono<VoidResponse> addVideoFrameUrl(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @QueryParam("timescale") Integer timescale, @BodyParam("application/json; charset=utf-8") List<VideoFrameBodyItem> videoFrameBody);
 
         // @Multipart not supported by RestProxy
         @POST("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> addVideoFrameStream(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @QueryParam("timescale") Integer timescale, @FormParam("frameImageZip") Flux<ByteBuffer> frameImageZip, @FormParam("frameMetadata") String frameMetadata);
+        Mono<VoidResponse> addVideoFrameStream(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @QueryParam("timescale") Integer timescale, @FormParam("frameImageZip") Flux<ByteBuf> frameImageZip, @FormParam("frameMetadata") String frameMetadata);
     }
 
     /**
@@ -986,7 +986,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> addVideoFrameWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId) {
+    public Mono<VoidResponse> addVideoFrameWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1033,7 +1033,7 @@ public final class ReviewsImpl implements Reviews {
      */
     public Mono<Void> addVideoFrameAsync(@NonNull String teamName, @NonNull String reviewId) {
         return addVideoFrameWithRestResponseAsync(teamName, reviewId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1105,7 +1105,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> addVideoFrameWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId, Integer timescale) {
+    public Mono<VoidResponse> addVideoFrameWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId, Integer timescale) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1152,7 +1152,7 @@ public final class ReviewsImpl implements Reviews {
      */
     public Mono<Void> addVideoFrameAsync(@NonNull String teamName, @NonNull String reviewId, Integer timescale) {
         return addVideoFrameWithRestResponseAsync(teamName, reviewId, timescale)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1422,7 +1422,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> publishVideoReviewWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId) {
+    public Mono<VoidResponse> publishVideoReviewWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1445,7 +1445,7 @@ public final class ReviewsImpl implements Reviews {
      */
     public Mono<Void> publishVideoReviewAsync(@NonNull String teamName, @NonNull String reviewId) {
         return publishVideoReviewWithRestResponseAsync(teamName, reviewId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1473,7 +1473,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> addVideoTranscriptModerationResultWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<TranscriptModerationBodyItem> transcriptModerationBody) {
+    public Mono<VoidResponse> addVideoTranscriptModerationResultWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<TranscriptModerationBodyItem> transcriptModerationBody) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1506,7 +1506,7 @@ public final class ReviewsImpl implements Reviews {
      */
     public Mono<Void> addVideoTranscriptModerationResultAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<TranscriptModerationBodyItem> transcriptModerationBody) {
         return addVideoTranscriptModerationResultWithRestResponseAsync(contentType, teamName, reviewId, transcriptModerationBody)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1520,7 +1520,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws APIErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void addVideoTranscript(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> vTTfile) {
+    public void addVideoTranscript(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuf> vTTfile) {
         addVideoTranscriptAsync(teamName, reviewId, contentLength, vTTfile).block();
     }
 
@@ -1534,7 +1534,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> addVideoTranscriptWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> vTTfile) {
+    public Mono<VoidResponse> addVideoTranscriptWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuf> vTTfile) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1561,9 +1561,9 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Void> addVideoTranscriptAsync(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> vTTfile) {
+    public Mono<Void> addVideoTranscriptAsync(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuf> vTTfile) {
         return addVideoTranscriptWithRestResponseAsync(teamName, reviewId, contentLength, vTTfile)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1845,7 +1845,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> addVideoFrameUrlWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody) {
+    public Mono<VoidResponse> addVideoFrameUrlWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1879,7 +1879,7 @@ public final class ReviewsImpl implements Reviews {
      */
     public Mono<Void> addVideoFrameUrlAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody) {
         return addVideoFrameUrlWithRestResponseAsync(contentType, teamName, reviewId, videoFrameBody)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1909,7 +1909,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> addVideoFrameUrlWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody, Integer timescale) {
+    public Mono<VoidResponse> addVideoFrameUrlWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody, Integer timescale) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1943,7 +1943,7 @@ public final class ReviewsImpl implements Reviews {
      */
     public Mono<Void> addVideoFrameUrlAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody, Integer timescale) {
         return addVideoFrameUrlWithRestResponseAsync(contentType, teamName, reviewId, videoFrameBody, timescale)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1958,7 +1958,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws APIErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void addVideoFrameStream(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata) {
+    public void addVideoFrameStream(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata) {
         addVideoFrameStreamAsync(contentType, teamName, reviewId, frameImageZip, frameMetadata).block();
     }
 
@@ -1973,7 +1973,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> addVideoFrameStreamWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata) {
+    public Mono<VoidResponse> addVideoFrameStreamWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -2007,9 +2007,9 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Void> addVideoFrameStreamAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata) {
+    public Mono<Void> addVideoFrameStreamAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata) {
         return addVideoFrameStreamWithRestResponseAsync(contentType, teamName, reviewId, frameImageZip, frameMetadata)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -2025,7 +2025,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws APIErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void addVideoFrameStream(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata, Integer timescale) {
+    public void addVideoFrameStream(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata, Integer timescale) {
         addVideoFrameStreamAsync(contentType, teamName, reviewId, frameImageZip, frameMetadata, timescale).block();
     }
 
@@ -2041,7 +2041,7 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> addVideoFrameStreamWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata, Integer timescale) {
+    public Mono<VoidResponse> addVideoFrameStreamWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata, Integer timescale) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -2075,8 +2075,8 @@ public final class ReviewsImpl implements Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Void> addVideoFrameStreamAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata, Integer timescale) {
+    public Mono<Void> addVideoFrameStreamAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuf> frameImageZip, @NonNull String frameMetadata, Integer timescale) {
         return addVideoFrameStreamWithRestResponseAsync(contentType, teamName, reviewId, frameImageZip, frameMetadata, timescale)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 }

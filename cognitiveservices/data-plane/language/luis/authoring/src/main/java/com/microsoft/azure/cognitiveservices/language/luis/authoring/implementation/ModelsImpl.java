@@ -23,6 +23,7 @@ import com.azure.common.annotations.UnexpectedResponseExceptionType;
 import com.azure.common.http.rest.SimpleResponse;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.Validator;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.Models;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AvailablePrebuiltEntityModel;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureClouds;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;

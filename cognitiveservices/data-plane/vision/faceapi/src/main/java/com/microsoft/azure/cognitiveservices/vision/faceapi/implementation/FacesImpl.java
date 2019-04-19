@@ -36,7 +36,7 @@ import com.microsoft.azure.cognitiveservices.vision.faceapi.models.SimilarFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.VerifyFaceToFaceRequest;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.VerifyFaceToPersonRequest;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.VerifyResult;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -108,7 +108,7 @@ public final class FacesImpl implements Faces {
         @POST("detect")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<SimpleResponse<List<DetectedFace>>> detectWithStream(@HostParam("Endpoint") String endpoint, @QueryParam("returnFaceId") Boolean returnFaceId, @QueryParam("returnFaceLandmarks") Boolean returnFaceLandmarks, @QueryParam("returnFaceAttributes") String returnFaceAttributes, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image, @QueryParam("recognitionModel") RecognitionModel recognitionModel1, @QueryParam("returnRecognitionModel") Boolean returnRecognitionModel);
+        Mono<SimpleResponse<List<DetectedFace>>> detectWithStream(@HostParam("Endpoint") String endpoint, @QueryParam("returnFaceId") Boolean returnFaceId, @QueryParam("returnFaceLandmarks") Boolean returnFaceLandmarks, @QueryParam("returnFaceAttributes") String returnFaceAttributes, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image, @QueryParam("recognitionModel") RecognitionModel recognitionModel1, @QueryParam("returnRecognitionModel") Boolean returnRecognitionModel);
     }
 
     /**
@@ -578,7 +578,7 @@ public final class FacesImpl implements Faces {
         final Boolean returnFaceId = true;
         final Boolean returnFaceLandmarks = false;
         final List<FaceAttributeType> returnFaceAttributes = null;
-        final RecognitionModel recognitionModel1 = recognition_01;
+        final RecognitionModel recognitionModel = RecognitionModel.RECOGNITION_01;
         final Boolean returnRecognitionModel = false;
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
@@ -817,7 +817,7 @@ public final class FacesImpl implements Faces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    public List<DetectedFace> detectWithStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public List<DetectedFace> detectWithStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return detectWithStreamAsync(contentLength, image).block();
     }
 
@@ -829,7 +829,7 @@ public final class FacesImpl implements Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<List<DetectedFace>>> detectWithStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<SimpleResponse<List<DetectedFace>>> detectWithStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -839,7 +839,7 @@ public final class FacesImpl implements Faces {
         final Boolean returnFaceId = true;
         final Boolean returnFaceLandmarks = false;
         final List<FaceAttributeType> returnFaceAttributes = null;
-        final RecognitionModel recognitionModel1 = recognition_01;
+        final RecognitionModel recognitionModel = RecognitionModel.RECOGNITION_01;
         final Boolean returnRecognitionModel = false;
         String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);
         return service.detectWithStream(this.client.endpoint(), returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, contentLength, image, recognitionModel, returnRecognitionModel);
@@ -853,7 +853,7 @@ public final class FacesImpl implements Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<List<DetectedFace>> detectWithStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<List<DetectedFace>> detectWithStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return detectWithStreamWithRestResponseAsync(contentLength, image)
             .flatMap((SimpleResponse<List<DetectedFace>> res) -> Mono.just(res.value()));
     }
@@ -873,7 +873,7 @@ public final class FacesImpl implements Faces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    public List<DetectedFace> detectWithStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+    public List<DetectedFace> detectWithStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
         return detectWithStreamAsync(contentLength, image, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel).block();
     }
 
@@ -890,7 +890,7 @@ public final class FacesImpl implements Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<List<DetectedFace>>> detectWithStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+    public Mono<SimpleResponse<List<DetectedFace>>> detectWithStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -915,7 +915,7 @@ public final class FacesImpl implements Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<List<DetectedFace>> detectWithStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+    public Mono<List<DetectedFace>> detectWithStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
         return detectWithStreamWithRestResponseAsync(contentLength, image, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel)
             .flatMap((SimpleResponse<List<DetectedFace>> res) -> Mono.just(res.value()));
     }

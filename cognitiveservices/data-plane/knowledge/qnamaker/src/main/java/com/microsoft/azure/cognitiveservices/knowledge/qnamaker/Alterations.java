@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.knowledge.qnamaker;
 
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.AlterationsDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.WordAlterationsDTO;
@@ -62,7 +62,7 @@ public interface Alterations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> replaceWithRestResponseAsync(@NonNull List<AlterationsDTO> wordAlterations);
+    Mono<VoidResponse> replaceWithRestResponseAsync(@NonNull List<AlterationsDTO> wordAlterations);
 
     /**
      * Replace alterations data.

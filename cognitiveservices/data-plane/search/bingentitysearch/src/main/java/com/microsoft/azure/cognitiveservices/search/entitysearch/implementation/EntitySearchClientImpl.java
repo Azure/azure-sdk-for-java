@@ -11,7 +11,7 @@ package com.microsoft.azure.cognitiveservices.search.entitysearch.implementation
 import com.azure.common.ServiceClient;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.implementation.RestProxy;
-import com.microsoft.azure.cognitiveservices.search.entitysearch.Entities;
+import com.microsoft.azure.cognitiveservices.search.entitysearch.EntitiesOperations;
 import com.microsoft.azure.cognitiveservices.search.entitysearch.EntitySearchClient;
 import reactor.util.annotation.NonNull;
 
@@ -45,17 +45,17 @@ public final class EntitySearchClientImpl extends ServiceClient implements Entit
     }
 
     /**
-     * The Entities object to access its operations.
+     * The EntitiesOperations object to access its operations.
      */
-    private Entities entities;
+    private EntitiesOperations entitiesOperations;
 
     /**
-     * Gets the Entities object to access its operations.
+     * Gets the EntitiesOperations object to access its operations.
      *
-     * @return the Entities object.
+     * @return the EntitiesOperations object.
      */
-    public Entities entities() {
-        return this.entities;
+    public EntitiesOperations entitiesOperations() {
+        return this.entitiesOperations;
     }
 
     /**
@@ -73,6 +73,6 @@ public final class EntitySearchClientImpl extends ServiceClient implements Entit
     public EntitySearchClientImpl(@NonNull HttpPipeline httpPipeline) {
         super(httpPipeline);
         this.endpoint = "https://api.cognitive.microsoft.com";
-        this.entities = new EntitiesImpl(this);
+        this.entitiesOperations = new EntitiesOperationsImpl(this);
     }
 }

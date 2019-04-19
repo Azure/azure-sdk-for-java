@@ -11,7 +11,7 @@ package com.microsoft.azure.cognitiveservices.search.newssearch.implementation;
 import com.azure.common.ServiceClient;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.implementation.RestProxy;
-import com.microsoft.azure.cognitiveservices.search.newssearch.News;
+import com.microsoft.azure.cognitiveservices.search.newssearch.NewsOperations;
 import com.microsoft.azure.cognitiveservices.search.newssearch.NewsSearchClient;
 import reactor.util.annotation.NonNull;
 
@@ -45,17 +45,17 @@ public final class NewsSearchClientImpl extends ServiceClient implements NewsSea
     }
 
     /**
-     * The News object to access its operations.
+     * The NewsOperations object to access its operations.
      */
-    private News news;
+    private NewsOperations newsOperations;
 
     /**
-     * Gets the News object to access its operations.
+     * Gets the NewsOperations object to access its operations.
      *
-     * @return the News object.
+     * @return the NewsOperations object.
      */
-    public News news() {
-        return this.news;
+    public NewsOperations newsOperations() {
+        return this.newsOperations;
     }
 
     /**
@@ -73,6 +73,6 @@ public final class NewsSearchClientImpl extends ServiceClient implements NewsSea
     public NewsSearchClientImpl(@NonNull HttpPipeline httpPipeline) {
         super(httpPipeline);
         this.endpoint = "https://api.cognitive.microsoft.com";
-        this.news = new NewsImpl(this);
+        this.newsOperations = new NewsOperationsImpl(this);
     }
 }

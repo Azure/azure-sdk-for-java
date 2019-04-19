@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.knowledge.qnamaker;
 
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.CreateKbDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.EnvironmentType;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.ErrorResponseException;
@@ -98,7 +98,7 @@ public interface Knowledgebases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String kbId);
+    Mono<VoidResponse> deleteWithRestResponseAsync(@NonNull String kbId);
 
     /**
      * Deletes the knowledgebase and all its data.
@@ -126,7 +126,7 @@ public interface Knowledgebases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> publishWithRestResponseAsync(@NonNull String kbId);
+    Mono<VoidResponse> publishWithRestResponseAsync(@NonNull String kbId);
 
     /**
      * Publishes all changes in test index of a knowledgebase to its prod index.
@@ -156,7 +156,7 @@ public interface Knowledgebases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> replaceWithRestResponseAsync(@NonNull String kbId, @NonNull List<QnADTO> qnAList);
+    Mono<VoidResponse> replaceWithRestResponseAsync(@NonNull String kbId, @NonNull List<QnADTO> qnAList);
 
     /**
      * Replace knowledgebase contents.

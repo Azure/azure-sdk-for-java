@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.Snapshot;
@@ -241,7 +241,7 @@ public interface Snapshots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull UUID snapshotId);
+    Mono<VoidResponse> updateWithRestResponseAsync(@NonNull UUID snapshotId);
 
     /**
      * Update the information of a snapshot. Only the source subscription who took the snapshot can update the snapshot.
@@ -273,7 +273,7 @@ public interface Snapshots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull UUID snapshotId, List<UUID> applyScope, String userData);
+    Mono<VoidResponse> updateWithRestResponseAsync(@NonNull UUID snapshotId, List<UUID> applyScope, String userData);
 
     /**
      * Update the information of a snapshot. Only the source subscription who took the snapshot can update the snapshot.
@@ -303,7 +303,7 @@ public interface Snapshots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull UUID snapshotId);
+    Mono<VoidResponse> deleteWithRestResponseAsync(@NonNull UUID snapshotId);
 
     /**
      * Delete an existing snapshot according to the snapshotId. All object data and information in the snapshot will also be deleted. Only the source subscription who took the snapshot can delete the snapshot. If the user does not delete a snapshot with this API, the snapshot will still be automatically deleted in 48 hours after creation.

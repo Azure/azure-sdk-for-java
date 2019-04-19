@@ -19,7 +19,7 @@ public final class OperationStatusType extends ExpandableStringEnum<OperationSta
     /**
      * Static value Failed for OperationStatusType.
      */
-    public static final OperationStatusType FAILED = fromString("Failed");
+    public static final OperationStatusType Failed = fromString("Failed");
 
     /**
      * Static value FAILED for OperationStatusType.

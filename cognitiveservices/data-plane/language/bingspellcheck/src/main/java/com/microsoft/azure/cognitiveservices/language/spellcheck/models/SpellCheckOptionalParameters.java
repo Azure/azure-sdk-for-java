@@ -245,6 +245,43 @@ public final class SpellCheckOptionalParameters {
     private String userId;
 
     /**
+     * The type of spelling and grammar checks to perform. The following are
+     * the possible values (the values are case insensitive). The default is
+     * Proof. 1) Proof—Finds most spelling and grammar mistakes. 2) Spell—Finds
+     * most spelling mistakes but does not find some of the grammar errors that
+     * Proof catches (for example, capitalization and repeated words). Possible
+     * values include: 'proof', 'spell'.
+     */
+    @JsonProperty(value = "")
+    private String mode;
+
+    /**
+     * A string that gives context to the text string. For example, the text
+     * string petal is valid. However, if you set preContextText to bike, the
+     * context changes and the text string becomes not valid. In this case, the
+     * API suggests that you change petal to pedal (as in bike pedal). This
+     * text is not checked for grammar or spelling errors. The combined length
+     * of the text string, preContextText string, and postContextText string
+     * may not exceed 10,000 characters. You may specify this parameter in the
+     * query string of a GET request or in the body of a POST request.
+     */
+    @JsonProperty(value = "")
+    private String preContextText;
+
+    /**
+     * A string that gives context to the text string. For example, the text
+     * string read is valid. However, if you set postContextText to carpet, the
+     * context changes and the text string becomes not valid. In this case, the
+     * API suggests that you change read to red (as in red carpet). This text
+     * is not checked for grammar or spelling errors. The combined length of
+     * the text string, preContextText string, and postContextText string may
+     * not exceed 10,000 characters. You may specify this parameter in the
+     * query string of a GET request or in the body of a POST request.
+     */
+    @JsonProperty(value = "")
+    private String postContextText;
+
+    /**
      * Get the acceptLanguage value.
      *
      * @return the acceptLanguage value.
@@ -541,6 +578,66 @@ public final class SpellCheckOptionalParameters {
      */
     public SpellCheckOptionalParameters withUserId(String userId) {
         this.userId = userId;
+        return this;
+    }
+
+    /**
+     * Get the mode value.
+     *
+     * @return the mode value.
+     */
+    public String mode() {
+        return this.mode;
+    }
+
+    /**
+     * Set the mode value.
+     *
+     * @param mode the mode value to set.
+     * @return the SpellCheckOptionalParameters object itself.
+     */
+    public SpellCheckOptionalParameters withMode(String mode) {
+        this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Get the preContextText value.
+     *
+     * @return the preContextText value.
+     */
+    public String preContextText() {
+        return this.preContextText;
+    }
+
+    /**
+     * Set the preContextText value.
+     *
+     * @param preContextText the preContextText value to set.
+     * @return the SpellCheckOptionalParameters object itself.
+     */
+    public SpellCheckOptionalParameters withPreContextText(String preContextText) {
+        this.preContextText = preContextText;
+        return this;
+    }
+
+    /**
+     * Get the postContextText value.
+     *
+     * @return the postContextText value.
+     */
+    public String postContextText() {
+        return this.postContextText;
+    }
+
+    /**
+     * Set the postContextText value.
+     *
+     * @param postContextText the postContextText value to set.
+     * @return the SpellCheckOptionalParameters object itself.
+     */
+    public SpellCheckOptionalParameters withPostContextText(String postContextText) {
+        this.postContextText = postContextText;
         return this;
     }
 }

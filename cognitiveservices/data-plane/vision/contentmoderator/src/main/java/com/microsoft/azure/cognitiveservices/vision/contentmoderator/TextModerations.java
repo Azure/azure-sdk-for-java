@@ -12,7 +12,7 @@ import com.azure.common.http.rest.SimpleResponse;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.DetectedLanguage;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Screen;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
@@ -34,7 +34,7 @@ public interface TextModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Screen object if successful.
      */
-    Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
+    Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent);
 
     /**
      * Detect profanity and match against custom and shared blacklists
@@ -46,7 +46,7 @@ public interface TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
+    Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent);
 
     /**
      * Detect profanity and match against custom and shared blacklists
@@ -58,7 +58,7 @@ public interface TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
+    Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent);
 
     /**
      * Detect profanity and match against custom and shared blacklists
@@ -77,7 +77,7 @@ public interface TextModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Screen object if successful.
      */
-    Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify);
+    Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify);
 
     /**
      * Detect profanity and match against custom and shared blacklists
@@ -94,7 +94,7 @@ public interface TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify);
+    Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify);
 
     /**
      * Detect profanity and match against custom and shared blacklists
@@ -111,7 +111,7 @@ public interface TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify);
+    Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify);
 
     /**
      * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
@@ -124,7 +124,7 @@ public interface TextModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DetectedLanguage object if successful.
      */
-    DetectedLanguage detectLanguage(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
+    DetectedLanguage detectLanguage(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent);
 
     /**
      * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
@@ -135,7 +135,7 @@ public interface TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<DetectedLanguage>> detectLanguageWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
+    Mono<SimpleResponse<DetectedLanguage>> detectLanguageWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent);
 
     /**
      * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
@@ -146,5 +146,5 @@ public interface TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<DetectedLanguage> detectLanguageAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
+    Mono<DetectedLanguage> detectLanguageAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent);
 }

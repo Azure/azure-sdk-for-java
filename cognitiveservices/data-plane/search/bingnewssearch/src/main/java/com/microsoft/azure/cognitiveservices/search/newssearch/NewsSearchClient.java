@@ -28,9 +28,9 @@ public interface NewsSearchClient {
     NewsSearchClient withEndpoint(String endpoint);
 
     /**
-     * Gets the News object to access its operations.
+     * Gets the NewsOperations object to access its operations.
      *
-     * @return the News object.
+     * @return the NewsOperations object.
      */
-    News news();
+    NewsOperations newsOperations();
 }

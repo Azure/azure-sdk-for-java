@@ -19,8 +19,8 @@ import com.azure.common.annotations.PathParam;
 import com.azure.common.annotations.POST;
 import com.azure.common.annotations.PUT;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Knowledgebases;
@@ -84,17 +84,17 @@ public final class KnowledgebasesImpl implements Knowledgebases {
         @DELETE("knowledgebases/{kbId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<RestVoidResponse> delete(@PathParam("kbId") String kbId, @HostParam("Endpoint") String endpoint);
+        Mono<VoidResponse> delete(@PathParam("kbId") String kbId, @HostParam("Endpoint") String endpoint);
 
         @POST("knowledgebases/{kbId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<RestVoidResponse> publish(@PathParam("kbId") String kbId, @HostParam("Endpoint") String endpoint);
+        Mono<VoidResponse> publish(@PathParam("kbId") String kbId, @HostParam("Endpoint") String endpoint);
 
         @PUT("knowledgebases/{kbId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<RestVoidResponse> replace(@PathParam("kbId") String kbId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") ReplaceKbDTO replaceKb);
+        Mono<VoidResponse> replace(@PathParam("kbId") String kbId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") ReplaceKbDTO replaceKb);
 
         @PATCH("knowledgebases/{kbId}")
         @ExpectedResponses({202})
@@ -206,7 +206,7 @@ public final class KnowledgebasesImpl implements Knowledgebases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String kbId) {
+    public Mono<VoidResponse> deleteWithRestResponseAsync(@NonNull String kbId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -225,7 +225,7 @@ public final class KnowledgebasesImpl implements Knowledgebases {
      */
     public Mono<Void> deleteAsync(@NonNull String kbId) {
         return deleteWithRestResponseAsync(kbId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -247,7 +247,7 @@ public final class KnowledgebasesImpl implements Knowledgebases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> publishWithRestResponseAsync(@NonNull String kbId) {
+    public Mono<VoidResponse> publishWithRestResponseAsync(@NonNull String kbId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -266,7 +266,7 @@ public final class KnowledgebasesImpl implements Knowledgebases {
      */
     public Mono<Void> publishAsync(@NonNull String kbId) {
         return publishWithRestResponseAsync(kbId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -290,7 +290,7 @@ public final class KnowledgebasesImpl implements Knowledgebases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> replaceWithRestResponseAsync(@NonNull String kbId, @NonNull List<QnADTO> qnAList) {
+    public Mono<VoidResponse> replaceWithRestResponseAsync(@NonNull String kbId, @NonNull List<QnADTO> qnAList) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -316,7 +316,7 @@ public final class KnowledgebasesImpl implements Knowledgebases {
      */
     public Mono<Void> replaceAsync(@NonNull String kbId, @NonNull List<QnADTO> qnAList) {
         return replaceWithRestResponseAsync(kbId, qnAList)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**

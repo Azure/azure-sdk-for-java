@@ -8,19 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.runtime.implementation;
 
-import com.azure.common.credentials.ServiceClientCredentials;
+import com.azure.common.ServiceClient;
 import com.azure.common.http.HttpPipeline;
+import com.azure.common.implementation.RestProxy;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.LuisRuntimeAPI;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.Predictions;
-import com.microsoft.azure.v3.AzureEnvironment;
-import com.microsoft.azure.v3.AzureProxy;
-import com.microsoft.azure.v3.AzureServiceClient;
 import reactor.util.annotation.NonNull;
 
 /**
  * Initializes a new instance of the LuisRuntimeAPI type.
  */
-public final class LuisRuntimeAPIImpl extends AzureServiceClient implements LuisRuntimeAPI {
+public final class LuisRuntimeAPIImpl extends ServiceClient implements LuisRuntimeAPI {
     /**
      * Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
      */
@@ -47,81 +45,6 @@ public final class LuisRuntimeAPIImpl extends AzureServiceClient implements Luis
     }
 
     /**
-     * The preferred language for the response.
-     */
-    private String acceptLanguage;
-
-    /**
-     * Gets The preferred language for the response.
-     *
-     * @return the acceptLanguage value.
-     */
-    public String acceptLanguage() {
-        return this.acceptLanguage;
-    }
-
-    /**
-     * Sets The preferred language for the response.
-     *
-     * @param acceptLanguage the acceptLanguage value.
-     * @return the service client itself.
-     */
-    public LuisRuntimeAPIImpl withAcceptLanguage(String acceptLanguage) {
-        this.acceptLanguage = acceptLanguage;
-        return this;
-    }
-
-    /**
-     * The retry timeout in seconds for Long Running Operations. Default value is 30.
-     */
-    private Integer longRunningOperationRetryTimeout;
-
-    /**
-     * Gets The retry timeout in seconds for Long Running Operations. Default value is 30.
-     *
-     * @return the longRunningOperationRetryTimeout value.
-     */
-    public Integer longRunningOperationRetryTimeout() {
-        return this.longRunningOperationRetryTimeout;
-    }
-
-    /**
-     * Sets The retry timeout in seconds for Long Running Operations. Default value is 30.
-     *
-     * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
-     * @return the service client itself.
-     */
-    public LuisRuntimeAPIImpl withLongRunningOperationRetryTimeout(Integer longRunningOperationRetryTimeout) {
-        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
-        return this;
-    }
-
-    /**
-     * Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
-     */
-    private Boolean generateClientRequestId;
-
-    /**
-     * Gets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
-     *
-     * @return the generateClientRequestId value.
-     */
-    public Boolean generateClientRequestId() {
-        return this.generateClientRequestId;
-    }
-
-    /**
-     * Sets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
-     *
-     * @param generateClientRequestId the generateClientRequestId value.
-     * @return the service client itself.
-     */
-    public LuisRuntimeAPIImpl withGenerateClientRequestId(Boolean generateClientRequestId) {
-        this.generateClientRequestId = generateClientRequestId;
-        return this;
-    }
-
-    /**
      * The Predictions object to access its operations.
      */
     private Predictions predictions;
@@ -137,21 +60,9 @@ public final class LuisRuntimeAPIImpl extends AzureServiceClient implements Luis
 
     /**
      * Initializes an instance of LuisRuntimeAPI client.
-     *
-     * @param credentials the management credentials for Azure.
      */
-    public LuisRuntimeAPIImpl(@NonNull ServiceClientCredentials credentials) {
-        this(AzureProxy.createDefaultPipeline(LuisRuntimeAPIImpl.class, credentials));
-    }
-
-    /**
-     * Initializes an instance of LuisRuntimeAPI client.
-     *
-     * @param credentials the management credentials for Azure.
-     * @param azureEnvironment The environment that requests will target.
-     */
-    public LuisRuntimeAPIImpl(@NonNull ServiceClientCredentials credentials, @NonNull AzureEnvironment azureEnvironment) {
-        this(AzureProxy.createDefaultPipeline(LuisRuntimeAPIImpl.class, credentials), azureEnvironment);
+    public LuisRuntimeAPIImpl() {
+        this(RestProxy.createDefaultPipeline());
     }
 
     /**
@@ -160,20 +71,7 @@ public final class LuisRuntimeAPIImpl extends AzureServiceClient implements Luis
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public LuisRuntimeAPIImpl(@NonNull HttpPipeline httpPipeline) {
-        this(httpPipeline, null);
-    }
-
-    /**
-     * Initializes an instance of LuisRuntimeAPI client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param azureEnvironment The environment that requests will target.
-     */
-    public LuisRuntimeAPIImpl(@NonNull HttpPipeline httpPipeline, @NonNull AzureEnvironment azureEnvironment) {
-        super(httpPipeline, azureEnvironment);
-        this.acceptLanguage = "en-US";
-        this.longRunningOperationRetryTimeout = 30;
-        this.generateClientRequestId = true;
+        super(httpPipeline);
         this.predictions = new PredictionsImpl(this);
     }
 }

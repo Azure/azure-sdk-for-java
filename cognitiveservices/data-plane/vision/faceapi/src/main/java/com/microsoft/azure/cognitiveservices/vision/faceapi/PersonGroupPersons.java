@@ -8,12 +8,12 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersistedFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.Person;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
@@ -172,7 +172,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId);
+    Mono<VoidResponse> deleteWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId);
 
     /**
      * Delete an existing person from a person group. All stored person data, and face features in the person entry will be deleted.
@@ -235,7 +235,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId);
+    Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId);
 
     /**
      * Update name or userData of a person.
@@ -270,7 +270,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, String name, String userData);
+    Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, String name, String userData);
 
     /**
      * Update name or userData of a person.
@@ -305,7 +305,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteFaceWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull UUID persistedFaceId);
+    Mono<VoidResponse> deleteFaceWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull UUID persistedFaceId);
 
     /**
      * Delete a face from a person. Relative feature for the persisted face will also be deleted.
@@ -374,7 +374,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateFaceWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull UUID persistedFaceId);
+    Mono<VoidResponse> updateFaceWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull UUID persistedFaceId);
 
     /**
      * Update a person persisted face's userData field.
@@ -410,7 +410,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateFaceWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull UUID persistedFaceId, String userData);
+    Mono<VoidResponse> updateFaceWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull UUID persistedFaceId, String userData);
 
     /**
      * Update a person persisted face's userData field.
@@ -512,7 +512,7 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addFaceFromStream(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    PersistedFace addFaceFromStream(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
@@ -524,7 +524,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
@@ -536,7 +536,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
@@ -552,7 +552,7 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addFaceFromStream(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace);
+    PersistedFace addFaceFromStream(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
@@ -566,7 +566,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace);
+    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
@@ -580,5 +580,5 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace);
+    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String personGroupId, @NonNull UUID personId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace);
 }

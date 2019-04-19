@@ -11,8 +11,8 @@ package com.microsoft.azure.cognitiveservices.search.videosearch.implementation;
 import com.azure.common.ServiceClient;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.implementation.RestProxy;
-import com.microsoft.azure.cognitiveservices.search.videosearch.Videos;
 import com.microsoft.azure.cognitiveservices.search.videosearch.VideoSearchClient;
+import com.microsoft.azure.cognitiveservices.search.videosearch.VideosOperations;
 import reactor.util.annotation.NonNull;
 
 /**
@@ -45,17 +45,17 @@ public final class VideoSearchClientImpl extends ServiceClient implements VideoS
     }
 
     /**
-     * The Videos object to access its operations.
+     * The VideosOperations object to access its operations.
      */
-    private Videos videos;
+    private VideosOperations videosOperations;
 
     /**
-     * Gets the Videos object to access its operations.
+     * Gets the VideosOperations object to access its operations.
      *
-     * @return the Videos object.
+     * @return the VideosOperations object.
      */
-    public Videos videos() {
-        return this.videos;
+    public VideosOperations videosOperations() {
+        return this.videosOperations;
     }
 
     /**
@@ -73,6 +73,6 @@ public final class VideoSearchClientImpl extends ServiceClient implements VideoS
     public VideoSearchClientImpl(@NonNull HttpPipeline httpPipeline) {
         super(httpPipeline);
         this.endpoint = "https://api.cognitive.microsoft.com";
-        this.videos = new VideosImpl(this);
+        this.videosOperations = new VideosOperationsImpl(this);
     }
 }

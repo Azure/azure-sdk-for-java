@@ -22,7 +22,7 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.TextModerat
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.DetectedLanguage;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Screen;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
@@ -61,12 +61,12 @@ public final class TextModerationsImpl implements TextModerations {
         @POST("contentmoderator/moderate/v1.0/ProcessText/Screen/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<SimpleResponse<Screen>> screenText(@HostParam("Endpoint") String endpoint, @QueryParam("language") String language, @QueryParam("autocorrect") Boolean autocorrect, @QueryParam("PII") Boolean pII, @QueryParam("listId") String listId, @QueryParam("classify") Boolean classify, @HeaderParam("Content-Type") String textContentType, @HeaderParam("Content-Length") long contentLength, @BodyParam("text/plain") Flux<ByteBuffer> textContent);
+        Mono<SimpleResponse<Screen>> screenText(@HostParam("Endpoint") String endpoint, @QueryParam("language") String language, @QueryParam("autocorrect") Boolean autocorrect, @QueryParam("PII") Boolean pII, @QueryParam("listId") String listId, @QueryParam("classify") Boolean classify, @HeaderParam("Content-Type") String textContentType, @HeaderParam("Content-Length") long contentLength, @BodyParam("text/plain") Flux<ByteBuf> textContent);
 
         @POST("contentmoderator/moderate/v1.0/ProcessText/DetectLanguage")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<SimpleResponse<DetectedLanguage>> detectLanguage(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String textContentType, @HeaderParam("Content-Length") long contentLength, @BodyParam("text/plain") Flux<ByteBuffer> textContent);
+        Mono<SimpleResponse<DetectedLanguage>> detectLanguage(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String textContentType, @HeaderParam("Content-Length") long contentLength, @BodyParam("text/plain") Flux<ByteBuf> textContent);
     }
 
     /**
@@ -81,7 +81,7 @@ public final class TextModerationsImpl implements TextModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Screen object if successful.
      */
-    public Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+    public Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent) {
         return screenTextAsync(textContentType, contentLength, textContent).block();
     }
 
@@ -95,7 +95,7 @@ public final class TextModerationsImpl implements TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+    public Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -123,7 +123,7 @@ public final class TextModerationsImpl implements TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+    public Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent) {
         return screenTextWithRestResponseAsync(textContentType, contentLength, textContent)
             .flatMap((SimpleResponse<Screen> res) -> Mono.just(res.value()));
     }
@@ -145,7 +145,7 @@ public final class TextModerationsImpl implements TextModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Screen object if successful.
      */
-    public Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify) {
+    public Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify) {
         return screenTextAsync(textContentType, contentLength, textContent, language, autocorrect, pII, listId, classify).block();
     }
 
@@ -164,7 +164,7 @@ public final class TextModerationsImpl implements TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify) {
+    public Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -192,7 +192,7 @@ public final class TextModerationsImpl implements TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify) {
+    public Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify) {
         return screenTextWithRestResponseAsync(textContentType, contentLength, textContent, language, autocorrect, pII, listId, classify)
             .flatMap((SimpleResponse<Screen> res) -> Mono.just(res.value()));
     }
@@ -208,7 +208,7 @@ public final class TextModerationsImpl implements TextModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DetectedLanguage object if successful.
      */
-    public DetectedLanguage detectLanguage(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+    public DetectedLanguage detectLanguage(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent) {
         return detectLanguageAsync(textContentType, contentLength, textContent).block();
     }
 
@@ -221,7 +221,7 @@ public final class TextModerationsImpl implements TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<DetectedLanguage>> detectLanguageWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+    public Mono<SimpleResponse<DetectedLanguage>> detectLanguageWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -243,7 +243,7 @@ public final class TextModerationsImpl implements TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DetectedLanguage> detectLanguageAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+    public Mono<DetectedLanguage> detectLanguageAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuf> textContent) {
         return detectLanguageWithRestResponseAsync(textContentType, contentLength, textContent)
             .flatMap((SimpleResponse<DetectedLanguage> res) -> Mono.just(res.value()));
     }

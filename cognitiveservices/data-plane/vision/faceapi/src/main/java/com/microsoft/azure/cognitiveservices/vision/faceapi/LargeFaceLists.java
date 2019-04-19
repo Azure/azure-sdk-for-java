@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.LargeFaceList;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersistedFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.TrainingStatus;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
@@ -60,7 +60,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String largeFaceListId);
+    Mono<VoidResponse> createWithRestResponseAsync(@NonNull String largeFaceListId);
 
     /**
      * Create an empty large face list with user-specified largeFaceListId, name, an optional userData and recognitionModel.
@@ -118,7 +118,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String largeFaceListId, String name, String userData, RecognitionModel recognitionModel);
+    Mono<VoidResponse> createWithRestResponseAsync(@NonNull String largeFaceListId, String name, String userData, RecognitionModel recognitionModel);
 
     /**
      * Create an empty large face list with user-specified largeFaceListId, name, an optional userData and recognitionModel.
@@ -218,7 +218,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String largeFaceListId);
+    Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String largeFaceListId);
 
     /**
      * Update information of a large face list.
@@ -250,7 +250,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String largeFaceListId, String name, String userData);
+    Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String largeFaceListId, String name, String userData);
 
     /**
      * Update information of a large face list.
@@ -280,7 +280,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String largeFaceListId);
+    Mono<VoidResponse> deleteWithRestResponseAsync(@NonNull String largeFaceListId);
 
     /**
      * Delete an existing large face list according to faceListId. Persisted face images in the large face list will also be deleted.
@@ -443,7 +443,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> trainWithRestResponseAsync(@NonNull String largeFaceListId);
+    Mono<VoidResponse> trainWithRestResponseAsync(@NonNull String largeFaceListId);
 
     /**
      * Queue a large face list training task, the training task may not be started immediately.
@@ -473,7 +473,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> deleteFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId);
+    Mono<VoidResponse> deleteFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId);
 
     /**
      * Delete an existing face from a large face list (given by a persistedFaceId and a largeFaceListId). Persisted image related to the face will also be deleted.
@@ -536,7 +536,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId);
+    Mono<VoidResponse> updateFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId);
 
     /**
      * Update a persisted face's userData field.
@@ -569,7 +569,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RestVoidResponse> updateFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId, String userData);
+    Mono<VoidResponse> updateFaceWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull UUID persistedFaceId, String userData);
 
     /**
      * Update a persisted face's userData field.
@@ -727,7 +727,7 @@ public interface LargeFaceLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addFaceFromStream(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    PersistedFace addFaceFromStream(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Add a face to a large face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
@@ -738,7 +738,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Add a face to a large face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
@@ -749,7 +749,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Add a face to a large face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
@@ -764,7 +764,7 @@ public interface LargeFaceLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addFaceFromStream(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace);
+    PersistedFace addFaceFromStream(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace);
 
     /**
      * Add a face to a large face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
@@ -777,7 +777,7 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace);
+    Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace);
 
     /**
      * Add a face to a large face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
@@ -790,5 +790,5 @@ public interface LargeFaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace);
+    Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String largeFaceListId, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String userData, List<Integer> targetFace);
 }

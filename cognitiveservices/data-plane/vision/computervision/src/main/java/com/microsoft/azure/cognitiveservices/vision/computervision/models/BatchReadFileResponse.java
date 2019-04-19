@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
+import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.rest.ResponseBase;
 import java.util.Map;
@@ -25,15 +26,7 @@ public final class BatchReadFileResponse extends ResponseBase<BatchReadFileHeade
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      */
-    public BatchReadFileResponse(HttpRequest request, int statusCode, BatchReadFileHeaders headers, Map<String, String> rawHeaders, Void value) {
-        super(request, statusCode, headers, rawHeaders, value);
-    }
-
-    /**
-     * @return the deserialized response headers.
-     */
-    @Override
-    public BatchReadFileHeaders headers() {
-        return super.headers();
+    public BatchReadFileResponse(HttpRequest request, int statusCode, BatchReadFileHeaders headers, HttpHeaders rawHeaders, Void value) {
+        super(request, statusCode, rawHeaders, value, headers);
     }
 }

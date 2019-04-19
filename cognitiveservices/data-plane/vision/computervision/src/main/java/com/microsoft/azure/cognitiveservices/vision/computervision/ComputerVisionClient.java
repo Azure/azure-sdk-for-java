@@ -29,7 +29,7 @@ import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagRes
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextOperationResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextRecognitionMode;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.VisualFeatureTypes;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -517,9 +517,9 @@ public interface ComputerVisionClient {
      * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    Flux<ByteBuffer> generateThumbnail(@NonNull int width, @NonNull int height, @NonNull String url);
+    Flux<ByteBuf> generateThumbnail(@NonNull int width, @NonNull int height, @NonNull String url);
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
@@ -545,7 +545,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Flux<ByteBuffer>> generateThumbnailAsync(@NonNull int width, @NonNull int height, @NonNull String url);
+    Mono<Flux<ByteBuf>> generateThumbnailAsync(@NonNull int width, @NonNull int height, @NonNull String url);
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
@@ -558,9 +558,9 @@ public interface ComputerVisionClient {
      * @param smartCropping Boolean flag for enabling smart cropping.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    Flux<ByteBuffer> generateThumbnail(@NonNull int width, @NonNull int height, @NonNull String url, Boolean smartCropping);
+    Flux<ByteBuf> generateThumbnail(@NonNull int width, @NonNull int height, @NonNull String url, Boolean smartCropping);
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
@@ -588,7 +588,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Flux<ByteBuffer>> generateThumbnailAsync(@NonNull int width, @NonNull int height, @NonNull String url, Boolean smartCropping);
+    Mono<Flux<ByteBuf>> generateThumbnailAsync(@NonNull int width, @NonNull int height, @NonNull String url, Boolean smartCropping);
 
     /**
      * This operation returns a bounding box around the most important area of the image.
@@ -757,7 +757,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageAnalysis object if successful.
      */
-    ImageAnalysis analyzeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    ImageAnalysis analyzeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
@@ -769,7 +769,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
@@ -781,7 +781,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<ImageAnalysis> analyzeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<ImageAnalysis> analyzeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
@@ -798,7 +798,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageAnalysis object if successful.
      */
-    ImageAnalysis analyzeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
+    ImageAnalysis analyzeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
@@ -813,7 +813,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
+    Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
@@ -828,7 +828,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<ImageAnalysis> analyzeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
+    Mono<ImageAnalysis> analyzeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
 
     /**
      * This operation returns a bounding box around the most important area of the image.
@@ -842,7 +842,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the AreaOfInterestResult object if successful.
      */
-    AreaOfInterestResult getAreaOfInterestInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    AreaOfInterestResult getAreaOfInterestInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation returns a bounding box around the most important area of the image.
@@ -854,7 +854,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<AreaOfInterestResult>> getAreaOfInterestInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<SimpleResponse<AreaOfInterestResult>> getAreaOfInterestInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation returns a bounding box around the most important area of the image.
@@ -866,7 +866,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<AreaOfInterestResult> getAreaOfInterestInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<AreaOfInterestResult> getAreaOfInterestInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
@@ -880,7 +880,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageDescription object if successful.
      */
-    ImageDescription describeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    ImageDescription describeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
@@ -892,7 +892,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<ImageDescription>> describeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<SimpleResponse<ImageDescription>> describeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
@@ -904,7 +904,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<ImageDescription> describeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<ImageDescription> describeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
@@ -920,7 +920,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageDescription object if successful.
      */
-    ImageDescription describeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Integer maxCandidates, String language);
+    ImageDescription describeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Integer maxCandidates, String language);
 
     /**
      * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
@@ -934,7 +934,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<ImageDescription>> describeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Integer maxCandidates, String language);
+    Mono<SimpleResponse<ImageDescription>> describeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Integer maxCandidates, String language);
 
     /**
      * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
@@ -948,7 +948,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<ImageDescription> describeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Integer maxCandidates, String language);
+    Mono<ImageDescription> describeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Integer maxCandidates, String language);
 
     /**
      * Performs object detection on the specified image.
@@ -962,7 +962,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DetectResult object if successful.
      */
-    DetectResult detectObjectsInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    DetectResult detectObjectsInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Performs object detection on the specified image.
@@ -974,7 +974,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<DetectResult>> detectObjectsInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<SimpleResponse<DetectResult>> detectObjectsInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Performs object detection on the specified image.
@@ -986,7 +986,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<DetectResult> detectObjectsInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<DetectResult> detectObjectsInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
@@ -999,9 +999,9 @@ public interface ComputerVisionClient {
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    Flux<ByteBuffer> generateThumbnailInStream(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Flux<ByteBuf> generateThumbnailInStream(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
@@ -1015,7 +1015,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<StreamResponse> generateThumbnailInStreamWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<StreamResponse> generateThumbnailInStreamWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
@@ -1029,7 +1029,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Flux<ByteBuffer>> generateThumbnailInStreamAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<Flux<ByteBuf>> generateThumbnailInStreamAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
@@ -1043,9 +1043,9 @@ public interface ComputerVisionClient {
      * @param smartCropping Boolean flag for enabling smart cropping.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    Flux<ByteBuffer> generateThumbnailInStream(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean smartCropping);
+    Flux<ByteBuf> generateThumbnailInStream(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean smartCropping);
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
@@ -1060,7 +1060,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<StreamResponse> generateThumbnailInStreamWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean smartCropping);
+    Mono<StreamResponse> generateThumbnailInStreamWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean smartCropping);
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
@@ -1075,7 +1075,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Flux<ByteBuffer>> generateThumbnailInStreamAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean smartCropping);
+    Mono<Flux<ByteBuf>> generateThumbnailInStreamAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean smartCropping);
 
     /**
      * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
@@ -1091,7 +1091,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DomainModelResults object if successful.
      */
-    DomainModelResults analyzeImageByDomainInStream(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    DomainModelResults analyzeImageByDomainInStream(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
@@ -1105,7 +1105,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStreamWithRestResponseAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStreamWithRestResponseAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
@@ -1119,7 +1119,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<DomainModelResults> analyzeImageByDomainInStreamAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<DomainModelResults> analyzeImageByDomainInStreamAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
@@ -1136,7 +1136,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DomainModelResults object if successful.
      */
-    DomainModelResults analyzeImageByDomainInStream(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+    DomainModelResults analyzeImageByDomainInStream(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language);
 
     /**
      * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
@@ -1151,7 +1151,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStreamWithRestResponseAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+    Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStreamWithRestResponseAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language);
 
     /**
      * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
@@ -1166,7 +1166,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<DomainModelResults> analyzeImageByDomainInStreamAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+    Mono<DomainModelResults> analyzeImageByDomainInStreamAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language);
 
     /**
      * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
@@ -1181,7 +1181,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OcrResult object if successful.
      */
-    OcrResult recognizePrintedTextInStream(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    OcrResult recognizePrintedTextInStream(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
@@ -1194,7 +1194,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStreamWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStreamWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
@@ -1207,7 +1207,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<OcrResult> recognizePrintedTextInStreamAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<OcrResult> recognizePrintedTextInStreamAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
@@ -1223,7 +1223,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OcrResult object if successful.
      */
-    OcrResult recognizePrintedTextInStream(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, OcrLanguages language);
+    OcrResult recognizePrintedTextInStream(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, OcrLanguages language);
 
     /**
      * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
@@ -1237,7 +1237,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStreamWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, OcrLanguages language);
+    Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStreamWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, OcrLanguages language);
 
     /**
      * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
@@ -1251,7 +1251,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<OcrResult> recognizePrintedTextInStreamAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, OcrLanguages language);
+    Mono<OcrResult> recognizePrintedTextInStreamAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, OcrLanguages language);
 
     /**
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
@@ -1265,7 +1265,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TagResult object if successful.
      */
-    TagResult tagImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    TagResult tagImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
@@ -1277,7 +1277,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<TagResult>> tagImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<SimpleResponse<TagResult>> tagImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
@@ -1289,7 +1289,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<TagResult> tagImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+    Mono<TagResult> tagImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image);
 
     /**
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
@@ -1304,7 +1304,7 @@ public interface ComputerVisionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TagResult object if successful.
      */
-    TagResult tagImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+    TagResult tagImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language);
 
     /**
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
@@ -1317,7 +1317,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<TagResult>> tagImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+    Mono<SimpleResponse<TagResult>> tagImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language);
 
     /**
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
@@ -1330,7 +1330,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<TagResult> tagImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+    Mono<TagResult> tagImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language);
 
     /**
      * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
@@ -1342,7 +1342,7 @@ public interface ComputerVisionClient {
      * @throws ComputerVisionErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void recognizeTextInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
+    void recognizeTextInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode);
 
     /**
      * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
@@ -1353,7 +1353,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<RecognizeTextInStreamResponse> recognizeTextInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
+    Mono<RecognizeTextInStreamResponse> recognizeTextInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode);
 
     /**
      * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
@@ -1364,7 +1364,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Void> recognizeTextInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
+    Mono<Void> recognizeTextInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode);
 
     /**
      * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
@@ -1376,7 +1376,7 @@ public interface ComputerVisionClient {
      * @throws ComputerVisionErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void batchReadFileInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
+    void batchReadFileInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode);
 
     /**
      * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
@@ -1387,7 +1387,7 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<BatchReadFileInStreamResponse> batchReadFileInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
+    Mono<BatchReadFileInStreamResponse> batchReadFileInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode);
 
     /**
      * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
@@ -1398,5 +1398,5 @@ public interface ComputerVisionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Void> batchReadFileInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
+    Mono<Void> batchReadFileInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode);
 }

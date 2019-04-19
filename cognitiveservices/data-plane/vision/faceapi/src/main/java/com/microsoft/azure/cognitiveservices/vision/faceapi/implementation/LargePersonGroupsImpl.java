@@ -20,8 +20,8 @@ import com.azure.common.annotations.POST;
 import com.azure.common.annotations.PUT;
 import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.RestProxy;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
@@ -69,12 +69,12 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
         @PUT("largepersongroups/{largePersonGroupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> create(@PathParam("largePersonGroupId") String largePersonGroupId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") MetaDataContract body);
+        Mono<VoidResponse> create(@PathParam("largePersonGroupId") String largePersonGroupId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") MetaDataContract body);
 
         @DELETE("largepersongroups/{largePersonGroupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> delete(@PathParam("largePersonGroupId") String largePersonGroupId, @HostParam("Endpoint") String endpoint);
+        Mono<VoidResponse> delete(@PathParam("largePersonGroupId") String largePersonGroupId, @HostParam("Endpoint") String endpoint);
 
         @GET("largepersongroups/{largePersonGroupId}")
         @ExpectedResponses({200})
@@ -84,7 +84,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
         @PATCH("largepersongroups/{largePersonGroupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> update(@PathParam("largePersonGroupId") String largePersonGroupId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") NameAndUserDataContract body);
+        Mono<VoidResponse> update(@PathParam("largePersonGroupId") String largePersonGroupId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") NameAndUserDataContract body);
 
         @GET("largepersongroups/{largePersonGroupId}/training")
         @ExpectedResponses({200})
@@ -99,7 +99,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
         @POST("largepersongroups/{largePersonGroupId}/train")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> train(@PathParam("largePersonGroupId") String largePersonGroupId, @HostParam("Endpoint") String endpoint);
+        Mono<VoidResponse> train(@PathParam("largePersonGroupId") String largePersonGroupId, @HostParam("Endpoint") String endpoint);
     }
 
     /**
@@ -137,7 +137,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String largePersonGroupId) {
+    public Mono<VoidResponse> createWithRestResponseAsync(@NonNull String largePersonGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -168,7 +168,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      */
     public Mono<Void> createAsync(@NonNull String largePersonGroupId) {
         return createWithRestResponseAsync(largePersonGroupId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -212,7 +212,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String largePersonGroupId, String name, String userData, RecognitionModel recognitionModel) {
+    public Mono<VoidResponse> createWithRestResponseAsync(@NonNull String largePersonGroupId, String name, String userData, RecognitionModel recognitionModel) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -246,7 +246,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      */
     public Mono<Void> createAsync(@NonNull String largePersonGroupId, String name, String userData, RecognitionModel recognitionModel) {
         return createWithRestResponseAsync(largePersonGroupId, name, userData, recognitionModel)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -268,7 +268,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String largePersonGroupId) {
+    public Mono<VoidResponse> deleteWithRestResponseAsync(@NonNull String largePersonGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -287,7 +287,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      */
     public Mono<Void> deleteAsync(@NonNull String largePersonGroupId) {
         return deleteWithRestResponseAsync(largePersonGroupId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -397,7 +397,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String largePersonGroupId) {
+    public Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String largePersonGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -419,7 +419,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      */
     public Mono<Void> updateAsync(@NonNull String largePersonGroupId) {
         return updateWithRestResponseAsync(largePersonGroupId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -445,7 +445,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String largePersonGroupId, String name, String userData) {
+    public Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String largePersonGroupId, String name, String userData) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -469,7 +469,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      */
     public Mono<Void> updateAsync(@NonNull String largePersonGroupId, String name, String userData) {
         return updateWithRestResponseAsync(largePersonGroupId, name, userData)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -662,7 +662,7 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> trainWithRestResponseAsync(@NonNull String largePersonGroupId) {
+    public Mono<VoidResponse> trainWithRestResponseAsync(@NonNull String largePersonGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -681,6 +681,6 @@ public final class LargePersonGroupsImpl implements LargePersonGroups {
      */
     public Mono<Void> trainAsync(@NonNull String largePersonGroupId) {
         return trainWithRestResponseAsync(largePersonGroupId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 }

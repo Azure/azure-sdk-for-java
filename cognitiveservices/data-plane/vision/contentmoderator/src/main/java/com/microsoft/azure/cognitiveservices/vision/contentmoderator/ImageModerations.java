@@ -15,7 +15,7 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Eval
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.FoundFaces;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.MatchResponse;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.OCR;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
@@ -294,7 +294,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the FoundFaces object if successful.
      */
-    FoundFaces findFacesFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    FoundFaces findFacesFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Returns the list of faces found.
@@ -304,7 +304,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<FoundFaces>> findFacesFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Mono<SimpleResponse<FoundFaces>> findFacesFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Returns the list of faces found.
@@ -314,7 +314,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<FoundFaces> findFacesFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Mono<FoundFaces> findFacesFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Returns the list of faces found.
@@ -327,7 +327,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the FoundFaces object if successful.
      */
-    FoundFaces findFacesFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
+    FoundFaces findFacesFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage);
 
     /**
      * Returns the list of faces found.
@@ -338,7 +338,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<FoundFaces>> findFacesFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
+    Mono<SimpleResponse<FoundFaces>> findFacesFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage);
 
     /**
      * Returns the list of faces found.
@@ -349,7 +349,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<FoundFaces> findFacesFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
+    Mono<FoundFaces> findFacesFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage);
 
     /**
      * Returns the list of faces found.
@@ -517,7 +517,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OCR object if successful.
      */
-    OCR oCRFileInput(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    OCR oCRFileInput(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
@@ -528,7 +528,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<OCR>> oCRFileInputWithRestResponseAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Mono<SimpleResponse<OCR>> oCRFileInputWithRestResponseAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
@@ -539,7 +539,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<OCR> oCRFileInputAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Mono<OCR> oCRFileInputAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
@@ -558,7 +558,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OCR object if successful.
      */
-    OCR oCRFileInput(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage, Boolean enhanced);
+    OCR oCRFileInput(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage, Boolean enhanced);
 
     /**
      * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
@@ -575,7 +575,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<OCR>> oCRFileInputWithRestResponseAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage, Boolean enhanced);
+    Mono<SimpleResponse<OCR>> oCRFileInputWithRestResponseAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage, Boolean enhanced);
 
     /**
      * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
@@ -592,7 +592,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<OCR> oCRFileInputAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage, Boolean enhanced);
+    Mono<OCR> oCRFileInputAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage, Boolean enhanced);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -604,7 +604,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Evaluate object if successful.
      */
-    Evaluate evaluateFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Evaluate evaluateFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -614,7 +614,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<Evaluate>> evaluateFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Mono<SimpleResponse<Evaluate>> evaluateFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -624,7 +624,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Evaluate> evaluateFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Mono<Evaluate> evaluateFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -637,7 +637,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Evaluate object if successful.
      */
-    Evaluate evaluateFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
+    Evaluate evaluateFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -648,7 +648,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<Evaluate>> evaluateFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
+    Mono<SimpleResponse<Evaluate>> evaluateFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -659,7 +659,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<Evaluate> evaluateFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
+    Mono<Evaluate> evaluateFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, Boolean cacheImage);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -836,7 +836,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the MatchResponse object if successful.
      */
-    MatchResponse matchFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    MatchResponse matchFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
@@ -850,7 +850,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<MatchResponse>> matchFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Mono<SimpleResponse<MatchResponse>> matchFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
@@ -864,7 +864,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<MatchResponse> matchFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+    Mono<MatchResponse> matchFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream);
 
     /**
      * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
@@ -882,7 +882,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the MatchResponse object if successful.
      */
-    MatchResponse matchFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, String listId, Boolean cacheImage);
+    MatchResponse matchFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, String listId, Boolean cacheImage);
 
     /**
      * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
@@ -898,7 +898,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<SimpleResponse<MatchResponse>> matchFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, String listId, Boolean cacheImage);
+    Mono<SimpleResponse<MatchResponse>> matchFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, String listId, Boolean cacheImage);
 
     /**
      * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
@@ -914,5 +914,5 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    Mono<MatchResponse> matchFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, String listId, Boolean cacheImage);
+    Mono<MatchResponse> matchFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> imageStream, String listId, Boolean cacheImage);
 }

@@ -19,8 +19,8 @@ import com.azure.common.annotations.PathParam;
 import com.azure.common.annotations.POST;
 import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.CollectionFormat;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.Validator;
@@ -90,12 +90,12 @@ public final class SnapshotsImpl implements Snapshots {
         @PATCH("snapshots/{snapshotId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> update(@PathParam("snapshotId") UUID snapshotId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") UpdateSnapshotRequest body);
+        Mono<VoidResponse> update(@PathParam("snapshotId") UUID snapshotId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") UpdateSnapshotRequest body);
 
         @DELETE("snapshots/{snapshotId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> delete(@PathParam("snapshotId") UUID snapshotId, @HostParam("Endpoint") String endpoint);
+        Mono<VoidResponse> delete(@PathParam("snapshotId") UUID snapshotId, @HostParam("Endpoint") String endpoint);
 
         @POST("snapshots/{snapshotId}/apply")
         @ExpectedResponses({202})
@@ -412,7 +412,7 @@ public final class SnapshotsImpl implements Snapshots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull UUID snapshotId) {
+    public Mono<VoidResponse> updateWithRestResponseAsync(@NonNull UUID snapshotId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -434,7 +434,7 @@ public final class SnapshotsImpl implements Snapshots {
      */
     public Mono<Void> updateAsync(@NonNull UUID snapshotId) {
         return updateWithRestResponseAsync(snapshotId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -460,7 +460,7 @@ public final class SnapshotsImpl implements Snapshots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull UUID snapshotId, List<UUID> applyScope, String userData) {
+    public Mono<VoidResponse> updateWithRestResponseAsync(@NonNull UUID snapshotId, List<UUID> applyScope, String userData) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -485,7 +485,7 @@ public final class SnapshotsImpl implements Snapshots {
      */
     public Mono<Void> updateAsync(@NonNull UUID snapshotId, List<UUID> applyScope, String userData) {
         return updateWithRestResponseAsync(snapshotId, applyScope, userData)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -507,7 +507,7 @@ public final class SnapshotsImpl implements Snapshots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull UUID snapshotId) {
+    public Mono<VoidResponse> deleteWithRestResponseAsync(@NonNull UUID snapshotId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -526,7 +526,7 @@ public final class SnapshotsImpl implements Snapshots {
      */
     public Mono<Void> deleteAsync(@NonNull UUID snapshotId) {
         return deleteWithRestResponseAsync(snapshotId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**

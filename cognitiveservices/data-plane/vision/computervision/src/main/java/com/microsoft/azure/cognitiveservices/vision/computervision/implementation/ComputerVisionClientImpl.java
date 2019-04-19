@@ -46,7 +46,7 @@ import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagRes
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextOperationResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextRecognitionMode;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.VisualFeatureTypes;
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 import reactor.core.publisher.Flux;
@@ -177,51 +177,51 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
         @POST("analyze")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ComputerVisionErrorException.class)
-        Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStream(@HostParam("Endpoint") String endpoint, @QueryParam("visualFeatures") String visualFeatures, @QueryParam("details") String details, @QueryParam("language") String language, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image);
+        Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStream(@HostParam("Endpoint") String endpoint, @QueryParam("visualFeatures") String visualFeatures, @QueryParam("details") String details, @QueryParam("language") String language, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image);
 
         @POST("areaOfInterest")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ComputerVisionErrorException.class)
-        Mono<SimpleResponse<AreaOfInterestResult>> getAreaOfInterestInStream(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image);
+        Mono<SimpleResponse<AreaOfInterestResult>> getAreaOfInterestInStream(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image);
 
         @POST("describe")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ComputerVisionErrorException.class)
-        Mono<SimpleResponse<ImageDescription>> describeImageInStream(@HostParam("Endpoint") String endpoint, @QueryParam("maxCandidates") Integer maxCandidates, @QueryParam("language") String language, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image);
+        Mono<SimpleResponse<ImageDescription>> describeImageInStream(@HostParam("Endpoint") String endpoint, @QueryParam("maxCandidates") Integer maxCandidates, @QueryParam("language") String language, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image);
 
         @POST("detect")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ComputerVisionErrorException.class)
-        Mono<SimpleResponse<DetectResult>> detectObjectsInStream(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image);
+        Mono<SimpleResponse<DetectResult>> detectObjectsInStream(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image);
 
         @POST("generateThumbnail")
         @ExpectedResponses({200})
-        Mono<StreamResponse> generateThumbnailInStream(@HostParam("Endpoint") String endpoint, @QueryParam("width") int width, @QueryParam("height") int height, @QueryParam("smartCropping") Boolean smartCropping, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image);
+        Mono<StreamResponse> generateThumbnailInStream(@HostParam("Endpoint") String endpoint, @QueryParam("width") int width, @QueryParam("height") int height, @QueryParam("smartCropping") Boolean smartCropping, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image);
 
         @POST("models/{model}/analyze")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ComputerVisionErrorException.class)
-        Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStream(@PathParam("model") String model, @HostParam("Endpoint") String endpoint, @QueryParam("language") String language, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image);
+        Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStream(@PathParam("model") String model, @HostParam("Endpoint") String endpoint, @QueryParam("language") String language, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image);
 
         @POST("ocr")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ComputerVisionErrorException.class)
-        Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStream(@HostParam("Endpoint") String endpoint, @QueryParam("detectOrientation") boolean detectOrientation, @QueryParam("language") OcrLanguages language, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image);
+        Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStream(@HostParam("Endpoint") String endpoint, @QueryParam("detectOrientation") boolean detectOrientation, @QueryParam("language") OcrLanguages language, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image);
 
         @POST("tag")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ComputerVisionErrorException.class)
-        Mono<SimpleResponse<TagResult>> tagImageInStream(@HostParam("Endpoint") String endpoint, @QueryParam("language") String language, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image);
+        Mono<SimpleResponse<TagResult>> tagImageInStream(@HostParam("Endpoint") String endpoint, @QueryParam("language") String language, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image);
 
         @POST("recognizeText")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ComputerVisionErrorException.class)
-        Mono<RecognizeTextInStreamResponse> recognizeTextInStream(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image, @QueryParam("mode") TextRecognitionMode mode);
+        Mono<RecognizeTextInStreamResponse> recognizeTextInStream(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image, @QueryParam("mode") TextRecognitionMode mode);
 
         @POST("read/core/asyncBatchAnalyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ComputerVisionErrorException.class)
-        Mono<BatchReadFileInStreamResponse> batchReadFileInStream(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image, @QueryParam("mode") TextRecognitionMode mode);
+        Mono<BatchReadFileInStreamResponse> batchReadFileInStream(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuf> image, @QueryParam("mode") TextRecognitionMode mode);
     }
 
     /**
@@ -691,7 +691,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
-        final OcrLanguages language = unk;
+        final OcrLanguages language = OcrLanguages.UNK;
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
         return service.recognizePrintedText(this.endpoint(), detectOrientation, language, imageUrl);
@@ -882,9 +882,9 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    public Flux<ByteBuffer> generateThumbnail(@NonNull int width, @NonNull int height, @NonNull String url) {
+    public Flux<ByteBuf> generateThumbnail(@NonNull int width, @NonNull int height, @NonNull String url) {
         return generateThumbnailAsync(width, height, url).block();
     }
 
@@ -923,7 +923,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Flux<ByteBuffer>> generateThumbnailAsync(@NonNull int width, @NonNull int height, @NonNull String url) {
+    public Mono<Flux<ByteBuf>> generateThumbnailAsync(@NonNull int width, @NonNull int height, @NonNull String url) {
         return generateThumbnailWithRestResponseAsync(width, height, url)
             .flatMap((StreamResponse res) -> Mono.just(res.value()));
     }
@@ -939,9 +939,9 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @param smartCropping Boolean flag for enabling smart cropping.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    public Flux<ByteBuffer> generateThumbnail(@NonNull int width, @NonNull int height, @NonNull String url, Boolean smartCropping) {
+    public Flux<ByteBuf> generateThumbnail(@NonNull int width, @NonNull int height, @NonNull String url, Boolean smartCropping) {
         return generateThumbnailAsync(width, height, url, smartCropping).block();
     }
 
@@ -981,7 +981,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Flux<ByteBuffer>> generateThumbnailAsync(@NonNull int width, @NonNull int height, @NonNull String url, Boolean smartCropping) {
+    public Mono<Flux<ByteBuf>> generateThumbnailAsync(@NonNull int width, @NonNull int height, @NonNull String url, Boolean smartCropping) {
         return generateThumbnailWithRestResponseAsync(width, height, url, smartCropping)
             .flatMap((StreamResponse res) -> Mono.just(res.value()));
     }
@@ -1230,7 +1230,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageAnalysis object if successful.
      */
-    public ImageAnalysis analyzeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public ImageAnalysis analyzeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return analyzeImageInStreamAsync(contentLength, image).block();
     }
 
@@ -1244,7 +1244,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1269,7 +1269,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ImageAnalysis> analyzeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<ImageAnalysis> analyzeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return analyzeImageInStreamWithRestResponseAsync(contentLength, image)
             .flatMap((SimpleResponse<ImageAnalysis> res) -> Mono.just(res.value()));
     }
@@ -1289,7 +1289,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageAnalysis object if successful.
      */
-    public ImageAnalysis analyzeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language) {
+    public ImageAnalysis analyzeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language) {
         return analyzeImageInStreamAsync(contentLength, image, visualFeatures, details, language).block();
     }
 
@@ -1306,7 +1306,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language) {
+    public Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1333,7 +1333,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ImageAnalysis> analyzeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language) {
+    public Mono<ImageAnalysis> analyzeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language) {
         return analyzeImageInStreamWithRestResponseAsync(contentLength, image, visualFeatures, details, language)
             .flatMap((SimpleResponse<ImageAnalysis> res) -> Mono.just(res.value()));
     }
@@ -1350,7 +1350,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the AreaOfInterestResult object if successful.
      */
-    public AreaOfInterestResult getAreaOfInterestInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public AreaOfInterestResult getAreaOfInterestInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return getAreaOfInterestInStreamAsync(contentLength, image).block();
     }
 
@@ -1364,7 +1364,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<AreaOfInterestResult>> getAreaOfInterestInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<SimpleResponse<AreaOfInterestResult>> getAreaOfInterestInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1384,7 +1384,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<AreaOfInterestResult> getAreaOfInterestInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<AreaOfInterestResult> getAreaOfInterestInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return getAreaOfInterestInStreamWithRestResponseAsync(contentLength, image)
             .flatMap((SimpleResponse<AreaOfInterestResult> res) -> Mono.just(res.value()));
     }
@@ -1401,7 +1401,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageDescription object if successful.
      */
-    public ImageDescription describeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public ImageDescription describeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return describeImageInStreamAsync(contentLength, image).block();
     }
 
@@ -1415,7 +1415,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<ImageDescription>> describeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<SimpleResponse<ImageDescription>> describeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1437,7 +1437,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ImageDescription> describeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<ImageDescription> describeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return describeImageInStreamWithRestResponseAsync(contentLength, image)
             .flatMap((SimpleResponse<ImageDescription> res) -> Mono.just(res.value()));
     }
@@ -1456,7 +1456,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageDescription object if successful.
      */
-    public ImageDescription describeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Integer maxCandidates, String language) {
+    public ImageDescription describeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Integer maxCandidates, String language) {
         return describeImageInStreamAsync(contentLength, image, maxCandidates, language).block();
     }
 
@@ -1472,7 +1472,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<ImageDescription>> describeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Integer maxCandidates, String language) {
+    public Mono<SimpleResponse<ImageDescription>> describeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Integer maxCandidates, String language) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1494,7 +1494,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ImageDescription> describeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Integer maxCandidates, String language) {
+    public Mono<ImageDescription> describeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, Integer maxCandidates, String language) {
         return describeImageInStreamWithRestResponseAsync(contentLength, image, maxCandidates, language)
             .flatMap((SimpleResponse<ImageDescription> res) -> Mono.just(res.value()));
     }
@@ -1511,7 +1511,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DetectResult object if successful.
      */
-    public DetectResult detectObjectsInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public DetectResult detectObjectsInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return detectObjectsInStreamAsync(contentLength, image).block();
     }
 
@@ -1525,7 +1525,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<DetectResult>> detectObjectsInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<SimpleResponse<DetectResult>> detectObjectsInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1545,7 +1545,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DetectResult> detectObjectsInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<DetectResult> detectObjectsInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return detectObjectsInStreamWithRestResponseAsync(contentLength, image)
             .flatMap((SimpleResponse<DetectResult> res) -> Mono.just(res.value()));
     }
@@ -1561,9 +1561,9 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    public Flux<ByteBuffer> generateThumbnailInStream(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Flux<ByteBuf> generateThumbnailInStream(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return generateThumbnailInStreamAsync(width, height, contentLength, image).block();
     }
 
@@ -1579,7 +1579,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<StreamResponse> generateThumbnailInStreamWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<StreamResponse> generateThumbnailInStreamWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1602,7 +1602,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Flux<ByteBuffer>> generateThumbnailInStreamAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<Flux<ByteBuf>> generateThumbnailInStreamAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return generateThumbnailInStreamWithRestResponseAsync(width, height, contentLength, image)
             .flatMap((StreamResponse res) -> Mono.just(res.value()));
     }
@@ -1619,9 +1619,9 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @param smartCropping Boolean flag for enabling smart cropping.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     * @return the Flux&lt;ByteBuf&gt; object if successful.
      */
-    public Flux<ByteBuffer> generateThumbnailInStream(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean smartCropping) {
+    public Flux<ByteBuf> generateThumbnailInStream(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean smartCropping) {
         return generateThumbnailInStreamAsync(width, height, contentLength, image, smartCropping).block();
     }
 
@@ -1638,7 +1638,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<StreamResponse> generateThumbnailInStreamWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean smartCropping) {
+    public Mono<StreamResponse> generateThumbnailInStreamWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean smartCropping) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1661,7 +1661,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Flux<ByteBuffer>> generateThumbnailInStreamAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean smartCropping) {
+    public Mono<Flux<ByteBuf>> generateThumbnailInStreamAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, Boolean smartCropping) {
         return generateThumbnailInStreamWithRestResponseAsync(width, height, contentLength, image, smartCropping)
             .flatMap((StreamResponse res) -> Mono.just(res.value()));
     }
@@ -1680,7 +1680,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DomainModelResults object if successful.
      */
-    public DomainModelResults analyzeImageByDomainInStream(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public DomainModelResults analyzeImageByDomainInStream(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return analyzeImageByDomainInStreamAsync(model, contentLength, image).block();
     }
 
@@ -1696,7 +1696,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStreamWithRestResponseAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStreamWithRestResponseAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1722,7 +1722,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DomainModelResults> analyzeImageByDomainInStreamAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<DomainModelResults> analyzeImageByDomainInStreamAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return analyzeImageByDomainInStreamWithRestResponseAsync(model, contentLength, image)
             .flatMap((SimpleResponse<DomainModelResults> res) -> Mono.just(res.value()));
     }
@@ -1742,7 +1742,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DomainModelResults object if successful.
      */
-    public DomainModelResults analyzeImageByDomainInStream(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language) {
+    public DomainModelResults analyzeImageByDomainInStream(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language) {
         return analyzeImageByDomainInStreamAsync(model, contentLength, image, language).block();
     }
 
@@ -1759,7 +1759,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStreamWithRestResponseAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language) {
+    public Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStreamWithRestResponseAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1785,7 +1785,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DomainModelResults> analyzeImageByDomainInStreamAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language) {
+    public Mono<DomainModelResults> analyzeImageByDomainInStreamAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language) {
         return analyzeImageByDomainInStreamWithRestResponseAsync(model, contentLength, image, language)
             .flatMap((SimpleResponse<DomainModelResults> res) -> Mono.just(res.value()));
     }
@@ -1803,7 +1803,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OcrResult object if successful.
      */
-    public OcrResult recognizePrintedTextInStream(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public OcrResult recognizePrintedTextInStream(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return recognizePrintedTextInStreamAsync(detectOrientation, contentLength, image).block();
     }
 
@@ -1818,14 +1818,14 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStreamWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStreamWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        final OcrLanguages language = unk;
+        final OcrLanguages language = OcrLanguages.UNK;
         return service.recognizePrintedTextInStream(this.endpoint(), detectOrientation, language, contentLength, image);
     }
 
@@ -1840,7 +1840,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<OcrResult> recognizePrintedTextInStreamAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<OcrResult> recognizePrintedTextInStreamAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return recognizePrintedTextInStreamWithRestResponseAsync(detectOrientation, contentLength, image)
             .flatMap((SimpleResponse<OcrResult> res) -> Mono.just(res.value()));
     }
@@ -1859,7 +1859,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OcrResult object if successful.
      */
-    public OcrResult recognizePrintedTextInStream(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, OcrLanguages language) {
+    public OcrResult recognizePrintedTextInStream(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, OcrLanguages language) {
         return recognizePrintedTextInStreamAsync(detectOrientation, contentLength, image, language).block();
     }
 
@@ -1875,7 +1875,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStreamWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, OcrLanguages language) {
+    public Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStreamWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, OcrLanguages language) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1897,7 +1897,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<OcrResult> recognizePrintedTextInStreamAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, OcrLanguages language) {
+    public Mono<OcrResult> recognizePrintedTextInStreamAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuf> image, OcrLanguages language) {
         return recognizePrintedTextInStreamWithRestResponseAsync(detectOrientation, contentLength, image, language)
             .flatMap((SimpleResponse<OcrResult> res) -> Mono.just(res.value()));
     }
@@ -1914,7 +1914,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TagResult object if successful.
      */
-    public TagResult tagImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public TagResult tagImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return tagImageInStreamAsync(contentLength, image).block();
     }
 
@@ -1928,7 +1928,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<TagResult>> tagImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<SimpleResponse<TagResult>> tagImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1949,7 +1949,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<TagResult> tagImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+    public Mono<TagResult> tagImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image) {
         return tagImageInStreamWithRestResponseAsync(contentLength, image)
             .flatMap((SimpleResponse<TagResult> res) -> Mono.just(res.value()));
     }
@@ -1967,7 +1967,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TagResult object if successful.
      */
-    public TagResult tagImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language) {
+    public TagResult tagImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language) {
         return tagImageInStreamAsync(contentLength, image, language).block();
     }
 
@@ -1982,7 +1982,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SimpleResponse<TagResult>> tagImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language) {
+    public Mono<SimpleResponse<TagResult>> tagImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2003,7 +2003,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<TagResult> tagImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language) {
+    public Mono<TagResult> tagImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, String language) {
         return tagImageInStreamWithRestResponseAsync(contentLength, image, language)
             .flatMap((SimpleResponse<TagResult> res) -> Mono.just(res.value()));
     }
@@ -2018,7 +2018,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws ComputerVisionErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void recognizeTextInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode) {
+    public void recognizeTextInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode) {
         recognizeTextInStreamAsync(contentLength, image, mode).block();
     }
 
@@ -2031,7 +2031,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RecognizeTextInStreamResponse> recognizeTextInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode) {
+    public Mono<RecognizeTextInStreamResponse> recognizeTextInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2053,7 +2053,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Void> recognizeTextInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode) {
+    public Mono<Void> recognizeTextInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode) {
         return recognizeTextInStreamWithRestResponseAsync(contentLength, image, mode)
             .flatMap((RecognizeTextInStreamResponse res) -> Mono.just(res.value()));
     }
@@ -2068,7 +2068,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws ComputerVisionErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void batchReadFileInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode) {
+    public void batchReadFileInStream(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode) {
         batchReadFileInStreamAsync(contentLength, image, mode).block();
     }
 
@@ -2081,7 +2081,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<BatchReadFileInStreamResponse> batchReadFileInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode) {
+    public Mono<BatchReadFileInStreamResponse> batchReadFileInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2103,7 +2103,7 @@ public final class ComputerVisionClientImpl extends ServiceClient implements Com
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Void> batchReadFileInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode) {
+    public Mono<Void> batchReadFileInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuf> image, @NonNull TextRecognitionMode mode) {
         return batchReadFileInStreamWithRestResponseAsync(contentLength, image, mode)
             .flatMap((BatchReadFileInStreamResponse res) -> Mono.just(res.value()));
     }

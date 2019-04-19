@@ -28,9 +28,9 @@ public interface VideoSearchClient {
     VideoSearchClient withEndpoint(String endpoint);
 
     /**
-     * Gets the Videos object to access its operations.
+     * Gets the VideosOperations object to access its operations.
      *
-     * @return the Videos object.
+     * @return the VideosOperations object.
      */
-    Videos videos();
+    VideosOperations videosOperations();
 }

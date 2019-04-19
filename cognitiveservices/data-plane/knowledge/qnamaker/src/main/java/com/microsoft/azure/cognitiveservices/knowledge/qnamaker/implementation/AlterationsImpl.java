@@ -15,8 +15,8 @@ import com.azure.common.annotations.Host;
 import com.azure.common.annotations.HostParam;
 import com.azure.common.annotations.PUT;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Alterations;
@@ -67,7 +67,7 @@ public final class AlterationsImpl implements Alterations {
         @PUT("alterations")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<RestVoidResponse> replace(@HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") WordAlterationsDTO wordAlterations);
+        Mono<VoidResponse> replace(@HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") WordAlterationsDTO wordAlterations);
     }
 
     /**
@@ -122,7 +122,7 @@ public final class AlterationsImpl implements Alterations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> replaceWithRestResponseAsync(@NonNull List<AlterationsDTO> wordAlterations) {
+    public Mono<VoidResponse> replaceWithRestResponseAsync(@NonNull List<AlterationsDTO> wordAlterations) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -144,6 +144,6 @@ public final class AlterationsImpl implements Alterations {
      */
     public Mono<Void> replaceAsync(@NonNull List<AlterationsDTO> wordAlterations) {
         return replaceWithRestResponseAsync(wordAlterations)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 }

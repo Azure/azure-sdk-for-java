@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
+import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.rest.ResponseBase;
 import java.util.Map;
@@ -25,15 +26,7 @@ public final class SnapshotsTakeResponse extends ResponseBase<SnapshotTakeHeader
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      */
-    public SnapshotsTakeResponse(HttpRequest request, int statusCode, SnapshotTakeHeaders headers, Map<String, String> rawHeaders, Void value) {
-        super(request, statusCode, headers, rawHeaders, value);
-    }
-
-    /**
-     * @return the deserialized response headers.
-     */
-    @Override
-    public SnapshotTakeHeaders headers() {
-        return super.headers();
+    public SnapshotsTakeResponse(HttpRequest request, int statusCode, SnapshotTakeHeaders headers, HttpHeaders rawHeaders, Void value) {
+        super(request, statusCode, rawHeaders, value, headers);
     }
 }

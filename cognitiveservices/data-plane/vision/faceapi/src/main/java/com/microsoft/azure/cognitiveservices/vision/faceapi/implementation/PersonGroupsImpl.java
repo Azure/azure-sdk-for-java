@@ -20,8 +20,8 @@ import com.azure.common.annotations.POST;
 import com.azure.common.annotations.PUT;
 import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
-import com.azure.common.http.rest.RestVoidResponse;
 import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.VoidResponse;
 import com.azure.common.implementation.RestProxy;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
@@ -69,12 +69,12 @@ public final class PersonGroupsImpl implements PersonGroups {
         @PUT("persongroups/{personGroupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> create(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") MetaDataContract body);
+        Mono<VoidResponse> create(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") MetaDataContract body);
 
         @DELETE("persongroups/{personGroupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> delete(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint);
+        Mono<VoidResponse> delete(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint);
 
         @GET("persongroups/{personGroupId}")
         @ExpectedResponses({200})
@@ -84,7 +84,7 @@ public final class PersonGroupsImpl implements PersonGroups {
         @PATCH("persongroups/{personGroupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> update(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") NameAndUserDataContract body);
+        Mono<VoidResponse> update(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") NameAndUserDataContract body);
 
         @GET("persongroups/{personGroupId}/training")
         @ExpectedResponses({200})
@@ -99,7 +99,7 @@ public final class PersonGroupsImpl implements PersonGroups {
         @POST("persongroups/{personGroupId}/train")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(APIErrorException.class)
-        Mono<RestVoidResponse> train(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint);
+        Mono<VoidResponse> train(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint);
     }
 
     /**
@@ -139,7 +139,7 @@ public final class PersonGroupsImpl implements PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String personGroupId) {
+    public Mono<VoidResponse> createWithRestResponseAsync(@NonNull String personGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -171,7 +171,7 @@ public final class PersonGroupsImpl implements PersonGroups {
      */
     public Mono<Void> createAsync(@NonNull String personGroupId) {
         return createWithRestResponseAsync(personGroupId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -217,7 +217,7 @@ public final class PersonGroupsImpl implements PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String personGroupId, String name, String userData, RecognitionModel recognitionModel) {
+    public Mono<VoidResponse> createWithRestResponseAsync(@NonNull String personGroupId, String name, String userData, RecognitionModel recognitionModel) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -252,7 +252,7 @@ public final class PersonGroupsImpl implements PersonGroups {
      */
     public Mono<Void> createAsync(@NonNull String personGroupId, String name, String userData, RecognitionModel recognitionModel) {
         return createWithRestResponseAsync(personGroupId, name, userData, recognitionModel)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -274,7 +274,7 @@ public final class PersonGroupsImpl implements PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String personGroupId) {
+    public Mono<VoidResponse> deleteWithRestResponseAsync(@NonNull String personGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -293,7 +293,7 @@ public final class PersonGroupsImpl implements PersonGroups {
      */
     public Mono<Void> deleteAsync(@NonNull String personGroupId) {
         return deleteWithRestResponseAsync(personGroupId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -403,7 +403,7 @@ public final class PersonGroupsImpl implements PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId) {
+    public Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -425,7 +425,7 @@ public final class PersonGroupsImpl implements PersonGroups {
      */
     public Mono<Void> updateAsync(@NonNull String personGroupId) {
         return updateWithRestResponseAsync(personGroupId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -451,7 +451,7 @@ public final class PersonGroupsImpl implements PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId, String name, String userData) {
+    public Mono<VoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId, String name, String userData) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -475,7 +475,7 @@ public final class PersonGroupsImpl implements PersonGroups {
      */
     public Mono<Void> updateAsync(@NonNull String personGroupId, String name, String userData) {
         return updateWithRestResponseAsync(personGroupId, name, userData)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -668,7 +668,7 @@ public final class PersonGroupsImpl implements PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<RestVoidResponse> trainWithRestResponseAsync(@NonNull String personGroupId) {
+    public Mono<VoidResponse> trainWithRestResponseAsync(@NonNull String personGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -687,6 +687,6 @@ public final class PersonGroupsImpl implements PersonGroups {
      */
     public Mono<Void> trainAsync(@NonNull String personGroupId) {
         return trainWithRestResponseAsync(personGroupId)
-            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+            .flatMap((VoidResponse res) -> Mono.just(res.value()));
     }
 }
