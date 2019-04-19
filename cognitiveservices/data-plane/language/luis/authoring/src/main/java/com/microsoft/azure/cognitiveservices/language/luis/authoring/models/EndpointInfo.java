@@ -52,6 +52,12 @@ public class EndpointInfo {
     private String endpointRegion;
 
     /**
+     * Regions where publishing failed.
+     */
+    @JsonProperty(value = "failedRegions")
+    private String failedRegions;
+
+    /**
      * Timestamp when was last published.
      */
     @JsonProperty(value = "publishedDateTime")
@@ -60,7 +66,7 @@ public class EndpointInfo {
     /**
      * Get the versionId value.
      *
-     * @return the versionId value
+     * @return the versionId value.
      */
     public String versionId() {
         return this.versionId;
@@ -69,7 +75,7 @@ public class EndpointInfo {
     /**
      * Set the versionId value.
      *
-     * @param versionId the versionId value to set
+     * @param versionId the versionId value to set.
      * @return the EndpointInfo object itself.
      */
     public EndpointInfo withVersionId(String versionId) {
@@ -80,7 +86,7 @@ public class EndpointInfo {
     /**
      * Get the isStaging value.
      *
-     * @return the isStaging value
+     * @return the isStaging value.
      */
     public Boolean isStaging() {
         return this.isStaging;
@@ -89,7 +95,7 @@ public class EndpointInfo {
     /**
      * Set the isStaging value.
      *
-     * @param isStaging the isStaging value to set
+     * @param isStaging the isStaging value to set.
      * @return the EndpointInfo object itself.
      */
     public EndpointInfo withIsStaging(Boolean isStaging) {
@@ -100,7 +106,7 @@ public class EndpointInfo {
     /**
      * Get the endpointUrl value.
      *
-     * @return the endpointUrl value
+     * @return the endpointUrl value.
      */
     public String endpointUrl() {
         return this.endpointUrl;
@@ -109,7 +115,7 @@ public class EndpointInfo {
     /**
      * Set the endpointUrl value.
      *
-     * @param endpointUrl the endpointUrl value to set
+     * @param endpointUrl the endpointUrl value to set.
      * @return the EndpointInfo object itself.
      */
     public EndpointInfo withEndpointUrl(String endpointUrl) {
@@ -120,7 +126,7 @@ public class EndpointInfo {
     /**
      * Get the region value.
      *
-     * @return the region value
+     * @return the region value.
      */
     public String region() {
         return this.region;
@@ -129,7 +135,7 @@ public class EndpointInfo {
     /**
      * Set the region value.
      *
-     * @param region the region value to set
+     * @param region the region value to set.
      * @return the EndpointInfo object itself.
      */
     public EndpointInfo withRegion(String region) {
@@ -140,7 +146,7 @@ public class EndpointInfo {
     /**
      * Get the assignedEndpointKey value.
      *
-     * @return the assignedEndpointKey value
+     * @return the assignedEndpointKey value.
      */
     public String assignedEndpointKey() {
         return this.assignedEndpointKey;
@@ -149,7 +155,7 @@ public class EndpointInfo {
     /**
      * Set the assignedEndpointKey value.
      *
-     * @param assignedEndpointKey the assignedEndpointKey value to set
+     * @param assignedEndpointKey the assignedEndpointKey value to set.
      * @return the EndpointInfo object itself.
      */
     public EndpointInfo withAssignedEndpointKey(String assignedEndpointKey) {
@@ -160,7 +166,7 @@ public class EndpointInfo {
     /**
      * Get the endpointRegion value.
      *
-     * @return the endpointRegion value
+     * @return the endpointRegion value.
      */
     public String endpointRegion() {
         return this.endpointRegion;
@@ -169,7 +175,7 @@ public class EndpointInfo {
     /**
      * Set the endpointRegion value.
      *
-     * @param endpointRegion the endpointRegion value to set
+     * @param endpointRegion the endpointRegion value to set.
      * @return the EndpointInfo object itself.
      */
     public EndpointInfo withEndpointRegion(String endpointRegion) {
@@ -178,9 +184,29 @@ public class EndpointInfo {
     }
 
     /**
+     * Get the failedRegions value.
+     *
+     * @return the failedRegions value.
+     */
+    public String failedRegions() {
+        return this.failedRegions;
+    }
+
+    /**
+     * Set the failedRegions value.
+     *
+     * @param failedRegions the failedRegions value to set.
+     * @return the EndpointInfo object itself.
+     */
+    public EndpointInfo withFailedRegions(String failedRegions) {
+        this.failedRegions = failedRegions;
+        return this;
+    }
+
+    /**
      * Get the publishedDateTime value.
      *
-     * @return the publishedDateTime value
+     * @return the publishedDateTime value.
      */
     public String publishedDateTime() {
         return this.publishedDateTime;
@@ -189,12 +215,11 @@ public class EndpointInfo {
     /**
      * Set the publishedDateTime value.
      *
-     * @param publishedDateTime the publishedDateTime value to set
+     * @param publishedDateTime the publishedDateTime value to set.
      * @return the EndpointInfo object itself.
      */
     public EndpointInfo withPublishedDateTime(String publishedDateTime) {
         this.publishedDateTime = publishedDateTime;
         return this;
     }
-
 }

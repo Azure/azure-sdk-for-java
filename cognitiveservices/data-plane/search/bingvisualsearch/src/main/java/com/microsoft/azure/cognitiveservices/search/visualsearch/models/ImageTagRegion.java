@@ -11,9 +11,9 @@ package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ImageTagRegion model.
+ * Defines an image region relevant to the ImageTag.
  */
-public class ImageTagRegion {
+public final class ImageTagRegion {
     /**
      * A rectangle that outlines the area of interest for this tag.
      */
@@ -29,7 +29,7 @@ public class ImageTagRegion {
     /**
      * Get the queryRectangle value.
      *
-     * @return the queryRectangle value
+     * @return the queryRectangle value.
      */
     public NormalizedQuadrilateral queryRectangle() {
         return this.queryRectangle;
@@ -38,7 +38,7 @@ public class ImageTagRegion {
     /**
      * Set the queryRectangle value.
      *
-     * @param queryRectangle the queryRectangle value to set
+     * @param queryRectangle the queryRectangle value to set.
      * @return the ImageTagRegion object itself.
      */
     public ImageTagRegion withQueryRectangle(NormalizedQuadrilateral queryRectangle) {
@@ -49,7 +49,7 @@ public class ImageTagRegion {
     /**
      * Get the displayRectangle value.
      *
-     * @return the displayRectangle value
+     * @return the displayRectangle value.
      */
     public NormalizedQuadrilateral displayRectangle() {
         return this.displayRectangle;
@@ -58,12 +58,11 @@ public class ImageTagRegion {
     /**
      * Set the displayRectangle value.
      *
-     * @param displayRectangle the displayRectangle value to set
+     * @param displayRectangle the displayRectangle value to set.
      * @return the ImageTagRegion object itself.
      */
     public ImageTagRegion withDisplayRectangle(NormalizedQuadrilateral displayRectangle) {
         this.displayRectangle = displayRectangle;
         return this;
     }
-
 }

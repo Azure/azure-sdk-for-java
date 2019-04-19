@@ -8,27 +8,34 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for OrderBy.
  */
 public final class OrderBy extends ExpandableStringEnum<OrderBy> {
-    /** Static value Newest for OrderBy. */
+    /**
+     * Static value Newest for OrderBy.
+     */
     public static final OrderBy NEWEST = fromString("Newest");
 
-    /** Static value Oldest for OrderBy. */
+    /**
+     * Static value Oldest for OrderBy.
+     */
     public static final OrderBy OLDEST = fromString("Oldest");
 
-    /** Static value Suggested for OrderBy. */
+    /**
+     * Static value Suggested for OrderBy.
+     */
     public static final OrderBy SUGGESTED = fromString("Suggested");
 
     /**
      * Creates or finds a OrderBy from its string representation.
-     * @param name a name to look for
-     * @return the corresponding OrderBy
+     *
+     * @param name a name to look for.
+     * @return the corresponding OrderBy.
      */
     @JsonCreator
     public static OrderBy fromString(String name) {
@@ -36,7 +43,7 @@ public final class OrderBy extends ExpandableStringEnum<OrderBy> {
     }
 
     /**
-     * @return known OrderBy values
+     * @return known OrderBy values.
      */
     public static Collection<OrderBy> values() {
         return values(OrderBy.class);

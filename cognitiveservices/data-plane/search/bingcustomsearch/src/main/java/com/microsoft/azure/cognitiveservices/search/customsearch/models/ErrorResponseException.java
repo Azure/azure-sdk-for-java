@@ -8,37 +8,36 @@
 
 package com.microsoft.azure.cognitiveservices.search.customsearch.models;
 
-import com.microsoft.rest.RestException;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
+import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.http.HttpResponse;
 
 /**
  * Exception thrown for an invalid response with ErrorResponse information.
  */
-public class ErrorResponseException extends RestException {
+public final class ErrorResponseException extends ServiceRequestException {
     /**
      * Initializes a new instance of the ErrorResponseException class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
+     * @param message the exception message or the response content if a message is not available.
+     * @param response the HTTP response.
      */
-    public ErrorResponseException(final String message, final Response<ResponseBody> response) {
+    public ErrorResponseException(String message, HttpResponse response) {
         super(message, response);
     }
 
     /**
      * Initializes a new instance of the ErrorResponseException class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
-     * @param body the deserialized response body
+     * @param message the exception message or the response content if a message is not available.
+     * @param response the HTTP response.
+     * @param value the deserialized response value.
      */
-    public ErrorResponseException(final String message, final Response<ResponseBody> response, final ErrorResponse body) {
-        super(message, response, body);
+    public ErrorResponseException(String message, HttpResponse response, ErrorResponse value) {
+        super(message, response, value);
     }
 
     @Override
-    public ErrorResponse body() {
-        return (ErrorResponse) super.body();
+    public ErrorResponse value() {
+        return (ErrorResponse) super.value();
     }
 }

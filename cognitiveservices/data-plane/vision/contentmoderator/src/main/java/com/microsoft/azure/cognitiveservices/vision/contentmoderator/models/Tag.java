@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Tag details.
  */
-public class Tag {
+public final class Tag {
     /**
      * The key parameter.
      */
@@ -29,7 +29,7 @@ public class Tag {
     /**
      * Get the key value.
      *
-     * @return the key value
+     * @return the key value.
      */
     public String key() {
         return this.key;
@@ -38,7 +38,7 @@ public class Tag {
     /**
      * Set the key value.
      *
-     * @param key the key value to set
+     * @param key the key value to set.
      * @return the Tag object itself.
      */
     public Tag withKey(String key) {
@@ -49,7 +49,7 @@ public class Tag {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public String value() {
         return this.value;
@@ -58,12 +58,11 @@ public class Tag {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the Tag object itself.
      */
     public Tag withValue(String value) {
         this.value = value;
         return this;
     }
-
 }

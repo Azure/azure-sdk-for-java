@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * A region consists of multiple lines (e.g. a column of text in a multi-column
  * document).
  */
-public class OcrRegion {
+public final class OcrRegion {
     /**
      * Bounding box of a recognized region. The four integers represent the
      * x-coordinate of the left edge, the y-coordinate of the top edge, width,
@@ -28,7 +28,7 @@ public class OcrRegion {
     private String boundingBox;
 
     /**
-     * The lines property.
+     * An array of recognized lines of text.
      */
     @JsonProperty(value = "lines")
     private List<OcrLine> lines;
@@ -36,7 +36,7 @@ public class OcrRegion {
     /**
      * Get the boundingBox value.
      *
-     * @return the boundingBox value
+     * @return the boundingBox value.
      */
     public String boundingBox() {
         return this.boundingBox;
@@ -45,7 +45,7 @@ public class OcrRegion {
     /**
      * Set the boundingBox value.
      *
-     * @param boundingBox the boundingBox value to set
+     * @param boundingBox the boundingBox value to set.
      * @return the OcrRegion object itself.
      */
     public OcrRegion withBoundingBox(String boundingBox) {
@@ -56,7 +56,7 @@ public class OcrRegion {
     /**
      * Get the lines value.
      *
-     * @return the lines value
+     * @return the lines value.
      */
     public List<OcrLine> lines() {
         return this.lines;
@@ -65,12 +65,11 @@ public class OcrRegion {
     /**
      * Set the lines value.
      *
-     * @param lines the lines value to set
+     * @param lines the lines value to set.
      * @return the OcrRegion object itself.
      */
     public OcrRegion withLines(List<OcrLine> lines) {
         this.lines = lines;
         return this;
     }
-
 }

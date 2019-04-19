@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.autosuggest.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Defines a search result answer.
@@ -31,10 +31,9 @@ public class SearchResultsAnswer extends Answer {
     /**
      * Get the queryContext value.
      *
-     * @return the queryContext value
+     * @return the queryContext value.
      */
     public QueryContext queryContext() {
         return this.queryContext;
     }
-
 }

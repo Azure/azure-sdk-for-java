@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The CollaboratorsArray model.
  */
-public class CollaboratorsArray {
+public final class CollaboratorsArray {
     /**
      * The email address of the users.
      */
@@ -24,7 +24,7 @@ public class CollaboratorsArray {
     /**
      * Get the emails value.
      *
-     * @return the emails value
+     * @return the emails value.
      */
     public List<String> emails() {
         return this.emails;
@@ -33,12 +33,11 @@ public class CollaboratorsArray {
     /**
      * Set the emails value.
      *
-     * @param emails the emails value to set
+     * @param emails the emails value to set.
      * @return the CollaboratorsArray object itself.
      */
     public CollaboratorsArray withEmails(List<String> emails) {
         this.emails = emails;
         return this;
     }
-
 }

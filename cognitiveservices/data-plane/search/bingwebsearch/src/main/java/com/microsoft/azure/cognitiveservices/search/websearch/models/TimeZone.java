@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Defines the data and time of one or more geographic locations.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = TimeZone.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("TimeZone")
-public class TimeZone extends SearchResultsAnswer {
+public final class TimeZone extends SearchResultsAnswer {
     /**
      * The data and time, in UTC, of the geographic location specified in the
      * query. If the query specified a specific geographic location (for
@@ -42,7 +42,7 @@ public class TimeZone extends SearchResultsAnswer {
     /**
      * Get the primaryCityTime value.
      *
-     * @return the primaryCityTime value
+     * @return the primaryCityTime value.
      */
     public TimeZoneTimeZoneInformation primaryCityTime() {
         return this.primaryCityTime;
@@ -51,7 +51,7 @@ public class TimeZone extends SearchResultsAnswer {
     /**
      * Set the primaryCityTime value.
      *
-     * @param primaryCityTime the primaryCityTime value to set
+     * @param primaryCityTime the primaryCityTime value to set.
      * @return the TimeZone object itself.
      */
     public TimeZone withPrimaryCityTime(TimeZoneTimeZoneInformation primaryCityTime) {
@@ -62,10 +62,9 @@ public class TimeZone extends SearchResultsAnswer {
     /**
      * Get the otherCityTimes value.
      *
-     * @return the otherCityTimes value
+     * @return the otherCityTimes value.
      */
     public List<TimeZoneTimeZoneInformation> otherCityTimes() {
         return this.otherCityTimes;
     }
-
 }

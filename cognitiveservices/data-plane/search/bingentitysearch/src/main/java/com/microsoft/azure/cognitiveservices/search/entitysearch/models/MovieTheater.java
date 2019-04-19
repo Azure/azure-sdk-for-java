@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The MovieTheater model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = MovieTheater.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("MovieTheater")
-public class MovieTheater extends EntertainmentBusiness {
+public final class MovieTheater extends EntertainmentBusiness {
     /**
      * The screenCount property.
      */
@@ -27,10 +27,9 @@ public class MovieTheater extends EntertainmentBusiness {
     /**
      * Get the screenCount value.
      *
-     * @return the screenCount value
+     * @return the screenCount value.
      */
     public Integer screenCount() {
         return this.screenCount;
     }
-
 }

@@ -18,9 +18,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * are fractional values of the original image's width and height in the range
  * 0.0 through 1.0.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = NormalizedRectangle.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("NormalizedRectangle")
-public class NormalizedRectangle extends StructuredValue {
+public final class NormalizedRectangle extends StructuredValue {
     /**
      * The left coordinate.
      */
@@ -48,7 +48,7 @@ public class NormalizedRectangle extends StructuredValue {
     /**
      * Get the left value.
      *
-     * @return the left value
+     * @return the left value.
      */
     public double left() {
         return this.left;
@@ -57,7 +57,7 @@ public class NormalizedRectangle extends StructuredValue {
     /**
      * Set the left value.
      *
-     * @param left the left value to set
+     * @param left the left value to set.
      * @return the NormalizedRectangle object itself.
      */
     public NormalizedRectangle withLeft(double left) {
@@ -68,7 +68,7 @@ public class NormalizedRectangle extends StructuredValue {
     /**
      * Get the top value.
      *
-     * @return the top value
+     * @return the top value.
      */
     public double top() {
         return this.top;
@@ -77,7 +77,7 @@ public class NormalizedRectangle extends StructuredValue {
     /**
      * Set the top value.
      *
-     * @param top the top value to set
+     * @param top the top value to set.
      * @return the NormalizedRectangle object itself.
      */
     public NormalizedRectangle withTop(double top) {
@@ -88,7 +88,7 @@ public class NormalizedRectangle extends StructuredValue {
     /**
      * Get the right value.
      *
-     * @return the right value
+     * @return the right value.
      */
     public double right() {
         return this.right;
@@ -97,7 +97,7 @@ public class NormalizedRectangle extends StructuredValue {
     /**
      * Set the right value.
      *
-     * @param right the right value to set
+     * @param right the right value to set.
      * @return the NormalizedRectangle object itself.
      */
     public NormalizedRectangle withRight(double right) {
@@ -108,7 +108,7 @@ public class NormalizedRectangle extends StructuredValue {
     /**
      * Get the bottom value.
      *
-     * @return the bottom value
+     * @return the bottom value.
      */
     public double bottom() {
         return this.bottom;
@@ -117,12 +117,11 @@ public class NormalizedRectangle extends StructuredValue {
     /**
      * Set the bottom value.
      *
-     * @param bottom the bottom value to set
+     * @param bottom the bottom value to set.
      * @return the NormalizedRectangle object itself.
      */
     public NormalizedRectangle withBottom(double bottom) {
         this.bottom = bottom;
         return this;
     }
-
 }

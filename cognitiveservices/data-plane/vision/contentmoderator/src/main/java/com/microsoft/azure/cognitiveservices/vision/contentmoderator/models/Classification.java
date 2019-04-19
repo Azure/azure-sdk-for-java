@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The classification details of the text.
  */
-public class Classification {
+public final class Classification {
     /**
      * The category1 score details of the text. &lt;a
      * href="https://aka.ms/textClassifyCategories"&gt;Click here&lt;/a&gt; for
@@ -47,7 +47,7 @@ public class Classification {
     /**
      * Get the category1 value.
      *
-     * @return the category1 value
+     * @return the category1 value.
      */
     public ClassificationCategory1 category1() {
         return this.category1;
@@ -56,7 +56,7 @@ public class Classification {
     /**
      * Set the category1 value.
      *
-     * @param category1 the category1 value to set
+     * @param category1 the category1 value to set.
      * @return the Classification object itself.
      */
     public Classification withCategory1(ClassificationCategory1 category1) {
@@ -67,7 +67,7 @@ public class Classification {
     /**
      * Get the category2 value.
      *
-     * @return the category2 value
+     * @return the category2 value.
      */
     public ClassificationCategory2 category2() {
         return this.category2;
@@ -76,7 +76,7 @@ public class Classification {
     /**
      * Set the category2 value.
      *
-     * @param category2 the category2 value to set
+     * @param category2 the category2 value to set.
      * @return the Classification object itself.
      */
     public Classification withCategory2(ClassificationCategory2 category2) {
@@ -87,7 +87,7 @@ public class Classification {
     /**
      * Get the category3 value.
      *
-     * @return the category3 value
+     * @return the category3 value.
      */
     public ClassificationCategory3 category3() {
         return this.category3;
@@ -96,7 +96,7 @@ public class Classification {
     /**
      * Set the category3 value.
      *
-     * @param category3 the category3 value to set
+     * @param category3 the category3 value to set.
      * @return the Classification object itself.
      */
     public Classification withCategory3(ClassificationCategory3 category3) {
@@ -107,7 +107,7 @@ public class Classification {
     /**
      * Get the reviewRecommended value.
      *
-     * @return the reviewRecommended value
+     * @return the reviewRecommended value.
      */
     public Boolean reviewRecommended() {
         return this.reviewRecommended;
@@ -116,12 +116,11 @@ public class Classification {
     /**
      * Set the reviewRecommended value.
      *
-     * @param reviewRecommended the reviewRecommended value to set
+     * @param reviewRecommended the reviewRecommended value to set.
      * @return the Classification object itself.
      */
     public Classification withReviewRecommended(Boolean reviewRecommended) {
         this.reviewRecommended = reviewRecommended;
         return this;
     }
-
 }

@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Request body for group request.
  */
-public class GroupRequest {
+public final class GroupRequest {
     /**
      * Array of candidate faceId created by Face - Detect. The maximum is 1000
      * faces.
@@ -26,7 +26,7 @@ public class GroupRequest {
     /**
      * Get the faceIds value.
      *
-     * @return the faceIds value
+     * @return the faceIds value.
      */
     public List<UUID> faceIds() {
         return this.faceIds;
@@ -35,12 +35,11 @@ public class GroupRequest {
     /**
      * Set the faceIds value.
      *
-     * @param faceIds the faceIds value to set
+     * @param faceIds the faceIds value to set.
      * @return the GroupRequest object itself.
      */
     public GroupRequest withFaceIds(List<UUID> faceIds) {
         this.faceIds = faceIds;
         return this;
     }
-
 }

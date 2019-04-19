@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a postal address.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = PostalAddress.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("PostalAddress")
-public class PostalAddress extends StructuredValue {
+public final class PostalAddress extends StructuredValue {
     /**
      * The streetAddress property.
      */
@@ -66,7 +66,7 @@ public class PostalAddress extends StructuredValue {
     private String addressCountry;
 
     /**
-     * The two letter ISO code of this countr. For example, US.
+     * The two letter ISO code of this country. For example, US.
      */
     @JsonProperty(value = "countryIso", access = JsonProperty.Access.WRITE_ONLY)
     private String countryIso;
@@ -94,7 +94,7 @@ public class PostalAddress extends StructuredValue {
     /**
      * Get the streetAddress value.
      *
-     * @return the streetAddress value
+     * @return the streetAddress value.
      */
     public String streetAddress() {
         return this.streetAddress;
@@ -103,7 +103,7 @@ public class PostalAddress extends StructuredValue {
     /**
      * Get the addressLocality value.
      *
-     * @return the addressLocality value
+     * @return the addressLocality value.
      */
     public String addressLocality() {
         return this.addressLocality;
@@ -112,7 +112,7 @@ public class PostalAddress extends StructuredValue {
     /**
      * Get the addressSubregion value.
      *
-     * @return the addressSubregion value
+     * @return the addressSubregion value.
      */
     public String addressSubregion() {
         return this.addressSubregion;
@@ -121,7 +121,7 @@ public class PostalAddress extends StructuredValue {
     /**
      * Get the addressRegion value.
      *
-     * @return the addressRegion value
+     * @return the addressRegion value.
      */
     public String addressRegion() {
         return this.addressRegion;
@@ -130,7 +130,7 @@ public class PostalAddress extends StructuredValue {
     /**
      * Get the postalCode value.
      *
-     * @return the postalCode value
+     * @return the postalCode value.
      */
     public String postalCode() {
         return this.postalCode;
@@ -139,7 +139,7 @@ public class PostalAddress extends StructuredValue {
     /**
      * Get the postOfficeBoxNumber value.
      *
-     * @return the postOfficeBoxNumber value
+     * @return the postOfficeBoxNumber value.
      */
     public String postOfficeBoxNumber() {
         return this.postOfficeBoxNumber;
@@ -148,7 +148,7 @@ public class PostalAddress extends StructuredValue {
     /**
      * Get the addressCountry value.
      *
-     * @return the addressCountry value
+     * @return the addressCountry value.
      */
     public String addressCountry() {
         return this.addressCountry;
@@ -157,7 +157,7 @@ public class PostalAddress extends StructuredValue {
     /**
      * Get the countryIso value.
      *
-     * @return the countryIso value
+     * @return the countryIso value.
      */
     public String countryIso() {
         return this.countryIso;
@@ -166,7 +166,7 @@ public class PostalAddress extends StructuredValue {
     /**
      * Get the neighborhood value.
      *
-     * @return the neighborhood value
+     * @return the neighborhood value.
      */
     public String neighborhood() {
         return this.neighborhood;
@@ -175,7 +175,7 @@ public class PostalAddress extends StructuredValue {
     /**
      * Get the addressRegionAbbreviation value.
      *
-     * @return the addressRegionAbbreviation value
+     * @return the addressRegionAbbreviation value.
      */
     public String addressRegionAbbreviation() {
         return this.addressRegionAbbreviation;
@@ -184,10 +184,9 @@ public class PostalAddress extends StructuredValue {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
     }
-
 }

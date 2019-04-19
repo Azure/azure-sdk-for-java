@@ -8,154 +8,96 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.runtime;
 
-import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.ResolveOptionalParameter;
+import com.azure.common.http.rest.SimpleResponse;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.LuisResult;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Predictions.
+ * An instance of this class provides access to all the operations defined in
+ * Predictions.
  */
 public interface Predictions {
     /**
-     * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
-     *   is 500 characters.
+     * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size is 500 characters.
      *
      * @param appId The LUIS application ID (Guid).
      * @param query The utterance to predict.
-     * @param resolveOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the LuisResult object if successful.
      */
-    @Deprecated
-    LuisResult resolve(String appId, String query, ResolveOptionalParameter resolveOptionalParameter);
+    LuisResult resolve(@NonNull String appId, @NonNull String query);
 
     /**
-     * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
-     *   is 500 characters.
+     * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size is 500 characters.
      *
      * @param appId The LUIS application ID (Guid).
      * @param query The utterance to predict.
-     * @param resolveOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the LuisResult object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<LuisResult> resolveAsync(String appId, String query, ResolveOptionalParameter resolveOptionalParameter);
+    Mono<SimpleResponse<LuisResult>> resolveWithRestResponseAsync(@NonNull String appId, @NonNull String query);
 
     /**
-     * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
-     *   is 500 characters.
+     * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size is 500 characters.
      *
-     * @return the first stage of the resolve call
+     * @param appId The LUIS application ID (Guid).
+     * @param query The utterance to predict.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    PredictionsResolveDefinitionStages.WithAppId resolve();
+    Mono<LuisResult> resolveAsync(@NonNull String appId, @NonNull String query);
 
     /**
-     * Grouping of resolve definition stages.
+     * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size is 500 characters.
+     *
+     * @param appId The LUIS application ID (Guid).
+     * @param query The utterance to predict.
+     * @param timezoneOffset The timezone offset for the location of the request.
+     * @param verbose If true, return all intents instead of just the top scoring intent.
+     * @param staging Use the staging endpoint slot.
+     * @param spellCheck Enable spell checking.
+     * @param bingSpellCheckSubscriptionKey The subscription key to use when enabling bing spell check.
+     * @param log Log query (default is true).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the LuisResult object if successful.
      */
-    interface PredictionsResolveDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The LUIS application ID (Guid).
-             *
-             * @return next definition stage
-             */
-            WithQuery withAppId(String appId);
-        }
-        /**
-         * The stage of the definition to be specify query.
-         */
-        interface WithQuery {
-            /**
-             * The utterance to predict.
-             *
-             * @return next definition stage
-             */
-            PredictionsResolveDefinitionStages.WithExecute withQuery(String query);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The timezone offset for the location of the request.
-             *
-             * @return next definition stage
-             */
-            PredictionsResolveDefinitionStages.WithExecute withTimezoneOffset(Double timezoneOffset);
-
-            /**
-             * If true, return all intents instead of just the top scoring intent.
-             *
-             * @return next definition stage
-             */
-            PredictionsResolveDefinitionStages.WithExecute withVerbose(Boolean verbose);
-
-            /**
-             * Use the staging endpoint slot.
-             *
-             * @return next definition stage
-             */
-            PredictionsResolveDefinitionStages.WithExecute withStaging(Boolean staging);
-
-            /**
-             * Enable spell checking.
-             *
-             * @return next definition stage
-             */
-            PredictionsResolveDefinitionStages.WithExecute withSpellCheck(Boolean spellCheck);
-
-            /**
-             * The subscription key to use when enabling bing spell check.
-             *
-             * @return next definition stage
-             */
-            PredictionsResolveDefinitionStages.WithExecute withBingSpellCheckSubscriptionKey(String bingSpellCheckSubscriptionKey);
-
-            /**
-             * Log query (default is true).
-             *
-             * @return next definition stage
-             */
-            PredictionsResolveDefinitionStages.WithExecute withLog(Boolean log);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PredictionsResolveDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the LuisResult object if successful.
-             */
-            LuisResult execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the LuisResult object
-             */
-            Observable<LuisResult> executeAsync();
-        }
-    }
+    LuisResult resolve(@NonNull String appId, @NonNull String query, Double timezoneOffset, Boolean verbose, Boolean staging, Boolean spellCheck, String bingSpellCheckSubscriptionKey, Boolean log);
 
     /**
-     * The entirety of resolve definition.
+     * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size is 500 characters.
+     *
+     * @param appId The LUIS application ID (Guid).
+     * @param query The utterance to predict.
+     * @param timezoneOffset The timezone offset for the location of the request.
+     * @param verbose If true, return all intents instead of just the top scoring intent.
+     * @param staging Use the staging endpoint slot.
+     * @param spellCheck Enable spell checking.
+     * @param bingSpellCheckSubscriptionKey The subscription key to use when enabling bing spell check.
+     * @param log Log query (default is true).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    interface PredictionsResolveDefinition extends
-        PredictionsResolveDefinitionStages.WithAppId,
-        PredictionsResolveDefinitionStages.WithQuery,
-        PredictionsResolveDefinitionStages.WithExecute {
-    }
+    Mono<SimpleResponse<LuisResult>> resolveWithRestResponseAsync(@NonNull String appId, @NonNull String query, Double timezoneOffset, Boolean verbose, Boolean staging, Boolean spellCheck, String bingSpellCheckSubscriptionKey, Boolean log);
 
+    /**
+     * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size is 500 characters.
+     *
+     * @param appId The LUIS application ID (Guid).
+     * @param query The utterance to predict.
+     * @param timezoneOffset The timezone offset for the location of the request.
+     * @param verbose If true, return all intents instead of just the top scoring intent.
+     * @param staging Use the staging endpoint slot.
+     * @param spellCheck Enable spell checking.
+     * @param bingSpellCheckSubscriptionKey The subscription key to use when enabling bing spell check.
+     * @param log Log query (default is true).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<LuisResult> resolveAsync(@NonNull String appId, @NonNull String query, Double timezoneOffset, Boolean verbose, Boolean staging, Boolean spellCheck, String bingSpellCheckSubscriptionKey, Boolean log);
 }

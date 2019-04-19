@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The RegionProposal model.
  */
-public class RegionProposal {
+public final class RegionProposal {
     /**
      * The confidence property.
      */
@@ -29,7 +29,7 @@ public class RegionProposal {
     /**
      * Get the confidence value.
      *
-     * @return the confidence value
+     * @return the confidence value.
      */
     public double confidence() {
         return this.confidence;
@@ -38,10 +38,9 @@ public class RegionProposal {
     /**
      * Get the boundingBox value.
      *
-     * @return the boundingBox value
+     * @return the boundingBox value.
      */
     public BoundingBox boundingBox() {
         return this.boundingBox;
     }
-
 }

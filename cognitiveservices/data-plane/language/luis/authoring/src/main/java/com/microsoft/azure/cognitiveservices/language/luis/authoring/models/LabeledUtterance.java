@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * A prediction and label pair of an example.
  */
-public class LabeledUtterance {
+public final class LabeledUtterance {
     /**
      * ID of Labeled Utterance.
      */
@@ -22,7 +22,7 @@ public class LabeledUtterance {
     private Integer id;
 
     /**
-     * The utterance. E.g.: what's the weather like in seattle?.
+     * The utterance. For example, "What's the weather like in seattle?".
      */
     @JsonProperty(value = "text")
     private String text;
@@ -60,7 +60,7 @@ public class LabeledUtterance {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public Integer id() {
         return this.id;
@@ -69,7 +69,7 @@ public class LabeledUtterance {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the LabeledUtterance object itself.
      */
     public LabeledUtterance withId(Integer id) {
@@ -80,7 +80,7 @@ public class LabeledUtterance {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -89,7 +89,7 @@ public class LabeledUtterance {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the LabeledUtterance object itself.
      */
     public LabeledUtterance withText(String text) {
@@ -100,7 +100,7 @@ public class LabeledUtterance {
     /**
      * Get the tokenizedText value.
      *
-     * @return the tokenizedText value
+     * @return the tokenizedText value.
      */
     public List<String> tokenizedText() {
         return this.tokenizedText;
@@ -109,7 +109,7 @@ public class LabeledUtterance {
     /**
      * Set the tokenizedText value.
      *
-     * @param tokenizedText the tokenizedText value to set
+     * @param tokenizedText the tokenizedText value to set.
      * @return the LabeledUtterance object itself.
      */
     public LabeledUtterance withTokenizedText(List<String> tokenizedText) {
@@ -120,7 +120,7 @@ public class LabeledUtterance {
     /**
      * Get the intentLabel value.
      *
-     * @return the intentLabel value
+     * @return the intentLabel value.
      */
     public String intentLabel() {
         return this.intentLabel;
@@ -129,7 +129,7 @@ public class LabeledUtterance {
     /**
      * Set the intentLabel value.
      *
-     * @param intentLabel the intentLabel value to set
+     * @param intentLabel the intentLabel value to set.
      * @return the LabeledUtterance object itself.
      */
     public LabeledUtterance withIntentLabel(String intentLabel) {
@@ -140,7 +140,7 @@ public class LabeledUtterance {
     /**
      * Get the entityLabels value.
      *
-     * @return the entityLabels value
+     * @return the entityLabels value.
      */
     public List<EntityLabel> entityLabels() {
         return this.entityLabels;
@@ -149,7 +149,7 @@ public class LabeledUtterance {
     /**
      * Set the entityLabels value.
      *
-     * @param entityLabels the entityLabels value to set
+     * @param entityLabels the entityLabels value to set.
      * @return the LabeledUtterance object itself.
      */
     public LabeledUtterance withEntityLabels(List<EntityLabel> entityLabels) {
@@ -160,7 +160,7 @@ public class LabeledUtterance {
     /**
      * Get the intentPredictions value.
      *
-     * @return the intentPredictions value
+     * @return the intentPredictions value.
      */
     public List<IntentPrediction> intentPredictions() {
         return this.intentPredictions;
@@ -169,7 +169,7 @@ public class LabeledUtterance {
     /**
      * Set the intentPredictions value.
      *
-     * @param intentPredictions the intentPredictions value to set
+     * @param intentPredictions the intentPredictions value to set.
      * @return the LabeledUtterance object itself.
      */
     public LabeledUtterance withIntentPredictions(List<IntentPrediction> intentPredictions) {
@@ -180,7 +180,7 @@ public class LabeledUtterance {
     /**
      * Get the entityPredictions value.
      *
-     * @return the entityPredictions value
+     * @return the entityPredictions value.
      */
     public List<EntityPrediction> entityPredictions() {
         return this.entityPredictions;
@@ -189,12 +189,11 @@ public class LabeledUtterance {
     /**
      * Set the entityPredictions value.
      *
-     * @param entityPredictions the entityPredictions value to set
+     * @param entityPredictions the entityPredictions value to set.
      * @return the LabeledUtterance object itself.
      */
     public LabeledUtterance withEntityPredictions(List<EntityPrediction> entityPredictions) {
         this.entityPredictions = entityPredictions;
         return this;
     }
-
 }

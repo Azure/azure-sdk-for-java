@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.videosearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * The SearchResultsAnswer model.
@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SearchResultsAnswer.class)
 @JsonTypeName("SearchResultsAnswer")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Videos", value = VideosModel.class)
+    @JsonSubTypes.Type(name = "Videos", value = Videos.class)
 })
 public class SearchResultsAnswer extends Answer {
     /**
@@ -39,7 +39,7 @@ public class SearchResultsAnswer extends Answer {
     /**
      * Get the totalEstimatedMatches value.
      *
-     * @return the totalEstimatedMatches value
+     * @return the totalEstimatedMatches value.
      */
     public Long totalEstimatedMatches() {
         return this.totalEstimatedMatches;
@@ -48,10 +48,9 @@ public class SearchResultsAnswer extends Answer {
     /**
      * Get the isFamilyFriendly value.
      *
-     * @return the isFamilyFriendly value
+     * @return the isFamilyFriendly value.
      */
     public Boolean isFamilyFriendly() {
         return this.isFamilyFriendly;
     }
-
 }

@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import org.joda.time.DateTime;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Object model of an application version.
  */
-public class VersionInfo {
+public final class VersionInfo {
     /**
      * The version ID. E.g.: "0.1".
      */
@@ -26,25 +26,25 @@ public class VersionInfo {
      * The version's creation timestamp.
      */
     @JsonProperty(value = "createdDateTime")
-    private DateTime createdDateTime;
+    private OffsetDateTime createdDateTime;
 
     /**
      * Timestamp of the last update.
      */
     @JsonProperty(value = "lastModifiedDateTime")
-    private DateTime lastModifiedDateTime;
+    private OffsetDateTime lastModifiedDateTime;
 
     /**
      * Timestamp of the last time the model was trained.
      */
     @JsonProperty(value = "lastTrainedDateTime")
-    private DateTime lastTrainedDateTime;
+    private OffsetDateTime lastTrainedDateTime;
 
     /**
      * Timestamp when was last published.
      */
     @JsonProperty(value = "lastPublishedDateTime")
-    private DateTime lastPublishedDateTime;
+    private OffsetDateTime lastPublishedDateTime;
 
     /**
      * The Runtime endpoint URL for this model version.
@@ -92,7 +92,7 @@ public class VersionInfo {
     /**
      * Get the version value.
      *
-     * @return the version value
+     * @return the version value.
      */
     public String version() {
         return this.version;
@@ -101,7 +101,7 @@ public class VersionInfo {
     /**
      * Set the version value.
      *
-     * @param version the version value to set
+     * @param version the version value to set.
      * @return the VersionInfo object itself.
      */
     public VersionInfo withVersion(String version) {
@@ -112,19 +112,19 @@ public class VersionInfo {
     /**
      * Get the createdDateTime value.
      *
-     * @return the createdDateTime value
+     * @return the createdDateTime value.
      */
-    public DateTime createdDateTime() {
+    public OffsetDateTime createdDateTime() {
         return this.createdDateTime;
     }
 
     /**
      * Set the createdDateTime value.
      *
-     * @param createdDateTime the createdDateTime value to set
+     * @param createdDateTime the createdDateTime value to set.
      * @return the VersionInfo object itself.
      */
-    public VersionInfo withCreatedDateTime(DateTime createdDateTime) {
+    public VersionInfo withCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
         return this;
     }
@@ -132,19 +132,19 @@ public class VersionInfo {
     /**
      * Get the lastModifiedDateTime value.
      *
-     * @return the lastModifiedDateTime value
+     * @return the lastModifiedDateTime value.
      */
-    public DateTime lastModifiedDateTime() {
+    public OffsetDateTime lastModifiedDateTime() {
         return this.lastModifiedDateTime;
     }
 
     /**
      * Set the lastModifiedDateTime value.
      *
-     * @param lastModifiedDateTime the lastModifiedDateTime value to set
+     * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the VersionInfo object itself.
      */
-    public VersionInfo withLastModifiedDateTime(DateTime lastModifiedDateTime) {
+    public VersionInfo withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         this.lastModifiedDateTime = lastModifiedDateTime;
         return this;
     }
@@ -152,19 +152,19 @@ public class VersionInfo {
     /**
      * Get the lastTrainedDateTime value.
      *
-     * @return the lastTrainedDateTime value
+     * @return the lastTrainedDateTime value.
      */
-    public DateTime lastTrainedDateTime() {
+    public OffsetDateTime lastTrainedDateTime() {
         return this.lastTrainedDateTime;
     }
 
     /**
      * Set the lastTrainedDateTime value.
      *
-     * @param lastTrainedDateTime the lastTrainedDateTime value to set
+     * @param lastTrainedDateTime the lastTrainedDateTime value to set.
      * @return the VersionInfo object itself.
      */
-    public VersionInfo withLastTrainedDateTime(DateTime lastTrainedDateTime) {
+    public VersionInfo withLastTrainedDateTime(OffsetDateTime lastTrainedDateTime) {
         this.lastTrainedDateTime = lastTrainedDateTime;
         return this;
     }
@@ -172,19 +172,19 @@ public class VersionInfo {
     /**
      * Get the lastPublishedDateTime value.
      *
-     * @return the lastPublishedDateTime value
+     * @return the lastPublishedDateTime value.
      */
-    public DateTime lastPublishedDateTime() {
+    public OffsetDateTime lastPublishedDateTime() {
         return this.lastPublishedDateTime;
     }
 
     /**
      * Set the lastPublishedDateTime value.
      *
-     * @param lastPublishedDateTime the lastPublishedDateTime value to set
+     * @param lastPublishedDateTime the lastPublishedDateTime value to set.
      * @return the VersionInfo object itself.
      */
-    public VersionInfo withLastPublishedDateTime(DateTime lastPublishedDateTime) {
+    public VersionInfo withLastPublishedDateTime(OffsetDateTime lastPublishedDateTime) {
         this.lastPublishedDateTime = lastPublishedDateTime;
         return this;
     }
@@ -192,7 +192,7 @@ public class VersionInfo {
     /**
      * Get the endpointUrl value.
      *
-     * @return the endpointUrl value
+     * @return the endpointUrl value.
      */
     public String endpointUrl() {
         return this.endpointUrl;
@@ -201,7 +201,7 @@ public class VersionInfo {
     /**
      * Set the endpointUrl value.
      *
-     * @param endpointUrl the endpointUrl value to set
+     * @param endpointUrl the endpointUrl value to set.
      * @return the VersionInfo object itself.
      */
     public VersionInfo withEndpointUrl(String endpointUrl) {
@@ -212,7 +212,7 @@ public class VersionInfo {
     /**
      * Get the assignedEndpointKey value.
      *
-     * @return the assignedEndpointKey value
+     * @return the assignedEndpointKey value.
      */
     public Map<String, String> assignedEndpointKey() {
         return this.assignedEndpointKey;
@@ -221,7 +221,7 @@ public class VersionInfo {
     /**
      * Set the assignedEndpointKey value.
      *
-     * @param assignedEndpointKey the assignedEndpointKey value to set
+     * @param assignedEndpointKey the assignedEndpointKey value to set.
      * @return the VersionInfo object itself.
      */
     public VersionInfo withAssignedEndpointKey(Map<String, String> assignedEndpointKey) {
@@ -232,7 +232,7 @@ public class VersionInfo {
     /**
      * Get the externalApiKeys value.
      *
-     * @return the externalApiKeys value
+     * @return the externalApiKeys value.
      */
     public Object externalApiKeys() {
         return this.externalApiKeys;
@@ -241,7 +241,7 @@ public class VersionInfo {
     /**
      * Set the externalApiKeys value.
      *
-     * @param externalApiKeys the externalApiKeys value to set
+     * @param externalApiKeys the externalApiKeys value to set.
      * @return the VersionInfo object itself.
      */
     public VersionInfo withExternalApiKeys(Object externalApiKeys) {
@@ -252,7 +252,7 @@ public class VersionInfo {
     /**
      * Get the intentsCount value.
      *
-     * @return the intentsCount value
+     * @return the intentsCount value.
      */
     public Integer intentsCount() {
         return this.intentsCount;
@@ -261,7 +261,7 @@ public class VersionInfo {
     /**
      * Set the intentsCount value.
      *
-     * @param intentsCount the intentsCount value to set
+     * @param intentsCount the intentsCount value to set.
      * @return the VersionInfo object itself.
      */
     public VersionInfo withIntentsCount(Integer intentsCount) {
@@ -272,7 +272,7 @@ public class VersionInfo {
     /**
      * Get the entitiesCount value.
      *
-     * @return the entitiesCount value
+     * @return the entitiesCount value.
      */
     public Integer entitiesCount() {
         return this.entitiesCount;
@@ -281,7 +281,7 @@ public class VersionInfo {
     /**
      * Set the entitiesCount value.
      *
-     * @param entitiesCount the entitiesCount value to set
+     * @param entitiesCount the entitiesCount value to set.
      * @return the VersionInfo object itself.
      */
     public VersionInfo withEntitiesCount(Integer entitiesCount) {
@@ -292,7 +292,7 @@ public class VersionInfo {
     /**
      * Get the endpointHitsCount value.
      *
-     * @return the endpointHitsCount value
+     * @return the endpointHitsCount value.
      */
     public Integer endpointHitsCount() {
         return this.endpointHitsCount;
@@ -301,7 +301,7 @@ public class VersionInfo {
     /**
      * Set the endpointHitsCount value.
      *
-     * @param endpointHitsCount the endpointHitsCount value to set
+     * @param endpointHitsCount the endpointHitsCount value to set.
      * @return the VersionInfo object itself.
      */
     public VersionInfo withEndpointHitsCount(Integer endpointHitsCount) {
@@ -312,7 +312,7 @@ public class VersionInfo {
     /**
      * Get the trainingStatus value.
      *
-     * @return the trainingStatus value
+     * @return the trainingStatus value.
      */
     public TrainingStatus trainingStatus() {
         return this.trainingStatus;
@@ -321,12 +321,11 @@ public class VersionInfo {
     /**
      * Set the trainingStatus value.
      *
-     * @param trainingStatus the trainingStatus value to set
+     * @param trainingStatus the trainingStatus value to set.
      * @return the VersionInfo object itself.
      */
     public VersionInfo withTrainingStatus(TrainingStatus trainingStatus) {
         this.trainingStatus = trainingStatus;
         return this;
     }
-
 }

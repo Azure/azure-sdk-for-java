@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.videosearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The TrendingVideos model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = TrendingVideos.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("TrendingVideos")
-public class TrendingVideos extends Response {
+public final class TrendingVideos extends Response {
     /**
      * The bannerTiles property.
      */
@@ -34,7 +34,7 @@ public class TrendingVideos extends Response {
     /**
      * Get the bannerTiles value.
      *
-     * @return the bannerTiles value
+     * @return the bannerTiles value.
      */
     public List<TrendingVideosTile> bannerTiles() {
         return this.bannerTiles;
@@ -43,7 +43,7 @@ public class TrendingVideos extends Response {
     /**
      * Set the bannerTiles value.
      *
-     * @param bannerTiles the bannerTiles value to set
+     * @param bannerTiles the bannerTiles value to set.
      * @return the TrendingVideos object itself.
      */
     public TrendingVideos withBannerTiles(List<TrendingVideosTile> bannerTiles) {
@@ -54,7 +54,7 @@ public class TrendingVideos extends Response {
     /**
      * Get the categories value.
      *
-     * @return the categories value
+     * @return the categories value.
      */
     public List<TrendingVideosCategory> categories() {
         return this.categories;
@@ -63,12 +63,11 @@ public class TrendingVideos extends Response {
     /**
      * Set the categories value.
      *
-     * @param categories the categories value to set
+     * @param categories the categories value to set.
      * @return the TrendingVideos object itself.
      */
     public TrendingVideos withCategories(List<TrendingVideosCategory> categories) {
         this.categories = categories;
         return this;
     }
-
 }

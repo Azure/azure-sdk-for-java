@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The PrebuiltDomainItem model.
  */
-public class PrebuiltDomainItem {
+public final class PrebuiltDomainItem {
     /**
      * The name property.
      */
@@ -35,7 +35,7 @@ public class PrebuiltDomainItem {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -44,7 +44,7 @@ public class PrebuiltDomainItem {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the PrebuiltDomainItem object itself.
      */
     public PrebuiltDomainItem withName(String name) {
@@ -55,7 +55,7 @@ public class PrebuiltDomainItem {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public String description() {
         return this.description;
@@ -64,7 +64,7 @@ public class PrebuiltDomainItem {
     /**
      * Set the description value.
      *
-     * @param description the description value to set
+     * @param description the description value to set.
      * @return the PrebuiltDomainItem object itself.
      */
     public PrebuiltDomainItem withDescription(String description) {
@@ -75,7 +75,7 @@ public class PrebuiltDomainItem {
     /**
      * Get the examples value.
      *
-     * @return the examples value
+     * @return the examples value.
      */
     public String examples() {
         return this.examples;
@@ -84,12 +84,11 @@ public class PrebuiltDomainItem {
     /**
      * Set the examples value.
      *
-     * @param examples the examples value to set
+     * @param examples the examples value to set.
      * @return the PrebuiltDomainItem object itself.
      */
     public PrebuiltDomainItem withExamples(String examples) {
         this.examples = examples;
         return this;
     }
-
 }

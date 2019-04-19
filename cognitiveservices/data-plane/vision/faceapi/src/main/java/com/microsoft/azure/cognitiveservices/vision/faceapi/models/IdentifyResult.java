@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.UUID;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Response body for identify face operation.
  */
-public class IdentifyResult {
+public final class IdentifyResult {
     /**
      * FaceId of the query face.
      */
@@ -33,7 +33,7 @@ public class IdentifyResult {
     /**
      * Get the faceId value.
      *
-     * @return the faceId value
+     * @return the faceId value.
      */
     public UUID faceId() {
         return this.faceId;
@@ -42,7 +42,7 @@ public class IdentifyResult {
     /**
      * Set the faceId value.
      *
-     * @param faceId the faceId value to set
+     * @param faceId the faceId value to set.
      * @return the IdentifyResult object itself.
      */
     public IdentifyResult withFaceId(UUID faceId) {
@@ -53,7 +53,7 @@ public class IdentifyResult {
     /**
      * Get the candidates value.
      *
-     * @return the candidates value
+     * @return the candidates value.
      */
     public List<IdentifyCandidate> candidates() {
         return this.candidates;
@@ -62,12 +62,11 @@ public class IdentifyResult {
     /**
      * Set the candidates value.
      *
-     * @param candidates the candidates value to set
+     * @param candidates the candidates value to set.
      * @return the IdentifyResult object itself.
      */
     public IdentifyResult withCandidates(List<IdentifyCandidate> candidates) {
         this.candidates = candidates;
         return this;
     }
-
 }

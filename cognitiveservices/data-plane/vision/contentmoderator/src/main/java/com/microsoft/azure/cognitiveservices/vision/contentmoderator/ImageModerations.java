@@ -8,1229 +8,911 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.FindFacesOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.OCRMethodOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.EvaluateMethodOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.MatchMethodOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.FindFacesFileInputOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.FindFacesUrlInputOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.OCRUrlInputOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.OCRFileInputOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.EvaluateFileInputOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.EvaluateUrlInputOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.MatchUrlInputOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.MatchFileInputOptionalParameter;
+import com.azure.common.http.rest.SimpleResponse;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModelModel;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Evaluate;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.FoundFaces;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.MatchResponse;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.OCR;
-import rx.Observable;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in ImageModerations.
+ * An instance of this class provides access to all the operations defined in
+ * ImageModerations.
  */
 public interface ImageModerations {
     /**
      * Returns the list of faces found.
      *
-     * @param findFacesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the FoundFaces object if successful.
      */
-    
-    FoundFaces findFaces(FindFacesOptionalParameter findFacesOptionalParameter);
+    FoundFaces findFaces();
 
     /**
      * Returns the list of faces found.
      *
-     * @param findFacesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FoundFaces object
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    Observable<FoundFaces> findFacesAsync(FindFacesOptionalParameter findFacesOptionalParameter);
+    Mono<SimpleResponse<FoundFaces>> findFacesWithRestResponseAsync();
 
     /**
      * Returns the list of faces found.
      *
-     * @return the first stage of the findFaces call
+     * @return a Mono which performs the network request upon subscription.
      */
-    ImageModerationsFindFacesDefinitionStages.WithExecute findFaces();
-
-    /**
-     * Grouping of findFaces definition stages.
-     */
-    interface ImageModerationsFindFacesDefinitionStages {
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsFindFacesDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsFindFacesDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the FoundFaces object if successful.
-             */
-            FoundFaces execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the FoundFaces object
-             */
-            Observable<FoundFaces> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of findFaces definition.
-     */
-    interface ImageModerationsFindFacesDefinition extends
-        ImageModerationsFindFacesDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then
-     *   the detection defaults to English.
-     *
-     * @param language Language of the terms.
-     * @param oCRMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OCR object if successful.
-     */
-    
-    OCR oCRMethod(String language, OCRMethodOptionalParameter oCRMethodOptionalParameter);
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then
-     *   the detection defaults to English.
-     *
-     * @param language Language of the terms.
-     * @param oCRMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OCR object
-     */
-    
-    Observable<OCR> oCRMethodAsync(String language, OCRMethodOptionalParameter oCRMethodOptionalParameter);
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then
-     *   the detection defaults to English.
-     *
-     * @return the first stage of the oCRMethod call
-     */
-    ImageModerationsOCRMethodDefinitionStages.WithLanguage oCRMethod();
-
-    /**
-     * Grouping of oCRMethod definition stages.
-     */
-    interface ImageModerationsOCRMethodDefinitionStages {
-        /**
-         * The stage of the definition to be specify language.
-         */
-        interface WithLanguage {
-            /**
-             * Language of the terms.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsOCRMethodDefinitionStages.WithExecute withLanguage(String language);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsOCRMethodDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-            /**
-             * When set to True, the image goes through additional processing to come with additional candidates.
-             *   image/tiff is not supported when enhanced is set to true
-             *   Note: This impacts the response time.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsOCRMethodDefinitionStages.WithExecute withEnhanced(Boolean enhanced);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsOCRMethodDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OCR object if successful.
-             */
-            OCR execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OCR object
-             */
-            Observable<OCR> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of oCRMethod definition.
-     */
-    interface ImageModerationsOCRMethodDefinition extends
-        ImageModerationsOCRMethodDefinitionStages.WithLanguage,
-        ImageModerationsOCRMethodDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Returns probabilities of the image containing racy or adult content.
-     *
-     * @param evaluateMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Evaluate object if successful.
-     */
-    
-    Evaluate evaluateMethod(EvaluateMethodOptionalParameter evaluateMethodOptionalParameter);
-
-    /**
-     * Returns probabilities of the image containing racy or adult content.
-     *
-     * @param evaluateMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Evaluate object
-     */
-    
-    Observable<Evaluate> evaluateMethodAsync(EvaluateMethodOptionalParameter evaluateMethodOptionalParameter);
-
-    /**
-     * Returns probabilities of the image containing racy or adult content.
-     *
-     * @return the first stage of the evaluateMethod call
-     */
-    ImageModerationsEvaluateMethodDefinitionStages.WithExecute evaluateMethod();
-
-    /**
-     * Grouping of evaluateMethod definition stages.
-     */
-    interface ImageModerationsEvaluateMethodDefinitionStages {
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsEvaluateMethodDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsEvaluateMethodDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Evaluate object if successful.
-             */
-            Evaluate execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Evaluate object
-             */
-            Observable<Evaluate> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of evaluateMethod definition.
-     */
-    interface ImageModerationsEvaluateMethodDefinition extends
-        ImageModerationsEvaluateMethodDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
-     *   lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     *   Returns ID and tags of matching image.&lt;br/&gt;
-     *   &lt;br/&gt;
-     *   Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
-     *   in the response.
-     *
-     * @param matchMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MatchResponse object if successful.
-     */
-    
-    MatchResponse matchMethod(MatchMethodOptionalParameter matchMethodOptionalParameter);
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
-     *   lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     *   Returns ID and tags of matching image.&lt;br/&gt;
-     *   &lt;br/&gt;
-     *   Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
-     *   in the response.
-     *
-     * @param matchMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MatchResponse object
-     */
-    
-    Observable<MatchResponse> matchMethodAsync(MatchMethodOptionalParameter matchMethodOptionalParameter);
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
-     *   lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     *   Returns ID and tags of matching image.&lt;br/&gt;
-     *   &lt;br/&gt;
-     *   Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
-     *   in the response.
-     *
-     * @return the first stage of the matchMethod call
-     */
-    ImageModerationsMatchMethodDefinitionStages.WithExecute matchMethod();
-
-    /**
-     * Grouping of matchMethod definition stages.
-     */
-    interface ImageModerationsMatchMethodDefinitionStages {
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The list Id.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsMatchMethodDefinitionStages.WithExecute withListId(String listId);
-
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsMatchMethodDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsMatchMethodDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the MatchResponse object if successful.
-             */
-            MatchResponse execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the MatchResponse object
-             */
-            Observable<MatchResponse> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of matchMethod definition.
-     */
-    interface ImageModerationsMatchMethodDefinition extends
-        ImageModerationsMatchMethodDefinitionStages.WithExecute {
-    }
+    Mono<FoundFaces> findFacesAsync();
 
     /**
      * Returns the list of faces found.
      *
-     * @param imageStream The image file.
-     * @param findFacesFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the FoundFaces object if successful.
      */
-    
-    FoundFaces findFacesFileInput(byte[] imageStream, FindFacesFileInputOptionalParameter findFacesFileInputOptionalParameter);
+    FoundFaces findFaces(Boolean cacheImage);
 
     /**
      * Returns the list of faces found.
      *
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<FoundFaces>> findFacesWithRestResponseAsync(Boolean cacheImage);
+
+    /**
+     * Returns the list of faces found.
+     *
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<FoundFaces> findFacesAsync(Boolean cacheImage);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OCR object if successful.
+     */
+    OCR oCRMethod(@NonNull String language);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OCR>> oCRMethodWithRestResponseAsync(@NonNull String language);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OCR> oCRMethodAsync(@NonNull String language);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
+     *
+     * image/tiff is not supported when enhanced is set to true
+     *
+     * Note: This impacts the response time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OCR object if successful.
+     */
+    OCR oCRMethod(@NonNull String language, Boolean cacheImage, Boolean enhanced);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
+     *
+     * image/tiff is not supported when enhanced is set to true
+     *
+     * Note: This impacts the response time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OCR>> oCRMethodWithRestResponseAsync(@NonNull String language, Boolean cacheImage, Boolean enhanced);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
+     *
+     * image/tiff is not supported when enhanced is set to true
+     *
+     * Note: This impacts the response time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OCR> oCRMethodAsync(@NonNull String language, Boolean cacheImage, Boolean enhanced);
+
+    /**
+     * Returns probabilities of the image containing racy or adult content.
+     *
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Evaluate object if successful.
+     */
+    Evaluate evaluateMethod();
+
+    /**
+     * Returns probabilities of the image containing racy or adult content.
+     *
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<Evaluate>> evaluateMethodWithRestResponseAsync();
+
+    /**
+     * Returns probabilities of the image containing racy or adult content.
+     *
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Evaluate> evaluateMethodAsync();
+
+    /**
+     * Returns probabilities of the image containing racy or adult content.
+     *
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Evaluate object if successful.
+     */
+    Evaluate evaluateMethod(Boolean cacheImage);
+
+    /**
+     * Returns probabilities of the image containing racy or adult content.
+     *
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<Evaluate>> evaluateMethodWithRestResponseAsync(Boolean cacheImage);
+
+    /**
+     * Returns probabilities of the image containing racy or adult content.
+     *
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Evaluate> evaluateMethodAsync(Boolean cacheImage);
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MatchResponse object if successful.
+     */
+    MatchResponse matchMethod();
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<MatchResponse>> matchMethodWithRestResponseAsync();
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<MatchResponse> matchMethodAsync();
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param listId The list Id.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MatchResponse object if successful.
+     */
+    MatchResponse matchMethod(String listId, Boolean cacheImage);
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param listId The list Id.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<MatchResponse>> matchMethodWithRestResponseAsync(String listId, Boolean cacheImage);
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param listId The list Id.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<MatchResponse> matchMethodAsync(String listId, Boolean cacheImage);
+
+    /**
+     * Returns the list of faces found.
+     *
+     * @param contentLength The content length.
      * @param imageStream The image file.
-     * @param findFacesFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FoundFaces object
-     */
-    
-    Observable<FoundFaces> findFacesFileInputAsync(byte[] imageStream, FindFacesFileInputOptionalParameter findFacesFileInputOptionalParameter);
-
-    /**
-     * Returns the list of faces found.
-     *
-     * @return the first stage of the findFacesFileInput call
-     */
-    ImageModerationsFindFacesFileInputDefinitionStages.WithImageStream findFacesFileInput();
-
-    /**
-     * Grouping of findFacesFileInput definition stages.
-     */
-    interface ImageModerationsFindFacesFileInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify imageStream.
-         */
-        interface WithImageStream {
-            /**
-             * The image file.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsFindFacesFileInputDefinitionStages.WithExecute withImageStream(byte[] imageStream);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsFindFacesFileInputDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsFindFacesFileInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the FoundFaces object if successful.
-             */
-            FoundFaces execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the FoundFaces object
-             */
-            Observable<FoundFaces> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of findFacesFileInput definition.
-     */
-    interface ImageModerationsFindFacesFileInputDefinition extends
-        ImageModerationsFindFacesFileInputDefinitionStages.WithImageStream,
-        ImageModerationsFindFacesFileInputDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Returns the list of faces found.
-     *
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param findFacesUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the FoundFaces object if successful.
      */
-    
-    FoundFaces findFacesUrlInput(String contentType, BodyModelModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter);
+    FoundFaces findFacesFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+
+    /**
+     * Returns the list of faces found.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<FoundFaces>> findFacesFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+
+    /**
+     * Returns the list of faces found.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<FoundFaces> findFacesFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+
+    /**
+     * Returns the list of faces found.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the FoundFaces object if successful.
+     */
+    FoundFaces findFacesFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
+
+    /**
+     * Returns the list of faces found.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<FoundFaces>> findFacesFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
+
+    /**
+     * Returns the list of faces found.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<FoundFaces> findFacesFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
 
     /**
      * Returns the list of faces found.
      *
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param findFacesUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FoundFaces object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the FoundFaces object if successful.
      */
-    
-    Observable<FoundFaces> findFacesUrlInputAsync(String contentType, BodyModelModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter);
+    FoundFaces findFacesUrlInput(@NonNull String contentType, @NonNull BodyModel imageUrl);
 
     /**
      * Returns the list of faces found.
      *
-     * @return the first stage of the findFacesUrlInput call
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ImageModerationsFindFacesUrlInputDefinitionStages.WithContentType findFacesUrlInput();
+    Mono<SimpleResponse<FoundFaces>> findFacesUrlInputWithRestResponseAsync(@NonNull String contentType, @NonNull BodyModel imageUrl);
 
     /**
-     * Grouping of findFacesUrlInput definition stages.
+     * Returns the list of faces found.
+     *
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    interface ImageModerationsFindFacesUrlInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify contentType.
-         */
-        interface WithContentType {
-            /**
-             * The content type.
-             *
-             * @return next definition stage
-             */
-            WithImageUrl withContentType(String contentType);
-        }
-        /**
-         * The stage of the definition to be specify imageUrl.
-         */
-        interface WithImageUrl {
-            /**
-             * The image url.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsFindFacesUrlInputDefinitionStages.WithExecute withImageUrl(BodyModelModel imageUrl);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsFindFacesUrlInputDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsFindFacesUrlInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the FoundFaces object if successful.
-             */
-            FoundFaces execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the FoundFaces object
-             */
-            Observable<FoundFaces> executeAsync();
-        }
-    }
+    Mono<FoundFaces> findFacesUrlInputAsync(@NonNull String contentType, @NonNull BodyModel imageUrl);
 
     /**
-     * The entirety of findFacesUrlInput definition.
+     * Returns the list of faces found.
+     *
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the FoundFaces object if successful.
      */
-    interface ImageModerationsFindFacesUrlInputDefinition extends
-        ImageModerationsFindFacesUrlInputDefinitionStages.WithContentType,
-        ImageModerationsFindFacesUrlInputDefinitionStages.WithImageUrl,
-        ImageModerationsFindFacesUrlInputDefinitionStages.WithExecute {
-    }
+    FoundFaces findFacesUrlInput(@NonNull String contentType, @NonNull BodyModel imageUrl, Boolean cacheImage);
 
     /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then
-     *   the detection defaults to English.
+     * Returns the list of faces found.
+     *
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<FoundFaces>> findFacesUrlInputWithRestResponseAsync(@NonNull String contentType, @NonNull BodyModel imageUrl, Boolean cacheImage);
+
+    /**
+     * Returns the list of faces found.
+     *
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<FoundFaces> findFacesUrlInputAsync(@NonNull String contentType, @NonNull BodyModel imageUrl, Boolean cacheImage);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
      *
      * @param language Language of the terms.
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param oCRUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OCR object if successful.
      */
-    
-    OCR oCRUrlInput(String language, String contentType, BodyModelModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter);
+    OCR oCRUrlInput(@NonNull String language, @NonNull String contentType, @NonNull BodyModel imageUrl);
 
     /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then
-     *   the detection defaults to English.
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
      *
      * @param language Language of the terms.
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param oCRUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OCR object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    Observable<OCR> oCRUrlInputAsync(String language, String contentType, BodyModelModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter);
+    Mono<SimpleResponse<OCR>> oCRUrlInputWithRestResponseAsync(@NonNull String language, @NonNull String contentType, @NonNull BodyModel imageUrl);
 
     /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then
-     *   the detection defaults to English.
-     *
-     * @return the first stage of the oCRUrlInput call
-     */
-    ImageModerationsOCRUrlInputDefinitionStages.WithLanguage oCRUrlInput();
-
-    /**
-     * Grouping of oCRUrlInput definition stages.
-     */
-    interface ImageModerationsOCRUrlInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify language.
-         */
-        interface WithLanguage {
-            /**
-             * Language of the terms.
-             *
-             * @return next definition stage
-             */
-            WithContentType withLanguage(String language);
-        }
-        /**
-         * The stage of the definition to be specify contentType.
-         */
-        interface WithContentType {
-            /**
-             * The content type.
-             *
-             * @return next definition stage
-             */
-            WithImageUrl withContentType(String contentType);
-        }
-        /**
-         * The stage of the definition to be specify imageUrl.
-         */
-        interface WithImageUrl {
-            /**
-             * The image url.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsOCRUrlInputDefinitionStages.WithExecute withImageUrl(BodyModelModel imageUrl);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsOCRUrlInputDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-            /**
-             * When set to True, the image goes through additional processing to come with additional candidates.
-             *   image/tiff is not supported when enhanced is set to true
-             *   Note: This impacts the response time.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsOCRUrlInputDefinitionStages.WithExecute withEnhanced(Boolean enhanced);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsOCRUrlInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OCR object if successful.
-             */
-            OCR execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OCR object
-             */
-            Observable<OCR> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of oCRUrlInput definition.
-     */
-    interface ImageModerationsOCRUrlInputDefinition extends
-        ImageModerationsOCRUrlInputDefinitionStages.WithLanguage,
-        ImageModerationsOCRUrlInputDefinitionStages.WithContentType,
-        ImageModerationsOCRUrlInputDefinitionStages.WithImageUrl,
-        ImageModerationsOCRUrlInputDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then
-     *   the detection defaults to English.
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
      *
      * @param language Language of the terms.
-     * @param imageStream The image file.
-     * @param oCRFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OCR> oCRUrlInputAsync(@NonNull String language, @NonNull String contentType, @NonNull BodyModel imageUrl);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
+     *
+     * image/tiff is not supported when enhanced is set to true
+     *
+     * Note: This impacts the response time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OCR object if successful.
      */
-    
-    OCR oCRFileInput(String language, byte[] imageStream, OCRFileInputOptionalParameter oCRFileInputOptionalParameter);
+    OCR oCRUrlInput(@NonNull String language, @NonNull String contentType, @NonNull BodyModel imageUrl, Boolean cacheImage, Boolean enhanced);
 
     /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then
-     *   the detection defaults to English.
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
      *
      * @param language Language of the terms.
-     * @param imageStream The image file.
-     * @param oCRFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OCR object
-     */
-    
-    Observable<OCR> oCRFileInputAsync(String language, byte[] imageStream, OCRFileInputOptionalParameter oCRFileInputOptionalParameter);
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then
-     *   the detection defaults to English.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
      *
-     * @return the first stage of the oCRFileInput call
+     * image/tiff is not supported when enhanced is set to true
+     *
+     * Note: This impacts the response time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ImageModerationsOCRFileInputDefinitionStages.WithLanguage oCRFileInput();
+    Mono<SimpleResponse<OCR>> oCRUrlInputWithRestResponseAsync(@NonNull String language, @NonNull String contentType, @NonNull BodyModel imageUrl, Boolean cacheImage, Boolean enhanced);
 
     /**
-     * Grouping of oCRFileInput definition stages.
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
+     *
+     * image/tiff is not supported when enhanced is set to true
+     *
+     * Note: This impacts the response time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    interface ImageModerationsOCRFileInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify language.
-         */
-        interface WithLanguage {
-            /**
-             * Language of the terms.
-             *
-             * @return next definition stage
-             */
-            WithImageStream withLanguage(String language);
-        }
-        /**
-         * The stage of the definition to be specify imageStream.
-         */
-        interface WithImageStream {
-            /**
-             * The image file.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsOCRFileInputDefinitionStages.WithExecute withImageStream(byte[] imageStream);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsOCRFileInputDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-            /**
-             * When set to True, the image goes through additional processing to come with additional candidates.
-             *   image/tiff is not supported when enhanced is set to true
-             *   Note: This impacts the response time.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsOCRFileInputDefinitionStages.WithExecute withEnhanced(Boolean enhanced);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsOCRFileInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OCR object if successful.
-             */
-            OCR execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OCR object
-             */
-            Observable<OCR> executeAsync();
-        }
-    }
+    Mono<OCR> oCRUrlInputAsync(@NonNull String language, @NonNull String contentType, @NonNull BodyModel imageUrl, Boolean cacheImage, Boolean enhanced);
 
     /**
-     * The entirety of oCRFileInput definition.
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OCR object if successful.
      */
-    interface ImageModerationsOCRFileInputDefinition extends
-        ImageModerationsOCRFileInputDefinitionStages.WithLanguage,
-        ImageModerationsOCRFileInputDefinitionStages.WithImageStream,
-        ImageModerationsOCRFileInputDefinitionStages.WithExecute {
-    }
+    OCR oCRFileInput(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OCR>> oCRFileInputWithRestResponseAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OCR> oCRFileInputAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
+     *
+     * image/tiff is not supported when enhanced is set to true
+     *
+     * Note: This impacts the response time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OCR object if successful.
+     */
+    OCR oCRFileInput(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage, Boolean enhanced);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
+     *
+     * image/tiff is not supported when enhanced is set to true
+     *
+     * Note: This impacts the response time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OCR>> oCRFileInputWithRestResponseAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage, Boolean enhanced);
+
+    /**
+     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     *
+     * @param language Language of the terms.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
+     *
+     * image/tiff is not supported when enhanced is set to true
+     *
+     * Note: This impacts the response time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OCR> oCRFileInputAsync(@NonNull String language, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage, Boolean enhanced);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
      *
+     * @param contentLength The content length.
      * @param imageStream The image file.
-     * @param evaluateFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Evaluate object if successful.
      */
-    
-    Evaluate evaluateFileInput(byte[] imageStream, EvaluateFileInputOptionalParameter evaluateFileInputOptionalParameter);
+    Evaluate evaluateFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
      *
+     * @param contentLength The content length.
      * @param imageStream The image file.
-     * @param evaluateFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Evaluate object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    Observable<Evaluate> evaluateFileInputAsync(byte[] imageStream, EvaluateFileInputOptionalParameter evaluateFileInputOptionalParameter);
+    Mono<SimpleResponse<Evaluate>> evaluateFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
      *
-     * @return the first stage of the evaluateFileInput call
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ImageModerationsEvaluateFileInputDefinitionStages.WithImageStream evaluateFileInput();
-
-    /**
-     * Grouping of evaluateFileInput definition stages.
-     */
-    interface ImageModerationsEvaluateFileInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify imageStream.
-         */
-        interface WithImageStream {
-            /**
-             * The image file.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsEvaluateFileInputDefinitionStages.WithExecute withImageStream(byte[] imageStream);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsEvaluateFileInputDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsEvaluateFileInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Evaluate object if successful.
-             */
-            Evaluate execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Evaluate object
-             */
-            Observable<Evaluate> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of evaluateFileInput definition.
-     */
-    interface ImageModerationsEvaluateFileInputDefinition extends
-        ImageModerationsEvaluateFileInputDefinitionStages.WithImageStream,
-        ImageModerationsEvaluateFileInputDefinitionStages.WithExecute {
-    }
+    Mono<Evaluate> evaluateFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
      *
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param evaluateUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Evaluate object if successful.
      */
-    
-    Evaluate evaluateUrlInput(String contentType, BodyModelModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter);
+    Evaluate evaluateFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
+
+    /**
+     * Returns probabilities of the image containing racy or adult content.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<Evaluate>> evaluateFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
+
+    /**
+     * Returns probabilities of the image containing racy or adult content.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Evaluate> evaluateFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Boolean cacheImage);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
      *
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param evaluateUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Evaluate object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Evaluate object if successful.
      */
-    
-    Observable<Evaluate> evaluateUrlInputAsync(String contentType, BodyModelModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter);
+    Evaluate evaluateUrlInput(@NonNull String contentType, @NonNull BodyModel imageUrl);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
      *
-     * @return the first stage of the evaluateUrlInput call
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ImageModerationsEvaluateUrlInputDefinitionStages.WithContentType evaluateUrlInput();
+    Mono<SimpleResponse<Evaluate>> evaluateUrlInputWithRestResponseAsync(@NonNull String contentType, @NonNull BodyModel imageUrl);
 
     /**
-     * Grouping of evaluateUrlInput definition stages.
-     */
-    interface ImageModerationsEvaluateUrlInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify contentType.
-         */
-        interface WithContentType {
-            /**
-             * The content type.
-             *
-             * @return next definition stage
-             */
-            WithImageUrl withContentType(String contentType);
-        }
-        /**
-         * The stage of the definition to be specify imageUrl.
-         */
-        interface WithImageUrl {
-            /**
-             * The image url.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsEvaluateUrlInputDefinitionStages.WithExecute withImageUrl(BodyModelModel imageUrl);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsEvaluateUrlInputDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsEvaluateUrlInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Evaluate object if successful.
-             */
-            Evaluate execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Evaluate object
-             */
-            Observable<Evaluate> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of evaluateUrlInput definition.
-     */
-    interface ImageModerationsEvaluateUrlInputDefinition extends
-        ImageModerationsEvaluateUrlInputDefinitionStages.WithContentType,
-        ImageModerationsEvaluateUrlInputDefinitionStages.WithImageUrl,
-        ImageModerationsEvaluateUrlInputDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
-     *   lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     *   Returns ID and tags of matching image.&lt;br/&gt;
-     *   &lt;br/&gt;
-     *   Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
-     *   in the response.
+     * Returns probabilities of the image containing racy or adult content.
      *
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param matchUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MatchResponse object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    MatchResponse matchUrlInput(String contentType, BodyModelModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter);
+    Mono<Evaluate> evaluateUrlInputAsync(@NonNull String contentType, @NonNull BodyModel imageUrl);
 
     /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
-     *   lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     *   Returns ID and tags of matching image.&lt;br/&gt;
-     *   &lt;br/&gt;
-     *   Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
-     *   in the response.
+     * Returns probabilities of the image containing racy or adult content.
      *
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param matchUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MatchResponse object
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Evaluate object if successful.
      */
-    
-    Observable<MatchResponse> matchUrlInputAsync(String contentType, BodyModelModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter);
+    Evaluate evaluateUrlInput(@NonNull String contentType, @NonNull BodyModel imageUrl, Boolean cacheImage);
 
     /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
-     *   lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     *   Returns ID and tags of matching image.&lt;br/&gt;
-     *   &lt;br/&gt;
-     *   Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
-     *   in the response.
+     * Returns probabilities of the image containing racy or adult content.
      *
-     * @return the first stage of the matchUrlInput call
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ImageModerationsMatchUrlInputDefinitionStages.WithContentType matchUrlInput();
+    Mono<SimpleResponse<Evaluate>> evaluateUrlInputWithRestResponseAsync(@NonNull String contentType, @NonNull BodyModel imageUrl, Boolean cacheImage);
 
     /**
-     * Grouping of matchUrlInput definition stages.
-     */
-    interface ImageModerationsMatchUrlInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify contentType.
-         */
-        interface WithContentType {
-            /**
-             * The content type.
-             *
-             * @return next definition stage
-             */
-            WithImageUrl withContentType(String contentType);
-        }
-        /**
-         * The stage of the definition to be specify imageUrl.
-         */
-        interface WithImageUrl {
-            /**
-             * The image url.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsMatchUrlInputDefinitionStages.WithExecute withImageUrl(BodyModelModel imageUrl);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The list Id.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsMatchUrlInputDefinitionStages.WithExecute withListId(String listId);
-
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsMatchUrlInputDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsMatchUrlInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the MatchResponse object if successful.
-             */
-            MatchResponse execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the MatchResponse object
-             */
-            Observable<MatchResponse> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of matchUrlInput definition.
-     */
-    interface ImageModerationsMatchUrlInputDefinition extends
-        ImageModerationsMatchUrlInputDefinitionStages.WithContentType,
-        ImageModerationsMatchUrlInputDefinitionStages.WithImageUrl,
-        ImageModerationsMatchUrlInputDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
-     *   lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     *   Returns ID and tags of matching image.&lt;br/&gt;
-     *   &lt;br/&gt;
-     *   Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
-     *   in the response.
+     * Returns probabilities of the image containing racy or adult content.
      *
-     * @param imageStream The image file.
-     * @param matchFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Evaluate> evaluateUrlInputAsync(@NonNull String contentType, @NonNull BodyModel imageUrl, Boolean cacheImage);
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the MatchResponse object if successful.
      */
-    
-    MatchResponse matchFileInput(byte[] imageStream, MatchFileInputOptionalParameter matchFileInputOptionalParameter);
+    MatchResponse matchUrlInput(@NonNull String contentType, @NonNull BodyModel imageUrl);
 
     /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
-     *   lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     *   Returns ID and tags of matching image.&lt;br/&gt;
-     *   &lt;br/&gt;
-     *   Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
-     *   in the response.
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
      *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<MatchResponse>> matchUrlInputWithRestResponseAsync(@NonNull String contentType, @NonNull BodyModel imageUrl);
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<MatchResponse> matchUrlInputAsync(@NonNull String contentType, @NonNull BodyModel imageUrl);
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param listId The list Id.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MatchResponse object if successful.
+     */
+    MatchResponse matchUrlInput(@NonNull String contentType, @NonNull BodyModel imageUrl, String listId, Boolean cacheImage);
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param listId The list Id.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<MatchResponse>> matchUrlInputWithRestResponseAsync(@NonNull String contentType, @NonNull BodyModel imageUrl, String listId, Boolean cacheImage);
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param listId The list Id.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<MatchResponse> matchUrlInputAsync(@NonNull String contentType, @NonNull BodyModel imageUrl, String listId, Boolean cacheImage);
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentLength The content length.
      * @param imageStream The image file.
-     * @param matchFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MatchResponse object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MatchResponse object if successful.
      */
-    
-    Observable<MatchResponse> matchFileInputAsync(byte[] imageStream, MatchFileInputOptionalParameter matchFileInputOptionalParameter);
+    MatchResponse matchFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
 
     /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
-     *   lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     *   Returns ID and tags of matching image.&lt;br/&gt;
-     *   &lt;br/&gt;
-     *   Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
-     *   in the response.
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
      *
-     * @return the first stage of the matchFileInput call
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ImageModerationsMatchFileInputDefinitionStages.WithImageStream matchFileInput();
+    Mono<SimpleResponse<MatchResponse>> matchFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
 
     /**
-     * Grouping of matchFileInput definition stages.
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    interface ImageModerationsMatchFileInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify imageStream.
-         */
-        interface WithImageStream {
-            /**
-             * The image file.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsMatchFileInputDefinitionStages.WithExecute withImageStream(byte[] imageStream);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The list Id.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsMatchFileInputDefinitionStages.WithExecute withListId(String listId);
-
-            /**
-             * Whether to retain the submitted image for future use; defaults to false if omitted.
-             *
-             * @return next definition stage
-             */
-            ImageModerationsMatchFileInputDefinitionStages.WithExecute withCacheImage(Boolean cacheImage);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ImageModerationsMatchFileInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the MatchResponse object if successful.
-             */
-            MatchResponse execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the MatchResponse object
-             */
-            Observable<MatchResponse> executeAsync();
-        }
-    }
+    Mono<MatchResponse> matchFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
 
     /**
-     * The entirety of matchFileInput definition.
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param listId The list Id.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MatchResponse object if successful.
      */
-    interface ImageModerationsMatchFileInputDefinition extends
-        ImageModerationsMatchFileInputDefinitionStages.WithImageStream,
-        ImageModerationsMatchFileInputDefinitionStages.WithExecute {
-    }
+    MatchResponse matchFileInput(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, String listId, Boolean cacheImage);
 
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param listId The list Id.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<MatchResponse>> matchFileInputWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, String listId, Boolean cacheImage);
+
+    /**
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *
+     * Returns ID and tags of matching image.&lt;br/&gt;
+     * &lt;br/&gt;
+     * Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     *
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param listId The list Id.
+     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<MatchResponse> matchFileInputAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, String listId, Boolean cacheImage);
 }

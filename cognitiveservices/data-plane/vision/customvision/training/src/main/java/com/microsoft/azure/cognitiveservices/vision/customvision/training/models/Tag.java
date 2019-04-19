@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * Represents a Tag.
  */
-public class Tag {
+public final class Tag {
     /**
      * Gets the Tag ID.
      */
@@ -24,14 +24,21 @@ public class Tag {
     /**
      * Gets or sets the name of the tag.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Gets or sets the description of the tag.
      */
-    @JsonProperty(value = "description")
+    @JsonProperty(value = "description", required = true)
     private String description;
+
+    /**
+     * Gets or sets the type of the tag. Possible values include: 'Regular',
+     * 'Negative'.
+     */
+    @JsonProperty(value = "type", required = true)
+    private TagType type;
 
     /**
      * Gets the number of images with this tag.
@@ -42,7 +49,7 @@ public class Tag {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -51,7 +58,7 @@ public class Tag {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -60,7 +67,7 @@ public class Tag {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the Tag object itself.
      */
     public Tag withName(String name) {
@@ -71,7 +78,7 @@ public class Tag {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public String description() {
         return this.description;
@@ -80,7 +87,7 @@ public class Tag {
     /**
      * Set the description value.
      *
-     * @param description the description value to set
+     * @param description the description value to set.
      * @return the Tag object itself.
      */
     public Tag withDescription(String description) {
@@ -89,12 +96,31 @@ public class Tag {
     }
 
     /**
+     * Get the type value.
+     *
+     * @return the type value.
+     */
+    public TagType type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set.
+     * @return the Tag object itself.
+     */
+    public Tag withType(TagType type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
      * Get the imageCount value.
      *
-     * @return the imageCount value
+     * @return the imageCount value.
      */
     public int imageCount() {
         return this.imageCount;
     }
-
 }

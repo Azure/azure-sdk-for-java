@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Accessory item and corresponding confidence level.
  */
-public class Accessory {
+public final class Accessory {
     /**
      * Type of an accessory. Possible values include: 'headWear', 'glasses',
      * 'mask'.
@@ -30,7 +30,7 @@ public class Accessory {
     /**
      * Get the type value.
      *
-     * @return the type value
+     * @return the type value.
      */
     public AccessoryType type() {
         return this.type;
@@ -39,7 +39,7 @@ public class Accessory {
     /**
      * Set the type value.
      *
-     * @param type the type value to set
+     * @param type the type value to set.
      * @return the Accessory object itself.
      */
     public Accessory withType(AccessoryType type) {
@@ -50,7 +50,7 @@ public class Accessory {
     /**
      * Get the confidence value.
      *
-     * @return the confidence value
+     * @return the confidence value.
      */
     public double confidence() {
         return this.confidence;
@@ -59,12 +59,11 @@ public class Accessory {
     /**
      * Set the confidence value.
      *
-     * @param confidence the confidence value to set
+     * @param confidence the confidence value to set.
      * @return the Accessory object itself.
      */
     public Accessory withConfidence(double confidence) {
         this.confidence = confidence;
         return this;
     }
-
 }

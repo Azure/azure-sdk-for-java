@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Defines a news answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = News.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("News")
-public class News extends SearchResultsAnswer {
+public final class News extends SearchResultsAnswer {
     /**
      * An array of NewsArticle objects that contain information about news
      * articles that are relevant to the query. If there are no results to
@@ -36,7 +36,7 @@ public class News extends SearchResultsAnswer {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<NewsArticle> value() {
         return this.value;
@@ -45,7 +45,7 @@ public class News extends SearchResultsAnswer {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the News object itself.
      */
     public News withValue(List<NewsArticle> value) {
@@ -56,10 +56,9 @@ public class News extends SearchResultsAnswer {
     /**
      * Get the location value.
      *
-     * @return the location value
+     * @return the location value.
      */
     public String location() {
         return this.location;
     }
-
 }

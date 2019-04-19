@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The MultiLanguageInput model.
  */
-public class MultiLanguageInput {
+public final class MultiLanguageInput {
     /**
      * This is the 2 letter ISO 639-1 representation of a language. For
      * example, use "en" for English; "es" for Spanish etc.,.
@@ -36,7 +36,7 @@ public class MultiLanguageInput {
     /**
      * Get the language value.
      *
-     * @return the language value
+     * @return the language value.
      */
     public String language() {
         return this.language;
@@ -45,7 +45,7 @@ public class MultiLanguageInput {
     /**
      * Set the language value.
      *
-     * @param language the language value to set
+     * @param language the language value to set.
      * @return the MultiLanguageInput object itself.
      */
     public MultiLanguageInput withLanguage(String language) {
@@ -56,7 +56,7 @@ public class MultiLanguageInput {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public String id() {
         return this.id;
@@ -65,7 +65,7 @@ public class MultiLanguageInput {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the MultiLanguageInput object itself.
      */
     public MultiLanguageInput withId(String id) {
@@ -76,7 +76,7 @@ public class MultiLanguageInput {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -85,12 +85,11 @@ public class MultiLanguageInput {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the MultiLanguageInput object itself.
      */
     public MultiLanguageInput withText(String text) {
         this.text = text;
         return this;
     }
-
 }

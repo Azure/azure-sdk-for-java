@@ -8,8 +8,9 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring;
 
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetPatternsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetIntentPatternsOptionalParameter;
+import com.azure.common.http.rest.SimpleResponse;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureClouds;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternRuleCreateObject;
@@ -17,401 +18,430 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Patt
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternRuleUpdateObject;
 import java.util.List;
 import java.util.UUID;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Patterns.
+ * An instance of this class provides access to all the operations defined in
+ * Patterns.
  */
 public interface Patterns {
-
     /**
-     * Adds one pattern to the specified application.
+     * Adds a pattern to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param pattern The input pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PatternRuleInfo object if successful.
      */
-    PatternRuleInfo addPattern(UUID appId, String versionId, PatternRuleCreateObject pattern);
+    PatternRuleInfo addPattern(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PatternRuleCreateObject pattern);
 
     /**
-     * Adds one pattern to the specified application.
+     * Adds a pattern to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param pattern The input pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PatternRuleInfo object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<PatternRuleInfo> addPatternAsync(UUID appId, String versionId, PatternRuleCreateObject pattern);
-
+    Mono<SimpleResponse<PatternRuleInfo>> addPatternWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PatternRuleCreateObject pattern);
 
     /**
-     * Returns an application version's patterns.
+     * Adds a pattern to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param pattern The input pattern.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<PatternRuleInfo> addPatternAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PatternRuleCreateObject pattern);
+
+    /**
+     * Gets patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    @Deprecated
-    List<PatternRuleInfo> getPatterns(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter);
+    List<PatternRuleInfo> listPatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<PatternRuleInfo>> getPatternsAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter);
+    Mono<SimpleResponse<List<PatternRuleInfo>>> listPatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
-     * @return the first stage of the getPatterns call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    PatternsGetPatternsDefinitionStages.WithAppId getPatterns();
+    Mono<List<PatternRuleInfo>> listPatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Grouping of getPatterns definition stages.
-     */
-    interface PatternsGetPatternsDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            PatternsGetPatternsDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            PatternsGetPatternsDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            PatternsGetPatternsDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PatternsGetPatternsDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;PatternRuleInfo&gt; object if successful.
-             */
-            List<PatternRuleInfo> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;PatternRuleInfo&gt; object
-             */
-            Observable<List<PatternRuleInfo>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of getPatterns definition.
-     */
-    interface PatternsGetPatternsDefinition extends
-        PatternsGetPatternsDefinitionStages.WithAppId,
-        PatternsGetPatternsDefinitionStages.WithVersionId,
-        PatternsGetPatternsDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Updates patterns.
+     * Gets patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;PatternRuleInfo&gt; object if successful.
+     */
+    List<PatternRuleInfo> listPatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<PatternRuleInfo>>> listPatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<PatternRuleInfo>> listPatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Updates patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patterns An array represents the patterns.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    List<PatternRuleInfo> updatePatterns(UUID appId, String versionId, List<PatternRuleUpdateObject> patterns);
+    List<PatternRuleInfo> updatePatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleUpdateObject> patterns);
 
     /**
-     * Updates patterns.
+     * Updates patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patterns An array represents the patterns.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<PatternRuleInfo>> updatePatternsAsync(UUID appId, String versionId, List<PatternRuleUpdateObject> patterns);
-
-
+    Mono<SimpleResponse<List<PatternRuleInfo>>> updatePatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleUpdateObject> patterns);
 
     /**
-     * Adds a batch of patterns to the specified application.
+     * Updates patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param patterns An array represents the patterns.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<PatternRuleInfo>> updatePatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleUpdateObject> patterns);
+
+    /**
+     * Adds a batch of patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patterns A JSON array containing patterns.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    List<PatternRuleInfo> batchAddPatterns(UUID appId, String versionId, List<PatternRuleCreateObject> patterns);
+    List<PatternRuleInfo> batchAddPatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleCreateObject> patterns);
 
     /**
-     * Adds a batch of patterns to the specified application.
+     * Adds a batch of patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patterns A JSON array containing patterns.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<PatternRuleInfo>> batchAddPatternsAsync(UUID appId, String versionId, List<PatternRuleCreateObject> patterns);
-
-
+    Mono<SimpleResponse<List<PatternRuleInfo>>> batchAddPatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleCreateObject> patterns);
 
     /**
-     * Deletes the patterns with the specified IDs.
+     * Adds a batch of patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param patterns A JSON array containing patterns.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<PatternRuleInfo>> batchAddPatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleCreateObject> patterns);
+
+    /**
+     * Deletes a list of patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternIds The patterns IDs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deletePatterns(UUID appId, String versionId, List<UUID> patternIds);
+    OperationStatus deletePatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<UUID> patternIds);
 
     /**
-     * Deletes the patterns with the specified IDs.
+     * Deletes a list of patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternIds The patterns IDs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deletePatternsAsync(UUID appId, String versionId, List<UUID> patternIds);
-
-
+    Mono<SimpleResponse<OperationStatus>> deletePatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<UUID> patternIds);
 
     /**
-     * Updates a pattern.
+     * Deletes a list of patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param patternIds The patterns IDs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deletePatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<UUID> patternIds);
+
+    /**
+     * Updates a pattern in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternId The pattern ID.
      * @param pattern An object representing a pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PatternRuleInfo object if successful.
      */
-    PatternRuleInfo updatePattern(UUID appId, String versionId, UUID patternId, PatternRuleUpdateObject pattern);
+    PatternRuleInfo updatePattern(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId, @NonNull PatternRuleUpdateObject pattern);
 
     /**
-     * Updates a pattern.
+     * Updates a pattern in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternId The pattern ID.
      * @param pattern An object representing a pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PatternRuleInfo object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<PatternRuleInfo> updatePatternAsync(UUID appId, String versionId, UUID patternId, PatternRuleUpdateObject pattern);
-
-
+    Mono<SimpleResponse<PatternRuleInfo>> updatePatternWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId, @NonNull PatternRuleUpdateObject pattern);
 
     /**
-     * Deletes the pattern with the specified ID.
+     * Updates a pattern in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternId The pattern ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param pattern An object representing a pattern.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<PatternRuleInfo> updatePatternAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId, @NonNull PatternRuleUpdateObject pattern);
+
+    /**
+     * Deletes the pattern with the specified ID from a version of the application..
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param patternId The pattern ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deletePattern(UUID appId, String versionId, UUID patternId);
+    OperationStatus deletePattern(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId);
 
     /**
-     * Deletes the pattern with the specified ID.
+     * Deletes the pattern with the specified ID from a version of the application..
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternId The pattern ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deletePatternAsync(UUID appId, String versionId, UUID patternId);
-
+    Mono<SimpleResponse<OperationStatus>> deletePatternWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId);
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Deletes the pattern with the specified ID from a version of the application..
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param patternId The pattern ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deletePatternAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId);
+
+    /**
+     * Returns patterns for the specific intent in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    @Deprecated
-    List<PatternRuleInfo> getIntentPatterns(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter);
+    List<PatternRuleInfo> listIntentPatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<PatternRuleInfo>> getIntentPatternsAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter);
+    Mono<SimpleResponse<List<PatternRuleInfo>>> listIntentPatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
-     * @return the first stage of the getIntentPatterns call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    PatternsGetIntentPatternsDefinitionStages.WithAppId getIntentPatterns();
+    Mono<List<PatternRuleInfo>> listIntentPatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
 
     /**
-     * Grouping of getIntentPatterns definition stages.
+     * Returns patterns for the specific intent in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    interface PatternsGetIntentPatternsDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithIntentId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify intentId.
-         */
-        interface WithIntentId {
-            /**
-             * The intent classifier ID.
-             *
-             * @return next definition stage
-             */
-            PatternsGetIntentPatternsDefinitionStages.WithExecute withIntentId(UUID intentId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            PatternsGetIntentPatternsDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            PatternsGetIntentPatternsDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PatternsGetIntentPatternsDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;PatternRuleInfo&gt; object if successful.
-             */
-            List<PatternRuleInfo> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;PatternRuleInfo&gt; object
-             */
-            Observable<List<PatternRuleInfo>> executeAsync();
-        }
-    }
+    List<PatternRuleInfo> listIntentPatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Integer skip, Integer take);
 
     /**
-     * The entirety of getIntentPatterns definition.
+     * Returns patterns for the specific intent in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    interface PatternsGetIntentPatternsDefinition extends
-        PatternsGetIntentPatternsDefinitionStages.WithAppId,
-        PatternsGetIntentPatternsDefinitionStages.WithVersionId,
-        PatternsGetIntentPatternsDefinitionStages.WithIntentId,
-        PatternsGetIntentPatternsDefinitionStages.WithExecute {
-    }
+    Mono<SimpleResponse<List<PatternRuleInfo>>> listIntentPatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Integer skip, Integer take);
 
+    /**
+     * Returns patterns for the specific intent in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<PatternRuleInfo>> listIntentPatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Integer skip, Integer take);
 }

@@ -15,19 +15,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for AccessoryType.
  */
 public enum AccessoryType {
-    /** Enum value headWear. */
+    /**
+     * Enum value headWear.
+     */
     HEAD_WEAR("headWear"),
 
-    /** Enum value glasses. */
+    /**
+     * Enum value glasses.
+     */
     GLASSES("glasses"),
 
-    /** Enum value mask. */
+    /**
+     * Enum value mask.
+     */
     MASK("mask");
 
-    /** The actual serialized value for a AccessoryType instance. */
-    private String value;
+    /**
+     * The actual serialized value for a AccessoryType instance.
+     */
+    private final String value;
 
-    AccessoryType(String value) {
+    private AccessoryType(String value) {
         this.value = value;
     }
 

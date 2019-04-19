@@ -8,24 +8,29 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for TextFormat.
  */
 public final class TextFormat extends ExpandableStringEnum<TextFormat> {
-    /** Static value Raw for TextFormat. */
+    /**
+     * Static value Raw for TextFormat.
+     */
     public static final TextFormat RAW = fromString("Raw");
 
-    /** Static value Html for TextFormat. */
+    /**
+     * Static value Html for TextFormat.
+     */
     public static final TextFormat HTML = fromString("Html");
 
     /**
      * Creates or finds a TextFormat from its string representation.
-     * @param name a name to look for
-     * @return the corresponding TextFormat
+     *
+     * @param name a name to look for.
+     * @return the corresponding TextFormat.
      */
     @JsonCreator
     public static TextFormat fromString(String name) {
@@ -33,7 +38,7 @@ public final class TextFormat extends ExpandableStringEnum<TextFormat> {
     }
 
     /**
-     * @return known TextFormat values
+     * @return known TextFormat values.
      */
     public static Collection<TextFormat> values() {
         return values(TextFormat.class);

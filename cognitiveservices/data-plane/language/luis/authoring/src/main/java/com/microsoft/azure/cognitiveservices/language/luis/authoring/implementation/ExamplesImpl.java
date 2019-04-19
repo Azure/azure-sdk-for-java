@@ -8,140 +8,120 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation;
 
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListExamplesOptionalParameter;
-import retrofit2.Retrofit;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.DELETE;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureClouds;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.BatchLabelExample;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ExampleLabelObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LabeledUtterance;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LabelExampleResponse;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Examples.
+ * An instance of this class provides access to all the operations defined in
+ * Examples.
  */
-public class ExamplesImpl implements Examples {
-    /** The Retrofit service to perform REST calls. */
+public final class ExamplesImpl implements Examples {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private ExamplesService service;
-    /** The service client containing this operation class. */
+
+    /**
+     * The service client containing this operation class.
+     */
     private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of ExamplesImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ExamplesImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
-        this.service = retrofit.create(ExamplesService.class);
+    public ExamplesImpl(LUISAuthoringClientImpl client) {
+        this.service = RestProxy.create(ExamplesService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Examples to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for Examples to be used by the
+     * proxy service to perform REST calls.
      */
-    interface ExamplesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples add" })
+    @Host("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0")
+    private interface ExamplesService {
         @POST("apps/{appId}/versions/{versionId}/example")
-        Observable<Response<ResponseBody>> add(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body ExampleLabelObject exampleLabelObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<LabelExampleResponse>> add(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") ExampleLabelObject exampleLabelObject);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples batch" })
         @POST("apps/{appId}/versions/{versionId}/examples")
-        Observable<Response<ResponseBody>> batch(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<ExampleLabelObject> exampleLabelObjectArray, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({201, 207})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<List<BatchLabelExample>>> batch(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") List<ExampleLabelObject> exampleLabelObjectArray);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples list" })
         @GET("apps/{appId}/versions/{versionId}/examples")
-        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<List<LabeledUtterance>>> list(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @QueryParam("skip") Integer skip, @QueryParam("take") Integer take);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples delete" })
-        @HTTP(path = "apps/{appId}/versions/{versionId}/examples/{exampleId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("exampleId") int exampleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
+        @DELETE("apps/{appId}/versions/{versionId}/examples/{exampleId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<OperationStatus>> delete(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @PathParam("exampleId") int exampleId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud);
     }
 
     /**
-     * Adds a labeled example to the application.
+     * Adds a labeled example utterance in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObject An example label with the expected intent and entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the LabelExampleResponse object if successful.
      */
-    public LabelExampleResponse add(UUID appId, String versionId, ExampleLabelObject exampleLabelObject) {
-        return addWithServiceResponseAsync(appId, versionId, exampleLabelObject).toBlocking().single().body();
+    public LabelExampleResponse add(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull ExampleLabelObject exampleLabelObject) {
+        return addAsync(azureRegion, azureCloud, appId, versionId, exampleLabelObject).block();
     }
 
     /**
-     * Adds a labeled example to the application.
+     * Adds a labeled example utterance in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObject An example label with the expected intent and entities.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<LabelExampleResponse> addAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject, final ServiceCallback<LabelExampleResponse> serviceCallback) {
-        return ServiceFuture.fromResponse(addWithServiceResponseAsync(appId, versionId, exampleLabelObject), serviceCallback);
-    }
-
-    /**
-     * Adds a labeled example to the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param exampleLabelObject An example label with the expected intent and entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the LabelExampleResponse object
-     */
-    public Observable<LabelExampleResponse> addAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject) {
-        return addWithServiceResponseAsync(appId, versionId, exampleLabelObject).map(new Func1<ServiceResponse<LabelExampleResponse>, LabelExampleResponse>() {
-            @Override
-            public LabelExampleResponse call(ServiceResponse<LabelExampleResponse> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Adds a labeled example to the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param exampleLabelObject An example label with the expected intent and entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the LabelExampleResponse object
-     */
-    public Observable<ServiceResponse<LabelExampleResponse>> addWithServiceResponseAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<LabelExampleResponse>> addWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull ExampleLabelObject exampleLabelObject) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -153,87 +133,59 @@ public class ExamplesImpl implements Examples {
             throw new IllegalArgumentException("Parameter exampleLabelObject is required and cannot be null.");
         }
         Validator.validate(exampleLabelObject);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.add(appId, versionId, exampleLabelObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LabelExampleResponse>>>() {
-                @Override
-                public Observable<ServiceResponse<LabelExampleResponse>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<LabelExampleResponse> clientResponse = addDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<LabelExampleResponse> addDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<LabelExampleResponse, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<LabelExampleResponse>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+        return service.add(appId, versionId, azureRegion, azureCloud, exampleLabelObject);
     }
 
     /**
-     * Adds a batch of labeled examples to the application.
+     * Adds a labeled example utterance in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObjectArray Array of examples.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<LabelExampleResponse> addAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull ExampleLabelObject exampleLabelObject) {
+        return addWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, exampleLabelObject)
+            .flatMap((SimpleResponse<LabelExampleResponse> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Adds a batch of labeled example utterances to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param exampleLabelObjectArray Array of example utterances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;BatchLabelExample&gt; object if successful.
      */
-    public List<BatchLabelExample> batch(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray) {
-        return batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray).toBlocking().single().body();
+    public List<BatchLabelExample> batch(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<ExampleLabelObject> exampleLabelObjectArray) {
+        return batchAsync(azureRegion, azureCloud, appId, versionId, exampleLabelObjectArray).block();
     }
 
     /**
-     * Adds a batch of labeled examples to the application.
+     * Adds a batch of labeled example utterances to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObjectArray Array of examples.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param exampleLabelObjectArray Array of example utterances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<BatchLabelExample>> batchAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray, final ServiceCallback<List<BatchLabelExample>> serviceCallback) {
-        return ServiceFuture.fromResponse(batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray), serviceCallback);
-    }
-
-    /**
-     * Adds a batch of labeled examples to the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param exampleLabelObjectArray Array of examples.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;BatchLabelExample&gt; object
-     */
-    public Observable<List<BatchLabelExample>> batchAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray) {
-        return batchWithServiceResponseAsync(appId, versionId, exampleLabelObjectArray).map(new Func1<ServiceResponse<List<BatchLabelExample>>, List<BatchLabelExample>>() {
-            @Override
-            public List<BatchLabelExample> call(ServiceResponse<List<BatchLabelExample>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Adds a batch of labeled examples to the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param exampleLabelObjectArray Array of examples.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;BatchLabelExample&gt; object
-     */
-    public Observable<ServiceResponse<List<BatchLabelExample>>> batchWithServiceResponseAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<List<BatchLabelExample>>> batchWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<ExampleLabelObject> exampleLabelObjectArray) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -245,89 +197,58 @@ public class ExamplesImpl implements Examples {
             throw new IllegalArgumentException("Parameter exampleLabelObjectArray is required and cannot be null.");
         }
         Validator.validate(exampleLabelObjectArray);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.batch(appId, versionId, exampleLabelObjectArray, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<BatchLabelExample>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<BatchLabelExample>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<BatchLabelExample>> clientResponse = batchDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        List<ExampleLabelObject> exampleLabelObjectArrayConverted = exampleLabelObjectArray;
+        return service.batch(appId, versionId, azureRegion, azureCloud, exampleLabelObjectArrayConverted);
     }
-
-    private ServiceResponse<List<BatchLabelExample>> batchDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<BatchLabelExample>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<List<BatchLabelExample>>() { }.getType())
-                .register(207, new TypeToken<List<BatchLabelExample>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
 
     /**
-     * Returns examples to be reviewed.
+     * Adds a batch of labeled example utterances to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param exampleLabelObjectArray Array of example utterances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<BatchLabelExample>> batchAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<ExampleLabelObject> exampleLabelObjectArray) {
+        return batchWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, exampleLabelObjectArray)
+            .flatMap((SimpleResponse<List<BatchLabelExample>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Returns example utterances to be reviewed from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;LabeledUtterance&gt; object if successful.
      */
-    public List<LabeledUtterance> list(UUID appId, String versionId, ListExamplesOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(appId, versionId, listOptionalParameter).toBlocking().single().body();
+    public List<LabeledUtterance> list(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return listAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
     /**
-     * Returns examples to be reviewed.
+     * Returns example utterances to be reviewed from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<LabeledUtterance>> listAsync(UUID appId, String versionId, ListExamplesOptionalParameter listOptionalParameter, final ServiceCallback<List<LabeledUtterance>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(appId, versionId, listOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Returns examples to be reviewed.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;LabeledUtterance&gt; object
-     */
-    public Observable<List<LabeledUtterance>> listAsync(UUID appId, String versionId, ListExamplesOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(appId, versionId, listOptionalParameter).map(new Func1<ServiceResponse<List<LabeledUtterance>>, List<LabeledUtterance>>() {
-            @Override
-            public List<LabeledUtterance> call(ServiceResponse<List<LabeledUtterance>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Returns examples to be reviewed.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;LabeledUtterance&gt; object
-     */
-    public Observable<ServiceResponse<List<LabeledUtterance>>> listWithServiceResponseAsync(UUID appId, String versionId, ListExamplesOptionalParameter listOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<List<LabeledUtterance>>> listWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -335,25 +256,62 @@ public class ExamplesImpl implements Examples {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        final Integer skip = listOptionalParameter != null ? listOptionalParameter.skip() : null;
-        final Integer take = listOptionalParameter != null ? listOptionalParameter.take() : null;
-
-        return listWithServiceResponseAsync(appId, versionId, skip, take);
+        final Integer skip = 0;
+        final Integer take = 100;
+        return service.list(appId, versionId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Returns examples to be reviewed.
+     * Returns example utterances to be reviewed from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<LabeledUtterance>> listAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return listWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<List<LabeledUtterance>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Returns example utterances to be reviewed from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param skip The number of entries to skip. Default value is 0.
      * @param take The number of entries to return. Maximum page size is 500. Default is 100.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;LabeledUtterance&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;LabeledUtterance&gt; object if successful.
      */
-    public Observable<ServiceResponse<List<LabeledUtterance>>> listWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public List<LabeledUtterance> list(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        return listAsync(azureRegion, azureCloud, appId, versionId, skip, take).block();
+    }
+
+    /**
+     * Returns example utterances to be reviewed from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<LabeledUtterance>>> listWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -361,150 +319,60 @@ public class ExamplesImpl implements Examples {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.list(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<LabeledUtterance>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<LabeledUtterance>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<LabeledUtterance>> clientResponse = listDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<LabeledUtterance>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<LabeledUtterance>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<LabeledUtterance>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public ExamplesListParameters list() {
-        return new ExamplesListParameters(this);
+        return service.list(appId, versionId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Internal class implementing ExamplesListDefinition.
-     */
-    class ExamplesListParameters implements ExamplesListDefinition {
-        private ExamplesImpl parent;
-        private UUID appId;
-        private String versionId;
-        private Integer skip;
-        private Integer take;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ExamplesListParameters(ExamplesImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ExamplesListParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public ExamplesListParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public ExamplesListParameters withSkip(Integer skip) {
-            this.skip = skip;
-            return this;
-        }
-
-        @Override
-        public ExamplesListParameters withTake(Integer take) {
-            this.take = take;
-            return this;
-        }
-
-        @Override
-        public List<LabeledUtterance> execute() {
-        return listWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<List<LabeledUtterance>> executeAsync() {
-            return listWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<LabeledUtterance>>, List<LabeledUtterance>>() {
-                @Override
-                public List<LabeledUtterance> call(ServiceResponse<List<LabeledUtterance>> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Deletes the labeled example with the specified ID.
+     * Returns example utterances to be reviewed from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<LabeledUtterance>> listAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        return listWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, skip, take)
+            .flatMap((SimpleResponse<List<LabeledUtterance>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Deletes the labeled example utterances with the specified ID from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleId The example ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus delete(UUID appId, String versionId, int exampleId) {
-        return deleteWithServiceResponseAsync(appId, versionId, exampleId).toBlocking().single().body();
+    public OperationStatus delete(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int exampleId) {
+        return deleteAsync(azureRegion, azureCloud, appId, versionId, exampleId).block();
     }
 
     /**
-     * Deletes the labeled example with the specified ID.
+     * Deletes the labeled example utterances with the specified ID from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleId The example ID.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<OperationStatus> deleteAsync(UUID appId, String versionId, int exampleId, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(appId, versionId, exampleId), serviceCallback);
-    }
-
-    /**
-     * Deletes the labeled example with the specified ID.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param exampleId The example ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> deleteAsync(UUID appId, String versionId, int exampleId) {
-        return deleteWithServiceResponseAsync(appId, versionId, exampleId).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes the labeled example with the specified ID.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param exampleId The example ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, String versionId, int exampleId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<OperationStatus>> deleteWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int exampleId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -512,26 +380,22 @@ public class ExamplesImpl implements Examples {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.delete(appId, versionId, exampleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.delete(appId, versionId, exampleId, azureRegion, azureCloud);
     }
 
-    private ServiceResponse<OperationStatus> deleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+    /**
+     * Deletes the labeled example utterances with the specified ID from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param exampleId The example ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> deleteAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int exampleId) {
+        return deleteWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, exampleId)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
     }
-
 }

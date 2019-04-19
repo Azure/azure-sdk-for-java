@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Schema items of the body.
  */
-public class TranscriptModerationBodyItem {
+public final class TranscriptModerationBodyItem {
     /**
      * Timestamp of the image.
      */
@@ -30,7 +30,7 @@ public class TranscriptModerationBodyItem {
     /**
      * Get the timestamp value.
      *
-     * @return the timestamp value
+     * @return the timestamp value.
      */
     public String timestamp() {
         return this.timestamp;
@@ -39,7 +39,7 @@ public class TranscriptModerationBodyItem {
     /**
      * Set the timestamp value.
      *
-     * @param timestamp the timestamp value to set
+     * @param timestamp the timestamp value to set.
      * @return the TranscriptModerationBodyItem object itself.
      */
     public TranscriptModerationBodyItem withTimestamp(String timestamp) {
@@ -50,7 +50,7 @@ public class TranscriptModerationBodyItem {
     /**
      * Get the terms value.
      *
-     * @return the terms value
+     * @return the terms value.
      */
     public List<TranscriptModerationBodyItemTermsItem> terms() {
         return this.terms;
@@ -59,12 +59,11 @@ public class TranscriptModerationBodyItem {
     /**
      * Set the terms value.
      *
-     * @param terms the terms value to set
+     * @param terms the terms value to set.
      * @return the TranscriptModerationBodyItem object itself.
      */
     public TranscriptModerationBodyItem withTerms(List<TranscriptModerationBodyItemTermsItem> terms) {
         this.terms = terms;
         return this;
     }
-
 }

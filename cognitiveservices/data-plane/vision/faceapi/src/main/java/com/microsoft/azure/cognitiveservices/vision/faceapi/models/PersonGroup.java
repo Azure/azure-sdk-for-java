@@ -13,9 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Person group object.
  */
-public class PersonGroup extends NameAndUserDataContract {
+public final class PersonGroup extends MetaDataContract {
     /**
-     * PersonGroupId of the existing person groups.
+     * PersonGroupId of the target person group.
      */
     @JsonProperty(value = "personGroupId", required = true)
     private String personGroupId;
@@ -23,7 +23,7 @@ public class PersonGroup extends NameAndUserDataContract {
     /**
      * Get the personGroupId value.
      *
-     * @return the personGroupId value
+     * @return the personGroupId value.
      */
     public String personGroupId() {
         return this.personGroupId;
@@ -32,12 +32,11 @@ public class PersonGroup extends NameAndUserDataContract {
     /**
      * Set the personGroupId value.
      *
-     * @param personGroupId the personGroupId value to set
+     * @param personGroupId the personGroupId value to set.
      * @return the PersonGroup object itself.
      */
     public PersonGroup withPersonGroupId(String personGroupId) {
         this.personGroupId = personGroupId;
         return this;
     }
-
 }

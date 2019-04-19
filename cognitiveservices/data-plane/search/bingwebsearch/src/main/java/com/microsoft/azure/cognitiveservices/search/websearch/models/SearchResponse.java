@@ -16,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Defines the top-level object that the response includes when the request
  * succeeds.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SearchResponse.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("SearchResponse")
-public class SearchResponse extends Response {
+public final class SearchResponse extends Response {
     /**
      * An object that contains the query string that Bing used for the request.
      * This object contains the query string as entered by the user. It may
@@ -85,7 +85,7 @@ public class SearchResponse extends Response {
     /**
      * Get the queryContext value.
      *
-     * @return the queryContext value
+     * @return the queryContext value.
      */
     public QueryContext queryContext() {
         return this.queryContext;
@@ -94,7 +94,7 @@ public class SearchResponse extends Response {
     /**
      * Get the webPages value.
      *
-     * @return the webPages value
+     * @return the webPages value.
      */
     public WebWebAnswer webPages() {
         return this.webPages;
@@ -103,7 +103,7 @@ public class SearchResponse extends Response {
     /**
      * Get the images value.
      *
-     * @return the images value
+     * @return the images value.
      */
     public Images images() {
         return this.images;
@@ -112,7 +112,7 @@ public class SearchResponse extends Response {
     /**
      * Get the news value.
      *
-     * @return the news value
+     * @return the news value.
      */
     public News news() {
         return this.news;
@@ -121,7 +121,7 @@ public class SearchResponse extends Response {
     /**
      * Get the relatedSearches value.
      *
-     * @return the relatedSearches value
+     * @return the relatedSearches value.
      */
     public RelatedSearchesRelatedSearchAnswer relatedSearches() {
         return this.relatedSearches;
@@ -130,7 +130,7 @@ public class SearchResponse extends Response {
     /**
      * Get the spellSuggestions value.
      *
-     * @return the spellSuggestions value
+     * @return the spellSuggestions value.
      */
     public SpellSuggestions spellSuggestions() {
         return this.spellSuggestions;
@@ -139,7 +139,7 @@ public class SearchResponse extends Response {
     /**
      * Get the timeZone value.
      *
-     * @return the timeZone value
+     * @return the timeZone value.
      */
     public TimeZone timeZone() {
         return this.timeZone;
@@ -148,7 +148,7 @@ public class SearchResponse extends Response {
     /**
      * Get the videos value.
      *
-     * @return the videos value
+     * @return the videos value.
      */
     public Videos videos() {
         return this.videos;
@@ -157,7 +157,7 @@ public class SearchResponse extends Response {
     /**
      * Get the computation value.
      *
-     * @return the computation value
+     * @return the computation value.
      */
     public Computation computation() {
         return this.computation;
@@ -166,10 +166,9 @@ public class SearchResponse extends Response {
     /**
      * Get the rankingResponse value.
      *
-     * @return the rankingResponse value
+     * @return the rankingResponse value.
      */
     public RankingRankingResponse rankingResponse() {
         return this.rankingResponse;
     }
-
 }

@@ -11,37 +11,37 @@ package com.microsoft.azure.cognitiveservices.vision.customvision.prediction.mod
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The BoundingBox model.
+ * Bounding box that defines a region of an image.
  */
-public class BoundingBox {
+public final class BoundingBox {
     /**
-     * The left property.
+     * Coordinate of the left boundary.
      */
-    @JsonProperty(value = "left")
+    @JsonProperty(value = "left", required = true)
     private double left;
 
     /**
-     * The top property.
+     * Coordinate of the top boundary.
      */
-    @JsonProperty(value = "top")
+    @JsonProperty(value = "top", required = true)
     private double top;
 
     /**
-     * The width property.
+     * Width.
      */
-    @JsonProperty(value = "width")
+    @JsonProperty(value = "width", required = true)
     private double width;
 
     /**
-     * The height property.
+     * Height.
      */
-    @JsonProperty(value = "height")
+    @JsonProperty(value = "height", required = true)
     private double height;
 
     /**
      * Get the left value.
      *
-     * @return the left value
+     * @return the left value.
      */
     public double left() {
         return this.left;
@@ -50,7 +50,7 @@ public class BoundingBox {
     /**
      * Set the left value.
      *
-     * @param left the left value to set
+     * @param left the left value to set.
      * @return the BoundingBox object itself.
      */
     public BoundingBox withLeft(double left) {
@@ -61,7 +61,7 @@ public class BoundingBox {
     /**
      * Get the top value.
      *
-     * @return the top value
+     * @return the top value.
      */
     public double top() {
         return this.top;
@@ -70,7 +70,7 @@ public class BoundingBox {
     /**
      * Set the top value.
      *
-     * @param top the top value to set
+     * @param top the top value to set.
      * @return the BoundingBox object itself.
      */
     public BoundingBox withTop(double top) {
@@ -81,7 +81,7 @@ public class BoundingBox {
     /**
      * Get the width value.
      *
-     * @return the width value
+     * @return the width value.
      */
     public double width() {
         return this.width;
@@ -90,7 +90,7 @@ public class BoundingBox {
     /**
      * Set the width value.
      *
-     * @param width the width value to set
+     * @param width the width value to set.
      * @return the BoundingBox object itself.
      */
     public BoundingBox withWidth(double width) {
@@ -101,7 +101,7 @@ public class BoundingBox {
     /**
      * Get the height value.
      *
-     * @return the height value
+     * @return the height value.
      */
     public double height() {
         return this.height;
@@ -110,12 +110,11 @@ public class BoundingBox {
     /**
      * Set the height value.
      *
-     * @param height the height value to set
+     * @param height the height value to set.
      * @return the BoundingBox object itself.
      */
     public BoundingBox withHeight(double height) {
         this.height = height;
         return this;
     }
-
 }

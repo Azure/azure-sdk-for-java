@@ -8,238 +8,175 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.implementation;
 
-import retrofit2.Retrofit;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.DELETE;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.HeaderParam;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.PUT;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTermLists;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Body;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.RefreshIndex;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.TermList;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in ListManagementTermLists.
+ * An instance of this class provides access to all the operations defined in
+ * ListManagementTermLists.
  */
-public class ListManagementTermListsImpl implements ListManagementTermLists {
-    /** The Retrofit service to perform REST calls. */
+public final class ListManagementTermListsImpl implements ListManagementTermLists {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private ListManagementTermListsService service;
-    /** The service client containing this operation class. */
+
+    /**
+     * The service client containing this operation class.
+     */
     private ContentModeratorClientImpl client;
 
     /**
      * Initializes an instance of ListManagementTermListsImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ListManagementTermListsImpl(Retrofit retrofit, ContentModeratorClientImpl client) {
-        this.service = retrofit.create(ListManagementTermListsService.class);
+    public ListManagementTermListsImpl(ContentModeratorClientImpl client) {
+        this.service = RestProxy.create(ListManagementTermListsService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ListManagementTermLists to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for ListManagementTermLists to
+     * be used by the proxy service to perform REST calls.
      */
-    interface ListManagementTermListsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTermLists getDetails" })
+    @Host("{Endpoint}")
+    private interface ListManagementTermListsService {
         @GET("contentmoderator/lists/v1.0/termlists/{listId}")
-        Observable<Response<ResponseBody>> getDetails(@Path("listId") String listId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<TermList>> getDetails(@PathParam("listId") String listId, @HostParam("Endpoint") String endpoint);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTermLists delete" })
-        @HTTP(path = "contentmoderator/lists/v1.0/termlists/{listId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("listId") String listId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @DELETE("contentmoderator/lists/v1.0/termlists/{listId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<String>> delete(@PathParam("listId") String listId, @HostParam("Endpoint") String endpoint);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTermLists update" })
         @PUT("contentmoderator/lists/v1.0/termlists/{listId}")
-        Observable<Response<ResponseBody>> update(@Path("listId") String listId, @Header("Content-Type") String contentType, @Body BodyModel bodyParameter, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<TermList>> update(@PathParam("listId") String listId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @BodyParam("application/json; charset=utf-8") Body body);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTermLists create" })
         @POST("contentmoderator/lists/v1.0/termlists")
-        Observable<Response<ResponseBody>> create(@Header("Content-Type") String contentType, @Body BodyModel bodyParameter, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<TermList>> create(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @BodyParam("application/json; charset=utf-8") Body body);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTermLists getAllTermLists" })
         @GET("contentmoderator/lists/v1.0/termlists")
-        Observable<Response<ResponseBody>> getAllTermLists(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<List<TermList>>> getAllTermLists(@HostParam("Endpoint") String endpoint);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTermLists refreshIndexMethod" })
         @POST("contentmoderator/lists/v1.0/termlists/{listId}/RefreshIndex")
-        Observable<Response<ResponseBody>> refreshIndexMethod(@Path("listId") String listId, @Query("language") String language, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<RefreshIndex>> refreshIndexMethod(@PathParam("listId") String listId, @HostParam("Endpoint") String endpoint, @QueryParam("language") String language);
     }
 
     /**
      * Returns list Id details of the term list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TermList object if successful.
      */
-    public TermList getDetails(String listId) {
-        return getDetailsWithServiceResponseAsync(listId).toBlocking().single().body();
+    public TermList getDetails(@NonNull String listId) {
+        return getDetailsAsync(listId).block();
     }
 
     /**
      * Returns list Id details of the term list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<TermList> getDetailsAsync(String listId, final ServiceCallback<TermList> serviceCallback) {
-        return ServiceFuture.fromResponse(getDetailsWithServiceResponseAsync(listId), serviceCallback);
-    }
-
-    /**
-     * Returns list Id details of the term list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
-     */
-    public Observable<TermList> getDetailsAsync(String listId) {
-        return getDetailsWithServiceResponseAsync(listId).map(new Func1<ServiceResponse<TermList>, TermList>() {
-            @Override
-            public TermList call(ServiceResponse<TermList> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Returns list Id details of the term list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
-     */
-    public Observable<ServiceResponse<TermList>> getDetailsWithServiceResponseAsync(String listId) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<TermList>> getDetailsWithRestResponseAsync(@NonNull String listId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.getDetails(listId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TermList>>>() {
-                @Override
-                public Observable<ServiceResponse<TermList>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<TermList> clientResponse = getDetailsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getDetails(listId, this.client.endpoint());
     }
 
-    private ServiceResponse<TermList> getDetailsDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TermList, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TermList>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Returns list Id details of the term list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<TermList> getDetailsAsync(@NonNull String listId) {
+        return getDetailsWithRestResponseAsync(listId)
+            .flatMap((SimpleResponse<TermList> res) -> Mono.just(res.value()));
     }
 
     /**
      * Deletes term list with the list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the String object if successful.
      */
-    public String delete(String listId) {
-        return deleteWithServiceResponseAsync(listId).toBlocking().single().body();
+    public String delete(@NonNull String listId) {
+        return deleteAsync(listId).block();
     }
 
     /**
      * Deletes term list with the list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<String> deleteAsync(String listId, final ServiceCallback<String> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(listId), serviceCallback);
-    }
-
-    /**
-     * Deletes term list with the list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<String> deleteAsync(String listId) {
-        return deleteWithServiceResponseAsync(listId).map(new Func1<ServiceResponse<String>, String>() {
-            @Override
-            public String call(ServiceResponse<String> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes term list with the list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<ServiceResponse<String>> deleteWithServiceResponseAsync(String listId) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<String>> deleteWithRestResponseAsync(@NonNull String listId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.delete(listId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
-                @Override
-                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<String> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.delete(listId, this.client.endpoint());
     }
 
-    private ServiceResponse<String> deleteDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<String, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<String>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Deletes term list with the list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<String> deleteAsync(@NonNull String listId) {
+        return deleteWithRestResponseAsync(listId)
+            .flatMap((SimpleResponse<String> res) -> Mono.just(res.value()));
     }
 
     /**
@@ -247,14 +184,14 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
      *
      * @param listId List Id of the image list.
      * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TermList object if successful.
      */
-    public TermList update(String listId, String contentType, BodyModel bodyParameter) {
-        return updateWithServiceResponseAsync(listId, contentType, bodyParameter).toBlocking().single().body();
+    public TermList update(@NonNull String listId, @NonNull String contentType, @NonNull Body body) {
+        return updateAsync(listId, contentType, body).block();
     }
 
     /**
@@ -262,45 +199,13 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
      *
      * @param listId List Id of the image list.
      * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<TermList> updateAsync(String listId, String contentType, BodyModel bodyParameter, final ServiceCallback<TermList> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(listId, contentType, bodyParameter), serviceCallback);
-    }
-
-    /**
-     * Updates an Term List.
-     *
-     * @param listId List Id of the image list.
-     * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
-     */
-    public Observable<TermList> updateAsync(String listId, String contentType, BodyModel bodyParameter) {
-        return updateWithServiceResponseAsync(listId, contentType, bodyParameter).map(new Func1<ServiceResponse<TermList>, TermList>() {
-            @Override
-            public TermList call(ServiceResponse<TermList> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates an Term List.
-     *
-     * @param listId List Id of the image list.
-     * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
-     */
-    public Observable<ServiceResponse<TermList>> updateWithServiceResponseAsync(String listId, String contentType, BodyModel bodyParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<TermList>> updateWithRestResponseAsync(@NonNull String listId, @NonNull String contentType, @NonNull Body body) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -308,185 +213,107 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
         if (contentType == null) {
             throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
         }
-        if (bodyParameter == null) {
-            throw new IllegalArgumentException("Parameter bodyParameter is required and cannot be null.");
+        if (body == null) {
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         }
-        Validator.validate(bodyParameter);
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.update(listId, contentType, bodyParameter, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TermList>>>() {
-                @Override
-                public Observable<ServiceResponse<TermList>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<TermList> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Validator.validate(body);
+        return service.update(listId, this.client.endpoint(), contentType, body);
     }
 
-    private ServiceResponse<TermList> updateDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TermList, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TermList>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Updates an Term List.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<TermList> updateAsync(@NonNull String listId, @NonNull String contentType, @NonNull Body body) {
+        return updateWithRestResponseAsync(listId, contentType, body)
+            .flatMap((SimpleResponse<TermList> res) -> Mono.just(res.value()));
     }
 
     /**
      * Creates a Term List.
      *
      * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TermList object if successful.
      */
-    public TermList create(String contentType, BodyModel bodyParameter) {
-        return createWithServiceResponseAsync(contentType, bodyParameter).toBlocking().single().body();
+    public TermList create(@NonNull String contentType, @NonNull Body body) {
+        return createAsync(contentType, body).block();
     }
 
     /**
      * Creates a Term List.
      *
      * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<TermList> createAsync(String contentType, BodyModel bodyParameter, final ServiceCallback<TermList> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(contentType, bodyParameter), serviceCallback);
-    }
-
-    /**
-     * Creates a Term List.
-     *
-     * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
-     */
-    public Observable<TermList> createAsync(String contentType, BodyModel bodyParameter) {
-        return createWithServiceResponseAsync(contentType, bodyParameter).map(new Func1<ServiceResponse<TermList>, TermList>() {
-            @Override
-            public TermList call(ServiceResponse<TermList> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a Term List.
-     *
-     * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
-     */
-    public Observable<ServiceResponse<TermList>> createWithServiceResponseAsync(String contentType, BodyModel bodyParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<TermList>> createWithRestResponseAsync(@NonNull String contentType, @NonNull Body body) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (contentType == null) {
             throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
         }
-        if (bodyParameter == null) {
-            throw new IllegalArgumentException("Parameter bodyParameter is required and cannot be null.");
+        if (body == null) {
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         }
-        Validator.validate(bodyParameter);
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.create(contentType, bodyParameter, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TermList>>>() {
-                @Override
-                public Observable<ServiceResponse<TermList>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<TermList> clientResponse = createDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Validator.validate(body);
+        return service.create(this.client.endpoint(), contentType, body);
     }
 
-    private ServiceResponse<TermList> createDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TermList, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TermList>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Creates a Term List.
+     *
+     * @param contentType The content type.
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<TermList> createAsync(@NonNull String contentType, @NonNull Body body) {
+        return createWithRestResponseAsync(contentType, body)
+            .flatMap((SimpleResponse<TermList> res) -> Mono.just(res.value()));
     }
 
     /**
      * gets all the Term Lists.
      *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;TermList&gt; object if successful.
      */
     public List<TermList> getAllTermLists() {
-        return getAllTermListsWithServiceResponseAsync().toBlocking().single().body();
+        return getAllTermListsAsync().block();
     }
 
     /**
      * gets all the Term Lists.
      *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<TermList>> getAllTermListsAsync(final ServiceCallback<List<TermList>> serviceCallback) {
-        return ServiceFuture.fromResponse(getAllTermListsWithServiceResponseAsync(), serviceCallback);
-    }
-
-    /**
-     * gets all the Term Lists.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;TermList&gt; object
-     */
-    public Observable<List<TermList>> getAllTermListsAsync() {
-        return getAllTermListsWithServiceResponseAsync().map(new Func1<ServiceResponse<List<TermList>>, List<TermList>>() {
-            @Override
-            public List<TermList> call(ServiceResponse<List<TermList>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * gets all the Term Lists.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;TermList&gt; object
-     */
-    public Observable<ServiceResponse<List<TermList>>> getAllTermListsWithServiceResponseAsync() {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<List<TermList>>> getAllTermListsWithRestResponseAsync() {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.getAllTermLists(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<TermList>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<TermList>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<TermList>> clientResponse = getAllTermListsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getAllTermLists(this.client.endpoint());
     }
 
-    private ServiceResponse<List<TermList>> getAllTermListsDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<TermList>, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<TermList>>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * gets all the Term Lists.
+     *
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<TermList>> getAllTermListsAsync() {
+        return getAllTermListsWithRestResponseAsync()
+            .flatMap((SimpleResponse<List<TermList>> res) -> Mono.just(res.value()));
     }
 
     /**
@@ -494,13 +321,13 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RefreshIndex object if successful.
      */
-    public RefreshIndex refreshIndexMethod(String listId, String language) {
-        return refreshIndexMethodWithServiceResponseAsync(listId, language).toBlocking().single().body();
+    public RefreshIndex refreshIndexMethod(@NonNull String listId, @NonNull String language) {
+        return refreshIndexMethodAsync(listId, language).block();
     }
 
     /**
@@ -508,42 +335,12 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<RefreshIndex> refreshIndexMethodAsync(String listId, String language, final ServiceCallback<RefreshIndex> serviceCallback) {
-        return ServiceFuture.fromResponse(refreshIndexMethodWithServiceResponseAsync(listId, language), serviceCallback);
-    }
-
-    /**
-     * Refreshes the index of the list with list Id equal to list ID passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RefreshIndex object
-     */
-    public Observable<RefreshIndex> refreshIndexMethodAsync(String listId, String language) {
-        return refreshIndexMethodWithServiceResponseAsync(listId, language).map(new Func1<ServiceResponse<RefreshIndex>, RefreshIndex>() {
-            @Override
-            public RefreshIndex call(ServiceResponse<RefreshIndex> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Refreshes the index of the list with list Id equal to list ID passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RefreshIndex object
-     */
-    public Observable<ServiceResponse<RefreshIndex>> refreshIndexMethodWithServiceResponseAsync(String listId, String language) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<RefreshIndex>> refreshIndexMethodWithRestResponseAsync(@NonNull String listId, @NonNull String language) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -551,26 +348,19 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
         if (language == null) {
             throw new IllegalArgumentException("Parameter language is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.refreshIndexMethod(listId, language, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RefreshIndex>>>() {
-                @Override
-                public Observable<ServiceResponse<RefreshIndex>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<RefreshIndex> clientResponse = refreshIndexMethodDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.refreshIndexMethod(listId, this.client.endpoint(), language);
     }
 
-    private ServiceResponse<RefreshIndex> refreshIndexMethodDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RefreshIndex, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<RefreshIndex>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Refreshes the index of the list with list Id equal to list ID passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<RefreshIndex> refreshIndexMethodAsync(@NonNull String listId, @NonNull String language) {
+        return refreshIndexMethodWithRestResponseAsync(listId, language)
+            .flatMap((SimpleResponse<RefreshIndex> res) -> Mono.just(res.value()));
     }
-
 }

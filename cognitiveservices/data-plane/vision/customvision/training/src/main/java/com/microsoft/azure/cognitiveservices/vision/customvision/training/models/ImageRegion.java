@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
-import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * The ImageRegion model.
  */
-public class ImageRegion {
+public final class ImageRegion {
     /**
      * The regionId property.
      */
@@ -32,42 +32,42 @@ public class ImageRegion {
      * The created property.
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime created;
+    private OffsetDateTime created;
 
     /**
-     * The tagId property.
+     * Id of the tag associated with this region.
      */
-    @JsonProperty(value = "tagId")
+    @JsonProperty(value = "tagId", required = true)
     private UUID tagId;
 
     /**
-     * The left property.
+     * Coordinate of the left boundary.
      */
-    @JsonProperty(value = "left")
+    @JsonProperty(value = "left", required = true)
     private double left;
 
     /**
-     * The top property.
+     * Coordinate of the top boundary.
      */
-    @JsonProperty(value = "top")
+    @JsonProperty(value = "top", required = true)
     private double top;
 
     /**
-     * The width property.
+     * Width.
      */
-    @JsonProperty(value = "width")
+    @JsonProperty(value = "width", required = true)
     private double width;
 
     /**
-     * The height property.
+     * Height.
      */
-    @JsonProperty(value = "height")
+    @JsonProperty(value = "height", required = true)
     private double height;
 
     /**
      * Get the regionId value.
      *
-     * @return the regionId value
+     * @return the regionId value.
      */
     public UUID regionId() {
         return this.regionId;
@@ -76,7 +76,7 @@ public class ImageRegion {
     /**
      * Get the tagName value.
      *
-     * @return the tagName value
+     * @return the tagName value.
      */
     public String tagName() {
         return this.tagName;
@@ -85,16 +85,16 @@ public class ImageRegion {
     /**
      * Get the created value.
      *
-     * @return the created value
+     * @return the created value.
      */
-    public DateTime created() {
+    public OffsetDateTime created() {
         return this.created;
     }
 
     /**
      * Get the tagId value.
      *
-     * @return the tagId value
+     * @return the tagId value.
      */
     public UUID tagId() {
         return this.tagId;
@@ -103,7 +103,7 @@ public class ImageRegion {
     /**
      * Set the tagId value.
      *
-     * @param tagId the tagId value to set
+     * @param tagId the tagId value to set.
      * @return the ImageRegion object itself.
      */
     public ImageRegion withTagId(UUID tagId) {
@@ -114,7 +114,7 @@ public class ImageRegion {
     /**
      * Get the left value.
      *
-     * @return the left value
+     * @return the left value.
      */
     public double left() {
         return this.left;
@@ -123,7 +123,7 @@ public class ImageRegion {
     /**
      * Set the left value.
      *
-     * @param left the left value to set
+     * @param left the left value to set.
      * @return the ImageRegion object itself.
      */
     public ImageRegion withLeft(double left) {
@@ -134,7 +134,7 @@ public class ImageRegion {
     /**
      * Get the top value.
      *
-     * @return the top value
+     * @return the top value.
      */
     public double top() {
         return this.top;
@@ -143,7 +143,7 @@ public class ImageRegion {
     /**
      * Set the top value.
      *
-     * @param top the top value to set
+     * @param top the top value to set.
      * @return the ImageRegion object itself.
      */
     public ImageRegion withTop(double top) {
@@ -154,7 +154,7 @@ public class ImageRegion {
     /**
      * Get the width value.
      *
-     * @return the width value
+     * @return the width value.
      */
     public double width() {
         return this.width;
@@ -163,7 +163,7 @@ public class ImageRegion {
     /**
      * Set the width value.
      *
-     * @param width the width value to set
+     * @param width the width value to set.
      * @return the ImageRegion object itself.
      */
     public ImageRegion withWidth(double width) {
@@ -174,7 +174,7 @@ public class ImageRegion {
     /**
      * Get the height value.
      *
-     * @return the height value
+     * @return the height value.
      */
     public double height() {
         return this.height;
@@ -183,12 +183,11 @@ public class ImageRegion {
     /**
      * Set the height value.
      *
-     * @param height the height value to set
+     * @param height the height value to set.
      * @return the ImageRegion object itself.
      */
     public ImageRegion withHeight(double height) {
         this.height = height;
         return this;
     }
-
 }

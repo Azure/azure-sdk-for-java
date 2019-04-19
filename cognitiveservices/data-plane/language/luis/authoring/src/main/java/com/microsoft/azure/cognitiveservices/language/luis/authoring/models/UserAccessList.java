@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * List of user permissions.
  */
-public class UserAccessList {
+public final class UserAccessList {
     /**
      * The email address of owner of the application.
      */
@@ -30,7 +30,7 @@ public class UserAccessList {
     /**
      * Get the owner value.
      *
-     * @return the owner value
+     * @return the owner value.
      */
     public String owner() {
         return this.owner;
@@ -39,7 +39,7 @@ public class UserAccessList {
     /**
      * Set the owner value.
      *
-     * @param owner the owner value to set
+     * @param owner the owner value to set.
      * @return the UserAccessList object itself.
      */
     public UserAccessList withOwner(String owner) {
@@ -50,7 +50,7 @@ public class UserAccessList {
     /**
      * Get the emails value.
      *
-     * @return the emails value
+     * @return the emails value.
      */
     public List<String> emails() {
         return this.emails;
@@ -59,12 +59,11 @@ public class UserAccessList {
     /**
      * Set the emails value.
      *
-     * @param emails the emails value to set
+     * @param emails the emails value to set.
      * @return the UserAccessList object itself.
      */
     public UserAccessList withEmails(List<String> emails) {
         this.emails = emails;
         return this;
     }
-
 }

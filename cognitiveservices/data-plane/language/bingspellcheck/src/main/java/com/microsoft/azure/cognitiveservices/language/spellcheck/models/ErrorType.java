@@ -8,24 +8,29 @@
 
 package com.microsoft.azure.cognitiveservices.language.spellcheck.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for ErrorType.
  */
 public final class ErrorType extends ExpandableStringEnum<ErrorType> {
-    /** Static value UnknownToken for ErrorType. */
+    /**
+     * Static value UnknownToken for ErrorType.
+     */
     public static final ErrorType UNKNOWN_TOKEN = fromString("UnknownToken");
 
-    /** Static value RepeatedToken for ErrorType. */
+    /**
+     * Static value RepeatedToken for ErrorType.
+     */
     public static final ErrorType REPEATED_TOKEN = fromString("RepeatedToken");
 
     /**
      * Creates or finds a ErrorType from its string representation.
-     * @param name a name to look for
-     * @return the corresponding ErrorType
+     *
+     * @param name a name to look for.
+     * @return the corresponding ErrorType.
      */
     @JsonCreator
     public static ErrorType fromString(String name) {
@@ -33,7 +38,7 @@ public final class ErrorType extends ExpandableStringEnum<ErrorType> {
     }
 
     /**
-     * @return known ErrorType values
+     * @return known ErrorType values.
      */
     public static Collection<ErrorType> values() {
         return values(ErrorType.class);

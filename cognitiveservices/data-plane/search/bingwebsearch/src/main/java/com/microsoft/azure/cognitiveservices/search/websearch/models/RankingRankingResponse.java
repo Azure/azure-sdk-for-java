@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Defines where on the search results page content should be placed and in
  * what order.
  */
-public class RankingRankingResponse {
+public final class RankingRankingResponse {
     /**
      * The search results that should be afforded the most visible treatment
      * (for example, displayed above the mainline and sidebar).
@@ -37,7 +37,7 @@ public class RankingRankingResponse {
     /**
      * Get the pole value.
      *
-     * @return the pole value
+     * @return the pole value.
      */
     public RankingRankingGroup pole() {
         return this.pole;
@@ -46,7 +46,7 @@ public class RankingRankingResponse {
     /**
      * Get the mainline value.
      *
-     * @return the mainline value
+     * @return the mainline value.
      */
     public RankingRankingGroup mainline() {
         return this.mainline;
@@ -55,10 +55,9 @@ public class RankingRankingResponse {
     /**
      * Get the sidebar value.
      *
-     * @return the sidebar value
+     * @return the sidebar value.
      */
     public RankingRankingGroup sidebar() {
         return this.sidebar;
     }
-
 }

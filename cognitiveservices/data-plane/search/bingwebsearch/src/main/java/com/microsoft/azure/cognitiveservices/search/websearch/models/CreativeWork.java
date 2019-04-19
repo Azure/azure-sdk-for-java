@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import java.util.List;
 
 /**
  * The CreativeWork model.
@@ -20,8 +20,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = CreativeWork.class)
 @JsonTypeName("CreativeWork")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "WebPage", value = WebPage.class),
     @JsonSubTypes.Type(name = "MediaObject", value = MediaObject.class),
+    @JsonSubTypes.Type(name = "WebPage", value = WebPage.class),
     @JsonSubTypes.Type(name = "Article", value = Article.class)
 })
 public class CreativeWork extends Thing {
@@ -46,7 +46,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the thumbnailUrl value.
      *
-     * @return the thumbnailUrl value
+     * @return the thumbnailUrl value.
      */
     public String thumbnailUrl() {
         return this.thumbnailUrl;
@@ -55,7 +55,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the provider value.
      *
-     * @return the provider value
+     * @return the provider value.
      */
     public List<Thing> provider() {
         return this.provider;
@@ -64,10 +64,9 @@ public class CreativeWork extends Thing {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
     }
-
 }

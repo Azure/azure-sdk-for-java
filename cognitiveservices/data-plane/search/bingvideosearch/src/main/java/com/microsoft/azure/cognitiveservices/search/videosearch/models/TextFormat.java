@@ -15,16 +15,22 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for TextFormat.
  */
 public enum TextFormat {
-    /** Enum value Raw. */
+    /**
+     * Enum value Raw.
+     */
     RAW("Raw"),
 
-    /** Enum value Html. */
+    /**
+     * Enum value Html.
+     */
     HTML("Html");
 
-    /** The actual serialized value for a TextFormat instance. */
-    private String value;
+    /**
+     * The actual serialized value for a TextFormat instance.
+     */
+    private final String value;
 
-    TextFormat(String value) {
+    private TextFormat(String value) {
         this.value = value;
     }
 

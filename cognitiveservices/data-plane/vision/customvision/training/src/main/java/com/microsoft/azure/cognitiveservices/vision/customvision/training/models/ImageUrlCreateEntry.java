@@ -8,18 +8,18 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ImageUrlCreateEntry model.
  */
-public class ImageUrlCreateEntry {
+public final class ImageUrlCreateEntry {
     /**
-     * The url property.
+     * Url of the image.
      */
-    @JsonProperty(value = "url")
+    @JsonProperty(value = "url", required = true)
     private String url;
 
     /**
@@ -37,7 +37,7 @@ public class ImageUrlCreateEntry {
     /**
      * Get the url value.
      *
-     * @return the url value
+     * @return the url value.
      */
     public String url() {
         return this.url;
@@ -46,7 +46,7 @@ public class ImageUrlCreateEntry {
     /**
      * Set the url value.
      *
-     * @param url the url value to set
+     * @param url the url value to set.
      * @return the ImageUrlCreateEntry object itself.
      */
     public ImageUrlCreateEntry withUrl(String url) {
@@ -57,7 +57,7 @@ public class ImageUrlCreateEntry {
     /**
      * Get the tagIds value.
      *
-     * @return the tagIds value
+     * @return the tagIds value.
      */
     public List<UUID> tagIds() {
         return this.tagIds;
@@ -66,7 +66,7 @@ public class ImageUrlCreateEntry {
     /**
      * Set the tagIds value.
      *
-     * @param tagIds the tagIds value to set
+     * @param tagIds the tagIds value to set.
      * @return the ImageUrlCreateEntry object itself.
      */
     public ImageUrlCreateEntry withTagIds(List<UUID> tagIds) {
@@ -77,7 +77,7 @@ public class ImageUrlCreateEntry {
     /**
      * Get the regions value.
      *
-     * @return the regions value
+     * @return the regions value.
      */
     public List<Region> regions() {
         return this.regions;
@@ -86,12 +86,11 @@ public class ImageUrlCreateEntry {
     /**
      * Set the regions value.
      *
-     * @param regions the regions value to set
+     * @param regions the regions value to set.
      * @return the ImageUrlCreateEntry object itself.
      */
     public ImageUrlCreateEntry withRegions(List<Region> regions) {
         this.regions = regions;
         return this;
     }
-
 }

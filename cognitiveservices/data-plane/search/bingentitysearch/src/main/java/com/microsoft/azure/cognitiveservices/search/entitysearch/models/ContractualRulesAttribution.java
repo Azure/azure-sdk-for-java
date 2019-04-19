@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * The ContractualRulesAttribution model.
@@ -38,10 +38,9 @@ public class ContractualRulesAttribution extends ContractualRulesContractualRule
     /**
      * Get the mustBeCloseToContent value.
      *
-     * @return the mustBeCloseToContent value
+     * @return the mustBeCloseToContent value.
      */
     public Boolean mustBeCloseToContent() {
         return this.mustBeCloseToContent;
     }
-
 }

@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /**
  * Model Training Details.
  */
-public class ModelTrainingDetails {
+public final class ModelTrainingDetails {
     /**
      * The train request status ID.
      */
@@ -38,7 +38,7 @@ public class ModelTrainingDetails {
      * When the model was trained.
      */
     @JsonProperty(value = "trainingDateTime")
-    private DateTime trainingDateTime;
+    private OffsetDateTime trainingDateTime;
 
     /**
      * Reason for the training failure.
@@ -49,7 +49,7 @@ public class ModelTrainingDetails {
     /**
      * Get the statusId value.
      *
-     * @return the statusId value
+     * @return the statusId value.
      */
     public Integer statusId() {
         return this.statusId;
@@ -58,7 +58,7 @@ public class ModelTrainingDetails {
     /**
      * Set the statusId value.
      *
-     * @param statusId the statusId value to set
+     * @param statusId the statusId value to set.
      * @return the ModelTrainingDetails object itself.
      */
     public ModelTrainingDetails withStatusId(Integer statusId) {
@@ -69,7 +69,7 @@ public class ModelTrainingDetails {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public String status() {
         return this.status;
@@ -78,7 +78,7 @@ public class ModelTrainingDetails {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the ModelTrainingDetails object itself.
      */
     public ModelTrainingDetails withStatus(String status) {
@@ -89,7 +89,7 @@ public class ModelTrainingDetails {
     /**
      * Get the exampleCount value.
      *
-     * @return the exampleCount value
+     * @return the exampleCount value.
      */
     public Integer exampleCount() {
         return this.exampleCount;
@@ -98,7 +98,7 @@ public class ModelTrainingDetails {
     /**
      * Set the exampleCount value.
      *
-     * @param exampleCount the exampleCount value to set
+     * @param exampleCount the exampleCount value to set.
      * @return the ModelTrainingDetails object itself.
      */
     public ModelTrainingDetails withExampleCount(Integer exampleCount) {
@@ -109,19 +109,19 @@ public class ModelTrainingDetails {
     /**
      * Get the trainingDateTime value.
      *
-     * @return the trainingDateTime value
+     * @return the trainingDateTime value.
      */
-    public DateTime trainingDateTime() {
+    public OffsetDateTime trainingDateTime() {
         return this.trainingDateTime;
     }
 
     /**
      * Set the trainingDateTime value.
      *
-     * @param trainingDateTime the trainingDateTime value to set
+     * @param trainingDateTime the trainingDateTime value to set.
      * @return the ModelTrainingDetails object itself.
      */
-    public ModelTrainingDetails withTrainingDateTime(DateTime trainingDateTime) {
+    public ModelTrainingDetails withTrainingDateTime(OffsetDateTime trainingDateTime) {
         this.trainingDateTime = trainingDateTime;
         return this;
     }
@@ -129,7 +129,7 @@ public class ModelTrainingDetails {
     /**
      * Get the failureReason value.
      *
-     * @return the failureReason value
+     * @return the failureReason value.
      */
     public String failureReason() {
         return this.failureReason;
@@ -138,12 +138,11 @@ public class ModelTrainingDetails {
     /**
      * Set the failureReason value.
      *
-     * @param failureReason the failureReason value to set
+     * @param failureReason the failureReason value to set.
      * @return the ModelTrainingDetails object itself.
      */
     public ModelTrainingDetails withFailureReason(String failureReason) {
         this.failureReason = failureReason;
         return this;
     }
-
 }

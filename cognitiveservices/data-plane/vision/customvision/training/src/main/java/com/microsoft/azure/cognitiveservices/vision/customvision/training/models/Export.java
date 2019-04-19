@@ -13,33 +13,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The Export model.
  */
-public class Export {
+public final class Export {
     /**
-     * Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'.
+     * Platform of the export. Possible values include: 'CoreML', 'TensorFlow',
+     * 'DockerFile', 'ONNX', 'VAIDK'.
      */
     @JsonProperty(value = "platform", access = JsonProperty.Access.WRITE_ONLY)
     private ExportPlatform platform;
 
     /**
-     * Possible values include: 'Exporting', 'Failed', 'Done'.
+     * Status of the export. Possible values include: 'Exporting', 'Failed',
+     * 'Done'.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private ExportStatusModel status;
+    private ExportStatus status;
 
     /**
-     * The downloadUri property.
+     * URI used to download the model.
      */
     @JsonProperty(value = "downloadUri", access = JsonProperty.Access.WRITE_ONLY)
     private String downloadUri;
 
     /**
-     * Possible values include: 'Linux', 'Windows'.
+     * Flavor of the export. Possible values include: 'Linux', 'Windows',
+     * 'ONNX10', 'ONNX12', 'ARM'.
      */
     @JsonProperty(value = "flavor", access = JsonProperty.Access.WRITE_ONLY)
     private ExportFlavor flavor;
 
     /**
-     * The newerVersionAvailable property.
+     * Indicates an updated version of the export package is available and
+     * should be re-exported for the latest changes.
      */
     @JsonProperty(value = "newerVersionAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private boolean newerVersionAvailable;
@@ -47,7 +51,7 @@ public class Export {
     /**
      * Get the platform value.
      *
-     * @return the platform value
+     * @return the platform value.
      */
     public ExportPlatform platform() {
         return this.platform;
@@ -56,16 +60,16 @@ public class Export {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
-    public ExportStatusModel status() {
+    public ExportStatus status() {
         return this.status;
     }
 
     /**
      * Get the downloadUri value.
      *
-     * @return the downloadUri value
+     * @return the downloadUri value.
      */
     public String downloadUri() {
         return this.downloadUri;
@@ -74,7 +78,7 @@ public class Export {
     /**
      * Get the flavor value.
      *
-     * @return the flavor value
+     * @return the flavor value.
      */
     public ExportFlavor flavor() {
         return this.flavor;
@@ -83,10 +87,9 @@ public class Export {
     /**
      * Get the newerVersionAvailable value.
      *
-     * @return the newerVersionAvailable value
+     * @return the newerVersionAvailable value.
      */
     public boolean newerVersionAvailable() {
         return this.newerVersionAvailable;
     }
-
 }

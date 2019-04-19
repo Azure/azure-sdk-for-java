@@ -11,9 +11,9 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The TextOperationResult model.
+ * Result of recognition text operation.
  */
-public class TextOperationResult {
+public final class TextOperationResult {
     /**
      * Status of the text operation. Possible values include: 'Not Started',
      * 'Running', 'Failed', 'Succeeded'.
@@ -22,15 +22,15 @@ public class TextOperationResult {
     private TextOperationStatusCodes status;
 
     /**
-     * The recognitionResult property.
+     * Text recognition result of the text operation.
      */
     @JsonProperty(value = "recognitionResult")
-    private RecognitionResult recognitionResult;
+    private TextRecognitionResult recognitionResult;
 
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public TextOperationStatusCodes status() {
         return this.status;
@@ -39,7 +39,7 @@ public class TextOperationResult {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the TextOperationResult object itself.
      */
     public TextOperationResult withStatus(TextOperationStatusCodes status) {
@@ -50,21 +50,20 @@ public class TextOperationResult {
     /**
      * Get the recognitionResult value.
      *
-     * @return the recognitionResult value
+     * @return the recognitionResult value.
      */
-    public RecognitionResult recognitionResult() {
+    public TextRecognitionResult recognitionResult() {
         return this.recognitionResult;
     }
 
     /**
      * Set the recognitionResult value.
      *
-     * @param recognitionResult the recognitionResult value to set
+     * @param recognitionResult the recognitionResult value to set.
      * @return the TextOperationResult object itself.
      */
-    public TextOperationResult withRecognitionResult(RecognitionResult recognitionResult) {
+    public TextOperationResult withRecognitionResult(TextRecognitionResult recognitionResult) {
         this.recognitionResult = recognitionResult;
         return this;
     }
-
 }

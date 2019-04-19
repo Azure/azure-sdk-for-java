@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Coordinates to the found face.
  */
-public class Face {
+public final class Face {
     /**
      * The bottom coordinate.
      */
@@ -41,7 +41,7 @@ public class Face {
     /**
      * Get the bottom value.
      *
-     * @return the bottom value
+     * @return the bottom value.
      */
     public Integer bottom() {
         return this.bottom;
@@ -50,7 +50,7 @@ public class Face {
     /**
      * Set the bottom value.
      *
-     * @param bottom the bottom value to set
+     * @param bottom the bottom value to set.
      * @return the Face object itself.
      */
     public Face withBottom(Integer bottom) {
@@ -61,7 +61,7 @@ public class Face {
     /**
      * Get the left value.
      *
-     * @return the left value
+     * @return the left value.
      */
     public Integer left() {
         return this.left;
@@ -70,7 +70,7 @@ public class Face {
     /**
      * Set the left value.
      *
-     * @param left the left value to set
+     * @param left the left value to set.
      * @return the Face object itself.
      */
     public Face withLeft(Integer left) {
@@ -81,7 +81,7 @@ public class Face {
     /**
      * Get the right value.
      *
-     * @return the right value
+     * @return the right value.
      */
     public Integer right() {
         return this.right;
@@ -90,7 +90,7 @@ public class Face {
     /**
      * Set the right value.
      *
-     * @param right the right value to set
+     * @param right the right value to set.
      * @return the Face object itself.
      */
     public Face withRight(Integer right) {
@@ -101,7 +101,7 @@ public class Face {
     /**
      * Get the top value.
      *
-     * @return the top value
+     * @return the top value.
      */
     public Integer top() {
         return this.top;
@@ -110,12 +110,11 @@ public class Face {
     /**
      * Set the top value.
      *
-     * @param top the top value to set
+     * @param top the top value to set.
      * @return the Face object itself.
      */
     public Face withTop(Integer top) {
         this.top = top;
         return this;
     }
-
 }

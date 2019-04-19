@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * An object describing a face identified in the image.
  */
-public class FaceDescription {
+public final class FaceDescription {
     /**
      * Possible age of the face.
      */
@@ -27,7 +27,7 @@ public class FaceDescription {
     private Gender gender;
 
     /**
-     * The faceRectangle property.
+     * Rectangle in the image containing the identified face.
      */
     @JsonProperty(value = "faceRectangle")
     private FaceRectangle faceRectangle;
@@ -35,7 +35,7 @@ public class FaceDescription {
     /**
      * Get the age value.
      *
-     * @return the age value
+     * @return the age value.
      */
     public int age() {
         return this.age;
@@ -44,7 +44,7 @@ public class FaceDescription {
     /**
      * Set the age value.
      *
-     * @param age the age value to set
+     * @param age the age value to set.
      * @return the FaceDescription object itself.
      */
     public FaceDescription withAge(int age) {
@@ -55,7 +55,7 @@ public class FaceDescription {
     /**
      * Get the gender value.
      *
-     * @return the gender value
+     * @return the gender value.
      */
     public Gender gender() {
         return this.gender;
@@ -64,7 +64,7 @@ public class FaceDescription {
     /**
      * Set the gender value.
      *
-     * @param gender the gender value to set
+     * @param gender the gender value to set.
      * @return the FaceDescription object itself.
      */
     public FaceDescription withGender(Gender gender) {
@@ -75,7 +75,7 @@ public class FaceDescription {
     /**
      * Get the faceRectangle value.
      *
-     * @return the faceRectangle value
+     * @return the faceRectangle value.
      */
     public FaceRectangle faceRectangle() {
         return this.faceRectangle;
@@ -84,12 +84,11 @@ public class FaceDescription {
     /**
      * Set the faceRectangle value.
      *
-     * @param faceRectangle the faceRectangle value to set
+     * @param faceRectangle the faceRectangle value to set.
      * @return the FaceDescription object itself.
      */
     public FaceDescription withFaceRectangle(FaceRectangle faceRectangle) {
         this.faceRectangle = faceRectangle;
         return this;
     }
-
 }

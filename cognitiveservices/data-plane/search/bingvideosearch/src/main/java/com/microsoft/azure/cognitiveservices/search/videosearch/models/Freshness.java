@@ -15,19 +15,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for Freshness.
  */
 public enum Freshness {
-    /** Enum value Day. */
+    /**
+     * Enum value Day.
+     */
     DAY("Day"),
 
-    /** Enum value Week. */
+    /**
+     * Enum value Week.
+     */
     WEEK("Week"),
 
-    /** Enum value Month. */
+    /**
+     * Enum value Month.
+     */
     MONTH("Month");
 
-    /** The actual serialized value for a Freshness instance. */
-    private String value;
+    /**
+     * The actual serialized value for a Freshness instance.
+     */
+    private final String value;
 
-    Freshness(String value) {
+    private Freshness(String value) {
         this.value = value;
     }
 

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Phone Property details.
  */
-public class Phone {
+public final class Phone {
     /**
      * CountryCode of the detected Phone number.
      */
@@ -35,7 +35,7 @@ public class Phone {
     /**
      * Get the countryCode value.
      *
-     * @return the countryCode value
+     * @return the countryCode value.
      */
     public String countryCode() {
         return this.countryCode;
@@ -44,7 +44,7 @@ public class Phone {
     /**
      * Set the countryCode value.
      *
-     * @param countryCode the countryCode value to set
+     * @param countryCode the countryCode value to set.
      * @return the Phone object itself.
      */
     public Phone withCountryCode(String countryCode) {
@@ -55,7 +55,7 @@ public class Phone {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -64,7 +64,7 @@ public class Phone {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the Phone object itself.
      */
     public Phone withText(String text) {
@@ -75,7 +75,7 @@ public class Phone {
     /**
      * Get the index value.
      *
-     * @return the index value
+     * @return the index value.
      */
     public Integer index() {
         return this.index;
@@ -84,12 +84,11 @@ public class Phone {
     /**
      * Set the index value.
      *
-     * @param index the index value to set
+     * @param index the index value to set.
      * @return the Phone object itself.
      */
     public Phone withIndex(Integer index) {
         this.index = index;
         return this;
     }
-
 }

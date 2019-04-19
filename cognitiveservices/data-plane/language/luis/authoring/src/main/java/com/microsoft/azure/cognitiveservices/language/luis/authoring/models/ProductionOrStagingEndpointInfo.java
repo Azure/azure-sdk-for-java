@@ -8,9 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-
 /**
  * The ProductionOrStagingEndpointInfo model.
  */
-public class ProductionOrStagingEndpointInfo extends EndpointInfo {
+public final class ProductionOrStagingEndpointInfo extends EndpointInfo {
 }

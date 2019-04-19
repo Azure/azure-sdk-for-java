@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A JSON object containing information about the request, such as filters for
  * the resulting actions.
  */
-public class KnowledgeRequest {
+public final class KnowledgeRequest {
     /**
      * A key-value object consisting of filters that may be specified to limit
      * the results returned by the API.
@@ -25,7 +25,7 @@ public class KnowledgeRequest {
     /**
      * Get the filters value.
      *
-     * @return the filters value
+     * @return the filters value.
      */
     public Filters filters() {
         return this.filters;
@@ -34,12 +34,11 @@ public class KnowledgeRequest {
     /**
      * Set the filters value.
      *
-     * @param filters the filters value to set
+     * @param filters the filters value to set.
      * @return the KnowledgeRequest object itself.
      */
     public KnowledgeRequest withFilters(Filters filters) {
         this.filters = filters;
         return this;
     }
-
 }

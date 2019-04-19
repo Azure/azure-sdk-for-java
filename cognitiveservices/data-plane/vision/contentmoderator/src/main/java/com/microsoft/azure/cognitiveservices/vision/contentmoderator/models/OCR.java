@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Contains the text found in image for the language specified.
  */
-public class OCR {
+public final class OCR {
     /**
      * The evaluate status.
      */
@@ -60,7 +60,7 @@ public class OCR {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public Status status() {
         return this.status;
@@ -69,7 +69,7 @@ public class OCR {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the OCR object itself.
      */
     public OCR withStatus(Status status) {
@@ -80,7 +80,7 @@ public class OCR {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public List<KeyValuePair> metadata() {
         return this.metadata;
@@ -89,7 +89,7 @@ public class OCR {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the OCR object itself.
      */
     public OCR withMetadata(List<KeyValuePair> metadata) {
@@ -100,7 +100,7 @@ public class OCR {
     /**
      * Get the trackingId value.
      *
-     * @return the trackingId value
+     * @return the trackingId value.
      */
     public String trackingId() {
         return this.trackingId;
@@ -109,7 +109,7 @@ public class OCR {
     /**
      * Set the trackingId value.
      *
-     * @param trackingId the trackingId value to set
+     * @param trackingId the trackingId value to set.
      * @return the OCR object itself.
      */
     public OCR withTrackingId(String trackingId) {
@@ -120,7 +120,7 @@ public class OCR {
     /**
      * Get the cacheId value.
      *
-     * @return the cacheId value
+     * @return the cacheId value.
      */
     public String cacheId() {
         return this.cacheId;
@@ -129,7 +129,7 @@ public class OCR {
     /**
      * Set the cacheId value.
      *
-     * @param cacheId the cacheId value to set
+     * @param cacheId the cacheId value to set.
      * @return the OCR object itself.
      */
     public OCR withCacheId(String cacheId) {
@@ -140,7 +140,7 @@ public class OCR {
     /**
      * Get the language value.
      *
-     * @return the language value
+     * @return the language value.
      */
     public String language() {
         return this.language;
@@ -149,7 +149,7 @@ public class OCR {
     /**
      * Set the language value.
      *
-     * @param language the language value to set
+     * @param language the language value to set.
      * @return the OCR object itself.
      */
     public OCR withLanguage(String language) {
@@ -160,7 +160,7 @@ public class OCR {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -169,7 +169,7 @@ public class OCR {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the OCR object itself.
      */
     public OCR withText(String text) {
@@ -180,7 +180,7 @@ public class OCR {
     /**
      * Get the candidates value.
      *
-     * @return the candidates value
+     * @return the candidates value.
      */
     public List<Candidate> candidates() {
         return this.candidates;
@@ -189,12 +189,11 @@ public class OCR {
     /**
      * Set the candidates value.
      *
-     * @param candidates the candidates value to set
+     * @param candidates the candidates value to set.
      * @return the OCR object itself.
      */
     public OCR withCandidates(List<Candidate> candidates) {
         this.candidates = candidates;
         return this;
     }
-
 }

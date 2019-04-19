@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Model Features, including Patterns and Phraselists.
  */
-public class FeaturesResponseObject {
+public final class FeaturesResponseObject {
     /**
      * The phraselistFeatures property.
      */
@@ -30,7 +30,7 @@ public class FeaturesResponseObject {
     /**
      * Get the phraselistFeatures value.
      *
-     * @return the phraselistFeatures value
+     * @return the phraselistFeatures value.
      */
     public List<PhraseListFeatureInfo> phraselistFeatures() {
         return this.phraselistFeatures;
@@ -39,7 +39,7 @@ public class FeaturesResponseObject {
     /**
      * Set the phraselistFeatures value.
      *
-     * @param phraselistFeatures the phraselistFeatures value to set
+     * @param phraselistFeatures the phraselistFeatures value to set.
      * @return the FeaturesResponseObject object itself.
      */
     public FeaturesResponseObject withPhraselistFeatures(List<PhraseListFeatureInfo> phraselistFeatures) {
@@ -50,7 +50,7 @@ public class FeaturesResponseObject {
     /**
      * Get the patternFeatures value.
      *
-     * @return the patternFeatures value
+     * @return the patternFeatures value.
      */
     public List<PatternFeatureInfo> patternFeatures() {
         return this.patternFeatures;
@@ -59,12 +59,11 @@ public class FeaturesResponseObject {
     /**
      * Set the patternFeatures value.
      *
-     * @param patternFeatures the patternFeatures value to set
+     * @param patternFeatures the patternFeatures value to set.
      * @return the FeaturesResponseObject object itself.
      */
     public FeaturesResponseObject withPatternFeatures(List<PatternFeatureInfo> patternFeatures) {
         this.patternFeatures = patternFeatures;
         return this;
     }
-
 }

@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The Hotel model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Hotel.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Hotel")
-public class Hotel extends LodgingBusiness {
+public final class Hotel extends LodgingBusiness {
     /**
      * The hotelClass property.
      */
@@ -34,7 +34,7 @@ public class Hotel extends LodgingBusiness {
     /**
      * Get the hotelClass value.
      *
-     * @return the hotelClass value
+     * @return the hotelClass value.
      */
     public String hotelClass() {
         return this.hotelClass;
@@ -43,10 +43,9 @@ public class Hotel extends LodgingBusiness {
     /**
      * Get the amenities value.
      *
-     * @return the amenities value
+     * @return the amenities value.
      */
     public List<String> amenities() {
         return this.amenities;
     }
-
 }

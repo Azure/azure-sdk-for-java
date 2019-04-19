@@ -8,29 +8,36 @@
 
 package com.microsoft.azure.cognitiveservices.language.textanalytics.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The LanguageBatchResult model.
  */
-public class LanguageBatchResult {
+public final class LanguageBatchResult {
     /**
-     * The documents property.
+     * Response by document.
      */
     @JsonProperty(value = "documents", access = JsonProperty.Access.WRITE_ONLY)
     private List<LanguageBatchResultItem> documents;
 
     /**
-     * The errors property.
+     * Errors and Warnings by document.
      */
     @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ErrorRecord> errors;
 
     /**
+     * (Optional) if showStats=true was specified in the request this field
+     * will contain information about the request payload.
+     */
+    @JsonProperty(value = "statistics", access = JsonProperty.Access.WRITE_ONLY)
+    private RequestStatistics statistics;
+
+    /**
      * Get the documents value.
      *
-     * @return the documents value
+     * @return the documents value.
      */
     public List<LanguageBatchResultItem> documents() {
         return this.documents;
@@ -39,10 +46,18 @@ public class LanguageBatchResult {
     /**
      * Get the errors value.
      *
-     * @return the errors value
+     * @return the errors value.
      */
     public List<ErrorRecord> errors() {
         return this.errors;
     }
 
+    /**
+     * Get the statistics value.
+     *
+     * @return the statistics value.
+     */
+    public RequestStatistics statistics() {
+        return this.statistics;
+    }
 }

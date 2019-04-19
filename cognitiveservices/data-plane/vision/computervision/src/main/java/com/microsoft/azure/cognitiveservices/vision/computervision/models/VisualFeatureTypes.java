@@ -15,31 +15,57 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for VisualFeatureTypes.
  */
 public enum VisualFeatureTypes {
-    /** Enum value ImageType. */
+    /**
+     * Enum value ImageType.
+     */
     IMAGE_TYPE("ImageType"),
 
-    /** Enum value Faces. */
+    /**
+     * Enum value Faces.
+     */
     FACES("Faces"),
 
-    /** Enum value Adult. */
+    /**
+     * Enum value Adult.
+     */
     ADULT("Adult"),
 
-    /** Enum value Categories. */
+    /**
+     * Enum value Categories.
+     */
     CATEGORIES("Categories"),
 
-    /** Enum value Color. */
+    /**
+     * Enum value Color.
+     */
     COLOR("Color"),
 
-    /** Enum value Tags. */
+    /**
+     * Enum value Tags.
+     */
     TAGS("Tags"),
 
-    /** Enum value Description. */
-    DESCRIPTION("Description");
+    /**
+     * Enum value Description.
+     */
+    DESCRIPTION("Description"),
 
-    /** The actual serialized value for a VisualFeatureTypes instance. */
-    private String value;
+    /**
+     * Enum value Objects.
+     */
+    OBJECTS("Objects"),
 
-    VisualFeatureTypes(String value) {
+    /**
+     * Enum value Brands.
+     */
+    BRANDS("Brands");
+
+    /**
+     * The actual serialized value for a VisualFeatureTypes instance.
+     */
+    private final String value;
+
+    private VisualFeatureTypes(String value) {
         this.value = value;
     }
 

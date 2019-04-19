@@ -13,15 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Image metadata.
  */
-public class ImageMetadata {
+public final class ImageMetadata {
     /**
-     * Image width.
+     * Image width, in pixels.
      */
     @JsonProperty(value = "width")
     private int width;
 
     /**
-     * Image height.
+     * Image height, in pixels.
      */
     @JsonProperty(value = "height")
     private int height;
@@ -35,7 +35,7 @@ public class ImageMetadata {
     /**
      * Get the width value.
      *
-     * @return the width value
+     * @return the width value.
      */
     public int width() {
         return this.width;
@@ -44,7 +44,7 @@ public class ImageMetadata {
     /**
      * Set the width value.
      *
-     * @param width the width value to set
+     * @param width the width value to set.
      * @return the ImageMetadata object itself.
      */
     public ImageMetadata withWidth(int width) {
@@ -55,7 +55,7 @@ public class ImageMetadata {
     /**
      * Get the height value.
      *
-     * @return the height value
+     * @return the height value.
      */
     public int height() {
         return this.height;
@@ -64,7 +64,7 @@ public class ImageMetadata {
     /**
      * Set the height value.
      *
-     * @param height the height value to set
+     * @param height the height value to set.
      * @return the ImageMetadata object itself.
      */
     public ImageMetadata withHeight(int height) {
@@ -75,7 +75,7 @@ public class ImageMetadata {
     /**
      * Get the format value.
      *
-     * @return the format value
+     * @return the format value.
      */
     public String format() {
         return this.format;
@@ -84,12 +84,11 @@ public class ImageMetadata {
     /**
      * Set the format value.
      *
-     * @param format the format value to set
+     * @param format the format value to set.
      * @return the ImageMetadata object itself.
      */
     public ImageMetadata withFormat(String format) {
         this.format = format;
         return this;
     }
-
 }

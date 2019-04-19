@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Defines a search result item to display.
  */
-public class RankingRankingItem {
+public final class RankingRankingItem {
     /**
      * The answer that contains the item to display. Use the type to find the
      * answer in the SearchResponse object. The type is the name of a
@@ -61,7 +61,7 @@ public class RankingRankingItem {
     /**
      * Get the answerType value.
      *
-     * @return the answerType value
+     * @return the answerType value.
      */
     public AnswerType answerType() {
         return this.answerType;
@@ -70,7 +70,7 @@ public class RankingRankingItem {
     /**
      * Set the answerType value.
      *
-     * @param answerType the answerType value to set
+     * @param answerType the answerType value to set.
      * @return the RankingRankingItem object itself.
      */
     public RankingRankingItem withAnswerType(AnswerType answerType) {
@@ -81,7 +81,7 @@ public class RankingRankingItem {
     /**
      * Get the resultIndex value.
      *
-     * @return the resultIndex value
+     * @return the resultIndex value.
      */
     public Integer resultIndex() {
         return this.resultIndex;
@@ -90,7 +90,7 @@ public class RankingRankingItem {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public Identifiable value() {
         return this.value;
@@ -99,7 +99,7 @@ public class RankingRankingItem {
     /**
      * Get the htmlIndex value.
      *
-     * @return the htmlIndex value
+     * @return the htmlIndex value.
      */
     public Integer htmlIndex() {
         return this.htmlIndex;
@@ -108,7 +108,7 @@ public class RankingRankingItem {
     /**
      * Get the textualIndex value.
      *
-     * @return the textualIndex value
+     * @return the textualIndex value.
      */
     public Integer textualIndex() {
         return this.textualIndex;
@@ -117,10 +117,9 @@ public class RankingRankingItem {
     /**
      * Get the screenshotIndex value.
      *
-     * @return the screenshotIndex value
+     * @return the screenshotIndex value.
      */
     public Integer screenshotIndex() {
         return this.screenshotIndex;
     }
-
 }

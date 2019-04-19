@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.runtime.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * LUIS Composite Entity.
  */
-public class CompositeEntityModel {
+public final class CompositeEntityModel {
     /**
      * Type/name of parent entity.
      */
@@ -36,7 +36,7 @@ public class CompositeEntityModel {
     /**
      * Get the parentType value.
      *
-     * @return the parentType value
+     * @return the parentType value.
      */
     public String parentType() {
         return this.parentType;
@@ -45,7 +45,7 @@ public class CompositeEntityModel {
     /**
      * Set the parentType value.
      *
-     * @param parentType the parentType value to set
+     * @param parentType the parentType value to set.
      * @return the CompositeEntityModel object itself.
      */
     public CompositeEntityModel withParentType(String parentType) {
@@ -56,7 +56,7 @@ public class CompositeEntityModel {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public String value() {
         return this.value;
@@ -65,7 +65,7 @@ public class CompositeEntityModel {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the CompositeEntityModel object itself.
      */
     public CompositeEntityModel withValue(String value) {
@@ -76,7 +76,7 @@ public class CompositeEntityModel {
     /**
      * Get the children value.
      *
-     * @return the children value
+     * @return the children value.
      */
     public List<CompositeChildModel> children() {
         return this.children;
@@ -85,12 +85,11 @@ public class CompositeEntityModel {
     /**
      * Set the children value.
      *
-     * @param children the children value to set
+     * @param children the children value to set.
      * @return the CompositeEntityModel object itself.
      */
     public CompositeEntityModel withChildren(List<CompositeChildModel> children) {
         this.children = children;
         return this;
     }
-
 }

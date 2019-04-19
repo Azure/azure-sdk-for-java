@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object model for cloning an application's version.
  */
-public class TaskUpdateObject {
+public final class TaskUpdateObject {
     /**
      * The new version for the cloned model.
      */
@@ -23,7 +23,7 @@ public class TaskUpdateObject {
     /**
      * Get the version value.
      *
-     * @return the version value
+     * @return the version value.
      */
     public String version() {
         return this.version;
@@ -32,12 +32,11 @@ public class TaskUpdateObject {
     /**
      * Set the version value.
      *
-     * @param version the version value to set
+     * @param version the version value to set.
      * @return the TaskUpdateObject object itself.
      */
     public TaskUpdateObject withVersion(String version) {
         this.version = version;
         return this;
     }
-
 }

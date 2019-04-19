@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * href="https://aka.ms/textClassifyCategories"&gt;Click here&lt;/a&gt; for
  * more details on category classification.
  */
-public class ClassificationCategory3 {
+public final class ClassificationCategory3 {
     /**
      * The category3 score.
      */
@@ -25,7 +25,7 @@ public class ClassificationCategory3 {
     /**
      * Get the score value.
      *
-     * @return the score value
+     * @return the score value.
      */
     public Double score() {
         return this.score;
@@ -34,12 +34,11 @@ public class ClassificationCategory3 {
     /**
      * Set the score value.
      *
-     * @param score the score value to set
+     * @param score the score value to set.
      * @return the ClassificationCategory3 object itself.
      */
     public ClassificationCategory3 withScore(Double score) {
         this.score = score;
         return this;
     }
-
 }

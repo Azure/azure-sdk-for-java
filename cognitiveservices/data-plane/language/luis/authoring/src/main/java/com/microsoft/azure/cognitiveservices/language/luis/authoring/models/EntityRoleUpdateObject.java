@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object model for updating an entity role.
  */
-public class EntityRoleUpdateObject {
+public final class EntityRoleUpdateObject {
     /**
      * The entity role name.
      */
@@ -23,7 +23,7 @@ public class EntityRoleUpdateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -32,12 +32,11 @@ public class EntityRoleUpdateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the EntityRoleUpdateObject object itself.
      */
     public EntityRoleUpdateObject withName(String name) {
         this.name = name;
         return this;
     }
-
 }

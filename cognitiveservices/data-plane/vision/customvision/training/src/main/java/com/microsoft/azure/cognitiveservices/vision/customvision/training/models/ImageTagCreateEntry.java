@@ -8,21 +8,21 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
- * The ImageTagCreateEntry model.
+ * Entry associating a tag to an image.
  */
-public class ImageTagCreateEntry {
+public final class ImageTagCreateEntry {
     /**
-     * The imageId property.
+     * Id of the image.
      */
     @JsonProperty(value = "imageId")
     private UUID imageId;
 
     /**
-     * The tagId property.
+     * Id of the tag.
      */
     @JsonProperty(value = "tagId")
     private UUID tagId;
@@ -30,7 +30,7 @@ public class ImageTagCreateEntry {
     /**
      * Get the imageId value.
      *
-     * @return the imageId value
+     * @return the imageId value.
      */
     public UUID imageId() {
         return this.imageId;
@@ -39,7 +39,7 @@ public class ImageTagCreateEntry {
     /**
      * Set the imageId value.
      *
-     * @param imageId the imageId value to set
+     * @param imageId the imageId value to set.
      * @return the ImageTagCreateEntry object itself.
      */
     public ImageTagCreateEntry withImageId(UUID imageId) {
@@ -50,7 +50,7 @@ public class ImageTagCreateEntry {
     /**
      * Get the tagId value.
      *
-     * @return the tagId value
+     * @return the tagId value.
      */
     public UUID tagId() {
         return this.tagId;
@@ -59,12 +59,11 @@ public class ImageTagCreateEntry {
     /**
      * Set the tagId value.
      *
-     * @param tagId the tagId value to set
+     * @param tagId the tagId value to set.
      * @return the ImageTagCreateEntry object itself.
      */
     public ImageTagCreateEntry withTagId(UUID tagId) {
         this.tagId = tagId;
         return this;
     }
-
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Detected Terms details.
  */
-public class DetectedTerms {
+public final class DetectedTerms {
     /**
      * Index(Location) of the detected profanity term in the input text
      * content.
@@ -43,7 +43,7 @@ public class DetectedTerms {
     /**
      * Get the index value.
      *
-     * @return the index value
+     * @return the index value.
      */
     public Integer index() {
         return this.index;
@@ -52,7 +52,7 @@ public class DetectedTerms {
     /**
      * Set the index value.
      *
-     * @param index the index value to set
+     * @param index the index value to set.
      * @return the DetectedTerms object itself.
      */
     public DetectedTerms withIndex(Integer index) {
@@ -63,7 +63,7 @@ public class DetectedTerms {
     /**
      * Get the originalIndex value.
      *
-     * @return the originalIndex value
+     * @return the originalIndex value.
      */
     public Integer originalIndex() {
         return this.originalIndex;
@@ -72,7 +72,7 @@ public class DetectedTerms {
     /**
      * Set the originalIndex value.
      *
-     * @param originalIndex the originalIndex value to set
+     * @param originalIndex the originalIndex value to set.
      * @return the DetectedTerms object itself.
      */
     public DetectedTerms withOriginalIndex(Integer originalIndex) {
@@ -83,7 +83,7 @@ public class DetectedTerms {
     /**
      * Get the listId value.
      *
-     * @return the listId value
+     * @return the listId value.
      */
     public Integer listId() {
         return this.listId;
@@ -92,7 +92,7 @@ public class DetectedTerms {
     /**
      * Set the listId value.
      *
-     * @param listId the listId value to set
+     * @param listId the listId value to set.
      * @return the DetectedTerms object itself.
      */
     public DetectedTerms withListId(Integer listId) {
@@ -103,7 +103,7 @@ public class DetectedTerms {
     /**
      * Get the term value.
      *
-     * @return the term value
+     * @return the term value.
      */
     public String term() {
         return this.term;
@@ -112,12 +112,11 @@ public class DetectedTerms {
     /**
      * Set the term value.
      *
-     * @param term the term value to set
+     * @param term the term value to set.
      * @return the DetectedTerms object itself.
      */
     public DetectedTerms withTerm(String term) {
         this.term = term;
         return this;
     }
-
 }

@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Defines a list of related searches.
  */
-public class RelatedSearchesModule {
+public final class RelatedSearchesModule {
     /**
      * A list of related searches.
      */
@@ -24,10 +24,9 @@ public class RelatedSearchesModule {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<Query> value() {
         return this.value;
     }
-
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Defines the query context that Bing used for the request.
  */
-public class QueryContext {
+public final class QueryContext {
     /**
      * The query string as specified in the request.
      */
@@ -51,7 +51,7 @@ public class QueryContext {
     /**
      * Get the originalQuery value.
      *
-     * @return the originalQuery value
+     * @return the originalQuery value.
      */
     public String originalQuery() {
         return this.originalQuery;
@@ -60,7 +60,7 @@ public class QueryContext {
     /**
      * Set the originalQuery value.
      *
-     * @param originalQuery the originalQuery value to set
+     * @param originalQuery the originalQuery value to set.
      * @return the QueryContext object itself.
      */
     public QueryContext withOriginalQuery(String originalQuery) {
@@ -71,7 +71,7 @@ public class QueryContext {
     /**
      * Get the alteredQuery value.
      *
-     * @return the alteredQuery value
+     * @return the alteredQuery value.
      */
     public String alteredQuery() {
         return this.alteredQuery;
@@ -80,7 +80,7 @@ public class QueryContext {
     /**
      * Get the alterationOverrideQuery value.
      *
-     * @return the alterationOverrideQuery value
+     * @return the alterationOverrideQuery value.
      */
     public String alterationOverrideQuery() {
         return this.alterationOverrideQuery;
@@ -89,10 +89,9 @@ public class QueryContext {
     /**
      * Get the adultIntent value.
      *
-     * @return the adultIntent value
+     * @return the adultIntent value.
      */
     public Boolean adultIntent() {
         return this.adultIntent;
     }
-
 }

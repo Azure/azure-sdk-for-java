@@ -8,314 +8,273 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring;
 
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddPermissionsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.DeletePermissionsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdatePermissionsOptionalParameter;
+import com.azure.common.http.rest.SimpleResponse;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureClouds;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UserAccessList;
 import java.util.List;
 import java.util.UUID;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Permissions.
+ * An instance of this class provides access to all the operations defined in
+ * Permissions.
  */
 public interface Permissions {
-
     /**
      * Gets the list of user emails that have permissions to access your application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UserAccessList object if successful.
      */
-    UserAccessList list(UUID appId);
+    UserAccessList list(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
 
     /**
      * Gets the list of user emails that have permissions to access your application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UserAccessList object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<UserAccessList> listAsync(UUID appId);
-
+    Mono<SimpleResponse<UserAccessList>> listWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
 
     /**
-     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email
-     *   address.
+     * Gets the list of user emails that have permissions to access your application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UserAccessList> listAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
+
+    /**
+     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus add(UUID appId, AddPermissionsOptionalParameter addOptionalParameter);
+    OperationStatus add(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
 
     /**
-     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email
-     *   address.
+     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> addAsync(UUID appId, AddPermissionsOptionalParameter addOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> addWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
 
     /**
-     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email
-     *   address.
+     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
      *
-     * @return the first stage of the add call
-     */
-    PermissionsAddDefinitionStages.WithAppId add();
-
-    /**
-     * Grouping of add definition stages.
-     */
-    interface PermissionsAddDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            PermissionsAddDefinitionStages.WithExecute withAppId(UUID appId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The email address of the user.
-             *
-             * @return next definition stage
-             */
-            PermissionsAddDefinitionStages.WithExecute withEmail(String email);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PermissionsAddDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of add definition.
-     */
-    interface PermissionsAddDefinition extends
-        PermissionsAddDefinitionStages.WithAppId,
-        PermissionsAddDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their
-     *   email address.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> addAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
+
+    /**
+     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param email The email address of the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus delete(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter);
+    OperationStatus add(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email);
 
     /**
-     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their
-     *   email address.
+     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @param email The email address of the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> deleteAsync(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> addWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email);
 
     /**
-     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their
-     *   email address.
+     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
      *
-     * @return the first stage of the delete call
-     */
-    PermissionsDeleteDefinitionStages.WithAppId delete();
-
-    /**
-     * Grouping of delete definition stages.
-     */
-    interface PermissionsDeleteDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            PermissionsDeleteDefinitionStages.WithExecute withAppId(UUID appId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The email address of the user.
-             *
-             * @return next definition stage
-             */
-            PermissionsDeleteDefinitionStages.WithExecute withEmail(String email);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PermissionsDeleteDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of delete definition.
-     */
-    interface PermissionsDeleteDefinition extends
-        PermissionsDeleteDefinitionStages.WithAppId,
-        PermissionsDeleteDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access
-     *   to other users will be removed.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param email The email address of the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> addAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email);
+
+    /**
+     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus update(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter);
+    OperationStatus delete(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access
-     *   to other users will be removed.
+     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> updateAsync(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> deleteWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access
-     *   to other users will be removed.
+     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
      *
-     * @return the first stage of the update call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    PermissionsUpdateDefinitionStages.WithAppId update();
+    Mono<OperationStatus> deleteAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
 
     /**
-     * Grouping of update definition stages.
+     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param email The email address of the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
      */
-    interface PermissionsUpdateDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            PermissionsUpdateDefinitionStages.WithExecute withAppId(UUID appId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The email address of the users.
-             *
-             * @return next definition stage
-             */
-            PermissionsUpdateDefinitionStages.WithExecute withEmails(List<String> emails);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PermissionsUpdateDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
+    OperationStatus delete(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email);
 
     /**
-     * The entirety of update definition.
+     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param email The email address of the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    interface PermissionsUpdateDefinition extends
-        PermissionsUpdateDefinitionStages.WithAppId,
-        PermissionsUpdateDefinitionStages.WithExecute {
-    }
+    Mono<SimpleResponse<OperationStatus>> deleteWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email);
 
+    /**
+     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param email The email address of the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email);
+
+    /**
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus update(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
+
+    /**
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
+
+    /**
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId);
+
+    /**
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param emails The email address of the users.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus update(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, List<String> emails);
+
+    /**
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param emails The email address of the users.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, List<String> emails);
+
+    /**
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param emails The email address of the users.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, List<String> emails);
 }

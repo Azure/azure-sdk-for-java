@@ -15,16 +15,22 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for Gender.
  */
 public enum Gender {
-    /** Enum value Male. */
+    /**
+     * Enum value Male.
+     */
     MALE("Male"),
 
-    /** Enum value Female. */
+    /**
+     * Enum value Female.
+     */
     FEMALE("Female");
 
-    /** The actual serialized value for a Gender instance. */
-    private String value;
+    /**
+     * The actual serialized value for a Gender instance.
+     */
+    private final String value;
 
-    Gender(String value) {
+    private Gender(String value) {
         this.value = value;
     }
 

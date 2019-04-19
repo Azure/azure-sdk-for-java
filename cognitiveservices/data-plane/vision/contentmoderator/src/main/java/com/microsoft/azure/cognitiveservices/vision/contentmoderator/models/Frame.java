@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Video frame property details.
  */
-public class Frame {
+public final class Frame {
     /**
      * Timestamp of the frame.
      */
@@ -42,7 +42,7 @@ public class Frame {
     /**
      * Get the timestamp value.
      *
-     * @return the timestamp value
+     * @return the timestamp value.
      */
     public String timestamp() {
         return this.timestamp;
@@ -51,7 +51,7 @@ public class Frame {
     /**
      * Set the timestamp value.
      *
-     * @param timestamp the timestamp value to set
+     * @param timestamp the timestamp value to set.
      * @return the Frame object itself.
      */
     public Frame withTimestamp(String timestamp) {
@@ -62,7 +62,7 @@ public class Frame {
     /**
      * Get the frameImage value.
      *
-     * @return the frameImage value
+     * @return the frameImage value.
      */
     public String frameImage() {
         return this.frameImage;
@@ -71,7 +71,7 @@ public class Frame {
     /**
      * Set the frameImage value.
      *
-     * @param frameImage the frameImage value to set
+     * @param frameImage the frameImage value to set.
      * @return the Frame object itself.
      */
     public Frame withFrameImage(String frameImage) {
@@ -82,7 +82,7 @@ public class Frame {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public List<KeyValuePair> metadata() {
         return this.metadata;
@@ -91,7 +91,7 @@ public class Frame {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the Frame object itself.
      */
     public Frame withMetadata(List<KeyValuePair> metadata) {
@@ -102,7 +102,7 @@ public class Frame {
     /**
      * Get the reviewerResultTags value.
      *
-     * @return the reviewerResultTags value
+     * @return the reviewerResultTags value.
      */
     public List<Tag> reviewerResultTags() {
         return this.reviewerResultTags;
@@ -111,12 +111,11 @@ public class Frame {
     /**
      * Set the reviewerResultTags value.
      *
-     * @param reviewerResultTags the reviewerResultTags value to set
+     * @param reviewerResultTags the reviewerResultTags value to set.
      * @return the Frame object itself.
      */
     public Frame withReviewerResultTags(List<Tag> reviewerResultTags) {
         this.reviewerResultTags = reviewerResultTags;
         return this;
     }
-
 }

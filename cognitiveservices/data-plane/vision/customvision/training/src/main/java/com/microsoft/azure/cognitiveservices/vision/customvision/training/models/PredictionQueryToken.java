@@ -8,15 +8,15 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
-import org.joda.time.DateTime;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The PredictionQueryToken model.
  */
-public class PredictionQueryToken {
+public final class PredictionQueryToken {
     /**
      * The session property.
      */
@@ -57,13 +57,13 @@ public class PredictionQueryToken {
      * The startTime property.
      */
     @JsonProperty(value = "startTime")
-    private DateTime startTime;
+    private OffsetDateTime startTime;
 
     /**
      * The endTime property.
      */
     @JsonProperty(value = "endTime")
-    private DateTime endTime;
+    private OffsetDateTime endTime;
 
     /**
      * The application property.
@@ -74,7 +74,7 @@ public class PredictionQueryToken {
     /**
      * Get the session value.
      *
-     * @return the session value
+     * @return the session value.
      */
     public String session() {
         return this.session;
@@ -83,7 +83,7 @@ public class PredictionQueryToken {
     /**
      * Set the session value.
      *
-     * @param session the session value to set
+     * @param session the session value to set.
      * @return the PredictionQueryToken object itself.
      */
     public PredictionQueryToken withSession(String session) {
@@ -94,7 +94,7 @@ public class PredictionQueryToken {
     /**
      * Get the continuation value.
      *
-     * @return the continuation value
+     * @return the continuation value.
      */
     public String continuation() {
         return this.continuation;
@@ -103,7 +103,7 @@ public class PredictionQueryToken {
     /**
      * Set the continuation value.
      *
-     * @param continuation the continuation value to set
+     * @param continuation the continuation value to set.
      * @return the PredictionQueryToken object itself.
      */
     public PredictionQueryToken withContinuation(String continuation) {
@@ -114,7 +114,7 @@ public class PredictionQueryToken {
     /**
      * Get the maxCount value.
      *
-     * @return the maxCount value
+     * @return the maxCount value.
      */
     public int maxCount() {
         return this.maxCount;
@@ -123,7 +123,7 @@ public class PredictionQueryToken {
     /**
      * Set the maxCount value.
      *
-     * @param maxCount the maxCount value to set
+     * @param maxCount the maxCount value to set.
      * @return the PredictionQueryToken object itself.
      */
     public PredictionQueryToken withMaxCount(int maxCount) {
@@ -134,7 +134,7 @@ public class PredictionQueryToken {
     /**
      * Get the orderBy value.
      *
-     * @return the orderBy value
+     * @return the orderBy value.
      */
     public OrderBy orderBy() {
         return this.orderBy;
@@ -143,7 +143,7 @@ public class PredictionQueryToken {
     /**
      * Set the orderBy value.
      *
-     * @param orderBy the orderBy value to set
+     * @param orderBy the orderBy value to set.
      * @return the PredictionQueryToken object itself.
      */
     public PredictionQueryToken withOrderBy(OrderBy orderBy) {
@@ -154,7 +154,7 @@ public class PredictionQueryToken {
     /**
      * Get the tags value.
      *
-     * @return the tags value
+     * @return the tags value.
      */
     public List<PredictionQueryTag> tags() {
         return this.tags;
@@ -163,7 +163,7 @@ public class PredictionQueryToken {
     /**
      * Set the tags value.
      *
-     * @param tags the tags value to set
+     * @param tags the tags value to set.
      * @return the PredictionQueryToken object itself.
      */
     public PredictionQueryToken withTags(List<PredictionQueryTag> tags) {
@@ -174,7 +174,7 @@ public class PredictionQueryToken {
     /**
      * Get the iterationId value.
      *
-     * @return the iterationId value
+     * @return the iterationId value.
      */
     public UUID iterationId() {
         return this.iterationId;
@@ -183,7 +183,7 @@ public class PredictionQueryToken {
     /**
      * Set the iterationId value.
      *
-     * @param iterationId the iterationId value to set
+     * @param iterationId the iterationId value to set.
      * @return the PredictionQueryToken object itself.
      */
     public PredictionQueryToken withIterationId(UUID iterationId) {
@@ -194,19 +194,19 @@ public class PredictionQueryToken {
     /**
      * Get the startTime value.
      *
-     * @return the startTime value
+     * @return the startTime value.
      */
-    public DateTime startTime() {
+    public OffsetDateTime startTime() {
         return this.startTime;
     }
 
     /**
      * Set the startTime value.
      *
-     * @param startTime the startTime value to set
+     * @param startTime the startTime value to set.
      * @return the PredictionQueryToken object itself.
      */
-    public PredictionQueryToken withStartTime(DateTime startTime) {
+    public PredictionQueryToken withStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -214,19 +214,19 @@ public class PredictionQueryToken {
     /**
      * Get the endTime value.
      *
-     * @return the endTime value
+     * @return the endTime value.
      */
-    public DateTime endTime() {
+    public OffsetDateTime endTime() {
         return this.endTime;
     }
 
     /**
      * Set the endTime value.
      *
-     * @param endTime the endTime value to set
+     * @param endTime the endTime value to set.
      * @return the PredictionQueryToken object itself.
      */
-    public PredictionQueryToken withEndTime(DateTime endTime) {
+    public PredictionQueryToken withEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -234,7 +234,7 @@ public class PredictionQueryToken {
     /**
      * Get the application value.
      *
-     * @return the application value
+     * @return the application value.
      */
     public String application() {
         return this.application;
@@ -243,12 +243,11 @@ public class PredictionQueryToken {
     /**
      * Set the application value.
      *
-     * @param application the application value to set
+     * @param application the application value to set.
      * @return the PredictionQueryToken object itself.
      */
     public PredictionQueryToken withApplication(String application) {
         this.application = application;
         return this;
     }
-
 }

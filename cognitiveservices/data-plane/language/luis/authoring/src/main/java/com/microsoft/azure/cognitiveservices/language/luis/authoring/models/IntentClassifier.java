@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Intent Classifier.
  */
-public class IntentClassifier extends ModelInfo {
+public final class IntentClassifier extends ModelInfo {
     /**
      * The domain name.
      */
@@ -29,7 +29,7 @@ public class IntentClassifier extends ModelInfo {
     /**
      * Get the customPrebuiltDomainName value.
      *
-     * @return the customPrebuiltDomainName value
+     * @return the customPrebuiltDomainName value.
      */
     public String customPrebuiltDomainName() {
         return this.customPrebuiltDomainName;
@@ -38,7 +38,8 @@ public class IntentClassifier extends ModelInfo {
     /**
      * Set the customPrebuiltDomainName value.
      *
-     * @param customPrebuiltDomainName the customPrebuiltDomainName value to set
+     * @param customPrebuiltDomainName the customPrebuiltDomainName value to
+     * set.
      * @return the IntentClassifier object itself.
      */
     public IntentClassifier withCustomPrebuiltDomainName(String customPrebuiltDomainName) {
@@ -49,7 +50,7 @@ public class IntentClassifier extends ModelInfo {
     /**
      * Get the customPrebuiltModelName value.
      *
-     * @return the customPrebuiltModelName value
+     * @return the customPrebuiltModelName value.
      */
     public String customPrebuiltModelName() {
         return this.customPrebuiltModelName;
@@ -58,12 +59,11 @@ public class IntentClassifier extends ModelInfo {
     /**
      * Set the customPrebuiltModelName value.
      *
-     * @param customPrebuiltModelName the customPrebuiltModelName value to set
+     * @param customPrebuiltModelName the customPrebuiltModelName value to set.
      * @return the IntentClassifier object itself.
      */
     public IntentClassifier withCustomPrebuiltModelName(String customPrebuiltModelName) {
         this.customPrebuiltModelName = customPrebuiltModelName;
         return this;
     }
-
 }

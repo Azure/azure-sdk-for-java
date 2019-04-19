@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.cognitiveservices.search.videosearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import java.util.List;
 
 /**
  * The Answer model.
@@ -32,10 +32,9 @@ public class Answer extends Response {
     /**
      * Get the followUpQueries value.
      *
-     * @return the followUpQueries value
+     * @return the followUpQueries value.
      */
     public List<Query> followUpQueries() {
         return this.followUpQueries;
     }
-
 }

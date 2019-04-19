@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.videosearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The PivotSuggestions model.
  */
-public class PivotSuggestions {
+public final class PivotSuggestions {
     /**
      * The pivot property.
      */
@@ -30,7 +30,7 @@ public class PivotSuggestions {
     /**
      * Get the pivot value.
      *
-     * @return the pivot value
+     * @return the pivot value.
      */
     public String pivot() {
         return this.pivot;
@@ -39,7 +39,7 @@ public class PivotSuggestions {
     /**
      * Set the pivot value.
      *
-     * @param pivot the pivot value to set
+     * @param pivot the pivot value to set.
      * @return the PivotSuggestions object itself.
      */
     public PivotSuggestions withPivot(String pivot) {
@@ -50,7 +50,7 @@ public class PivotSuggestions {
     /**
      * Get the suggestions value.
      *
-     * @return the suggestions value
+     * @return the suggestions value.
      */
     public List<Query> suggestions() {
         return this.suggestions;
@@ -59,12 +59,11 @@ public class PivotSuggestions {
     /**
      * Set the suggestions value.
      *
-     * @param suggestions the suggestions value to set
+     * @param suggestions the suggestions value to set.
      * @return the PivotSuggestions object itself.
      */
     public PivotSuggestions withSuggestions(List<Query> suggestions) {
         this.suggestions = suggestions;
         return this;
     }
-
 }

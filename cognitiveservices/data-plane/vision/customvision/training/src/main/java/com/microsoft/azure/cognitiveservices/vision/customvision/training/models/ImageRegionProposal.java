@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * The ImageRegionProposal model.
  */
-public class ImageRegionProposal {
+public final class ImageRegionProposal {
     /**
      * The projectId property.
      */
@@ -37,7 +37,7 @@ public class ImageRegionProposal {
     /**
      * Get the projectId value.
      *
-     * @return the projectId value
+     * @return the projectId value.
      */
     public UUID projectId() {
         return this.projectId;
@@ -46,7 +46,7 @@ public class ImageRegionProposal {
     /**
      * Get the imageId value.
      *
-     * @return the imageId value
+     * @return the imageId value.
      */
     public UUID imageId() {
         return this.imageId;
@@ -55,10 +55,9 @@ public class ImageRegionProposal {
     /**
      * Get the proposals value.
      *
-     * @return the proposals value
+     * @return the proposals value.
      */
     public List<RegionProposal> proposals() {
         return this.proposals;
     }
-
 }

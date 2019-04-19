@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Properties describing facial hair attributes.
  */
-public class FacialHair {
+public final class FacialHair {
     /**
      * The moustache property.
      */
@@ -35,7 +35,7 @@ public class FacialHair {
     /**
      * Get the moustache value.
      *
-     * @return the moustache value
+     * @return the moustache value.
      */
     public double moustache() {
         return this.moustache;
@@ -44,7 +44,7 @@ public class FacialHair {
     /**
      * Set the moustache value.
      *
-     * @param moustache the moustache value to set
+     * @param moustache the moustache value to set.
      * @return the FacialHair object itself.
      */
     public FacialHair withMoustache(double moustache) {
@@ -55,7 +55,7 @@ public class FacialHair {
     /**
      * Get the beard value.
      *
-     * @return the beard value
+     * @return the beard value.
      */
     public double beard() {
         return this.beard;
@@ -64,7 +64,7 @@ public class FacialHair {
     /**
      * Set the beard value.
      *
-     * @param beard the beard value to set
+     * @param beard the beard value to set.
      * @return the FacialHair object itself.
      */
     public FacialHair withBeard(double beard) {
@@ -75,7 +75,7 @@ public class FacialHair {
     /**
      * Get the sideburns value.
      *
-     * @return the sideburns value
+     * @return the sideburns value.
      */
     public double sideburns() {
         return this.sideburns;
@@ -84,12 +84,11 @@ public class FacialHair {
     /**
      * Set the sideburns value.
      *
-     * @param sideburns the sideburns value to set
+     * @param sideburns the sideburns value to set.
      * @return the FacialHair object itself.
      */
     public FacialHair withSideburns(double sideburns) {
         this.sideburns = sideburns;
         return this;
     }
-
 }

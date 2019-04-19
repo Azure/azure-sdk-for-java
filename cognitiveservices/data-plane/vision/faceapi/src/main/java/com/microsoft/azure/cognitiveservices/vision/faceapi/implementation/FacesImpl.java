@@ -8,14 +8,19 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.FindSimilarOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.IdentifyOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.DetectWithUrlOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.DetectWithStreamOptionalParameter;
-import retrofit2.Retrofit;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.HeaderParam;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.CollectionFormat;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.Faces;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.DetectedFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.FaceAttributeType;
@@ -26,591 +31,474 @@ import com.microsoft.azure.cognitiveservices.vision.faceapi.models.GroupResult;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.IdentifyRequest;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.IdentifyResult;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ImageUrl;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.SimilarFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.VerifyFaceToFaceRequest;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.VerifyFaceToPersonRequest;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.VerifyResult;
-import com.microsoft.rest.CollectionFormat;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Faces.
+ * An instance of this class provides access to all the operations defined in
+ * Faces.
  */
-public class FacesImpl implements Faces {
-    /** The Retrofit service to perform REST calls. */
+public final class FacesImpl implements Faces {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private FacesService service;
-    /** The service client containing this operation class. */
-    private FaceAPIImpl client;
+
+    /**
+     * The service client containing this operation class.
+     */
+    private FaceClientImpl client;
 
     /**
      * Initializes an instance of FacesImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public FacesImpl(Retrofit retrofit, FaceAPIImpl client) {
-        this.service = retrofit.create(FacesService.class);
+    public FacesImpl(FaceClientImpl client) {
+        this.service = RestProxy.create(FacesService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Faces to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for Faces to be used by the
+     * proxy service to perform REST calls.
      */
-    interface FacesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces findSimilar" })
+    @Host("{Endpoint}/face/v1.0")
+    private interface FacesService {
         @POST("findsimilars")
-        Observable<Response<ResponseBody>> findSimilar(@Header("accept-language") String acceptLanguage, @Body FindSimilarRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<List<SimilarFace>>> findSimilar(@HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") FindSimilarRequest body);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces group" })
         @POST("group")
-        Observable<Response<ResponseBody>> group(@Header("accept-language") String acceptLanguage, @Body GroupRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<GroupResult>> group(@HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") GroupRequest body);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces identify" })
         @POST("identify")
-        Observable<Response<ResponseBody>> identify(@Header("accept-language") String acceptLanguage, @Body IdentifyRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<List<IdentifyResult>>> identify(@HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") IdentifyRequest body);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces verifyFaceToFace" })
         @POST("verify")
-        Observable<Response<ResponseBody>> verifyFaceToFace(@Header("accept-language") String acceptLanguage, @Body VerifyFaceToFaceRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<VerifyResult>> verifyFaceToFace(@HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") VerifyFaceToFaceRequest body);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces detectWithUrl" })
         @POST("detect")
-        Observable<Response<ResponseBody>> detectWithUrl(@Query("returnFaceId") Boolean returnFaceId, @Query("returnFaceLandmarks") Boolean returnFaceLandmarks, @Query("returnFaceAttributes") String returnFaceAttributes, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<List<DetectedFace>>> detectWithUrl(@HostParam("Endpoint") String endpoint, @QueryParam("returnFaceId") Boolean returnFaceId, @QueryParam("returnFaceLandmarks") Boolean returnFaceLandmarks, @QueryParam("returnFaceAttributes") String returnFaceAttributes, @QueryParam("recognitionModel") RecognitionModel recognitionModel1, @QueryParam("returnRecognitionModel") Boolean returnRecognitionModel, @BodyParam("application/json; charset=utf-8") ImageUrl imageUrl);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces verifyFaceToPerson" })
         @POST("verify")
-        Observable<Response<ResponseBody>> verifyFaceToPerson(@Header("accept-language") String acceptLanguage, @Body VerifyFaceToPersonRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<VerifyResult>> verifyFaceToPerson(@HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") VerifyFaceToPersonRequest body);
 
-        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces detectWithStream" })
         @POST("detect")
-        Observable<Response<ResponseBody>> detectWithStream(@Query("returnFaceId") Boolean returnFaceId, @Query("returnFaceLandmarks") Boolean returnFaceLandmarks, @Query("returnFaceAttributes") String returnFaceAttributes, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<List<DetectedFace>>> detectWithStream(@HostParam("Endpoint") String endpoint, @QueryParam("returnFaceId") Boolean returnFaceId, @QueryParam("returnFaceLandmarks") Boolean returnFaceLandmarks, @QueryParam("returnFaceAttributes") String returnFaceAttributes, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image, @QueryParam("recognitionModel") RecognitionModel recognitionModel1, @QueryParam("returnRecognitionModel") Boolean returnRecognitionModel);
     }
 
-
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     * &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     * &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
      *
-     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
-     * @param findSimilarOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;SimilarFace&gt; object if successful.
      */
-    public List<SimilarFace> findSimilar(UUID faceId, FindSimilarOptionalParameter findSimilarOptionalParameter) {
-        return findSimilarWithServiceResponseAsync(faceId, findSimilarOptionalParameter).toBlocking().single().body();
+    public List<SimilarFace> findSimilar(@NonNull UUID faceId) {
+        return findSimilarAsync(faceId).block();
     }
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     * &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     * &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
      *
-     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
-     * @param findSimilarOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<SimilarFace>> findSimilarAsync(UUID faceId, FindSimilarOptionalParameter findSimilarOptionalParameter, final ServiceCallback<List<SimilarFace>> serviceCallback) {
-        return ServiceFuture.fromResponse(findSimilarWithServiceResponseAsync(faceId, findSimilarOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
-     *
-     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
-     * @param findSimilarOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;SimilarFace&gt; object
-     */
-    public Observable<List<SimilarFace>> findSimilarAsync(UUID faceId, FindSimilarOptionalParameter findSimilarOptionalParameter) {
-        return findSimilarWithServiceResponseAsync(faceId, findSimilarOptionalParameter).map(new Func1<ServiceResponse<List<SimilarFace>>, List<SimilarFace>>() {
-            @Override
-            public List<SimilarFace> call(ServiceResponse<List<SimilarFace>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
-     *
-     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
-     * @param findSimilarOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;SimilarFace&gt; object
-     */
-    public Observable<ServiceResponse<List<SimilarFace>>> findSimilarWithServiceResponseAsync(UUID faceId, FindSimilarOptionalParameter findSimilarOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<List<SimilarFace>>> findSimilarWithRestResponseAsync(@NonNull UUID faceId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceId == null) {
             throw new IllegalArgumentException("Parameter faceId is required and cannot be null.");
         }
-        final String faceListId = findSimilarOptionalParameter != null ? findSimilarOptionalParameter.faceListId() : null;
-        final List<UUID> faceIds = findSimilarOptionalParameter != null ? findSimilarOptionalParameter.faceIds() : null;
-        final Integer maxNumOfCandidatesReturned = findSimilarOptionalParameter != null ? findSimilarOptionalParameter.maxNumOfCandidatesReturned() : null;
-        final FindSimilarMatchMode mode = findSimilarOptionalParameter != null ? findSimilarOptionalParameter.mode() : null;
-
-        return findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode);
+        FindSimilarRequest body = new FindSimilarRequest();
+        body.withFaceId(faceId);
+        body.withFaceListId(null);
+        body.withLargeFaceListId(null);
+        body.withFaceIds(null);
+        body.withMaxNumOfCandidatesReturned(null);
+        body.withMode(null);
+        return service.findSimilar(this.client.endpoint(), body);
     }
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     * &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     * &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
      *
-     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
-     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and faceIds should not be provided at the same time
-     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call.
-     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
-     * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;SimilarFace&gt; object
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<ServiceResponse<List<SimilarFace>>> findSimilarWithServiceResponseAsync(UUID faceId, String faceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<List<SimilarFace>> findSimilarAsync(@NonNull UUID faceId) {
+        return findSimilarWithRestResponseAsync(faceId)
+            .flatMap((SimpleResponse<List<SimilarFace>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     * &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     * &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
+     *
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call.
+     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param largeFaceListId An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
+     * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;SimilarFace&gt; object if successful.
+     */
+    public List<SimilarFace> findSimilar(@NonNull UUID faceId, String faceListId, String largeFaceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
+        return findSimilarAsync(faceId, faceListId, largeFaceListId, faceIds, maxNumOfCandidatesReturned, mode).block();
+    }
+
+    /**
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     * &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     * &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
+     *
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call.
+     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param largeFaceListId An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
+     * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<SimilarFace>>> findSimilarWithRestResponseAsync(@NonNull UUID faceId, String faceListId, String largeFaceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceId == null) {
             throw new IllegalArgumentException("Parameter faceId is required and cannot be null.");
         }
         Validator.validate(faceIds);
-        FindSimilarRequest bodyParameter = new FindSimilarRequest();
-        bodyParameter.withFaceId(faceId);
-        bodyParameter.withFaceListId(faceListId);
-        bodyParameter.withFaceIds(faceIds);
-        bodyParameter.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
-        bodyParameter.withMode(mode);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.findSimilar(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SimilarFace>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<SimilarFace>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<SimilarFace>> clientResponse = findSimilarDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<SimilarFace>> findSimilarDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<SimilarFace>, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<SimilarFace>>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public FacesFindSimilarParameters findSimilar() {
-        return new FacesFindSimilarParameters(this);
+        FindSimilarRequest body = new FindSimilarRequest();
+        body.withFaceId(faceId);
+        body.withFaceListId(faceListId);
+        body.withLargeFaceListId(largeFaceListId);
+        body.withFaceIds(faceIds);
+        body.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
+        body.withMode(mode);
+        return service.findSimilar(this.client.endpoint(), body);
     }
 
     /**
-     * Internal class implementing FacesFindSimilarDefinition.
-     */
-    class FacesFindSimilarParameters implements FacesFindSimilarDefinition {
-        private FacesImpl parent;
-        private UUID faceId;
-        private String faceListId;
-        private List<UUID> faceIds;
-        private Integer maxNumOfCandidatesReturned;
-        private FindSimilarMatchMode mode;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        FacesFindSimilarParameters(FacesImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public FacesFindSimilarParameters withFaceId(UUID faceId) {
-            this.faceId = faceId;
-            return this;
-        }
-
-        @Override
-        public FacesFindSimilarParameters withFaceListId(String faceListId) {
-            this.faceListId = faceListId;
-            return this;
-        }
-
-        @Override
-        public FacesFindSimilarParameters withFaceIds(List<UUID> faceIds) {
-            this.faceIds = faceIds;
-            return this;
-        }
-
-        @Override
-        public FacesFindSimilarParameters withMaxNumOfCandidatesReturned(Integer maxNumOfCandidatesReturned) {
-            this.maxNumOfCandidatesReturned = maxNumOfCandidatesReturned;
-            return this;
-        }
-
-        @Override
-        public FacesFindSimilarParameters withMode(FindSimilarMatchMode mode) {
-            this.mode = mode;
-            return this;
-        }
-
-        @Override
-        public List<SimilarFace> execute() {
-        return findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<List<SimilarFace>> executeAsync() {
-            return findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode).map(new Func1<ServiceResponse<List<SimilarFace>>, List<SimilarFace>>() {
-                @Override
-                public List<SimilarFace> call(ServiceResponse<List<SimilarFace>> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Divide candidate faces into groups based on face similarity.
+     * Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. faceId array contains the faces created by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), which will expire 24 hours after creation. A "faceListId" is created by [FaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b) containing persistedFaceIds that will not expire. And a "largeFaceListId" is created by [LargeFaceList - Create](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) containing persistedFaceIds that will also not expire. Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
+     * &lt;br/&gt;Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. It can be used in the cases like searching celebrity-looking faces.
+     * &lt;br/&gt;The 'recognitionModel' associated with the query face's faceId should be the same as the 'recognitionModel' used by the target faceId array, face list or large face list.
      *
-     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call.
+     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param largeFaceListId An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
+     * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<SimilarFace>> findSimilarAsync(@NonNull UUID faceId, String faceListId, String largeFaceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
+        return findSimilarWithRestResponseAsync(faceId, faceListId, largeFaceListId, faceIds, maxNumOfCandidatesReturned, mode)
+            .flatMap((SimpleResponse<List<SimilarFace>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Divide candidate faces into groups based on face similarity.&lt;br /&gt;
+     * * The output is one or more disjointed face groups and a messyGroup. A face group contains faces that have similar looking, often of the same person. Face groups are ranked by group size, i.e. number of faces. Notice that faces belonging to a same person might be split into several groups in the result.
+     * * MessyGroup is a special face group containing faces that cannot find any similar counterpart face from original faces. The messyGroup will not appear in the result if all faces found their counterparts.
+     * * Group API needs at least 2 candidate faces and 1000 at most. We suggest to try [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a) when you only have 2 candidate faces.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same.
+     *
+     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the GroupResult object if successful.
      */
-    public GroupResult group(List<UUID> faceIds) {
-        return groupWithServiceResponseAsync(faceIds).toBlocking().single().body();
+    public GroupResult group(@NonNull List<UUID> faceIds) {
+        return groupAsync(faceIds).block();
     }
 
     /**
-     * Divide candidate faces into groups based on face similarity.
+     * Divide candidate faces into groups based on face similarity.&lt;br /&gt;
+     * * The output is one or more disjointed face groups and a messyGroup. A face group contains faces that have similar looking, often of the same person. Face groups are ranked by group size, i.e. number of faces. Notice that faces belonging to a same person might be split into several groups in the result.
+     * * MessyGroup is a special face group containing faces that cannot find any similar counterpart face from original faces. The messyGroup will not appear in the result if all faces found their counterparts.
+     * * Group API needs at least 2 candidate faces and 1000 at most. We suggest to try [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a) when you only have 2 candidate faces.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same.
      *
-     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<GroupResult> groupAsync(List<UUID> faceIds, final ServiceCallback<GroupResult> serviceCallback) {
-        return ServiceFuture.fromResponse(groupWithServiceResponseAsync(faceIds), serviceCallback);
-    }
-
-    /**
-     * Divide candidate faces into groups based on face similarity.
-     *
-     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the GroupResult object
-     */
-    public Observable<GroupResult> groupAsync(List<UUID> faceIds) {
-        return groupWithServiceResponseAsync(faceIds).map(new Func1<ServiceResponse<GroupResult>, GroupResult>() {
-            @Override
-            public GroupResult call(ServiceResponse<GroupResult> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Divide candidate faces into groups based on face similarity.
-     *
-     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the GroupResult object
-     */
-    public Observable<ServiceResponse<GroupResult>> groupWithServiceResponseAsync(List<UUID> faceIds) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<GroupResult>> groupWithRestResponseAsync(@NonNull List<UUID> faceIds) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceIds == null) {
             throw new IllegalArgumentException("Parameter faceIds is required and cannot be null.");
         }
         Validator.validate(faceIds);
-        GroupRequest bodyParameter = new GroupRequest();
-        bodyParameter.withFaceIds(faceIds);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.group(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GroupResult>>>() {
-                @Override
-                public Observable<ServiceResponse<GroupResult>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<GroupResult> clientResponse = groupDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        GroupRequest body = new GroupRequest();
+        body.withFaceIds(faceIds);
+        return service.group(this.client.endpoint(), body);
     }
-
-    private ServiceResponse<GroupResult> groupDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<GroupResult, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<GroupResult>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
 
     /**
-     * Identify unknown faces from a person group.
+     * Divide candidate faces into groups based on face similarity.&lt;br /&gt;
+     * * The output is one or more disjointed face groups and a messyGroup. A face group contains faces that have similar looking, often of the same person. Face groups are ranked by group size, i.e. number of faces. Notice that faces belonging to a same person might be split into several groups in the result.
+     * * MessyGroup is a special face group containing faces that cannot find any similar counterpart face from original faces. The messyGroup will not appear in the result if all faces found their counterparts.
+     * * Group API needs at least 2 candidate faces and 1000 at most. We suggest to try [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a) when you only have 2 candidate faces.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
+     * @param faceIds Array of candidate faceId created by Face - Detect. The maximum is 1000 faces.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<GroupResult> groupAsync(@NonNull List<UUID> faceIds) {
+        return groupWithRestResponseAsync(faceIds)
+            .flatMap((SimpleResponse<GroupResult> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     * &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     * &lt;br/&gt;
+     *
+     * Remarks:&lt;br /&gt;
+     * * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
+     *
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
-     * @param identifyOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;IdentifyResult&gt; object if successful.
      */
-    public List<IdentifyResult> identify(String personGroupId, List<UUID> faceIds, IdentifyOptionalParameter identifyOptionalParameter) {
-        return identifyWithServiceResponseAsync(personGroupId, faceIds, identifyOptionalParameter).toBlocking().single().body();
+    public List<IdentifyResult> identify(@NonNull List<UUID> faceIds) {
+        return identifyAsync(faceIds).block();
     }
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     * &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     * &lt;br/&gt;
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
-     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
-     * @param identifyOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<IdentifyResult>> identifyAsync(String personGroupId, List<UUID> faceIds, IdentifyOptionalParameter identifyOptionalParameter, final ServiceCallback<List<IdentifyResult>> serviceCallback) {
-        return ServiceFuture.fromResponse(identifyWithServiceResponseAsync(personGroupId, faceIds, identifyOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Identify unknown faces from a person group.
+     * Remarks:&lt;br /&gt;
+     * * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
-     * @param identifyOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;IdentifyResult&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<List<IdentifyResult>> identifyAsync(String personGroupId, List<UUID> faceIds, IdentifyOptionalParameter identifyOptionalParameter) {
-        return identifyWithServiceResponseAsync(personGroupId, faceIds, identifyOptionalParameter).map(new Func1<ServiceResponse<List<IdentifyResult>>, List<IdentifyResult>>() {
-            @Override
-            public List<IdentifyResult> call(ServiceResponse<List<IdentifyResult>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Identify unknown faces from a person group.
-     *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
-     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
-     * @param identifyOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;IdentifyResult&gt; object
-     */
-    public Observable<ServiceResponse<List<IdentifyResult>>> identifyWithServiceResponseAsync(String personGroupId, List<UUID> faceIds, IdentifyOptionalParameter identifyOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+    public Mono<SimpleResponse<List<IdentifyResult>>> identifyWithRestResponseAsync(@NonNull List<UUID> faceIds) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceIds == null) {
             throw new IllegalArgumentException("Parameter faceIds is required and cannot be null.");
         }
         Validator.validate(faceIds);
-        final Integer maxNumOfCandidatesReturned = identifyOptionalParameter != null ? identifyOptionalParameter.maxNumOfCandidatesReturned() : null;
-        final Double confidenceThreshold = identifyOptionalParameter != null ? identifyOptionalParameter.confidenceThreshold() : null;
-
-        return identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold);
+        IdentifyRequest body = new IdentifyRequest();
+        body.withFaceIds(faceIds);
+        body.withPersonGroupId(null);
+        body.withLargePersonGroupId(null);
+        body.withMaxNumOfCandidatesReturned(null);
+        body.withConfidenceThreshold(null);
+        return service.identify(this.client.endpoint(), body);
     }
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     * &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     * &lt;br/&gt;
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
+     * Remarks:&lt;br /&gt;
+     * * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
+     *
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<IdentifyResult>> identifyAsync(@NonNull List<UUID> faceIds) {
+        return identifyWithRestResponseAsync(faceIds)
+            .flatMap((SimpleResponse<List<IdentifyResult>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     * &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     * &lt;br/&gt;
+     *
+     * Remarks:&lt;br /&gt;
+     * * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
+     *
+     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param personGroupId PersonGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
      * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
      * @param confidenceThreshold Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;IdentifyResult&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;IdentifyResult&gt; object if successful.
      */
-    public Observable<ServiceResponse<List<IdentifyResult>>> identifyWithServiceResponseAsync(String personGroupId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+    public List<IdentifyResult> identify(@NonNull List<UUID> faceIds, String personGroupId, String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
+        return identifyAsync(faceIds, personGroupId, largePersonGroupId, maxNumOfCandidatesReturned, confidenceThreshold).block();
+    }
+
+    /**
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     * &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     * &lt;br/&gt;
+     *
+     * Remarks:&lt;br /&gt;
+     * * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
+     *
+     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param personGroupId PersonGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
+     * @param confidenceThreshold Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<IdentifyResult>>> identifyWithRestResponseAsync(@NonNull List<UUID> faceIds, String personGroupId, String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceIds == null) {
             throw new IllegalArgumentException("Parameter faceIds is required and cannot be null.");
         }
         Validator.validate(faceIds);
-        IdentifyRequest bodyParameter = new IdentifyRequest();
-        bodyParameter.withPersonGroupId(personGroupId);
-        bodyParameter.withFaceIds(faceIds);
-        bodyParameter.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
-        bodyParameter.withConfidenceThreshold(confidenceThreshold);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.identify(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IdentifyResult>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<IdentifyResult>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<IdentifyResult>> clientResponse = identifyDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<IdentifyResult>> identifyDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<IdentifyResult>, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<IdentifyResult>>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public FacesIdentifyParameters identify() {
-        return new FacesIdentifyParameters(this);
+        IdentifyRequest body = new IdentifyRequest();
+        body.withFaceIds(faceIds);
+        body.withPersonGroupId(personGroupId);
+        body.withLargePersonGroupId(largePersonGroupId);
+        body.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
+        body.withConfidenceThreshold(confidenceThreshold);
+        return service.identify(this.client.endpoint(), body);
     }
 
     /**
-     * Internal class implementing FacesIdentifyDefinition.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
+     * &lt;br/&gt; For each face in the faceIds array, Face Identify will compute similarities between the query face and all the faces in the person group (given by personGroupId) or large person group (given by largePersonGroupId), and return candidate person(s) for that face ranked by similarity confidence. The person group/large person group should be trained to make it ready for identification. See more in [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) and [LargePersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/599ae2d16ac60f11b48b5aa4).
+     * &lt;br/&gt;
+     *
+     * Remarks:&lt;br /&gt;
+     * * The algorithm allows more than one face to be identified independently at the same request, but no more than 10 faces.
+     * * Each person in the person group/large person group could have more than one face, but no more than 248 faces.
+     * * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no person is identified, the returned candidates will be an empty array.
+     * * Try [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237) when you need to find similar faces from a face list/large face list instead of a person group/large person group.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target person group or large person group.
+     *
+     * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param personGroupId PersonGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
+     * @param confidenceThreshold Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class FacesIdentifyParameters implements FacesIdentifyDefinition {
-        private FacesImpl parent;
-        private String personGroupId;
-        private List<UUID> faceIds;
-        private Integer maxNumOfCandidatesReturned;
-        private Double confidenceThreshold;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        FacesIdentifyParameters(FacesImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public FacesIdentifyParameters withPersonGroupId(String personGroupId) {
-            this.personGroupId = personGroupId;
-            return this;
-        }
-
-        @Override
-        public FacesIdentifyParameters withFaceIds(List<UUID> faceIds) {
-            this.faceIds = faceIds;
-            return this;
-        }
-
-        @Override
-        public FacesIdentifyParameters withMaxNumOfCandidatesReturned(Integer maxNumOfCandidatesReturned) {
-            this.maxNumOfCandidatesReturned = maxNumOfCandidatesReturned;
-            return this;
-        }
-
-        @Override
-        public FacesIdentifyParameters withConfidenceThreshold(Double confidenceThreshold) {
-            this.confidenceThreshold = confidenceThreshold;
-            return this;
-        }
-
-        @Override
-        public List<IdentifyResult> execute() {
-        return identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<List<IdentifyResult>> executeAsync() {
-            return identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold).map(new Func1<ServiceResponse<List<IdentifyResult>>, List<IdentifyResult>>() {
-                @Override
-                public List<IdentifyResult> call(ServiceResponse<List<IdentifyResult>> response) {
-                    return response.body();
-                }
-            });
-        }
+    public Mono<List<IdentifyResult>> identifyAsync(@NonNull List<UUID> faceIds, String personGroupId, String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
+        return identifyWithRestResponseAsync(faceIds, personGroupId, largePersonGroupId, maxNumOfCandidatesReturned, confidenceThreshold)
+            .flatMap((SimpleResponse<List<IdentifyResult>> res) -> Mono.just(res.value()));
     }
 
     /**
      * Verify whether two faces belong to a same person or whether one face belongs to a person.
+     * &lt;br/&gt;
+     * Remarks:&lt;br /&gt;
+     * * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * For the scenarios that are sensitive to accuracy please make your own judgment.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target face, person group or large person group.
      *
-     * @param faceId1 FaceId of the first face, comes from Face - Detect
-     * @param faceId2 FaceId of the second face, comes from Face - Detect
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param faceId1 FaceId of the first face, comes from Face - Detect.
+     * @param faceId2 FaceId of the second face, comes from Face - Detect.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the VerifyResult object if successful.
      */
-    public VerifyResult verifyFaceToFace(UUID faceId1, UUID faceId2) {
-        return verifyFaceToFaceWithServiceResponseAsync(faceId1, faceId2).toBlocking().single().body();
+    public VerifyResult verifyFaceToFace(@NonNull UUID faceId1, @NonNull UUID faceId2) {
+        return verifyFaceToFaceAsync(faceId1, faceId2).block();
     }
 
     /**
      * Verify whether two faces belong to a same person or whether one face belongs to a person.
+     * &lt;br/&gt;
+     * Remarks:&lt;br /&gt;
+     * * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * For the scenarios that are sensitive to accuracy please make your own judgment.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target face, person group or large person group.
      *
-     * @param faceId1 FaceId of the first face, comes from Face - Detect
-     * @param faceId2 FaceId of the second face, comes from Face - Detect
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param faceId1 FaceId of the first face, comes from Face - Detect.
+     * @param faceId2 FaceId of the second face, comes from Face - Detect.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<VerifyResult> verifyFaceToFaceAsync(UUID faceId1, UUID faceId2, final ServiceCallback<VerifyResult> serviceCallback) {
-        return ServiceFuture.fromResponse(verifyFaceToFaceWithServiceResponseAsync(faceId1, faceId2), serviceCallback);
-    }
-
-    /**
-     * Verify whether two faces belong to a same person or whether one face belongs to a person.
-     *
-     * @param faceId1 FaceId of the first face, comes from Face - Detect
-     * @param faceId2 FaceId of the second face, comes from Face - Detect
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the VerifyResult object
-     */
-    public Observable<VerifyResult> verifyFaceToFaceAsync(UUID faceId1, UUID faceId2) {
-        return verifyFaceToFaceWithServiceResponseAsync(faceId1, faceId2).map(new Func1<ServiceResponse<VerifyResult>, VerifyResult>() {
-            @Override
-            public VerifyResult call(ServiceResponse<VerifyResult> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Verify whether two faces belong to a same person or whether one face belongs to a person.
-     *
-     * @param faceId1 FaceId of the first face, comes from Face - Detect
-     * @param faceId2 FaceId of the second face, comes from Face - Detect
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the VerifyResult object
-     */
-    public Observable<ServiceResponse<VerifyResult>> verifyFaceToFaceWithServiceResponseAsync(UUID faceId1, UUID faceId2) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<VerifyResult>> verifyFaceToFaceWithRestResponseAsync(@NonNull UUID faceId1, @NonNull UUID faceId2) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceId1 == null) {
             throw new IllegalArgumentException("Parameter faceId1 is required and cannot be null.");
@@ -618,111 +506,158 @@ public class FacesImpl implements Faces {
         if (faceId2 == null) {
             throw new IllegalArgumentException("Parameter faceId2 is required and cannot be null.");
         }
-        VerifyFaceToFaceRequest bodyParameter = new VerifyFaceToFaceRequest();
-        bodyParameter.withFaceId1(faceId1);
-        bodyParameter.withFaceId2(faceId2);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.verifyFaceToFace(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VerifyResult>>>() {
-                @Override
-                public Observable<ServiceResponse<VerifyResult>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<VerifyResult> clientResponse = verifyFaceToFaceDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        VerifyFaceToFaceRequest body = new VerifyFaceToFaceRequest();
+        body.withFaceId1(faceId1);
+        body.withFaceId2(faceId2);
+        return service.verifyFaceToFace(this.client.endpoint(), body);
     }
-
-    private ServiceResponse<VerifyResult> verifyFaceToFaceDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<VerifyResult, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<VerifyResult>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
 
     /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
+     * Verify whether two faces belong to a same person or whether one face belongs to a person.
+     * &lt;br/&gt;
+     * Remarks:&lt;br /&gt;
+     * * Higher face image quality means better identification precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * For the scenarios that are sensitive to accuracy please make your own judgment.
+     * * The 'recognitionModel' associated with the query faces' faceIds should be the same as the 'recognitionModel' used by the target face, person group or large person group.
      *
-     * @param url Publicly reachable URL of an image
-     * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param faceId1 FaceId of the first face, comes from Face - Detect.
+     * @param faceId2 FaceId of the second face, comes from Face - Detect.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<VerifyResult> verifyFaceToFaceAsync(@NonNull UUID faceId1, @NonNull UUID faceId2) {
+        return verifyFaceToFaceWithRestResponseAsync(faceId1, faceId2)
+            .flatMap((SimpleResponse<VerifyResult> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    public List<DetectedFace> detectWithUrl(String url, DetectWithUrlOptionalParameter detectWithUrlOptionalParameter) {
-        return detectWithUrlWithServiceResponseAsync(url, detectWithUrlOptionalParameter).toBlocking().single().body();
+    public List<DetectedFace> detectWithUrl(@NonNull String url) {
+        return detectWithUrlAsync(url).block();
     }
 
     /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
      *
-     * @param url Publicly reachable URL of an image
-     * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<DetectedFace>> detectWithUrlAsync(String url, DetectWithUrlOptionalParameter detectWithUrlOptionalParameter, final ServiceCallback<List<DetectedFace>> serviceCallback) {
-        return ServiceFuture.fromResponse(detectWithUrlWithServiceResponseAsync(url, detectWithUrlOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
-     *
-     * @param url Publicly reachable URL of an image
-     * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;DetectedFace&gt; object
-     */
-    public Observable<List<DetectedFace>> detectWithUrlAsync(String url, DetectWithUrlOptionalParameter detectWithUrlOptionalParameter) {
-        return detectWithUrlWithServiceResponseAsync(url, detectWithUrlOptionalParameter).map(new Func1<ServiceResponse<List<DetectedFace>>, List<DetectedFace>>() {
-            @Override
-            public List<DetectedFace> call(ServiceResponse<List<DetectedFace>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
-     *
-     * @param url Publicly reachable URL of an image
-     * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;DetectedFace&gt; object
-     */
-    public Observable<ServiceResponse<List<DetectedFace>>> detectWithUrlWithServiceResponseAsync(String url, DetectWithUrlOptionalParameter detectWithUrlOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<List<DetectedFace>>> detectWithUrlWithRestResponseAsync(@NonNull String url) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
-        final Boolean returnFaceId = detectWithUrlOptionalParameter != null ? detectWithUrlOptionalParameter.returnFaceId() : null;
-        final Boolean returnFaceLandmarks = detectWithUrlOptionalParameter != null ? detectWithUrlOptionalParameter.returnFaceLandmarks() : null;
-        final List<FaceAttributeType> returnFaceAttributes = detectWithUrlOptionalParameter != null ? detectWithUrlOptionalParameter.returnFaceAttributes() : null;
-
-        return detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes);
+        final Boolean returnFaceId = true;
+        final Boolean returnFaceLandmarks = false;
+        final List<FaceAttributeType> returnFaceAttributes = null;
+        final RecognitionModel recognitionModel1 = recognition_01;
+        final Boolean returnRecognitionModel = false;
+        ImageUrl imageUrl = new ImageUrl();
+        imageUrl.withUrl(url);
+        String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);
+        return service.detectWithUrl(this.client.endpoint(), returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, recognitionModel, returnRecognitionModel, imageUrl);
     }
 
     /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<DetectedFace>> detectWithUrlAsync(@NonNull String url) {
+        return detectWithUrlWithRestResponseAsync(url)
+            .flatMap((SimpleResponse<List<DetectedFace>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
+     *
+     * @param url Publicly reachable URL of an image.
      * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;DetectedFace&gt; object
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    public Observable<ServiceResponse<List<DetectedFace>>> detectWithUrlWithServiceResponseAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public List<DetectedFace> detectWithUrl(@NonNull String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+        return detectWithUrlAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel).block();
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<DetectedFace>>> detectWithUrlWithRestResponseAsync(@NonNull String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
@@ -730,357 +665,258 @@ public class FacesImpl implements Faces {
         Validator.validate(returnFaceAttributes);
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
         String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);
-        return service.detectWithUrl(returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DetectedFace>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<DetectedFace>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<DetectedFace>> clientResponse = detectWithUrlDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<DetectedFace>> detectWithUrlDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<DetectedFace>, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<DetectedFace>>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public FacesDetectWithUrlParameters detectWithUrl() {
-        return new FacesDetectWithUrlParameters(this);
+        return service.detectWithUrl(this.client.endpoint(), returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, recognitionModel, returnRecognitionModel, imageUrl);
     }
 
     /**
-     * Internal class implementing FacesDetectWithUrlDefinition.
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
+     * * Optional parameters including faceId, landmarks, and attributes. Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+     * * The extracted face feature, instead of the actual image, will be stored on server. The faceId is an identifier of the face feature and will be used in [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239), [Face - Verify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523a), and [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). It will expire 24 hours after the detection call.
+     * * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * * Faces are detectable when its size is 36x36 to 4096x4096 pixels. If need to detect very small but clear faces, please try to enlarge the input image.
+     * * Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * * Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g. exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+     * * Attributes (age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate. HeadPose's pitch value is a reserved field and will always return 0.
+     * * Different 'recognitionModel' values are provided. If follow-up operations like Verify, Identify, Find Similar are needed, please specify the recognition model with 'recognitionModel' parameter. The default value for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model. More details, please refer to [How to specify a recognition model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-recognition-model).
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class FacesDetectWithUrlParameters implements FacesDetectWithUrlDefinition {
-        private FacesImpl parent;
-        private String url;
-        private Boolean returnFaceId;
-        private Boolean returnFaceLandmarks;
-        private List<FaceAttributeType> returnFaceAttributes;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        FacesDetectWithUrlParameters(FacesImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public FacesDetectWithUrlParameters withUrl(String url) {
-            this.url = url;
-            return this;
-        }
-
-        @Override
-        public FacesDetectWithUrlParameters withReturnFaceId(Boolean returnFaceId) {
-            this.returnFaceId = returnFaceId;
-            return this;
-        }
-
-        @Override
-        public FacesDetectWithUrlParameters withReturnFaceLandmarks(Boolean returnFaceLandmarks) {
-            this.returnFaceLandmarks = returnFaceLandmarks;
-            return this;
-        }
-
-        @Override
-        public FacesDetectWithUrlParameters withReturnFaceAttributes(List<FaceAttributeType> returnFaceAttributes) {
-            this.returnFaceAttributes = returnFaceAttributes;
-            return this;
-        }
-
-        @Override
-        public List<DetectedFace> execute() {
-        return detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<List<DetectedFace>> executeAsync() {
-            return detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes).map(new Func1<ServiceResponse<List<DetectedFace>>, List<DetectedFace>>() {
-                @Override
-                public List<DetectedFace> call(ServiceResponse<List<DetectedFace>> response) {
-                    return response.body();
-                }
-            });
-        }
+    public Mono<List<DetectedFace>> detectWithUrlAsync(@NonNull String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+        return detectWithUrlWithRestResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel)
+            .flatMap((SimpleResponse<List<DetectedFace>> res) -> Mono.just(res.value()));
     }
 
     /**
      * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
      *
-     * @param faceId FaceId the face, comes from Face - Detect
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
-     * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param faceId FaceId of the face, comes from Face - Detect.
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the VerifyResult object if successful.
      */
-    public VerifyResult verifyFaceToPerson(UUID faceId, String personGroupId, UUID personId) {
-        return verifyFaceToPersonWithServiceResponseAsync(faceId, personGroupId, personId).toBlocking().single().body();
+    public VerifyResult verifyFaceToPerson(@NonNull UUID faceId, @NonNull UUID personId) {
+        return verifyFaceToPersonAsync(faceId, personId).block();
     }
 
     /**
      * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
      *
-     * @param faceId FaceId the face, comes from Face - Detect
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
-     * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param faceId FaceId of the face, comes from Face - Detect.
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<VerifyResult> verifyFaceToPersonAsync(UUID faceId, String personGroupId, UUID personId, final ServiceCallback<VerifyResult> serviceCallback) {
-        return ServiceFuture.fromResponse(verifyFaceToPersonWithServiceResponseAsync(faceId, personGroupId, personId), serviceCallback);
-    }
-
-    /**
-     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
-     *
-     * @param faceId FaceId the face, comes from Face - Detect
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
-     * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the VerifyResult object
-     */
-    public Observable<VerifyResult> verifyFaceToPersonAsync(UUID faceId, String personGroupId, UUID personId) {
-        return verifyFaceToPersonWithServiceResponseAsync(faceId, personGroupId, personId).map(new Func1<ServiceResponse<VerifyResult>, VerifyResult>() {
-            @Override
-            public VerifyResult call(ServiceResponse<VerifyResult> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
-     *
-     * @param faceId FaceId the face, comes from Face - Detect
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
-     * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the VerifyResult object
-     */
-    public Observable<ServiceResponse<VerifyResult>> verifyFaceToPersonWithServiceResponseAsync(UUID faceId, String personGroupId, UUID personId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<VerifyResult>> verifyFaceToPersonWithRestResponseAsync(@NonNull UUID faceId, @NonNull UUID personId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceId == null) {
             throw new IllegalArgumentException("Parameter faceId is required and cannot be null.");
         }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        if (personId == null) {
+            throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
+        }
+        VerifyFaceToPersonRequest body = new VerifyFaceToPersonRequest();
+        body.withFaceId(faceId);
+        body.withPersonGroupId(null);
+        body.withLargePersonGroupId(null);
+        body.withPersonId(personId);
+        return service.verifyFaceToPerson(this.client.endpoint(), body);
+    }
+
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect.
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<VerifyResult> verifyFaceToPersonAsync(@NonNull UUID faceId, @NonNull UUID personId) {
+        return verifyFaceToPersonWithRestResponseAsync(faceId, personId)
+            .flatMap((SimpleResponse<VerifyResult> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect.
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the VerifyResult object if successful.
+     */
+    public VerifyResult verifyFaceToPerson(@NonNull UUID faceId, @NonNull UUID personId, String personGroupId, String largePersonGroupId) {
+        return verifyFaceToPersonAsync(faceId, personId, personGroupId, largePersonGroupId).block();
+    }
+
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect.
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<VerifyResult>> verifyFaceToPersonWithRestResponseAsync(@NonNull UUID faceId, @NonNull UUID personId, String personGroupId, String largePersonGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (faceId == null) {
+            throw new IllegalArgumentException("Parameter faceId is required and cannot be null.");
         }
         if (personId == null) {
             throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
         }
-        VerifyFaceToPersonRequest bodyParameter = new VerifyFaceToPersonRequest();
-        bodyParameter.withFaceId(faceId);
-        bodyParameter.withPersonGroupId(personGroupId);
-        bodyParameter.withPersonId(personId);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.verifyFaceToPerson(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VerifyResult>>>() {
-                @Override
-                public Observable<ServiceResponse<VerifyResult>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<VerifyResult> clientResponse = verifyFaceToPersonDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        VerifyFaceToPersonRequest body = new VerifyFaceToPersonRequest();
+        body.withFaceId(faceId);
+        body.withPersonGroupId(personGroupId);
+        body.withLargePersonGroupId(largePersonGroupId);
+        body.withPersonId(personId);
+        return service.verifyFaceToPerson(this.client.endpoint(), body);
     }
 
-    private ServiceResponse<VerifyResult> verifyFaceToPersonDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<VerifyResult, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<VerifyResult>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect.
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<VerifyResult> verifyFaceToPersonAsync(@NonNull UUID faceId, @NonNull UUID personId, String personGroupId, String largePersonGroupId) {
+        return verifyFaceToPersonWithRestResponseAsync(faceId, personId, personGroupId, largePersonGroupId)
+            .flatMap((SimpleResponse<VerifyResult> res) -> Mono.just(res.value()));
     }
-
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
      *
+     * @param contentLength The content length.
      * @param image An image stream.
-     * @param detectWithStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    public List<DetectedFace> detectWithStream(byte[] image, DetectWithStreamOptionalParameter detectWithStreamOptionalParameter) {
-        return detectWithStreamWithServiceResponseAsync(image, detectWithStreamOptionalParameter).toBlocking().single().body();
+    public List<DetectedFace> detectWithStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+        return detectWithStreamAsync(contentLength, image).block();
     }
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
      *
+     * @param contentLength The content length.
      * @param image An image stream.
-     * @param detectWithStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<DetectedFace>> detectWithStreamAsync(byte[] image, DetectWithStreamOptionalParameter detectWithStreamOptionalParameter, final ServiceCallback<List<DetectedFace>> serviceCallback) {
-        return ServiceFuture.fromResponse(detectWithStreamWithServiceResponseAsync(image, detectWithStreamOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
-     *
-     * @param image An image stream.
-     * @param detectWithStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;DetectedFace&gt; object
-     */
-    public Observable<List<DetectedFace>> detectWithStreamAsync(byte[] image, DetectWithStreamOptionalParameter detectWithStreamOptionalParameter) {
-        return detectWithStreamWithServiceResponseAsync(image, detectWithStreamOptionalParameter).map(new Func1<ServiceResponse<List<DetectedFace>>, List<DetectedFace>>() {
-            @Override
-            public List<DetectedFace> call(ServiceResponse<List<DetectedFace>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
-     *
-     * @param image An image stream.
-     * @param detectWithStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;DetectedFace&gt; object
-     */
-    public Observable<ServiceResponse<List<DetectedFace>>> detectWithStreamWithServiceResponseAsync(byte[] image, DetectWithStreamOptionalParameter detectWithStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<List<DetectedFace>>> detectWithStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        final Boolean returnFaceId = detectWithStreamOptionalParameter != null ? detectWithStreamOptionalParameter.returnFaceId() : null;
-        final Boolean returnFaceLandmarks = detectWithStreamOptionalParameter != null ? detectWithStreamOptionalParameter.returnFaceLandmarks() : null;
-        final List<FaceAttributeType> returnFaceAttributes = detectWithStreamOptionalParameter != null ? detectWithStreamOptionalParameter.returnFaceAttributes() : null;
-
-        return detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes);
+        final Boolean returnFaceId = true;
+        final Boolean returnFaceLandmarks = false;
+        final List<FaceAttributeType> returnFaceAttributes = null;
+        final RecognitionModel recognitionModel1 = recognition_01;
+        final Boolean returnRecognitionModel = false;
+        String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);
+        return service.detectWithStream(this.client.endpoint(), returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, contentLength, image, recognitionModel, returnRecognitionModel);
     }
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
      *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<DetectedFace>> detectWithStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+        return detectWithStreamWithRestResponseAsync(contentLength, image)
+            .flatMap((SimpleResponse<List<DetectedFace>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
+     *
+     * @param contentLength The content length.
      * @param image An image stream.
      * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;DetectedFace&gt; object
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    public Observable<ServiceResponse<List<DetectedFace>>> detectWithStreamWithServiceResponseAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public List<DetectedFace> detectWithStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+        return detectWithStreamAsync(contentLength, image, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel).block();
+    }
+
+    /**
+     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<DetectedFace>>> detectWithStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
         Validator.validate(returnFaceAttributes);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
         String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);
-        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.detectWithStream(returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DetectedFace>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<DetectedFace>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<DetectedFace>> clientResponse = detectWithStreamDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<DetectedFace>> detectWithStreamDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<DetectedFace>, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<DetectedFace>>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public FacesDetectWithStreamParameters detectWithStream() {
-        return new FacesDetectWithStreamParameters(this);
+        return service.detectWithStream(this.client.endpoint(), returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, contentLength, image, recognitionModel, returnRecognitionModel);
     }
 
     /**
-     * Internal class implementing FacesDetectWithStreamDefinition.
+     * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
+     * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
+     * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class FacesDetectWithStreamParameters implements FacesDetectWithStreamDefinition {
-        private FacesImpl parent;
-        private byte[] image;
-        private Boolean returnFaceId;
-        private Boolean returnFaceLandmarks;
-        private List<FaceAttributeType> returnFaceAttributes;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        FacesDetectWithStreamParameters(FacesImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public FacesDetectWithStreamParameters withImage(byte[] image) {
-            this.image = image;
-            return this;
-        }
-
-        @Override
-        public FacesDetectWithStreamParameters withReturnFaceId(Boolean returnFaceId) {
-            this.returnFaceId = returnFaceId;
-            return this;
-        }
-
-        @Override
-        public FacesDetectWithStreamParameters withReturnFaceLandmarks(Boolean returnFaceLandmarks) {
-            this.returnFaceLandmarks = returnFaceLandmarks;
-            return this;
-        }
-
-        @Override
-        public FacesDetectWithStreamParameters withReturnFaceAttributes(List<FaceAttributeType> returnFaceAttributes) {
-            this.returnFaceAttributes = returnFaceAttributes;
-            return this;
-        }
-
-        @Override
-        public List<DetectedFace> execute() {
-        return detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes).toBlocking().single().body();
+    public Mono<List<DetectedFace>> detectWithStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+        return detectWithStreamWithRestResponseAsync(contentLength, image, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel)
+            .flatMap((SimpleResponse<List<DetectedFace>> res) -> Mono.just(res.value()));
     }
-
-        @Override
-        public Observable<List<DetectedFace>> executeAsync() {
-            return detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes).map(new Func1<ServiceResponse<List<DetectedFace>>, List<DetectedFace>>() {
-                @Override
-                public List<DetectedFace> call(ServiceResponse<List<DetectedFace>> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
 }

@@ -8,24 +8,29 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for DomainType.
  */
 public final class DomainType extends ExpandableStringEnum<DomainType> {
-    /** Static value Classification for DomainType. */
+    /**
+     * Static value Classification for DomainType.
+     */
     public static final DomainType CLASSIFICATION = fromString("Classification");
 
-    /** Static value ObjectDetection for DomainType. */
+    /**
+     * Static value ObjectDetection for DomainType.
+     */
     public static final DomainType OBJECT_DETECTION = fromString("ObjectDetection");
 
     /**
      * Creates or finds a DomainType from its string representation.
-     * @param name a name to look for
-     * @return the corresponding DomainType
+     *
+     * @param name a name to look for.
+     * @return the corresponding DomainType.
      */
     @JsonCreator
     public static DomainType fromString(String name) {
@@ -33,7 +38,7 @@ public final class DomainType extends ExpandableStringEnum<DomainType> {
     }
 
     /**
-     * @return known DomainType values
+     * @return known DomainType values.
      */
     public static Collection<DomainType> values() {
         return values(DomainType.class);

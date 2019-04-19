@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Properties describing present makeups on a given face.
  */
-public class Makeup {
+public final class Makeup {
     /**
      * A boolean value describing whether eye makeup is present on a face.
      */
@@ -29,7 +29,7 @@ public class Makeup {
     /**
      * Get the eyeMakeup value.
      *
-     * @return the eyeMakeup value
+     * @return the eyeMakeup value.
      */
     public boolean eyeMakeup() {
         return this.eyeMakeup;
@@ -38,7 +38,7 @@ public class Makeup {
     /**
      * Set the eyeMakeup value.
      *
-     * @param eyeMakeup the eyeMakeup value to set
+     * @param eyeMakeup the eyeMakeup value to set.
      * @return the Makeup object itself.
      */
     public Makeup withEyeMakeup(boolean eyeMakeup) {
@@ -49,7 +49,7 @@ public class Makeup {
     /**
      * Get the lipMakeup value.
      *
-     * @return the lipMakeup value
+     * @return the lipMakeup value.
      */
     public boolean lipMakeup() {
         return this.lipMakeup;
@@ -58,12 +58,11 @@ public class Makeup {
     /**
      * Set the lipMakeup value.
      *
-     * @param lipMakeup the lipMakeup value to set
+     * @param lipMakeup the lipMakeup value to set.
      * @return the Makeup object itself.
      */
     public Makeup withLipMakeup(boolean lipMakeup) {
         this.lipMakeup = lipMakeup;
         return this;
     }
-
 }

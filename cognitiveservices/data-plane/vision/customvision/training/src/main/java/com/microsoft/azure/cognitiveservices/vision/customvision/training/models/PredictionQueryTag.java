@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * The PredictionQueryTag model.
  */
-public class PredictionQueryTag {
+public final class PredictionQueryTag {
     /**
      * The id property.
      */
@@ -36,7 +36,7 @@ public class PredictionQueryTag {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -45,7 +45,7 @@ public class PredictionQueryTag {
     /**
      * Get the minThreshold value.
      *
-     * @return the minThreshold value
+     * @return the minThreshold value.
      */
     public double minThreshold() {
         return this.minThreshold;
@@ -54,10 +54,9 @@ public class PredictionQueryTag {
     /**
      * Get the maxThreshold value.
      *
-     * @return the maxThreshold value
+     * @return the maxThreshold value.
      */
     public double maxThreshold() {
         return this.maxThreshold;
     }
-
 }

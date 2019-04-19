@@ -15,28 +15,42 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for ErrorCode.
  */
 public enum ErrorCode {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value ServerError. */
+    /**
+     * Enum value ServerError.
+     */
     SERVER_ERROR("ServerError"),
 
-    /** Enum value InvalidRequest. */
+    /**
+     * Enum value InvalidRequest.
+     */
     INVALID_REQUEST("InvalidRequest"),
 
-    /** Enum value RateLimitExceeded. */
+    /**
+     * Enum value RateLimitExceeded.
+     */
     RATE_LIMIT_EXCEEDED("RateLimitExceeded"),
 
-    /** Enum value InvalidAuthorization. */
+    /**
+     * Enum value InvalidAuthorization.
+     */
     INVALID_AUTHORIZATION("InvalidAuthorization"),
 
-    /** Enum value InsufficientAuthorization. */
+    /**
+     * Enum value InsufficientAuthorization.
+     */
     INSUFFICIENT_AUTHORIZATION("InsufficientAuthorization");
 
-    /** The actual serialized value for a ErrorCode instance. */
-    private String value;
+    /**
+     * The actual serialized value for a ErrorCode instance.
+     */
+    private final String value;
 
-    ErrorCode(String value) {
+    private ErrorCode(String value) {
         this.value = value;
     }
 

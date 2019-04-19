@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Paging details.
  */
-public class TermsPaging {
+public final class TermsPaging {
     /**
      * Total details.
      */
@@ -41,7 +41,7 @@ public class TermsPaging {
     /**
      * Get the total value.
      *
-     * @return the total value
+     * @return the total value.
      */
     public Integer total() {
         return this.total;
@@ -50,7 +50,7 @@ public class TermsPaging {
     /**
      * Set the total value.
      *
-     * @param total the total value to set
+     * @param total the total value to set.
      * @return the TermsPaging object itself.
      */
     public TermsPaging withTotal(Integer total) {
@@ -61,7 +61,7 @@ public class TermsPaging {
     /**
      * Get the limit value.
      *
-     * @return the limit value
+     * @return the limit value.
      */
     public Integer limit() {
         return this.limit;
@@ -70,7 +70,7 @@ public class TermsPaging {
     /**
      * Set the limit value.
      *
-     * @param limit the limit value to set
+     * @param limit the limit value to set.
      * @return the TermsPaging object itself.
      */
     public TermsPaging withLimit(Integer limit) {
@@ -81,7 +81,7 @@ public class TermsPaging {
     /**
      * Get the offset value.
      *
-     * @return the offset value
+     * @return the offset value.
      */
     public Integer offset() {
         return this.offset;
@@ -90,7 +90,7 @@ public class TermsPaging {
     /**
      * Set the offset value.
      *
-     * @param offset the offset value to set
+     * @param offset the offset value to set.
      * @return the TermsPaging object itself.
      */
     public TermsPaging withOffset(Integer offset) {
@@ -101,7 +101,7 @@ public class TermsPaging {
     /**
      * Get the returned value.
      *
-     * @return the returned value
+     * @return the returned value.
      */
     public Integer returned() {
         return this.returned;
@@ -110,12 +110,11 @@ public class TermsPaging {
     /**
      * Set the returned value.
      *
-     * @param returned the returned value to set
+     * @param returned the returned value to set.
      * @return the TermsPaging object itself.
      */
     public TermsPaging withReturned(Integer returned) {
         this.returned = returned;
         return this;
     }
-
 }

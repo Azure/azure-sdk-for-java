@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Defines a search result answer.
@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SearchResultsAnswer.class)
 @JsonTypeName("SearchResultsAnswer")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Images", value = ImagesModel.class)
+    @JsonSubTypes.Type(name = "Images", value = Images.class)
 })
 public class SearchResultsAnswer extends Answer {
     /**
@@ -33,10 +33,9 @@ public class SearchResultsAnswer extends Answer {
     /**
      * Get the totalEstimatedMatches value.
      *
-     * @return the totalEstimatedMatches value
+     * @return the totalEstimatedMatches value.
      */
     public Long totalEstimatedMatches() {
         return this.totalEstimatedMatches;
     }
-
 }

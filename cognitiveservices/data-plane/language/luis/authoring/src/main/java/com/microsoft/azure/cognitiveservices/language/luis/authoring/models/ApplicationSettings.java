@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * The application settings.
  */
-public class ApplicationSettings {
+public final class ApplicationSettings {
     /**
      * The application ID.
      */
@@ -23,7 +23,7 @@ public class ApplicationSettings {
 
     /**
      * Setting your application as public allows other people to use your
-     * application's endpoint using their own keys.
+     * application's endpoint using their own keys for billing purposes.
      */
     @JsonProperty(value = "public", required = true)
     private boolean isPublic;
@@ -31,7 +31,7 @@ public class ApplicationSettings {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -40,7 +40,7 @@ public class ApplicationSettings {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the ApplicationSettings object itself.
      */
     public ApplicationSettings withId(UUID id) {
@@ -51,7 +51,7 @@ public class ApplicationSettings {
     /**
      * Get the isPublic value.
      *
-     * @return the isPublic value
+     * @return the isPublic value.
      */
     public boolean isPublic() {
         return this.isPublic;
@@ -60,12 +60,11 @@ public class ApplicationSettings {
     /**
      * Set the isPublic value.
      *
-     * @param isPublic the isPublic value to set
+     * @param isPublic the isPublic value to set.
      * @return the ApplicationSettings object itself.
      */
     public ApplicationSettings withIsPublic(boolean isPublic) {
         this.isPublic = isPublic;
         return this;
     }
-
 }

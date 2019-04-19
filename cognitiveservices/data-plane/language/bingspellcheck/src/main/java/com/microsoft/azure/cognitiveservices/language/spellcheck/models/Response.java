@@ -8,9 +8,9 @@
 
 package com.microsoft.azure.cognitiveservices.language.spellcheck.models;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Defines a response. All schemas that could be returned at the root of a

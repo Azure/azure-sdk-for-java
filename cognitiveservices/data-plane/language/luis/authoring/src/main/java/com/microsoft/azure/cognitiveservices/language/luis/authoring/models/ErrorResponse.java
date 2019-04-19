@@ -8,16 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /**
  * Error response when invoking an operation on the API.
  */
-public class ErrorResponse {
+public final class ErrorResponse {
     /**
      * Unmatched properties from the message are deserialized this collection.
      */
+    @JsonProperty(value = "")
     private Map<String, Object> additionalProperties;
 
     /**
@@ -29,7 +30,7 @@ public class ErrorResponse {
     /**
      * Get the additionalProperties value.
      *
-     * @return the additionalProperties value
+     * @return the additionalProperties value.
      */
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
@@ -38,7 +39,7 @@ public class ErrorResponse {
     /**
      * Set the additionalProperties value.
      *
-     * @param additionalProperties the additionalProperties value to set
+     * @param additionalProperties the additionalProperties value to set.
      * @return the ErrorResponse object itself.
      */
     public ErrorResponse withAdditionalProperties(Map<String, Object> additionalProperties) {
@@ -49,7 +50,7 @@ public class ErrorResponse {
     /**
      * Get the errorType value.
      *
-     * @return the errorType value
+     * @return the errorType value.
      */
     public String errorType() {
         return this.errorType;
@@ -58,12 +59,11 @@ public class ErrorResponse {
     /**
      * Set the errorType value.
      *
-     * @param errorType the errorType value to set
+     * @param errorType the errorType value to set.
      * @return the ErrorResponse object itself.
      */
     public ErrorResponse withErrorType(String errorType) {
         this.errorType = errorType;
         return this;
     }
-
 }

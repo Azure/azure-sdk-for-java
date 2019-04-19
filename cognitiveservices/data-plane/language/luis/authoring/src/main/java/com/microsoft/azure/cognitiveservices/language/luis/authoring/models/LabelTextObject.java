@@ -11,9 +11,9 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An object containing the example's text.
+ * An object containing the example utterance's text.
  */
-public class LabelTextObject {
+public final class LabelTextObject {
     /**
      * The ID of the Label.
      */
@@ -29,7 +29,7 @@ public class LabelTextObject {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public Integer id() {
         return this.id;
@@ -38,7 +38,7 @@ public class LabelTextObject {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the LabelTextObject object itself.
      */
     public LabelTextObject withId(Integer id) {
@@ -49,7 +49,7 @@ public class LabelTextObject {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -58,12 +58,11 @@ public class LabelTextObject {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the LabelTextObject object itself.
      */
     public LabelTextObject withText(String text) {
         this.text = text;
         return this;
     }
-
 }

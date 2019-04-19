@@ -13,27 +13,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * An object describing face rectangle.
  */
-public class FaceRectangle {
+public final class FaceRectangle {
     /**
-     * X-coordinate of the top left point of the face.
+     * X-coordinate of the top left point of the face, in pixels.
      */
     @JsonProperty(value = "left")
     private int left;
 
     /**
-     * Y-coordinate of the top left point of the face.
+     * Y-coordinate of the top left point of the face, in pixels.
      */
     @JsonProperty(value = "top")
     private int top;
 
     /**
-     * Width measured from the top-left point of the face.
+     * Width measured from the top-left point of the face, in pixels.
      */
     @JsonProperty(value = "width")
     private int width;
 
     /**
-     * Height measured from the top-left point of the face.
+     * Height measured from the top-left point of the face, in pixels.
      */
     @JsonProperty(value = "height")
     private int height;
@@ -41,7 +41,7 @@ public class FaceRectangle {
     /**
      * Get the left value.
      *
-     * @return the left value
+     * @return the left value.
      */
     public int left() {
         return this.left;
@@ -50,7 +50,7 @@ public class FaceRectangle {
     /**
      * Set the left value.
      *
-     * @param left the left value to set
+     * @param left the left value to set.
      * @return the FaceRectangle object itself.
      */
     public FaceRectangle withLeft(int left) {
@@ -61,7 +61,7 @@ public class FaceRectangle {
     /**
      * Get the top value.
      *
-     * @return the top value
+     * @return the top value.
      */
     public int top() {
         return this.top;
@@ -70,7 +70,7 @@ public class FaceRectangle {
     /**
      * Set the top value.
      *
-     * @param top the top value to set
+     * @param top the top value to set.
      * @return the FaceRectangle object itself.
      */
     public FaceRectangle withTop(int top) {
@@ -81,7 +81,7 @@ public class FaceRectangle {
     /**
      * Get the width value.
      *
-     * @return the width value
+     * @return the width value.
      */
     public int width() {
         return this.width;
@@ -90,7 +90,7 @@ public class FaceRectangle {
     /**
      * Set the width value.
      *
-     * @param width the width value to set
+     * @param width the width value to set.
      * @return the FaceRectangle object itself.
      */
     public FaceRectangle withWidth(int width) {
@@ -101,7 +101,7 @@ public class FaceRectangle {
     /**
      * Get the height value.
      *
-     * @return the height value
+     * @return the height value.
      */
     public int height() {
         return this.height;
@@ -110,12 +110,11 @@ public class FaceRectangle {
     /**
      * Set the height value.
      *
-     * @param height the height value to set
+     * @param height the height value to set.
      * @return the FaceRectangle object itself.
      */
     public FaceRectangle withHeight(int height) {
         this.height = height;
         return this;
     }
-
 }

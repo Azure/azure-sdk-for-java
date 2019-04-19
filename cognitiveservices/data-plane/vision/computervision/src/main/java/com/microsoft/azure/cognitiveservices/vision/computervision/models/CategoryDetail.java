@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * An object describing additional category details.
  */
-public class CategoryDetail {
+public final class CategoryDetail {
     /**
      * An array of celebrities if any identified.
      */
@@ -30,7 +30,7 @@ public class CategoryDetail {
     /**
      * Get the celebrities value.
      *
-     * @return the celebrities value
+     * @return the celebrities value.
      */
     public List<CelebritiesModel> celebrities() {
         return this.celebrities;
@@ -39,7 +39,7 @@ public class CategoryDetail {
     /**
      * Set the celebrities value.
      *
-     * @param celebrities the celebrities value to set
+     * @param celebrities the celebrities value to set.
      * @return the CategoryDetail object itself.
      */
     public CategoryDetail withCelebrities(List<CelebritiesModel> celebrities) {
@@ -50,7 +50,7 @@ public class CategoryDetail {
     /**
      * Get the landmarks value.
      *
-     * @return the landmarks value
+     * @return the landmarks value.
      */
     public List<LandmarksModel> landmarks() {
         return this.landmarks;
@@ -59,12 +59,11 @@ public class CategoryDetail {
     /**
      * Set the landmarks value.
      *
-     * @param landmarks the landmarks value to set
+     * @param landmarks the landmarks value to set.
      * @return the CategoryDetail object itself.
      */
     public CategoryDetail withLandmarks(List<LandmarksModel> landmarks) {
         this.landmarks = landmarks;
         return this;
     }
-
 }

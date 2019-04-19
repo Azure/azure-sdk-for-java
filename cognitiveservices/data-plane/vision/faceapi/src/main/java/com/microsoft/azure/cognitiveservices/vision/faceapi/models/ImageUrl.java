@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The ImageUrl model.
  */
-public class ImageUrl {
+public final class ImageUrl {
     /**
      * Publicly reachable URL of an image.
      */
@@ -23,7 +23,7 @@ public class ImageUrl {
     /**
      * Get the url value.
      *
-     * @return the url value
+     * @return the url value.
      */
     public String url() {
         return this.url;
@@ -32,12 +32,11 @@ public class ImageUrl {
     /**
      * Set the url value.
      *
-     * @param url the url value to set
+     * @param url the url value to set.
      * @return the ImageUrl object itself.
      */
     public ImageUrl withUrl(String url) {
         this.url = url;
         return this;
     }
-
 }

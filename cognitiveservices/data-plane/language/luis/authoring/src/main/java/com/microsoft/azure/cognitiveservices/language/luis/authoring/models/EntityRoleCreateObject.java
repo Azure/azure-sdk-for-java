@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object model for creating an entity role.
  */
-public class EntityRoleCreateObject {
+public final class EntityRoleCreateObject {
     /**
      * The entity role name.
      */
@@ -23,7 +23,7 @@ public class EntityRoleCreateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -32,12 +32,11 @@ public class EntityRoleCreateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the EntityRoleCreateObject object itself.
      */
     public EntityRoleCreateObject withName(String name) {
         this.name = name;
         return this;
     }
-
 }

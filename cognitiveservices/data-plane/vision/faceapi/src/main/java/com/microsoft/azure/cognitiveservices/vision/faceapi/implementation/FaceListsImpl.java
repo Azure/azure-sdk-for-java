@@ -8,406 +8,365 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreateFaceListsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceListsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromUrlOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromStreamOptionalParameter;
-import retrofit2.Retrofit;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.DELETE;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.HeaderParam;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PATCH;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.PUT;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.RestVoidResponse;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.CollectionFormat;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.FaceList;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ImageUrl;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.MetaDataContract;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.NameAndUserDataContract;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersistedFace;
-import com.microsoft.rest.CollectionFormat;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.PATCH;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in FaceLists.
+ * An instance of this class provides access to all the operations defined in
+ * FaceLists.
  */
-public class FaceListsImpl implements FaceLists {
-    /** The Retrofit service to perform REST calls. */
+public final class FaceListsImpl implements FaceLists {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private FaceListsService service;
-    /** The service client containing this operation class. */
-    private FaceAPIImpl client;
+
+    /**
+     * The service client containing this operation class.
+     */
+    private FaceClientImpl client;
 
     /**
      * Initializes an instance of FaceListsImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public FaceListsImpl(Retrofit retrofit, FaceAPIImpl client) {
-        this.service = retrofit.create(FaceListsService.class);
+    public FaceListsImpl(FaceClientImpl client) {
+        this.service = RestProxy.create(FaceListsService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for FaceLists to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for FaceLists to be used by the
+     * proxy service to perform REST calls.
      */
-    interface FaceListsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists create" })
+    @Host("{Endpoint}/face/v1.0")
+    private interface FaceListsService {
         @PUT("facelists/{faceListId}")
-        Observable<Response<ResponseBody>> create(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> create(@PathParam("faceListId") String faceListId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") MetaDataContract body);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists get" })
         @GET("facelists/{faceListId}")
-        Observable<Response<ResponseBody>> get(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<FaceList>> get(@PathParam("faceListId") String faceListId, @HostParam("Endpoint") String endpoint, @QueryParam("returnRecognitionModel") Boolean returnRecognitionModel);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists update" })
         @PATCH("facelists/{faceListId}")
-        Observable<Response<ResponseBody>> update(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> update(@PathParam("faceListId") String faceListId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") NameAndUserDataContract body);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists delete" })
-        @HTTP(path = "facelists/{faceListId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @DELETE("facelists/{faceListId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> delete(@PathParam("faceListId") String faceListId, @HostParam("Endpoint") String endpoint);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists list" })
         @GET("facelists")
-        Observable<Response<ResponseBody>> list(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<List<FaceList>>> list(@HostParam("Endpoint") String endpoint, @QueryParam("returnRecognitionModel") Boolean returnRecognitionModel);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists deleteFace" })
-        @HTTP(path = "facelists/{faceListId}/persistedFaces/{persistedFaceId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteFace(@Path("faceListId") String faceListId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @DELETE("facelists/{faceListId}/persistedfaces/{persistedFaceId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> deleteFace(@PathParam("faceListId") String faceListId, @PathParam("persistedFaceId") UUID persistedFaceId, @HostParam("Endpoint") String endpoint);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists addFaceFromUrl" })
-        @POST("facelists/{faceListId}/persistedFaces")
-        Observable<Response<ResponseBody>> addFaceFromUrl(@Path("faceListId") String faceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @POST("facelists/{faceListId}/persistedfaces")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<PersistedFace>> addFaceFromUrl(@PathParam("faceListId") String faceListId, @HostParam("Endpoint") String endpoint, @QueryParam("userData") String userData, @QueryParam("targetFace") String targetFace, @BodyParam("application/json; charset=utf-8") ImageUrl imageUrl);
 
-        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists addFaceFromStream" })
-        @POST("facelists/{faceListId}/persistedFaces")
-        Observable<Response<ResponseBody>> addFaceFromStream(@Path("faceListId") String faceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-    }
-
-
-    /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
-     *
-     * @param faceListId Id referencing a particular face list.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void create(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter) {
-        createWithServiceResponseAsync(faceListId, createOptionalParameter).toBlocking().single().body();
+        @POST("facelists/{faceListId}/persistedfaces")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<PersistedFace>> addFaceFromStream(@PathParam("faceListId") String faceListId, @HostParam("Endpoint") String endpoint, @QueryParam("userData") String userData, @QueryParam("targetFace") String targetFace, @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") Flux<ByteBuffer> image);
     }
 
     /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     * &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     * &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. Faces are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     * &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces. 'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public ServiceFuture<Void> createAsync(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(faceListId, createOptionalParameter), serviceCallback);
+    public void create(@NonNull String faceListId) {
+        createAsync(faceListId).block();
     }
 
     /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     * &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     * &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. Faces are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     * &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces. 'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<Void> createAsync(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter) {
-        return createWithServiceResponseAsync(faceListId, createOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
-     *
-     * @param faceListId Id referencing a particular face list.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String faceListId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        final String name = createOptionalParameter != null ? createOptionalParameter.name() : null;
-        final String userData = createOptionalParameter != null ? createOptionalParameter.userData() : null;
-
-        return createWithServiceResponseAsync(faceListId, name, userData);
+        MetaDataContract body = new MetaDataContract();
+        body.withName(null);
+        body.withUserData(null);
+        body.withRecognitionModel(null);
+        return service.create(faceListId, this.client.endpoint(), body);
     }
 
     /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     * &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     * &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. Faces are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     * &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces. 'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> createAsync(@NonNull String faceListId) {
+        return createWithRestResponseAsync(faceListId)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     * &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     * &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. Faces are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     * &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces. 'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
      *
      * @param faceListId Id referencing a particular face list.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String faceListId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public void create(@NonNull String faceListId, String name, String userData, RecognitionModel recognitionModel) {
+        createAsync(faceListId, name, userData, recognitionModel).block();
+    }
+
+    /**
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     * &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     * &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. Faces are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     * &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces. 'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String faceListId, String name, String userData, RecognitionModel recognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
-        bodyParameter.withName(name);
-        bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.create(faceListId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = createDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> createDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public FaceListsCreateParameters create() {
-        return new FaceListsCreateParameters(this);
+        MetaDataContract body = new MetaDataContract();
+        body.withName(name);
+        body.withUserData(userData);
+        body.withRecognitionModel(recognitionModel);
+        return service.create(faceListId, this.client.endpoint(), body);
     }
 
     /**
-     * Internal class implementing FaceListsCreateDefinition.
-     */
-    class FaceListsCreateParameters implements FaceListsCreateDefinition {
-        private FaceListsImpl parent;
-        private String faceListId;
-        private String name;
-        private String userData;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        FaceListsCreateParameters(FaceListsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public FaceListsCreateParameters withFaceListId(String faceListId) {
-            this.faceListId = faceListId;
-            return this;
-        }
-
-        @Override
-        public FaceListsCreateParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public FaceListsCreateParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        createWithServiceResponseAsync(faceListId, name, userData).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return createWithServiceResponseAsync(faceListId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
-                @Override
-                public Void call(ServiceResponse<Void> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Retrieve a face list's information.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     * &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     * &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. Faces are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     * &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces. 'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
      *
      * @param faceListId Id referencing a particular face list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> createAsync(@NonNull String faceListId, String name, String userData, RecognitionModel recognitionModel) {
+        return createWithRestResponseAsync(faceListId, name, userData, recognitionModel)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the FaceList object if successful.
      */
-    public FaceList get(String faceListId) {
-        return getWithServiceResponseAsync(faceListId).toBlocking().single().body();
+    public FaceList get(@NonNull String faceListId) {
+        return getAsync(faceListId).block();
     }
 
     /**
-     * Retrieve a face list's information.
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<FaceList> getAsync(String faceListId, final ServiceCallback<FaceList> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(faceListId), serviceCallback);
-    }
-
-    /**
-     * Retrieve a face list's information.
-     *
-     * @param faceListId Id referencing a particular face list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FaceList object
-     */
-    public Observable<FaceList> getAsync(String faceListId) {
-        return getWithServiceResponseAsync(faceListId).map(new Func1<ServiceResponse<FaceList>, FaceList>() {
-            @Override
-            public FaceList call(ServiceResponse<FaceList> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Retrieve a face list's information.
-     *
-     * @param faceListId Id referencing a particular face list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FaceList object
-     */
-    public Observable<ServiceResponse<FaceList>> getWithServiceResponseAsync(String faceListId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<FaceList>> getWithRestResponseAsync(@NonNull String faceListId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.get(faceListId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FaceList>>>() {
-                @Override
-                public Observable<ServiceResponse<FaceList>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<FaceList> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<FaceList> getDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<FaceList, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<FaceList>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-
-    /**
-     * Update information of a face list.
-     *
-     * @param faceListId Id referencing a particular face list.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void update(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter) {
-        updateWithServiceResponseAsync(faceListId, updateOptionalParameter).toBlocking().single().body();
+        final Boolean returnRecognitionModel = false;
+        return service.get(faceListId, this.client.endpoint(), returnRecognitionModel);
     }
 
     /**
-     * Update information of a face list.
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Void> updateAsync(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(faceListId, updateOptionalParameter), serviceCallback);
+    public Mono<FaceList> getAsync(@NonNull String faceListId) {
+        return getWithRestResponseAsync(faceListId)
+            .flatMap((SimpleResponse<FaceList> res) -> Mono.just(res.value()));
     }
 
     /**
-     * Update information of a face list.
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the FaceList object if successful.
      */
-    public Observable<Void> updateAsync(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter) {
-        return updateWithServiceResponseAsync(faceListId, updateOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
+    public FaceList get(@NonNull String faceListId, Boolean returnRecognitionModel) {
+        return getAsync(faceListId, returnRecognitionModel).block();
     }
 
     /**
-     * Update information of a face list.
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<FaceList>> getWithRestResponseAsync(@NonNull String faceListId, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        final String name = updateOptionalParameter != null ? updateOptionalParameter.name() : null;
-        final String userData = updateOptionalParameter != null ? updateOptionalParameter.userData() : null;
+        return service.get(faceListId, this.client.endpoint(), returnRecognitionModel);
+    }
 
-        return updateWithServiceResponseAsync(faceListId, name, userData);
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<FaceList> getAsync(@NonNull String faceListId, Boolean returnRecognitionModel) {
+        return getWithRestResponseAsync(faceListId, returnRecognitionModel)
+            .flatMap((SimpleResponse<FaceList> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Update information of a face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void update(@NonNull String faceListId) {
+        updateAsync(faceListId).block();
+    }
+
+    /**
+     * Update information of a face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String faceListId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (faceListId == null) {
+            throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
+        }
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(null);
+        body.withUserData(null);
+        return service.update(faceListId, this.client.endpoint(), body);
+    }
+
+    /**
+     * Update information of a face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> updateAsync(@NonNull String faceListId) {
+        return updateWithRestResponseAsync(faceListId)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -416,297 +375,194 @@ public class FaceListsImpl implements FaceLists {
      * @param faceListId Id referencing a particular face list.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String faceListId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public void update(@NonNull String faceListId, String name, String userData) {
+        updateAsync(faceListId, name, userData).block();
+    }
+
+    /**
+     * Update information of a face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String faceListId, String name, String userData) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
-        bodyParameter.withName(name);
-        bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.update(faceListId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> updateDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public FaceListsUpdateParameters update() {
-        return new FaceListsUpdateParameters(this);
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(name);
+        body.withUserData(userData);
+        return service.update(faceListId, this.client.endpoint(), body);
     }
 
     /**
-     * Internal class implementing FaceListsUpdateDefinition.
+     * Update information of a face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class FaceListsUpdateParameters implements FaceListsUpdateDefinition {
-        private FaceListsImpl parent;
-        private String faceListId;
-        private String name;
-        private String userData;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        FaceListsUpdateParameters(FaceListsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public FaceListsUpdateParameters withFaceListId(String faceListId) {
-            this.faceListId = faceListId;
-            return this;
-        }
-
-        @Override
-        public FaceListsUpdateParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public FaceListsUpdateParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        updateWithServiceResponseAsync(faceListId, name, userData).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return updateWithServiceResponseAsync(faceListId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
-                @Override
-                public Void call(ServiceResponse<Void> response) {
-                    return response.body();
-                }
-            });
-        }
+    public Mono<Void> updateAsync(@NonNull String faceListId, String name, String userData) {
+        return updateWithRestResponseAsync(faceListId, name, userData)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
      * Delete an existing face list according to faceListId. Persisted face images in the face list will also be deleted.
      *
      * @param faceListId Id referencing a particular face list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void delete(String faceListId) {
-        deleteWithServiceResponseAsync(faceListId).toBlocking().single().body();
+    public void delete(@NonNull String faceListId) {
+        deleteAsync(faceListId).block();
     }
 
     /**
      * Delete an existing face list according to faceListId. Persisted face images in the face list will also be deleted.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Void> deleteAsync(String faceListId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(faceListId), serviceCallback);
-    }
-
-    /**
-     * Delete an existing face list according to faceListId. Persisted face images in the face list will also be deleted.
-     *
-     * @param faceListId Id referencing a particular face list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteAsync(String faceListId) {
-        return deleteWithServiceResponseAsync(faceListId).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Delete an existing face list according to faceListId. Persisted face images in the face list will also be deleted.
-     *
-     * @param faceListId Id referencing a particular face list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String faceListId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String faceListId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.delete(faceListId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+        return service.delete(faceListId, this.client.endpoint());
     }
 
     /**
-     * Retrieve information about all existing face lists. Only faceListId, name and userData will be returned.
+     * Delete an existing face list according to faceListId. Persisted face images in the face list will also be deleted.
      *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> deleteAsync(@NonNull String faceListId) {
+        return deleteWithRestResponseAsync(faceListId)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     * To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;FaceList&gt; object if successful.
      */
     public List<FaceList> list() {
-        return listWithServiceResponseAsync().toBlocking().single().body();
+        return listAsync().block();
     }
 
     /**
-     * Retrieve information about all existing face lists. Only faceListId, name and userData will be returned.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     * To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
      *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<FaceList>> listAsync(final ServiceCallback<List<FaceList>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
-    }
-
-    /**
-     * Retrieve information about all existing face lists. Only faceListId, name and userData will be returned.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;FaceList&gt; object
-     */
-    public Observable<List<FaceList>> listAsync() {
-        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<FaceList>>, List<FaceList>>() {
-            @Override
-            public List<FaceList> call(ServiceResponse<List<FaceList>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Retrieve information about all existing face lists. Only faceListId, name and userData will be returned.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;FaceList&gt; object
-     */
-    public Observable<ServiceResponse<List<FaceList>>> listWithServiceResponseAsync() {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<List<FaceList>>> listWithRestResponseAsync() {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.list(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<FaceList>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<FaceList>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<FaceList>> clientResponse = listDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<FaceList>> listDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<FaceList>, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<FaceList>>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+        final Boolean returnRecognitionModel = false;
+        return service.list(this.client.endpoint(), returnRecognitionModel);
     }
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     * To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
      *
-     * @param faceListId Id referencing a particular face list.
-     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return a Mono which performs the network request upon subscription.
      */
-    public void deleteFace(String faceListId, UUID persistedFaceId) {
-        deleteFaceWithServiceResponseAsync(faceListId, persistedFaceId).toBlocking().single().body();
+    public Mono<List<FaceList>> listAsync() {
+        return listWithRestResponseAsync()
+            .flatMap((SimpleResponse<List<FaceList>> res) -> Mono.just(res.value()));
     }
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     * To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
      *
-     * @param faceListId Id referencing a particular face list.
-     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;FaceList&gt; object if successful.
      */
-    public ServiceFuture<Void> deleteFaceAsync(String faceListId, UUID persistedFaceId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteFaceWithServiceResponseAsync(faceListId, persistedFaceId), serviceCallback);
+    public List<FaceList> list(Boolean returnRecognitionModel) {
+        return listAsync(returnRecognitionModel).block();
     }
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     * To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
      *
-     * @param faceListId Id referencing a particular face list.
-     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<Void> deleteFaceAsync(String faceListId, UUID persistedFaceId) {
-        return deleteFaceWithServiceResponseAsync(faceListId, persistedFaceId).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
+    public Mono<SimpleResponse<List<FaceList>>> listWithRestResponseAsync(Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        return service.list(this.client.endpoint(), returnRecognitionModel);
     }
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     * To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<FaceList>> listAsync(Boolean returnRecognitionModel) {
+        return listWithRestResponseAsync(returnRecognitionModel)
+            .flatMap((SimpleResponse<List<FaceList>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Delete an existing face from a face list (given by a persistedFaceId and a faceListId). Persisted image related to the face will also be deleted.
      *
      * @param faceListId Id referencing a particular face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public Observable<ServiceResponse<Void>> deleteFaceWithServiceResponseAsync(String faceListId, UUID persistedFaceId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public void deleteFace(@NonNull String faceListId, @NonNull UUID persistedFaceId) {
+        deleteFaceAsync(faceListId, persistedFaceId).block();
+    }
+
+    /**
+     * Delete an existing face from a face list (given by a persistedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<RestVoidResponse> deleteFaceWithRestResponseAsync(@NonNull String faceListId, @NonNull UUID persistedFaceId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -714,88 +570,47 @@ public class FaceListsImpl implements FaceLists {
         if (persistedFaceId == null) {
             throw new IllegalArgumentException("Parameter persistedFaceId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.deleteFace(faceListId, persistedFaceId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteFaceDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.deleteFace(faceListId, persistedFaceId, this.client.endpoint());
     }
 
-    private ServiceResponse<Void> deleteFaceDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Delete an existing face from a face list (given by a persistedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> deleteFaceAsync(@NonNull String faceListId, @NonNull UUID persistedFaceId) {
+        return deleteFaceWithRestResponseAsync(faceListId, persistedFaceId)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
-
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url Publicly reachable URL of an image
-     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addFaceFromUrl(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter) {
-        return addFaceFromUrlWithServiceResponseAsync(faceListId, url, addFaceFromUrlOptionalParameter).toBlocking().single().body();
+    public PersistedFace addFaceFromUrl(@NonNull String faceListId, @NonNull String url) {
+        return addFaceFromUrlAsync(faceListId, url).block();
     }
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url Publicly reachable URL of an image
-     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<PersistedFace> addFaceFromUrlAsync(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
-        return ServiceFuture.fromResponse(addFaceFromUrlWithServiceResponseAsync(faceListId, url, addFaceFromUrlOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
-     *
-     * @param faceListId Id referencing a particular face list.
-     * @param url Publicly reachable URL of an image
-     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PersistedFace object
-     */
-    public Observable<PersistedFace> addFaceFromUrlAsync(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter) {
-        return addFaceFromUrlWithServiceResponseAsync(faceListId, url, addFaceFromUrlOptionalParameter).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
-            @Override
-            public PersistedFace call(ServiceResponse<PersistedFace> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
-     *
-     * @param faceListId Id referencing a particular face list.
-     * @param url Publicly reachable URL of an image
-     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PersistedFace object
-     */
-    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<PersistedFace>> addFaceFromUrlWithRestResponseAsync(@NonNull String faceListId, @NonNull String url) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -803,25 +618,56 @@ public class FaceListsImpl implements FaceLists {
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
-        final String userData = addFaceFromUrlOptionalParameter != null ? addFaceFromUrlOptionalParameter.userData() : null;
-        final List<Integer> targetFace = addFaceFromUrlOptionalParameter != null ? addFaceFromUrlOptionalParameter.targetFace() : null;
-
-        return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace);
+        final String userData = null;
+        final List<Integer> targetFace = null;
+        ImageUrl imageUrl = new ImageUrl();
+        imageUrl.withUrl(url);
+        String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
+        return service.addFaceFromUrl(faceListId, this.client.endpoint(), userData, targetFaceConverted, imageUrl);
     }
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<PersistedFace> addFaceFromUrlAsync(@NonNull String faceListId, @NonNull String url) {
+        return addFaceFromUrlWithRestResponseAsync(faceListId, url)
+            .flatMap((SimpleResponse<PersistedFace> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param url Publicly reachable URL of an image.
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PersistedFace object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the PersistedFace object if successful.
      */
-    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String faceListId, String url, String userData, List<Integer> targetFace) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public PersistedFace addFaceFromUrl(@NonNull String faceListId, @NonNull String url, String userData, List<Integer> targetFace) {
+        return addFaceFromUrlAsync(faceListId, url, userData, targetFace).block();
+    }
+
+    /**
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param url Publicly reachable URL of an image.
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<PersistedFace>> addFaceFromUrlWithRestResponseAsync(@NonNull String faceListId, @NonNull String url, String userData, List<Integer> targetFace) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -832,152 +678,52 @@ public class FaceListsImpl implements FaceLists {
         Validator.validate(targetFace);
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
-        return service.addFaceFromUrl(faceListId, userData, targetFaceConverted, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
-                @Override
-                public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PersistedFace> clientResponse = addFaceFromUrlDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.addFaceFromUrl(faceListId, this.client.endpoint(), userData, targetFaceConverted, imageUrl);
     }
-
-    private ServiceResponse<PersistedFace> addFaceFromUrlDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PersistedFace, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PersistedFace>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public FaceListsAddFaceFromUrlParameters addFaceFromUrl() {
-        return new FaceListsAddFaceFromUrlParameters(this);
-    }
-
-    /**
-     * Internal class implementing FaceListsAddFaceFromUrlDefinition.
-     */
-    class FaceListsAddFaceFromUrlParameters implements FaceListsAddFaceFromUrlDefinition {
-        private FaceListsImpl parent;
-        private String faceListId;
-        private String url;
-        private String userData;
-        private List<Integer> targetFace;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        FaceListsAddFaceFromUrlParameters(FaceListsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public FaceListsAddFaceFromUrlParameters withFaceListId(String faceListId) {
-            this.faceListId = faceListId;
-            return this;
-        }
-
-        @Override
-        public FaceListsAddFaceFromUrlParameters withUrl(String url) {
-            this.url = url;
-            return this;
-        }
-
-        @Override
-        public FaceListsAddFaceFromUrlParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public FaceListsAddFaceFromUrlParameters withTargetFace(List<Integer> targetFace) {
-            this.targetFace = targetFace;
-            return this;
-        }
-
-        @Override
-        public PersistedFace execute() {
-        return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<PersistedFace> executeAsync() {
-            return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
-                @Override
-                public PersistedFace call(ServiceResponse<PersistedFace> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
+     * @param url Publicly reachable URL of an image.
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<PersistedFace> addFaceFromUrlAsync(@NonNull String faceListId, @NonNull String url, String userData, List<Integer> targetFace) {
+        return addFaceFromUrlWithRestResponseAsync(faceListId, url, userData, targetFace)
+            .flatMap((SimpleResponse<PersistedFace> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param contentLength The content length.
      * @param image An image stream.
-     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addFaceFromStream(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter) {
-        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, addFaceFromStreamOptionalParameter).toBlocking().single().body();
+    public PersistedFace addFaceFromStream(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+        return addFaceFromStreamAsync(faceListId, contentLength, image).block();
     }
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
+     * @param contentLength The content length.
      * @param image An image stream.
-     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
-        return ServiceFuture.fromResponse(addFaceFromStreamWithServiceResponseAsync(faceListId, image, addFaceFromStreamOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
-     *
-     * @param faceListId Id referencing a particular face list.
-     * @param image An image stream.
-     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PersistedFace object
-     */
-    public Observable<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter) {
-        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, addFaceFromStreamOptionalParameter).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
-            @Override
-            public PersistedFace call(ServiceResponse<PersistedFace> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
-     *
-     * @param faceListId Id referencing a particular face list.
-     * @param image An image stream.
-     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PersistedFace object
-     */
-    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -985,25 +731,57 @@ public class FaceListsImpl implements FaceLists {
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        final String userData = addFaceFromStreamOptionalParameter != null ? addFaceFromStreamOptionalParameter.userData() : null;
-        final List<Integer> targetFace = addFaceFromStreamOptionalParameter != null ? addFaceFromStreamOptionalParameter.targetFace() : null;
-
-        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace);
+        final String userData = null;
+        final List<Integer> targetFace = null;
+        String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
+        return service.addFaceFromStream(faceListId, this.client.endpoint(), userData, targetFaceConverted, contentLength, image);
     }
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image) {
+        return addFaceFromStreamWithRestResponseAsync(faceListId, contentLength, image)
+            .flatMap((SimpleResponse<PersistedFace> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param contentLength The content length.
      * @param image An image stream.
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PersistedFace object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the PersistedFace object if successful.
      */
-    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String faceListId, byte[] image, String userData, List<Integer> targetFace) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public PersistedFace addFaceFromStream(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace) {
+        return addFaceFromStreamAsync(faceListId, contentLength, image, userData, targetFace).block();
+    }
+
+    /**
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<PersistedFace>> addFaceFromStreamWithRestResponseAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -1012,91 +790,23 @@ public class FaceListsImpl implements FaceLists {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
         Validator.validate(targetFace);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
-        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.addFaceFromStream(faceListId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
-                @Override
-                public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PersistedFace> clientResponse = addFaceFromStreamDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PersistedFace> addFaceFromStreamDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PersistedFace, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PersistedFace>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public FaceListsAddFaceFromStreamParameters addFaceFromStream() {
-        return new FaceListsAddFaceFromStreamParameters(this);
+        return service.addFaceFromStream(faceListId, this.client.endpoint(), userData, targetFaceConverted, contentLength, image);
     }
 
     /**
-     * Internal class implementing FaceListsAddFaceFromStreamDefinition.
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class FaceListsAddFaceFromStreamParameters implements FaceListsAddFaceFromStreamDefinition {
-        private FaceListsImpl parent;
-        private String faceListId;
-        private byte[] image;
-        private String userData;
-        private List<Integer> targetFace;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        FaceListsAddFaceFromStreamParameters(FaceListsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public FaceListsAddFaceFromStreamParameters withFaceListId(String faceListId) {
-            this.faceListId = faceListId;
-            return this;
-        }
-
-        @Override
-        public FaceListsAddFaceFromStreamParameters withImage(byte[] image) {
-            this.image = image;
-            return this;
-        }
-
-        @Override
-        public FaceListsAddFaceFromStreamParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public FaceListsAddFaceFromStreamParameters withTargetFace(List<Integer> targetFace) {
-            this.targetFace = targetFace;
-            return this;
-        }
-
-        @Override
-        public PersistedFace execute() {
-        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace).toBlocking().single().body();
+    public Mono<PersistedFace> addFaceFromStreamAsync(@NonNull String faceListId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String userData, List<Integer> targetFace) {
+        return addFaceFromStreamWithRestResponseAsync(faceListId, contentLength, image, userData, targetFace)
+            .flatMap((SimpleResponse<PersistedFace> res) -> Mono.just(res.value()));
     }
-
-        @Override
-        public Observable<PersistedFace> executeAsync() {
-            return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
-                @Override
-                public PersistedFace call(ServiceResponse<PersistedFace> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
 }

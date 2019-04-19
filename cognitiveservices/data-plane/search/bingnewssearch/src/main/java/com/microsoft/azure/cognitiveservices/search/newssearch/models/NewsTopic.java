@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The NewsTopic model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = NewsTopic.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("News/Topic")
-public class NewsTopic extends Thing {
+public final class NewsTopic extends Thing {
     /**
      * A Boolean value that indicates whether the topic is considered breaking
      * news. If the topic is considered breaking news, the value is true.
@@ -40,7 +40,7 @@ public class NewsTopic extends Thing {
     /**
      * Get the isBreakingNews value.
      *
-     * @return the isBreakingNews value
+     * @return the isBreakingNews value.
      */
     public Boolean isBreakingNews() {
         return this.isBreakingNews;
@@ -49,7 +49,7 @@ public class NewsTopic extends Thing {
     /**
      * Get the query value.
      *
-     * @return the query value
+     * @return the query value.
      */
     public Query query() {
         return this.query;
@@ -58,10 +58,9 @@ public class NewsTopic extends Thing {
     /**
      * Get the newsSearchUrl value.
      *
-     * @return the newsSearchUrl value
+     * @return the newsSearchUrl value.
      */
     public String newsSearchUrl() {
         return this.newsSearchUrl;
     }
-
 }

@@ -8,24 +8,29 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for ImageContent.
  */
 public final class ImageContent extends ExpandableStringEnum<ImageContent> {
-    /** Static value Face for ImageContent. */
+    /**
+     * Static value Face for ImageContent.
+     */
     public static final ImageContent FACE = fromString("Face");
 
-    /** Static value Portrait for ImageContent. */
+    /**
+     * Static value Portrait for ImageContent.
+     */
     public static final ImageContent PORTRAIT = fromString("Portrait");
 
     /**
      * Creates or finds a ImageContent from its string representation.
-     * @param name a name to look for
-     * @return the corresponding ImageContent
+     *
+     * @param name a name to look for.
+     * @return the corresponding ImageContent.
      */
     @JsonCreator
     public static ImageContent fromString(String name) {
@@ -33,7 +38,7 @@ public final class ImageContent extends ExpandableStringEnum<ImageContent> {
     }
 
     /**
-     * @return known ImageContent values
+     * @return known ImageContent values.
      */
     public static Collection<ImageContent> values() {
         return values(ImageContent.class);

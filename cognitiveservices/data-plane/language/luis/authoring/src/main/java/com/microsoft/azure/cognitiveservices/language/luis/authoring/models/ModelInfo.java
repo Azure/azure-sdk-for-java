@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * Base type used in entity types.
@@ -36,9 +36,9 @@ public class ModelInfo {
     /**
      * Possible values include: 'Entity Extractor', 'Hierarchical Entity
      * Extractor', 'Hierarchical Child Entity Extractor', 'Composite Entity
-     * Extractor', 'Closed List Entity Extractor', 'Prebuilt Entity Extractor',
-     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regex Entity
-     * Extractor'.
+     * Extractor', 'List Entity Extractor', 'Prebuilt Entity Extractor',
+     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regular Expression
+     * Entity Extractor'.
      */
     @JsonProperty(value = "readableType", required = true)
     private String readableType;
@@ -46,7 +46,7 @@ public class ModelInfo {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -55,7 +55,7 @@ public class ModelInfo {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the ModelInfo object itself.
      */
     public ModelInfo withId(UUID id) {
@@ -66,7 +66,7 @@ public class ModelInfo {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -75,7 +75,7 @@ public class ModelInfo {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ModelInfo object itself.
      */
     public ModelInfo withName(String name) {
@@ -86,7 +86,7 @@ public class ModelInfo {
     /**
      * Get the typeId value.
      *
-     * @return the typeId value
+     * @return the typeId value.
      */
     public Integer typeId() {
         return this.typeId;
@@ -95,7 +95,7 @@ public class ModelInfo {
     /**
      * Set the typeId value.
      *
-     * @param typeId the typeId value to set
+     * @param typeId the typeId value to set.
      * @return the ModelInfo object itself.
      */
     public ModelInfo withTypeId(Integer typeId) {
@@ -106,7 +106,7 @@ public class ModelInfo {
     /**
      * Get the readableType value.
      *
-     * @return the readableType value
+     * @return the readableType value.
      */
     public String readableType() {
         return this.readableType;
@@ -115,12 +115,11 @@ public class ModelInfo {
     /**
      * Set the readableType value.
      *
-     * @param readableType the readableType value to set
+     * @param readableType the readableType value to set.
      * @return the ModelInfo object itself.
      */
     public ModelInfo withReadableType(String readableType) {
         this.readableType = readableType;
         return this;
     }
-
 }

@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The response for a Screen text request.
  */
-public class Screen {
+public final class Screen {
     /**
      * The original text.
      */
@@ -78,7 +78,7 @@ public class Screen {
     /**
      * Get the originalText value.
      *
-     * @return the originalText value
+     * @return the originalText value.
      */
     public String originalText() {
         return this.originalText;
@@ -87,7 +87,7 @@ public class Screen {
     /**
      * Set the originalText value.
      *
-     * @param originalText the originalText value to set
+     * @param originalText the originalText value to set.
      * @return the Screen object itself.
      */
     public Screen withOriginalText(String originalText) {
@@ -98,7 +98,7 @@ public class Screen {
     /**
      * Get the normalizedText value.
      *
-     * @return the normalizedText value
+     * @return the normalizedText value.
      */
     public String normalizedText() {
         return this.normalizedText;
@@ -107,7 +107,7 @@ public class Screen {
     /**
      * Set the normalizedText value.
      *
-     * @param normalizedText the normalizedText value to set
+     * @param normalizedText the normalizedText value to set.
      * @return the Screen object itself.
      */
     public Screen withNormalizedText(String normalizedText) {
@@ -118,7 +118,7 @@ public class Screen {
     /**
      * Get the autoCorrectedText value.
      *
-     * @return the autoCorrectedText value
+     * @return the autoCorrectedText value.
      */
     public String autoCorrectedText() {
         return this.autoCorrectedText;
@@ -127,7 +127,7 @@ public class Screen {
     /**
      * Set the autoCorrectedText value.
      *
-     * @param autoCorrectedText the autoCorrectedText value to set
+     * @param autoCorrectedText the autoCorrectedText value to set.
      * @return the Screen object itself.
      */
     public Screen withAutoCorrectedText(String autoCorrectedText) {
@@ -138,7 +138,7 @@ public class Screen {
     /**
      * Get the misrepresentation value.
      *
-     * @return the misrepresentation value
+     * @return the misrepresentation value.
      */
     public List<String> misrepresentation() {
         return this.misrepresentation;
@@ -147,7 +147,7 @@ public class Screen {
     /**
      * Set the misrepresentation value.
      *
-     * @param misrepresentation the misrepresentation value to set
+     * @param misrepresentation the misrepresentation value to set.
      * @return the Screen object itself.
      */
     public Screen withMisrepresentation(List<String> misrepresentation) {
@@ -158,7 +158,7 @@ public class Screen {
     /**
      * Get the classification value.
      *
-     * @return the classification value
+     * @return the classification value.
      */
     public Classification classification() {
         return this.classification;
@@ -167,7 +167,7 @@ public class Screen {
     /**
      * Set the classification value.
      *
-     * @param classification the classification value to set
+     * @param classification the classification value to set.
      * @return the Screen object itself.
      */
     public Screen withClassification(Classification classification) {
@@ -178,7 +178,7 @@ public class Screen {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public Status status() {
         return this.status;
@@ -187,7 +187,7 @@ public class Screen {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the Screen object itself.
      */
     public Screen withStatus(Status status) {
@@ -198,7 +198,7 @@ public class Screen {
     /**
      * Get the pII value.
      *
-     * @return the pII value
+     * @return the pII value.
      */
     public PII pII() {
         return this.pII;
@@ -207,7 +207,7 @@ public class Screen {
     /**
      * Set the pII value.
      *
-     * @param pII the pII value to set
+     * @param pII the pII value to set.
      * @return the Screen object itself.
      */
     public Screen withPII(PII pII) {
@@ -218,7 +218,7 @@ public class Screen {
     /**
      * Get the language value.
      *
-     * @return the language value
+     * @return the language value.
      */
     public String language() {
         return this.language;
@@ -227,7 +227,7 @@ public class Screen {
     /**
      * Set the language value.
      *
-     * @param language the language value to set
+     * @param language the language value to set.
      * @return the Screen object itself.
      */
     public Screen withLanguage(String language) {
@@ -238,7 +238,7 @@ public class Screen {
     /**
      * Get the terms value.
      *
-     * @return the terms value
+     * @return the terms value.
      */
     public List<DetectedTerms> terms() {
         return this.terms;
@@ -247,7 +247,7 @@ public class Screen {
     /**
      * Set the terms value.
      *
-     * @param terms the terms value to set
+     * @param terms the terms value to set.
      * @return the Screen object itself.
      */
     public Screen withTerms(List<DetectedTerms> terms) {
@@ -258,7 +258,7 @@ public class Screen {
     /**
      * Get the trackingId value.
      *
-     * @return the trackingId value
+     * @return the trackingId value.
      */
     public String trackingId() {
         return this.trackingId;
@@ -267,12 +267,11 @@ public class Screen {
     /**
      * Set the trackingId value.
      *
-     * @param trackingId the trackingId value to set
+     * @param trackingId the trackingId value to set.
      * @return the Screen object itself.
      */
     public Screen withTrackingId(String trackingId) {
         this.trackingId = trackingId;
         return this;
     }
-
 }

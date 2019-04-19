@@ -8,29 +8,41 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
- * Request body for verify operation.
+ * Request body for face to person verification.
  */
-public class VerifyFaceToPersonRequest {
+public final class VerifyFaceToPersonRequest {
     /**
-     * FaceId the face, comes from Face - Detect.
+     * FaceId of the face, comes from Face - Detect.
      */
     @JsonProperty(value = "faceId", required = true)
     private UUID faceId;
 
     /**
      * Using existing personGroupId and personId for fast loading a specified
-     * person. personGroupId is created in Person Groups.Create.
+     * person. personGroupId is created in PersonGroup - Create. Parameter
+     * personGroupId and largePersonGroupId should not be provided at the same
+     * time.
      */
-    @JsonProperty(value = "personGroupId", required = true)
+    @JsonProperty(value = "personGroupId")
     private String personGroupId;
 
     /**
-     * Specify a certain person in a person group. personId is created in
-     * Persons.Create.
+     * Using existing largePersonGroupId and personId for fast loading a
+     * specified person. largePersonGroupId is created in LargePersonGroup -
+     * Create. Parameter personGroupId and largePersonGroupId should not be
+     * provided at the same time.
+     */
+    @JsonProperty(value = "largePersonGroupId")
+    private String largePersonGroupId;
+
+    /**
+     * Specify a certain person in a person group or a large person group.
+     * personId is created in PersonGroup Person - Create or LargePersonGroup
+     * Person - Create.
      */
     @JsonProperty(value = "personId", required = true)
     private UUID personId;
@@ -38,7 +50,7 @@ public class VerifyFaceToPersonRequest {
     /**
      * Get the faceId value.
      *
-     * @return the faceId value
+     * @return the faceId value.
      */
     public UUID faceId() {
         return this.faceId;
@@ -47,7 +59,7 @@ public class VerifyFaceToPersonRequest {
     /**
      * Set the faceId value.
      *
-     * @param faceId the faceId value to set
+     * @param faceId the faceId value to set.
      * @return the VerifyFaceToPersonRequest object itself.
      */
     public VerifyFaceToPersonRequest withFaceId(UUID faceId) {
@@ -58,7 +70,7 @@ public class VerifyFaceToPersonRequest {
     /**
      * Get the personGroupId value.
      *
-     * @return the personGroupId value
+     * @return the personGroupId value.
      */
     public String personGroupId() {
         return this.personGroupId;
@@ -67,7 +79,7 @@ public class VerifyFaceToPersonRequest {
     /**
      * Set the personGroupId value.
      *
-     * @param personGroupId the personGroupId value to set
+     * @param personGroupId the personGroupId value to set.
      * @return the VerifyFaceToPersonRequest object itself.
      */
     public VerifyFaceToPersonRequest withPersonGroupId(String personGroupId) {
@@ -76,9 +88,29 @@ public class VerifyFaceToPersonRequest {
     }
 
     /**
+     * Get the largePersonGroupId value.
+     *
+     * @return the largePersonGroupId value.
+     */
+    public String largePersonGroupId() {
+        return this.largePersonGroupId;
+    }
+
+    /**
+     * Set the largePersonGroupId value.
+     *
+     * @param largePersonGroupId the largePersonGroupId value to set.
+     * @return the VerifyFaceToPersonRequest object itself.
+     */
+    public VerifyFaceToPersonRequest withLargePersonGroupId(String largePersonGroupId) {
+        this.largePersonGroupId = largePersonGroupId;
+        return this;
+    }
+
+    /**
      * Get the personId value.
      *
-     * @return the personId value
+     * @return the personId value.
      */
     public UUID personId() {
         return this.personId;
@@ -87,12 +119,11 @@ public class VerifyFaceToPersonRequest {
     /**
      * Set the personId value.
      *
-     * @param personId the personId value to set
+     * @param personId the personId value to set.
      * @return the VerifyFaceToPersonRequest object itself.
      */
     public VerifyFaceToPersonRequest withPersonId(UUID personId) {
         this.personId = personId;
         return this;
     }
-
 }

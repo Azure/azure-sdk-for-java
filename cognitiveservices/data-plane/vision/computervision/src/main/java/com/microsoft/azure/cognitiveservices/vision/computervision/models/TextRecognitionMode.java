@@ -15,16 +15,22 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for TextRecognitionMode.
  */
 public enum TextRecognitionMode {
-    /** Enum value Handwritten. */
+    /**
+     * Enum value Handwritten.
+     */
     HANDWRITTEN("Handwritten"),
 
-    /** Enum value Printed. */
+    /**
+     * Enum value Printed.
+     */
     PRINTED("Printed");
 
-    /** The actual serialized value for a TextRecognitionMode instance. */
-    private String value;
+    /**
+     * The actual serialized value for a TextRecognitionMode instance.
+     */
+    private final String value;
 
-    TextRecognitionMode(String value) {
+    private TextRecognitionMode(String value) {
         this.value = value;
     }
 

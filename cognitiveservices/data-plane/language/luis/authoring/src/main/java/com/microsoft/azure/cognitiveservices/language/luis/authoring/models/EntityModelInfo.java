@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * An Entity Extractor model info.
  */
-public class EntityModelInfo extends ModelInfo {
+public final class EntityModelInfo extends ModelInfo {
     /**
      * The roles property.
      */
@@ -24,7 +24,7 @@ public class EntityModelInfo extends ModelInfo {
     /**
      * Get the roles value.
      *
-     * @return the roles value
+     * @return the roles value.
      */
     public List<EntityRole> roles() {
         return this.roles;
@@ -33,12 +33,11 @@ public class EntityModelInfo extends ModelInfo {
     /**
      * Set the roles value.
      *
-     * @param roles the roles value to set
+     * @param roles the roles value to set.
      * @return the EntityModelInfo object itself.
      */
     public EntityModelInfo withRoles(List<EntityRole> roles) {
         this.roles = roles;
         return this;
     }
-
 }

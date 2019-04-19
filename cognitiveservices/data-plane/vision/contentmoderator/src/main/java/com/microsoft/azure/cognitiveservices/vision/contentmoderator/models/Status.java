@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Status properties.
  */
-public class Status {
+public final class Status {
     /**
      * Status code.
      */
@@ -35,7 +35,7 @@ public class Status {
     /**
      * Get the code value.
      *
-     * @return the code value
+     * @return the code value.
      */
     public Integer code() {
         return this.code;
@@ -44,7 +44,7 @@ public class Status {
     /**
      * Set the code value.
      *
-     * @param code the code value to set
+     * @param code the code value to set.
      * @return the Status object itself.
      */
     public Status withCode(Integer code) {
@@ -55,7 +55,7 @@ public class Status {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public String description() {
         return this.description;
@@ -64,7 +64,7 @@ public class Status {
     /**
      * Set the description value.
      *
-     * @param description the description value to set
+     * @param description the description value to set.
      * @return the Status object itself.
      */
     public Status withDescription(String description) {
@@ -75,7 +75,7 @@ public class Status {
     /**
      * Get the exception value.
      *
-     * @return the exception value
+     * @return the exception value.
      */
     public String exception() {
         return this.exception;
@@ -84,12 +84,11 @@ public class Status {
     /**
      * Set the exception value.
      *
-     * @param exception the exception value to set
+     * @param exception the exception value to set.
      * @return the Status object itself.
      */
     public Status withException(String exception) {
         this.exception = exception;
         return this;
     }
-
 }

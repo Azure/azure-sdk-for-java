@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Defines a search query.
  */
-public class Query {
+public final class Query {
     /**
      * The query string. Use this string as the query term in a new search
      * request.
@@ -53,7 +53,7 @@ public class Query {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -62,7 +62,7 @@ public class Query {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the Query object itself.
      */
     public Query withText(String text) {
@@ -73,7 +73,7 @@ public class Query {
     /**
      * Get the displayText value.
      *
-     * @return the displayText value
+     * @return the displayText value.
      */
     public String displayText() {
         return this.displayText;
@@ -82,7 +82,7 @@ public class Query {
     /**
      * Get the webSearchUrl value.
      *
-     * @return the webSearchUrl value
+     * @return the webSearchUrl value.
      */
     public String webSearchUrl() {
         return this.webSearchUrl;
@@ -91,7 +91,7 @@ public class Query {
     /**
      * Get the searchLink value.
      *
-     * @return the searchLink value
+     * @return the searchLink value.
      */
     public String searchLink() {
         return this.searchLink;
@@ -100,10 +100,9 @@ public class Query {
     /**
      * Get the thumbnail value.
      *
-     * @return the thumbnail value
+     * @return the thumbnail value.
      */
     public ImageObject thumbnail() {
         return this.thumbnail;
     }
-
 }

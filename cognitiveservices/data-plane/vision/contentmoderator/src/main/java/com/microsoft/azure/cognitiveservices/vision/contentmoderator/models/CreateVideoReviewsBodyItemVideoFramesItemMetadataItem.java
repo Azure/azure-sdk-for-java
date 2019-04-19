@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The CreateVideoReviewsBodyItemVideoFramesItemMetadataItem model.
  */
-public class CreateVideoReviewsBodyItemVideoFramesItemMetadataItem {
+public final class CreateVideoReviewsBodyItemVideoFramesItemMetadataItem {
     /**
      * Your key parameter.
      */
@@ -29,7 +29,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItemMetadataItem {
     /**
      * Get the key value.
      *
-     * @return the key value
+     * @return the key value.
      */
     public String key() {
         return this.key;
@@ -38,8 +38,9 @@ public class CreateVideoReviewsBodyItemVideoFramesItemMetadataItem {
     /**
      * Set the key value.
      *
-     * @param key the key value to set
-     * @return the CreateVideoReviewsBodyItemVideoFramesItemMetadataItem object itself.
+     * @param key the key value to set.
+     * @return the CreateVideoReviewsBodyItemVideoFramesItemMetadataItem object
+     * itself.
      */
     public CreateVideoReviewsBodyItemVideoFramesItemMetadataItem withKey(String key) {
         this.key = key;
@@ -49,7 +50,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItemMetadataItem {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public String value() {
         return this.value;
@@ -58,12 +59,12 @@ public class CreateVideoReviewsBodyItemVideoFramesItemMetadataItem {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
-     * @return the CreateVideoReviewsBodyItemVideoFramesItemMetadataItem object itself.
+     * @param value the value value to set.
+     * @return the CreateVideoReviewsBodyItemVideoFramesItemMetadataItem object
+     * itself.
      */
     public CreateVideoReviewsBodyItemVideoFramesItemMetadataItem withValue(String value) {
         this.value = value;
         return this;
     }
-
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Properties describing exposure level of the image.
  */
-public class Exposure {
+public final class Exposure {
     /**
      * An enum value indicating level of exposure. Possible values include:
      * 'UnderExposure', 'GoodExposure', 'OverExposure'.
@@ -32,7 +32,7 @@ public class Exposure {
     /**
      * Get the exposureLevel value.
      *
-     * @return the exposureLevel value
+     * @return the exposureLevel value.
      */
     public ExposureLevel exposureLevel() {
         return this.exposureLevel;
@@ -41,7 +41,7 @@ public class Exposure {
     /**
      * Set the exposureLevel value.
      *
-     * @param exposureLevel the exposureLevel value to set
+     * @param exposureLevel the exposureLevel value to set.
      * @return the Exposure object itself.
      */
     public Exposure withExposureLevel(ExposureLevel exposureLevel) {
@@ -52,7 +52,7 @@ public class Exposure {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public double value() {
         return this.value;
@@ -61,12 +61,11 @@ public class Exposure {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the Exposure object itself.
      */
     public Exposure withValue(double value) {
         this.value = value;
         return this;
     }
-
 }

@@ -8,471 +8,424 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupsOptionalParameter;
-import retrofit2.Retrofit;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.DELETE;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PATCH;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.PUT;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.RestVoidResponse;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.MetaDataContract;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.NameAndUserDataContract;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersonGroup;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.TrainingStatus;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.PATCH;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in PersonGroups.
+ * An instance of this class provides access to all the operations defined in
+ * PersonGroups.
  */
-public class PersonGroupsImpl implements PersonGroups {
-    /** The Retrofit service to perform REST calls. */
+public final class PersonGroupsImpl implements PersonGroups {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private PersonGroupsService service;
-    /** The service client containing this operation class. */
-    private FaceAPIImpl client;
+
+    /**
+     * The service client containing this operation class.
+     */
+    private FaceClientImpl client;
 
     /**
      * Initializes an instance of PersonGroupsImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PersonGroupsImpl(Retrofit retrofit, FaceAPIImpl client) {
-        this.service = retrofit.create(PersonGroupsService.class);
+    public PersonGroupsImpl(FaceClientImpl client) {
+        this.service = RestProxy.create(PersonGroupsService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PersonGroups to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for PersonGroups to be used by
+     * the proxy service to perform REST calls.
      */
-    interface PersonGroupsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups create" })
+    @Host("{Endpoint}/face/v1.0")
+    private interface PersonGroupsService {
         @PUT("persongroups/{personGroupId}")
-        Observable<Response<ResponseBody>> create(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> create(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") MetaDataContract body);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups delete" })
-        @HTTP(path = "persongroups/{personGroupId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @DELETE("persongroups/{personGroupId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> delete(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups get" })
         @GET("persongroups/{personGroupId}")
-        Observable<Response<ResponseBody>> get(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<PersonGroup>> get(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint, @QueryParam("returnRecognitionModel") Boolean returnRecognitionModel);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups update" })
         @PATCH("persongroups/{personGroupId}")
-        Observable<Response<ResponseBody>> update(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> update(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") NameAndUserDataContract body);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups getTrainingStatus" })
         @GET("persongroups/{personGroupId}/training")
-        Observable<Response<ResponseBody>> getTrainingStatus(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<TrainingStatus>> getTrainingStatus(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups list" })
         @GET("persongroups")
-        Observable<Response<ResponseBody>> list(@Query("start") String start, @Query("top") Integer top, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<List<PersonGroup>>> list(@HostParam("Endpoint") String endpoint, @QueryParam("start") String start, @QueryParam("top") Integer top, @QueryParam("returnRecognitionModel") Boolean returnRecognitionModel);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups train" })
         @POST("persongroups/{personGroupId}/train")
-        Observable<Response<ResponseBody>> train(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-    }
-
-
-    /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
-     *
-     * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void create(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter) {
-        createWithServiceResponseAsync(personGroupId, createOptionalParameter).toBlocking().single().body();
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> train(@PathParam("personGroupId") String personGroupId, @HostParam("Endpoint") String endpoint);
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public ServiceFuture<Void> createAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(personGroupId, createOptionalParameter), serviceCallback);
+    public void create(@NonNull String personGroupId) {
+        createAsync(personGroupId).block();
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<Void> createAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter) {
-        return createWithServiceResponseAsync(personGroupId, createOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
-     *
-     * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String personGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        final String name = createOptionalParameter != null ? createOptionalParameter.name() : null;
-        final String userData = createOptionalParameter != null ? createOptionalParameter.userData() : null;
-
-        return createWithServiceResponseAsync(personGroupId, name, userData);
+        MetaDataContract body = new MetaDataContract();
+        body.withName(null);
+        body.withUserData(null);
+        body.withRecognitionModel(null);
+        return service.create(personGroupId, this.client.endpoint(), body);
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> createAsync(@NonNull String personGroupId) {
+        return createWithRestResponseAsync(personGroupId)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public void create(@NonNull String personGroupId, String name, String userData, RecognitionModel recognitionModel) {
+        createAsync(personGroupId, name, userData, recognitionModel).block();
+    }
+
+    /**
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String personGroupId, String name, String userData, RecognitionModel recognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
-        bodyParameter.withName(name);
-        bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.create(personGroupId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = createDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> createDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public PersonGroupsCreateParameters create() {
-        return new PersonGroupsCreateParameters(this);
+        MetaDataContract body = new MetaDataContract();
+        body.withName(name);
+        body.withUserData(userData);
+        body.withRecognitionModel(recognitionModel);
+        return service.create(personGroupId, this.client.endpoint(), body);
     }
 
     /**
-     * Internal class implementing PersonGroupsCreateDefinition.
-     */
-    class PersonGroupsCreateParameters implements PersonGroupsCreateDefinition {
-        private PersonGroupsImpl parent;
-        private String personGroupId;
-        private String name;
-        private String userData;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupsCreateParameters(PersonGroupsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PersonGroupsCreateParameters withPersonGroupId(String personGroupId) {
-            this.personGroupId = personGroupId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupsCreateParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public PersonGroupsCreateParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        createWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return createWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
-                @Override
-                public Void call(ServiceResponse<Void> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public void delete(String personGroupId) {
-        deleteWithServiceResponseAsync(personGroupId).toBlocking().single().body();
+    public Mono<Void> createAsync(@NonNull String personGroupId, String name, String userData, RecognitionModel recognitionModel) {
+        return createWithRestResponseAsync(personGroupId, name, userData, recognitionModel)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public ServiceFuture<Void> deleteAsync(String personGroupId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(personGroupId), serviceCallback);
+    public void delete(@NonNull String personGroupId) {
+        deleteAsync(personGroupId).block();
     }
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<Void> deleteAsync(String personGroupId) {
-        return deleteWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
-     *
-     * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String personGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.delete(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+        return service.delete(personGroupId, this.client.endpoint());
     }
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> deleteAsync(@NonNull String personGroupId) {
+        return deleteWithRestResponseAsync(personGroupId)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersonGroup object if successful.
      */
-    public PersonGroup get(String personGroupId) {
-        return getWithServiceResponseAsync(personGroupId).toBlocking().single().body();
+    public PersonGroup get(@NonNull String personGroupId) {
+        return getAsync(personGroupId).block();
     }
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<PersonGroup> getAsync(String personGroupId, final ServiceCallback<PersonGroup> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(personGroupId), serviceCallback);
-    }
-
-    /**
-     * Retrieve the information of a person group, including its name and userData.
-     *
-     * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PersonGroup object
-     */
-    public Observable<PersonGroup> getAsync(String personGroupId) {
-        return getWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<PersonGroup>, PersonGroup>() {
-            @Override
-            public PersonGroup call(ServiceResponse<PersonGroup> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Retrieve the information of a person group, including its name and userData.
-     *
-     * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PersonGroup object
-     */
-    public Observable<ServiceResponse<PersonGroup>> getWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<PersonGroup>> getWithRestResponseAsync(@NonNull String personGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.get(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersonGroup>>>() {
-                @Override
-                public Observable<ServiceResponse<PersonGroup>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PersonGroup> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PersonGroup> getDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PersonGroup, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PersonGroup>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-
-    /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
-     *
-     * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void update(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter) {
-        updateWithServiceResponseAsync(personGroupId, updateOptionalParameter).toBlocking().single().body();
+        final Boolean returnRecognitionModel = false;
+        return service.get(personGroupId, this.client.endpoint(), returnRecognitionModel);
     }
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Void> updateAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(personGroupId, updateOptionalParameter), serviceCallback);
+    public Mono<PersonGroup> getAsync(@NonNull String personGroupId) {
+        return getWithRestResponseAsync(personGroupId)
+            .flatMap((SimpleResponse<PersonGroup> res) -> Mono.just(res.value()));
     }
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the PersonGroup object if successful.
      */
-    public Observable<Void> updateAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter) {
-        return updateWithServiceResponseAsync(personGroupId, updateOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
+    public PersonGroup get(@NonNull String personGroupId, Boolean returnRecognitionModel) {
+        return getAsync(personGroupId, returnRecognitionModel).block();
     }
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<PersonGroup>> getWithRestResponseAsync(@NonNull String personGroupId, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        final String name = updateOptionalParameter != null ? updateOptionalParameter.name() : null;
-        final String userData = updateOptionalParameter != null ? updateOptionalParameter.userData() : null;
+        return service.get(personGroupId, this.client.endpoint(), returnRecognitionModel);
+    }
 
-        return updateWithServiceResponseAsync(personGroupId, name, userData);
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<PersonGroup> getAsync(@NonNull String personGroupId, Boolean returnRecognitionModel) {
+        return getWithRestResponseAsync(personGroupId, returnRecognitionModel)
+            .flatMap((SimpleResponse<PersonGroup> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void update(@NonNull String personGroupId) {
+        updateAsync(personGroupId).block();
+    }
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (personGroupId == null) {
+            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        }
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(null);
+        body.withUserData(null);
+        return service.update(personGroupId, this.client.endpoint(), body);
+    }
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> updateAsync(@NonNull String personGroupId) {
+        return updateWithRestResponseAsync(personGroupId)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -481,390 +434,259 @@ public class PersonGroupsImpl implements PersonGroups {
      * @param personGroupId Id referencing a particular person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public void update(@NonNull String personGroupId, String name, String userData) {
+        updateAsync(personGroupId, name, userData).block();
+    }
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId, String name, String userData) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
-        bodyParameter.withName(name);
-        bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.update(personGroupId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> updateDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public PersonGroupsUpdateParameters update() {
-        return new PersonGroupsUpdateParameters(this);
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(name);
+        body.withUserData(userData);
+        return service.update(personGroupId, this.client.endpoint(), body);
     }
 
     /**
-     * Internal class implementing PersonGroupsUpdateDefinition.
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class PersonGroupsUpdateParameters implements PersonGroupsUpdateDefinition {
-        private PersonGroupsImpl parent;
-        private String personGroupId;
-        private String name;
-        private String userData;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupsUpdateParameters(PersonGroupsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PersonGroupsUpdateParameters withPersonGroupId(String personGroupId) {
-            this.personGroupId = personGroupId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupsUpdateParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public PersonGroupsUpdateParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        updateWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return updateWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
-                @Override
-                public Void call(ServiceResponse<Void> response) {
-                    return response.body();
-                }
-            });
-        }
+    public Mono<Void> updateAsync(@NonNull String personGroupId, String name, String userData) {
+        return updateWithRestResponseAsync(personGroupId, name, userData)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
      * Retrieve the training status of a person group (completed or ongoing).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TrainingStatus object if successful.
      */
-    public TrainingStatus getTrainingStatus(String personGroupId) {
-        return getTrainingStatusWithServiceResponseAsync(personGroupId).toBlocking().single().body();
+    public TrainingStatus getTrainingStatus(@NonNull String personGroupId) {
+        return getTrainingStatusAsync(personGroupId).block();
     }
 
     /**
      * Retrieve the training status of a person group (completed or ongoing).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<TrainingStatus> getTrainingStatusAsync(String personGroupId, final ServiceCallback<TrainingStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(getTrainingStatusWithServiceResponseAsync(personGroupId), serviceCallback);
-    }
-
-    /**
-     * Retrieve the training status of a person group (completed or ongoing).
-     *
-     * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TrainingStatus object
-     */
-    public Observable<TrainingStatus> getTrainingStatusAsync(String personGroupId) {
-        return getTrainingStatusWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<TrainingStatus>, TrainingStatus>() {
-            @Override
-            public TrainingStatus call(ServiceResponse<TrainingStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Retrieve the training status of a person group (completed or ongoing).
-     *
-     * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TrainingStatus object
-     */
-    public Observable<ServiceResponse<TrainingStatus>> getTrainingStatusWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<TrainingStatus>> getTrainingStatusWithRestResponseAsync(@NonNull String personGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.getTrainingStatus(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TrainingStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<TrainingStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<TrainingStatus> clientResponse = getTrainingStatusDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getTrainingStatus(personGroupId, this.client.endpoint());
     }
-
-    private ServiceResponse<TrainingStatus> getTrainingStatusDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TrainingStatus, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TrainingStatus>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
 
     /**
-     * List person groups and their information.
+     * Retrieve the training status of a person group (completed or ongoing).
      *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<TrainingStatus> getTrainingStatusAsync(@NonNull String personGroupId) {
+        return getTrainingStatusWithRestResponseAsync(personGroupId)
+            .flatMap((SimpleResponse<TrainingStatus> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
+     *
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PersonGroup&gt; object if successful.
      */
-    public List<PersonGroup> list(ListPersonGroupsOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(listOptionalParameter).toBlocking().single().body();
+    public List<PersonGroup> list() {
+        return listAsync().block();
     }
 
     /**
-     * List person groups and their information.
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<PersonGroup>> listAsync(ListPersonGroupsOptionalParameter listOptionalParameter, final ServiceCallback<List<PersonGroup>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(listOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * List person groups and their information.
-     *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PersonGroup&gt; object
-     */
-    public Observable<List<PersonGroup>> listAsync(ListPersonGroupsOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(listOptionalParameter).map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
-            @Override
-            public List<PersonGroup> call(ServiceResponse<List<PersonGroup>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * List person groups and their information.
-     *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PersonGroup&gt; object
-     */
-    public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(ListPersonGroupsOptionalParameter listOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<SimpleResponse<List<PersonGroup>>> listWithRestResponseAsync() {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        final String start = listOptionalParameter != null ? listOptionalParameter.start() : null;
-        final Integer top = listOptionalParameter != null ? listOptionalParameter.top() : null;
-
-        return listWithServiceResponseAsync(start, top);
+        final String start = null;
+        final Integer top = 1000;
+        final Boolean returnRecognitionModel = false;
+        return service.list(this.client.endpoint(), start, top, returnRecognitionModel);
     }
 
     /**
-     * List person groups and their information.
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
+     *
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<PersonGroup>> listAsync() {
+        return listWithRestResponseAsync()
+            .flatMap((SimpleResponse<List<PersonGroup>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
      * @param start List person groups from the least personGroupId greater than the "start".
      * @param top The number of person groups to list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PersonGroup&gt; object
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;PersonGroup&gt; object if successful.
      */
-    public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(String start, Integer top) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.list(start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PersonGroup>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<PersonGroup>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<PersonGroup>> clientResponse = listDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<PersonGroup>> listDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<PersonGroup>, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<PersonGroup>>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public PersonGroupsListParameters list() {
-        return new PersonGroupsListParameters(this);
+    public List<PersonGroup> list(String start, Integer top, Boolean returnRecognitionModel) {
+        return listAsync(start, top, returnRecognitionModel).block();
     }
 
     /**
-     * Internal class implementing PersonGroupsListDefinition.
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class PersonGroupsListParameters implements PersonGroupsListDefinition {
-        private PersonGroupsImpl parent;
-        private String start;
-        private Integer top;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupsListParameters(PersonGroupsImpl parent) {
-            this.parent = parent;
+    public Mono<SimpleResponse<List<PersonGroup>>> listWithRestResponseAsync(String start, Integer top, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-
-        @Override
-        public PersonGroupsListParameters withStart(String start) {
-            this.start = start;
-            return this;
-        }
-
-        @Override
-        public PersonGroupsListParameters withTop(Integer top) {
-            this.top = top;
-            return this;
-        }
-
-        @Override
-        public List<PersonGroup> execute() {
-        return listWithServiceResponseAsync(start, top).toBlocking().single().body();
+        return service.list(this.client.endpoint(), start, top, returnRecognitionModel);
     }
 
-        @Override
-        public Observable<List<PersonGroup>> executeAsync() {
-            return listWithServiceResponseAsync(start, top).map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
-                @Override
-                public List<PersonGroup> call(ServiceResponse<List<PersonGroup>> response) {
-                    return response.body();
-                }
-            });
-        }
+    /**
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<PersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel) {
+        return listWithRestResponseAsync(start, top, returnRecognitionModel)
+            .flatMap((SimpleResponse<List<PersonGroup>> res) -> Mono.just(res.value()));
     }
 
     /**
      * Queue a person group training task, the training task may not be started immediately.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void train(String personGroupId) {
-        trainWithServiceResponseAsync(personGroupId).toBlocking().single().body();
+    public void train(@NonNull String personGroupId) {
+        trainAsync(personGroupId).block();
     }
 
     /**
      * Queue a person group training task, the training task may not be started immediately.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Void> trainAsync(String personGroupId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(trainWithServiceResponseAsync(personGroupId), serviceCallback);
-    }
-
-    /**
-     * Queue a person group training task, the training task may not be started immediately.
-     *
-     * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> trainAsync(String personGroupId) {
-        return trainWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Queue a person group training task, the training task may not be started immediately.
-     *
-     * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> trainWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Mono<RestVoidResponse> trainWithRestResponseAsync(@NonNull String personGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.train(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = trainDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.train(personGroupId, this.client.endpoint());
     }
 
-    private ServiceResponse<Void> trainDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Queue a person group training task, the training task may not be started immediately.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> trainAsync(@NonNull String personGroupId) {
+        return trainWithRestResponseAsync(personGroupId)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
-
 }

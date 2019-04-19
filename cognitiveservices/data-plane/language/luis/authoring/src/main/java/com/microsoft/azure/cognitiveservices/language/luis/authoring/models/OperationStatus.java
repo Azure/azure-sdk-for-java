@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Response of an Operation status.
  */
-public class OperationStatus {
+public final class OperationStatus {
     /**
      * Status Code. Possible values include: 'Failed', 'FAILED', 'Success'.
      */
@@ -29,7 +29,7 @@ public class OperationStatus {
     /**
      * Get the code value.
      *
-     * @return the code value
+     * @return the code value.
      */
     public OperationStatusType code() {
         return this.code;
@@ -38,7 +38,7 @@ public class OperationStatus {
     /**
      * Set the code value.
      *
-     * @param code the code value to set
+     * @param code the code value to set.
      * @return the OperationStatus object itself.
      */
     public OperationStatus withCode(OperationStatusType code) {
@@ -49,7 +49,7 @@ public class OperationStatus {
     /**
      * Get the message value.
      *
-     * @return the message value
+     * @return the message value.
      */
     public String message() {
         return this.message;
@@ -58,12 +58,11 @@ public class OperationStatus {
     /**
      * Set the message value.
      *
-     * @param message the message value to set
+     * @param message the message value to set.
      * @return the OperationStatus object itself.
      */
     public OperationStatus withMessage(String message) {
         this.message = message;
         return this;
     }
-
 }

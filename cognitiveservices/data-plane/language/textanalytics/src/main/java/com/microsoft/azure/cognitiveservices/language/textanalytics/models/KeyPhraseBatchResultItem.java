@@ -8,13 +8,19 @@
 
 package com.microsoft.azure.cognitiveservices.language.textanalytics.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The KeyPhraseBatchResultItem model.
  */
-public class KeyPhraseBatchResultItem {
+public final class KeyPhraseBatchResultItem {
+    /**
+     * Unique, non-empty document identifier.
+     */
+    @JsonProperty(value = "id")
+    private String id;
+
     /**
      * A list of representative words or phrases. The number of key phrases
      * returned is proportional to the number of words in the input document.
@@ -23,27 +29,58 @@ public class KeyPhraseBatchResultItem {
     private List<String> keyPhrases;
 
     /**
-     * Unique document identifier.
+     * (Optional) if showStats=true was specified in the request this field
+     * will contain information about the document payload.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    @JsonProperty(value = "statistics")
+    private DocumentStatistics statistics;
+
+    /**
+     * Get the id value.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id value.
+     *
+     * @param id the id value to set.
+     * @return the KeyPhraseBatchResultItem object itself.
+     */
+    public KeyPhraseBatchResultItem withId(String id) {
+        this.id = id;
+        return this;
+    }
 
     /**
      * Get the keyPhrases value.
      *
-     * @return the keyPhrases value
+     * @return the keyPhrases value.
      */
     public List<String> keyPhrases() {
         return this.keyPhrases;
     }
 
     /**
-     * Get the id value.
+     * Get the statistics value.
      *
-     * @return the id value
+     * @return the statistics value.
      */
-    public String id() {
-        return this.id;
+    public DocumentStatistics statistics() {
+        return this.statistics;
     }
 
+    /**
+     * Set the statistics value.
+     *
+     * @param statistics the statistics value to set.
+     * @return the KeyPhraseBatchResultItem object itself.
+     */
+    public KeyPhraseBatchResultItem withStatistics(DocumentStatistics statistics) {
+        this.statistics = statistics;
+        return this;
+    }
 }

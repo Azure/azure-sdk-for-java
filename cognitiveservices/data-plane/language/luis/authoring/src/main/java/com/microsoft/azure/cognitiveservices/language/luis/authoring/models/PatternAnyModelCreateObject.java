@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Model object for creating a Pattern.Any entity model.
  */
-public class PatternAnyModelCreateObject {
+public final class PatternAnyModelCreateObject {
     /**
      * The model name.
      */
@@ -30,7 +30,7 @@ public class PatternAnyModelCreateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -39,7 +39,7 @@ public class PatternAnyModelCreateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the PatternAnyModelCreateObject object itself.
      */
     public PatternAnyModelCreateObject withName(String name) {
@@ -50,7 +50,7 @@ public class PatternAnyModelCreateObject {
     /**
      * Get the explicitList value.
      *
-     * @return the explicitList value
+     * @return the explicitList value.
      */
     public List<String> explicitList() {
         return this.explicitList;
@@ -59,12 +59,11 @@ public class PatternAnyModelCreateObject {
     /**
      * Set the explicitList value.
      *
-     * @param explicitList the explicitList value to set
+     * @param explicitList the explicitList value to set.
      * @return the PatternAnyModelCreateObject object itself.
      */
     public PatternAnyModelCreateObject withExplicitList(List<String> explicitList) {
         this.explicitList = explicitList;
         return this;
     }
-
 }

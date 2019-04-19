@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A rectangle within which a face can be found.
  */
-public class FaceRectangle {
+public final class FaceRectangle {
     /**
      * The width of the rectangle, in pixels.
      */
@@ -43,7 +43,7 @@ public class FaceRectangle {
     /**
      * Get the width value.
      *
-     * @return the width value
+     * @return the width value.
      */
     public int width() {
         return this.width;
@@ -52,7 +52,7 @@ public class FaceRectangle {
     /**
      * Set the width value.
      *
-     * @param width the width value to set
+     * @param width the width value to set.
      * @return the FaceRectangle object itself.
      */
     public FaceRectangle withWidth(int width) {
@@ -63,7 +63,7 @@ public class FaceRectangle {
     /**
      * Get the height value.
      *
-     * @return the height value
+     * @return the height value.
      */
     public int height() {
         return this.height;
@@ -72,7 +72,7 @@ public class FaceRectangle {
     /**
      * Set the height value.
      *
-     * @param height the height value to set
+     * @param height the height value to set.
      * @return the FaceRectangle object itself.
      */
     public FaceRectangle withHeight(int height) {
@@ -83,7 +83,7 @@ public class FaceRectangle {
     /**
      * Get the left value.
      *
-     * @return the left value
+     * @return the left value.
      */
     public int left() {
         return this.left;
@@ -92,7 +92,7 @@ public class FaceRectangle {
     /**
      * Set the left value.
      *
-     * @param left the left value to set
+     * @param left the left value to set.
      * @return the FaceRectangle object itself.
      */
     public FaceRectangle withLeft(int left) {
@@ -103,7 +103,7 @@ public class FaceRectangle {
     /**
      * Get the top value.
      *
-     * @return the top value
+     * @return the top value.
      */
     public int top() {
         return this.top;
@@ -112,12 +112,11 @@ public class FaceRectangle {
     /**
      * Set the top value.
      *
-     * @param top the top value to set
+     * @param top the top value to set.
      * @return the FaceRectangle object itself.
      */
     public FaceRectangle withTop(int top) {
         this.top = top;
         return this;
     }
-
 }

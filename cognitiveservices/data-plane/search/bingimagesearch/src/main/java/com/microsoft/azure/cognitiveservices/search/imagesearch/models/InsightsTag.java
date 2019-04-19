@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Defines a characteristic of the content found in the image.
  */
-public class InsightsTag {
+public final class InsightsTag {
     /**
      * The name of the characteristic. For example, cat, kitty, calico cat.
      */
@@ -23,10 +23,9 @@ public class InsightsTag {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
     }
-
 }

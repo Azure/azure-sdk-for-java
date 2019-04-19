@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The ImageTagCreateSummary model.
  */
-public class ImageTagCreateSummary {
+public final class ImageTagCreateSummary {
     /**
      * The created property.
      */
@@ -36,7 +36,7 @@ public class ImageTagCreateSummary {
     /**
      * Get the created value.
      *
-     * @return the created value
+     * @return the created value.
      */
     public List<ImageTagCreateEntry> created() {
         return this.created;
@@ -45,7 +45,7 @@ public class ImageTagCreateSummary {
     /**
      * Set the created value.
      *
-     * @param created the created value to set
+     * @param created the created value to set.
      * @return the ImageTagCreateSummary object itself.
      */
     public ImageTagCreateSummary withCreated(List<ImageTagCreateEntry> created) {
@@ -56,7 +56,7 @@ public class ImageTagCreateSummary {
     /**
      * Get the duplicated value.
      *
-     * @return the duplicated value
+     * @return the duplicated value.
      */
     public List<ImageTagCreateEntry> duplicated() {
         return this.duplicated;
@@ -65,7 +65,7 @@ public class ImageTagCreateSummary {
     /**
      * Set the duplicated value.
      *
-     * @param duplicated the duplicated value to set
+     * @param duplicated the duplicated value to set.
      * @return the ImageTagCreateSummary object itself.
      */
     public ImageTagCreateSummary withDuplicated(List<ImageTagCreateEntry> duplicated) {
@@ -76,7 +76,7 @@ public class ImageTagCreateSummary {
     /**
      * Get the exceeded value.
      *
-     * @return the exceeded value
+     * @return the exceeded value.
      */
     public List<ImageTagCreateEntry> exceeded() {
         return this.exceeded;
@@ -85,12 +85,11 @@ public class ImageTagCreateSummary {
     /**
      * Set the exceeded value.
      *
-     * @param exceeded the exceeded value to set
+     * @param exceeded the exceeded value to set.
      * @return the ImageTagCreateSummary object itself.
      */
     public ImageTagCreateSummary withExceeded(List<ImageTagCreateEntry> exceeded) {
         this.exceeded = exceeded;
         return this;
     }
-
 }

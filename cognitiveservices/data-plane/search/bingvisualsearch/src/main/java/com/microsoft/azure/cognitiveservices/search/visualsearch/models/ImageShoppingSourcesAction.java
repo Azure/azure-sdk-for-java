@@ -13,11 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The ImageShoppingSourcesAction model.
+ * Defines a shopping sources action.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageShoppingSourcesAction.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageShoppingSourcesAction")
-public class ImageShoppingSourcesAction extends ImageAction {
+public final class ImageShoppingSourcesAction extends ImageAction {
     /**
      * A list of merchants that offer items related to the image.
      */
@@ -27,10 +27,9 @@ public class ImageShoppingSourcesAction extends ImageAction {
     /**
      * Get the data value.
      *
-     * @return the data value
+     * @return the data value.
      */
     public AggregateOffer data() {
         return this.data;
     }
-
 }

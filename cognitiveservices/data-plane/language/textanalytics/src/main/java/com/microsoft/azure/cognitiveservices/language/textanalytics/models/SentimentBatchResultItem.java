@@ -13,38 +13,86 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The SentimentBatchResultItem model.
  */
-public class SentimentBatchResultItem {
+public final class SentimentBatchResultItem {
+    /**
+     * Unique, non-empty document identifier.
+     */
+    @JsonProperty(value = "id")
+    private String id;
+
     /**
      * A decimal number between 0 and 1 denoting the sentiment of the document.
      * A score above 0.7 usually refers to a positive document while a score
      * below 0.3 normally has a negative connotation. Mid values refer to
      * neutral text.
      */
-    @JsonProperty(value = "score", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "score")
     private Double score;
 
     /**
-     * Unique document identifier.
+     * (Optional) if showStats=true was specified in the request this field
+     * will contain information about the document payload.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    @JsonProperty(value = "statistics")
+    private DocumentStatistics statistics;
+
+    /**
+     * Get the id value.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id value.
+     *
+     * @param id the id value to set.
+     * @return the SentimentBatchResultItem object itself.
+     */
+    public SentimentBatchResultItem withId(String id) {
+        this.id = id;
+        return this;
+    }
 
     /**
      * Get the score value.
      *
-     * @return the score value
+     * @return the score value.
      */
     public Double score() {
         return this.score;
     }
 
     /**
-     * Get the id value.
+     * Set the score value.
      *
-     * @return the id value
+     * @param score the score value to set.
+     * @return the SentimentBatchResultItem object itself.
      */
-    public String id() {
-        return this.id;
+    public SentimentBatchResultItem withScore(Double score) {
+        this.score = score;
+        return this;
     }
 
+    /**
+     * Get the statistics value.
+     *
+     * @return the statistics value.
+     */
+    public DocumentStatistics statistics() {
+        return this.statistics;
+    }
+
+    /**
+     * Set the statistics value.
+     *
+     * @param statistics the statistics value to set.
+     * @return the SentimentBatchResultItem object itself.
+     */
+    public SentimentBatchResultItem withStatistics(DocumentStatistics statistics) {
+        this.statistics = statistics;
+        return this;
+    }
 }

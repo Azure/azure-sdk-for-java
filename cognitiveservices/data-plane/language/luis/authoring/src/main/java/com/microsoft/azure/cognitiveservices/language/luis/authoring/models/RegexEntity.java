@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Regular Expression Entity Extractor.
  */
-public class RegexEntity {
+public final class RegexEntity {
     /**
      * The name property.
      */
@@ -36,7 +36,7 @@ public class RegexEntity {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -45,7 +45,7 @@ public class RegexEntity {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the RegexEntity object itself.
      */
     public RegexEntity withName(String name) {
@@ -56,7 +56,7 @@ public class RegexEntity {
     /**
      * Get the regexPattern value.
      *
-     * @return the regexPattern value
+     * @return the regexPattern value.
      */
     public String regexPattern() {
         return this.regexPattern;
@@ -65,7 +65,7 @@ public class RegexEntity {
     /**
      * Set the regexPattern value.
      *
-     * @param regexPattern the regexPattern value to set
+     * @param regexPattern the regexPattern value to set.
      * @return the RegexEntity object itself.
      */
     public RegexEntity withRegexPattern(String regexPattern) {
@@ -76,7 +76,7 @@ public class RegexEntity {
     /**
      * Get the roles value.
      *
-     * @return the roles value
+     * @return the roles value.
      */
     public List<String> roles() {
         return this.roles;
@@ -85,12 +85,11 @@ public class RegexEntity {
     /**
      * Set the roles value.
      *
-     * @param roles the roles value to set
+     * @param roles the roles value to set.
      * @return the RegexEntity object itself.
      */
     public RegexEntity withRoles(List<String> roles) {
         this.roles = roles;
         return this;
     }
-
 }

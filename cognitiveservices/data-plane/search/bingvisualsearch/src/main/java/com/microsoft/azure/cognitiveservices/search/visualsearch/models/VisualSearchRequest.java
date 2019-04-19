@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A JSON object that contains information about the image to get insights of.
  * Specify this object only in a knowledgeRequest form data.
  */
-public class VisualSearchRequest {
+public final class VisualSearchRequest {
     /**
      * A JSON object that identities the image to get insights of.
      */
@@ -31,7 +31,7 @@ public class VisualSearchRequest {
     /**
      * Get the imageInfo value.
      *
-     * @return the imageInfo value
+     * @return the imageInfo value.
      */
     public ImageInfo imageInfo() {
         return this.imageInfo;
@@ -40,7 +40,7 @@ public class VisualSearchRequest {
     /**
      * Set the imageInfo value.
      *
-     * @param imageInfo the imageInfo value to set
+     * @param imageInfo the imageInfo value to set.
      * @return the VisualSearchRequest object itself.
      */
     public VisualSearchRequest withImageInfo(ImageInfo imageInfo) {
@@ -51,7 +51,7 @@ public class VisualSearchRequest {
     /**
      * Get the knowledgeRequest value.
      *
-     * @return the knowledgeRequest value
+     * @return the knowledgeRequest value.
      */
     public KnowledgeRequest knowledgeRequest() {
         return this.knowledgeRequest;
@@ -60,12 +60,11 @@ public class VisualSearchRequest {
     /**
      * Set the knowledgeRequest value.
      *
-     * @param knowledgeRequest the knowledgeRequest value to set
+     * @param knowledgeRequest the knowledgeRequest value to set.
      * @return the VisualSearchRequest object itself.
      */
     public VisualSearchRequest withKnowledgeRequest(KnowledgeRequest knowledgeRequest) {
         this.knowledgeRequest = knowledgeRequest;
         return this;
     }
-
 }

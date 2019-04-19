@@ -15,34 +15,52 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for HairColorType.
  */
 public enum HairColorType {
-    /** Enum value unknown. */
+    /**
+     * Enum value unknown.
+     */
     UNKNOWN("unknown"),
 
-    /** Enum value white. */
+    /**
+     * Enum value white.
+     */
     WHITE("white"),
 
-    /** Enum value gray. */
+    /**
+     * Enum value gray.
+     */
     GRAY("gray"),
 
-    /** Enum value blond. */
+    /**
+     * Enum value blond.
+     */
     BLOND("blond"),
 
-    /** Enum value brown. */
+    /**
+     * Enum value brown.
+     */
     BROWN("brown"),
 
-    /** Enum value red. */
+    /**
+     * Enum value red.
+     */
     RED("red"),
 
-    /** Enum value black. */
+    /**
+     * Enum value black.
+     */
     BLACK("black"),
 
-    /** Enum value other. */
+    /**
+     * Enum value other.
+     */
     OTHER("other");
 
-    /** The actual serialized value for a HairColorType instance. */
-    private String value;
+    /**
+     * The actual serialized value for a HairColorType instance.
+     */
+    private final String value;
 
-    HairColorType(String value) {
+    private HairColorType(String value) {
         this.value = value;
     }
 

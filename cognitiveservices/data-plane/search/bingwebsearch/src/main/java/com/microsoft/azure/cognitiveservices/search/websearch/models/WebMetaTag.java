@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Defines a webpage's metadata.
  */
-public class WebMetaTag {
+public final class WebMetaTag {
     /**
      * The metadata.
      */
@@ -29,7 +29,7 @@ public class WebMetaTag {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -38,10 +38,9 @@ public class WebMetaTag {
     /**
      * Get the content value.
      *
-     * @return the content value
+     * @return the content value.
      */
     public String content() {
         return this.content;
     }
-
 }

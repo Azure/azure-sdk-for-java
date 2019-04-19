@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * An application model info.
  */
-public class ModelInfoResponse {
+public final class ModelInfoResponse {
     /**
      * The ID of the Entity Model.
      */
@@ -37,9 +37,9 @@ public class ModelInfoResponse {
     /**
      * Possible values include: 'Entity Extractor', 'Hierarchical Entity
      * Extractor', 'Hierarchical Child Entity Extractor', 'Composite Entity
-     * Extractor', 'Closed List Entity Extractor', 'Prebuilt Entity Extractor',
-     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regex Entity
-     * Extractor'.
+     * Extractor', 'List Entity Extractor', 'Prebuilt Entity Extractor',
+     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regular Expression
+     * Entity Extractor'.
      */
     @JsonProperty(value = "readableType", required = true)
     private String readableType;
@@ -57,7 +57,7 @@ public class ModelInfoResponse {
     private List<ChildEntity> children;
 
     /**
-     * List of sub-lists.
+     * List of sublists.
      */
     @JsonProperty(value = "subLists")
     private List<SubClosedListResponse> subLists;
@@ -75,7 +75,7 @@ public class ModelInfoResponse {
     private String customPrebuiltModelName;
 
     /**
-     * The Regex entity pattern.
+     * The Regular Expression entity pattern.
      */
     @JsonProperty(value = "regexPattern")
     private String regexPattern;
@@ -89,7 +89,7 @@ public class ModelInfoResponse {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -98,7 +98,7 @@ public class ModelInfoResponse {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the ModelInfoResponse object itself.
      */
     public ModelInfoResponse withId(UUID id) {
@@ -109,7 +109,7 @@ public class ModelInfoResponse {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -118,7 +118,7 @@ public class ModelInfoResponse {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ModelInfoResponse object itself.
      */
     public ModelInfoResponse withName(String name) {
@@ -129,7 +129,7 @@ public class ModelInfoResponse {
     /**
      * Get the typeId value.
      *
-     * @return the typeId value
+     * @return the typeId value.
      */
     public Integer typeId() {
         return this.typeId;
@@ -138,7 +138,7 @@ public class ModelInfoResponse {
     /**
      * Set the typeId value.
      *
-     * @param typeId the typeId value to set
+     * @param typeId the typeId value to set.
      * @return the ModelInfoResponse object itself.
      */
     public ModelInfoResponse withTypeId(Integer typeId) {
@@ -149,7 +149,7 @@ public class ModelInfoResponse {
     /**
      * Get the readableType value.
      *
-     * @return the readableType value
+     * @return the readableType value.
      */
     public String readableType() {
         return this.readableType;
@@ -158,7 +158,7 @@ public class ModelInfoResponse {
     /**
      * Set the readableType value.
      *
-     * @param readableType the readableType value to set
+     * @param readableType the readableType value to set.
      * @return the ModelInfoResponse object itself.
      */
     public ModelInfoResponse withReadableType(String readableType) {
@@ -169,7 +169,7 @@ public class ModelInfoResponse {
     /**
      * Get the roles value.
      *
-     * @return the roles value
+     * @return the roles value.
      */
     public List<EntityRole> roles() {
         return this.roles;
@@ -178,7 +178,7 @@ public class ModelInfoResponse {
     /**
      * Set the roles value.
      *
-     * @param roles the roles value to set
+     * @param roles the roles value to set.
      * @return the ModelInfoResponse object itself.
      */
     public ModelInfoResponse withRoles(List<EntityRole> roles) {
@@ -189,7 +189,7 @@ public class ModelInfoResponse {
     /**
      * Get the children value.
      *
-     * @return the children value
+     * @return the children value.
      */
     public List<ChildEntity> children() {
         return this.children;
@@ -198,7 +198,7 @@ public class ModelInfoResponse {
     /**
      * Set the children value.
      *
-     * @param children the children value to set
+     * @param children the children value to set.
      * @return the ModelInfoResponse object itself.
      */
     public ModelInfoResponse withChildren(List<ChildEntity> children) {
@@ -209,7 +209,7 @@ public class ModelInfoResponse {
     /**
      * Get the subLists value.
      *
-     * @return the subLists value
+     * @return the subLists value.
      */
     public List<SubClosedListResponse> subLists() {
         return this.subLists;
@@ -218,7 +218,7 @@ public class ModelInfoResponse {
     /**
      * Set the subLists value.
      *
-     * @param subLists the subLists value to set
+     * @param subLists the subLists value to set.
      * @return the ModelInfoResponse object itself.
      */
     public ModelInfoResponse withSubLists(List<SubClosedListResponse> subLists) {
@@ -229,7 +229,7 @@ public class ModelInfoResponse {
     /**
      * Get the customPrebuiltDomainName value.
      *
-     * @return the customPrebuiltDomainName value
+     * @return the customPrebuiltDomainName value.
      */
     public String customPrebuiltDomainName() {
         return this.customPrebuiltDomainName;
@@ -238,7 +238,8 @@ public class ModelInfoResponse {
     /**
      * Set the customPrebuiltDomainName value.
      *
-     * @param customPrebuiltDomainName the customPrebuiltDomainName value to set
+     * @param customPrebuiltDomainName the customPrebuiltDomainName value to
+     * set.
      * @return the ModelInfoResponse object itself.
      */
     public ModelInfoResponse withCustomPrebuiltDomainName(String customPrebuiltDomainName) {
@@ -249,7 +250,7 @@ public class ModelInfoResponse {
     /**
      * Get the customPrebuiltModelName value.
      *
-     * @return the customPrebuiltModelName value
+     * @return the customPrebuiltModelName value.
      */
     public String customPrebuiltModelName() {
         return this.customPrebuiltModelName;
@@ -258,7 +259,7 @@ public class ModelInfoResponse {
     /**
      * Set the customPrebuiltModelName value.
      *
-     * @param customPrebuiltModelName the customPrebuiltModelName value to set
+     * @param customPrebuiltModelName the customPrebuiltModelName value to set.
      * @return the ModelInfoResponse object itself.
      */
     public ModelInfoResponse withCustomPrebuiltModelName(String customPrebuiltModelName) {
@@ -269,7 +270,7 @@ public class ModelInfoResponse {
     /**
      * Get the regexPattern value.
      *
-     * @return the regexPattern value
+     * @return the regexPattern value.
      */
     public String regexPattern() {
         return this.regexPattern;
@@ -278,7 +279,7 @@ public class ModelInfoResponse {
     /**
      * Set the regexPattern value.
      *
-     * @param regexPattern the regexPattern value to set
+     * @param regexPattern the regexPattern value to set.
      * @return the ModelInfoResponse object itself.
      */
     public ModelInfoResponse withRegexPattern(String regexPattern) {
@@ -289,7 +290,7 @@ public class ModelInfoResponse {
     /**
      * Get the explicitList value.
      *
-     * @return the explicitList value
+     * @return the explicitList value.
      */
     public List<ExplicitListItem> explicitList() {
         return this.explicitList;
@@ -298,12 +299,11 @@ public class ModelInfoResponse {
     /**
      * Set the explicitList value.
      *
-     * @param explicitList the explicitList value to set
+     * @param explicitList the explicitList value to set.
      * @return the ModelInfoResponse object itself.
      */
     public ModelInfoResponse withExplicitList(List<ExplicitListItem> explicitList) {
         this.explicitList = explicitList;
         return this;
     }
-
 }

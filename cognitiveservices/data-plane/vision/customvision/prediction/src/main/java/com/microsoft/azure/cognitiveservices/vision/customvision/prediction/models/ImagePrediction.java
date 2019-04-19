@@ -8,41 +8,41 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.prediction.models;
 
-import java.util.UUID;
-import org.joda.time.DateTime;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.UUID;
 
 /**
- * The ImagePrediction model.
+ * Result of an image prediction request.
  */
-public class ImagePrediction {
+public final class ImagePrediction {
     /**
-     * The id property.
+     * Prediction Id.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
-     * The project property.
+     * Project Id.
      */
     @JsonProperty(value = "project", access = JsonProperty.Access.WRITE_ONLY)
     private UUID project;
 
     /**
-     * The iteration property.
+     * Iteration Id.
      */
     @JsonProperty(value = "iteration", access = JsonProperty.Access.WRITE_ONLY)
     private UUID iteration;
 
     /**
-     * The created property.
+     * Date this prediction was created.
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime created;
+    private OffsetDateTime created;
 
     /**
-     * The predictions property.
+     * List of predictions.
      */
     @JsonProperty(value = "predictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<Prediction> predictions;
@@ -50,7 +50,7 @@ public class ImagePrediction {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -59,7 +59,7 @@ public class ImagePrediction {
     /**
      * Get the project value.
      *
-     * @return the project value
+     * @return the project value.
      */
     public UUID project() {
         return this.project;
@@ -68,7 +68,7 @@ public class ImagePrediction {
     /**
      * Get the iteration value.
      *
-     * @return the iteration value
+     * @return the iteration value.
      */
     public UUID iteration() {
         return this.iteration;
@@ -77,19 +77,18 @@ public class ImagePrediction {
     /**
      * Get the created value.
      *
-     * @return the created value
+     * @return the created value.
      */
-    public DateTime created() {
+    public OffsetDateTime created() {
         return this.created;
     }
 
     /**
      * Get the predictions value.
      *
-     * @return the predictions value
+     * @return the predictions value.
      */
     public List<Prediction> predictions() {
         return this.predictions;
     }
-
 }

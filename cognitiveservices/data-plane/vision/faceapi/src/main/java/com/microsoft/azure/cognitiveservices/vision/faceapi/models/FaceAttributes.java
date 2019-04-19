@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Face Attributes.
  */
-public class FaceAttributes {
+public final class FaceAttributes {
     /**
      * Age in years.
      */
@@ -22,8 +22,7 @@ public class FaceAttributes {
     private Double age;
 
     /**
-     * Possible gender of the face. Possible values include: 'male', 'female',
-     * 'genderless'.
+     * Possible gender of the face. Possible values include: 'male', 'female'.
      */
     @JsonProperty(value = "gender")
     private Gender gender;
@@ -105,7 +104,7 @@ public class FaceAttributes {
     /**
      * Get the age value.
      *
-     * @return the age value
+     * @return the age value.
      */
     public Double age() {
         return this.age;
@@ -114,7 +113,7 @@ public class FaceAttributes {
     /**
      * Set the age value.
      *
-     * @param age the age value to set
+     * @param age the age value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withAge(Double age) {
@@ -125,7 +124,7 @@ public class FaceAttributes {
     /**
      * Get the gender value.
      *
-     * @return the gender value
+     * @return the gender value.
      */
     public Gender gender() {
         return this.gender;
@@ -134,7 +133,7 @@ public class FaceAttributes {
     /**
      * Set the gender value.
      *
-     * @param gender the gender value to set
+     * @param gender the gender value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withGender(Gender gender) {
@@ -145,7 +144,7 @@ public class FaceAttributes {
     /**
      * Get the smile value.
      *
-     * @return the smile value
+     * @return the smile value.
      */
     public Double smile() {
         return this.smile;
@@ -154,7 +153,7 @@ public class FaceAttributes {
     /**
      * Set the smile value.
      *
-     * @param smile the smile value to set
+     * @param smile the smile value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withSmile(Double smile) {
@@ -165,7 +164,7 @@ public class FaceAttributes {
     /**
      * Get the facialHair value.
      *
-     * @return the facialHair value
+     * @return the facialHair value.
      */
     public FacialHair facialHair() {
         return this.facialHair;
@@ -174,7 +173,7 @@ public class FaceAttributes {
     /**
      * Set the facialHair value.
      *
-     * @param facialHair the facialHair value to set
+     * @param facialHair the facialHair value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withFacialHair(FacialHair facialHair) {
@@ -185,7 +184,7 @@ public class FaceAttributes {
     /**
      * Get the glasses value.
      *
-     * @return the glasses value
+     * @return the glasses value.
      */
     public GlassesType glasses() {
         return this.glasses;
@@ -194,7 +193,7 @@ public class FaceAttributes {
     /**
      * Set the glasses value.
      *
-     * @param glasses the glasses value to set
+     * @param glasses the glasses value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withGlasses(GlassesType glasses) {
@@ -205,7 +204,7 @@ public class FaceAttributes {
     /**
      * Get the headPose value.
      *
-     * @return the headPose value
+     * @return the headPose value.
      */
     public HeadPose headPose() {
         return this.headPose;
@@ -214,7 +213,7 @@ public class FaceAttributes {
     /**
      * Set the headPose value.
      *
-     * @param headPose the headPose value to set
+     * @param headPose the headPose value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withHeadPose(HeadPose headPose) {
@@ -225,7 +224,7 @@ public class FaceAttributes {
     /**
      * Get the emotion value.
      *
-     * @return the emotion value
+     * @return the emotion value.
      */
     public Emotion emotion() {
         return this.emotion;
@@ -234,7 +233,7 @@ public class FaceAttributes {
     /**
      * Set the emotion value.
      *
-     * @param emotion the emotion value to set
+     * @param emotion the emotion value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withEmotion(Emotion emotion) {
@@ -245,7 +244,7 @@ public class FaceAttributes {
     /**
      * Get the hair value.
      *
-     * @return the hair value
+     * @return the hair value.
      */
     public Hair hair() {
         return this.hair;
@@ -254,7 +253,7 @@ public class FaceAttributes {
     /**
      * Set the hair value.
      *
-     * @param hair the hair value to set
+     * @param hair the hair value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withHair(Hair hair) {
@@ -265,7 +264,7 @@ public class FaceAttributes {
     /**
      * Get the makeup value.
      *
-     * @return the makeup value
+     * @return the makeup value.
      */
     public Makeup makeup() {
         return this.makeup;
@@ -274,7 +273,7 @@ public class FaceAttributes {
     /**
      * Set the makeup value.
      *
-     * @param makeup the makeup value to set
+     * @param makeup the makeup value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withMakeup(Makeup makeup) {
@@ -285,7 +284,7 @@ public class FaceAttributes {
     /**
      * Get the occlusion value.
      *
-     * @return the occlusion value
+     * @return the occlusion value.
      */
     public Occlusion occlusion() {
         return this.occlusion;
@@ -294,7 +293,7 @@ public class FaceAttributes {
     /**
      * Set the occlusion value.
      *
-     * @param occlusion the occlusion value to set
+     * @param occlusion the occlusion value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withOcclusion(Occlusion occlusion) {
@@ -305,7 +304,7 @@ public class FaceAttributes {
     /**
      * Get the accessories value.
      *
-     * @return the accessories value
+     * @return the accessories value.
      */
     public List<Accessory> accessories() {
         return this.accessories;
@@ -314,7 +313,7 @@ public class FaceAttributes {
     /**
      * Set the accessories value.
      *
-     * @param accessories the accessories value to set
+     * @param accessories the accessories value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withAccessories(List<Accessory> accessories) {
@@ -325,7 +324,7 @@ public class FaceAttributes {
     /**
      * Get the blur value.
      *
-     * @return the blur value
+     * @return the blur value.
      */
     public Blur blur() {
         return this.blur;
@@ -334,7 +333,7 @@ public class FaceAttributes {
     /**
      * Set the blur value.
      *
-     * @param blur the blur value to set
+     * @param blur the blur value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withBlur(Blur blur) {
@@ -345,7 +344,7 @@ public class FaceAttributes {
     /**
      * Get the exposure value.
      *
-     * @return the exposure value
+     * @return the exposure value.
      */
     public Exposure exposure() {
         return this.exposure;
@@ -354,7 +353,7 @@ public class FaceAttributes {
     /**
      * Set the exposure value.
      *
-     * @param exposure the exposure value to set
+     * @param exposure the exposure value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withExposure(Exposure exposure) {
@@ -365,7 +364,7 @@ public class FaceAttributes {
     /**
      * Get the noise value.
      *
-     * @return the noise value
+     * @return the noise value.
      */
     public Noise noise() {
         return this.noise;
@@ -374,12 +373,11 @@ public class FaceAttributes {
     /**
      * Set the noise value.
      *
-     * @param noise the noise value to set
+     * @param noise the noise value to set.
      * @return the FaceAttributes object itself.
      */
     public FaceAttributes withNoise(Noise noise) {
         this.noise = noise;
         return this;
     }
-
 }

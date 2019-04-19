@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A model object containing the name of the custom prebuilt entity and the
  * name of the domain to which this model belongs.
  */
-public class PrebuiltDomainCreateBaseObject {
+public final class PrebuiltDomainCreateBaseObject {
     /**
      * The domain name.
      */
@@ -24,7 +24,7 @@ public class PrebuiltDomainCreateBaseObject {
     /**
      * Get the domainName value.
      *
-     * @return the domainName value
+     * @return the domainName value.
      */
     public String domainName() {
         return this.domainName;
@@ -33,12 +33,11 @@ public class PrebuiltDomainCreateBaseObject {
     /**
      * Set the domainName value.
      *
-     * @param domainName the domainName value to set
+     * @param domainName the domainName value to set.
      * @return the PrebuiltDomainCreateBaseObject object itself.
      */
     public PrebuiltDomainCreateBaseObject withDomainName(String domainName) {
         this.domainName = domainName;
         return this;
     }
-
 }

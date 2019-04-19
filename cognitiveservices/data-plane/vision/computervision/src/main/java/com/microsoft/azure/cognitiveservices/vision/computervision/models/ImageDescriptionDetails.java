@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * A collection of content tags, along with a list of captions sorted by
  * confidence level, and image metadata.
  */
-public class ImageDescriptionDetails {
+public final class ImageDescriptionDetails {
     /**
      * A collection of image tags.
      */
@@ -31,7 +31,7 @@ public class ImageDescriptionDetails {
     /**
      * Get the tags value.
      *
-     * @return the tags value
+     * @return the tags value.
      */
     public List<String> tags() {
         return this.tags;
@@ -40,7 +40,7 @@ public class ImageDescriptionDetails {
     /**
      * Set the tags value.
      *
-     * @param tags the tags value to set
+     * @param tags the tags value to set.
      * @return the ImageDescriptionDetails object itself.
      */
     public ImageDescriptionDetails withTags(List<String> tags) {
@@ -51,7 +51,7 @@ public class ImageDescriptionDetails {
     /**
      * Get the captions value.
      *
-     * @return the captions value
+     * @return the captions value.
      */
     public List<ImageCaption> captions() {
         return this.captions;
@@ -60,12 +60,11 @@ public class ImageDescriptionDetails {
     /**
      * Set the captions value.
      *
-     * @param captions the captions value to set
+     * @param captions the captions value to set.
      * @return the ImageDescriptionDetails object itself.
      */
     public ImageDescriptionDetails withCaptions(List<ImageCaption> captions) {
         this.captions = captions;
         return this;
     }
-
 }

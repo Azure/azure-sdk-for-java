@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Defines a list of webpages that contain related images.
  */
-public class RelatedCollectionsModule {
+public final class RelatedCollectionsModule {
     /**
      * A list of webpages that contain related images.
      */
@@ -24,10 +24,9 @@ public class RelatedCollectionsModule {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<ImageGallery> value() {
         return this.value;
     }
-
 }

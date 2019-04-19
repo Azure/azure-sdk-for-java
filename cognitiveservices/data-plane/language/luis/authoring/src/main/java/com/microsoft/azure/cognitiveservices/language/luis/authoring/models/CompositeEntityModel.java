@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * A composite entity.
+ * A composite entity extractor.
  */
-public class CompositeEntityModel {
+public final class CompositeEntityModel {
     /**
      * Child entities.
      */
@@ -30,7 +30,7 @@ public class CompositeEntityModel {
     /**
      * Get the children value.
      *
-     * @return the children value
+     * @return the children value.
      */
     public List<String> children() {
         return this.children;
@@ -39,7 +39,7 @@ public class CompositeEntityModel {
     /**
      * Set the children value.
      *
-     * @param children the children value to set
+     * @param children the children value to set.
      * @return the CompositeEntityModel object itself.
      */
     public CompositeEntityModel withChildren(List<String> children) {
@@ -50,7 +50,7 @@ public class CompositeEntityModel {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -59,12 +59,11 @@ public class CompositeEntityModel {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the CompositeEntityModel object itself.
      */
     public CompositeEntityModel withName(String name) {
         this.name = name;
         return this;
     }
-
 }

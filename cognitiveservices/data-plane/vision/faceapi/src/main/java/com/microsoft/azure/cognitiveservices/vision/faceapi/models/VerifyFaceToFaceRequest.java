@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
- * Request body for verify operation.
+ * Request body for face to face verification.
  */
-public class VerifyFaceToFaceRequest {
+public final class VerifyFaceToFaceRequest {
     /**
      * FaceId of the first face, comes from Face - Detect.
      */
@@ -30,7 +30,7 @@ public class VerifyFaceToFaceRequest {
     /**
      * Get the faceId1 value.
      *
-     * @return the faceId1 value
+     * @return the faceId1 value.
      */
     public UUID faceId1() {
         return this.faceId1;
@@ -39,7 +39,7 @@ public class VerifyFaceToFaceRequest {
     /**
      * Set the faceId1 value.
      *
-     * @param faceId1 the faceId1 value to set
+     * @param faceId1 the faceId1 value to set.
      * @return the VerifyFaceToFaceRequest object itself.
      */
     public VerifyFaceToFaceRequest withFaceId1(UUID faceId1) {
@@ -50,7 +50,7 @@ public class VerifyFaceToFaceRequest {
     /**
      * Get the faceId2 value.
      *
-     * @return the faceId2 value
+     * @return the faceId2 value.
      */
     public UUID faceId2() {
         return this.faceId2;
@@ -59,12 +59,11 @@ public class VerifyFaceToFaceRequest {
     /**
      * Set the faceId2 value.
      *
-     * @param faceId2 the faceId2 value to set
+     * @param faceId2 the faceId2 value to set.
      * @return the VerifyFaceToFaceRequest object itself.
      */
     public VerifyFaceToFaceRequest withFaceId2(UUID faceId2) {
         this.faceId2 = faceId2;
         return this;
     }
-
 }

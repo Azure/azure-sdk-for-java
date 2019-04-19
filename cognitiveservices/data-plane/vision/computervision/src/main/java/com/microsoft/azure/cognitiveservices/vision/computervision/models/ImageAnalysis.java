@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Result of AnalyzeImage operation.
  */
-public class ImageAnalysis {
+public final class ImageAnalysis {
     /**
      * An array indicating identified categories.
      */
@@ -22,19 +22,20 @@ public class ImageAnalysis {
     private List<Category> categories;
 
     /**
-     * The adult property.
+     * An object describing whether the image contains adult-oriented content
+     * and/or is racy.
      */
     @JsonProperty(value = "adult")
     private AdultInfo adult;
 
     /**
-     * The color property.
+     * An object providing additional metadata describing color attributes.
      */
     @JsonProperty(value = "color")
     private ColorInfo color;
 
     /**
-     * The imageType property.
+     * An object providing possible image types and matching confidence levels.
      */
     @JsonProperty(value = "imageType")
     private ImageType imageType;
@@ -46,7 +47,8 @@ public class ImageAnalysis {
     private List<ImageTag> tags;
 
     /**
-     * The description property.
+     * A collection of content tags, along with a list of captions sorted by
+     * confidence level, and image metadata.
      */
     @JsonProperty(value = "description")
     private ImageDescriptionDetails description;
@@ -58,7 +60,19 @@ public class ImageAnalysis {
     private List<FaceDescription> faces;
 
     /**
-     * Id of the request for tracking purposes.
+     * Array of objects describing what was detected in the image.
+     */
+    @JsonProperty(value = "objects")
+    private List<DetectedObject> objects;
+
+    /**
+     * Array of brands detected in the image.
+     */
+    @JsonProperty(value = "brands")
+    private List<DetectedBrand> brands;
+
+    /**
+     * Id of the REST API request.
      */
     @JsonProperty(value = "requestId")
     private String requestId;
@@ -72,7 +86,7 @@ public class ImageAnalysis {
     /**
      * Get the categories value.
      *
-     * @return the categories value
+     * @return the categories value.
      */
     public List<Category> categories() {
         return this.categories;
@@ -81,7 +95,7 @@ public class ImageAnalysis {
     /**
      * Set the categories value.
      *
-     * @param categories the categories value to set
+     * @param categories the categories value to set.
      * @return the ImageAnalysis object itself.
      */
     public ImageAnalysis withCategories(List<Category> categories) {
@@ -92,7 +106,7 @@ public class ImageAnalysis {
     /**
      * Get the adult value.
      *
-     * @return the adult value
+     * @return the adult value.
      */
     public AdultInfo adult() {
         return this.adult;
@@ -101,7 +115,7 @@ public class ImageAnalysis {
     /**
      * Set the adult value.
      *
-     * @param adult the adult value to set
+     * @param adult the adult value to set.
      * @return the ImageAnalysis object itself.
      */
     public ImageAnalysis withAdult(AdultInfo adult) {
@@ -112,7 +126,7 @@ public class ImageAnalysis {
     /**
      * Get the color value.
      *
-     * @return the color value
+     * @return the color value.
      */
     public ColorInfo color() {
         return this.color;
@@ -121,7 +135,7 @@ public class ImageAnalysis {
     /**
      * Set the color value.
      *
-     * @param color the color value to set
+     * @param color the color value to set.
      * @return the ImageAnalysis object itself.
      */
     public ImageAnalysis withColor(ColorInfo color) {
@@ -132,7 +146,7 @@ public class ImageAnalysis {
     /**
      * Get the imageType value.
      *
-     * @return the imageType value
+     * @return the imageType value.
      */
     public ImageType imageType() {
         return this.imageType;
@@ -141,7 +155,7 @@ public class ImageAnalysis {
     /**
      * Set the imageType value.
      *
-     * @param imageType the imageType value to set
+     * @param imageType the imageType value to set.
      * @return the ImageAnalysis object itself.
      */
     public ImageAnalysis withImageType(ImageType imageType) {
@@ -152,7 +166,7 @@ public class ImageAnalysis {
     /**
      * Get the tags value.
      *
-     * @return the tags value
+     * @return the tags value.
      */
     public List<ImageTag> tags() {
         return this.tags;
@@ -161,7 +175,7 @@ public class ImageAnalysis {
     /**
      * Set the tags value.
      *
-     * @param tags the tags value to set
+     * @param tags the tags value to set.
      * @return the ImageAnalysis object itself.
      */
     public ImageAnalysis withTags(List<ImageTag> tags) {
@@ -172,7 +186,7 @@ public class ImageAnalysis {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public ImageDescriptionDetails description() {
         return this.description;
@@ -181,7 +195,7 @@ public class ImageAnalysis {
     /**
      * Set the description value.
      *
-     * @param description the description value to set
+     * @param description the description value to set.
      * @return the ImageAnalysis object itself.
      */
     public ImageAnalysis withDescription(ImageDescriptionDetails description) {
@@ -192,7 +206,7 @@ public class ImageAnalysis {
     /**
      * Get the faces value.
      *
-     * @return the faces value
+     * @return the faces value.
      */
     public List<FaceDescription> faces() {
         return this.faces;
@@ -201,7 +215,7 @@ public class ImageAnalysis {
     /**
      * Set the faces value.
      *
-     * @param faces the faces value to set
+     * @param faces the faces value to set.
      * @return the ImageAnalysis object itself.
      */
     public ImageAnalysis withFaces(List<FaceDescription> faces) {
@@ -210,9 +224,49 @@ public class ImageAnalysis {
     }
 
     /**
+     * Get the objects value.
+     *
+     * @return the objects value.
+     */
+    public List<DetectedObject> objects() {
+        return this.objects;
+    }
+
+    /**
+     * Set the objects value.
+     *
+     * @param objects the objects value to set.
+     * @return the ImageAnalysis object itself.
+     */
+    public ImageAnalysis withObjects(List<DetectedObject> objects) {
+        this.objects = objects;
+        return this;
+    }
+
+    /**
+     * Get the brands value.
+     *
+     * @return the brands value.
+     */
+    public List<DetectedBrand> brands() {
+        return this.brands;
+    }
+
+    /**
+     * Set the brands value.
+     *
+     * @param brands the brands value to set.
+     * @return the ImageAnalysis object itself.
+     */
+    public ImageAnalysis withBrands(List<DetectedBrand> brands) {
+        this.brands = brands;
+        return this;
+    }
+
+    /**
      * Get the requestId value.
      *
-     * @return the requestId value
+     * @return the requestId value.
      */
     public String requestId() {
         return this.requestId;
@@ -221,7 +275,7 @@ public class ImageAnalysis {
     /**
      * Set the requestId value.
      *
-     * @param requestId the requestId value to set
+     * @param requestId the requestId value to set.
      * @return the ImageAnalysis object itself.
      */
     public ImageAnalysis withRequestId(String requestId) {
@@ -232,7 +286,7 @@ public class ImageAnalysis {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public ImageMetadata metadata() {
         return this.metadata;
@@ -241,12 +295,11 @@ public class ImageAnalysis {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the ImageAnalysis object itself.
      */
     public ImageAnalysis withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }
-
 }

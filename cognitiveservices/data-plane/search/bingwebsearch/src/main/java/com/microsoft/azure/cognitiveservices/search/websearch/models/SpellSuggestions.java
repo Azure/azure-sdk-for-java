@@ -8,10 +8,10 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Defines a suggested query string that likely represents the user's intent.
@@ -21,9 +21,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * intended to search for Alton Brown instead (based on past searches by others
  * of Alon Brown).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SpellSuggestions.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("SpellSuggestions")
-public class SpellSuggestions extends SearchResultsAnswer {
+public final class SpellSuggestions extends SearchResultsAnswer {
     /**
      * A list of suggested query strings that may represent the user's
      * intention. The list contains only one Query object.
@@ -34,7 +34,7 @@ public class SpellSuggestions extends SearchResultsAnswer {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<Query> value() {
         return this.value;
@@ -43,12 +43,11 @@ public class SpellSuggestions extends SearchResultsAnswer {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the SpellSuggestions object itself.
      */
     public SpellSuggestions withValue(List<Query> value) {
         this.value = value;
         return this;
     }
-
 }

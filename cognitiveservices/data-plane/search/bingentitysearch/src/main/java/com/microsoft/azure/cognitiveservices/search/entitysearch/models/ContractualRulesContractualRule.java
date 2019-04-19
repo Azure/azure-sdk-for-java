@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * The ContractualRulesContractualRule model.
@@ -31,10 +31,9 @@ public class ContractualRulesContractualRule {
     /**
      * Get the targetPropertyName value.
      *
-     * @return the targetPropertyName value
+     * @return the targetPropertyName value.
      */
     public String targetPropertyName() {
         return this.targetPropertyName;
     }
-
 }

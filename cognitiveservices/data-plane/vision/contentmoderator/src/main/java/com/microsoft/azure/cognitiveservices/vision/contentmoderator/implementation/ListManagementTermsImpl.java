@@ -8,132 +8,102 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.GetAllTermsOptionalParameter;
-import retrofit2.Retrofit;
+import com.azure.common.annotations.DELETE;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTerms;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Terms;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
-import okhttp3.ResponseBody;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in ListManagementTerms.
+ * An instance of this class provides access to all the operations defined in
+ * ListManagementTerms.
  */
-public class ListManagementTermsImpl implements ListManagementTerms {
-    /** The Retrofit service to perform REST calls. */
+public final class ListManagementTermsImpl implements ListManagementTerms {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private ListManagementTermsService service;
-    /** The service client containing this operation class. */
+
+    /**
+     * The service client containing this operation class.
+     */
     private ContentModeratorClientImpl client;
 
     /**
      * Initializes an instance of ListManagementTermsImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ListManagementTermsImpl(Retrofit retrofit, ContentModeratorClientImpl client) {
-        this.service = retrofit.create(ListManagementTermsService.class);
+    public ListManagementTermsImpl(ContentModeratorClientImpl client) {
+        this.service = RestProxy.create(ListManagementTermsService.class, client);
         this.client = client;
     }
 
     /**
      * The interface defining all the services for ListManagementTerms to be
-     * used by Retrofit to perform actually REST calls.
+     * used by the proxy service to perform REST calls.
      */
-    interface ListManagementTermsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTerms addTerm" })
+    @Host("{Endpoint}")
+    private interface ListManagementTermsService {
         @POST("contentmoderator/lists/v1.0/termlists/{listId}/terms/{term}")
-        Observable<Response<ResponseBody>> addTerm(@Path("listId") String listId, @Path("term") String term, @Query("language") String language, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<Object>> addTerm(@PathParam("listId") String listId, @PathParam("term") String term, @HostParam("Endpoint") String endpoint, @QueryParam("language") String language);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTerms deleteTerm" })
-        @HTTP(path = "contentmoderator/lists/v1.0/termlists/{listId}/terms/{term}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteTerm(@Path("listId") String listId, @Path("term") String term, @Query("language") String language, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @DELETE("contentmoderator/lists/v1.0/termlists/{listId}/terms/{term}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<String>> deleteTerm(@PathParam("listId") String listId, @PathParam("term") String term, @HostParam("Endpoint") String endpoint, @QueryParam("language") String language);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTerms getAllTerms" })
         @GET("contentmoderator/lists/v1.0/termlists/{listId}/terms")
-        Observable<Response<ResponseBody>> getAllTerms(@Path("listId") String listId, @Query("language") String language, @Query("offset") Integer offset, @Query("limit") Integer limit, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<Terms>> getAllTerms(@PathParam("listId") String listId, @HostParam("Endpoint") String endpoint, @QueryParam("language") String language, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTerms deleteAllTerms" })
-        @HTTP(path = "contentmoderator/lists/v1.0/termlists/{listId}/terms", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteAllTerms(@Path("listId") String listId, @Query("language") String language, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
+        @DELETE("contentmoderator/lists/v1.0/termlists/{listId}/terms")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<String>> deleteAllTerms(@PathParam("listId") String listId, @HostParam("Endpoint") String endpoint, @QueryParam("language") String language);
     }
 
     /**
      * Add a term to the term list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param term Term to be deleted
+     * @param term Term to be deleted.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Object object if successful.
      */
-    public Object addTerm(String listId, String term, String language) {
-        return addTermWithServiceResponseAsync(listId, term, language).toBlocking().single().body();
+    public Object addTerm(@NonNull String listId, @NonNull String term, @NonNull String language) {
+        return addTermAsync(listId, term, language).block();
     }
 
     /**
      * Add a term to the term list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param term Term to be deleted
+     * @param term Term to be deleted.
      * @param language Language of the terms.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Object> addTermAsync(String listId, String term, String language, final ServiceCallback<Object> serviceCallback) {
-        return ServiceFuture.fromResponse(addTermWithServiceResponseAsync(listId, term, language), serviceCallback);
-    }
-
-    /**
-     * Add a term to the term list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param term Term to be deleted
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
-     */
-    public Observable<Object> addTermAsync(String listId, String term, String language) {
-        return addTermWithServiceResponseAsync(listId, term, language).map(new Func1<ServiceResponse<Object>, Object>() {
-            @Override
-            public Object call(ServiceResponse<Object> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Add a term to the term list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param term Term to be deleted
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
-     */
-    public Observable<ServiceResponse<Object>> addTermWithServiceResponseAsync(String listId, String term, String language) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<Object>> addTermWithRestResponseAsync(@NonNull String listId, @NonNull String term, @NonNull String language) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -144,87 +114,50 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         if (language == null) {
             throw new IllegalArgumentException("Parameter language is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.addTerm(listId, term, language, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
-                @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Object> clientResponse = addTermDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.addTerm(listId, term, this.client.endpoint(), language);
     }
 
-    private ServiceResponse<Object> addTermDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<Object>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Add a term to the term list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param term Term to be deleted.
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Object> addTermAsync(@NonNull String listId, @NonNull String term, @NonNull String language) {
+        return addTermWithRestResponseAsync(listId, term, language)
+            .flatMap((SimpleResponse<Object> res) -> Mono.just(res.value()));
     }
 
     /**
      * Deletes a term from the list with list Id equal to the list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param term Term to be deleted
+     * @param term Term to be deleted.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the String object if successful.
      */
-    public String deleteTerm(String listId, String term, String language) {
-        return deleteTermWithServiceResponseAsync(listId, term, language).toBlocking().single().body();
+    public String deleteTerm(@NonNull String listId, @NonNull String term, @NonNull String language) {
+        return deleteTermAsync(listId, term, language).block();
     }
 
     /**
      * Deletes a term from the list with list Id equal to the list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param term Term to be deleted
+     * @param term Term to be deleted.
      * @param language Language of the terms.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<String> deleteTermAsync(String listId, String term, String language, final ServiceCallback<String> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteTermWithServiceResponseAsync(listId, term, language), serviceCallback);
-    }
-
-    /**
-     * Deletes a term from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param term Term to be deleted
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<String> deleteTermAsync(String listId, String term, String language) {
-        return deleteTermWithServiceResponseAsync(listId, term, language).map(new Func1<ServiceResponse<String>, String>() {
-            @Override
-            public String call(ServiceResponse<String> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes a term from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param term Term to be deleted
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<ServiceResponse<String>> deleteTermWithServiceResponseAsync(String listId, String term, String language) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<String>> deleteTermWithRestResponseAsync(@NonNull String listId, @NonNull String term, @NonNull String language) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -235,42 +168,35 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         if (language == null) {
             throw new IllegalArgumentException("Parameter language is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.deleteTerm(listId, term, language, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
-                @Override
-                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<String> clientResponse = deleteTermDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.deleteTerm(listId, term, this.client.endpoint(), language);
     }
 
-    private ServiceResponse<String> deleteTermDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<String, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<String>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Deletes a term from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param term Term to be deleted.
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<String> deleteTermAsync(@NonNull String listId, @NonNull String term, @NonNull String language) {
+        return deleteTermWithRestResponseAsync(listId, term, language)
+            .flatMap((SimpleResponse<String> res) -> Mono.just(res.value()));
     }
-
 
     /**
      * Gets all terms from the list with list Id equal to the list Id passed.
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Terms object if successful.
      */
-    public Terms getAllTerms(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter) {
-        return getAllTermsWithServiceResponseAsync(listId, language, getAllTermsOptionalParameter).toBlocking().single().body();
+    public Terms getAllTerms(@NonNull String listId, @NonNull String language) {
+        return getAllTermsAsync(listId, language).block();
     }
 
     /**
@@ -278,45 +204,12 @@ public class ListManagementTermsImpl implements ListManagementTerms {
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Terms> getAllTermsAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter, final ServiceCallback<Terms> serviceCallback) {
-        return ServiceFuture.fromResponse(getAllTermsWithServiceResponseAsync(listId, language, getAllTermsOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Gets all terms from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
-     * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Terms object
-     */
-    public Observable<Terms> getAllTermsAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter) {
-        return getAllTermsWithServiceResponseAsync(listId, language, getAllTermsOptionalParameter).map(new Func1<ServiceResponse<Terms>, Terms>() {
-            @Override
-            public Terms call(ServiceResponse<Terms> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets all terms from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
-     * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Terms object
-     */
-    public Observable<ServiceResponse<Terms>> getAllTermsWithServiceResponseAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<Terms>> getAllTermsWithRestResponseAsync(@NonNull String listId, @NonNull String language) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -324,10 +217,22 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         if (language == null) {
             throw new IllegalArgumentException("Parameter language is required and cannot be null.");
         }
-        final Integer offset = getAllTermsOptionalParameter != null ? getAllTermsOptionalParameter.offset() : null;
-        final Integer limit = getAllTermsOptionalParameter != null ? getAllTermsOptionalParameter.limit() : null;
+        final Integer offset = null;
+        final Integer limit = null;
+        return service.getAllTerms(listId, this.client.endpoint(), language, offset, limit);
+    }
 
-        return getAllTermsWithServiceResponseAsync(listId, language, offset, limit);
+    /**
+     * Gets all terms from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Terms> getAllTermsAsync(@NonNull String listId, @NonNull String language) {
+        return getAllTermsWithRestResponseAsync(listId, language)
+            .flatMap((SimpleResponse<Terms> res) -> Mono.just(res.value()));
     }
 
     /**
@@ -337,12 +242,28 @@ public class ListManagementTermsImpl implements ListManagementTerms {
      * @param language Language of the terms.
      * @param offset The pagination start index.
      * @param limit The max limit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Terms object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Terms object if successful.
      */
-    public Observable<ServiceResponse<Terms>> getAllTermsWithServiceResponseAsync(String listId, String language, Integer offset, Integer limit) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Terms getAllTerms(@NonNull String listId, @NonNull String language, Integer offset, Integer limit) {
+        return getAllTermsAsync(listId, language, offset, limit).block();
+    }
+
+    /**
+     * Gets all terms from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @param offset The pagination start index.
+     * @param limit The max limit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<Terms>> getAllTermsWithRestResponseAsync(@NonNull String listId, @NonNull String language, Integer offset, Integer limit) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -350,89 +271,22 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         if (language == null) {
             throw new IllegalArgumentException("Parameter language is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.getAllTerms(listId, language, offset, limit, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Terms>>>() {
-                @Override
-                public Observable<ServiceResponse<Terms>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Terms> clientResponse = getAllTermsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Terms> getAllTermsDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Terms, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Terms>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public ListManagementTermsGetAllTermsParameters getAllTerms() {
-        return new ListManagementTermsGetAllTermsParameters(this);
+        return service.getAllTerms(listId, this.client.endpoint(), language, offset, limit);
     }
 
     /**
-     * Internal class implementing ListManagementTermsGetAllTermsDefinition.
+     * Gets all terms from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @param offset The pagination start index.
+     * @param limit The max limit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class ListManagementTermsGetAllTermsParameters implements ListManagementTermsGetAllTermsDefinition {
-        private ListManagementTermsImpl parent;
-        private String listId;
-        private String language;
-        private Integer offset;
-        private Integer limit;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ListManagementTermsGetAllTermsParameters(ListManagementTermsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ListManagementTermsGetAllTermsParameters withListId(String listId) {
-            this.listId = listId;
-            return this;
-        }
-
-        @Override
-        public ListManagementTermsGetAllTermsParameters withLanguage(String language) {
-            this.language = language;
-            return this;
-        }
-
-        @Override
-        public ListManagementTermsGetAllTermsParameters withOffset(Integer offset) {
-            this.offset = offset;
-            return this;
-        }
-
-        @Override
-        public ListManagementTermsGetAllTermsParameters withLimit(Integer limit) {
-            this.limit = limit;
-            return this;
-        }
-
-        @Override
-        public Terms execute() {
-        return getAllTermsWithServiceResponseAsync(listId, language, offset, limit).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Terms> executeAsync() {
-            return getAllTermsWithServiceResponseAsync(listId, language, offset, limit).map(new Func1<ServiceResponse<Terms>, Terms>() {
-                @Override
-                public Terms call(ServiceResponse<Terms> response) {
-                    return response.body();
-                }
-            });
-        }
+    public Mono<Terms> getAllTermsAsync(@NonNull String listId, @NonNull String language, Integer offset, Integer limit) {
+        return getAllTermsWithRestResponseAsync(listId, language, offset, limit)
+            .flatMap((SimpleResponse<Terms> res) -> Mono.just(res.value()));
     }
 
     /**
@@ -440,13 +294,13 @@ public class ListManagementTermsImpl implements ListManagementTerms {
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the String object if successful.
      */
-    public String deleteAllTerms(String listId, String language) {
-        return deleteAllTermsWithServiceResponseAsync(listId, language).toBlocking().single().body();
+    public String deleteAllTerms(@NonNull String listId, @NonNull String language) {
+        return deleteAllTermsAsync(listId, language).block();
     }
 
     /**
@@ -454,42 +308,12 @@ public class ListManagementTermsImpl implements ListManagementTerms {
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<String> deleteAllTermsAsync(String listId, String language, final ServiceCallback<String> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteAllTermsWithServiceResponseAsync(listId, language), serviceCallback);
-    }
-
-    /**
-     * Deletes all terms from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<String> deleteAllTermsAsync(String listId, String language) {
-        return deleteAllTermsWithServiceResponseAsync(listId, language).map(new Func1<ServiceResponse<String>, String>() {
-            @Override
-            public String call(ServiceResponse<String> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes all terms from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<ServiceResponse<String>> deleteAllTermsWithServiceResponseAsync(String listId, String language) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<String>> deleteAllTermsWithRestResponseAsync(@NonNull String listId, @NonNull String language) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -497,26 +321,19 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         if (language == null) {
             throw new IllegalArgumentException("Parameter language is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.deleteAllTerms(listId, language, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
-                @Override
-                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<String> clientResponse = deleteAllTermsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.deleteAllTerms(listId, this.client.endpoint(), language);
     }
 
-    private ServiceResponse<String> deleteAllTermsDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<String, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<String>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Deletes all terms from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<String> deleteAllTermsAsync(@NonNull String listId, @NonNull String language) {
+        return deleteAllTermsWithRestResponseAsync(listId, language)
+            .flatMap((SimpleResponse<String> res) -> Mono.just(res.value()));
     }
-
 }

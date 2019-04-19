@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Defines headers for RecognizeTextInStream operation.
  */
-public class RecognizeTextInStreamHeaders {
+public final class RecognizeTextInStreamHeaders {
     /**
      * URL to query for status of the operation. The operation ID will expire
      * in 48 hours.
@@ -24,7 +24,7 @@ public class RecognizeTextInStreamHeaders {
     /**
      * Get the operationLocation value.
      *
-     * @return the operationLocation value
+     * @return the operationLocation value.
      */
     public String operationLocation() {
         return this.operationLocation;
@@ -33,12 +33,11 @@ public class RecognizeTextInStreamHeaders {
     /**
      * Set the operationLocation value.
      *
-     * @param operationLocation the operationLocation value to set
+     * @param operationLocation the operationLocation value to set.
      * @return the RecognizeTextInStreamHeaders object itself.
      */
     public RecognizeTextInStreamHeaders withOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;
     }
-
 }

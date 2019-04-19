@@ -15,19 +15,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for ExposureLevel.
  */
 public enum ExposureLevel {
-    /** Enum value UnderExposure. */
+    /**
+     * Enum value UnderExposure.
+     */
     UNDER_EXPOSURE("UnderExposure"),
 
-    /** Enum value GoodExposure. */
+    /**
+     * Enum value GoodExposure.
+     */
     GOOD_EXPOSURE("GoodExposure"),
 
-    /** Enum value OverExposure. */
+    /**
+     * Enum value OverExposure.
+     */
     OVER_EXPOSURE("OverExposure");
 
-    /** The actual serialized value for a ExposureLevel instance. */
-    private String value;
+    /**
+     * The actual serialized value for a ExposureLevel instance.
+     */
+    private final String value;
 
-    ExposureLevel(String value) {
+    private ExposureLevel(String value) {
         this.value = value;
     }
 

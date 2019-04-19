@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import java.util.List;
 
 /**
  * The LocalBusiness model.
@@ -52,7 +52,7 @@ public class LocalBusiness extends Place {
     /**
      * Get the priceRange value.
      *
-     * @return the priceRange value
+     * @return the priceRange value.
      */
     public String priceRange() {
         return this.priceRange;
@@ -61,7 +61,7 @@ public class LocalBusiness extends Place {
     /**
      * Get the panoramas value.
      *
-     * @return the panoramas value
+     * @return the panoramas value.
      */
     public List<ImageObject> panoramas() {
         return this.panoramas;
@@ -70,7 +70,7 @@ public class LocalBusiness extends Place {
     /**
      * Get the isPermanentlyClosed value.
      *
-     * @return the isPermanentlyClosed value
+     * @return the isPermanentlyClosed value.
      */
     public Boolean isPermanentlyClosed() {
         return this.isPermanentlyClosed;
@@ -79,10 +79,9 @@ public class LocalBusiness extends Place {
     /**
      * Get the tagLine value.
      *
-     * @return the tagLine value
+     * @return the tagLine value.
      */
     public String tagLine() {
         return this.tagLine;
     }
-
 }

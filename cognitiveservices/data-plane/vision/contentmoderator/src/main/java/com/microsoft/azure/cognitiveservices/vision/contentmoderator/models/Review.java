@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The Review object.
  */
-public class Review {
+public final class Review {
     /**
      * Id of the review.
      */
@@ -78,7 +78,7 @@ public class Review {
     /**
      * Get the reviewId value.
      *
-     * @return the reviewId value
+     * @return the reviewId value.
      */
     public String reviewId() {
         return this.reviewId;
@@ -87,7 +87,7 @@ public class Review {
     /**
      * Set the reviewId value.
      *
-     * @param reviewId the reviewId value to set
+     * @param reviewId the reviewId value to set.
      * @return the Review object itself.
      */
     public Review withReviewId(String reviewId) {
@@ -98,7 +98,7 @@ public class Review {
     /**
      * Get the subTeam value.
      *
-     * @return the subTeam value
+     * @return the subTeam value.
      */
     public String subTeam() {
         return this.subTeam;
@@ -107,7 +107,7 @@ public class Review {
     /**
      * Set the subTeam value.
      *
-     * @param subTeam the subTeam value to set
+     * @param subTeam the subTeam value to set.
      * @return the Review object itself.
      */
     public Review withSubTeam(String subTeam) {
@@ -118,7 +118,7 @@ public class Review {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public String status() {
         return this.status;
@@ -127,7 +127,7 @@ public class Review {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the Review object itself.
      */
     public Review withStatus(String status) {
@@ -138,7 +138,7 @@ public class Review {
     /**
      * Get the reviewerResultTags value.
      *
-     * @return the reviewerResultTags value
+     * @return the reviewerResultTags value.
      */
     public List<KeyValuePair> reviewerResultTags() {
         return this.reviewerResultTags;
@@ -147,7 +147,7 @@ public class Review {
     /**
      * Set the reviewerResultTags value.
      *
-     * @param reviewerResultTags the reviewerResultTags value to set
+     * @param reviewerResultTags the reviewerResultTags value to set.
      * @return the Review object itself.
      */
     public Review withReviewerResultTags(List<KeyValuePair> reviewerResultTags) {
@@ -158,7 +158,7 @@ public class Review {
     /**
      * Get the createdBy value.
      *
-     * @return the createdBy value
+     * @return the createdBy value.
      */
     public String createdBy() {
         return this.createdBy;
@@ -167,7 +167,7 @@ public class Review {
     /**
      * Set the createdBy value.
      *
-     * @param createdBy the createdBy value to set
+     * @param createdBy the createdBy value to set.
      * @return the Review object itself.
      */
     public Review withCreatedBy(String createdBy) {
@@ -178,7 +178,7 @@ public class Review {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public List<KeyValuePair> metadata() {
         return this.metadata;
@@ -187,7 +187,7 @@ public class Review {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the Review object itself.
      */
     public Review withMetadata(List<KeyValuePair> metadata) {
@@ -198,7 +198,7 @@ public class Review {
     /**
      * Get the type value.
      *
-     * @return the type value
+     * @return the type value.
      */
     public String type() {
         return this.type;
@@ -207,7 +207,7 @@ public class Review {
     /**
      * Set the type value.
      *
-     * @param type the type value to set
+     * @param type the type value to set.
      * @return the Review object itself.
      */
     public Review withType(String type) {
@@ -218,7 +218,7 @@ public class Review {
     /**
      * Get the content value.
      *
-     * @return the content value
+     * @return the content value.
      */
     public String content() {
         return this.content;
@@ -227,7 +227,7 @@ public class Review {
     /**
      * Set the content value.
      *
-     * @param content the content value to set
+     * @param content the content value to set.
      * @return the Review object itself.
      */
     public Review withContent(String content) {
@@ -238,7 +238,7 @@ public class Review {
     /**
      * Get the contentId value.
      *
-     * @return the contentId value
+     * @return the contentId value.
      */
     public String contentId() {
         return this.contentId;
@@ -247,7 +247,7 @@ public class Review {
     /**
      * Set the contentId value.
      *
-     * @param contentId the contentId value to set
+     * @param contentId the contentId value to set.
      * @return the Review object itself.
      */
     public Review withContentId(String contentId) {
@@ -258,7 +258,7 @@ public class Review {
     /**
      * Get the callbackEndpoint value.
      *
-     * @return the callbackEndpoint value
+     * @return the callbackEndpoint value.
      */
     public String callbackEndpoint() {
         return this.callbackEndpoint;
@@ -267,12 +267,11 @@ public class Review {
     /**
      * Set the callbackEndpoint value.
      *
-     * @param callbackEndpoint the callbackEndpoint value to set
+     * @param callbackEndpoint the callbackEndpoint value to set.
      * @return the Review object itself.
      */
     public Review withCallbackEndpoint(String callbackEndpoint) {
         this.callbackEndpoint = callbackEndpoint;
         return this;
     }
-
 }

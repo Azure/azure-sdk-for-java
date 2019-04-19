@@ -8,27 +8,27 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * The Line model.
+ * Json object representing a recognized text line.
  */
-public class Line {
+public final class Line {
     /**
-     * The boundingBox property.
+     * Bounding box of a recognized line.
      */
     @JsonProperty(value = "boundingBox")
     private List<Integer> boundingBox;
 
     /**
-     * The text property.
+     * The text content of the line.
      */
     @JsonProperty(value = "text")
     private String text;
 
     /**
-     * The words property.
+     * List of words in the text line.
      */
     @JsonProperty(value = "words")
     private List<Word> words;
@@ -36,7 +36,7 @@ public class Line {
     /**
      * Get the boundingBox value.
      *
-     * @return the boundingBox value
+     * @return the boundingBox value.
      */
     public List<Integer> boundingBox() {
         return this.boundingBox;
@@ -45,7 +45,7 @@ public class Line {
     /**
      * Set the boundingBox value.
      *
-     * @param boundingBox the boundingBox value to set
+     * @param boundingBox the boundingBox value to set.
      * @return the Line object itself.
      */
     public Line withBoundingBox(List<Integer> boundingBox) {
@@ -56,7 +56,7 @@ public class Line {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -65,7 +65,7 @@ public class Line {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the Line object itself.
      */
     public Line withText(String text) {
@@ -76,7 +76,7 @@ public class Line {
     /**
      * Get the words value.
      *
-     * @return the words value
+     * @return the words value.
      */
     public List<Word> words() {
         return this.words;
@@ -85,12 +85,11 @@ public class Line {
     /**
      * Set the words value.
      *
-     * @param words the words value to set
+     * @param words the words value to set.
      * @return the Line object itself.
      */
     public Line withWords(List<Word> words) {
         this.words = words;
         return this;
     }
-
 }

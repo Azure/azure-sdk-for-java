@@ -15,19 +15,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for VideoPricing.
  */
 public enum VideoPricing {
-    /** Enum value All. */
+    /**
+     * Enum value All.
+     */
     ALL("All"),
 
-    /** Enum value Free. */
+    /**
+     * Enum value Free.
+     */
     FREE("Free"),
 
-    /** Enum value Paid. */
+    /**
+     * Enum value Paid.
+     */
     PAID("Paid");
 
-    /** The actual serialized value for a VideoPricing instance. */
-    private String value;
+    /**
+     * The actual serialized value for a VideoPricing instance.
+     */
+    private final String value;
 
-    VideoPricing(String value) {
+    private VideoPricing(String value) {
         this.value = value;
     }
 

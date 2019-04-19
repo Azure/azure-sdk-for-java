@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Defines a merchant's offer.
@@ -83,7 +83,7 @@ public class Offer extends Thing {
     /**
      * Get the seller value.
      *
-     * @return the seller value
+     * @return the seller value.
      */
     public Organization seller() {
         return this.seller;
@@ -92,7 +92,7 @@ public class Offer extends Thing {
     /**
      * Get the price value.
      *
-     * @return the price value
+     * @return the price value.
      */
     public Double price() {
         return this.price;
@@ -101,7 +101,7 @@ public class Offer extends Thing {
     /**
      * Get the priceCurrency value.
      *
-     * @return the priceCurrency value
+     * @return the priceCurrency value.
      */
     public Currency priceCurrency() {
         return this.priceCurrency;
@@ -110,7 +110,7 @@ public class Offer extends Thing {
     /**
      * Get the availability value.
      *
-     * @return the availability value
+     * @return the availability value.
      */
     public ItemAvailability availability() {
         return this.availability;
@@ -119,7 +119,7 @@ public class Offer extends Thing {
     /**
      * Get the aggregateRating value.
      *
-     * @return the aggregateRating value
+     * @return the aggregateRating value.
      */
     public AggregateRating aggregateRating() {
         return this.aggregateRating;
@@ -128,10 +128,9 @@ public class Offer extends Thing {
     /**
      * Get the lastUpdated value.
      *
-     * @return the lastUpdated value
+     * @return the lastUpdated value.
      */
     public String lastUpdated() {
         return this.lastUpdated;
     }
-
 }

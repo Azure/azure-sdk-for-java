@@ -8,21 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Request body for identify face operation.
  */
-public class IdentifyRequest {
-    /**
-     * PersonGroupId of the target person group, created by
-     * PersonGroups.Create.
-     */
-    @JsonProperty(value = "personGroupId", required = true)
-    private String personGroupId;
-
+public final class IdentifyRequest {
     /**
      * Array of query faces faceIds, created by the Face - Detect. Each of the
      * faces are identified independently. The valid number of faceIds is
@@ -30,6 +23,22 @@ public class IdentifyRequest {
      */
     @JsonProperty(value = "faceIds", required = true)
     private List<UUID> faceIds;
+
+    /**
+     * PersonGroupId of the target person group, created by PersonGroup -
+     * Create. Parameter personGroupId and largePersonGroupId should not be
+     * provided at the same time.
+     */
+    @JsonProperty(value = "personGroupId")
+    private String personGroupId;
+
+    /**
+     * LargePersonGroupId of the target large person group, created by
+     * LargePersonGroup - Create. Parameter personGroupId and
+     * largePersonGroupId should not be provided at the same time.
+     */
+    @JsonProperty(value = "largePersonGroupId")
+    private String largePersonGroupId;
 
     /**
      * The range of maxNumOfCandidatesReturned is between 1 and 5 (default is
@@ -47,29 +56,9 @@ public class IdentifyRequest {
     private Double confidenceThreshold;
 
     /**
-     * Get the personGroupId value.
-     *
-     * @return the personGroupId value
-     */
-    public String personGroupId() {
-        return this.personGroupId;
-    }
-
-    /**
-     * Set the personGroupId value.
-     *
-     * @param personGroupId the personGroupId value to set
-     * @return the IdentifyRequest object itself.
-     */
-    public IdentifyRequest withPersonGroupId(String personGroupId) {
-        this.personGroupId = personGroupId;
-        return this;
-    }
-
-    /**
      * Get the faceIds value.
      *
-     * @return the faceIds value
+     * @return the faceIds value.
      */
     public List<UUID> faceIds() {
         return this.faceIds;
@@ -78,7 +67,7 @@ public class IdentifyRequest {
     /**
      * Set the faceIds value.
      *
-     * @param faceIds the faceIds value to set
+     * @param faceIds the faceIds value to set.
      * @return the IdentifyRequest object itself.
      */
     public IdentifyRequest withFaceIds(List<UUID> faceIds) {
@@ -87,9 +76,49 @@ public class IdentifyRequest {
     }
 
     /**
+     * Get the personGroupId value.
+     *
+     * @return the personGroupId value.
+     */
+    public String personGroupId() {
+        return this.personGroupId;
+    }
+
+    /**
+     * Set the personGroupId value.
+     *
+     * @param personGroupId the personGroupId value to set.
+     * @return the IdentifyRequest object itself.
+     */
+    public IdentifyRequest withPersonGroupId(String personGroupId) {
+        this.personGroupId = personGroupId;
+        return this;
+    }
+
+    /**
+     * Get the largePersonGroupId value.
+     *
+     * @return the largePersonGroupId value.
+     */
+    public String largePersonGroupId() {
+        return this.largePersonGroupId;
+    }
+
+    /**
+     * Set the largePersonGroupId value.
+     *
+     * @param largePersonGroupId the largePersonGroupId value to set.
+     * @return the IdentifyRequest object itself.
+     */
+    public IdentifyRequest withLargePersonGroupId(String largePersonGroupId) {
+        this.largePersonGroupId = largePersonGroupId;
+        return this;
+    }
+
+    /**
      * Get the maxNumOfCandidatesReturned value.
      *
-     * @return the maxNumOfCandidatesReturned value
+     * @return the maxNumOfCandidatesReturned value.
      */
     public Integer maxNumOfCandidatesReturned() {
         return this.maxNumOfCandidatesReturned;
@@ -98,7 +127,8 @@ public class IdentifyRequest {
     /**
      * Set the maxNumOfCandidatesReturned value.
      *
-     * @param maxNumOfCandidatesReturned the maxNumOfCandidatesReturned value to set
+     * @param maxNumOfCandidatesReturned the maxNumOfCandidatesReturned value
+     * to set.
      * @return the IdentifyRequest object itself.
      */
     public IdentifyRequest withMaxNumOfCandidatesReturned(Integer maxNumOfCandidatesReturned) {
@@ -109,7 +139,7 @@ public class IdentifyRequest {
     /**
      * Get the confidenceThreshold value.
      *
-     * @return the confidenceThreshold value
+     * @return the confidenceThreshold value.
      */
     public Double confidenceThreshold() {
         return this.confidenceThreshold;
@@ -118,12 +148,11 @@ public class IdentifyRequest {
     /**
      * Set the confidenceThreshold value.
      *
-     * @param confidenceThreshold the confidenceThreshold value to set
+     * @param confidenceThreshold the confidenceThreshold value to set.
      * @return the IdentifyRequest object itself.
      */
     public IdentifyRequest withConfidenceThreshold(Double confidenceThreshold) {
         this.confidenceThreshold = confidenceThreshold;
         return this;
     }
-
 }

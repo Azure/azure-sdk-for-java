@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.autosuggest.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The Suggestions model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Suggestions.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Suggestions")
-public class Suggestions extends SearchResultsAnswer {
+public final class Suggestions extends SearchResultsAnswer {
     /**
      * The suggestionGroups property.
      */
@@ -28,7 +28,7 @@ public class Suggestions extends SearchResultsAnswer {
     /**
      * Get the suggestionGroups value.
      *
-     * @return the suggestionGroups value
+     * @return the suggestionGroups value.
      */
     public List<SuggestionsSuggestionGroup> suggestionGroups() {
         return this.suggestionGroups;
@@ -37,12 +37,11 @@ public class Suggestions extends SearchResultsAnswer {
     /**
      * Set the suggestionGroups value.
      *
-     * @param suggestionGroups the suggestionGroups value to set
+     * @param suggestionGroups the suggestionGroups value to set.
      * @return the Suggestions object itself.
      */
     public Suggestions withSuggestionGroups(List<SuggestionsSuggestionGroup> suggestionGroups) {
         this.suggestionGroups = suggestionGroups;
         return this;
     }
-
 }

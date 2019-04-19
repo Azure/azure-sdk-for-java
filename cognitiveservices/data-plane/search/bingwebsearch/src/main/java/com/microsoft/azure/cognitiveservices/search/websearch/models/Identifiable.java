@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Defines the identity of a resource.
@@ -31,10 +31,9 @@ public class Identifiable extends ResponseBase {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public String id() {
         return this.id;
     }
-
 }

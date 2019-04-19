@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Defines a list of previously recognized entities.
  */
-public class RecognizedEntitiesModule {
+public final class RecognizedEntitiesModule {
     /**
      * A list of recognized entities.
      */
@@ -24,10 +24,9 @@ public class RecognizedEntitiesModule {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<RecognizedEntityGroup> value() {
         return this.value;
     }
-
 }

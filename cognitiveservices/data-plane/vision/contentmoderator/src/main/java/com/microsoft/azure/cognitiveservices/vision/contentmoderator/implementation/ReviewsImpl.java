@@ -8,17 +8,23 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.CreateReviewsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.CreateJobOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddVideoFrameOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.GetVideoFramesOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.CreateVideoReviewsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddVideoFrameUrlOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddVideoFrameStreamOptionalParameter;
-import retrofit2.Retrofit;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.FormParam;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.HeaderParam;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.PUT;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.RestVoidResponse;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Content;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.CreateReviewBodyItem;
@@ -29,103 +35,104 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.JobI
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Review;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.TranscriptModerationBodyItem;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.VideoFrameBodyItem;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Multipart;
-import retrofit2.http.Part;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Reviews.
+ * An instance of this class provides access to all the operations defined in
+ * Reviews.
  */
-public class ReviewsImpl implements Reviews {
-    /** The Retrofit service to perform REST calls. */
+public final class ReviewsImpl implements Reviews {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private ReviewsService service;
-    /** The service client containing this operation class. */
+
+    /**
+     * The service client containing this operation class.
+     */
     private ContentModeratorClientImpl client;
 
     /**
      * Initializes an instance of ReviewsImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ReviewsImpl(Retrofit retrofit, ContentModeratorClientImpl client) {
-        this.service = retrofit.create(ReviewsService.class);
+    public ReviewsImpl(ContentModeratorClientImpl client) {
+        this.service = RestProxy.create(ReviewsService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Reviews to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for Reviews to be used by the
+     * proxy service to perform REST calls.
      */
-    interface ReviewsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews getReview" })
+    @Host("{Endpoint}")
+    private interface ReviewsService {
         @GET("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}")
-        Observable<Response<ResponseBody>> getReview(@Path("teamName") String teamName, @Path("reviewId") String reviewId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<Review>> getReview(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews getJobDetails" })
         @GET("contentmoderator/review/v1.0/teams/{teamName}/jobs/{JobId}")
-        Observable<Response<ResponseBody>> getJobDetails(@Path("teamName") String teamName, @Path("JobId") String jobId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<Job>> getJobDetails(@PathParam("teamName") String teamName, @PathParam("JobId") String jobId, @HostParam("Endpoint") String endpoint);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews createReviews" })
         @POST("contentmoderator/review/v1.0/teams/{teamName}/reviews")
-        Observable<Response<ResponseBody>> createReviews(@Path("teamName") String teamName, @Header("UrlContentType") String urlContentType, @Query("subTeam") String subTeam, @Body List<CreateReviewBodyItem> createReviewBody, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<List<String>>> createReviews(@PathParam("teamName") String teamName, @HostParam("Endpoint") String endpoint, @HeaderParam("UrlContentType") String urlContentType, @QueryParam("subTeam") String subTeam, @BodyParam("application/json; charset=utf-8") List<CreateReviewBodyItem> createReviewBody);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews createJob" })
         @POST("contentmoderator/review/v1.0/teams/{teamName}/jobs")
-        Observable<Response<ResponseBody>> createJob(@Path("teamName") String teamName, @Query("ContentType") String contentType, @Query("ContentId") String contentId, @Query("WorkflowName") String workflowName, @Query("CallBackEndpoint") String callBackEndpoint, @Header("Content-Type") String jobContentType, @Header("accept-language") String acceptLanguage, @Body Content content, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<JobId>> createJob(@PathParam("teamName") String teamName, @HostParam("Endpoint") String endpoint, @QueryParam("ContentType") String contentType, @QueryParam("ContentId") String contentId, @QueryParam("WorkflowName") String workflowName, @QueryParam("CallBackEndpoint") String callBackEndpoint, @HeaderParam("Content-Type") String jobContentType, @BodyParam("application/json; charset=utf-8") Content content);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews addVideoFrame" })
         @POST("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames")
-        Observable<Response<ResponseBody>> addVideoFrame(@Path("teamName") String teamName, @Path("reviewId") String reviewId, @Query("timescale") Integer timescale, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> addVideoFrame(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @QueryParam("timescale") Integer timescale);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews getVideoFrames" })
         @GET("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames")
-        Observable<Response<ResponseBody>> getVideoFrames(@Path("teamName") String teamName, @Path("reviewId") String reviewId, @Query("startSeed") Integer startSeed, @Query("noOfRecords") Integer noOfRecords, @Query("filter") String filter, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<Frames>> getVideoFrames(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @QueryParam("startSeed") Integer startSeed, @QueryParam("noOfRecords") Integer noOfRecords, @QueryParam("filter") String filter);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews publishVideoReview" })
         @POST("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/publish")
-        Observable<Response<ResponseBody>> publishVideoReview(@Path("teamName") String teamName, @Path("reviewId") String reviewId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> publishVideoReview(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews addVideoTranscriptModerationResult" })
         @PUT("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/transcriptmoderationresult")
-        Observable<Response<ResponseBody>> addVideoTranscriptModerationResult(@Path("teamName") String teamName, @Path("reviewId") String reviewId, @Header("Content-Type") String contentType, @Body List<TranscriptModerationBodyItem> transcriptModerationBody, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> addVideoTranscriptModerationResult(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @BodyParam("application/json; charset=utf-8") List<TranscriptModerationBodyItem> transcriptModerationBody);
 
-        @Headers({ "Content-Type: text/plain", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews addVideoTranscript" })
         @PUT("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/transcript")
-        Observable<Response<ResponseBody>> addVideoTranscript(@Path("teamName") String teamName, @Path("reviewId") String reviewId, @Header("Content-Type") String contentType, @Body RequestBody vTTfile, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> addVideoTranscript(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") long contentLength, @BodyParam("text/plain") Flux<ByteBuffer> vTTfile);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews createVideoReviews" })
         @POST("contentmoderator/review/v1.0/teams/{teamName}/reviews")
-        Observable<Response<ResponseBody>> createVideoReviews(@Path("teamName") String teamName, @Header("Content-Type") String contentType, @Query("subTeam") String subTeam, @Body List<CreateVideoReviewsBodyItem> createVideoReviewsBody, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<List<String>>> createVideoReviews(@PathParam("teamName") String teamName, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @QueryParam("subTeam") String subTeam, @BodyParam("application/json; charset=utf-8") List<CreateVideoReviewsBodyItem> createVideoReviewsBody);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews addVideoFrameUrl" })
         @POST("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames")
-        Observable<Response<ResponseBody>> addVideoFrameUrl(@Path("teamName") String teamName, @Path("reviewId") String reviewId, @Header("Content-Type") String contentType, @Query("timescale") Integer timescale, @Body List<VideoFrameBodyItem> videoFrameBody, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> addVideoFrameUrl(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @QueryParam("timescale") Integer timescale, @BodyParam("application/json; charset=utf-8") List<VideoFrameBodyItem> videoFrameBody);
 
-        @Multipart
+        // @Multipart not supported by RestProxy
         @POST("contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames")
-        Observable<Response<ResponseBody>> addVideoFrameStream(@Path("teamName") String teamName, @Path("reviewId") String reviewId, @Header("Content-Type") String contentType, @Query("timescale") Integer timescale, @Part("frameImageZip") RequestBody frameImageZip, @Part("frameMetadata") String frameMetadata, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<RestVoidResponse> addVideoFrameStream(@PathParam("teamName") String teamName, @PathParam("reviewId") String reviewId, @HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String contentType, @QueryParam("timescale") Integer timescale, @FormParam("frameImageZip") Flux<ByteBuffer> frameImageZip, @FormParam("frameMetadata") String frameMetadata);
     }
 
     /**
@@ -133,13 +140,13 @@ public class ReviewsImpl implements Reviews {
      *
      * @param teamName Your Team Name.
      * @param reviewId Id of the review.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Review object if successful.
      */
-    public Review getReview(String teamName, String reviewId) {
-        return getReviewWithServiceResponseAsync(teamName, reviewId).toBlocking().single().body();
+    public Review getReview(@NonNull String teamName, @NonNull String reviewId) {
+        return getReviewAsync(teamName, reviewId).block();
     }
 
     /**
@@ -147,42 +154,12 @@ public class ReviewsImpl implements Reviews {
      *
      * @param teamName Your Team Name.
      * @param reviewId Id of the review.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Review> getReviewAsync(String teamName, String reviewId, final ServiceCallback<Review> serviceCallback) {
-        return ServiceFuture.fromResponse(getReviewWithServiceResponseAsync(teamName, reviewId), serviceCallback);
-    }
-
-    /**
-     * Returns review details for the review Id passed.
-     *
-     * @param teamName Your Team Name.
-     * @param reviewId Id of the review.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Review object
-     */
-    public Observable<Review> getReviewAsync(String teamName, String reviewId) {
-        return getReviewWithServiceResponseAsync(teamName, reviewId).map(new Func1<ServiceResponse<Review>, Review>() {
-            @Override
-            public Review call(ServiceResponse<Review> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Returns review details for the review Id passed.
-     *
-     * @param teamName Your Team Name.
-     * @param reviewId Id of the review.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Review object
-     */
-    public Observable<ServiceResponse<Review>> getReviewWithServiceResponseAsync(String teamName, String reviewId) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<Review>> getReviewWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -190,26 +167,20 @@ public class ReviewsImpl implements Reviews {
         if (reviewId == null) {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.getReview(teamName, reviewId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Review>>>() {
-                @Override
-                public Observable<ServiceResponse<Review>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Review> clientResponse = getReviewDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getReview(teamName, reviewId, this.client.endpoint());
     }
 
-    private ServiceResponse<Review> getReviewDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Review, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Review>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Returns review details for the review Id passed.
+     *
+     * @param teamName Your Team Name.
+     * @param reviewId Id of the review.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Review> getReviewAsync(@NonNull String teamName, @NonNull String reviewId) {
+        return getReviewWithRestResponseAsync(teamName, reviewId)
+            .flatMap((SimpleResponse<Review> res) -> Mono.just(res.value()));
     }
 
     /**
@@ -217,13 +188,13 @@ public class ReviewsImpl implements Reviews {
      *
      * @param teamName Your Team Name.
      * @param jobId Id of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Job object if successful.
      */
-    public Job getJobDetails(String teamName, String jobId) {
-        return getJobDetailsWithServiceResponseAsync(teamName, jobId).toBlocking().single().body();
+    public Job getJobDetails(@NonNull String teamName, @NonNull String jobId) {
+        return getJobDetailsAsync(teamName, jobId).block();
     }
 
     /**
@@ -231,42 +202,12 @@ public class ReviewsImpl implements Reviews {
      *
      * @param teamName Your Team Name.
      * @param jobId Id of the job.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Job> getJobDetailsAsync(String teamName, String jobId, final ServiceCallback<Job> serviceCallback) {
-        return ServiceFuture.fromResponse(getJobDetailsWithServiceResponseAsync(teamName, jobId), serviceCallback);
-    }
-
-    /**
-     * Get the Job Details for a Job Id.
-     *
-     * @param teamName Your Team Name.
-     * @param jobId Id of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Job object
-     */
-    public Observable<Job> getJobDetailsAsync(String teamName, String jobId) {
-        return getJobDetailsWithServiceResponseAsync(teamName, jobId).map(new Func1<ServiceResponse<Job>, Job>() {
-            @Override
-            public Job call(ServiceResponse<Job> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get the Job Details for a Job Id.
-     *
-     * @param teamName Your Team Name.
-     * @param jobId Id of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Job object
-     */
-    public Observable<ServiceResponse<Job>> getJobDetailsWithServiceResponseAsync(String teamName, String jobId) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<Job>> getJobDetailsWithRestResponseAsync(@NonNull String teamName, @NonNull String jobId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -274,558 +215,403 @@ public class ReviewsImpl implements Reviews {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.getJobDetails(teamName, jobId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Job>>>() {
-                @Override
-                public Observable<ServiceResponse<Job>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Job> clientResponse = getJobDetailsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getJobDetails(teamName, jobId, this.client.endpoint());
     }
 
-    private ServiceResponse<Job> getJobDetailsDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Job, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Job>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Get the Job Details for a Job Id.
+     *
+     * @param teamName Your Team Name.
+     * @param jobId Id of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Job> getJobDetailsAsync(@NonNull String teamName, @NonNull String jobId) {
+        return getJobDetailsWithRestResponseAsync(teamName, jobId)
+            .flatMap((SimpleResponse<Job> res) -> Mono.just(res.value()));
     }
-
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
      *
-     * @param teamName Your team name.
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
      * @param urlContentType The content type.
-     * @param createReviewBody Body for create reviews API
-     * @param createReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param teamName Your team name.
+     * @param createReviewBody Body for create reviews API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;String&gt; object if successful.
      */
-    public List<String> createReviews(String teamName, String urlContentType, List<CreateReviewBodyItem> createReviewBody, CreateReviewsOptionalParameter createReviewsOptionalParameter) {
-        return createReviewsWithServiceResponseAsync(teamName, urlContentType, createReviewBody, createReviewsOptionalParameter).toBlocking().single().body();
+    public List<String> createReviews(@NonNull String urlContentType, @NonNull String teamName, @NonNull List<CreateReviewBodyItem> createReviewBody) {
+        return createReviewsAsync(urlContentType, teamName, createReviewBody).block();
     }
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
      *
-     * @param teamName Your team name.
-     * @param urlContentType The content type.
-     * @param createReviewBody Body for create reviews API
-     * @param createReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<String>> createReviewsAsync(String teamName, String urlContentType, List<CreateReviewBodyItem> createReviewBody, CreateReviewsOptionalParameter createReviewsOptionalParameter, final ServiceCallback<List<String>> serviceCallback) {
-        return ServiceFuture.fromResponse(createReviewsWithServiceResponseAsync(teamName, urlContentType, createReviewBody, createReviewsOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
      *
-     * @param teamName Your team name.
-     * @param urlContentType The content type.
-     * @param createReviewBody Body for create reviews API
-     * @param createReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;String&gt; object
-     */
-    public Observable<List<String>> createReviewsAsync(String teamName, String urlContentType, List<CreateReviewBodyItem> createReviewBody, CreateReviewsOptionalParameter createReviewsOptionalParameter) {
-        return createReviewsWithServiceResponseAsync(teamName, urlContentType, createReviewBody, createReviewsOptionalParameter).map(new Func1<ServiceResponse<List<String>>, List<String>>() {
-            @Override
-            public List<String> call(ServiceResponse<List<String>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     * &lt;/p&gt;.
      *
-     * @param teamName Your team name.
      * @param urlContentType The content type.
-     * @param createReviewBody Body for create reviews API
-     * @param createReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;String&gt; object
+     * @param teamName Your team name.
+     * @param createReviewBody Body for create reviews API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<ServiceResponse<List<String>>> createReviewsWithServiceResponseAsync(String teamName, String urlContentType, List<CreateReviewBodyItem> createReviewBody, CreateReviewsOptionalParameter createReviewsOptionalParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
-        }
-        if (teamName == null) {
-            throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
+    public Mono<SimpleResponse<List<String>>> createReviewsWithRestResponseAsync(@NonNull String urlContentType, @NonNull String teamName, @NonNull List<CreateReviewBodyItem> createReviewBody) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (urlContentType == null) {
             throw new IllegalArgumentException("Parameter urlContentType is required and cannot be null.");
+        }
+        if (teamName == null) {
+            throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
         }
         if (createReviewBody == null) {
             throw new IllegalArgumentException("Parameter createReviewBody is required and cannot be null.");
         }
         Validator.validate(createReviewBody);
-        final String subTeam = createReviewsOptionalParameter != null ? createReviewsOptionalParameter.subTeam() : null;
-
-        return createReviewsWithServiceResponseAsync(teamName, urlContentType, createReviewBody, subTeam);
+        final String subTeam = null;
+        List<CreateReviewBodyItem> createReviewBodyConverted = createReviewBody;
+        return service.createReviews(teamName, this.client.endpoint(), urlContentType, subTeam, createReviewBodyConverted);
     }
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
      *
-     * @param teamName Your team name.
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
      * @param urlContentType The content type.
-     * @param createReviewBody Body for create reviews API
+     * @param teamName Your team name.
+     * @param createReviewBody Body for create reviews API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<String>> createReviewsAsync(@NonNull String urlContentType, @NonNull String teamName, @NonNull List<CreateReviewBodyItem> createReviewBody) {
+        return createReviewsWithRestResponseAsync(urlContentType, teamName, createReviewBody)
+            .flatMap((SimpleResponse<List<String>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param urlContentType The content type.
+     * @param teamName Your team name.
+     * @param createReviewBody Body for create reviews API.
      * @param subTeam SubTeam of your team, you want to assign the created review to.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;String&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;String&gt; object if successful.
      */
-    public Observable<ServiceResponse<List<String>>> createReviewsWithServiceResponseAsync(String teamName, String urlContentType, List<CreateReviewBodyItem> createReviewBody, String subTeam) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
-        }
-        if (teamName == null) {
-            throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
+    public List<String> createReviews(@NonNull String urlContentType, @NonNull String teamName, @NonNull List<CreateReviewBodyItem> createReviewBody, String subTeam) {
+        return createReviewsAsync(urlContentType, teamName, createReviewBody, subTeam).block();
+    }
+
+    /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param urlContentType The content type.
+     * @param teamName Your team name.
+     * @param createReviewBody Body for create reviews API.
+     * @param subTeam SubTeam of your team, you want to assign the created review to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<String>>> createReviewsWithRestResponseAsync(@NonNull String urlContentType, @NonNull String teamName, @NonNull List<CreateReviewBodyItem> createReviewBody, String subTeam) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (urlContentType == null) {
             throw new IllegalArgumentException("Parameter urlContentType is required and cannot be null.");
+        }
+        if (teamName == null) {
+            throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
         }
         if (createReviewBody == null) {
             throw new IllegalArgumentException("Parameter createReviewBody is required and cannot be null.");
         }
         Validator.validate(createReviewBody);
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.createReviews(teamName, urlContentType, subTeam, createReviewBody, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<String>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<String>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<String>> clientResponse = createReviewsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<String>> createReviewsDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<String>, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<String>>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public ReviewsCreateReviewsParameters createReviews() {
-        return new ReviewsCreateReviewsParameters(this);
+        List<CreateReviewBodyItem> createReviewBodyConverted = createReviewBody;
+        return service.createReviews(teamName, this.client.endpoint(), urlContentType, subTeam, createReviewBodyConverted);
     }
 
     /**
-     * Internal class implementing ReviewsCreateReviewsDefinition.
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param urlContentType The content type.
+     * @param teamName Your team name.
+     * @param createReviewBody Body for create reviews API.
+     * @param subTeam SubTeam of your team, you want to assign the created review to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class ReviewsCreateReviewsParameters implements ReviewsCreateReviewsDefinition {
-        private ReviewsImpl parent;
-        private String teamName;
-        private String urlContentType;
-        private List<CreateReviewBodyItem> createReviewBody;
-        private String subTeam;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ReviewsCreateReviewsParameters(ReviewsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ReviewsCreateReviewsParameters withTeamName(String teamName) {
-            this.teamName = teamName;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateReviewsParameters withUrlContentType(String urlContentType) {
-            this.urlContentType = urlContentType;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateReviewsParameters withCreateReviewBody(List<CreateReviewBodyItem> createReviewBody) {
-            this.createReviewBody = createReviewBody;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateReviewsParameters withSubTeam(String subTeam) {
-            this.subTeam = subTeam;
-            return this;
-        }
-
-        @Override
-        public List<String> execute() {
-        return createReviewsWithServiceResponseAsync(teamName, urlContentType, createReviewBody, subTeam).toBlocking().single().body();
+    public Mono<List<String>> createReviewsAsync(@NonNull String urlContentType, @NonNull String teamName, @NonNull List<CreateReviewBodyItem> createReviewBody, String subTeam) {
+        return createReviewsWithRestResponseAsync(urlContentType, teamName, createReviewBody, subTeam)
+            .flatMap((SimpleResponse<List<String>> res) -> Mono.just(res.value()));
     }
-
-        @Override
-        public Observable<List<String>> executeAsync() {
-            return createReviewsWithServiceResponseAsync(teamName, urlContentType, createReviewBody, subTeam).map(new Func1<ServiceResponse<List<String>>, List<String>>() {
-                @Override
-                public List<String> call(ServiceResponse<List<String>> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
 
     /**
      * A job Id will be returned for the content posted on this endpoint.
-     Once the content is evaluated against the Workflow provided the review will be created or ignored based on the workflow expression.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;p&gt;
-     &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     {&lt;br/&gt;
-       "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
-       "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
-       "WorkFlowId": "default",&lt;br/&gt;
-       "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
-       "ContentType": "Image",&lt;br/&gt;
-       "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
-       "CallBackType": "Job",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;
-     &lt;p&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     {
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     *
+     * Once the content is evaluated against the Workflow provided the review will be created or ignored based on the workflow expression.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *
+     * &lt;p&gt;
+     * &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {&lt;br/&gt;
+     *   "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
+     *   "WorkFlowId": "default",&lt;br/&gt;
+     *   "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
+     *   "ContentType": "Image",&lt;br/&gt;
+     *   "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
+     *   "CallBackType": "Job",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
      *
      * @param teamName Your team name.
-     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'
+     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'.
      * @param contentId Id/Name to identify the content submitted.
      * @param workflowName Workflow Name that you want to invoke.
-     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'
+     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'.
      * @param contentValue Content to evaluate for a job.
-     * @param createJobOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the JobId object if successful.
      */
-    public JobId createJob(String teamName, String contentType, String contentId, String workflowName, String jobContentType, String contentValue, CreateJobOptionalParameter createJobOptionalParameter) {
-        return createJobWithServiceResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, createJobOptionalParameter).toBlocking().single().body();
+    public JobId createJob(@NonNull String teamName, @NonNull String contentType, @NonNull String contentId, @NonNull String workflowName, @NonNull String jobContentType, @NonNull String contentValue) {
+        return createJobAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue).block();
     }
 
     /**
      * A job Id will be returned for the content posted on this endpoint.
-     Once the content is evaluated against the Workflow provided the review will be created or ignored based on the workflow expression.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;p&gt;
-     &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     {&lt;br/&gt;
-       "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
-       "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
-       "WorkFlowId": "default",&lt;br/&gt;
-       "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
-       "ContentType": "Image",&lt;br/&gt;
-       "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
-       "CallBackType": "Job",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;
-     &lt;p&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     {
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     *
+     * Once the content is evaluated against the Workflow provided the review will be created or ignored based on the workflow expression.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *
+     * &lt;p&gt;
+     * &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {&lt;br/&gt;
+     *   "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
+     *   "WorkFlowId": "default",&lt;br/&gt;
+     *   "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
+     *   "ContentType": "Image",&lt;br/&gt;
+     *   "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
+     *   "CallBackType": "Job",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
      *
      * @param teamName Your team name.
-     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'
+     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'.
      * @param contentId Id/Name to identify the content submitted.
      * @param workflowName Workflow Name that you want to invoke.
-     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'
+     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'.
      * @param contentValue Content to evaluate for a job.
-     * @param createJobOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<JobId> createJobAsync(String teamName, String contentType, String contentId, String workflowName, String jobContentType, String contentValue, CreateJobOptionalParameter createJobOptionalParameter, final ServiceCallback<JobId> serviceCallback) {
-        return ServiceFuture.fromResponse(createJobWithServiceResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, createJobOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * A job Id will be returned for the content posted on this endpoint.
-     Once the content is evaluated against the Workflow provided the review will be created or ignored based on the workflow expression.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;p&gt;
-     &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     {&lt;br/&gt;
-       "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
-       "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
-       "WorkFlowId": "default",&lt;br/&gt;
-       "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
-       "ContentType": "Image",&lt;br/&gt;
-       "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
-       "CallBackType": "Job",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;
-     &lt;p&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     {
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
-     *
-     * @param teamName Your team name.
-     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'
-     * @param contentId Id/Name to identify the content submitted.
-     * @param workflowName Workflow Name that you want to invoke.
-     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'
-     * @param contentValue Content to evaluate for a job.
-     * @param createJobOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the JobId object
-     */
-    public Observable<JobId> createJobAsync(String teamName, String contentType, String contentId, String workflowName, String jobContentType, String contentValue, CreateJobOptionalParameter createJobOptionalParameter) {
-        return createJobWithServiceResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, createJobOptionalParameter).map(new Func1<ServiceResponse<JobId>, JobId>() {
-            @Override
-            public JobId call(ServiceResponse<JobId> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * A job Id will be returned for the content posted on this endpoint.
-     Once the content is evaluated against the Workflow provided the review will be created or ignored based on the workflow expression.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;p&gt;
-     &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     {&lt;br/&gt;
-       "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
-       "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
-       "WorkFlowId": "default",&lt;br/&gt;
-       "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
-       "ContentType": "Image",&lt;br/&gt;
-       "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
-       "CallBackType": "Job",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;
-     &lt;p&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     {
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
-     *
-     * @param teamName Your team name.
-     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'
-     * @param contentId Id/Name to identify the content submitted.
-     * @param workflowName Workflow Name that you want to invoke.
-     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'
-     * @param contentValue Content to evaluate for a job.
-     * @param createJobOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the JobId object
-     */
-    public Observable<ServiceResponse<JobId>> createJobWithServiceResponseAsync(String teamName, String contentType, String contentId, String workflowName, String jobContentType, String contentValue, CreateJobOptionalParameter createJobOptionalParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<JobId>> createJobWithRestResponseAsync(@NonNull String teamName, @NonNull String contentType, @NonNull String contentId, @NonNull String workflowName, @NonNull String jobContentType, @NonNull String contentValue) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -845,67 +631,205 @@ public class ReviewsImpl implements Reviews {
         if (contentValue == null) {
             throw new IllegalArgumentException("Parameter contentValue is required and cannot be null.");
         }
-        final String callBackEndpoint = createJobOptionalParameter != null ? createJobOptionalParameter.callBackEndpoint() : null;
-
-        return createJobWithServiceResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, callBackEndpoint);
+        final String callBackEndpoint = null;
+        Content content = new Content();
+        content.withContentValue(contentValue);
+        return service.createJob(teamName, this.client.endpoint(), contentType, contentId, workflowName, callBackEndpoint, jobContentType, content);
     }
 
     /**
      * A job Id will be returned for the content posted on this endpoint.
-     Once the content is evaluated against the Workflow provided the review will be created or ignored based on the workflow expression.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;p&gt;
-     &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     {&lt;br/&gt;
-       "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
-       "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
-       "WorkFlowId": "default",&lt;br/&gt;
-       "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
-       "ContentType": "Image",&lt;br/&gt;
-       "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
-       "CallBackType": "Job",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;
-     &lt;p&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     {
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     *
+     * Once the content is evaluated against the Workflow provided the review will be created or ignored based on the workflow expression.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *
+     * &lt;p&gt;
+     * &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {&lt;br/&gt;
+     *   "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
+     *   "WorkFlowId": "default",&lt;br/&gt;
+     *   "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
+     *   "ContentType": "Image",&lt;br/&gt;
+     *   "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
+     *   "CallBackType": "Job",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
      *
      * @param teamName Your team name.
-     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'
+     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'.
      * @param contentId Id/Name to identify the content submitted.
      * @param workflowName Workflow Name that you want to invoke.
-     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'
+     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'.
+     * @param contentValue Content to evaluate for a job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<JobId> createJobAsync(@NonNull String teamName, @NonNull String contentType, @NonNull String contentId, @NonNull String workflowName, @NonNull String jobContentType, @NonNull String contentValue) {
+        return createJobWithRestResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue)
+            .flatMap((SimpleResponse<JobId> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * A job Id will be returned for the content posted on this endpoint.
+     *
+     * Once the content is evaluated against the Workflow provided the review will be created or ignored based on the workflow expression.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *
+     * &lt;p&gt;
+     * &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {&lt;br/&gt;
+     *   "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
+     *   "WorkFlowId": "default",&lt;br/&gt;
+     *   "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
+     *   "ContentType": "Image",&lt;br/&gt;
+     *   "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
+     *   "CallBackType": "Job",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param teamName Your team name.
+     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'.
+     * @param contentId Id/Name to identify the content submitted.
+     * @param workflowName Workflow Name that you want to invoke.
+     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'.
      * @param contentValue Content to evaluate for a job.
      * @param callBackEndpoint Callback endpoint for posting the create job result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the JobId object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the JobId object if successful.
      */
-    public Observable<ServiceResponse<JobId>> createJobWithServiceResponseAsync(String teamName, String contentType, String contentId, String workflowName, String jobContentType, String contentValue, String callBackEndpoint) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public JobId createJob(@NonNull String teamName, @NonNull String contentType, @NonNull String contentId, @NonNull String workflowName, @NonNull String jobContentType, @NonNull String contentValue, String callBackEndpoint) {
+        return createJobAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, callBackEndpoint).block();
+    }
+
+    /**
+     * A job Id will be returned for the content posted on this endpoint.
+     *
+     * Once the content is evaluated against the Workflow provided the review will be created or ignored based on the workflow expression.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *
+     * &lt;p&gt;
+     * &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {&lt;br/&gt;
+     *   "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
+     *   "WorkFlowId": "default",&lt;br/&gt;
+     *   "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
+     *   "ContentType": "Image",&lt;br/&gt;
+     *   "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
+     *   "CallBackType": "Job",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param teamName Your team name.
+     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'.
+     * @param contentId Id/Name to identify the content submitted.
+     * @param workflowName Workflow Name that you want to invoke.
+     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'.
+     * @param contentValue Content to evaluate for a job.
+     * @param callBackEndpoint Callback endpoint for posting the create job result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<JobId>> createJobWithRestResponseAsync(@NonNull String teamName, @NonNull String contentType, @NonNull String contentId, @NonNull String workflowName, @NonNull String jobContentType, @NonNull String contentValue, String callBackEndpoint) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -927,255 +851,144 @@ public class ReviewsImpl implements Reviews {
         }
         Content content = new Content();
         content.withContentValue(contentValue);
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.createJob(teamName, contentType, contentId, workflowName, callBackEndpoint, jobContentType, this.client.acceptLanguage(), content, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<JobId>>>() {
-                @Override
-                public Observable<ServiceResponse<JobId>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<JobId> clientResponse = createJobDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<JobId> createJobDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<JobId, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<JobId>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public ReviewsCreateJobParameters createJob() {
-        return new ReviewsCreateJobParameters(this);
+        return service.createJob(teamName, this.client.endpoint(), contentType, contentId, workflowName, callBackEndpoint, jobContentType, content);
     }
 
     /**
-     * Internal class implementing ReviewsCreateJobDefinition.
-     */
-    class ReviewsCreateJobParameters implements ReviewsCreateJobDefinition {
-        private ReviewsImpl parent;
-        private String teamName;
-        private String contentType;
-        private String contentId;
-        private String workflowName;
-        private String jobContentType;
-        private String contentValue;
-        private String callBackEndpoint;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ReviewsCreateJobParameters(ReviewsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ReviewsCreateJobParameters withTeamName(String teamName) {
-            this.teamName = teamName;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateJobParameters withContentType(String contentType) {
-            this.contentType = contentType;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateJobParameters withContentId(String contentId) {
-            this.contentId = contentId;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateJobParameters withWorkflowName(String workflowName) {
-            this.workflowName = workflowName;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateJobParameters withJobContentType(String jobContentType) {
-            this.jobContentType = jobContentType;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateJobParameters withContentValue(String contentValue) {
-            this.contentValue = contentValue;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateJobParameters withCallBackEndpoint(String callBackEndpoint) {
-            this.callBackEndpoint = callBackEndpoint;
-            return this;
-        }
-
-        @Override
-        public JobId execute() {
-        return createJobWithServiceResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, callBackEndpoint).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<JobId> executeAsync() {
-            return createJobWithServiceResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, callBackEndpoint).map(new Func1<ServiceResponse<JobId>, JobId>() {
-                @Override
-                public JobId call(ServiceResponse<JobId> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
-    /**
-     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     * A job Id will be returned for the content posted on this endpoint.
+     *
+     * Once the content is evaluated against the Workflow provided the review will be created or ignored based on the workflow expression.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *
+     * &lt;p&gt;
+     * &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {&lt;br/&gt;
+     *   "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
+     *   "WorkFlowId": "default",&lt;br/&gt;
+     *   "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
+     *   "ContentType": "Image",&lt;br/&gt;
+     *   "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
+     *   "CallBackType": "Job",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
+     *
+     * {
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
      *
      * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @param addVideoFrameOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'.
+     * @param contentId Id/Name to identify the content submitted.
+     * @param workflowName Workflow Name that you want to invoke.
+     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'.
+     * @param contentValue Content to evaluate for a job.
+     * @param callBackEndpoint Callback endpoint for posting the create job result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public void addVideoFrame(String teamName, String reviewId, AddVideoFrameOptionalParameter addVideoFrameOptionalParameter) {
-        addVideoFrameWithServiceResponseAsync(teamName, reviewId, addVideoFrameOptionalParameter).toBlocking().single().body();
+    public Mono<JobId> createJobAsync(@NonNull String teamName, @NonNull String contentType, @NonNull String contentId, @NonNull String workflowName, @NonNull String jobContentType, @NonNull String contentValue, String callBackEndpoint) {
+        return createJobWithRestResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, callBackEndpoint)
+            .flatMap((SimpleResponse<JobId> res) -> Mono.just(res.value()));
     }
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param addVideoFrameOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public ServiceFuture<Void> addVideoFrameAsync(String teamName, String reviewId, AddVideoFrameOptionalParameter addVideoFrameOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(addVideoFrameWithServiceResponseAsync(teamName, reviewId, addVideoFrameOptionalParameter), serviceCallback);
+    public void addVideoFrame(@NonNull String teamName, @NonNull String reviewId) {
+        addVideoFrameAsync(teamName, reviewId).block();
     }
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param addVideoFrameOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<Void> addVideoFrameAsync(String teamName, String reviewId, AddVideoFrameOptionalParameter addVideoFrameOptionalParameter) {
-        return addVideoFrameWithServiceResponseAsync(teamName, reviewId, addVideoFrameOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
-     *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @param addVideoFrameOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> addVideoFrameWithServiceResponseAsync(String teamName, String reviewId, AddVideoFrameOptionalParameter addVideoFrameOptionalParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<RestVoidResponse> addVideoFrameWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -1183,44 +996,118 @@ public class ReviewsImpl implements Reviews {
         if (reviewId == null) {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
         }
-        final Integer timescale = addVideoFrameOptionalParameter != null ? addVideoFrameOptionalParameter.timescale() : null;
-
-        return addVideoFrameWithServiceResponseAsync(teamName, reviewId, timescale);
+        final Integer timescale = null;
+        return service.addVideoFrame(teamName, reviewId, this.client.endpoint(), timescale);
     }
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> addVideoFrameAsync(@NonNull String teamName, @NonNull String reviewId) {
+        return addVideoFrameWithRestResponseAsync(teamName, reviewId)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
      * @param timescale Timescale of the video you are adding frames to.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public Observable<ServiceResponse<Void>> addVideoFrameWithServiceResponseAsync(String teamName, String reviewId, Integer timescale) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public void addVideoFrame(@NonNull String teamName, @NonNull String reviewId, Integer timescale) {
+        addVideoFrameAsync(teamName, reviewId, timescale).block();
+    }
+
+    /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @param timescale Timescale of the video you are adding frames to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<RestVoidResponse> addVideoFrameWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId, Integer timescale) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -1228,228 +1115,117 @@ public class ReviewsImpl implements Reviews {
         if (reviewId == null) {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.addVideoFrame(teamName, reviewId, timescale, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = addVideoFrameDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.addVideoFrame(teamName, reviewId, this.client.endpoint(), timescale);
     }
-
-    private ServiceResponse<Void> addVideoFrameDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public ReviewsAddVideoFrameParameters addVideoFrame() {
-        return new ReviewsAddVideoFrameParameters(this);
-    }
-
-    /**
-     * Internal class implementing ReviewsAddVideoFrameDefinition.
-     */
-    class ReviewsAddVideoFrameParameters implements ReviewsAddVideoFrameDefinition {
-        private ReviewsImpl parent;
-        private String teamName;
-        private String reviewId;
-        private Integer timescale;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ReviewsAddVideoFrameParameters(ReviewsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameParameters withTeamName(String teamName) {
-            this.teamName = teamName;
-            return this;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameParameters withReviewId(String reviewId) {
-            this.reviewId = reviewId;
-            return this;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameParameters withTimescale(Integer timescale) {
-            this.timescale = timescale;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        addVideoFrameWithServiceResponseAsync(teamName, reviewId, timescale).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return addVideoFrameWithServiceResponseAsync(teamName, reviewId, timescale).map(new Func1<ServiceResponse<Void>, Void>() {
-                @Override
-                public Void call(ServiceResponse<Void> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param getVideoFramesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param timescale Timescale of the video you are adding frames to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> addVideoFrameAsync(@NonNull String teamName, @NonNull String reviewId, Integer timescale) {
+        return addVideoFrameWithRestResponseAsync(teamName, reviewId, timescale)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Frames object if successful.
      */
-    public Frames getVideoFrames(String teamName, String reviewId, GetVideoFramesOptionalParameter getVideoFramesOptionalParameter) {
-        return getVideoFramesWithServiceResponseAsync(teamName, reviewId, getVideoFramesOptionalParameter).toBlocking().single().body();
+    public Frames getVideoFrames(@NonNull String teamName, @NonNull String reviewId) {
+        return getVideoFramesAsync(teamName, reviewId).block();
     }
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param getVideoFramesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Frames> getVideoFramesAsync(String teamName, String reviewId, GetVideoFramesOptionalParameter getVideoFramesOptionalParameter, final ServiceCallback<Frames> serviceCallback) {
-        return ServiceFuture.fromResponse(getVideoFramesWithServiceResponseAsync(teamName, reviewId, getVideoFramesOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
-     *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @param getVideoFramesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Frames object
-     */
-    public Observable<Frames> getVideoFramesAsync(String teamName, String reviewId, GetVideoFramesOptionalParameter getVideoFramesOptionalParameter) {
-        return getVideoFramesWithServiceResponseAsync(teamName, reviewId, getVideoFramesOptionalParameter).map(new Func1<ServiceResponse<Frames>, Frames>() {
-            @Override
-            public Frames call(ServiceResponse<Frames> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
-     *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @param getVideoFramesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Frames object
-     */
-    public Observable<ServiceResponse<Frames>> getVideoFramesWithServiceResponseAsync(String teamName, String reviewId, GetVideoFramesOptionalParameter getVideoFramesOptionalParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<Frames>> getVideoFramesWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -1457,48 +1233,125 @@ public class ReviewsImpl implements Reviews {
         if (reviewId == null) {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
         }
-        final Integer startSeed = getVideoFramesOptionalParameter != null ? getVideoFramesOptionalParameter.startSeed() : null;
-        final Integer noOfRecords = getVideoFramesOptionalParameter != null ? getVideoFramesOptionalParameter.noOfRecords() : null;
-        final String filter = getVideoFramesOptionalParameter != null ? getVideoFramesOptionalParameter.filter() : null;
-
-        return getVideoFramesWithServiceResponseAsync(teamName, reviewId, startSeed, noOfRecords, filter);
+        final Integer startSeed = null;
+        final Integer noOfRecords = null;
+        final String filter = null;
+        return service.getVideoFrames(teamName, reviewId, this.client.endpoint(), startSeed, noOfRecords, filter);
     }
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Frames> getVideoFramesAsync(@NonNull String teamName, @NonNull String reviewId) {
+        return getVideoFramesWithRestResponseAsync(teamName, reviewId)
+            .flatMap((SimpleResponse<Frames> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
      * @param startSeed Time stamp of the frame from where you want to start fetching the frames.
      * @param noOfRecords Number of frames to fetch.
      * @param filter Get frames filtered by tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Frames object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Frames object if successful.
      */
-    public Observable<ServiceResponse<Frames>> getVideoFramesWithServiceResponseAsync(String teamName, String reviewId, Integer startSeed, Integer noOfRecords, String filter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Frames getVideoFrames(@NonNull String teamName, @NonNull String reviewId, Integer startSeed, Integer noOfRecords, String filter) {
+        return getVideoFramesAsync(teamName, reviewId, startSeed, noOfRecords, filter).block();
+    }
+
+    /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @param startSeed Time stamp of the frame from where you want to start fetching the frames.
+     * @param noOfRecords Number of frames to fetch.
+     * @param filter Get frames filtered by tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<Frames>> getVideoFramesWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId, Integer startSeed, Integer noOfRecords, String filter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -1506,96 +1359,46 @@ public class ReviewsImpl implements Reviews {
         if (reviewId == null) {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.getVideoFrames(teamName, reviewId, startSeed, noOfRecords, filter, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Frames>>>() {
-                @Override
-                public Observable<ServiceResponse<Frames>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Frames> clientResponse = getVideoFramesDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Frames> getVideoFramesDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Frames, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Frames>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public ReviewsGetVideoFramesParameters getVideoFrames() {
-        return new ReviewsGetVideoFramesParameters(this);
+        return service.getVideoFrames(teamName, reviewId, this.client.endpoint(), startSeed, noOfRecords, filter);
     }
 
     /**
-     * Internal class implementing ReviewsGetVideoFramesDefinition.
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @param startSeed Time stamp of the frame from where you want to start fetching the frames.
+     * @param noOfRecords Number of frames to fetch.
+     * @param filter Get frames filtered by tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class ReviewsGetVideoFramesParameters implements ReviewsGetVideoFramesDefinition {
-        private ReviewsImpl parent;
-        private String teamName;
-        private String reviewId;
-        private Integer startSeed;
-        private Integer noOfRecords;
-        private String filter;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ReviewsGetVideoFramesParameters(ReviewsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ReviewsGetVideoFramesParameters withTeamName(String teamName) {
-            this.teamName = teamName;
-            return this;
-        }
-
-        @Override
-        public ReviewsGetVideoFramesParameters withReviewId(String reviewId) {
-            this.reviewId = reviewId;
-            return this;
-        }
-
-        @Override
-        public ReviewsGetVideoFramesParameters withStartSeed(Integer startSeed) {
-            this.startSeed = startSeed;
-            return this;
-        }
-
-        @Override
-        public ReviewsGetVideoFramesParameters withNoOfRecords(Integer noOfRecords) {
-            this.noOfRecords = noOfRecords;
-            return this;
-        }
-
-        @Override
-        public ReviewsGetVideoFramesParameters withFilter(String filter) {
-            this.filter = filter;
-            return this;
-        }
-
-        @Override
-        public Frames execute() {
-        return getVideoFramesWithServiceResponseAsync(teamName, reviewId, startSeed, noOfRecords, filter).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Frames> executeAsync() {
-            return getVideoFramesWithServiceResponseAsync(teamName, reviewId, startSeed, noOfRecords, filter).map(new Func1<ServiceResponse<Frames>, Frames>() {
-                @Override
-                public Frames call(ServiceResponse<Frames> response) {
-                    return response.body();
-                }
-            });
-        }
+    public Mono<Frames> getVideoFramesAsync(@NonNull String teamName, @NonNull String reviewId, Integer startSeed, Integer noOfRecords, String filter) {
+        return getVideoFramesWithRestResponseAsync(teamName, reviewId, startSeed, noOfRecords, filter)
+            .flatMap((SimpleResponse<Frames> res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1603,12 +1406,12 @@ public class ReviewsImpl implements Reviews {
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void publishVideoReview(String teamName, String reviewId) {
-        publishVideoReviewWithServiceResponseAsync(teamName, reviewId).toBlocking().single().body();
+    public void publishVideoReview(@NonNull String teamName, @NonNull String reviewId) {
+        publishVideoReviewAsync(teamName, reviewId).block();
     }
 
     /**
@@ -1616,42 +1419,12 @@ public class ReviewsImpl implements Reviews {
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Void> publishVideoReviewAsync(String teamName, String reviewId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(publishVideoReviewWithServiceResponseAsync(teamName, reviewId), serviceCallback);
-    }
-
-    /**
-     * Publish video review to make it available for review.
-     *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> publishVideoReviewAsync(String teamName, String reviewId) {
-        return publishVideoReviewWithServiceResponseAsync(teamName, reviewId).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Publish video review to make it available for review.
-     *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> publishVideoReviewWithServiceResponseAsync(String teamName, String reviewId) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<RestVoidResponse> publishVideoReviewWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -1659,124 +1432,81 @@ public class ReviewsImpl implements Reviews {
         if (reviewId == null) {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.publishVideoReview(teamName, reviewId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = publishVideoReviewDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.publishVideoReview(teamName, reviewId, this.client.endpoint());
     }
 
-    private ServiceResponse<Void> publishVideoReviewDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * Publish video review to make it available for review.
+     *
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> publishVideoReviewAsync(@NonNull String teamName, @NonNull String reviewId) {
+        return publishVideoReviewWithRestResponseAsync(teamName, reviewId)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
      * This API adds a transcript screen text result file for a video review. Transcript screen text result file is a result of Screen Text API . In order to generate transcript screen text result file , a transcript file has to be screened for profanity using Screen Text API.
      *
+     * @param contentType The content type.
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param contentType The content type.
-     * @param transcriptModerationBody Body for add video transcript moderation result API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param transcriptModerationBody Body for add video transcript moderation result API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void addVideoTranscriptModerationResult(String teamName, String reviewId, String contentType, List<TranscriptModerationBodyItem> transcriptModerationBody) {
-        addVideoTranscriptModerationResultWithServiceResponseAsync(teamName, reviewId, contentType, transcriptModerationBody).toBlocking().single().body();
+    public void addVideoTranscriptModerationResult(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<TranscriptModerationBodyItem> transcriptModerationBody) {
+        addVideoTranscriptModerationResultAsync(contentType, teamName, reviewId, transcriptModerationBody).block();
     }
 
     /**
      * This API adds a transcript screen text result file for a video review. Transcript screen text result file is a result of Screen Text API . In order to generate transcript screen text result file , a transcript file has to be screened for profanity using Screen Text API.
      *
+     * @param contentType The content type.
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param contentType The content type.
-     * @param transcriptModerationBody Body for add video transcript moderation result API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param transcriptModerationBody Body for add video transcript moderation result API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Void> addVideoTranscriptModerationResultAsync(String teamName, String reviewId, String contentType, List<TranscriptModerationBodyItem> transcriptModerationBody, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(addVideoTranscriptModerationResultWithServiceResponseAsync(teamName, reviewId, contentType, transcriptModerationBody), serviceCallback);
-    }
-
-    /**
-     * This API adds a transcript screen text result file for a video review. Transcript screen text result file is a result of Screen Text API . In order to generate transcript screen text result file , a transcript file has to be screened for profanity using Screen Text API.
-     *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @param contentType The content type.
-     * @param transcriptModerationBody Body for add video transcript moderation result API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> addVideoTranscriptModerationResultAsync(String teamName, String reviewId, String contentType, List<TranscriptModerationBodyItem> transcriptModerationBody) {
-        return addVideoTranscriptModerationResultWithServiceResponseAsync(teamName, reviewId, contentType, transcriptModerationBody).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * This API adds a transcript screen text result file for a video review. Transcript screen text result file is a result of Screen Text API . In order to generate transcript screen text result file , a transcript file has to be screened for profanity using Screen Text API.
-     *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @param contentType The content type.
-     * @param transcriptModerationBody Body for add video transcript moderation result API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> addVideoTranscriptModerationResultWithServiceResponseAsync(String teamName, String reviewId, String contentType, List<TranscriptModerationBodyItem> transcriptModerationBody) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
-        }
-        if (teamName == null) {
-            throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
-        }
-        if (reviewId == null) {
-            throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
+    public Mono<RestVoidResponse> addVideoTranscriptModerationResultWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<TranscriptModerationBodyItem> transcriptModerationBody) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (contentType == null) {
             throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
+        }
+        if (teamName == null) {
+            throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
+        }
+        if (reviewId == null) {
+            throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
         }
         if (transcriptModerationBody == null) {
             throw new IllegalArgumentException("Parameter transcriptModerationBody is required and cannot be null.");
         }
         Validator.validate(transcriptModerationBody);
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.addVideoTranscriptModerationResult(teamName, reviewId, contentType, transcriptModerationBody, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = addVideoTranscriptModerationResultDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        List<TranscriptModerationBodyItem> transcriptModerationBodyConverted = transcriptModerationBody;
+        return service.addVideoTranscriptModerationResult(teamName, reviewId, this.client.endpoint(), contentType, transcriptModerationBodyConverted);
     }
 
-    private ServiceResponse<Void> addVideoTranscriptModerationResultDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * This API adds a transcript screen text result file for a video review. Transcript screen text result file is a result of Screen Text API . In order to generate transcript screen text result file , a transcript file has to be screened for profanity using Screen Text API.
+     *
+     * @param contentType The content type.
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @param transcriptModerationBody Body for add video transcript moderation result API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> addVideoTranscriptModerationResultAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<TranscriptModerationBodyItem> transcriptModerationBody) {
+        return addVideoTranscriptModerationResultWithRestResponseAsync(contentType, teamName, reviewId, transcriptModerationBody)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
@@ -1784,13 +1514,14 @@ public class ReviewsImpl implements Reviews {
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
+     * @param contentLength The content length.
      * @param vTTfile Transcript file of the video.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void addVideoTranscript(String teamName, String reviewId, byte[] vTTfile) {
-        addVideoTranscriptWithServiceResponseAsync(teamName, reviewId, vTTfile).toBlocking().single().body();
+    public void addVideoTranscript(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> vTTfile) {
+        addVideoTranscriptAsync(teamName, reviewId, contentLength, vTTfile).block();
     }
 
     /**
@@ -1798,45 +1529,14 @@ public class ReviewsImpl implements Reviews {
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
+     * @param contentLength The content length.
      * @param vTTfile Transcript file of the video.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Void> addVideoTranscriptAsync(String teamName, String reviewId, byte[] vTTfile, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(addVideoTranscriptWithServiceResponseAsync(teamName, reviewId, vTTfile), serviceCallback);
-    }
-
-    /**
-     * This API adds a transcript file (text version of all the words spoken in a video) to a video review. The file should be a valid WebVTT format.
-     *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @param vTTfile Transcript file of the video.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> addVideoTranscriptAsync(String teamName, String reviewId, byte[] vTTfile) {
-        return addVideoTranscriptWithServiceResponseAsync(teamName, reviewId, vTTfile).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * This API adds a transcript file (text version of all the words spoken in a video) to a video review. The file should be a valid WebVTT format.
-     *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @param vTTfile Transcript file of the video.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> addVideoTranscriptWithServiceResponseAsync(String teamName, String reviewId, byte[] vTTfile) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<RestVoidResponse> addVideoTranscriptWithRestResponseAsync(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> vTTfile) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -1848,390 +1548,309 @@ public class ReviewsImpl implements Reviews {
             throw new IllegalArgumentException("Parameter vTTfile is required and cannot be null.");
         }
         final String contentType = "text/plain";
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody vTTfileConverted = RequestBody.create(MediaType.parse("text/plain"), vTTfile);
-        return service.addVideoTranscript(teamName, reviewId, contentType, vTTfileConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = addVideoTranscriptDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.addVideoTranscript(teamName, reviewId, this.client.endpoint(), contentType, contentLength, vTTfile);
     }
 
-    private ServiceResponse<Void> addVideoTranscriptDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * This API adds a transcript file (text version of all the words spoken in a video) to a video review. The file should be a valid WebVTT format.
+     *
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @param contentLength The content length.
+     * @param vTTfile Transcript file of the video.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> addVideoTranscriptAsync(@NonNull String teamName, @NonNull String reviewId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> vTTfile) {
+        return addVideoTranscriptWithRestResponseAsync(teamName, reviewId, contentLength, vTTfile)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
-
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
      *
-     * @param teamName Your team name.
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
      * @param contentType The content type.
-     * @param createVideoReviewsBody Body for create reviews API
-     * @param createVideoReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param teamName Your team name.
+     * @param createVideoReviewsBody Body for create reviews API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;String&gt; object if successful.
      */
-    public List<String> createVideoReviews(String teamName, String contentType, List<CreateVideoReviewsBodyItem> createVideoReviewsBody, CreateVideoReviewsOptionalParameter createVideoReviewsOptionalParameter) {
-        return createVideoReviewsWithServiceResponseAsync(teamName, contentType, createVideoReviewsBody, createVideoReviewsOptionalParameter).toBlocking().single().body();
+    public List<String> createVideoReviews(@NonNull String contentType, @NonNull String teamName, @NonNull List<CreateVideoReviewsBodyItem> createVideoReviewsBody) {
+        return createVideoReviewsAsync(contentType, teamName, createVideoReviewsBody).block();
     }
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
      *
-     * @param teamName Your team name.
-     * @param contentType The content type.
-     * @param createVideoReviewsBody Body for create reviews API
-     * @param createVideoReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<String>> createVideoReviewsAsync(String teamName, String contentType, List<CreateVideoReviewsBodyItem> createVideoReviewsBody, CreateVideoReviewsOptionalParameter createVideoReviewsOptionalParameter, final ServiceCallback<List<String>> serviceCallback) {
-        return ServiceFuture.fromResponse(createVideoReviewsWithServiceResponseAsync(teamName, contentType, createVideoReviewsBody, createVideoReviewsOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
      *
-     * @param teamName Your team name.
-     * @param contentType The content type.
-     * @param createVideoReviewsBody Body for create reviews API
-     * @param createVideoReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;String&gt; object
-     */
-    public Observable<List<String>> createVideoReviewsAsync(String teamName, String contentType, List<CreateVideoReviewsBodyItem> createVideoReviewsBody, CreateVideoReviewsOptionalParameter createVideoReviewsOptionalParameter) {
-        return createVideoReviewsWithServiceResponseAsync(teamName, contentType, createVideoReviewsBody, createVideoReviewsOptionalParameter).map(new Func1<ServiceResponse<List<String>>, List<String>>() {
-            @Override
-            public List<String> call(ServiceResponse<List<String>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
+     * &lt;/p&gt;.
      *
-     * @param teamName Your team name.
      * @param contentType The content type.
-     * @param createVideoReviewsBody Body for create reviews API
-     * @param createVideoReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;String&gt; object
+     * @param teamName Your team name.
+     * @param createVideoReviewsBody Body for create reviews API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<ServiceResponse<List<String>>> createVideoReviewsWithServiceResponseAsync(String teamName, String contentType, List<CreateVideoReviewsBodyItem> createVideoReviewsBody, CreateVideoReviewsOptionalParameter createVideoReviewsOptionalParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
-        }
-        if (teamName == null) {
-            throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
+    public Mono<SimpleResponse<List<String>>> createVideoReviewsWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull List<CreateVideoReviewsBodyItem> createVideoReviewsBody) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (contentType == null) {
             throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
+        }
+        if (teamName == null) {
+            throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
         }
         if (createVideoReviewsBody == null) {
             throw new IllegalArgumentException("Parameter createVideoReviewsBody is required and cannot be null.");
         }
         Validator.validate(createVideoReviewsBody);
-        final String subTeam = createVideoReviewsOptionalParameter != null ? createVideoReviewsOptionalParameter.subTeam() : null;
-
-        return createVideoReviewsWithServiceResponseAsync(teamName, contentType, createVideoReviewsBody, subTeam);
+        final String subTeam = null;
+        List<CreateVideoReviewsBodyItem> createVideoReviewsBodyConverted = createVideoReviewsBody;
+        return service.createVideoReviews(teamName, this.client.endpoint(), contentType, subTeam, createVideoReviewsBodyConverted);
     }
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     &lt;p&gt;
-     {&lt;br/&gt;
-       "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-       "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-       "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-       "CallBackType": "Review",&lt;br/&gt;
-       "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-       "Metadata": {&lt;br/&gt;
-         "adultscore": "0.xxx",&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "racyscore": "0.xxx",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       },&lt;br/&gt;
-       "ReviewerResultTags": {&lt;br/&gt;
-         "a": "False",&lt;br/&gt;
-         "r": "True"&lt;br/&gt;
-       }&lt;br/&gt;
-     }&lt;br/&gt;
-     &lt;/p&gt;.
      *
-     * @param teamName Your team name.
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
      * @param contentType The content type.
-     * @param createVideoReviewsBody Body for create reviews API
+     * @param teamName Your team name.
+     * @param createVideoReviewsBody Body for create reviews API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<String>> createVideoReviewsAsync(@NonNull String contentType, @NonNull String teamName, @NonNull List<CreateVideoReviewsBodyItem> createVideoReviewsBody) {
+        return createVideoReviewsWithRestResponseAsync(contentType, teamName, createVideoReviewsBody)
+            .flatMap((SimpleResponse<List<String>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param contentType The content type.
+     * @param teamName Your team name.
+     * @param createVideoReviewsBody Body for create reviews API.
      * @param subTeam SubTeam of your team, you want to assign the created review to.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;String&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;String&gt; object if successful.
      */
-    public Observable<ServiceResponse<List<String>>> createVideoReviewsWithServiceResponseAsync(String teamName, String contentType, List<CreateVideoReviewsBodyItem> createVideoReviewsBody, String subTeam) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
-        }
-        if (teamName == null) {
-            throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
+    public List<String> createVideoReviews(@NonNull String contentType, @NonNull String teamName, @NonNull List<CreateVideoReviewsBodyItem> createVideoReviewsBody, String subTeam) {
+        return createVideoReviewsAsync(contentType, teamName, createVideoReviewsBody, subTeam).block();
+    }
+
+    /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
+     * @param contentType The content type.
+     * @param teamName Your team name.
+     * @param createVideoReviewsBody Body for create reviews API.
+     * @param subTeam SubTeam of your team, you want to assign the created review to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<String>>> createVideoReviewsWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull List<CreateVideoReviewsBodyItem> createVideoReviewsBody, String subTeam) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (contentType == null) {
             throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
+        }
+        if (teamName == null) {
+            throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
         }
         if (createVideoReviewsBody == null) {
             throw new IllegalArgumentException("Parameter createVideoReviewsBody is required and cannot be null.");
         }
         Validator.validate(createVideoReviewsBody);
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.createVideoReviews(teamName, contentType, subTeam, createVideoReviewsBody, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<String>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<String>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<String>> clientResponse = createVideoReviewsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<String>> createVideoReviewsDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<String>, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<String>>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public ReviewsCreateVideoReviewsParameters createVideoReviews() {
-        return new ReviewsCreateVideoReviewsParameters(this);
+        List<CreateVideoReviewsBodyItem> createVideoReviewsBodyConverted = createVideoReviewsBody;
+        return service.createVideoReviews(teamName, this.client.endpoint(), contentType, subTeam, createVideoReviewsBodyConverted);
     }
 
     /**
-     * Internal class implementing ReviewsCreateVideoReviewsDefinition.
-     */
-    class ReviewsCreateVideoReviewsParameters implements ReviewsCreateVideoReviewsDefinition {
-        private ReviewsImpl parent;
-        private String teamName;
-        private String contentType;
-        private List<CreateVideoReviewsBodyItem> createVideoReviewsBody;
-        private String subTeam;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ReviewsCreateVideoReviewsParameters(ReviewsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ReviewsCreateVideoReviewsParameters withTeamName(String teamName) {
-            this.teamName = teamName;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateVideoReviewsParameters withContentType(String contentType) {
-            this.contentType = contentType;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateVideoReviewsParameters withCreateVideoReviewsBody(List<CreateVideoReviewsBodyItem> createVideoReviewsBody) {
-            this.createVideoReviewsBody = createVideoReviewsBody;
-            return this;
-        }
-
-        @Override
-        public ReviewsCreateVideoReviewsParameters withSubTeam(String subTeam) {
-            this.subTeam = subTeam;
-            return this;
-        }
-
-        @Override
-        public List<String> execute() {
-        return createVideoReviewsWithServiceResponseAsync(teamName, contentType, createVideoReviewsBody, subTeam).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<List<String>> executeAsync() {
-            return createVideoReviewsWithServiceResponseAsync(teamName, contentType, createVideoReviewsBody, subTeam).map(new Func1<ServiceResponse<List<String>>, List<String>>() {
-                @Override
-                public List<String> call(ServiceResponse<List<String>> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
-    /**
-     * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
      *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
+     * &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     * &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     * &lt;p&gt;
+     * {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *     "adultscore": "0.xxx",&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "racyscore": "0.xxx",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *     "a": "False",&lt;br/&gt;
+     *     "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     * }&lt;br/&gt;
+     *
+     * &lt;/p&gt;.
+     *
      * @param contentType The content type.
-     * @param videoFrameBody Body for add video frames API
-     * @param addVideoFrameUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param teamName Your team name.
+     * @param createVideoReviewsBody Body for create reviews API.
+     * @param subTeam SubTeam of your team, you want to assign the created review to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public void addVideoFrameUrl(String teamName, String reviewId, String contentType, List<VideoFrameBodyItem> videoFrameBody, AddVideoFrameUrlOptionalParameter addVideoFrameUrlOptionalParameter) {
-        addVideoFrameUrlWithServiceResponseAsync(teamName, reviewId, contentType, videoFrameBody, addVideoFrameUrlOptionalParameter).toBlocking().single().body();
+    public Mono<List<String>> createVideoReviewsAsync(@NonNull String contentType, @NonNull String teamName, @NonNull List<CreateVideoReviewsBodyItem> createVideoReviewsBody, String subTeam) {
+        return createVideoReviewsWithRestResponseAsync(contentType, teamName, createVideoReviewsBody, subTeam)
+            .flatMap((SimpleResponse<List<String>> res) -> Mono.just(res.value()));
     }
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
      *
+     * @param contentType The content type.
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param contentType The content type.
-     * @param videoFrameBody Body for add video frames API
-     * @param addVideoFrameUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param videoFrameBody Body for add video frames API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public ServiceFuture<Void> addVideoFrameUrlAsync(String teamName, String reviewId, String contentType, List<VideoFrameBodyItem> videoFrameBody, AddVideoFrameUrlOptionalParameter addVideoFrameUrlOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(addVideoFrameUrlWithServiceResponseAsync(teamName, reviewId, contentType, videoFrameBody, addVideoFrameUrlOptionalParameter), serviceCallback);
+    public void addVideoFrameUrl(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody) {
+        addVideoFrameUrlAsync(contentType, teamName, reviewId, videoFrameBody).block();
     }
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
      *
+     * @param contentType The content type.
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param contentType The content type.
-     * @param videoFrameBody Body for add video frames API
-     * @param addVideoFrameUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @param videoFrameBody Body for add video frames API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<Void> addVideoFrameUrlAsync(String teamName, String reviewId, String contentType, List<VideoFrameBodyItem> videoFrameBody, AddVideoFrameUrlOptionalParameter addVideoFrameUrlOptionalParameter) {
-        return addVideoFrameUrlWithServiceResponseAsync(teamName, reviewId, contentType, videoFrameBody, addVideoFrameUrlOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
-     *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @param contentType The content type.
-     * @param videoFrameBody Body for add video frames API
-     * @param addVideoFrameUrlOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> addVideoFrameUrlWithServiceResponseAsync(String teamName, String reviewId, String contentType, List<VideoFrameBodyItem> videoFrameBody, AddVideoFrameUrlOptionalParameter addVideoFrameUrlOptionalParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<RestVoidResponse> addVideoFrameUrlWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (contentType == null) {
+            throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -2239,218 +1858,133 @@ public class ReviewsImpl implements Reviews {
         if (reviewId == null) {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
         }
-        if (contentType == null) {
-            throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
-        }
         if (videoFrameBody == null) {
             throw new IllegalArgumentException("Parameter videoFrameBody is required and cannot be null.");
         }
         Validator.validate(videoFrameBody);
-        final Integer timescale = addVideoFrameUrlOptionalParameter != null ? addVideoFrameUrlOptionalParameter.timescale() : null;
-
-        return addVideoFrameUrlWithServiceResponseAsync(teamName, reviewId, contentType, videoFrameBody, timescale);
+        final Integer timescale = null;
+        List<VideoFrameBodyItem> videoFrameBodyConverted = videoFrameBody;
+        return service.addVideoFrameUrl(teamName, reviewId, this.client.endpoint(), contentType, timescale, videoFrameBodyConverted);
     }
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
      *
+     * @param contentType The content type.
      * @param teamName Your team name.
      * @param reviewId Id of the review.
+     * @param videoFrameBody Body for add video frames API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> addVideoFrameUrlAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody) {
+        return addVideoFrameUrlWithRestResponseAsync(contentType, teamName, reviewId, videoFrameBody)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
+     *
      * @param contentType The content type.
-     * @param videoFrameBody Body for add video frames API
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @param videoFrameBody Body for add video frames API.
      * @param timescale Timescale of the video.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public Observable<ServiceResponse<Void>> addVideoFrameUrlWithServiceResponseAsync(String teamName, String reviewId, String contentType, List<VideoFrameBodyItem> videoFrameBody, Integer timescale) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public void addVideoFrameUrl(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody, Integer timescale) {
+        addVideoFrameUrlAsync(contentType, teamName, reviewId, videoFrameBody, timescale).block();
+    }
+
+    /**
+     * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
+     *
+     * @param contentType The content type.
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @param videoFrameBody Body for add video frames API.
+     * @param timescale Timescale of the video.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<RestVoidResponse> addVideoFrameUrlWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody, Integer timescale) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (contentType == null) {
+            throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
         }
         if (reviewId == null) {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
-        }
-        if (contentType == null) {
-            throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
         }
         if (videoFrameBody == null) {
             throw new IllegalArgumentException("Parameter videoFrameBody is required and cannot be null.");
         }
         Validator.validate(videoFrameBody);
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.addVideoFrameUrl(teamName, reviewId, contentType, timescale, videoFrameBody, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = addVideoFrameUrlDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> addVideoFrameUrlDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public ReviewsAddVideoFrameUrlParameters addVideoFrameUrl() {
-        return new ReviewsAddVideoFrameUrlParameters(this);
-    }
-
-    /**
-     * Internal class implementing ReviewsAddVideoFrameUrlDefinition.
-     */
-    class ReviewsAddVideoFrameUrlParameters implements ReviewsAddVideoFrameUrlDefinition {
-        private ReviewsImpl parent;
-        private String teamName;
-        private String reviewId;
-        private String contentType;
-        private List<VideoFrameBodyItem> videoFrameBody;
-        private Integer timescale;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ReviewsAddVideoFrameUrlParameters(ReviewsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameUrlParameters withTeamName(String teamName) {
-            this.teamName = teamName;
-            return this;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameUrlParameters withReviewId(String reviewId) {
-            this.reviewId = reviewId;
-            return this;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameUrlParameters withContentType(String contentType) {
-            this.contentType = contentType;
-            return this;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameUrlParameters withVideoFrameBody(List<VideoFrameBodyItem> videoFrameBody) {
-            this.videoFrameBody = videoFrameBody;
-            return this;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameUrlParameters withTimescale(Integer timescale) {
-            this.timescale = timescale;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        addVideoFrameUrlWithServiceResponseAsync(teamName, reviewId, contentType, videoFrameBody, timescale).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return addVideoFrameUrlWithServiceResponseAsync(teamName, reviewId, contentType, videoFrameBody, timescale).map(new Func1<ServiceResponse<Void>, Void>() {
-                @Override
-                public Void call(ServiceResponse<Void> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
-    /**
-     * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
-     *
-     * @param teamName Your team name.
-     * @param reviewId Id of the review.
-     * @param contentType The content type.
-     * @param frameImageZip Zip file containing frame images.
-     * @param frameMetadata Metadata of the frame.
-     * @param addVideoFrameStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void addVideoFrameStream(String teamName, String reviewId, String contentType, byte[] frameImageZip, String frameMetadata, AddVideoFrameStreamOptionalParameter addVideoFrameStreamOptionalParameter) {
-        addVideoFrameStreamWithServiceResponseAsync(teamName, reviewId, contentType, frameImageZip, frameMetadata, addVideoFrameStreamOptionalParameter).toBlocking().single().body();
+        List<VideoFrameBodyItem> videoFrameBodyConverted = videoFrameBody;
+        return service.addVideoFrameUrl(teamName, reviewId, this.client.endpoint(), contentType, timescale, videoFrameBodyConverted);
     }
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
      *
+     * @param contentType The content type.
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param contentType The content type.
-     * @param frameImageZip Zip file containing frame images.
-     * @param frameMetadata Metadata of the frame.
-     * @param addVideoFrameStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param videoFrameBody Body for add video frames API.
+     * @param timescale Timescale of the video.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Void> addVideoFrameStreamAsync(String teamName, String reviewId, String contentType, byte[] frameImageZip, String frameMetadata, AddVideoFrameStreamOptionalParameter addVideoFrameStreamOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(addVideoFrameStreamWithServiceResponseAsync(teamName, reviewId, contentType, frameImageZip, frameMetadata, addVideoFrameStreamOptionalParameter), serviceCallback);
+    public Mono<Void> addVideoFrameUrlAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull List<VideoFrameBodyItem> videoFrameBody, Integer timescale) {
+        return addVideoFrameUrlWithRestResponseAsync(contentType, teamName, reviewId, videoFrameBody, timescale)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
      *
+     * @param contentType The content type.
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param contentType The content type.
      * @param frameImageZip Zip file containing frame images.
      * @param frameMetadata Metadata of the frame.
-     * @param addVideoFrameStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public Observable<Void> addVideoFrameStreamAsync(String teamName, String reviewId, String contentType, byte[] frameImageZip, String frameMetadata, AddVideoFrameStreamOptionalParameter addVideoFrameStreamOptionalParameter) {
-        return addVideoFrameStreamWithServiceResponseAsync(teamName, reviewId, contentType, frameImageZip, frameMetadata, addVideoFrameStreamOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
+    public void addVideoFrameStream(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata) {
+        addVideoFrameStreamAsync(contentType, teamName, reviewId, frameImageZip, frameMetadata).block();
     }
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
      *
+     * @param contentType The content type.
      * @param teamName Your team name.
      * @param reviewId Id of the review.
-     * @param contentType The content type.
      * @param frameImageZip Zip file containing frame images.
      * @param frameMetadata Metadata of the frame.
-     * @param addVideoFrameStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public Observable<ServiceResponse<Void>> addVideoFrameStreamWithServiceResponseAsync(String teamName, String reviewId, String contentType, byte[] frameImageZip, String frameMetadata, AddVideoFrameStreamOptionalParameter addVideoFrameStreamOptionalParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<RestVoidResponse> addVideoFrameStreamWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (contentType == null) {
+            throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
         }
         if (reviewId == null) {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
-        }
-        if (contentType == null) {
-            throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
         }
         if (frameImageZip == null) {
             throw new IllegalArgumentException("Parameter frameImageZip is required and cannot be null.");
@@ -2458,26 +1992,61 @@ public class ReviewsImpl implements Reviews {
         if (frameMetadata == null) {
             throw new IllegalArgumentException("Parameter frameMetadata is required and cannot be null.");
         }
-        final Integer timescale = addVideoFrameStreamOptionalParameter != null ? addVideoFrameStreamOptionalParameter.timescale() : null;
-
-        return addVideoFrameStreamWithServiceResponseAsync(teamName, reviewId, contentType, frameImageZip, frameMetadata, timescale);
+        final Integer timescale = null;
+        return service.addVideoFrameStream(teamName, reviewId, this.client.endpoint(), contentType, timescale, frameImageZip, frameMetadata);
     }
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
      *
+     * @param contentType The content type.
      * @param teamName Your team name.
      * @param reviewId Id of the review.
+     * @param frameImageZip Zip file containing frame images.
+     * @param frameMetadata Metadata of the frame.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Void> addVideoFrameStreamAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata) {
+        return addVideoFrameStreamWithRestResponseAsync(contentType, teamName, reviewId, frameImageZip, frameMetadata)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
+     *
      * @param contentType The content type.
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
      * @param frameImageZip Zip file containing frame images.
      * @param frameMetadata Metadata of the frame.
      * @param timescale Timescale of the video .
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public Observable<ServiceResponse<Void>> addVideoFrameStreamWithServiceResponseAsync(String teamName, String reviewId, String contentType, byte[] frameImageZip, String frameMetadata, Integer timescale) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public void addVideoFrameStream(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata, Integer timescale) {
+        addVideoFrameStreamAsync(contentType, teamName, reviewId, frameImageZip, frameMetadata, timescale).block();
+    }
+
+    /**
+     * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
+     *
+     * @param contentType The content type.
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @param frameImageZip Zip file containing frame images.
+     * @param frameMetadata Metadata of the frame.
+     * @param timescale Timescale of the video .
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<RestVoidResponse> addVideoFrameStreamWithRestResponseAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata, Integer timescale) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (contentType == null) {
+            throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
         }
         if (teamName == null) {
             throw new IllegalArgumentException("Parameter teamName is required and cannot be null.");
@@ -2485,113 +2054,29 @@ public class ReviewsImpl implements Reviews {
         if (reviewId == null) {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
         }
-        if (contentType == null) {
-            throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
-        }
         if (frameImageZip == null) {
             throw new IllegalArgumentException("Parameter frameImageZip is required and cannot be null.");
         }
         if (frameMetadata == null) {
             throw new IllegalArgumentException("Parameter frameMetadata is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody frameImageZipConverted = RequestBody.create(MediaType.parse("multipart/form-data"), frameImageZip);
-        return service.addVideoFrameStream(teamName, reviewId, contentType, timescale, frameImageZipConverted, frameMetadata, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = addVideoFrameStreamDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> addVideoFrameStreamDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public ReviewsAddVideoFrameStreamParameters addVideoFrameStream() {
-        return new ReviewsAddVideoFrameStreamParameters(this);
+        return service.addVideoFrameStream(teamName, reviewId, this.client.endpoint(), contentType, timescale, frameImageZip, frameMetadata);
     }
 
     /**
-     * Internal class implementing ReviewsAddVideoFrameStreamDefinition.
+     * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is Ticks/Second.
+     *
+     * @param contentType The content type.
+     * @param teamName Your team name.
+     * @param reviewId Id of the review.
+     * @param frameImageZip Zip file containing frame images.
+     * @param frameMetadata Metadata of the frame.
+     * @param timescale Timescale of the video .
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class ReviewsAddVideoFrameStreamParameters implements ReviewsAddVideoFrameStreamDefinition {
-        private ReviewsImpl parent;
-        private String teamName;
-        private String reviewId;
-        private String contentType;
-        private byte[] frameImageZip;
-        private String frameMetadata;
-        private Integer timescale;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ReviewsAddVideoFrameStreamParameters(ReviewsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameStreamParameters withTeamName(String teamName) {
-            this.teamName = teamName;
-            return this;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameStreamParameters withReviewId(String reviewId) {
-            this.reviewId = reviewId;
-            return this;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameStreamParameters withContentType(String contentType) {
-            this.contentType = contentType;
-            return this;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameStreamParameters withFrameImageZip(byte[] frameImageZip) {
-            this.frameImageZip = frameImageZip;
-            return this;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameStreamParameters withFrameMetadata(String frameMetadata) {
-            this.frameMetadata = frameMetadata;
-            return this;
-        }
-
-        @Override
-        public ReviewsAddVideoFrameStreamParameters withTimescale(Integer timescale) {
-            this.timescale = timescale;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        addVideoFrameStreamWithServiceResponseAsync(teamName, reviewId, contentType, frameImageZip, frameMetadata, timescale).toBlocking().single().body();
+    public Mono<Void> addVideoFrameStreamAsync(@NonNull String contentType, @NonNull String teamName, @NonNull String reviewId, @NonNull Flux<ByteBuffer> frameImageZip, @NonNull String frameMetadata, Integer timescale) {
+        return addVideoFrameStreamWithRestResponseAsync(contentType, teamName, reviewId, frameImageZip, frameMetadata, timescale)
+            .flatMap((RestVoidResponse res) -> Mono.just(res.value()));
     }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return addVideoFrameStreamWithServiceResponseAsync(teamName, reviewId, contentType, frameImageZip, frameMetadata, timescale).map(new Func1<ServiceResponse<Void>, Void>() {
-                @Override
-                public Void call(ServiceResponse<Void> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
 }

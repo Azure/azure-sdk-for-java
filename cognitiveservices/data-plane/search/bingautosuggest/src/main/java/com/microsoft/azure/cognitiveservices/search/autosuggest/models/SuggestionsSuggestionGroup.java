@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.autosuggest.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The SuggestionsSuggestionGroup model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SuggestionsSuggestionGroup.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Suggestions/SuggestionGroup")
-public class SuggestionsSuggestionGroup {
+public final class SuggestionsSuggestionGroup {
     /**
      * Possible values include: 'Unknown', 'Web', 'StoreApps', 'SearchHistory',
      * 'PersonalSearchDocuments', 'PersonalSearchTags', 'Custom'.
@@ -35,7 +35,7 @@ public class SuggestionsSuggestionGroup {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public ScenarioType name() {
         return this.name;
@@ -44,7 +44,7 @@ public class SuggestionsSuggestionGroup {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the SuggestionsSuggestionGroup object itself.
      */
     public SuggestionsSuggestionGroup withName(ScenarioType name) {
@@ -55,7 +55,7 @@ public class SuggestionsSuggestionGroup {
     /**
      * Get the searchSuggestions value.
      *
-     * @return the searchSuggestions value
+     * @return the searchSuggestions value.
      */
     public List<SearchAction> searchSuggestions() {
         return this.searchSuggestions;
@@ -64,12 +64,11 @@ public class SuggestionsSuggestionGroup {
     /**
      * Set the searchSuggestions value.
      *
-     * @param searchSuggestions the searchSuggestions value to set
+     * @param searchSuggestions the searchSuggestions value to set.
      * @return the SuggestionsSuggestionGroup object itself.
      */
     public SuggestionsSuggestionGroup withSearchSuggestions(List<SearchAction> searchSuggestions) {
         this.searchSuggestions = searchSuggestions;
         return this;
     }
-
 }

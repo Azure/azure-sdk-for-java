@@ -8,21 +8,21 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * Exported Model - A Closed List.
+ * Exported Model - A list entity.
  */
-public class ClosedList {
+public final class ClosedList {
     /**
-     * Name of the closed list feature.
+     * Name of the list entity.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * Sublists for the feature.
+     * Sublists for the list entity.
      */
     @JsonProperty(value = "subLists")
     private List<SubClosedList> subLists;
@@ -36,7 +36,7 @@ public class ClosedList {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -45,7 +45,7 @@ public class ClosedList {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ClosedList object itself.
      */
     public ClosedList withName(String name) {
@@ -56,7 +56,7 @@ public class ClosedList {
     /**
      * Get the subLists value.
      *
-     * @return the subLists value
+     * @return the subLists value.
      */
     public List<SubClosedList> subLists() {
         return this.subLists;
@@ -65,7 +65,7 @@ public class ClosedList {
     /**
      * Set the subLists value.
      *
-     * @param subLists the subLists value to set
+     * @param subLists the subLists value to set.
      * @return the ClosedList object itself.
      */
     public ClosedList withSubLists(List<SubClosedList> subLists) {
@@ -76,7 +76,7 @@ public class ClosedList {
     /**
      * Get the roles value.
      *
-     * @return the roles value
+     * @return the roles value.
      */
     public List<String> roles() {
         return this.roles;
@@ -85,12 +85,11 @@ public class ClosedList {
     /**
      * Set the roles value.
      *
-     * @param roles the roles value to set
+     * @param roles the roles value to set.
      * @return the ClosedList object itself.
      */
     public ClosedList withRoles(List<String> roles) {
         this.roles = roles;
         return this;
     }
-
 }

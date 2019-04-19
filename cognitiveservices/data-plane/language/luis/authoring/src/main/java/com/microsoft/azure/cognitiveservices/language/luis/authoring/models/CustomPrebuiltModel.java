@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * A Custom Prebuilt model.
  */
-public class CustomPrebuiltModel {
+public final class CustomPrebuiltModel {
     /**
      * The ID of the Entity Model.
      */
@@ -37,9 +37,9 @@ public class CustomPrebuiltModel {
     /**
      * Possible values include: 'Entity Extractor', 'Hierarchical Entity
      * Extractor', 'Hierarchical Child Entity Extractor', 'Composite Entity
-     * Extractor', 'Closed List Entity Extractor', 'Prebuilt Entity Extractor',
-     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regex Entity
-     * Extractor'.
+     * Extractor', 'List Entity Extractor', 'Prebuilt Entity Extractor',
+     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regular Expression
+     * Entity Extractor'.
      */
     @JsonProperty(value = "readableType", required = true)
     private String readableType;
@@ -65,7 +65,7 @@ public class CustomPrebuiltModel {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -74,7 +74,7 @@ public class CustomPrebuiltModel {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the CustomPrebuiltModel object itself.
      */
     public CustomPrebuiltModel withId(UUID id) {
@@ -85,7 +85,7 @@ public class CustomPrebuiltModel {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -94,7 +94,7 @@ public class CustomPrebuiltModel {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the CustomPrebuiltModel object itself.
      */
     public CustomPrebuiltModel withName(String name) {
@@ -105,7 +105,7 @@ public class CustomPrebuiltModel {
     /**
      * Get the typeId value.
      *
-     * @return the typeId value
+     * @return the typeId value.
      */
     public Integer typeId() {
         return this.typeId;
@@ -114,7 +114,7 @@ public class CustomPrebuiltModel {
     /**
      * Set the typeId value.
      *
-     * @param typeId the typeId value to set
+     * @param typeId the typeId value to set.
      * @return the CustomPrebuiltModel object itself.
      */
     public CustomPrebuiltModel withTypeId(Integer typeId) {
@@ -125,7 +125,7 @@ public class CustomPrebuiltModel {
     /**
      * Get the readableType value.
      *
-     * @return the readableType value
+     * @return the readableType value.
      */
     public String readableType() {
         return this.readableType;
@@ -134,7 +134,7 @@ public class CustomPrebuiltModel {
     /**
      * Set the readableType value.
      *
-     * @param readableType the readableType value to set
+     * @param readableType the readableType value to set.
      * @return the CustomPrebuiltModel object itself.
      */
     public CustomPrebuiltModel withReadableType(String readableType) {
@@ -145,7 +145,7 @@ public class CustomPrebuiltModel {
     /**
      * Get the customPrebuiltDomainName value.
      *
-     * @return the customPrebuiltDomainName value
+     * @return the customPrebuiltDomainName value.
      */
     public String customPrebuiltDomainName() {
         return this.customPrebuiltDomainName;
@@ -154,7 +154,8 @@ public class CustomPrebuiltModel {
     /**
      * Set the customPrebuiltDomainName value.
      *
-     * @param customPrebuiltDomainName the customPrebuiltDomainName value to set
+     * @param customPrebuiltDomainName the customPrebuiltDomainName value to
+     * set.
      * @return the CustomPrebuiltModel object itself.
      */
     public CustomPrebuiltModel withCustomPrebuiltDomainName(String customPrebuiltDomainName) {
@@ -165,7 +166,7 @@ public class CustomPrebuiltModel {
     /**
      * Get the customPrebuiltModelName value.
      *
-     * @return the customPrebuiltModelName value
+     * @return the customPrebuiltModelName value.
      */
     public String customPrebuiltModelName() {
         return this.customPrebuiltModelName;
@@ -174,7 +175,7 @@ public class CustomPrebuiltModel {
     /**
      * Set the customPrebuiltModelName value.
      *
-     * @param customPrebuiltModelName the customPrebuiltModelName value to set
+     * @param customPrebuiltModelName the customPrebuiltModelName value to set.
      * @return the CustomPrebuiltModel object itself.
      */
     public CustomPrebuiltModel withCustomPrebuiltModelName(String customPrebuiltModelName) {
@@ -185,7 +186,7 @@ public class CustomPrebuiltModel {
     /**
      * Get the roles value.
      *
-     * @return the roles value
+     * @return the roles value.
      */
     public List<EntityRole> roles() {
         return this.roles;
@@ -194,12 +195,11 @@ public class CustomPrebuiltModel {
     /**
      * Set the roles value.
      *
-     * @param roles the roles value to set
+     * @param roles the roles value to set.
      * @return the CustomPrebuiltModel object itself.
      */
     public CustomPrebuiltModel withRoles(List<EntityRole> roles) {
         this.roles = roles;
         return this;
     }
-
 }

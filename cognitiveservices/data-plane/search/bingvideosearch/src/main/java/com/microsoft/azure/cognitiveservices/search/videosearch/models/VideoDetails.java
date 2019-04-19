@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The VideoDetails model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = VideoDetails.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("VideoDetails")
-public class VideoDetails extends Response {
+public final class VideoDetails extends Response {
     /**
      * The relatedVideos property.
      */
@@ -33,7 +33,7 @@ public class VideoDetails extends Response {
     /**
      * Get the relatedVideos value.
      *
-     * @return the relatedVideos value
+     * @return the relatedVideos value.
      */
     public VideosModule relatedVideos() {
         return this.relatedVideos;
@@ -42,10 +42,9 @@ public class VideoDetails extends Response {
     /**
      * Get the videoResult value.
      *
-     * @return the videoResult value
+     * @return the videoResult value.
      */
     public VideoObject videoResult() {
         return this.videoResult;
     }
-
 }

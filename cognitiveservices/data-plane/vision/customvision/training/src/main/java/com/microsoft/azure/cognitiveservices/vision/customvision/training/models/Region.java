@@ -8,47 +8,47 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * The Region model.
  */
-public class Region {
+public final class Region {
     /**
-     * The tagId property.
+     * Id of the tag associated with this region.
      */
-    @JsonProperty(value = "tagId")
+    @JsonProperty(value = "tagId", required = true)
     private UUID tagId;
 
     /**
-     * The left property.
+     * Coordinate of the left boundary.
      */
-    @JsonProperty(value = "left")
+    @JsonProperty(value = "left", required = true)
     private double left;
 
     /**
-     * The top property.
+     * Coordinate of the top boundary.
      */
-    @JsonProperty(value = "top")
+    @JsonProperty(value = "top", required = true)
     private double top;
 
     /**
-     * The width property.
+     * Width.
      */
-    @JsonProperty(value = "width")
+    @JsonProperty(value = "width", required = true)
     private double width;
 
     /**
-     * The height property.
+     * Height.
      */
-    @JsonProperty(value = "height")
+    @JsonProperty(value = "height", required = true)
     private double height;
 
     /**
      * Get the tagId value.
      *
-     * @return the tagId value
+     * @return the tagId value.
      */
     public UUID tagId() {
         return this.tagId;
@@ -57,7 +57,7 @@ public class Region {
     /**
      * Set the tagId value.
      *
-     * @param tagId the tagId value to set
+     * @param tagId the tagId value to set.
      * @return the Region object itself.
      */
     public Region withTagId(UUID tagId) {
@@ -68,7 +68,7 @@ public class Region {
     /**
      * Get the left value.
      *
-     * @return the left value
+     * @return the left value.
      */
     public double left() {
         return this.left;
@@ -77,7 +77,7 @@ public class Region {
     /**
      * Set the left value.
      *
-     * @param left the left value to set
+     * @param left the left value to set.
      * @return the Region object itself.
      */
     public Region withLeft(double left) {
@@ -88,7 +88,7 @@ public class Region {
     /**
      * Get the top value.
      *
-     * @return the top value
+     * @return the top value.
      */
     public double top() {
         return this.top;
@@ -97,7 +97,7 @@ public class Region {
     /**
      * Set the top value.
      *
-     * @param top the top value to set
+     * @param top the top value to set.
      * @return the Region object itself.
      */
     public Region withTop(double top) {
@@ -108,7 +108,7 @@ public class Region {
     /**
      * Get the width value.
      *
-     * @return the width value
+     * @return the width value.
      */
     public double width() {
         return this.width;
@@ -117,7 +117,7 @@ public class Region {
     /**
      * Set the width value.
      *
-     * @param width the width value to set
+     * @param width the width value to set.
      * @return the Region object itself.
      */
     public Region withWidth(double width) {
@@ -128,7 +128,7 @@ public class Region {
     /**
      * Get the height value.
      *
-     * @return the height value
+     * @return the height value.
      */
     public double height() {
         return this.height;
@@ -137,12 +137,11 @@ public class Region {
     /**
      * Set the height value.
      *
-     * @param height the height value to set
+     * @param height the height value to set.
      * @return the Region object itself.
      */
     public Region withHeight(double height) {
         this.height = height;
         return this;
     }
-
 }

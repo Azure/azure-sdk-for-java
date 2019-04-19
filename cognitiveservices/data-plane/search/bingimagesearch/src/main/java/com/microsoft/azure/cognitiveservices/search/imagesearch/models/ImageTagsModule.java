@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Defines the characteristics of content found in an image.
  */
-public class ImageTagsModule {
+public final class ImageTagsModule {
     /**
      * A list of tags that describe the characteristics of the content found in
      * the image. For example, if the image is of a musical artist, the list
@@ -27,7 +27,7 @@ public class ImageTagsModule {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<InsightsTag> value() {
         return this.value;
@@ -36,12 +36,11 @@ public class ImageTagsModule {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the ImageTagsModule object itself.
      */
     public ImageTagsModule withValue(List<InsightsTag> value) {
         this.value = value;
         return this;
     }
-
 }

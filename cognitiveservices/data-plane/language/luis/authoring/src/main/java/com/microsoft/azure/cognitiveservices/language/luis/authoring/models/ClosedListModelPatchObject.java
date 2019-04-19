@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * Object model for adding a batch of sublists to an existing closedlist.
+ * Object model for adding a batch of sublists to an existing list entity.
  */
-public class ClosedListModelPatchObject {
+public final class ClosedListModelPatchObject {
     /**
      * Sublists to add.
      */
@@ -24,7 +24,7 @@ public class ClosedListModelPatchObject {
     /**
      * Get the subLists value.
      *
-     * @return the subLists value
+     * @return the subLists value.
      */
     public List<WordListObject> subLists() {
         return this.subLists;
@@ -33,12 +33,11 @@ public class ClosedListModelPatchObject {
     /**
      * Set the subLists value.
      *
-     * @param subLists the subLists value to set
+     * @param subLists the subLists value to set.
      * @return the ClosedListModelPatchObject object itself.
      */
     public ClosedListModelPatchObject withSubLists(List<WordListObject> subLists) {
         this.subLists = subLists;
         return this;
     }
-
 }

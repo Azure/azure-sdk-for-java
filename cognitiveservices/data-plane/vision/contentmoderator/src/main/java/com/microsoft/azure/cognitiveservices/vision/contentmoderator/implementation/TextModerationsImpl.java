@@ -8,130 +8,96 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ScreenTextOptionalParameter;
-import retrofit2.Retrofit;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.HeaderParam;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.TextModerations;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.DetectedLanguage;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Screen;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in TextModerations.
+ * An instance of this class provides access to all the operations defined in
+ * TextModerations.
  */
-public class TextModerationsImpl implements TextModerations {
-    /** The Retrofit service to perform REST calls. */
+public final class TextModerationsImpl implements TextModerations {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private TextModerationsService service;
-    /** The service client containing this operation class. */
+
+    /**
+     * The service client containing this operation class.
+     */
     private ContentModeratorClientImpl client;
 
     /**
      * Initializes an instance of TextModerationsImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public TextModerationsImpl(Retrofit retrofit, ContentModeratorClientImpl client) {
-        this.service = retrofit.create(TextModerationsService.class);
+    public TextModerationsImpl(ContentModeratorClientImpl client) {
+        this.service = RestProxy.create(TextModerationsService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for TextModerations to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for TextModerations to be used
+     * by the proxy service to perform REST calls.
      */
-    interface TextModerationsService {
-        @Headers({ "Content-Type: text/plain", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.TextModerations screenText" })
+    @Host("{Endpoint}")
+    private interface TextModerationsService {
         @POST("contentmoderator/moderate/v1.0/ProcessText/Screen/")
-        Observable<Response<ResponseBody>> screenText(@Query("language") String language, @Query("autocorrect") Boolean autocorrect, @Query("PII") Boolean pII, @Query("listId") String listId, @Query("classify") Boolean classify, @Header("Content-Type") String textContentType, @Body RequestBody textContent, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<Screen>> screenText(@HostParam("Endpoint") String endpoint, @QueryParam("language") String language, @QueryParam("autocorrect") Boolean autocorrect, @QueryParam("PII") Boolean pII, @QueryParam("listId") String listId, @QueryParam("classify") Boolean classify, @HeaderParam("Content-Type") String textContentType, @HeaderParam("Content-Length") long contentLength, @BodyParam("text/plain") Flux<ByteBuffer> textContent);
 
-        @Headers({ "Content-Type: text/plain", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.TextModerations detectLanguage" })
         @POST("contentmoderator/moderate/v1.0/ProcessText/DetectLanguage")
-        Observable<Response<ResponseBody>> detectLanguage(@Header("Content-Type") String textContentType, @Body RequestBody textContent, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(APIErrorException.class)
+        Mono<SimpleResponse<DetectedLanguage>> detectLanguage(@HostParam("Endpoint") String endpoint, @HeaderParam("Content-Type") String textContentType, @HeaderParam("Content-Length") long contentLength, @BodyParam("text/plain") Flux<ByteBuffer> textContent);
     }
 
-
     /**
-     * Detect profanity and match against custom and shared blacklists.
+     * Detect profanity and match against custom and shared blacklists
      * Detects profanity in more than 100 languages and match against custom and shared blacklists.
      *
-     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
      * @param textContent Content to screen.
-     * @param screenTextOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Screen object if successful.
      */
-    public Screen screenText(String textContentType, byte[] textContent, ScreenTextOptionalParameter screenTextOptionalParameter) {
-        return screenTextWithServiceResponseAsync(textContentType, textContent, screenTextOptionalParameter).toBlocking().single().body();
+    public Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+        return screenTextAsync(textContentType, contentLength, textContent).block();
     }
 
     /**
-     * Detect profanity and match against custom and shared blacklists.
+     * Detect profanity and match against custom and shared blacklists
      * Detects profanity in more than 100 languages and match against custom and shared blacklists.
      *
-     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
      * @param textContent Content to screen.
-     * @param screenTextOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Screen> screenTextAsync(String textContentType, byte[] textContent, ScreenTextOptionalParameter screenTextOptionalParameter, final ServiceCallback<Screen> serviceCallback) {
-        return ServiceFuture.fromResponse(screenTextWithServiceResponseAsync(textContentType, textContent, screenTextOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Detect profanity and match against custom and shared blacklists.
-     * Detects profanity in more than 100 languages and match against custom and shared blacklists.
-     *
-     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'
-     * @param textContent Content to screen.
-     * @param screenTextOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Screen object
-     */
-    public Observable<Screen> screenTextAsync(String textContentType, byte[] textContent, ScreenTextOptionalParameter screenTextOptionalParameter) {
-        return screenTextWithServiceResponseAsync(textContentType, textContent, screenTextOptionalParameter).map(new Func1<ServiceResponse<Screen>, Screen>() {
-            @Override
-            public Screen call(ServiceResponse<Screen> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Detect profanity and match against custom and shared blacklists.
-     * Detects profanity in more than 100 languages and match against custom and shared blacklists.
-     *
-     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'
-     * @param textContent Content to screen.
-     * @param screenTextOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Screen object
-     */
-    public Observable<ServiceResponse<Screen>> screenTextWithServiceResponseAsync(String textContentType, byte[] textContent, ScreenTextOptionalParameter screenTextOptionalParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (textContentType == null) {
             throw new IllegalArgumentException("Parameter textContentType is required and cannot be null.");
@@ -139,32 +105,68 @@ public class TextModerationsImpl implements TextModerations {
         if (textContent == null) {
             throw new IllegalArgumentException("Parameter textContent is required and cannot be null.");
         }
-        final String language = screenTextOptionalParameter != null ? screenTextOptionalParameter.language() : null;
-        final Boolean autocorrect = screenTextOptionalParameter != null ? screenTextOptionalParameter.autocorrect() : null;
-        final Boolean pII = screenTextOptionalParameter != null ? screenTextOptionalParameter.pII() : null;
-        final String listId = screenTextOptionalParameter != null ? screenTextOptionalParameter.listId() : null;
-        final Boolean classify = screenTextOptionalParameter != null ? screenTextOptionalParameter.classify() : null;
-
-        return screenTextWithServiceResponseAsync(textContentType, textContent, language, autocorrect, pII, listId, classify);
+        final String language = null;
+        final Boolean autocorrect = false;
+        final Boolean pII = false;
+        final String listId = null;
+        final Boolean classify = false;
+        return service.screenText(this.client.endpoint(), language, autocorrect, pII, listId, classify, textContentType, contentLength, textContent);
     }
 
     /**
-     * Detect profanity and match against custom and shared blacklists.
+     * Detect profanity and match against custom and shared blacklists
      * Detects profanity in more than 100 languages and match against custom and shared blacklists.
      *
-     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
+     * @param textContent Content to screen.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+        return screenTextWithRestResponseAsync(textContentType, contentLength, textContent)
+            .flatMap((SimpleResponse<Screen> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Detect profanity and match against custom and shared blacklists
+     * Detects profanity in more than 100 languages and match against custom and shared blacklists.
+     *
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
      * @param textContent Content to screen.
      * @param language Language of the text.
      * @param autocorrect Autocorrect text.
      * @param pII Detect personal identifiable information.
      * @param listId The list Id.
      * @param classify Classify input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Screen object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Screen object if successful.
      */
-    public Observable<ServiceResponse<Screen>> screenTextWithServiceResponseAsync(String textContentType, byte[] textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify) {
+        return screenTextAsync(textContentType, contentLength, textContent, language, autocorrect, pII, listId, classify).block();
+    }
+
+    /**
+     * Detect profanity and match against custom and shared blacklists
+     * Detects profanity in more than 100 languages and match against custom and shared blacklists.
+     *
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
+     * @param textContent Content to screen.
+     * @param language Language of the text.
+     * @param autocorrect Autocorrect text.
+     * @param pII Detect personal identifiable information.
+     * @param listId The list Id.
+     * @param classify Classify input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (textContentType == null) {
             throw new IllegalArgumentException("Parameter textContentType is required and cannot be null.");
@@ -172,168 +174,56 @@ public class TextModerationsImpl implements TextModerations {
         if (textContent == null) {
             throw new IllegalArgumentException("Parameter textContent is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody textContentConverted = RequestBody.create(MediaType.parse("text/plain"), textContent);
-        return service.screenText(language, autocorrect, pII, listId, classify, textContentType, textContentConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Screen>>>() {
-                @Override
-                public Observable<ServiceResponse<Screen>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Screen> clientResponse = screenTextDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Screen> screenTextDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Screen, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Screen>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
-    }
-
-    @Override
-    public TextModerationsScreenTextParameters screenText() {
-        return new TextModerationsScreenTextParameters(this);
+        return service.screenText(this.client.endpoint(), language, autocorrect, pII, listId, classify, textContentType, contentLength, textContent);
     }
 
     /**
-     * Internal class implementing TextModerationsScreenTextDefinition.
+     * Detect profanity and match against custom and shared blacklists
+     * Detects profanity in more than 100 languages and match against custom and shared blacklists.
+     *
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
+     * @param textContent Content to screen.
+     * @param language Language of the text.
+     * @param autocorrect Autocorrect text.
+     * @param pII Detect personal identifiable information.
+     * @param listId The list Id.
+     * @param classify Classify input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class TextModerationsScreenTextParameters implements TextModerationsScreenTextDefinition {
-        private TextModerationsImpl parent;
-        private String textContentType;
-        private byte[] textContent;
-        private String language;
-        private Boolean autocorrect;
-        private Boolean pII;
-        private String listId;
-        private Boolean classify;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        TextModerationsScreenTextParameters(TextModerationsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public TextModerationsScreenTextParameters withTextContentType(String textContentType) {
-            this.textContentType = textContentType;
-            return this;
-        }
-
-        @Override
-        public TextModerationsScreenTextParameters withTextContent(byte[] textContent) {
-            this.textContent = textContent;
-            return this;
-        }
-
-        @Override
-        public TextModerationsScreenTextParameters withLanguage(String language) {
-            this.language = language;
-            return this;
-        }
-
-        @Override
-        public TextModerationsScreenTextParameters withAutocorrect(Boolean autocorrect) {
-            this.autocorrect = autocorrect;
-            return this;
-        }
-
-        @Override
-        public TextModerationsScreenTextParameters withPII(Boolean pII) {
-            this.pII = pII;
-            return this;
-        }
-
-        @Override
-        public TextModerationsScreenTextParameters withListId(String listId) {
-            this.listId = listId;
-            return this;
-        }
-
-        @Override
-        public TextModerationsScreenTextParameters withClassify(Boolean classify) {
-            this.classify = classify;
-            return this;
-        }
-
-        @Override
-        public Screen execute() {
-        return screenTextWithServiceResponseAsync(textContentType, textContent, language, autocorrect, pII, listId, classify).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Screen> executeAsync() {
-            return screenTextWithServiceResponseAsync(textContentType, textContent, language, autocorrect, pII, listId, classify).map(new Func1<ServiceResponse<Screen>, Screen>() {
-                @Override
-                public Screen call(ServiceResponse<Screen> response) {
-                    return response.body();
-                }
-            });
-        }
+    public Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify) {
+        return screenTextWithRestResponseAsync(textContentType, contentLength, textContent, language, autocorrect, pII, listId, classify)
+            .flatMap((SimpleResponse<Screen> res) -> Mono.just(res.value()));
     }
 
     /**
      * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
      *
-     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
      * @param textContent Content to screen.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DetectedLanguage object if successful.
      */
-    public DetectedLanguage detectLanguage(String textContentType, byte[] textContent) {
-        return detectLanguageWithServiceResponseAsync(textContentType, textContent).toBlocking().single().body();
+    public DetectedLanguage detectLanguage(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+        return detectLanguageAsync(textContentType, contentLength, textContent).block();
     }
 
     /**
      * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
      *
-     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
      * @param textContent Content to screen.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<DetectedLanguage> detectLanguageAsync(String textContentType, byte[] textContent, final ServiceCallback<DetectedLanguage> serviceCallback) {
-        return ServiceFuture.fromResponse(detectLanguageWithServiceResponseAsync(textContentType, textContent), serviceCallback);
-    }
-
-    /**
-     * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
-     *
-     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'
-     * @param textContent Content to screen.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DetectedLanguage object
-     */
-    public Observable<DetectedLanguage> detectLanguageAsync(String textContentType, byte[] textContent) {
-        return detectLanguageWithServiceResponseAsync(textContentType, textContent).map(new Func1<ServiceResponse<DetectedLanguage>, DetectedLanguage>() {
-            @Override
-            public DetectedLanguage call(ServiceResponse<DetectedLanguage> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
-     *
-     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'
-     * @param textContent Content to screen.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DetectedLanguage object
-     */
-    public Observable<ServiceResponse<DetectedLanguage>> detectLanguageWithServiceResponseAsync(String textContentType, byte[] textContent) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Mono<SimpleResponse<DetectedLanguage>> detectLanguageWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (textContentType == null) {
             throw new IllegalArgumentException("Parameter textContentType is required and cannot be null.");
@@ -341,27 +231,20 @@ public class TextModerationsImpl implements TextModerations {
         if (textContent == null) {
             throw new IllegalArgumentException("Parameter textContent is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody textContentConverted = RequestBody.create(MediaType.parse("text/plain"), textContent);
-        return service.detectLanguage(textContentType, textContentConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DetectedLanguage>>>() {
-                @Override
-                public Observable<ServiceResponse<DetectedLanguage>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DetectedLanguage> clientResponse = detectLanguageDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.detectLanguage(this.client.endpoint(), textContentType, contentLength, textContent);
     }
 
-    private ServiceResponse<DetectedLanguage> detectLanguageDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<DetectedLanguage, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<DetectedLanguage>() { }.getType())
-                .registerError(APIErrorException.class)
-                .build(response);
+    /**
+     * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
+     *
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
+     * @param textContent Content to screen.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<DetectedLanguage> detectLanguageAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent) {
+        return detectLanguageWithRestResponseAsync(textContentType, contentLength, textContent)
+            .flatMap((SimpleResponse<DetectedLanguage> res) -> Mono.just(res.value()));
     }
-
 }

@@ -15,22 +15,32 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for TextOperationStatusCodes.
  */
 public enum TextOperationStatusCodes {
-    /** Enum value Not Started. */
+    /**
+     * Enum value Not Started.
+     */
     NOT_STARTED("Not Started"),
 
-    /** Enum value Running. */
+    /**
+     * Enum value Running.
+     */
     RUNNING("Running"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded");
 
-    /** The actual serialized value for a TextOperationStatusCodes instance. */
-    private String value;
+    /**
+     * The actual serialized value for a TextOperationStatusCodes instance.
+     */
+    private final String value;
 
-    TextOperationStatusCodes(String value) {
+    private TextOperationStatusCodes(String value) {
         this.value = value;
     }
 

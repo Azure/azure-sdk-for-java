@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object model for updating a Phraselist.
  */
-public class PhraselistUpdateObject {
+public final class PhraselistUpdateObject {
     /**
      * List of comma-separated phrases that represent the Phraselist.
      */
@@ -51,7 +51,7 @@ public class PhraselistUpdateObject {
     /**
      * Get the phrases value.
      *
-     * @return the phrases value
+     * @return the phrases value.
      */
     public String phrases() {
         return this.phrases;
@@ -60,7 +60,7 @@ public class PhraselistUpdateObject {
     /**
      * Set the phrases value.
      *
-     * @param phrases the phrases value to set
+     * @param phrases the phrases value to set.
      * @return the PhraselistUpdateObject object itself.
      */
     public PhraselistUpdateObject withPhrases(String phrases) {
@@ -71,7 +71,7 @@ public class PhraselistUpdateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -80,7 +80,7 @@ public class PhraselistUpdateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the PhraselistUpdateObject object itself.
      */
     public PhraselistUpdateObject withName(String name) {
@@ -91,7 +91,7 @@ public class PhraselistUpdateObject {
     /**
      * Get the isActive value.
      *
-     * @return the isActive value
+     * @return the isActive value.
      */
     public Boolean isActive() {
         return this.isActive;
@@ -100,7 +100,7 @@ public class PhraselistUpdateObject {
     /**
      * Set the isActive value.
      *
-     * @param isActive the isActive value to set
+     * @param isActive the isActive value to set.
      * @return the PhraselistUpdateObject object itself.
      */
     public PhraselistUpdateObject withIsActive(Boolean isActive) {
@@ -111,7 +111,7 @@ public class PhraselistUpdateObject {
     /**
      * Get the isExchangeable value.
      *
-     * @return the isExchangeable value
+     * @return the isExchangeable value.
      */
     public Boolean isExchangeable() {
         return this.isExchangeable;
@@ -120,12 +120,11 @@ public class PhraselistUpdateObject {
     /**
      * Set the isExchangeable value.
      *
-     * @param isExchangeable the isExchangeable value to set
+     * @param isExchangeable the isExchangeable value to set.
      * @return the PhraselistUpdateObject object itself.
      */
     public PhraselistUpdateObject withIsExchangeable(Boolean isExchangeable) {
         this.isExchangeable = isExchangeable;
         return this;
     }
-
 }

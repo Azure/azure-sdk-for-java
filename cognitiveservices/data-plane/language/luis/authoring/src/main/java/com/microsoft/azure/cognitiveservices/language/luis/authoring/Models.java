@@ -8,48 +8,10 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring;
 
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddIntentOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListIntentsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddEntityOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListEntitiesOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListHierarchicalEntitiesOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListCompositeEntitiesOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListClosedListsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListPrebuiltsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListModelsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ExamplesMethodOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateIntentOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.DeleteIntentOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateEntityOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatchClosedListOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetIntentSuggestionsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetEntitySuggestionsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddCustomPrebuiltDomainModelsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateHierarchicalEntityChildOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddHierarchicalEntityChildOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddCompositeEntityChildOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetRegexEntityInfosOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetPatternAnyEntityInfosOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreateEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreatePrebuiltEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreateClosedListEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreateRegexEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreateCompositeEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreatePatternAnyEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreateHierarchicalEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreateCustomPrebuiltEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddExplicitListItemOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdatePrebuiltEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateClosedListEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateRegexEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateCompositeEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdatePatternAnyEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateHierarchicalEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateCustomPrebuiltEntityRoleOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateExplicitListItemOptionalParameter;
-import com.microsoft.azure.CloudException;
+import com.azure.common.http.rest.SimpleResponse;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AvailablePrebuiltEntityModel;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureClouds;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ClosedListEntityExtractor;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ClosedListModelCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ClosedListModelUpdateObject;
@@ -81,6466 +43,6211 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Word
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.WordListObject;
 import java.util.List;
 import java.util.UUID;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Models.
+ * An instance of this class provides access to all the operations defined in
+ * Models.
  */
 public interface Models {
     /**
-     * Adds an intent classifier to the application.
+     * Adds an intent to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addIntentOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID addIntent(UUID appId, String versionId, AddIntentOptionalParameter addIntentOptionalParameter);
+    UUID addIntent(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Adds an intent classifier to the application.
+     * Adds an intent to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addIntentOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<UUID> addIntentAsync(UUID appId, String versionId, AddIntentOptionalParameter addIntentOptionalParameter);
+    Mono<SimpleResponse<UUID>> addIntentWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Adds an intent classifier to the application.
+     * Adds an intent to a version of the application.
      *
-     * @return the first stage of the addIntent call
-     */
-    ModelsAddIntentDefinitionStages.WithAppId addIntent();
-
-    /**
-     * Grouping of addIntent definition stages.
-     */
-    interface ModelsAddIntentDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsAddIntentDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Name of the new entity extractor.
-             *
-             * @return next definition stage
-             */
-            ModelsAddIntentDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsAddIntentDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of addIntent definition.
-     */
-    interface ModelsAddIntentDefinition extends
-        ModelsAddIntentDefinitionStages.WithAppId,
-        ModelsAddIntentDefinitionStages.WithVersionId,
-        ModelsAddIntentDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Gets information about the intent models.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listIntentsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> addIntentAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Adds an intent to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param name Name of the new entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID addIntent(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String name);
+
+    /**
+     * Adds an intent to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param name Name of the new entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> addIntentWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String name);
+
+    /**
+     * Adds an intent to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param name Name of the new entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> addIntentAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String name);
+
+    /**
+     * Gets information about the intent models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;IntentClassifier&gt; object if successful.
      */
-    @Deprecated
-    List<IntentClassifier> listIntents(UUID appId, String versionId, ListIntentsOptionalParameter listIntentsOptionalParameter);
+    List<IntentClassifier> listIntents(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the intent models.
+     * Gets information about the intent models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listIntentsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;IntentClassifier&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<IntentClassifier>> listIntentsAsync(UUID appId, String versionId, ListIntentsOptionalParameter listIntentsOptionalParameter);
+    Mono<SimpleResponse<List<IntentClassifier>>> listIntentsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the intent models.
+     * Gets information about the intent models in a version of the application.
      *
-     * @return the first stage of the listIntents call
-     */
-    ModelsListIntentsDefinitionStages.WithAppId listIntents();
-
-    /**
-     * Grouping of listIntents definition stages.
-     */
-    interface ModelsListIntentsDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsListIntentsDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            ModelsListIntentsDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsListIntentsDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsListIntentsDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;IntentClassifier&gt; object if successful.
-             */
-            List<IntentClassifier> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;IntentClassifier&gt; object
-             */
-            Observable<List<IntentClassifier>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of listIntents definition.
-     */
-    interface ModelsListIntentsDefinition extends
-        ModelsListIntentsDefinitionStages.WithAppId,
-        ModelsListIntentsDefinitionStages.WithVersionId,
-        ModelsListIntentsDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Adds an entity extractor to the application.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addEntityOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<IntentClassifier>> listIntentsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Gets information about the intent models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;IntentClassifier&gt; object if successful.
+     */
+    List<IntentClassifier> listIntents(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about the intent models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<IntentClassifier>>> listIntentsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about the intent models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<IntentClassifier>> listIntentsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Adds a simple entity extractor to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID addEntity(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter);
+    UUID addEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Adds an entity extractor to the application.
+     * Adds a simple entity extractor to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addEntityOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<UUID> addEntityAsync(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter);
+    Mono<SimpleResponse<UUID>> addEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Adds an entity extractor to the application.
+     * Adds a simple entity extractor to a version of the application.
      *
-     * @return the first stage of the addEntity call
-     */
-    ModelsAddEntityDefinitionStages.WithAppId addEntity();
-
-    /**
-     * Grouping of addEntity definition stages.
-     */
-    interface ModelsAddEntityDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsAddEntityDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Name of the new entity extractor.
-             *
-             * @return next definition stage
-             */
-            ModelsAddEntityDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsAddEntityDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of addEntity definition.
-     */
-    interface ModelsAddEntityDefinition extends
-        ModelsAddEntityDefinitionStages.WithAppId,
-        ModelsAddEntityDefinitionStages.WithVersionId,
-        ModelsAddEntityDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Gets information about the entity models.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listEntitiesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> addEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Adds a simple entity extractor to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param name Name of the new entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID addEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String name);
+
+    /**
+     * Adds a simple entity extractor to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param name Name of the new entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> addEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String name);
+
+    /**
+     * Adds a simple entity extractor to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param name Name of the new entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> addEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String name);
+
+    /**
+     * Gets information about all the simple entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;EntityExtractor&gt; object if successful.
      */
-    @Deprecated
-    List<EntityExtractor> listEntities(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter);
+    List<EntityExtractor> listEntities(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the entity models.
+     * Gets information about all the simple entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listEntitiesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityExtractor&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<EntityExtractor>> listEntitiesAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter);
+    Mono<SimpleResponse<List<EntityExtractor>>> listEntitiesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the entity models.
+     * Gets information about all the simple entity models in a version of the application.
      *
-     * @return the first stage of the listEntities call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsListEntitiesDefinitionStages.WithAppId listEntities();
+    Mono<List<EntityExtractor>> listEntitiesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Grouping of listEntities definition stages.
-     */
-    interface ModelsListEntitiesDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsListEntitiesDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            ModelsListEntitiesDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsListEntitiesDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsListEntitiesDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;EntityExtractor&gt; object if successful.
-             */
-            List<EntityExtractor> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;EntityExtractor&gt; object
-             */
-            Observable<List<EntityExtractor>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of listEntities definition.
-     */
-    interface ModelsListEntitiesDefinition extends
-        ModelsListEntitiesDefinitionStages.WithAppId,
-        ModelsListEntitiesDefinitionStages.WithVersionId,
-        ModelsListEntitiesDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Adds a hierarchical entity extractor to the application version.
+     * Gets information about all the simple entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;EntityExtractor&gt; object if successful.
+     */
+    List<EntityExtractor> listEntities(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the simple entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<EntityExtractor>>> listEntitiesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the simple entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<EntityExtractor>> listEntitiesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Adds a hierarchical entity extractor to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hierarchicalModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    UUID addHierarchicalEntity(UUID appId, String versionId, HierarchicalEntityModel hierarchicalModelCreateObject);
+    UUID addHierarchicalEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull HierarchicalEntityModel hierarchicalModelCreateObject);
 
     /**
-     * Adds a hierarchical entity extractor to the application version.
+     * Adds a hierarchical entity extractor to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hierarchicalModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<UUID> addHierarchicalEntityAsync(UUID appId, String versionId, HierarchicalEntityModel hierarchicalModelCreateObject);
-
+    Mono<SimpleResponse<UUID>> addHierarchicalEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull HierarchicalEntityModel hierarchicalModelCreateObject);
 
     /**
-     * Gets information about the hierarchical entity models.
+     * Adds a hierarchical entity extractor to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listHierarchicalEntitiesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param hierarchicalModelCreateObject A model containing the name and children of the new entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> addHierarchicalEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull HierarchicalEntityModel hierarchicalModelCreateObject);
+
+    /**
+     * Gets information about all the hierarchical entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;HierarchicalEntityExtractor&gt; object if successful.
      */
-    @Deprecated
-    List<HierarchicalEntityExtractor> listHierarchicalEntities(UUID appId, String versionId, ListHierarchicalEntitiesOptionalParameter listHierarchicalEntitiesOptionalParameter);
+    List<HierarchicalEntityExtractor> listHierarchicalEntities(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the hierarchical entity models.
+     * Gets information about all the hierarchical entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listHierarchicalEntitiesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;HierarchicalEntityExtractor&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<HierarchicalEntityExtractor>> listHierarchicalEntitiesAsync(UUID appId, String versionId, ListHierarchicalEntitiesOptionalParameter listHierarchicalEntitiesOptionalParameter);
+    Mono<SimpleResponse<List<HierarchicalEntityExtractor>>> listHierarchicalEntitiesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the hierarchical entity models.
+     * Gets information about all the hierarchical entity models in a version of the application.
      *
-     * @return the first stage of the listHierarchicalEntities call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsListHierarchicalEntitiesDefinitionStages.WithAppId listHierarchicalEntities();
+    Mono<List<HierarchicalEntityExtractor>> listHierarchicalEntitiesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Grouping of listHierarchicalEntities definition stages.
-     */
-    interface ModelsListHierarchicalEntitiesDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsListHierarchicalEntitiesDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            ModelsListHierarchicalEntitiesDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsListHierarchicalEntitiesDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsListHierarchicalEntitiesDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;HierarchicalEntityExtractor&gt; object if successful.
-             */
-            List<HierarchicalEntityExtractor> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;HierarchicalEntityExtractor&gt; object
-             */
-            Observable<List<HierarchicalEntityExtractor>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of listHierarchicalEntities definition.
-     */
-    interface ModelsListHierarchicalEntitiesDefinition extends
-        ModelsListHierarchicalEntitiesDefinitionStages.WithAppId,
-        ModelsListHierarchicalEntitiesDefinitionStages.WithVersionId,
-        ModelsListHierarchicalEntitiesDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Adds a composite entity extractor to the application.
+     * Gets information about all the hierarchical entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;HierarchicalEntityExtractor&gt; object if successful.
+     */
+    List<HierarchicalEntityExtractor> listHierarchicalEntities(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the hierarchical entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<HierarchicalEntityExtractor>>> listHierarchicalEntitiesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the hierarchical entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<HierarchicalEntityExtractor>> listHierarchicalEntitiesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Adds a composite entity extractor to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param compositeModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    UUID addCompositeEntity(UUID appId, String versionId, CompositeEntityModel compositeModelCreateObject);
+    UUID addCompositeEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull CompositeEntityModel compositeModelCreateObject);
 
     /**
-     * Adds a composite entity extractor to the application.
+     * Adds a composite entity extractor to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param compositeModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<UUID> addCompositeEntityAsync(UUID appId, String versionId, CompositeEntityModel compositeModelCreateObject);
-
+    Mono<SimpleResponse<UUID>> addCompositeEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull CompositeEntityModel compositeModelCreateObject);
 
     /**
-     * Gets information about the composite entity models.
+     * Adds a composite entity extractor to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listCompositeEntitiesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param compositeModelCreateObject A model containing the name and children of the new entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> addCompositeEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull CompositeEntityModel compositeModelCreateObject);
+
+    /**
+     * Gets information about all the composite entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;CompositeEntityExtractor&gt; object if successful.
      */
-    @Deprecated
-    List<CompositeEntityExtractor> listCompositeEntities(UUID appId, String versionId, ListCompositeEntitiesOptionalParameter listCompositeEntitiesOptionalParameter);
+    List<CompositeEntityExtractor> listCompositeEntities(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the composite entity models.
+     * Gets information about all the composite entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listCompositeEntitiesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;CompositeEntityExtractor&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<CompositeEntityExtractor>> listCompositeEntitiesAsync(UUID appId, String versionId, ListCompositeEntitiesOptionalParameter listCompositeEntitiesOptionalParameter);
+    Mono<SimpleResponse<List<CompositeEntityExtractor>>> listCompositeEntitiesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the composite entity models.
+     * Gets information about all the composite entity models in a version of the application.
      *
-     * @return the first stage of the listCompositeEntities call
-     */
-    ModelsListCompositeEntitiesDefinitionStages.WithAppId listCompositeEntities();
-
-    /**
-     * Grouping of listCompositeEntities definition stages.
-     */
-    interface ModelsListCompositeEntitiesDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsListCompositeEntitiesDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            ModelsListCompositeEntitiesDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsListCompositeEntitiesDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsListCompositeEntitiesDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;CompositeEntityExtractor&gt; object if successful.
-             */
-            List<CompositeEntityExtractor> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;CompositeEntityExtractor&gt; object
-             */
-            Observable<List<CompositeEntityExtractor>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of listCompositeEntities definition.
-     */
-    interface ModelsListCompositeEntitiesDefinition extends
-        ModelsListCompositeEntitiesDefinitionStages.WithAppId,
-        ModelsListCompositeEntitiesDefinitionStages.WithVersionId,
-        ModelsListCompositeEntitiesDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Gets information about the closedlist models.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listClosedListsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<CompositeEntityExtractor>> listCompositeEntitiesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Gets information about all the composite entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;CompositeEntityExtractor&gt; object if successful.
+     */
+    List<CompositeEntityExtractor> listCompositeEntities(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the composite entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<CompositeEntityExtractor>>> listCompositeEntitiesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the composite entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<CompositeEntityExtractor>> listCompositeEntitiesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the list entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;ClosedListEntityExtractor&gt; object if successful.
      */
-    @Deprecated
-    List<ClosedListEntityExtractor> listClosedLists(UUID appId, String versionId, ListClosedListsOptionalParameter listClosedListsOptionalParameter);
+    List<ClosedListEntityExtractor> listClosedLists(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the closedlist models.
+     * Gets information about all the list entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listClosedListsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ClosedListEntityExtractor&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<ClosedListEntityExtractor>> listClosedListsAsync(UUID appId, String versionId, ListClosedListsOptionalParameter listClosedListsOptionalParameter);
+    Mono<SimpleResponse<List<ClosedListEntityExtractor>>> listClosedListsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the closedlist models.
+     * Gets information about all the list entity models in a version of the application.
      *
-     * @return the first stage of the listClosedLists call
-     */
-    ModelsListClosedListsDefinitionStages.WithAppId listClosedLists();
-
-    /**
-     * Grouping of listClosedLists definition stages.
-     */
-    interface ModelsListClosedListsDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsListClosedListsDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            ModelsListClosedListsDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsListClosedListsDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsListClosedListsDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;ClosedListEntityExtractor&gt; object if successful.
-             */
-            List<ClosedListEntityExtractor> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;ClosedListEntityExtractor&gt; object
-             */
-            Observable<List<ClosedListEntityExtractor>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of listClosedLists definition.
-     */
-    interface ModelsListClosedListsDefinition extends
-        ModelsListClosedListsDefinitionStages.WithAppId,
-        ModelsListClosedListsDefinitionStages.WithVersionId,
-        ModelsListClosedListsDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Adds a closed list model to the application.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param closedListModelCreateObject A model containing the name and words for the new closed list entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<ClosedListEntityExtractor>> listClosedListsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Gets information about all the list entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;ClosedListEntityExtractor&gt; object if successful.
+     */
+    List<ClosedListEntityExtractor> listClosedLists(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the list entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<ClosedListEntityExtractor>>> listClosedListsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the list entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<ClosedListEntityExtractor>> listClosedListsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Adds a list entity model to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param closedListModelCreateObject A model containing the name and words for the new list entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    UUID addClosedList(UUID appId, String versionId, ClosedListModelCreateObject closedListModelCreateObject);
+    UUID addClosedList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull ClosedListModelCreateObject closedListModelCreateObject);
 
     /**
-     * Adds a closed list model to the application.
+     * Adds a list entity model to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param closedListModelCreateObject A model containing the name and words for the new closed list entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @param closedListModelCreateObject A model containing the name and words for the new list entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<UUID> addClosedListAsync(UUID appId, String versionId, ClosedListModelCreateObject closedListModelCreateObject);
-
-
+    Mono<SimpleResponse<UUID>> addClosedListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull ClosedListModelCreateObject closedListModelCreateObject);
 
     /**
-     * Adds a list of prebuilt entity extractors to the application.
+     * Adds a list entity model to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param closedListModelCreateObject A model containing the name and words for the new list entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> addClosedListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull ClosedListModelCreateObject closedListModelCreateObject);
+
+    /**
+     * Adds a list of prebuilt entities to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param prebuiltExtractorNames An array of prebuilt entity extractor names.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PrebuiltEntityExtractor&gt; object if successful.
      */
-    List<PrebuiltEntityExtractor> addPrebuilt(UUID appId, String versionId, List<String> prebuiltExtractorNames);
+    List<PrebuiltEntityExtractor> addPrebuilt(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<String> prebuiltExtractorNames);
 
     /**
-     * Adds a list of prebuilt entity extractors to the application.
+     * Adds a list of prebuilt entities to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param prebuiltExtractorNames An array of prebuilt entity extractor names.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<PrebuiltEntityExtractor>> addPrebuiltAsync(UUID appId, String versionId, List<String> prebuiltExtractorNames);
-
+    Mono<SimpleResponse<List<PrebuiltEntityExtractor>>> addPrebuiltWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<String> prebuiltExtractorNames);
 
     /**
-     * Gets information about the prebuilt entity models.
+     * Adds a list of prebuilt entities to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listPrebuiltsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param prebuiltExtractorNames An array of prebuilt entity extractor names.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<PrebuiltEntityExtractor>> addPrebuiltAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<String> prebuiltExtractorNames);
+
+    /**
+     * Gets information about all the prebuilt entities in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PrebuiltEntityExtractor&gt; object if successful.
      */
-    @Deprecated
-    List<PrebuiltEntityExtractor> listPrebuilts(UUID appId, String versionId, ListPrebuiltsOptionalParameter listPrebuiltsOptionalParameter);
+    List<PrebuiltEntityExtractor> listPrebuilts(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the prebuilt entity models.
+     * Gets information about all the prebuilt entities in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listPrebuiltsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<PrebuiltEntityExtractor>> listPrebuiltsAsync(UUID appId, String versionId, ListPrebuiltsOptionalParameter listPrebuiltsOptionalParameter);
+    Mono<SimpleResponse<List<PrebuiltEntityExtractor>>> listPrebuiltsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the prebuilt entity models.
+     * Gets information about all the prebuilt entities in a version of the application.
      *
-     * @return the first stage of the listPrebuilts call
-     */
-    ModelsListPrebuiltsDefinitionStages.WithAppId listPrebuilts();
-
-    /**
-     * Grouping of listPrebuilts definition stages.
-     */
-    interface ModelsListPrebuiltsDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsListPrebuiltsDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            ModelsListPrebuiltsDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsListPrebuiltsDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsListPrebuiltsDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;PrebuiltEntityExtractor&gt; object if successful.
-             */
-            List<PrebuiltEntityExtractor> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
-             */
-            Observable<List<PrebuiltEntityExtractor>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of listPrebuilts definition.
-     */
-    interface ModelsListPrebuiltsDefinition extends
-        ModelsListPrebuiltsDefinitionStages.WithAppId,
-        ModelsListPrebuiltsDefinitionStages.WithVersionId,
-        ModelsListPrebuiltsDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Gets all the available prebuilt entity extractors for the application.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<PrebuiltEntityExtractor>> listPrebuiltsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Gets information about all the prebuilt entities in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;PrebuiltEntityExtractor&gt; object if successful.
+     */
+    List<PrebuiltEntityExtractor> listPrebuilts(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the prebuilt entities in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<PrebuiltEntityExtractor>>> listPrebuiltsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the prebuilt entities in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<PrebuiltEntityExtractor>> listPrebuiltsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets all the available prebuilt entities in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;AvailablePrebuiltEntityModel&gt; object if successful.
      */
-    List<AvailablePrebuiltEntityModel> listPrebuiltEntities(UUID appId, String versionId);
+    List<AvailablePrebuiltEntityModel> listPrebuiltEntities(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets all the available prebuilt entity extractors for the application.
+     * Gets all the available prebuilt entities in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;AvailablePrebuiltEntityModel&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<AvailablePrebuiltEntityModel>> listPrebuiltEntitiesAsync(UUID appId, String versionId);
-
+    Mono<SimpleResponse<List<AvailablePrebuiltEntityModel>>> listPrebuiltEntitiesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the application version models.
+     * Gets all the available prebuilt entities in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listModelsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<AvailablePrebuiltEntityModel>> listPrebuiltEntitiesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Gets information about all the intent and entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;ModelInfoResponse&gt; object if successful.
      */
-    @Deprecated
-    List<ModelInfoResponse> listModels(UUID appId, String versionId, ListModelsOptionalParameter listModelsOptionalParameter);
+    List<ModelInfoResponse> listModels(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the application version models.
+     * Gets information about all the intent and entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listModelsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ModelInfoResponse&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<ModelInfoResponse>> listModelsAsync(UUID appId, String versionId, ListModelsOptionalParameter listModelsOptionalParameter);
+    Mono<SimpleResponse<List<ModelInfoResponse>>> listModelsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the application version models.
+     * Gets information about all the intent and entity models in a version of the application.
      *
-     * @return the first stage of the listModels call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsListModelsDefinitionStages.WithAppId listModels();
+    Mono<List<ModelInfoResponse>> listModelsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Grouping of listModels definition stages.
-     */
-    interface ModelsListModelsDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsListModelsDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            ModelsListModelsDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsListModelsDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsListModelsDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;ModelInfoResponse&gt; object if successful.
-             */
-            List<ModelInfoResponse> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;ModelInfoResponse&gt; object
-             */
-            Observable<List<ModelInfoResponse>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of listModels definition.
-     */
-    interface ModelsListModelsDefinition extends
-        ModelsListModelsDefinitionStages.WithAppId,
-        ModelsListModelsDefinitionStages.WithVersionId,
-        ModelsListModelsDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Gets the utterances for the given model in the given app version.
+     * Gets information about all the intent and entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;ModelInfoResponse&gt; object if successful.
+     */
+    List<ModelInfoResponse> listModels(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the intent and entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<ModelInfoResponse>>> listModelsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about all the intent and entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<ModelInfoResponse>> listModelsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets the example utterances for the given intent or entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param modelId The ID (GUID) of the model.
-     * @param examplesMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;LabelTextObject&gt; object if successful.
      */
-    @Deprecated
-    List<LabelTextObject> examplesMethod(UUID appId, String versionId, String modelId, ExamplesMethodOptionalParameter examplesMethodOptionalParameter);
+    List<LabelTextObject> examplesMethod(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String modelId);
 
     /**
-     * Gets the utterances for the given model in the given app version.
+     * Gets the example utterances for the given intent or entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param modelId The ID (GUID) of the model.
-     * @param examplesMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;LabelTextObject&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<LabelTextObject>> examplesMethodAsync(UUID appId, String versionId, String modelId, ExamplesMethodOptionalParameter examplesMethodOptionalParameter);
+    Mono<SimpleResponse<List<LabelTextObject>>> examplesMethodWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String modelId);
 
     /**
-     * Gets the utterances for the given model in the given app version.
+     * Gets the example utterances for the given intent or entity model in a version of the application.
      *
-     * @return the first stage of the examplesMethod call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param modelId The ID (GUID) of the model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsExamplesMethodDefinitionStages.WithAppId examplesMethod();
+    Mono<List<LabelTextObject>> examplesMethodAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String modelId);
 
     /**
-     * Grouping of examplesMethod definition stages.
-     */
-    interface ModelsExamplesMethodDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithModelId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify modelId.
-         */
-        interface WithModelId {
-            /**
-             * The ID (GUID) of the model.
-             *
-             * @return next definition stage
-             */
-            ModelsExamplesMethodDefinitionStages.WithExecute withModelId(String modelId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            ModelsExamplesMethodDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsExamplesMethodDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsExamplesMethodDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;LabelTextObject&gt; object if successful.
-             */
-            List<LabelTextObject> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;LabelTextObject&gt; object
-             */
-            Observable<List<LabelTextObject>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of examplesMethod definition.
-     */
-    interface ModelsExamplesMethodDefinition extends
-        ModelsExamplesMethodDefinitionStages.WithAppId,
-        ModelsExamplesMethodDefinitionStages.WithVersionId,
-        ModelsExamplesMethodDefinitionStages.WithModelId,
-        ModelsExamplesMethodDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Gets information about the intent model.
+     * Gets the example utterances for the given intent or entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param modelId The ID (GUID) of the model.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;LabelTextObject&gt; object if successful.
+     */
+    List<LabelTextObject> examplesMethod(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String modelId, Integer skip, Integer take);
+
+    /**
+     * Gets the example utterances for the given intent or entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param modelId The ID (GUID) of the model.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<LabelTextObject>>> examplesMethodWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String modelId, Integer skip, Integer take);
+
+    /**
+     * Gets the example utterances for the given intent or entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param modelId The ID (GUID) of the model.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<LabelTextObject>> examplesMethodAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String modelId, Integer skip, Integer take);
+
+    /**
+     * Gets information about the intent model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IntentClassifier object if successful.
      */
-    IntentClassifier getIntent(UUID appId, String versionId, UUID intentId);
+    IntentClassifier getIntent(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
 
     /**
-     * Gets information about the intent model.
+     * Gets information about the intent model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the IntentClassifier object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<IntentClassifier> getIntentAsync(UUID appId, String versionId, UUID intentId);
-
+    Mono<SimpleResponse<IntentClassifier>> getIntentWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
 
     /**
-     * Updates the name of an intent classifier.
+     * Gets information about the intent model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param updateIntentOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<IntentClassifier> getIntentAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
+
+    /**
+     * Updates the name of an intent in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus updateIntent(UUID appId, String versionId, UUID intentId, UpdateIntentOptionalParameter updateIntentOptionalParameter);
+    OperationStatus updateIntent(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
 
     /**
-     * Updates the name of an intent classifier.
+     * Updates the name of an intent in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param updateIntentOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> updateIntentAsync(UUID appId, String versionId, UUID intentId, UpdateIntentOptionalParameter updateIntentOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> updateIntentWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
 
     /**
-     * Updates the name of an intent classifier.
+     * Updates the name of an intent in a version of the application.
      *
-     * @return the first stage of the updateIntent call
-     */
-    ModelsUpdateIntentDefinitionStages.WithAppId updateIntent();
-
-    /**
-     * Grouping of updateIntent definition stages.
-     */
-    interface ModelsUpdateIntentDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithIntentId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify intentId.
-         */
-        interface WithIntentId {
-            /**
-             * The intent classifier ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateIntentDefinitionStages.WithExecute withIntentId(UUID intentId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity's new name.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateIntentDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdateIntentDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updateIntent definition.
-     */
-    interface ModelsUpdateIntentDefinition extends
-        ModelsUpdateIntentDefinitionStages.WithAppId,
-        ModelsUpdateIntentDefinitionStages.WithVersionId,
-        ModelsUpdateIntentDefinitionStages.WithIntentId,
-        ModelsUpdateIntentDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Deletes an intent classifier from the application.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param deleteIntentOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateIntentAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
+
+    /**
+     * Updates the name of an intent in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param name The entity's new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus deleteIntent(UUID appId, String versionId, UUID intentId, DeleteIntentOptionalParameter deleteIntentOptionalParameter);
+    OperationStatus updateIntent(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, String name);
 
     /**
-     * Deletes an intent classifier from the application.
+     * Updates the name of an intent in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param deleteIntentOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @param name The entity's new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> deleteIntentAsync(UUID appId, String versionId, UUID intentId, DeleteIntentOptionalParameter deleteIntentOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> updateIntentWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, String name);
 
     /**
-     * Deletes an intent classifier from the application.
+     * Updates the name of an intent in a version of the application.
      *
-     * @return the first stage of the deleteIntent call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param name The entity's new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsDeleteIntentDefinitionStages.WithAppId deleteIntent();
+    Mono<OperationStatus> updateIntentAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, String name);
 
     /**
-     * Grouping of deleteIntent definition stages.
-     */
-    interface ModelsDeleteIntentDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithIntentId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify intentId.
-         */
-        interface WithIntentId {
-            /**
-             * The intent classifier ID.
-             *
-             * @return next definition stage
-             */
-            ModelsDeleteIntentDefinitionStages.WithExecute withIntentId(UUID intentId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Also delete the intent's utterances (true). Or move the utterances to the None intent (false - the default
-             *   value).
-             *
-             * @return next definition stage
-             */
-            ModelsDeleteIntentDefinitionStages.WithExecute withDeleteUtterances(Boolean deleteUtterances);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsDeleteIntentDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of deleteIntent definition.
-     */
-    interface ModelsDeleteIntentDefinition extends
-        ModelsDeleteIntentDefinitionStages.WithAppId,
-        ModelsDeleteIntentDefinitionStages.WithVersionId,
-        ModelsDeleteIntentDefinitionStages.WithIntentId,
-        ModelsDeleteIntentDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Gets information about the entity model.
+     * Deletes an intent from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus deleteIntent(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
+
+    /**
+     * Deletes an intent from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteIntentWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
+
+    /**
+     * Deletes an intent from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteIntentAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
+
+    /**
+     * Deletes an intent from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param deleteUtterances If true, deletes the intent's example utterances. If false, moves the example utterances to the None intent. The default value is false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus deleteIntent(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Boolean deleteUtterances);
+
+    /**
+     * Deletes an intent from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param deleteUtterances If true, deletes the intent's example utterances. If false, moves the example utterances to the None intent. The default value is false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteIntentWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Boolean deleteUtterances);
+
+    /**
+     * Deletes an intent from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param deleteUtterances If true, deletes the intent's example utterances. If false, moves the example utterances to the None intent. The default value is false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteIntentAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Boolean deleteUtterances);
+
+    /**
+     * Gets information about an entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the EntityExtractor object if successful.
      */
-    EntityExtractor getEntity(UUID appId, String versionId, UUID entityId);
+    EntityExtractor getEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Gets information about the entity model.
+     * Gets information about an entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityExtractor object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<EntityExtractor> getEntityAsync(UUID appId, String versionId, UUID entityId);
-
+    Mono<SimpleResponse<EntityExtractor>> getEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Updates the name of an entity extractor.
+     * Gets information about an entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
-     * @param updateEntityOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<EntityExtractor> getEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Updates the name of an entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus updateEntity(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter);
+    OperationStatus updateEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Updates the name of an entity extractor.
+     * Updates the name of an entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
-     * @param updateEntityOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> updateEntityAsync(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> updateEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Updates the name of an entity extractor.
+     * Updates the name of an entity in a version of the application.
      *
-     * @return the first stage of the updateEntity call
-     */
-    ModelsUpdateEntityDefinitionStages.WithAppId updateEntity();
-
-    /**
-     * Grouping of updateEntity definition stages.
-     */
-    interface ModelsUpdateEntityDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity extractor ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateEntityDefinitionStages.WithExecute withEntityId(UUID entityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity's new name.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateEntityDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdateEntityDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updateEntity definition.
-     */
-    interface ModelsUpdateEntityDefinition extends
-        ModelsUpdateEntityDefinitionStages.WithAppId,
-        ModelsUpdateEntityDefinitionStages.WithVersionId,
-        ModelsUpdateEntityDefinitionStages.WithEntityId,
-        ModelsUpdateEntityDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Deletes an entity extractor from the application.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Updates the name of an entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param name The entity's new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteEntity(UUID appId, String versionId, UUID entityId);
+    OperationStatus updateEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
 
     /**
-     * Deletes an entity extractor from the application.
+     * Updates the name of an entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @param name The entity's new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deleteEntityAsync(UUID appId, String versionId, UUID entityId);
-
-
+    Mono<SimpleResponse<OperationStatus>> updateEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
 
     /**
-     * Gets information about the hierarchical entity model.
+     * Updates the name of an entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param name The entity's new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Deletes an entity from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus deleteEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Deletes an entity from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Deletes an entity from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Gets information about a hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HierarchicalEntityExtractor object if successful.
      */
-    HierarchicalEntityExtractor getHierarchicalEntity(UUID appId, String versionId, UUID hEntityId);
+    HierarchicalEntityExtractor getHierarchicalEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
 
     /**
-     * Gets information about the hierarchical entity model.
+     * Gets information about a hierarchical entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the HierarchicalEntityExtractor object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<HierarchicalEntityExtractor> getHierarchicalEntityAsync(UUID appId, String versionId, UUID hEntityId);
-
-
+    Mono<SimpleResponse<HierarchicalEntityExtractor>> getHierarchicalEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
 
     /**
-     * Updates the name and children of a hierarchical entity model.
+     * Gets information about a hierarchical entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<HierarchicalEntityExtractor> getHierarchicalEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
+
+    /**
+     * Updates the name and children of a hierarchical entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
      * @param hierarchicalModelUpdateObject Model containing names of the children of the hierarchical entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus updateHierarchicalEntity(UUID appId, String versionId, UUID hEntityId, HierarchicalEntityModel hierarchicalModelUpdateObject);
+    OperationStatus updateHierarchicalEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull HierarchicalEntityModel hierarchicalModelUpdateObject);
 
     /**
-     * Updates the name and children of a hierarchical entity model.
+     * Updates the name and children of a hierarchical entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
      * @param hierarchicalModelUpdateObject Model containing names of the children of the hierarchical entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> updateHierarchicalEntityAsync(UUID appId, String versionId, UUID hEntityId, HierarchicalEntityModel hierarchicalModelUpdateObject);
-
-
+    Mono<SimpleResponse<OperationStatus>> updateHierarchicalEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull HierarchicalEntityModel hierarchicalModelUpdateObject);
 
     /**
-     * Deletes a hierarchical entity extractor from the application version.
+     * Updates the name and children of a hierarchical entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param hierarchicalModelUpdateObject Model containing names of the children of the hierarchical entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateHierarchicalEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull HierarchicalEntityModel hierarchicalModelUpdateObject);
+
+    /**
+     * Deletes a hierarchical entity from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteHierarchicalEntity(UUID appId, String versionId, UUID hEntityId);
+    OperationStatus deleteHierarchicalEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
 
     /**
-     * Deletes a hierarchical entity extractor from the application version.
+     * Deletes a hierarchical entity from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deleteHierarchicalEntityAsync(UUID appId, String versionId, UUID hEntityId);
-
-
+    Mono<SimpleResponse<OperationStatus>> deleteHierarchicalEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
 
     /**
-     * Gets information about the composite entity model.
+     * Deletes a hierarchical entity from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteHierarchicalEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
+
+    /**
+     * Gets information about a composite entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CompositeEntityExtractor object if successful.
      */
-    CompositeEntityExtractor getCompositeEntity(UUID appId, String versionId, UUID cEntityId);
+    CompositeEntityExtractor getCompositeEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Gets information about the composite entity model.
+     * Gets information about a composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the CompositeEntityExtractor object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<CompositeEntityExtractor> getCompositeEntityAsync(UUID appId, String versionId, UUID cEntityId);
-
-
+    Mono<SimpleResponse<CompositeEntityExtractor>> getCompositeEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Updates the composite entity extractor.
+     * Gets information about a composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<CompositeEntityExtractor> getCompositeEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
+
+    /**
+     * Updates a composite entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
      * @param compositeModelUpdateObject A model object containing the new entity extractor name and children.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus updateCompositeEntity(UUID appId, String versionId, UUID cEntityId, CompositeEntityModel compositeModelUpdateObject);
+    OperationStatus updateCompositeEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull CompositeEntityModel compositeModelUpdateObject);
 
     /**
-     * Updates the composite entity extractor.
+     * Updates a composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
      * @param compositeModelUpdateObject A model object containing the new entity extractor name and children.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> updateCompositeEntityAsync(UUID appId, String versionId, UUID cEntityId, CompositeEntityModel compositeModelUpdateObject);
-
-
+    Mono<SimpleResponse<OperationStatus>> updateCompositeEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull CompositeEntityModel compositeModelUpdateObject);
 
     /**
-     * Deletes a composite entity extractor from the application.
+     * Updates a composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param compositeModelUpdateObject A model object containing the new entity extractor name and children.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateCompositeEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull CompositeEntityModel compositeModelUpdateObject);
+
+    /**
+     * Deletes a composite entity from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteCompositeEntity(UUID appId, String versionId, UUID cEntityId);
+    OperationStatus deleteCompositeEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Deletes a composite entity extractor from the application.
+     * Deletes a composite entity from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deleteCompositeEntityAsync(UUID appId, String versionId, UUID cEntityId);
-
-
+    Mono<SimpleResponse<OperationStatus>> deleteCompositeEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Gets information of a closed list model.
+     * Deletes a composite entity from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param cEntityId The composite entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteCompositeEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
+
+    /**
+     * Gets information about a list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ClosedListEntityExtractor object if successful.
      */
-    ClosedListEntityExtractor getClosedList(UUID appId, String versionId, UUID clEntityId);
+    ClosedListEntityExtractor getClosedList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId);
 
     /**
-     * Gets information of a closed list model.
+     * Gets information about a list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ClosedListEntityExtractor object
+     * @param clEntityId The list model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<ClosedListEntityExtractor> getClosedListAsync(UUID appId, String versionId, UUID clEntityId);
-
-
+    Mono<SimpleResponse<ClosedListEntityExtractor>> getClosedListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId);
 
     /**
-     * Updates the closed list model.
+     * Gets information about a list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @param closedListModelUpdateObject The new entity name and words list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param clEntityId The list model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<ClosedListEntityExtractor> getClosedListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId);
+
+    /**
+     * Updates the list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list model ID.
+     * @param closedListModelUpdateObject The new list entity name and words list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus updateClosedList(UUID appId, String versionId, UUID clEntityId, ClosedListModelUpdateObject closedListModelUpdateObject);
+    OperationStatus updateClosedList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull ClosedListModelUpdateObject closedListModelUpdateObject);
 
     /**
-     * Updates the closed list model.
+     * Updates the list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @param closedListModelUpdateObject The new entity name and words list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @param clEntityId The list model ID.
+     * @param closedListModelUpdateObject The new list entity name and words list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> updateClosedListAsync(UUID appId, String versionId, UUID clEntityId, ClosedListModelUpdateObject closedListModelUpdateObject);
-
+    Mono<SimpleResponse<OperationStatus>> updateClosedListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull ClosedListModelUpdateObject closedListModelUpdateObject);
 
     /**
-     * Adds a batch of sublists to an existing closedlist.
+     * Updates the list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @param patchClosedListOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param clEntityId The list model ID.
+     * @param closedListModelUpdateObject The new list entity name and words list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateClosedListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull ClosedListModelUpdateObject closedListModelUpdateObject);
+
+    /**
+     * Adds a batch of sublists to an existing list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus patchClosedList(UUID appId, String versionId, UUID clEntityId, PatchClosedListOptionalParameter patchClosedListOptionalParameter);
+    OperationStatus patchClosedList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId);
 
     /**
-     * Adds a batch of sublists to an existing closedlist.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @param patchClosedListOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @param clEntityId The list entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> patchClosedListAsync(UUID appId, String versionId, UUID clEntityId, PatchClosedListOptionalParameter patchClosedListOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> patchClosedListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId);
 
     /**
-     * Adds a batch of sublists to an existing closedlist.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
-     * @return the first stage of the patchClosedList call
-     */
-    ModelsPatchClosedListDefinitionStages.WithAppId patchClosedList();
-
-    /**
-     * Grouping of patchClosedList definition stages.
-     */
-    interface ModelsPatchClosedListDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithClEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify clEntityId.
-         */
-        interface WithClEntityId {
-            /**
-             * The closed list model ID.
-             *
-             * @return next definition stage
-             */
-            ModelsPatchClosedListDefinitionStages.WithExecute withClEntityId(UUID clEntityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Sublists to add.
-             *
-             * @return next definition stage
-             */
-            ModelsPatchClosedListDefinitionStages.WithExecute withSubLists(List<WordListObject> subLists);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsPatchClosedListDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of patchClosedList definition.
-     */
-    interface ModelsPatchClosedListDefinition extends
-        ModelsPatchClosedListDefinitionStages.WithAppId,
-        ModelsPatchClosedListDefinitionStages.WithVersionId,
-        ModelsPatchClosedListDefinitionStages.WithClEntityId,
-        ModelsPatchClosedListDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Deletes a closed list model from the application.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param clEntityId The list entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> patchClosedListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId);
+
+    /**
+     * Adds a batch of sublists to an existing list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list entity model ID.
+     * @param subLists Sublists to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteClosedList(UUID appId, String versionId, UUID clEntityId);
+    OperationStatus patchClosedList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, List<WordListObject> subLists);
 
     /**
-     * Deletes a closed list model from the application.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @param clEntityId The list entity model ID.
+     * @param subLists Sublists to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deleteClosedListAsync(UUID appId, String versionId, UUID clEntityId);
-
-
+    Mono<SimpleResponse<OperationStatus>> patchClosedListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, List<WordListObject> subLists);
 
     /**
-     * Gets information about the prebuilt entity model.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list entity model ID.
+     * @param subLists Sublists to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> patchClosedListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, List<WordListObject> subLists);
+
+    /**
+     * Deletes a list entity model from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus deleteClosedList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId);
+
+    /**
+     * Deletes a list entity model from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteClosedListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId);
+
+    /**
+     * Deletes a list entity model from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteClosedListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId);
+
+    /**
+     * Gets information about a prebuilt entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param prebuiltId The prebuilt entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PrebuiltEntityExtractor object if successful.
      */
-    PrebuiltEntityExtractor getPrebuilt(UUID appId, String versionId, UUID prebuiltId);
+    PrebuiltEntityExtractor getPrebuilt(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID prebuiltId);
 
     /**
-     * Gets information about the prebuilt entity model.
+     * Gets information about a prebuilt entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param prebuiltId The prebuilt entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PrebuiltEntityExtractor object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<PrebuiltEntityExtractor> getPrebuiltAsync(UUID appId, String versionId, UUID prebuiltId);
-
-
+    Mono<SimpleResponse<PrebuiltEntityExtractor>> getPrebuiltWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID prebuiltId);
 
     /**
-     * Deletes a prebuilt entity extractor from the application.
+     * Gets information about a prebuilt entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param prebuiltId The prebuilt entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<PrebuiltEntityExtractor> getPrebuiltAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID prebuiltId);
+
+    /**
+     * Deletes a prebuilt entity extractor from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param prebuiltId The prebuilt entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deletePrebuilt(UUID appId, String versionId, UUID prebuiltId);
+    OperationStatus deletePrebuilt(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID prebuiltId);
 
     /**
-     * Deletes a prebuilt entity extractor from the application.
+     * Deletes a prebuilt entity extractor from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param prebuiltId The prebuilt entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deletePrebuiltAsync(UUID appId, String versionId, UUID prebuiltId);
-
-
+    Mono<SimpleResponse<OperationStatus>> deletePrebuiltWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID prebuiltId);
 
     /**
-     * Deletes a sublist of a specific closed list model.
+     * Deletes a prebuilt entity extractor from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param prebuiltId The prebuilt entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deletePrebuiltAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID prebuiltId);
+
+    /**
+     * Deletes a sublist of a specific list entity model from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteSubList(UUID appId, String versionId, UUID clEntityId, int subListId);
+    OperationStatus deleteSubList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull long subListId);
 
     /**
-     * Deletes a sublist of a specific closed list model.
+     * Deletes a sublist of a specific list entity model from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deleteSubListAsync(UUID appId, String versionId, UUID clEntityId, int subListId);
-
-
+    Mono<SimpleResponse<OperationStatus>> deleteSubListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull long subListId);
 
     /**
-     * Updates one of the closed list's sublists.
+     * Deletes a sublist of a specific list entity model from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
+     * @param subListId The sublist ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteSubListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull long subListId);
+
+    /**
+     * Updates one of the list entity's sublists in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @param wordListBaseUpdateObject A sublist update object containing the new canonical form and the list of words.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus updateSubList(UUID appId, String versionId, UUID clEntityId, int subListId, WordListBaseUpdateObject wordListBaseUpdateObject);
+    OperationStatus updateSubList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull long subListId, @NonNull WordListBaseUpdateObject wordListBaseUpdateObject);
 
     /**
-     * Updates one of the closed list's sublists.
+     * Updates one of the list entity's sublists in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @param wordListBaseUpdateObject A sublist update object containing the new canonical form and the list of words.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> updateSubListAsync(UUID appId, String versionId, UUID clEntityId, int subListId, WordListBaseUpdateObject wordListBaseUpdateObject);
-
+    Mono<SimpleResponse<OperationStatus>> updateSubListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull long subListId, @NonNull WordListBaseUpdateObject wordListBaseUpdateObject);
 
     /**
-     * Suggests examples that would improve the accuracy of the intent model.
+     * Updates one of the list entity's sublists in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list entity extractor ID.
+     * @param subListId The sublist ID.
+     * @param wordListBaseUpdateObject A sublist update object containing the new canonical form and the list of words.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateSubListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull long subListId, @NonNull WordListBaseUpdateObject wordListBaseUpdateObject);
+
+    /**
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;IntentsSuggestionExample&gt; object if successful.
      */
-    @Deprecated
-    List<IntentsSuggestionExample> getIntentSuggestions(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter);
+    List<IntentsSuggestionExample> listIntentSuggestions(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
 
     /**
-     * Suggests examples that would improve the accuracy of the intent model.
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<IntentsSuggestionExample>> getIntentSuggestionsAsync(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter);
+    Mono<SimpleResponse<List<IntentsSuggestionExample>>> listIntentSuggestionsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
 
     /**
-     * Suggests examples that would improve the accuracy of the intent model.
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the application.
      *
-     * @return the first stage of the getIntentSuggestions call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsGetIntentSuggestionsDefinitionStages.WithAppId getIntentSuggestions();
+    Mono<List<IntentsSuggestionExample>> listIntentSuggestionsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId);
 
     /**
-     * Grouping of getIntentSuggestions definition stages.
-     */
-    interface ModelsGetIntentSuggestionsDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithIntentId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify intentId.
-         */
-        interface WithIntentId {
-            /**
-             * The intent classifier ID.
-             *
-             * @return next definition stage
-             */
-            ModelsGetIntentSuggestionsDefinitionStages.WithExecute withIntentId(UUID intentId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsGetIntentSuggestionsDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsGetIntentSuggestionsDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;IntentsSuggestionExample&gt; object if successful.
-             */
-            List<IntentsSuggestionExample> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
-             */
-            Observable<List<IntentsSuggestionExample>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of getIntentSuggestions definition.
-     */
-    interface ModelsGetIntentSuggestionsDefinition extends
-        ModelsGetIntentSuggestionsDefinitionStages.WithAppId,
-        ModelsGetIntentSuggestionsDefinitionStages.WithVersionId,
-        ModelsGetIntentSuggestionsDefinitionStages.WithIntentId,
-        ModelsGetIntentSuggestionsDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Get suggestion examples that would improve the accuracy of the entity model.
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;IntentsSuggestionExample&gt; object if successful.
+     */
+    List<IntentsSuggestionExample> listIntentSuggestions(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Integer take);
+
+    /**
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<IntentsSuggestionExample>>> listIntentSuggestionsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Integer take);
+
+    /**
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<IntentsSuggestionExample>> listIntentSuggestionsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Integer take);
+
+    /**
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The target entity extractor model to enhance.
-     * @param getEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;EntitiesSuggestionExample&gt; object if successful.
      */
-    @Deprecated
-    List<EntitiesSuggestionExample> getEntitySuggestions(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter);
+    List<EntitiesSuggestionExample> listEntitySuggestions(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Get suggestion examples that would improve the accuracy of the entity model.
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The target entity extractor model to enhance.
-     * @param getEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<EntitiesSuggestionExample>> getEntitySuggestionsAsync(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter);
+    Mono<SimpleResponse<List<EntitiesSuggestionExample>>> listEntitySuggestionsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Get suggestion examples that would improve the accuracy of the entity model.
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the application.
      *
-     * @return the first stage of the getEntitySuggestions call
-     */
-    ModelsGetEntitySuggestionsDefinitionStages.WithAppId getEntitySuggestions();
-
-    /**
-     * Grouping of getEntitySuggestions definition stages.
-     */
-    interface ModelsGetEntitySuggestionsDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The target entity extractor model to enhance.
-             *
-             * @return next definition stage
-             */
-            ModelsGetEntitySuggestionsDefinitionStages.WithExecute withEntityId(UUID entityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsGetEntitySuggestionsDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsGetEntitySuggestionsDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;EntitiesSuggestionExample&gt; object if successful.
-             */
-            List<EntitiesSuggestionExample> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
-             */
-            Observable<List<EntitiesSuggestionExample>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of getEntitySuggestions definition.
-     */
-    interface ModelsGetEntitySuggestionsDefinition extends
-        ModelsGetEntitySuggestionsDefinitionStages.WithAppId,
-        ModelsGetEntitySuggestionsDefinitionStages.WithVersionId,
-        ModelsGetEntitySuggestionsDefinitionStages.WithEntityId,
-        ModelsGetEntitySuggestionsDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Adds a list to an existing closed list.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param entityId The target entity extractor model to enhance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<EntitiesSuggestionExample>> listEntitySuggestionsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The target entity extractor model to enhance.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;EntitiesSuggestionExample&gt; object if successful.
+     */
+    List<EntitiesSuggestionExample> listEntitySuggestions(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, Integer take);
+
+    /**
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The target entity extractor model to enhance.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<EntitiesSuggestionExample>>> listEntitySuggestionsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, Integer take);
+
+    /**
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The target entity extractor model to enhance.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<EntitiesSuggestionExample>> listEntitySuggestionsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, Integer take);
+
+    /**
+     * Adds a sublist to an existing list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param clEntityId The list entity extractor ID.
      * @param wordListCreateObject Words list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the int object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the long object if successful.
      */
-    int addSubList(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject);
+    long addSubList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull WordListObject wordListCreateObject);
 
     /**
-     * Adds a list to an existing closed list.
+     * Adds a sublist to an existing list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param wordListCreateObject Words list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the int object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<Integer> addSubListAsync(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject);
-
+    Mono<SimpleResponse<Long>> addSubListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull WordListObject wordListCreateObject);
 
     /**
-     * Adds a customizable prebuilt domain along with all of its models to this application.
+     * Adds a sublist to an existing list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addCustomPrebuiltDomainOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param clEntityId The list entity extractor ID.
+     * @param wordListCreateObject Words list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Long> addSubListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID clEntityId, @NonNull WordListObject wordListCreateObject);
+
+    /**
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;UUID&gt; object if successful.
      */
-    @Deprecated
-    List<UUID> addCustomPrebuiltDomain(UUID appId, String versionId, AddCustomPrebuiltDomainModelsOptionalParameter addCustomPrebuiltDomainOptionalParameter);
+    List<UUID> addCustomPrebuiltDomain(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Adds a customizable prebuilt domain along with all of its models to this application.
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addCustomPrebuiltDomainOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;UUID&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<UUID>> addCustomPrebuiltDomainAsync(UUID appId, String versionId, AddCustomPrebuiltDomainModelsOptionalParameter addCustomPrebuiltDomainOptionalParameter);
+    Mono<SimpleResponse<List<UUID>>> addCustomPrebuiltDomainWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Adds a customizable prebuilt domain along with all of its models to this application.
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the application.
      *
-     * @return the first stage of the addCustomPrebuiltDomain call
-     */
-    ModelsAddCustomPrebuiltDomainDefinitionStages.WithAppId addCustomPrebuiltDomain();
-
-    /**
-     * Grouping of addCustomPrebuiltDomain definition stages.
-     */
-    interface ModelsAddCustomPrebuiltDomainDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsAddCustomPrebuiltDomainDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The domain name.
-             *
-             * @return next definition stage
-             */
-            ModelsAddCustomPrebuiltDomainDefinitionStages.WithExecute withDomainName(String domainName);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsAddCustomPrebuiltDomainDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;UUID&gt; object if successful.
-             */
-            List<UUID> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;UUID&gt; object
-             */
-            Observable<List<UUID>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of addCustomPrebuiltDomain definition.
-     */
-    interface ModelsAddCustomPrebuiltDomainDefinition extends
-        ModelsAddCustomPrebuiltDomainDefinitionStages.WithAppId,
-        ModelsAddCustomPrebuiltDomainDefinitionStages.WithVersionId,
-        ModelsAddCustomPrebuiltDomainDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Adds a custom prebuilt intent model to the application.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt intent and the name of the domain to
-      *  which this model belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<UUID>> addCustomPrebuiltDomainAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param domainName The domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;UUID&gt; object if successful.
+     */
+    List<UUID> addCustomPrebuiltDomain(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String domainName);
+
+    /**
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param domainName The domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<UUID>>> addCustomPrebuiltDomainWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String domainName);
+
+    /**
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param domainName The domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<UUID>> addCustomPrebuiltDomainAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String domainName);
+
+    /**
+     * Adds a customizable prebuilt intent model to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the customizable prebuilt intent and the name of the domain to which this model belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    UUID addCustomPrebuiltIntent(UUID appId, String versionId, PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
+    UUID addCustomPrebuiltIntent(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
 
     /**
-     * Adds a custom prebuilt intent model to the application.
+     * Adds a customizable prebuilt intent model to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt intent and the name of the domain to
-      *  which this model belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the customizable prebuilt intent and the name of the domain to which this model belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<UUID> addCustomPrebuiltIntentAsync(UUID appId, String versionId, PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
-
-
+    Mono<SimpleResponse<UUID>> addCustomPrebuiltIntentWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
 
     /**
-     * Gets custom prebuilt intents information of this application.
+     * Adds a customizable prebuilt intent model to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the customizable prebuilt intent and the name of the domain to which this model belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> addCustomPrebuiltIntentAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
+
+    /**
+     * Gets information about customizable prebuilt intents added to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;IntentClassifier&gt; object if successful.
      */
-    List<IntentClassifier> listCustomPrebuiltIntents(UUID appId, String versionId);
+    List<IntentClassifier> listCustomPrebuiltIntents(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets custom prebuilt intents information of this application.
+     * Gets information about customizable prebuilt intents added to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;IntentClassifier&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<IntentClassifier>> listCustomPrebuiltIntentsAsync(UUID appId, String versionId);
-
-
+    Mono<SimpleResponse<List<IntentClassifier>>> listCustomPrebuiltIntentsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Adds a custom prebuilt entity model to the application.
+     * Gets information about customizable prebuilt intents added to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt entity and the name of the domain to
-      *  which this model belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<IntentClassifier>> listCustomPrebuiltIntentsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Adds a prebuilt entity model to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the prebuilt entity and the name of the domain to which this model belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    UUID addCustomPrebuiltEntity(UUID appId, String versionId, PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
+    UUID addCustomPrebuiltEntity(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
 
     /**
-     * Adds a custom prebuilt entity model to the application.
+     * Adds a prebuilt entity model to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt entity and the name of the domain to
-      *  which this model belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the prebuilt entity and the name of the domain to which this model belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<UUID> addCustomPrebuiltEntityAsync(UUID appId, String versionId, PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
-
-
+    Mono<SimpleResponse<UUID>> addCustomPrebuiltEntityWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
 
     /**
-     * Gets all custom prebuilt entities information of this application.
+     * Adds a prebuilt entity model to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the prebuilt entity and the name of the domain to which this model belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> addCustomPrebuiltEntityAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
+
+    /**
+     * Gets all prebuilt entities used in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;EntityExtractor&gt; object if successful.
      */
-    List<EntityExtractor> listCustomPrebuiltEntities(UUID appId, String versionId);
+    List<EntityExtractor> listCustomPrebuiltEntities(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets all custom prebuilt entities information of this application.
+     * Gets all prebuilt entities used in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityExtractor&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<EntityExtractor>> listCustomPrebuiltEntitiesAsync(UUID appId, String versionId);
-
-
+    Mono<SimpleResponse<List<EntityExtractor>>> listCustomPrebuiltEntitiesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets all custom prebuilt models information of this application.
+     * Gets all prebuilt entities used in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<EntityExtractor>> listCustomPrebuiltEntitiesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Gets all prebuilt intent and entity model information used in a version of this application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;CustomPrebuiltModel&gt; object if successful.
      */
-    List<CustomPrebuiltModel> listCustomPrebuiltModels(UUID appId, String versionId);
+    List<CustomPrebuiltModel> listCustomPrebuiltModels(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets all custom prebuilt models information of this application.
+     * Gets all prebuilt intent and entity model information used in a version of this application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;CustomPrebuiltModel&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<CustomPrebuiltModel>> listCustomPrebuiltModelsAsync(UUID appId, String versionId);
-
-
+    Mono<SimpleResponse<List<CustomPrebuiltModel>>> listCustomPrebuiltModelsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Deletes a prebuilt domain's models from the application.
+     * Gets all prebuilt intent and entity model information used in a version of this application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<CustomPrebuiltModel>> listCustomPrebuiltModelsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Deletes a prebuilt domain's models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param domainName Domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteCustomPrebuiltDomain(UUID appId, String versionId, String domainName);
+    OperationStatus deleteCustomPrebuiltDomain(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String domainName);
 
     /**
-     * Deletes a prebuilt domain's models from the application.
+     * Deletes a prebuilt domain's models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param domainName Domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deleteCustomPrebuiltDomainAsync(UUID appId, String versionId, String domainName);
-
-
+    Mono<SimpleResponse<OperationStatus>> deleteCustomPrebuiltDomainWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String domainName);
 
     /**
-     * Gets information about the hierarchical entity child model.
+     * Deletes a prebuilt domain's models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param domainName Domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteCustomPrebuiltDomainAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String domainName);
+
+    /**
+     * Gets information about the child's model contained in an hierarchical entity child model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
      * @param hChildId The hierarchical entity extractor child ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HierarchicalChildEntity object if successful.
      */
-    HierarchicalChildEntity getHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, UUID hChildId);
+    HierarchicalChildEntity getHierarchicalEntityChild(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId);
 
     /**
-     * Gets information about the hierarchical entity child model.
+     * Gets information about the child's model contained in an hierarchical entity child model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
      * @param hChildId The hierarchical entity extractor child ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the HierarchicalChildEntity object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<HierarchicalChildEntity> getHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId);
-
+    Mono<SimpleResponse<HierarchicalChildEntity>> getHierarchicalEntityChildWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId);
 
     /**
-     * Renames a single child in an existing hierarchical entity model.
+     * Gets information about the child's model contained in an hierarchical entity child model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
      * @param hChildId The hierarchical entity extractor child ID.
-     * @param updateHierarchicalEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<HierarchicalChildEntity> getHierarchicalEntityChildAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId);
+
+    /**
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param hChildId The hierarchical entity extractor child ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus updateHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, UUID hChildId, UpdateHierarchicalEntityChildOptionalParameter updateHierarchicalEntityChildOptionalParameter);
+    OperationStatus updateHierarchicalEntityChild(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId);
 
     /**
-     * Renames a single child in an existing hierarchical entity model.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
      * @param hChildId The hierarchical entity extractor child ID.
-     * @param updateHierarchicalEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> updateHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId, UpdateHierarchicalEntityChildOptionalParameter updateHierarchicalEntityChildOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> updateHierarchicalEntityChildWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId);
 
     /**
-     * Renames a single child in an existing hierarchical entity model.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
-     * @return the first stage of the updateHierarchicalEntityChild call
-     */
-    ModelsUpdateHierarchicalEntityChildDefinitionStages.WithAppId updateHierarchicalEntityChild();
-
-    /**
-     * Grouping of updateHierarchicalEntityChild definition stages.
-     */
-    interface ModelsUpdateHierarchicalEntityChildDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithHEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify hEntityId.
-         */
-        interface WithHEntityId {
-            /**
-             * The hierarchical entity extractor ID.
-             *
-             * @return next definition stage
-             */
-            WithHChildId withHEntityId(UUID hEntityId);
-        }
-        /**
-         * The stage of the definition to be specify hChildId.
-         */
-        interface WithHChildId {
-            /**
-             * The hierarchical entity extractor child ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateHierarchicalEntityChildDefinitionStages.WithExecute withHChildId(UUID hChildId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             *
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateHierarchicalEntityChildDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdateHierarchicalEntityChildDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updateHierarchicalEntityChild definition.
-     */
-    interface ModelsUpdateHierarchicalEntityChildDefinition extends
-        ModelsUpdateHierarchicalEntityChildDefinitionStages.WithAppId,
-        ModelsUpdateHierarchicalEntityChildDefinitionStages.WithVersionId,
-        ModelsUpdateHierarchicalEntityChildDefinitionStages.WithHEntityId,
-        ModelsUpdateHierarchicalEntityChildDefinitionStages.WithHChildId,
-        ModelsUpdateHierarchicalEntityChildDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Deletes a hierarchical entity extractor child from the application.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
      * @param hChildId The hierarchical entity extractor child ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateHierarchicalEntityChildAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId);
+
+    /**
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param hChildId The hierarchical entity extractor child ID.
+     * @param name the String value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, UUID hChildId);
+    OperationStatus updateHierarchicalEntityChild(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId, String name);
 
     /**
-     * Deletes a hierarchical entity extractor child from the application.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
      * @param hChildId The hierarchical entity extractor child ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @param name the String value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deleteHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId);
-
+    Mono<SimpleResponse<OperationStatus>> updateHierarchicalEntityChildWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId, String name);
 
     /**
-     * Creates a single child in an existing hierarchical entity model.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
-     * @param addHierarchicalEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param hChildId The hierarchical entity extractor child ID.
+     * @param name the String value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateHierarchicalEntityChildAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId, String name);
+
+    /**
+     * Deletes a hierarchical entity extractor child in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param hChildId The hierarchical entity extractor child ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus deleteHierarchicalEntityChild(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId);
+
+    /**
+     * Deletes a hierarchical entity extractor child in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param hChildId The hierarchical entity extractor child ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteHierarchicalEntityChildWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId);
+
+    /**
+     * Deletes a hierarchical entity extractor child in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param hChildId The hierarchical entity extractor child ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteHierarchicalEntityChildAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID hChildId);
+
+    /**
+     * Creates a single child in an existing hierarchical entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID addHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter);
+    UUID addHierarchicalEntityChild(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
 
     /**
-     * Creates a single child in an existing hierarchical entity model.
+     * Creates a single child in an existing hierarchical entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
-     * @param addHierarchicalEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<UUID> addHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter);
+    Mono<SimpleResponse<UUID>> addHierarchicalEntityChildWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
 
     /**
-     * Creates a single child in an existing hierarchical entity model.
+     * Creates a single child in an existing hierarchical entity model in a version of the application.
      *
-     * @return the first stage of the addHierarchicalEntityChild call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsAddHierarchicalEntityChildDefinitionStages.WithAppId addHierarchicalEntityChild();
+    Mono<UUID> addHierarchicalEntityChildAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
 
     /**
-     * Grouping of addHierarchicalEntityChild definition stages.
-     */
-    interface ModelsAddHierarchicalEntityChildDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithHEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify hEntityId.
-         */
-        interface WithHEntityId {
-            /**
-             * The hierarchical entity extractor ID.
-             *
-             * @return next definition stage
-             */
-            ModelsAddHierarchicalEntityChildDefinitionStages.WithExecute withHEntityId(UUID hEntityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             *
-             *
-             * @return next definition stage
-             */
-            ModelsAddHierarchicalEntityChildDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsAddHierarchicalEntityChildDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of addHierarchicalEntityChild definition.
-     */
-    interface ModelsAddHierarchicalEntityChildDefinition extends
-        ModelsAddHierarchicalEntityChildDefinitionStages.WithAppId,
-        ModelsAddHierarchicalEntityChildDefinitionStages.WithVersionId,
-        ModelsAddHierarchicalEntityChildDefinitionStages.WithHEntityId,
-        ModelsAddHierarchicalEntityChildDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Creates a single child in an existing composite entity model.
+     * Creates a single child in an existing hierarchical entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param name the String value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID addHierarchicalEntityChild(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, String name);
+
+    /**
+     * Creates a single child in an existing hierarchical entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param name the String value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> addHierarchicalEntityChildWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, String name);
+
+    /**
+     * Creates a single child in an existing hierarchical entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param name the String value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> addHierarchicalEntityChildAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, String name);
+
+    /**
+     * Creates a single child in an existing composite entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
-     * @param addCompositeEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID addCompositeEntityChild(UUID appId, String versionId, UUID cEntityId, AddCompositeEntityChildOptionalParameter addCompositeEntityChildOptionalParameter);
+    UUID addCompositeEntityChild(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Creates a single child in an existing composite entity model.
+     * Creates a single child in an existing composite entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
-     * @param addCompositeEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<UUID> addCompositeEntityChildAsync(UUID appId, String versionId, UUID cEntityId, AddCompositeEntityChildOptionalParameter addCompositeEntityChildOptionalParameter);
+    Mono<SimpleResponse<UUID>> addCompositeEntityChildWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Creates a single child in an existing composite entity model.
+     * Creates a single child in an existing composite entity model in a version of the application.
      *
-     * @return the first stage of the addCompositeEntityChild call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsAddCompositeEntityChildDefinitionStages.WithAppId addCompositeEntityChild();
+    Mono<UUID> addCompositeEntityChildAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Grouping of addCompositeEntityChild definition stages.
-     */
-    interface ModelsAddCompositeEntityChildDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithCEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify cEntityId.
-         */
-        interface WithCEntityId {
-            /**
-             * The composite entity extractor ID.
-             *
-             * @return next definition stage
-             */
-            ModelsAddCompositeEntityChildDefinitionStages.WithExecute withCEntityId(UUID cEntityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             *
-             *
-             * @return next definition stage
-             */
-            ModelsAddCompositeEntityChildDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsAddCompositeEntityChildDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of addCompositeEntityChild definition.
-     */
-    interface ModelsAddCompositeEntityChildDefinition extends
-        ModelsAddCompositeEntityChildDefinitionStages.WithAppId,
-        ModelsAddCompositeEntityChildDefinitionStages.WithVersionId,
-        ModelsAddCompositeEntityChildDefinitionStages.WithCEntityId,
-        ModelsAddCompositeEntityChildDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Deletes a composite entity extractor child from the application.
+     * Creates a single child in an existing composite entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @param name the String value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID addCompositeEntityChild(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, String name);
+
+    /**
+     * Creates a single child in an existing composite entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @param name the String value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> addCompositeEntityChildWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, String name);
+
+    /**
+     * Creates a single child in an existing composite entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @param name the String value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> addCompositeEntityChildAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, String name);
+
+    /**
+     * Deletes a composite entity extractor child from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
      * @param cChildId The hierarchical entity extractor child ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteCompositeEntityChild(UUID appId, String versionId, UUID cEntityId, UUID cChildId);
+    OperationStatus deleteCompositeEntityChild(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID cChildId);
 
     /**
-     * Deletes a composite entity extractor child from the application.
+     * Deletes a composite entity extractor child from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
      * @param cChildId The hierarchical entity extractor child ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deleteCompositeEntityChildAsync(UUID appId, String versionId, UUID cEntityId, UUID cChildId);
-
+    Mono<SimpleResponse<OperationStatus>> deleteCompositeEntityChildWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID cChildId);
 
     /**
-     * Gets information about the regex entity models.
+     * Deletes a composite entity extractor child from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param cEntityId The composite entity extractor ID.
+     * @param cChildId The hierarchical entity extractor child ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteCompositeEntityChildAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID cChildId);
+
+    /**
+     * Gets information about the regular expression entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;RegexEntityExtractor&gt; object if successful.
      */
-    @Deprecated
-    List<RegexEntityExtractor> getRegexEntityInfos(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter);
+    List<RegexEntityExtractor> listRegexEntityInfos(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the regex entity models.
+     * Gets information about the regular expression entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;RegexEntityExtractor&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<RegexEntityExtractor>> getRegexEntityInfosAsync(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter);
+    Mono<SimpleResponse<List<RegexEntityExtractor>>> listRegexEntityInfosWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Gets information about the regex entity models.
+     * Gets information about the regular expression entity models in a version of the application.
      *
-     * @return the first stage of the getRegexEntityInfos call
-     */
-    ModelsGetRegexEntityInfosDefinitionStages.WithAppId getRegexEntityInfos();
-
-    /**
-     * Grouping of getRegexEntityInfos definition stages.
-     */
-    interface ModelsGetRegexEntityInfosDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsGetRegexEntityInfosDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            ModelsGetRegexEntityInfosDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsGetRegexEntityInfosDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsGetRegexEntityInfosDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;RegexEntityExtractor&gt; object if successful.
-             */
-            List<RegexEntityExtractor> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;RegexEntityExtractor&gt; object
-             */
-            Observable<List<RegexEntityExtractor>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of getRegexEntityInfos definition.
-     */
-    interface ModelsGetRegexEntityInfosDefinition extends
-        ModelsGetRegexEntityInfosDefinitionStages.WithAppId,
-        ModelsGetRegexEntityInfosDefinitionStages.WithVersionId,
-        ModelsGetRegexEntityInfosDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Adds a regex entity model to the application version.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regex entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<RegexEntityExtractor>> listRegexEntityInfosAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
+
+    /**
+     * Gets information about the regular expression entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;RegexEntityExtractor&gt; object if successful.
+     */
+    List<RegexEntityExtractor> listRegexEntityInfos(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about the regular expression entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<RegexEntityExtractor>>> listRegexEntityInfosWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Gets information about the regular expression entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<RegexEntityExtractor>> listRegexEntityInfosAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Adds a regular expression entity model to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regular expression entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    UUID createRegexEntityModel(UUID appId, String versionId, RegexModelCreateObject regexEntityExtractorCreateObj);
+    UUID createRegexEntityModel(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull RegexModelCreateObject regexEntityExtractorCreateObj);
 
     /**
-     * Adds a regex entity model to the application version.
+     * Adds a regular expression entity model to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regex entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regular expression entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<UUID> createRegexEntityModelAsync(UUID appId, String versionId, RegexModelCreateObject regexEntityExtractorCreateObj);
-
+    Mono<SimpleResponse<UUID>> createRegexEntityModelWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull RegexModelCreateObject regexEntityExtractorCreateObj);
 
     /**
-     * Get information about the Pattern.Any entity models.
+     * Adds a regular expression entity model to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regular expression entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> createRegexEntityModelAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull RegexModelCreateObject regexEntityExtractorCreateObj);
+
+    /**
+     * Get information about the Pattern.Any entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PatternAnyEntityExtractor&gt; object if successful.
      */
-    @Deprecated
-    List<PatternAnyEntityExtractor> getPatternAnyEntityInfos(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter);
+    List<PatternAnyEntityExtractor> listPatternAnyEntityInfos(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Get information about the Pattern.Any entity models.
+     * Get information about the Pattern.Any entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<List<PatternAnyEntityExtractor>> getPatternAnyEntityInfosAsync(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter);
+    Mono<SimpleResponse<List<PatternAnyEntityExtractor>>> listPatternAnyEntityInfosWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Get information about the Pattern.Any entity models.
+     * Get information about the Pattern.Any entity models in a version of the application.
      *
-     * @return the first stage of the getPatternAnyEntityInfos call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsGetPatternAnyEntityInfosDefinitionStages.WithAppId getPatternAnyEntityInfos();
+    Mono<List<PatternAnyEntityExtractor>> listPatternAnyEntityInfosAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId);
 
     /**
-     * Grouping of getPatternAnyEntityInfos definition stages.
-     */
-    interface ModelsGetPatternAnyEntityInfosDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The number of entries to skip. Default value is 0.
-             *
-             * @return next definition stage
-             */
-            ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute withSkip(Integer skip);
-
-            /**
-             * The number of entries to return. Maximum page size is 500. Default is 100.
-             *
-             * @return next definition stage
-             */
-            ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute withTake(Integer take);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsGetPatternAnyEntityInfosDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;PatternAnyEntityExtractor&gt; object if successful.
-             */
-            List<PatternAnyEntityExtractor> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
-             */
-            Observable<List<PatternAnyEntityExtractor>> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of getPatternAnyEntityInfos definition.
-     */
-    interface ModelsGetPatternAnyEntityInfosDefinition extends
-        ModelsGetPatternAnyEntityInfosDefinitionStages.WithAppId,
-        ModelsGetPatternAnyEntityInfosDefinitionStages.WithVersionId,
-        ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Adds a pattern.any entity extractor to the application.
+     * Get information about the Pattern.Any entity models in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;PatternAnyEntityExtractor&gt; object if successful.
+     */
+    List<PatternAnyEntityExtractor> listPatternAnyEntityInfos(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Get information about the Pattern.Any entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<PatternAnyEntityExtractor>>> listPatternAnyEntityInfosWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Get information about the Pattern.Any entity models in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<PatternAnyEntityExtractor>> listPatternAnyEntityInfosAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take);
+
+    /**
+     * Adds a pattern.any entity extractor to a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param extractorCreateObject A model object containing the name and explicit list for the new Pattern.Any entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    UUID createPatternAnyEntityModel(UUID appId, String versionId, PatternAnyModelCreateObject extractorCreateObject);
+    UUID createPatternAnyEntityModel(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PatternAnyModelCreateObject extractorCreateObject);
 
     /**
-     * Adds a pattern.any entity extractor to the application.
+     * Adds a pattern.any entity extractor to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param extractorCreateObject A model object containing the name and explicit list for the new Pattern.Any entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<UUID> createPatternAnyEntityModelAsync(UUID appId, String versionId, PatternAnyModelCreateObject extractorCreateObject);
-
-
+    Mono<SimpleResponse<UUID>> createPatternAnyEntityModelWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PatternAnyModelCreateObject extractorCreateObject);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Adds a pattern.any entity extractor to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param extractorCreateObject A model object containing the name and explicit list for the new Pattern.Any entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> createPatternAnyEntityModelAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PatternAnyModelCreateObject extractorCreateObject);
+
+    /**
+     * Get all roles for an entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getEntityRoles(UUID appId, String versionId, UUID entityId);
+    List<EntityRole> listEntityRoles(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for an entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityRole&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<EntityRole>> getEntityRolesAsync(UUID appId, String versionId, UUID entityId);
-
+    Mono<SimpleResponse<List<EntityRole>>> listEntityRolesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Get all roles for an entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<EntityRole>> listEntityRolesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Create an entity role in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity model ID.
-     * @param createEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID createEntityRole(UUID appId, String versionId, UUID entityId, CreateEntityRoleOptionalParameter createEntityRoleOptionalParameter);
+    UUID createEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create an entity role in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity model ID.
-     * @param createEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<UUID> createEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateEntityRoleOptionalParameter createEntityRoleOptionalParameter);
+    Mono<SimpleResponse<UUID>> createEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create an entity role in a version of the application.
      *
-     * @return the first stage of the createEntityRole call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsCreateEntityRoleDefinitionStages.WithAppId createEntityRole();
+    Mono<UUID> createEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Grouping of createEntityRole definition stages.
-     */
-    interface ModelsCreateEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity model ID.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsCreateEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of createEntityRole definition.
-     */
-    interface ModelsCreateEntityRoleDefinition extends
-        ModelsCreateEntityRoleDefinitionStages.WithAppId,
-        ModelsCreateEntityRoleDefinitionStages.WithVersionId,
-        ModelsCreateEntityRoleDefinitionStages.WithEntityId,
-        ModelsCreateEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Get All Entity Roles for a given entity.
+     * Create an entity role in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID createEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create an entity role in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> createEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create an entity role in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> createEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Get a prebuilt entity's roles in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getPrebuiltEntityRoles(UUID appId, String versionId, UUID entityId);
+    List<EntityRole> listPrebuiltEntityRoles(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get a prebuilt entity's roles in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityRole&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<EntityRole>> getPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId);
-
+    Mono<SimpleResponse<List<EntityRole>>> listPrebuiltEntityRolesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Get a prebuilt entity's roles in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<EntityRole>> listPrebuiltEntityRolesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Create a role for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity model ID.
-     * @param createPrebuiltEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID createPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, CreatePrebuiltEntityRoleOptionalParameter createPrebuiltEntityRoleOptionalParameter);
+    UUID createPrebuiltEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity model ID.
-     * @param createPrebuiltEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<UUID> createPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreatePrebuiltEntityRoleOptionalParameter createPrebuiltEntityRoleOptionalParameter);
+    Mono<SimpleResponse<UUID>> createPrebuiltEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
-     * @return the first stage of the createPrebuiltEntityRole call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsCreatePrebuiltEntityRoleDefinitionStages.WithAppId createPrebuiltEntityRole();
+    Mono<UUID> createPrebuiltEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Grouping of createPrebuiltEntityRole definition stages.
-     */
-    interface ModelsCreatePrebuiltEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity model ID.
-             *
-             * @return next definition stage
-             */
-            ModelsCreatePrebuiltEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsCreatePrebuiltEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsCreatePrebuiltEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of createPrebuiltEntityRole definition.
-     */
-    interface ModelsCreatePrebuiltEntityRoleDefinition extends
-        ModelsCreatePrebuiltEntityRoleDefinitionStages.WithAppId,
-        ModelsCreatePrebuiltEntityRoleDefinitionStages.WithVersionId,
-        ModelsCreatePrebuiltEntityRoleDefinitionStages.WithEntityId,
-        ModelsCreatePrebuiltEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Get All Entity Roles for a given entity.
+     * Create a role for a prebuilt entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID createPrebuiltEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create a role for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> createPrebuiltEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create a role for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> createPrebuiltEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Get all roles for a list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getClosedListEntityRoles(UUID appId, String versionId, UUID entityId);
+    List<EntityRole> listClosedListEntityRoles(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityRole&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<EntityRole>> getClosedListEntityRolesAsync(UUID appId, String versionId, UUID entityId);
-
+    Mono<SimpleResponse<List<EntityRole>>> listClosedListEntityRolesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Get all roles for a list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<EntityRole>> listClosedListEntityRolesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Create a role for a list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity model ID.
-     * @param createClosedListEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID createClosedListEntityRole(UUID appId, String versionId, UUID entityId, CreateClosedListEntityRoleOptionalParameter createClosedListEntityRoleOptionalParameter);
+    UUID createClosedListEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity model ID.
-     * @param createClosedListEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<UUID> createClosedListEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateClosedListEntityRoleOptionalParameter createClosedListEntityRoleOptionalParameter);
+    Mono<SimpleResponse<UUID>> createClosedListEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a list entity in a version of the application.
      *
-     * @return the first stage of the createClosedListEntityRole call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsCreateClosedListEntityRoleDefinitionStages.WithAppId createClosedListEntityRole();
+    Mono<UUID> createClosedListEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Grouping of createClosedListEntityRole definition stages.
-     */
-    interface ModelsCreateClosedListEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity model ID.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateClosedListEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateClosedListEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsCreateClosedListEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of createClosedListEntityRole definition.
-     */
-    interface ModelsCreateClosedListEntityRoleDefinition extends
-        ModelsCreateClosedListEntityRoleDefinitionStages.WithAppId,
-        ModelsCreateClosedListEntityRoleDefinitionStages.WithVersionId,
-        ModelsCreateClosedListEntityRoleDefinitionStages.WithEntityId,
-        ModelsCreateClosedListEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Get All Entity Roles for a given entity.
+     * Create a role for a list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID createClosedListEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create a role for a list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> createClosedListEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create a role for a list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> createClosedListEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Get all roles for a regular expression entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getRegexEntityRoles(UUID appId, String versionId, UUID entityId);
+    List<EntityRole> listRegexEntityRoles(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityRole&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<EntityRole>> getRegexEntityRolesAsync(UUID appId, String versionId, UUID entityId);
-
+    Mono<SimpleResponse<List<EntityRole>>> listRegexEntityRolesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Get all roles for a regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<EntityRole>> listRegexEntityRolesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Create a role for an regular expression entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity model ID.
-     * @param createRegexEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID createRegexEntityRole(UUID appId, String versionId, UUID entityId, CreateRegexEntityRoleOptionalParameter createRegexEntityRoleOptionalParameter);
+    UUID createRegexEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity model ID.
-     * @param createRegexEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<UUID> createRegexEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateRegexEntityRoleOptionalParameter createRegexEntityRoleOptionalParameter);
+    Mono<SimpleResponse<UUID>> createRegexEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an regular expression entity in a version of the application.
      *
-     * @return the first stage of the createRegexEntityRole call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsCreateRegexEntityRoleDefinitionStages.WithAppId createRegexEntityRole();
+    Mono<UUID> createRegexEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Grouping of createRegexEntityRole definition stages.
-     */
-    interface ModelsCreateRegexEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity model ID.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateRegexEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateRegexEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsCreateRegexEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of createRegexEntityRole definition.
-     */
-    interface ModelsCreateRegexEntityRoleDefinition extends
-        ModelsCreateRegexEntityRoleDefinitionStages.WithAppId,
-        ModelsCreateRegexEntityRoleDefinitionStages.WithVersionId,
-        ModelsCreateRegexEntityRoleDefinitionStages.WithEntityId,
-        ModelsCreateRegexEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Get All Entity Roles for a given entity.
+     * Create a role for an regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID createRegexEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create a role for an regular expression entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> createRegexEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create a role for an regular expression entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> createRegexEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Get all roles for a composite entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getCompositeEntityRoles(UUID appId, String versionId, UUID cEntityId);
+    List<EntityRole> listCompositeEntityRoles(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityRole&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<EntityRole>> getCompositeEntityRolesAsync(UUID appId, String versionId, UUID cEntityId);
-
+    Mono<SimpleResponse<List<EntityRole>>> listCompositeEntityRolesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Get all roles for a composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
-     * @param createCompositeEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the UUID object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    UUID createCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, CreateCompositeEntityRoleOptionalParameter createCompositeEntityRoleOptionalParameter);
+    Mono<List<EntityRole>> listCompositeEntityRolesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
-     * @param createCompositeEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    @Deprecated
-    Observable<UUID> createCompositeEntityRoleAsync(UUID appId, String versionId, UUID cEntityId, CreateCompositeEntityRoleOptionalParameter createCompositeEntityRoleOptionalParameter);
-
-    /**
-     * Create an entity role for an entity in the application.
-     *
-     * @return the first stage of the createCompositeEntityRole call
-     */
-    ModelsCreateCompositeEntityRoleDefinitionStages.WithAppId createCompositeEntityRole();
-
-    /**
-     * Grouping of createCompositeEntityRole definition stages.
-     */
-    interface ModelsCreateCompositeEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithCEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify cEntityId.
-         */
-        interface WithCEntityId {
-            /**
-             * The composite entity extractor ID.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateCompositeEntityRoleDefinitionStages.WithExecute withCEntityId(UUID cEntityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateCompositeEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsCreateCompositeEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of createCompositeEntityRole definition.
-     */
-    interface ModelsCreateCompositeEntityRoleDefinition extends
-        ModelsCreateCompositeEntityRoleDefinitionStages.WithAppId,
-        ModelsCreateCompositeEntityRoleDefinitionStages.WithVersionId,
-        ModelsCreateCompositeEntityRoleDefinitionStages.WithCEntityId,
-        ModelsCreateCompositeEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Get All Entity Roles for a given entity.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;EntityRole&gt; object if successful.
-     */
-    List<EntityRole> getPatternAnyEntityRoles(UUID appId, String versionId, UUID entityId);
-
-    /**
-     * Get All Entity Roles for a given entity.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityRole&gt; object
-     */
-    Observable<List<EntityRole>> getPatternAnyEntityRolesAsync(UUID appId, String versionId, UUID entityId);
-
-
-    /**
-     * Create an entity role for an entity in the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity model ID.
-     * @param createPatternAnyEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID createPatternAnyEntityRole(UUID appId, String versionId, UUID entityId, CreatePatternAnyEntityRoleOptionalParameter createPatternAnyEntityRoleOptionalParameter);
+    UUID createCompositeEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId The entity model ID.
-     * @param createPatternAnyEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @param cEntityId The composite entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<UUID> createPatternAnyEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreatePatternAnyEntityRoleOptionalParameter createPatternAnyEntityRoleOptionalParameter);
+    Mono<SimpleResponse<UUID>> createCompositeEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
-     * @return the first stage of the createPatternAnyEntityRole call
-     */
-    ModelsCreatePatternAnyEntityRoleDefinitionStages.WithAppId createPatternAnyEntityRole();
-
-    /**
-     * Grouping of createPatternAnyEntityRole definition stages.
-     */
-    interface ModelsCreatePatternAnyEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity model ID.
-             *
-             * @return next definition stage
-             */
-            ModelsCreatePatternAnyEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsCreatePatternAnyEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsCreatePatternAnyEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of createPatternAnyEntityRole definition.
-     */
-    interface ModelsCreatePatternAnyEntityRoleDefinition extends
-        ModelsCreatePatternAnyEntityRoleDefinitionStages.WithAppId,
-        ModelsCreatePatternAnyEntityRoleDefinitionStages.WithVersionId,
-        ModelsCreatePatternAnyEntityRoleDefinitionStages.WithEntityId,
-        ModelsCreatePatternAnyEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Get All Entity Roles for a given entity.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;EntityRole&gt; object if successful.
+     * @param cEntityId The composite entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    List<EntityRole> getHierarchicalEntityRoles(UUID appId, String versionId, UUID hEntityId);
+    Mono<UUID> createCompositeEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Create a role for a composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityRole&gt; object
-     */
-    Observable<List<EntityRole>> getHierarchicalEntityRolesAsync(UUID appId, String versionId, UUID hEntityId);
-
-
-    /**
-     * Create an entity role for an entity in the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param createHierarchicalEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param cEntityId The composite entity extractor ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID createHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, CreateHierarchicalEntityRoleOptionalParameter createHierarchicalEntityRoleOptionalParameter);
+    UUID createCompositeEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, String name);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param createHierarchicalEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @param cEntityId The composite entity extractor ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<UUID> createHierarchicalEntityRoleAsync(UUID appId, String versionId, UUID hEntityId, CreateHierarchicalEntityRoleOptionalParameter createHierarchicalEntityRoleOptionalParameter);
+    Mono<SimpleResponse<UUID>> createCompositeEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, String name);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
-     * @return the first stage of the createHierarchicalEntityRole call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsCreateHierarchicalEntityRoleDefinitionStages.WithAppId createHierarchicalEntityRole();
+    Mono<UUID> createCompositeEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, String name);
 
     /**
-     * Grouping of createHierarchicalEntityRole definition stages.
-     */
-    interface ModelsCreateHierarchicalEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithHEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify hEntityId.
-         */
-        interface WithHEntityId {
-            /**
-             * The hierarchical entity extractor ID.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateHierarchicalEntityRoleDefinitionStages.WithExecute withHEntityId(UUID hEntityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateHierarchicalEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsCreateHierarchicalEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of createHierarchicalEntityRole definition.
-     */
-    interface ModelsCreateHierarchicalEntityRoleDefinition extends
-        ModelsCreateHierarchicalEntityRoleDefinitionStages.WithAppId,
-        ModelsCreateHierarchicalEntityRoleDefinitionStages.WithVersionId,
-        ModelsCreateHierarchicalEntityRoleDefinitionStages.WithHEntityId,
-        ModelsCreateHierarchicalEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a Pattern.any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getCustomPrebuiltEntityRoles(UUID appId, String versionId, UUID entityId);
+    List<EntityRole> listPatternAnyEntityRoles(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a Pattern.any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityRole&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<EntityRole>> getCustomPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId);
-
+    Mono<SimpleResponse<List<EntityRole>>> listPatternAnyEntityRolesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Get all roles for a Pattern.any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<EntityRole>> listPatternAnyEntityRolesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Create a role for an Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity model ID.
-     * @param createCustomPrebuiltEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID createCustomPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, CreateCustomPrebuiltEntityRoleOptionalParameter createCustomPrebuiltEntityRoleOptionalParameter);
+    UUID createPatternAnyEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an Pattern.any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity model ID.
-     * @param createCustomPrebuiltEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<UUID> createCustomPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateCustomPrebuiltEntityRoleOptionalParameter createCustomPrebuiltEntityRoleOptionalParameter);
+    Mono<SimpleResponse<UUID>> createPatternAnyEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an Pattern.any entity in a version of the application.
      *
-     * @return the first stage of the createCustomPrebuiltEntityRole call
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithAppId createCustomPrebuiltEntityRole();
+    Mono<UUID> createPatternAnyEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Grouping of createCustomPrebuiltEntityRole definition stages.
-     */
-    interface ModelsCreateCustomPrebuiltEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity model ID.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of createCustomPrebuiltEntityRole definition.
-     */
-    interface ModelsCreateCustomPrebuiltEntityRoleDefinition extends
-        ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithAppId,
-        ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithVersionId,
-        ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithEntityId,
-        ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Get the explicit list of the pattern.any entity.
+     * Create a role for an Pattern.any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID createPatternAnyEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create a role for an Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> createPatternAnyEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create a role for an Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> createPatternAnyEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Get all roles for a hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;EntityRole&gt; object if successful.
+     */
+    List<EntityRole> listHierarchicalEntityRoles(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
+
+    /**
+     * Get all roles for a hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<EntityRole>>> listHierarchicalEntityRolesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
+
+    /**
+     * Get all roles for a hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<EntityRole>> listHierarchicalEntityRolesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
+
+    /**
+     * Create a role for an hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID createHierarchicalEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
+
+    /**
+     * Create a role for an hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> createHierarchicalEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
+
+    /**
+     * Create a role for an hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> createHierarchicalEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId);
+
+    /**
+     * Create a role for an hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID createHierarchicalEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, String name);
+
+    /**
+     * Create a role for an hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> createHierarchicalEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, String name);
+
+    /**
+     * Create a role for an hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> createHierarchicalEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, String name);
+
+    /**
+     * Get all roles for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;EntityRole&gt; object if successful.
+     */
+    List<EntityRole> listCustomPrebuiltEntityRoles(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Get all roles for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<List<EntityRole>>> listCustomPrebuiltEntityRolesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Get all roles for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<EntityRole>> listCustomPrebuiltEntityRolesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Create a role for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID createCustomPrebuiltEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Create a role for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> createCustomPrebuiltEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Create a role for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> createCustomPrebuiltEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Create a role for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the UUID object if successful.
+     */
+    UUID createCustomPrebuiltEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create a role for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<UUID>> createCustomPrebuiltEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Create a role for a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity model ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<UUID> createCustomPrebuiltEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String name);
+
+    /**
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;ExplicitListItem&gt; object if successful.
      */
-    List<ExplicitListItem> getExplicitList(UUID appId, String versionId, UUID entityId);
+    List<ExplicitListItem> getExplicitList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ExplicitListItem&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<ExplicitListItem>> getExplicitListAsync(UUID appId, String versionId, UUID entityId);
-
+    Mono<SimpleResponse<List<ExplicitListItem>>> getExplicitListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Add a new item to the explicit list for the Pattern.Any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The Pattern.Any entity id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<ExplicitListItem>> getExplicitListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity extractor ID.
-     * @param addExplicitListItemOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the int object if successful.
      */
-    @Deprecated
-    int addExplicitListItem(UUID appId, String versionId, UUID entityId, AddExplicitListItemOptionalParameter addExplicitListItemOptionalParameter);
+    int addExplicitListItem(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Add a new item to the explicit list for the Pattern.Any entity.
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity extractor ID.
-     * @param addExplicitListItemOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the int object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<Integer> addExplicitListItemAsync(UUID appId, String versionId, UUID entityId, AddExplicitListItemOptionalParameter addExplicitListItemOptionalParameter);
+    Mono<SimpleResponse<Integer>> addExplicitListItemWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Add a new item to the explicit list for the Pattern.Any entity.
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
      *
-     * @return the first stage of the addExplicitListItem call
-     */
-    ModelsAddExplicitListItemDefinitionStages.WithAppId addExplicitListItem();
-
-    /**
-     * Grouping of addExplicitListItem definition stages.
-     */
-    interface ModelsAddExplicitListItemDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The Pattern.Any entity extractor ID.
-             *
-             * @return next definition stage
-             */
-            ModelsAddExplicitListItemDefinitionStages.WithExecute withEntityId(UUID entityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The explicit list item.
-             *
-             * @return next definition stage
-             */
-            ModelsAddExplicitListItemDefinitionStages.WithExecute withExplicitListItem(String explicitListItem);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsAddExplicitListItemDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the int object if successful.
-             */
-            int execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the int object
-             */
-            Observable<Integer> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of addExplicitListItem definition.
-     */
-    interface ModelsAddExplicitListItemDefinition extends
-        ModelsAddExplicitListItemDefinitionStages.WithAppId,
-        ModelsAddExplicitListItemDefinitionStages.WithVersionId,
-        ModelsAddExplicitListItemDefinitionStages.WithEntityId,
-        ModelsAddExplicitListItemDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Gets information of a regex entity model.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity model ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param entityId The Pattern.Any entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Integer> addExplicitListItemAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The Pattern.Any entity extractor ID.
+     * @param explicitListItem The explicit list item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the int object if successful.
+     */
+    int addExplicitListItem(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String explicitListItem);
+
+    /**
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The Pattern.Any entity extractor ID.
+     * @param explicitListItem The explicit list item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<Integer>> addExplicitListItemWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String explicitListItem);
+
+    /**
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The Pattern.Any entity extractor ID.
+     * @param explicitListItem The explicit list item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Integer> addExplicitListItemAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, String explicitListItem);
+
+    /**
+     * Gets information about a regular expression entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param regexEntityId The regular expression entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RegexEntityExtractor object if successful.
      */
-    RegexEntityExtractor getRegexEntityEntityInfo(UUID appId, String versionId, UUID regexEntityId);
+    RegexEntityExtractor getRegexEntityEntityInfo(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID regexEntityId);
 
     /**
-     * Gets information of a regex entity model.
+     * Gets information about a regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity model ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RegexEntityExtractor object
+     * @param regexEntityId The regular expression entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<RegexEntityExtractor> getRegexEntityEntityInfoAsync(UUID appId, String versionId, UUID regexEntityId);
-
-
+    Mono<SimpleResponse<RegexEntityExtractor>> getRegexEntityEntityInfoWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID regexEntityId);
 
     /**
-     * Updates the regex entity model .
+     * Gets information about a regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity model ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<RegexEntityExtractor> getRegexEntityEntityInfoAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID regexEntityId);
+
+    /**
+     * Updates the regular expression entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @param regexEntityUpdateObject An object containing the new entity name and regex pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus updateRegexEntityModel(UUID appId, String versionId, UUID regexEntityId, RegexModelUpdateObject regexEntityUpdateObject);
+    OperationStatus updateRegexEntityModel(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID regexEntityId, @NonNull RegexModelUpdateObject regexEntityUpdateObject);
 
     /**
-     * Updates the regex entity model .
+     * Updates the regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @param regexEntityUpdateObject An object containing the new entity name and regex pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> updateRegexEntityModelAsync(UUID appId, String versionId, UUID regexEntityId, RegexModelUpdateObject regexEntityUpdateObject);
-
-
+    Mono<SimpleResponse<OperationStatus>> updateRegexEntityModelWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID regexEntityId, @NonNull RegexModelUpdateObject regexEntityUpdateObject);
 
     /**
-     * Deletes a regex entity model from the application.
+     * Updates the regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param regexEntityId The regular expression entity extractor ID.
+     * @param regexEntityUpdateObject An object containing the new entity name and regex pattern.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateRegexEntityModelAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID regexEntityId, @NonNull RegexModelUpdateObject regexEntityUpdateObject);
+
+    /**
+     * Deletes a regular expression entity from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param regexEntityId The regular expression entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteRegexEntityModel(UUID appId, String versionId, UUID regexEntityId);
+    OperationStatus deleteRegexEntityModel(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID regexEntityId);
 
     /**
-     * Deletes a regex entity model from the application.
+     * Deletes a regular expression entity from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @param regexEntityId The regular expression entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> deleteRegexEntityModelAsync(UUID appId, String versionId, UUID regexEntityId);
-
-
+    Mono<SimpleResponse<OperationStatus>> deleteRegexEntityModelWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID regexEntityId);
 
     /**
-     * Gets information about the application version's Pattern.Any model.
+     * Deletes a regular expression entity from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param regexEntityId The regular expression entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteRegexEntityModelAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID regexEntityId);
+
+    /**
+     * Gets information about the Pattern.Any model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PatternAnyEntityExtractor object if successful.
      */
-    PatternAnyEntityExtractor getPatternAnyEntityInfo(UUID appId, String versionId, UUID entityId);
+    PatternAnyEntityExtractor getPatternAnyEntityInfo(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Gets information about the application version's Pattern.Any model.
+     * Gets information about the Pattern.Any model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PatternAnyEntityExtractor object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<PatternAnyEntityExtractor> getPatternAnyEntityInfoAsync(UUID appId, String versionId, UUID entityId);
-
-
+    Mono<SimpleResponse<PatternAnyEntityExtractor>> getPatternAnyEntityInfoWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Updates the name and explicit list of a Pattern.Any entity model.
+     * Gets information about the Pattern.Any model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<PatternAnyEntityExtractor> getPatternAnyEntityInfoAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Updates the name and explicit (exception) list of a Pattern.Any entity model in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity extractor ID.
      * @param patternAnyUpdateObject An object containing the explicit list of the Pattern.Any entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus updatePatternAnyEntityModel(UUID appId, String versionId, UUID entityId, PatternAnyModelUpdateObject patternAnyUpdateObject);
+    OperationStatus updatePatternAnyEntityModel(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull PatternAnyModelUpdateObject patternAnyUpdateObject);
 
     /**
-     * Updates the name and explicit list of a Pattern.Any entity model.
+     * Updates the name and explicit (exception) list of a Pattern.Any entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity extractor ID.
      * @param patternAnyUpdateObject An object containing the explicit list of the Pattern.Any entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<OperationStatus> updatePatternAnyEntityModelAsync(UUID appId, String versionId, UUID entityId, PatternAnyModelUpdateObject patternAnyUpdateObject);
-
-
+    Mono<SimpleResponse<OperationStatus>> updatePatternAnyEntityModelWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull PatternAnyModelUpdateObject patternAnyUpdateObject);
 
     /**
-     * Deletes a Pattern.Any entity extractor from the application.
+     * Updates the name and explicit (exception) list of a Pattern.Any entity model in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
+     * @param patternAnyUpdateObject An object containing the explicit list of the Pattern.Any entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    OperationStatus deletePatternAnyEntityModel(UUID appId, String versionId, UUID entityId);
+    Mono<OperationStatus> updatePatternAnyEntityModelAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull PatternAnyModelUpdateObject patternAnyUpdateObject);
 
     /**
-     * Deletes a Pattern.Any entity extractor from the application.
+     * Deletes a Pattern.Any entity extractor from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
      */
-    Observable<OperationStatus> deletePatternAnyEntityModelAsync(UUID appId, String versionId, UUID entityId);
-
-
+    OperationStatus deletePatternAnyEntityModel(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
 
     /**
-     * Get one entity role for a given entity.
+     * Deletes a Pattern.Any entity extractor from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The Pattern.Any entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deletePatternAnyEntityModelWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Deletes a Pattern.Any entity extractor from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The Pattern.Any entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deletePatternAnyEntityModelAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId);
+
+    /**
+     * Get one role for a given entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the EntityRole object if successful.
      */
-    EntityRole getEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
+    EntityRole getEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityRole object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<EntityRole> getEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
+    Mono<SimpleResponse<EntityRole>> getEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Get one role for a given entity in a version of the application.
      *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role ID.
-     * @param updateEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    @Deprecated
-    OperationStatus updateEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateEntityRoleOptionalParameter updateEntityRoleOptionalParameter);
-
-    /**
-     * Update an entity role for a given entity.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role ID.
-     * @param updateEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    @Deprecated
-    Observable<OperationStatus> updateEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateEntityRoleOptionalParameter updateEntityRoleOptionalParameter);
-
-    /**
-     * Update an entity role for a given entity.
-     *
-     * @return the first stage of the updateEntityRole call
-     */
-    ModelsUpdateEntityRoleDefinitionStages.WithAppId updateEntityRole();
-
-    /**
-     * Grouping of updateEntityRole definition stages.
-     */
-    interface ModelsUpdateEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity ID.
-             *
-             * @return next definition stage
-             */
-            WithRoleId withEntityId(UUID entityId);
-        }
-        /**
-         * The stage of the definition to be specify roleId.
-         */
-        interface WithRoleId {
-            /**
-             * The entity role ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdateEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updateEntityRole definition.
-     */
-    interface ModelsUpdateEntityRoleDefinition extends
-        ModelsUpdateEntityRoleDefinitionStages.WithAppId,
-        ModelsUpdateEntityRoleDefinitionStages.WithVersionId,
-        ModelsUpdateEntityRoleDefinitionStages.WithEntityId,
-        ModelsUpdateEntityRoleDefinitionStages.WithRoleId,
-        ModelsUpdateEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Delete an entity role.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    OperationStatus deleteEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
-
-    /**
-     * Delete an entity role.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    Observable<OperationStatus> deleteEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
-
-
-    /**
-     * Get one entity role for a given entity.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<EntityRole> getEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updateEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updateEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Delete an entity role in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus deleteEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Delete an entity role in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Delete an entity role in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Get one role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity ID.
+     * @param roleId entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the EntityRole object if successful.
      */
-    EntityRole getPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
+    EntityRole getPrebuiltEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityRole object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<EntityRole> getPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
+    Mono<SimpleResponse<EntityRole>> getPrebuiltEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role ID.
-     * @param updatePrebuiltEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    @Deprecated
-    OperationStatus updatePrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePrebuiltEntityRoleOptionalParameter updatePrebuiltEntityRoleOptionalParameter);
-
-    /**
-     * Update an entity role for a given entity.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role ID.
-     * @param updatePrebuiltEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    @Deprecated
-    Observable<OperationStatus> updatePrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePrebuiltEntityRoleOptionalParameter updatePrebuiltEntityRoleOptionalParameter);
-
-    /**
-     * Update an entity role for a given entity.
-     *
-     * @return the first stage of the updatePrebuiltEntityRole call
-     */
-    ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithAppId updatePrebuiltEntityRole();
-
-    /**
-     * Grouping of updatePrebuiltEntityRole definition stages.
-     */
-    interface ModelsUpdatePrebuiltEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity ID.
-             *
-             * @return next definition stage
-             */
-            WithRoleId withEntityId(UUID entityId);
-        }
-        /**
-         * The stage of the definition to be specify roleId.
-         */
-        interface WithRoleId {
-            /**
-             * The entity role ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updatePrebuiltEntityRole definition.
-     */
-    interface ModelsUpdatePrebuiltEntityRoleDefinition extends
-        ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithAppId,
-        ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithVersionId,
-        ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithEntityId,
-        ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithRoleId,
-        ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Delete an entity role.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    OperationStatus deletePrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
-
-    /**
-     * Delete an entity role.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    Observable<OperationStatus> deletePrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
-
-
-    /**
-     * Get one entity role for a given entity.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<EntityRole> getPrebuiltEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updatePrebuiltEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updatePrebuiltEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updatePrebuiltEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updatePrebuiltEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updatePrebuiltEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updatePrebuiltEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Delete a role in a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus deletePrebuiltEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Delete a role in a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deletePrebuiltEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Delete a role in a prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deletePrebuiltEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Get one role for a given list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity ID.
+     * @param roleId entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the EntityRole object if successful.
      */
-    EntityRole getClosedListEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
+    EntityRole getClosedListEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given list entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityRole object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<EntityRole> getClosedListEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
+    Mono<SimpleResponse<EntityRole>> getClosedListEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Get one role for a given list entity in a version of the application.
      *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role ID.
-     * @param updateClosedListEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    @Deprecated
-    OperationStatus updateClosedListEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateClosedListEntityRoleOptionalParameter updateClosedListEntityRoleOptionalParameter);
-
-    /**
-     * Update an entity role for a given entity.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role ID.
-     * @param updateClosedListEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    @Deprecated
-    Observable<OperationStatus> updateClosedListEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateClosedListEntityRoleOptionalParameter updateClosedListEntityRoleOptionalParameter);
-
-    /**
-     * Update an entity role for a given entity.
-     *
-     * @return the first stage of the updateClosedListEntityRole call
-     */
-    ModelsUpdateClosedListEntityRoleDefinitionStages.WithAppId updateClosedListEntityRole();
-
-    /**
-     * Grouping of updateClosedListEntityRole definition stages.
-     */
-    interface ModelsUpdateClosedListEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity ID.
-             *
-             * @return next definition stage
-             */
-            WithRoleId withEntityId(UUID entityId);
-        }
-        /**
-         * The stage of the definition to be specify roleId.
-         */
-        interface WithRoleId {
-            /**
-             * The entity role ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateClosedListEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateClosedListEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdateClosedListEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updateClosedListEntityRole definition.
-     */
-    interface ModelsUpdateClosedListEntityRoleDefinition extends
-        ModelsUpdateClosedListEntityRoleDefinitionStages.WithAppId,
-        ModelsUpdateClosedListEntityRoleDefinitionStages.WithVersionId,
-        ModelsUpdateClosedListEntityRoleDefinitionStages.WithEntityId,
-        ModelsUpdateClosedListEntityRoleDefinitionStages.WithRoleId,
-        ModelsUpdateClosedListEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Delete an entity role.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    OperationStatus deleteClosedListEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
-
-    /**
-     * Delete an entity role.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    Observable<OperationStatus> deleteClosedListEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
-
-
-    /**
-     * Get one entity role for a given entity.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<EntityRole> getClosedListEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updateClosedListEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateClosedListEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateClosedListEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updateClosedListEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateClosedListEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateClosedListEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Delete a role for a given list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus deleteClosedListEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Delete a role for a given list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteClosedListEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Delete a role for a given list entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteClosedListEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Get one role for a given regular expression entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity ID.
+     * @param roleId entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the EntityRole object if successful.
      */
-    EntityRole getRegexEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
+    EntityRole getRegexEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityRole object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<EntityRole> getRegexEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
+    Mono<SimpleResponse<EntityRole>> getRegexEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Get one role for a given regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity ID.
+     * @param roleId entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<EntityRole> getRegexEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given regular expression entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity ID.
      * @param roleId The entity role ID.
-     * @param updateRegexEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus updateRegexEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateRegexEntityRoleOptionalParameter updateRegexEntityRoleOptionalParameter);
+    OperationStatus updateRegexEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity ID.
      * @param roleId The entity role ID.
-     * @param updateRegexEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> updateRegexEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateRegexEntityRoleOptionalParameter updateRegexEntityRoleOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> updateRegexEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given regular expression entity in a version of the application.
      *
-     * @return the first stage of the updateRegexEntityRole call
-     */
-    ModelsUpdateRegexEntityRoleDefinitionStages.WithAppId updateRegexEntityRole();
-
-    /**
-     * Grouping of updateRegexEntityRole definition stages.
-     */
-    interface ModelsUpdateRegexEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity ID.
-             *
-             * @return next definition stage
-             */
-            WithRoleId withEntityId(UUID entityId);
-        }
-        /**
-         * The stage of the definition to be specify roleId.
-         */
-        interface WithRoleId {
-            /**
-             * The entity role ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateRegexEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateRegexEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdateRegexEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updateRegexEntityRole definition.
-     */
-    interface ModelsUpdateRegexEntityRoleDefinition extends
-        ModelsUpdateRegexEntityRoleDefinitionStages.WithAppId,
-        ModelsUpdateRegexEntityRoleDefinitionStages.WithVersionId,
-        ModelsUpdateRegexEntityRoleDefinitionStages.WithEntityId,
-        ModelsUpdateRegexEntityRoleDefinitionStages.WithRoleId,
-        ModelsUpdateRegexEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Delete an entity role.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateRegexEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given regular expression entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteRegexEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
+    OperationStatus updateRegexEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
 
     /**
-     * Delete an entity role.
+     * Update a role for a given regular expression entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateRegexEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given regular expression entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateRegexEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Delete a role for a given regular expression in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity ID.
      * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
      */
-    Observable<OperationStatus> deleteRegexEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
-
+    OperationStatus deleteRegexEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Delete a role for a given regular expression in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteRegexEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Delete a role for a given regular expression in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteRegexEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Get one role for a given composite entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the EntityRole object if successful.
      */
-    EntityRole getCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, UUID roleId);
+    EntityRole getCompositeEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityRole object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<EntityRole> getCompositeEntityRoleAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId);
-
+    Mono<SimpleResponse<EntityRole>> getCompositeEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Get one role for a given composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @param roleId entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<EntityRole> getCompositeEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given composite entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
      * @param roleId The entity role ID.
-     * @param updateCompositeEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus updateCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, UUID roleId, UpdateCompositeEntityRoleOptionalParameter updateCompositeEntityRoleOptionalParameter);
+    OperationStatus updateCompositeEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
      * @param roleId The entity role ID.
-     * @param updateCompositeEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> updateCompositeEntityRoleAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId, UpdateCompositeEntityRoleOptionalParameter updateCompositeEntityRoleOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> updateCompositeEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given composite entity in a version of the application.
      *
-     * @return the first stage of the updateCompositeEntityRole call
-     */
-    ModelsUpdateCompositeEntityRoleDefinitionStages.WithAppId updateCompositeEntityRole();
-
-    /**
-     * Grouping of updateCompositeEntityRole definition stages.
-     */
-    interface ModelsUpdateCompositeEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithCEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify cEntityId.
-         */
-        interface WithCEntityId {
-            /**
-             * The composite entity extractor ID.
-             *
-             * @return next definition stage
-             */
-            WithRoleId withCEntityId(UUID cEntityId);
-        }
-        /**
-         * The stage of the definition to be specify roleId.
-         */
-        interface WithRoleId {
-            /**
-             * The entity role ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateCompositeEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateCompositeEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdateCompositeEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updateCompositeEntityRole definition.
-     */
-    interface ModelsUpdateCompositeEntityRoleDefinition extends
-        ModelsUpdateCompositeEntityRoleDefinitionStages.WithAppId,
-        ModelsUpdateCompositeEntityRoleDefinitionStages.WithVersionId,
-        ModelsUpdateCompositeEntityRoleDefinitionStages.WithCEntityId,
-        ModelsUpdateCompositeEntityRoleDefinitionStages.WithRoleId,
-        ModelsUpdateCompositeEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Delete an entity role.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateCompositeEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given composite entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, UUID roleId);
+    OperationStatus updateCompositeEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId, String name);
 
     /**
-     * Delete an entity role.
+     * Update a role for a given composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateCompositeEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given composite entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateCompositeEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Delete a role for a given composite entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param cEntityId The composite entity extractor ID.
      * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
      */
-    Observable<OperationStatus> deleteCompositeEntityRoleAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId);
-
-
+    OperationStatus deleteCompositeEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Delete a role for a given composite entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteCompositeEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId);
+
+    /**
+     * Delete a role for a given composite entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param cEntityId The composite entity extractor ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteCompositeEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID cEntityId, @NonNull UUID roleId);
+
+    /**
+     * Get one role for a given Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the EntityRole object if successful.
      */
-    EntityRole getPatternAnyEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
+    EntityRole getPatternAnyEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given Pattern.any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityRole object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<EntityRole> getPatternAnyEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
+    Mono<SimpleResponse<EntityRole>> getPatternAnyEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Get one role for a given Pattern.any entity in a version of the application.
      *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role ID.
-     * @param updatePatternAnyEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    @Deprecated
-    OperationStatus updatePatternAnyEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePatternAnyEntityRoleOptionalParameter updatePatternAnyEntityRoleOptionalParameter);
-
-    /**
-     * Update an entity role for a given entity.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role ID.
-     * @param updatePatternAnyEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    @Deprecated
-    Observable<OperationStatus> updatePatternAnyEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePatternAnyEntityRoleOptionalParameter updatePatternAnyEntityRoleOptionalParameter);
-
-    /**
-     * Update an entity role for a given entity.
-     *
-     * @return the first stage of the updatePatternAnyEntityRole call
-     */
-    ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithAppId updatePatternAnyEntityRole();
-
-    /**
-     * Grouping of updatePatternAnyEntityRole definition stages.
-     */
-    interface ModelsUpdatePatternAnyEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity ID.
-             *
-             * @return next definition stage
-             */
-            WithRoleId withEntityId(UUID entityId);
-        }
-        /**
-         * The stage of the definition to be specify roleId.
-         */
-        interface WithRoleId {
-            /**
-             * The entity role ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updatePatternAnyEntityRole definition.
-     */
-    interface ModelsUpdatePatternAnyEntityRoleDefinition extends
-        ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithAppId,
-        ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithVersionId,
-        ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithEntityId,
-        ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithRoleId,
-        ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Delete an entity role.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    OperationStatus deletePatternAnyEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
-
-    /**
-     * Delete an entity role.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    Observable<OperationStatus> deletePatternAnyEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
-
-
-    /**
-     * Get one entity role for a given entity.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the EntityRole object if successful.
-     */
-    EntityRole getHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, UUID roleId);
-
-    /**
-     * Get one entity role for a given entity.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityRole object
-     */
-    Observable<EntityRole> getHierarchicalEntityRoleAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId);
-
-
-    /**
-     * Update an entity role for a given entity.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param roleId The entity role ID.
-     * @param updateHierarchicalEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    @Deprecated
-    OperationStatus updateHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, UUID roleId, UpdateHierarchicalEntityRoleOptionalParameter updateHierarchicalEntityRoleOptionalParameter);
-
-    /**
-     * Update an entity role for a given entity.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param roleId The entity role ID.
-     * @param updateHierarchicalEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    @Deprecated
-    Observable<OperationStatus> updateHierarchicalEntityRoleAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId, UpdateHierarchicalEntityRoleOptionalParameter updateHierarchicalEntityRoleOptionalParameter);
-
-    /**
-     * Update an entity role for a given entity.
-     *
-     * @return the first stage of the updateHierarchicalEntityRole call
-     */
-    ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithAppId updateHierarchicalEntityRole();
-
-    /**
-     * Grouping of updateHierarchicalEntityRole definition stages.
-     */
-    interface ModelsUpdateHierarchicalEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithHEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify hEntityId.
-         */
-        interface WithHEntityId {
-            /**
-             * The hierarchical entity extractor ID.
-             *
-             * @return next definition stage
-             */
-            WithRoleId withHEntityId(UUID hEntityId);
-        }
-        /**
-         * The stage of the definition to be specify roleId.
-         */
-        interface WithRoleId {
-            /**
-             * The entity role ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updateHierarchicalEntityRole definition.
-     */
-    interface ModelsUpdateHierarchicalEntityRoleDefinition extends
-        ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithAppId,
-        ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithVersionId,
-        ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithHEntityId,
-        ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithRoleId,
-        ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Delete an entity role.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    OperationStatus deleteHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, UUID roleId);
-
-    /**
-     * Delete an entity role.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    Observable<OperationStatus> deleteHierarchicalEntityRoleAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId);
-
-
-
-    /**
-     * Get one entity role for a given entity.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the EntityRole object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    EntityRole getCustomEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
+    Mono<EntityRole> getPatternAnyEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Update a role for a given Pattern.any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updatePatternAnyEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updatePatternAnyEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updatePatternAnyEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updatePatternAnyEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updatePatternAnyEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updatePatternAnyEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Delete a role for a given Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus deletePatternAnyEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Delete a role for a given Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deletePatternAnyEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Delete a role for a given Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deletePatternAnyEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Get one role for a given hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the EntityRole object if successful.
+     */
+    EntityRole getHierarchicalEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId);
+
+    /**
+     * Get one role for a given hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<EntityRole>> getHierarchicalEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId);
+
+    /**
+     * Get one role for a given hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<EntityRole> getHierarchicalEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updateHierarchicalEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateHierarchicalEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateHierarchicalEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updateHierarchicalEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateHierarchicalEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given hierarchical entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateHierarchicalEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Delete a role for a given hierarchical role in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus deleteHierarchicalEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId);
+
+    /**
+     * Delete a role for a given hierarchical role in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteHierarchicalEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId);
+
+    /**
+     * Delete a role for a given hierarchical role in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteHierarchicalEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID hEntityId, @NonNull UUID roleId);
+
+    /**
+     * Get one role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId entity ID.
      * @param roleId entity role ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityRole object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the EntityRole object if successful.
      */
-    Observable<EntityRole> getCustomEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
+    EntityRole getCustomEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity ID.
+     * @param roleId entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<EntityRole>> getCustomEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Get one role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId entity ID.
+     * @param roleId entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<EntityRole> getCustomEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity ID.
      * @param roleId The entity role ID.
-     * @param updateCustomPrebuiltEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus updateCustomPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateCustomPrebuiltEntityRoleOptionalParameter updateCustomPrebuiltEntityRoleOptionalParameter);
+    OperationStatus updateCustomPrebuiltEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity ID.
      * @param roleId The entity role ID.
-     * @param updateCustomPrebuiltEntityRoleOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> updateCustomPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateCustomPrebuiltEntityRoleOptionalParameter updateCustomPrebuiltEntityRoleOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> updateCustomPrebuiltEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
-     * @return the first stage of the updateCustomPrebuiltEntityRole call
-     */
-    ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithAppId updateCustomPrebuiltEntityRole();
-
-    /**
-     * Grouping of updateCustomPrebuiltEntityRole definition stages.
-     */
-    interface ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The entity ID.
-             *
-             * @return next definition stage
-             */
-            WithRoleId withEntityId(UUID entityId);
-        }
-        /**
-         * The stage of the definition to be specify roleId.
-         */
-        interface WithRoleId {
-            /**
-             * The entity role ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The entity role name.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updateCustomPrebuiltEntityRole definition.
-     */
-    interface ModelsUpdateCustomPrebuiltEntityRoleDefinition extends
-        ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithAppId,
-        ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithVersionId,
-        ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithEntityId,
-        ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithRoleId,
-        ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Delete an entity role.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity ID.
-     * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param roleId The entity role ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateCustomPrebuiltEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Update a role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteCustomEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
+    OperationStatus updateCustomPrebuiltEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
 
     /**
-     * Delete an entity role.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateCustomPrebuiltEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Update a role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role ID.
+     * @param name The entity role name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateCustomPrebuiltEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId, String name);
+
+    /**
+     * Delete a role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity ID.
      * @param roleId The entity role Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
      */
-    Observable<OperationStatus> deleteCustomEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId);
-
-
+    OperationStatus deleteCustomEntityRole(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Delete a role for a given prebuilt entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteCustomEntityRoleWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Delete a role for a given prebuilt entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity ID.
+     * @param roleId The entity role Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteCustomEntityRoleAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull UUID roleId);
+
+    /**
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity Id.
      * @param itemId The explicit list item Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ExplicitListItem object if successful.
      */
-    ExplicitListItem getExplicitListItem(UUID appId, String versionId, UUID entityId, long itemId);
+    ExplicitListItem getExplicitListItem(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId);
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity Id.
      * @param itemId The explicit list item Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ExplicitListItem object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<ExplicitListItem> getExplicitListItemAsync(UUID appId, String versionId, UUID entityId, long itemId);
-
+    Mono<SimpleResponse<ExplicitListItem>> getExplicitListItemWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId);
 
     /**
-     * Updates an explicit list item for a Pattern.Any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The Pattern.Any entity Id.
+     * @param itemId The explicit list item Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<ExplicitListItem> getExplicitListItemAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId);
+
+    /**
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity extractor ID.
      * @param itemId The explicit list item ID.
-     * @param updateExplicitListItemOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus updateExplicitListItem(UUID appId, String versionId, UUID entityId, long itemId, UpdateExplicitListItemOptionalParameter updateExplicitListItemOptionalParameter);
+    OperationStatus updateExplicitListItem(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId);
 
     /**
-     * Updates an explicit list item for a Pattern.Any entity.
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The Pattern.Any entity extractor ID.
      * @param itemId The explicit list item ID.
-     * @param updateExplicitListItemOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    @Deprecated
-    Observable<OperationStatus> updateExplicitListItemAsync(UUID appId, String versionId, UUID entityId, long itemId, UpdateExplicitListItemOptionalParameter updateExplicitListItemOptionalParameter);
+    Mono<SimpleResponse<OperationStatus>> updateExplicitListItemWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId);
 
     /**
-     * Updates an explicit list item for a Pattern.Any entity.
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
      *
-     * @return the first stage of the updateExplicitListItem call
-     */
-    ModelsUpdateExplicitListItemDefinitionStages.WithAppId updateExplicitListItem();
-
-    /**
-     * Grouping of updateExplicitListItem definition stages.
-     */
-    interface ModelsUpdateExplicitListItemDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify entityId.
-         */
-        interface WithEntityId {
-            /**
-             * The Pattern.Any entity extractor ID.
-             *
-             * @return next definition stage
-             */
-            WithItemId withEntityId(UUID entityId);
-        }
-        /**
-         * The stage of the definition to be specify itemId.
-         */
-        interface WithItemId {
-            /**
-             * The explicit list item ID.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateExplicitListItemDefinitionStages.WithExecute withItemId(long itemId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The explicit list item.
-             *
-             * @return next definition stage
-             */
-            ModelsUpdateExplicitListItemDefinitionStages.WithExecute withExplicitListItem(String explicitListItem);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsUpdateExplicitListItemDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the OperationStatus object if successful.
-             */
-            OperationStatus execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the OperationStatus object
-             */
-            Observable<OperationStatus> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of updateExplicitListItem definition.
-     */
-    interface ModelsUpdateExplicitListItemDefinition extends
-        ModelsUpdateExplicitListItemDefinitionStages.WithAppId,
-        ModelsUpdateExplicitListItemDefinitionStages.WithVersionId,
-        ModelsUpdateExplicitListItemDefinitionStages.WithEntityId,
-        ModelsUpdateExplicitListItemDefinitionStages.WithItemId,
-        ModelsUpdateExplicitListItemDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Delete the explicit list item from the Pattern.any explicit list.
-     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId The pattern.any entity id.
-     * @param itemId The explicit list item which will be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param entityId The Pattern.Any entity extractor ID.
+     * @param itemId The explicit list item ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateExplicitListItemAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId);
+
+    /**
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The Pattern.Any entity extractor ID.
+     * @param itemId The explicit list item ID.
+     * @param explicitListItem The explicit list item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteExplicitListItem(UUID appId, String versionId, UUID entityId, long itemId);
+    OperationStatus updateExplicitListItem(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId, String explicitListItem);
 
     /**
-     * Delete the explicit list item from the Pattern.any explicit list.
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The Pattern.Any entity extractor ID.
+     * @param itemId The explicit list item ID.
+     * @param explicitListItem The explicit list item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> updateExplicitListItemWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId, String explicitListItem);
+
+    /**
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The Pattern.Any entity extractor ID.
+     * @param itemId The explicit list item ID.
+     * @param explicitListItem The explicit list item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> updateExplicitListItemAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId, String explicitListItem);
+
+    /**
+     * Delete an item from the explicit (exception) list for a Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The pattern.any entity id.
      * @param itemId The explicit list item which will be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
      */
-    Observable<OperationStatus> deleteExplicitListItemAsync(UUID appId, String versionId, UUID entityId, long itemId);
+    OperationStatus deleteExplicitListItem(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId);
 
+    /**
+     * Delete an item from the explicit (exception) list for a Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The pattern.any entity id.
+     * @param itemId The explicit list item which will be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OperationStatus>> deleteExplicitListItemWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId);
 
+    /**
+     * Delete an item from the explicit (exception) list for a Pattern.any entity in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The pattern.any entity id.
+     * @param itemId The explicit list item which will be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OperationStatus> deleteExplicitListItemAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID entityId, @NonNull long itemId);
 }

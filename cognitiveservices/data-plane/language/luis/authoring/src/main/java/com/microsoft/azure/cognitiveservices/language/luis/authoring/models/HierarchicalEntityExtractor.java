@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Hierarchical Entity Extractor.
  */
-public class HierarchicalEntityExtractor {
+public final class HierarchicalEntityExtractor {
     /**
      * The ID of the Entity Model.
      */
@@ -37,9 +37,9 @@ public class HierarchicalEntityExtractor {
     /**
      * Possible values include: 'Entity Extractor', 'Hierarchical Entity
      * Extractor', 'Hierarchical Child Entity Extractor', 'Composite Entity
-     * Extractor', 'Closed List Entity Extractor', 'Prebuilt Entity Extractor',
-     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regex Entity
-     * Extractor'.
+     * Extractor', 'List Entity Extractor', 'Prebuilt Entity Extractor',
+     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regular Expression
+     * Entity Extractor'.
      */
     @JsonProperty(value = "readableType", required = true)
     private String readableType;
@@ -59,7 +59,7 @@ public class HierarchicalEntityExtractor {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -68,7 +68,7 @@ public class HierarchicalEntityExtractor {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the HierarchicalEntityExtractor object itself.
      */
     public HierarchicalEntityExtractor withId(UUID id) {
@@ -79,7 +79,7 @@ public class HierarchicalEntityExtractor {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -88,7 +88,7 @@ public class HierarchicalEntityExtractor {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the HierarchicalEntityExtractor object itself.
      */
     public HierarchicalEntityExtractor withName(String name) {
@@ -99,7 +99,7 @@ public class HierarchicalEntityExtractor {
     /**
      * Get the typeId value.
      *
-     * @return the typeId value
+     * @return the typeId value.
      */
     public Integer typeId() {
         return this.typeId;
@@ -108,7 +108,7 @@ public class HierarchicalEntityExtractor {
     /**
      * Set the typeId value.
      *
-     * @param typeId the typeId value to set
+     * @param typeId the typeId value to set.
      * @return the HierarchicalEntityExtractor object itself.
      */
     public HierarchicalEntityExtractor withTypeId(Integer typeId) {
@@ -119,7 +119,7 @@ public class HierarchicalEntityExtractor {
     /**
      * Get the readableType value.
      *
-     * @return the readableType value
+     * @return the readableType value.
      */
     public String readableType() {
         return this.readableType;
@@ -128,7 +128,7 @@ public class HierarchicalEntityExtractor {
     /**
      * Set the readableType value.
      *
-     * @param readableType the readableType value to set
+     * @param readableType the readableType value to set.
      * @return the HierarchicalEntityExtractor object itself.
      */
     public HierarchicalEntityExtractor withReadableType(String readableType) {
@@ -139,7 +139,7 @@ public class HierarchicalEntityExtractor {
     /**
      * Get the roles value.
      *
-     * @return the roles value
+     * @return the roles value.
      */
     public List<EntityRole> roles() {
         return this.roles;
@@ -148,7 +148,7 @@ public class HierarchicalEntityExtractor {
     /**
      * Set the roles value.
      *
-     * @param roles the roles value to set
+     * @param roles the roles value to set.
      * @return the HierarchicalEntityExtractor object itself.
      */
     public HierarchicalEntityExtractor withRoles(List<EntityRole> roles) {
@@ -159,7 +159,7 @@ public class HierarchicalEntityExtractor {
     /**
      * Get the children value.
      *
-     * @return the children value
+     * @return the children value.
      */
     public List<ChildEntity> children() {
         return this.children;
@@ -168,12 +168,11 @@ public class HierarchicalEntityExtractor {
     /**
      * Set the children value.
      *
-     * @param children the children value to set
+     * @param children the children value to set.
      * @return the HierarchicalEntityExtractor object itself.
      */
     public HierarchicalEntityExtractor withChildren(List<ChildEntity> children) {
         this.children = children;
         return this;
     }
-
 }

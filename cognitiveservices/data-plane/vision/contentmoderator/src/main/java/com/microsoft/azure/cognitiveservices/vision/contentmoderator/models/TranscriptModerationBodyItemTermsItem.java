@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The TranscriptModerationBodyItemTermsItem model.
  */
-public class TranscriptModerationBodyItemTermsItem {
+public final class TranscriptModerationBodyItemTermsItem {
     /**
      * Index of the word.
      */
@@ -29,7 +29,7 @@ public class TranscriptModerationBodyItemTermsItem {
     /**
      * Get the index value.
      *
-     * @return the index value
+     * @return the index value.
      */
     public int index() {
         return this.index;
@@ -38,7 +38,7 @@ public class TranscriptModerationBodyItemTermsItem {
     /**
      * Set the index value.
      *
-     * @param index the index value to set
+     * @param index the index value to set.
      * @return the TranscriptModerationBodyItemTermsItem object itself.
      */
     public TranscriptModerationBodyItemTermsItem withIndex(int index) {
@@ -49,7 +49,7 @@ public class TranscriptModerationBodyItemTermsItem {
     /**
      * Get the term value.
      *
-     * @return the term value
+     * @return the term value.
      */
     public String term() {
         return this.term;
@@ -58,12 +58,11 @@ public class TranscriptModerationBodyItemTermsItem {
     /**
      * Set the term value.
      *
-     * @param term the term value to set
+     * @param term the term value to set.
      * @return the TranscriptModerationBodyItemTermsItem object itself.
      */
     public TranscriptModerationBodyItemTermsItem withTerm(String term) {
         this.term = term;
         return this;
     }
-
 }

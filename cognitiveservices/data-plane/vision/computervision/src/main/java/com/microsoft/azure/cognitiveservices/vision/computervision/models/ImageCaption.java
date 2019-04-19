@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * An image caption, i.e. a brief description of what the image depicts.
  */
-public class ImageCaption {
+public final class ImageCaption {
     /**
      * The text of the caption.
      */
@@ -29,7 +29,7 @@ public class ImageCaption {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -38,7 +38,7 @@ public class ImageCaption {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the ImageCaption object itself.
      */
     public ImageCaption withText(String text) {
@@ -49,7 +49,7 @@ public class ImageCaption {
     /**
      * Get the confidence value.
      *
-     * @return the confidence value
+     * @return the confidence value.
      */
     public double confidence() {
         return this.confidence;
@@ -58,12 +58,11 @@ public class ImageCaption {
     /**
      * Set the confidence value.
      *
-     * @param confidence the confidence value to set
+     * @param confidence the confidence value to set.
      * @return the ImageCaption object itself.
      */
     public ImageCaption withConfidence(double confidence) {
         this.confidence = confidence;
         return this;
     }
-
 }

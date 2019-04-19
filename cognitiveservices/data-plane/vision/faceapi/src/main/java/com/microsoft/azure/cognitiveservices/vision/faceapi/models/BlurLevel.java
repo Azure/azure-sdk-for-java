@@ -15,19 +15,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for BlurLevel.
  */
 public enum BlurLevel {
-    /** Enum value Low. */
+    /**
+     * Enum value Low.
+     */
     LOW("Low"),
 
-    /** Enum value Medium. */
+    /**
+     * Enum value Medium.
+     */
     MEDIUM("Medium"),
 
-    /** Enum value High. */
+    /**
+     * Enum value High.
+     */
     HIGH("High");
 
-    /** The actual serialized value for a BlurLevel instance. */
-    private String value;
+    /**
+     * The actual serialized value for a BlurLevel instance.
+     */
+    private final String value;
 
-    BlurLevel(String value) {
+    private BlurLevel(String value) {
         this.value = value;
     }
 

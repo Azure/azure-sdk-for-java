@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * includes the optional crop area that you use to identify the region of
  * interest in the image.
  */
-public class ImageInfo {
+public final class ImageInfo {
     /**
      * An image insights token. To get the insights token, call one of the
      * Image Search APIs (for example, /images/search). In the search results,
@@ -51,7 +51,7 @@ public class ImageInfo {
     /**
      * Get the imageInsightsToken value.
      *
-     * @return the imageInsightsToken value
+     * @return the imageInsightsToken value.
      */
     public String imageInsightsToken() {
         return this.imageInsightsToken;
@@ -60,7 +60,7 @@ public class ImageInfo {
     /**
      * Set the imageInsightsToken value.
      *
-     * @param imageInsightsToken the imageInsightsToken value to set
+     * @param imageInsightsToken the imageInsightsToken value to set.
      * @return the ImageInfo object itself.
      */
     public ImageInfo withImageInsightsToken(String imageInsightsToken) {
@@ -71,7 +71,7 @@ public class ImageInfo {
     /**
      * Get the url value.
      *
-     * @return the url value
+     * @return the url value.
      */
     public String url() {
         return this.url;
@@ -80,7 +80,7 @@ public class ImageInfo {
     /**
      * Set the url value.
      *
-     * @param url the url value to set
+     * @param url the url value to set.
      * @return the ImageInfo object itself.
      */
     public ImageInfo withUrl(String url) {
@@ -91,7 +91,7 @@ public class ImageInfo {
     /**
      * Get the cropArea value.
      *
-     * @return the cropArea value
+     * @return the cropArea value.
      */
     public CropArea cropArea() {
         return this.cropArea;
@@ -100,12 +100,11 @@ public class ImageInfo {
     /**
      * Set the cropArea value.
      *
-     * @param cropArea the cropArea value to set
+     * @param cropArea the cropArea value to set.
      * @return the ImageInfo object itself.
      */
     public ImageInfo withCropArea(CropArea cropArea) {
         this.cropArea = cropArea;
         return this;
     }
-
 }

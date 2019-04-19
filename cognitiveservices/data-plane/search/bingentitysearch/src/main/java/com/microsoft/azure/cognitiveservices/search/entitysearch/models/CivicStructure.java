@@ -8,9 +8,9 @@
 
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * The CivicStructure model.

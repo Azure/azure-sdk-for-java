@@ -8,27 +8,34 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for SafeSearch.
  */
 public final class SafeSearch extends ExpandableStringEnum<SafeSearch> {
-    /** Static value Off for SafeSearch. */
+    /**
+     * Static value Off for SafeSearch.
+     */
     public static final SafeSearch OFF = fromString("Off");
 
-    /** Static value Moderate for SafeSearch. */
+    /**
+     * Static value Moderate for SafeSearch.
+     */
     public static final SafeSearch MODERATE = fromString("Moderate");
 
-    /** Static value Strict for SafeSearch. */
+    /**
+     * Static value Strict for SafeSearch.
+     */
     public static final SafeSearch STRICT = fromString("Strict");
 
     /**
      * Creates or finds a SafeSearch from its string representation.
-     * @param name a name to look for
-     * @return the corresponding SafeSearch
+     *
+     * @param name a name to look for.
+     * @return the corresponding SafeSearch.
      */
     @JsonCreator
     public static SafeSearch fromString(String name) {
@@ -36,7 +43,7 @@ public final class SafeSearch extends ExpandableStringEnum<SafeSearch> {
     }
 
     /**
-     * @return known SafeSearch values
+     * @return known SafeSearch values.
      */
     public static Collection<SafeSearch> values() {
         return values(SafeSearch.class);

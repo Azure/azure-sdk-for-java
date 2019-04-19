@@ -8,120 +8,101 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation;
 
-import retrofit2.Retrofit;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Trains;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureClouds;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EnqueueTrainingResponse;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ModelTrainingInfo;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import okhttp3.ResponseBody;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Trains.
+ * An instance of this class provides access to all the operations defined in
+ * Trains.
  */
-public class TrainsImpl implements Trains {
-    /** The Retrofit service to perform REST calls. */
+public final class TrainsImpl implements Trains {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private TrainsService service;
-    /** The service client containing this operation class. */
+
+    /**
+     * The service client containing this operation class.
+     */
     private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of TrainsImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public TrainsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
-        this.service = retrofit.create(TrainsService.class);
+    public TrainsImpl(LUISAuthoringClientImpl client) {
+        this.service = RestProxy.create(TrainsService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Trains to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for Trains to be used by the
+     * proxy service to perform REST calls.
      */
-    interface TrainsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Trains trainVersion" })
+    @Host("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0")
+    private interface TrainsService {
         @POST("apps/{appId}/versions/{versionId}/train")
-        Observable<Response<ResponseBody>> trainVersion(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<EnqueueTrainingResponse>> trainVersion(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Trains getStatus" })
         @GET("apps/{appId}/versions/{versionId}/train")
-        Observable<Response<ResponseBody>> getStatus(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<List<ModelTrainingInfo>>> getStatus(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud);
     }
 
     /**
      * Sends a training request for a version of a specified LUIS app. This POST request initiates a request asynchronously. To determine whether the training request is successful, submit a GET request to get training status. Note: The application version is not fully trained unless all the models (intents and entities) are trained successfully or are up to date. To verify training success, get the training status at least once after training is complete.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the EnqueueTrainingResponse object if successful.
      */
-    public EnqueueTrainingResponse trainVersion(UUID appId, String versionId) {
-        return trainVersionWithServiceResponseAsync(appId, versionId).toBlocking().single().body();
+    public EnqueueTrainingResponse trainVersion(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return trainVersionAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
     /**
      * Sends a training request for a version of a specified LUIS app. This POST request initiates a request asynchronously. To determine whether the training request is successful, submit a GET request to get training status. Note: The application version is not fully trained unless all the models (intents and entities) are trained successfully or are up to date. To verify training success, get the training status at least once after training is complete.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<EnqueueTrainingResponse> trainVersionAsync(UUID appId, String versionId, final ServiceCallback<EnqueueTrainingResponse> serviceCallback) {
-        return ServiceFuture.fromResponse(trainVersionWithServiceResponseAsync(appId, versionId), serviceCallback);
-    }
-
-    /**
-     * Sends a training request for a version of a specified LUIS app. This POST request initiates a request asynchronously. To determine whether the training request is successful, submit a GET request to get training status. Note: The application version is not fully trained unless all the models (intents and entities) are trained successfully or are up to date. To verify training success, get the training status at least once after training is complete.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EnqueueTrainingResponse object
-     */
-    public Observable<EnqueueTrainingResponse> trainVersionAsync(UUID appId, String versionId) {
-        return trainVersionWithServiceResponseAsync(appId, versionId).map(new Func1<ServiceResponse<EnqueueTrainingResponse>, EnqueueTrainingResponse>() {
-            @Override
-            public EnqueueTrainingResponse call(ServiceResponse<EnqueueTrainingResponse> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Sends a training request for a version of a specified LUIS app. This POST request initiates a request asynchronously. To determine whether the training request is successful, submit a GET request to get training status. Note: The application version is not fully trained unless all the models (intents and entities) are trained successfully or are up to date. To verify training success, get the training status at least once after training is complete.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EnqueueTrainingResponse object
-     */
-    public Observable<ServiceResponse<EnqueueTrainingResponse>> trainVersionWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<EnqueueTrainingResponse>> trainVersionWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -129,83 +110,56 @@ public class TrainsImpl implements Trains {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.trainVersion(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EnqueueTrainingResponse>>>() {
-                @Override
-                public Observable<ServiceResponse<EnqueueTrainingResponse>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<EnqueueTrainingResponse> clientResponse = trainVersionDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.trainVersion(appId, versionId, azureRegion, azureCloud);
     }
 
-    private ServiceResponse<EnqueueTrainingResponse> trainVersionDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<EnqueueTrainingResponse, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(202, new TypeToken<EnqueueTrainingResponse>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+    /**
+     * Sends a training request for a version of a specified LUIS app. This POST request initiates a request asynchronously. To determine whether the training request is successful, submit a GET request to get training status. Note: The application version is not fully trained unless all the models (intents and entities) are trained successfully or are up to date. To verify training success, get the training status at least once after training is complete.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<EnqueueTrainingResponse> trainVersionAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return trainVersionWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<EnqueueTrainingResponse> res) -> Mono.just(res.value()));
     }
 
     /**
      * Gets the training status of all models (intents and entities) for the specified LUIS app. You must call the train API to train the LUIS app before you call this API to get training status. "appID" specifies the LUIS app ID. "versionId" specifies the version number of the LUIS app. For example, "0.1".
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;ModelTrainingInfo&gt; object if successful.
      */
-    public List<ModelTrainingInfo> getStatus(UUID appId, String versionId) {
-        return getStatusWithServiceResponseAsync(appId, versionId).toBlocking().single().body();
+    public List<ModelTrainingInfo> getStatus(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return getStatusAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
     /**
      * Gets the training status of all models (intents and entities) for the specified LUIS app. You must call the train API to train the LUIS app before you call this API to get training status. "appID" specifies the LUIS app ID. "versionId" specifies the version number of the LUIS app. For example, "0.1".
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<ModelTrainingInfo>> getStatusAsync(UUID appId, String versionId, final ServiceCallback<List<ModelTrainingInfo>> serviceCallback) {
-        return ServiceFuture.fromResponse(getStatusWithServiceResponseAsync(appId, versionId), serviceCallback);
-    }
-
-    /**
-     * Gets the training status of all models (intents and entities) for the specified LUIS app. You must call the train API to train the LUIS app before you call this API to get training status. "appID" specifies the LUIS app ID. "versionId" specifies the version number of the LUIS app. For example, "0.1".
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ModelTrainingInfo&gt; object
-     */
-    public Observable<List<ModelTrainingInfo>> getStatusAsync(UUID appId, String versionId) {
-        return getStatusWithServiceResponseAsync(appId, versionId).map(new Func1<ServiceResponse<List<ModelTrainingInfo>>, List<ModelTrainingInfo>>() {
-            @Override
-            public List<ModelTrainingInfo> call(ServiceResponse<List<ModelTrainingInfo>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the training status of all models (intents and entities) for the specified LUIS app. You must call the train API to train the LUIS app before you call this API to get training status. "appID" specifies the LUIS app ID. "versionId" specifies the version number of the LUIS app. For example, "0.1".
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ModelTrainingInfo&gt; object
-     */
-    public Observable<ServiceResponse<List<ModelTrainingInfo>>> getStatusWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<List<ModelTrainingInfo>>> getStatusWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -213,26 +167,21 @@ public class TrainsImpl implements Trains {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getStatus(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ModelTrainingInfo>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<ModelTrainingInfo>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<ModelTrainingInfo>> clientResponse = getStatusDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getStatus(appId, versionId, azureRegion, azureCloud);
     }
 
-    private ServiceResponse<List<ModelTrainingInfo>> getStatusDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<ModelTrainingInfo>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<ModelTrainingInfo>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+    /**
+     * Gets the training status of all models (intents and entities) for the specified LUIS app. You must call the train API to train the LUIS app before you call this API to get training status. "appID" specifies the LUIS app ID. "versionId" specifies the version number of the LUIS app. For example, "0.1".
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<ModelTrainingInfo>> getStatusAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return getStatusWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<List<ModelTrainingInfo>> res) -> Mono.just(res.value()));
     }
-
 }

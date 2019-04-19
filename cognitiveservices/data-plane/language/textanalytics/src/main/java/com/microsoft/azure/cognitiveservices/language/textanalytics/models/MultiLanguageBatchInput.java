@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.textanalytics.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The MultiLanguageBatchInput model.
  */
-public class MultiLanguageBatchInput {
+public final class MultiLanguageBatchInput {
     /**
      * The documents property.
      */
@@ -24,7 +24,7 @@ public class MultiLanguageBatchInput {
     /**
      * Get the documents value.
      *
-     * @return the documents value
+     * @return the documents value.
      */
     public List<MultiLanguageInput> documents() {
         return this.documents;
@@ -33,12 +33,11 @@ public class MultiLanguageBatchInput {
     /**
      * Set the documents value.
      *
-     * @param documents the documents value to set
+     * @param documents the documents value to set.
      * @return the MultiLanguageBatchInput object itself.
      */
     public MultiLanguageBatchInput withDocuments(List<MultiLanguageInput> documents) {
         this.documents = documents;
         return this;
     }
-
 }

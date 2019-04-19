@@ -18,9 +18,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * points. The coordinates are fractional values of the original image's width
  * and height in the range 0.0 through 1.0.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = NormalizedQuadrilateral.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("NormalizedQuadrilateral")
-public class NormalizedQuadrilateral extends StructuredValue {
+public final class NormalizedQuadrilateral extends StructuredValue {
     /**
      * The top left corner coordinate.
      */
@@ -48,7 +48,7 @@ public class NormalizedQuadrilateral extends StructuredValue {
     /**
      * Get the topLeft value.
      *
-     * @return the topLeft value
+     * @return the topLeft value.
      */
     public Point2D topLeft() {
         return this.topLeft;
@@ -57,7 +57,7 @@ public class NormalizedQuadrilateral extends StructuredValue {
     /**
      * Set the topLeft value.
      *
-     * @param topLeft the topLeft value to set
+     * @param topLeft the topLeft value to set.
      * @return the NormalizedQuadrilateral object itself.
      */
     public NormalizedQuadrilateral withTopLeft(Point2D topLeft) {
@@ -68,7 +68,7 @@ public class NormalizedQuadrilateral extends StructuredValue {
     /**
      * Get the topRight value.
      *
-     * @return the topRight value
+     * @return the topRight value.
      */
     public Point2D topRight() {
         return this.topRight;
@@ -77,7 +77,7 @@ public class NormalizedQuadrilateral extends StructuredValue {
     /**
      * Set the topRight value.
      *
-     * @param topRight the topRight value to set
+     * @param topRight the topRight value to set.
      * @return the NormalizedQuadrilateral object itself.
      */
     public NormalizedQuadrilateral withTopRight(Point2D topRight) {
@@ -88,7 +88,7 @@ public class NormalizedQuadrilateral extends StructuredValue {
     /**
      * Get the bottomRight value.
      *
-     * @return the bottomRight value
+     * @return the bottomRight value.
      */
     public Point2D bottomRight() {
         return this.bottomRight;
@@ -97,7 +97,7 @@ public class NormalizedQuadrilateral extends StructuredValue {
     /**
      * Set the bottomRight value.
      *
-     * @param bottomRight the bottomRight value to set
+     * @param bottomRight the bottomRight value to set.
      * @return the NormalizedQuadrilateral object itself.
      */
     public NormalizedQuadrilateral withBottomRight(Point2D bottomRight) {
@@ -108,7 +108,7 @@ public class NormalizedQuadrilateral extends StructuredValue {
     /**
      * Get the bottomLeft value.
      *
-     * @return the bottomLeft value
+     * @return the bottomLeft value.
      */
     public Point2D bottomLeft() {
         return this.bottomLeft;
@@ -117,12 +117,11 @@ public class NormalizedQuadrilateral extends StructuredValue {
     /**
      * Set the bottomLeft value.
      *
-     * @param bottomLeft the bottomLeft value to set
+     * @param bottomLeft the bottomLeft value to set.
      * @return the NormalizedQuadrilateral object itself.
      */
     public NormalizedQuadrilateral withBottomLeft(Point2D bottomLeft) {
         this.bottomLeft = bottomLeft;
         return this;
     }
-
 }

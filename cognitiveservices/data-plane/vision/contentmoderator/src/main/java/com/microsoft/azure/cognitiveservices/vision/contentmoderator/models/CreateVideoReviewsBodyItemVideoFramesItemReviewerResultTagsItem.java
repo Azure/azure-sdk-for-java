@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem model.
  */
-public class CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem {
+public final class CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem {
     /**
      * Your key parameter.
      */
@@ -29,7 +29,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem {
     /**
      * Get the key value.
      *
-     * @return the key value
+     * @return the key value.
      */
     public String key() {
         return this.key;
@@ -38,8 +38,10 @@ public class CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem {
     /**
      * Set the key value.
      *
-     * @param key the key value to set
-     * @return the CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem object itself.
+     * @param key the key value to set.
+     * @return the
+     * CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem object
+     * itself.
      */
     public CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem withKey(String key) {
         this.key = key;
@@ -49,7 +51,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public String value() {
         return this.value;
@@ -58,12 +60,13 @@ public class CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
-     * @return the CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem object itself.
+     * @param value the value value to set.
+     * @return the
+     * CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem object
+     * itself.
      */
     public CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem withValue(String value) {
         this.value = value;
         return this;
     }
-
 }

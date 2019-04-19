@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The OcrResult model.
  */
-public class OcrResult {
+public final class OcrResult {
     /**
      * The BCP-47 language code of the text in the image.
      */
@@ -37,10 +37,10 @@ public class OcrResult {
     private double textAngle;
 
     /**
-     * Orientation of the text recognized in the image. The value
-     * (up,down,left, or right) refers to the direction that the top of the
-     * recognized text is facing, after the image has been rotated around its
-     * center according to the detected text angle (see textAngle property).
+     * Orientation of the text recognized in the image. The value (up, down,
+     * left, or right) refers to the direction that the top of the recognized
+     * text is facing, after the image has been rotated around its center
+     * according to the detected text angle (see textAngle property).
      */
     @JsonProperty(value = "orientation")
     private String orientation;
@@ -55,7 +55,7 @@ public class OcrResult {
     /**
      * Get the language value.
      *
-     * @return the language value
+     * @return the language value.
      */
     public String language() {
         return this.language;
@@ -64,7 +64,7 @@ public class OcrResult {
     /**
      * Set the language value.
      *
-     * @param language the language value to set
+     * @param language the language value to set.
      * @return the OcrResult object itself.
      */
     public OcrResult withLanguage(String language) {
@@ -75,7 +75,7 @@ public class OcrResult {
     /**
      * Get the textAngle value.
      *
-     * @return the textAngle value
+     * @return the textAngle value.
      */
     public double textAngle() {
         return this.textAngle;
@@ -84,7 +84,7 @@ public class OcrResult {
     /**
      * Set the textAngle value.
      *
-     * @param textAngle the textAngle value to set
+     * @param textAngle the textAngle value to set.
      * @return the OcrResult object itself.
      */
     public OcrResult withTextAngle(double textAngle) {
@@ -95,7 +95,7 @@ public class OcrResult {
     /**
      * Get the orientation value.
      *
-     * @return the orientation value
+     * @return the orientation value.
      */
     public String orientation() {
         return this.orientation;
@@ -104,7 +104,7 @@ public class OcrResult {
     /**
      * Set the orientation value.
      *
-     * @param orientation the orientation value to set
+     * @param orientation the orientation value to set.
      * @return the OcrResult object itself.
      */
     public OcrResult withOrientation(String orientation) {
@@ -115,7 +115,7 @@ public class OcrResult {
     /**
      * Get the regions value.
      *
-     * @return the regions value
+     * @return the regions value.
      */
     public List<OcrRegion> regions() {
         return this.regions;
@@ -124,12 +124,11 @@ public class OcrResult {
     /**
      * Set the regions value.
      *
-     * @param regions the regions value to set
+     * @param regions the regions value to set.
      * @return the OcrResult object itself.
      */
     public OcrResult withRegions(List<OcrRegion> regions) {
         this.regions = regions;
         return this;
     }
-
 }

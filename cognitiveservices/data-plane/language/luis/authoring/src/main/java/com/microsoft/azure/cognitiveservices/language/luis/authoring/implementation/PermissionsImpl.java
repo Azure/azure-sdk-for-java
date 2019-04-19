@@ -8,541 +8,439 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation;
 
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddPermissionsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.DeletePermissionsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdatePermissionsOptionalParameter;
-import retrofit2.Retrofit;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.DELETE;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.PUT;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureClouds;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CollaboratorsArray;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UserAccessList;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UserCollaborator;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Permissions.
+ * An instance of this class provides access to all the operations defined in
+ * Permissions.
  */
-public class PermissionsImpl implements Permissions {
-    /** The Retrofit service to perform REST calls. */
+public final class PermissionsImpl implements Permissions {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private PermissionsService service;
-    /** The service client containing this operation class. */
+
+    /**
+     * The service client containing this operation class.
+     */
     private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of PermissionsImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PermissionsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
-        this.service = retrofit.create(PermissionsService.class);
+    public PermissionsImpl(LUISAuthoringClientImpl client) {
+        this.service = RestProxy.create(PermissionsService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Permissions to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for Permissions to be used by
+     * the proxy service to perform REST calls.
      */
-    interface PermissionsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions list" })
+    @Host("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0")
+    private interface PermissionsService {
         @GET("apps/{appId}/permissions")
-        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<UserAccessList>> list(@PathParam("appId") UUID appId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions add" })
         @POST("apps/{appId}/permissions")
-        Observable<Response<ResponseBody>> add(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Body UserCollaborator userToAdd, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<OperationStatus>> add(@PathParam("appId") UUID appId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") UserCollaborator userToAdd);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions delete" })
-        @HTTP(path = "apps/{appId}/permissions", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Body UserCollaborator userToDelete, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @DELETE("apps/{appId}/permissions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<OperationStatus>> delete(@PathParam("appId") UUID appId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") UserCollaborator userToDelete);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions update" })
         @PUT("apps/{appId}/permissions")
-        Observable<Response<ResponseBody>> update(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Body CollaboratorsArray collaborators, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<OperationStatus>> update(@PathParam("appId") UUID appId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") CollaboratorsArray collaborators);
     }
 
     /**
      * Gets the list of user emails that have permissions to access your application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the UserAccessList object if successful.
      */
-    public UserAccessList list(UUID appId) {
-        return listWithServiceResponseAsync(appId).toBlocking().single().body();
+    public UserAccessList list(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        return listAsync(azureRegion, azureCloud, appId).block();
     }
 
     /**
      * Gets the list of user emails that have permissions to access your application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<UserAccessList> listAsync(UUID appId, final ServiceCallback<UserAccessList> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(appId), serviceCallback);
-    }
-
-    /**
-     * Gets the list of user emails that have permissions to access your application.
-     *
-     * @param appId The application ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UserAccessList object
-     */
-    public Observable<UserAccessList> listAsync(UUID appId) {
-        return listWithServiceResponseAsync(appId).map(new Func1<ServiceResponse<UserAccessList>, UserAccessList>() {
-            @Override
-            public UserAccessList call(ServiceResponse<UserAccessList> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the list of user emails that have permissions to access your application.
-     *
-     * @param appId The application ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UserAccessList object
-     */
-    public Observable<ServiceResponse<UserAccessList>> listWithServiceResponseAsync(UUID appId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<UserAccessList>> listWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.list(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UserAccessList>>>() {
-                @Override
-                public Observable<ServiceResponse<UserAccessList>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<UserAccessList> clientResponse = listDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.list(appId, azureRegion, azureCloud);
     }
 
-    private ServiceResponse<UserAccessList> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<UserAccessList, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<UserAccessList>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+    /**
+     * Gets the list of user emails that have permissions to access your application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<UserAccessList> listAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        return listWithRestResponseAsync(azureRegion, azureCloud, appId)
+            .flatMap((SimpleResponse<UserAccessList> res) -> Mono.just(res.value()));
     }
-
 
     /**
      * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus add(UUID appId, AddPermissionsOptionalParameter addOptionalParameter) {
-        return addWithServiceResponseAsync(appId, addOptionalParameter).toBlocking().single().body();
+    public OperationStatus add(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        return addAsync(azureRegion, azureCloud, appId).block();
     }
 
     /**
      * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<OperationStatus> addAsync(UUID appId, AddPermissionsOptionalParameter addOptionalParameter, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(addWithServiceResponseAsync(appId, addOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
-     *
-     * @param appId The application ID.
-     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> addAsync(UUID appId, AddPermissionsOptionalParameter addOptionalParameter) {
-        return addWithServiceResponseAsync(appId, addOptionalParameter).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
-     *
-     * @param appId The application ID.
-     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> addWithServiceResponseAsync(UUID appId, AddPermissionsOptionalParameter addOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<OperationStatus>> addWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        final String email = addOptionalParameter != null ? addOptionalParameter.email() : null;
-
-        return addWithServiceResponseAsync(appId, email);
+        UserCollaborator userToAdd = new UserCollaborator();
+        userToAdd.withEmail(null);
+        return service.add(appId, azureRegion, azureCloud, userToAdd);
     }
 
     /**
      * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> addAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        return addWithRestResponseAsync(azureRegion, azureCloud, appId)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param email The email address of the user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
      */
-    public Observable<ServiceResponse<OperationStatus>> addWithServiceResponseAsync(UUID appId, String email) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public OperationStatus add(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email) {
+        return addAsync(azureRegion, azureCloud, appId, email).block();
+    }
+
+    /**
+     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param email The email address of the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<OperationStatus>> addWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         UserCollaborator userToAdd = new UserCollaborator();
         userToAdd.withEmail(email);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.add(appId, this.client.acceptLanguage(), userToAdd, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = addDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<OperationStatus> addDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public PermissionsAddParameters add() {
-        return new PermissionsAddParameters(this);
+        return service.add(appId, azureRegion, azureCloud, userToAdd);
     }
 
     /**
-     * Internal class implementing PermissionsAddDefinition.
+     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email address.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param email The email address of the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class PermissionsAddParameters implements PermissionsAddDefinition {
-        private PermissionsImpl parent;
-        private UUID appId;
-        private String email;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PermissionsAddParameters(PermissionsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PermissionsAddParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public PermissionsAddParameters withEmail(String email) {
-            this.email = email;
-            return this;
-        }
-
-        @Override
-        public OperationStatus execute() {
-        return addWithServiceResponseAsync(appId, email).toBlocking().single().body();
+    public Mono<OperationStatus> addAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email) {
+        return addWithRestResponseAsync(azureRegion, azureCloud, appId, email)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
     }
-
-        @Override
-        public Observable<OperationStatus> executeAsync() {
-            return addWithServiceResponseAsync(appId, email).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-                @Override
-                public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
 
     /**
      * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus delete(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter) {
-        return deleteWithServiceResponseAsync(appId, deleteOptionalParameter).toBlocking().single().body();
+    public OperationStatus delete(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        return deleteAsync(azureRegion, azureCloud, appId).block();
     }
 
     /**
      * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<OperationStatus> deleteAsync(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(appId, deleteOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
-     *
-     * @param appId The application ID.
-     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> deleteAsync(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter) {
-        return deleteWithServiceResponseAsync(appId, deleteOptionalParameter).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
-     *
-     * @param appId The application ID.
-     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<OperationStatus>> deleteWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        final String email = deleteOptionalParameter != null ? deleteOptionalParameter.email() : null;
-
-        return deleteWithServiceResponseAsync(appId, email);
+        UserCollaborator userToDelete = new UserCollaborator();
+        userToDelete.withEmail(null);
+        return service.delete(appId, azureRegion, azureCloud, userToDelete);
     }
 
     /**
      * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> deleteAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        return deleteWithRestResponseAsync(azureRegion, azureCloud, appId)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param email The email address of the user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
      */
-    public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, String email) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public OperationStatus delete(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email) {
+        return deleteAsync(azureRegion, azureCloud, appId, email).block();
+    }
+
+    /**
+     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param email The email address of the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<OperationStatus>> deleteWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         UserCollaborator userToDelete = new UserCollaborator();
         userToDelete.withEmail(email);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.delete(appId, this.client.acceptLanguage(), userToDelete, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<OperationStatus> deleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public PermissionsDeleteParameters delete() {
-        return new PermissionsDeleteParameters(this);
+        return service.delete(appId, azureRegion, azureCloud, userToDelete);
     }
 
     /**
-     * Internal class implementing PermissionsDeleteDefinition.
-     */
-    class PermissionsDeleteParameters implements PermissionsDeleteDefinition {
-        private PermissionsImpl parent;
-        private UUID appId;
-        private String email;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PermissionsDeleteParameters(PermissionsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PermissionsDeleteParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public PermissionsDeleteParameters withEmail(String email) {
-            this.email = email;
-            return this;
-        }
-
-        @Override
-        public OperationStatus execute() {
-        return deleteWithServiceResponseAsync(appId, email).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<OperationStatus> executeAsync() {
-            return deleteWithServiceResponseAsync(appId, email).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-                @Override
-                public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
-    /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access to other users will be removed.
+     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param email The email address of the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> deleteAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, String email) {
+        return deleteWithRestResponseAsync(azureRegion, azureCloud, appId, email)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus update(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter) {
-        return updateWithServiceResponseAsync(appId, updateOptionalParameter).toBlocking().single().body();
+    public OperationStatus update(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        return updateAsync(azureRegion, azureCloud, appId).block();
     }
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access to other users will be removed.
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<OperationStatus> updateAsync(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(appId, updateOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access to other users will be removed.
-     *
-     * @param appId The application ID.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> updateAsync(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter) {
-        return updateWithServiceResponseAsync(appId, updateOptionalParameter).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access to other users will be removed.
-     *
-     * @param appId The application ID.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<OperationStatus>> updateWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        final List<String> emails = updateOptionalParameter != null ? updateOptionalParameter.emails() : null;
-
-        return updateWithServiceResponseAsync(appId, emails);
+        CollaboratorsArray collaborators = new CollaboratorsArray();
+        collaborators.withEmails(null);
+        return service.update(appId, azureRegion, azureCloud, collaborators);
     }
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access to other users will be removed.
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> updateAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        return updateWithRestResponseAsync(azureRegion, azureCloud, appId)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param emails The email address of the users.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
      */
-    public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, List<String> emails) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public OperationStatus update(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, List<String> emails) {
+        return updateAsync(azureRegion, azureCloud, appId, emails).block();
+    }
+
+    /**
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param emails The email address of the users.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<OperationStatus>> updateWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, List<String> emails) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -550,75 +448,21 @@ public class PermissionsImpl implements Permissions {
         Validator.validate(emails);
         CollaboratorsArray collaborators = new CollaboratorsArray();
         collaborators.withEmails(emails);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.update(appId, this.client.acceptLanguage(), collaborators, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<OperationStatus> updateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public PermissionsUpdateParameters update() {
-        return new PermissionsUpdateParameters(this);
+        return service.update(appId, azureRegion, azureCloud, collaborators);
     }
 
     /**
-     * Internal class implementing PermissionsUpdateDefinition.
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param emails The email address of the users.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class PermissionsUpdateParameters implements PermissionsUpdateDefinition {
-        private PermissionsImpl parent;
-        private UUID appId;
-        private List<String> emails;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PermissionsUpdateParameters(PermissionsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PermissionsUpdateParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public PermissionsUpdateParameters withEmails(List<String> emails) {
-            this.emails = emails;
-            return this;
-        }
-
-        @Override
-        public OperationStatus execute() {
-        return updateWithServiceResponseAsync(appId, emails).toBlocking().single().body();
+    public Mono<OperationStatus> updateAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, List<String> emails) {
+        return updateWithRestResponseAsync(azureRegion, azureCloud, appId, emails)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
     }
-
-        @Override
-        public Observable<OperationStatus> executeAsync() {
-            return updateWithServiceResponseAsync(appId, emails).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-                @Override
-                public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
 }

@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The WebWebGrouping model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = WebWebGrouping.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Web/WebGrouping")
-public class WebWebGrouping {
+public final class WebWebGrouping {
     /**
      * The webPages property.
      */
@@ -28,7 +28,7 @@ public class WebWebGrouping {
     /**
      * Get the webPages value.
      *
-     * @return the webPages value
+     * @return the webPages value.
      */
     public List<WebPage> webPages() {
         return this.webPages;
@@ -37,12 +37,11 @@ public class WebWebGrouping {
     /**
      * Set the webPages value.
      *
-     * @param webPages the webPages value to set
+     * @param webPages the webPages value to set.
      * @return the WebWebGrouping object itself.
      */
     public WebWebGrouping withWebPages(List<WebPage> webPages) {
         this.webPages = webPages;
         return this;
     }
-
 }

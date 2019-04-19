@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Coordinates within an image.
  */
-public class Coordinate {
+public final class Coordinate {
     /**
      * The horizontal component, in pixels.
      */
@@ -29,7 +29,7 @@ public class Coordinate {
     /**
      * Get the x value.
      *
-     * @return the x value
+     * @return the x value.
      */
     public double x() {
         return this.x;
@@ -38,7 +38,7 @@ public class Coordinate {
     /**
      * Set the x value.
      *
-     * @param x the x value to set
+     * @param x the x value to set.
      * @return the Coordinate object itself.
      */
     public Coordinate withX(double x) {
@@ -49,7 +49,7 @@ public class Coordinate {
     /**
      * Get the y value.
      *
-     * @return the y value
+     * @return the y value.
      */
     public double y() {
         return this.y;
@@ -58,12 +58,11 @@ public class Coordinate {
     /**
      * Set the y value.
      *
-     * @param y the y value to set
+     * @param y the y value to set.
      * @return the Coordinate object itself.
      */
     public Coordinate withY(double y) {
         this.y = y;
         return this;
     }
-
 }

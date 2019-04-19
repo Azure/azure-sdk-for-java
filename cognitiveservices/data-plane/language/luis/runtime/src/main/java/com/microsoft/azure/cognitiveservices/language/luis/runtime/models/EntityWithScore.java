@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The EntityWithScore model.
  */
-public class EntityWithScore extends EntityModel {
+public final class EntityWithScore extends EntityModel {
     /**
      * Associated prediction score for the intent (float).
      */
@@ -23,7 +23,7 @@ public class EntityWithScore extends EntityModel {
     /**
      * Get the score value.
      *
-     * @return the score value
+     * @return the score value.
      */
     public double score() {
         return this.score;
@@ -32,12 +32,11 @@ public class EntityWithScore extends EntityModel {
     /**
      * Set the score value.
      *
-     * @param score the score value to set
+     * @param score the score value to set.
      * @return the EntityWithScore object itself.
      */
     public EntityWithScore withScore(double score) {
         this.score = score;
         return this;
     }
-
 }

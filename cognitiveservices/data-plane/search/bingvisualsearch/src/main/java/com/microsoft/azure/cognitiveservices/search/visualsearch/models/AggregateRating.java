@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines the metrics that indicate how well an item was rated by others.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = AggregateRating.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("AggregateRating")
-public class AggregateRating extends Rating {
+public final class AggregateRating extends Rating {
     /**
      * The number of times the recipe has been rated or reviewed.
      */
@@ -27,10 +27,9 @@ public class AggregateRating extends Rating {
     /**
      * Get the reviewCount value.
      *
-     * @return the reviewCount value
+     * @return the reviewCount value.
      */
     public Integer reviewCount() {
         return this.reviewCount;
     }
-
 }

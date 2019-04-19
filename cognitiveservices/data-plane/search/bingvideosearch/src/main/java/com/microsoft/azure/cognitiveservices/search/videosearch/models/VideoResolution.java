@@ -15,22 +15,32 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for VideoResolution.
  */
 public enum VideoResolution {
-    /** Enum value All. */
+    /**
+     * Enum value All.
+     */
     ALL("All"),
 
-    /** Enum value SD480p. */
+    /**
+     * Enum value SD480p.
+     */
     SD480P("SD480p"),
 
-    /** Enum value HD720p. */
+    /**
+     * Enum value HD720p.
+     */
     HD720P("HD720p"),
 
-    /** Enum value HD1080p. */
+    /**
+     * Enum value HD1080p.
+     */
     HD1080P("HD1080p");
 
-    /** The actual serialized value for a VideoResolution instance. */
-    private String value;
+    /**
+     * The actual serialized value for a VideoResolution instance.
+     */
+    private final String value;
 
-    VideoResolution(String value) {
+    private VideoResolution(String value) {
         this.value = value;
     }
 

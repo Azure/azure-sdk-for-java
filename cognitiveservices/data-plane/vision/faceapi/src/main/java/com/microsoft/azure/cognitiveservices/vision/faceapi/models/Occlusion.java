@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Properties describing occlusions on a given face.
  */
-public class Occlusion {
+public final class Occlusion {
     /**
      * A boolean value indicating whether forehead is occluded.
      */
@@ -35,7 +35,7 @@ public class Occlusion {
     /**
      * Get the foreheadOccluded value.
      *
-     * @return the foreheadOccluded value
+     * @return the foreheadOccluded value.
      */
     public boolean foreheadOccluded() {
         return this.foreheadOccluded;
@@ -44,7 +44,7 @@ public class Occlusion {
     /**
      * Set the foreheadOccluded value.
      *
-     * @param foreheadOccluded the foreheadOccluded value to set
+     * @param foreheadOccluded the foreheadOccluded value to set.
      * @return the Occlusion object itself.
      */
     public Occlusion withForeheadOccluded(boolean foreheadOccluded) {
@@ -55,7 +55,7 @@ public class Occlusion {
     /**
      * Get the eyeOccluded value.
      *
-     * @return the eyeOccluded value
+     * @return the eyeOccluded value.
      */
     public boolean eyeOccluded() {
         return this.eyeOccluded;
@@ -64,7 +64,7 @@ public class Occlusion {
     /**
      * Set the eyeOccluded value.
      *
-     * @param eyeOccluded the eyeOccluded value to set
+     * @param eyeOccluded the eyeOccluded value to set.
      * @return the Occlusion object itself.
      */
     public Occlusion withEyeOccluded(boolean eyeOccluded) {
@@ -75,7 +75,7 @@ public class Occlusion {
     /**
      * Get the mouthOccluded value.
      *
-     * @return the mouthOccluded value
+     * @return the mouthOccluded value.
      */
     public boolean mouthOccluded() {
         return this.mouthOccluded;
@@ -84,12 +84,11 @@ public class Occlusion {
     /**
      * Set the mouthOccluded value.
      *
-     * @param mouthOccluded the mouthOccluded value to set
+     * @param mouthOccluded the mouthOccluded value to set.
      * @return the Occlusion object itself.
      */
     public Occlusion withMouthOccluded(boolean mouthOccluded) {
         this.mouthOccluded = mouthOccluded;
         return this;
     }
-
 }

@@ -8,15 +8,15 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * List of landmarks recognized in the image.
+ * Result of domain-specific classifications for the domain of landmarks.
  */
-public class LandmarkResults {
+public final class LandmarkResults {
     /**
-     * The landmarks property.
+     * List of landmarks recognized in the image.
      */
     @JsonProperty(value = "landmarks")
     private List<LandmarksModel> landmarks;
@@ -36,7 +36,7 @@ public class LandmarkResults {
     /**
      * Get the landmarks value.
      *
-     * @return the landmarks value
+     * @return the landmarks value.
      */
     public List<LandmarksModel> landmarks() {
         return this.landmarks;
@@ -45,7 +45,7 @@ public class LandmarkResults {
     /**
      * Set the landmarks value.
      *
-     * @param landmarks the landmarks value to set
+     * @param landmarks the landmarks value to set.
      * @return the LandmarkResults object itself.
      */
     public LandmarkResults withLandmarks(List<LandmarksModel> landmarks) {
@@ -56,7 +56,7 @@ public class LandmarkResults {
     /**
      * Get the requestId value.
      *
-     * @return the requestId value
+     * @return the requestId value.
      */
     public String requestId() {
         return this.requestId;
@@ -65,7 +65,7 @@ public class LandmarkResults {
     /**
      * Set the requestId value.
      *
-     * @param requestId the requestId value to set
+     * @param requestId the requestId value to set.
      * @return the LandmarkResults object itself.
      */
     public LandmarkResults withRequestId(String requestId) {
@@ -76,7 +76,7 @@ public class LandmarkResults {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public ImageMetadata metadata() {
         return this.metadata;
@@ -85,12 +85,11 @@ public class LandmarkResults {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the LandmarkResults object itself.
      */
     public LandmarkResults withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }
-
 }

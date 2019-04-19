@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * IP Address details.
  */
-public class IPA {
+public final class IPA {
     /**
      * Subtype of the detected IP Address.
      */
@@ -35,7 +35,7 @@ public class IPA {
     /**
      * Get the subType value.
      *
-     * @return the subType value
+     * @return the subType value.
      */
     public String subType() {
         return this.subType;
@@ -44,7 +44,7 @@ public class IPA {
     /**
      * Set the subType value.
      *
-     * @param subType the subType value to set
+     * @param subType the subType value to set.
      * @return the IPA object itself.
      */
     public IPA withSubType(String subType) {
@@ -55,7 +55,7 @@ public class IPA {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -64,7 +64,7 @@ public class IPA {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the IPA object itself.
      */
     public IPA withText(String text) {
@@ -75,7 +75,7 @@ public class IPA {
     /**
      * Get the index value.
      *
-     * @return the index value
+     * @return the index value.
      */
     public Integer index() {
         return this.index;
@@ -84,12 +84,11 @@ public class IPA {
     /**
      * Set the index value.
      *
-     * @param index the index value to set
+     * @param index the index value to set.
      * @return the IPA object itself.
      */
     public IPA withIndex(Integer index) {
         this.index = index;
         return this;
     }
-
 }

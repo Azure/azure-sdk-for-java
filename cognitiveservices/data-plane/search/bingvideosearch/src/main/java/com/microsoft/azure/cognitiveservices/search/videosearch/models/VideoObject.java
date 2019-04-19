@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a video object that is relevant to the query.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = VideoObject.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("VideoObject")
-public class VideoObject extends MediaObject {
+public final class VideoObject extends MediaObject {
     /**
      * The motionThumbnailUrl property.
      */
@@ -75,7 +75,7 @@ public class VideoObject extends MediaObject {
     /**
      * Get the motionThumbnailUrl value.
      *
-     * @return the motionThumbnailUrl value
+     * @return the motionThumbnailUrl value.
      */
     public String motionThumbnailUrl() {
         return this.motionThumbnailUrl;
@@ -84,7 +84,7 @@ public class VideoObject extends MediaObject {
     /**
      * Get the motionThumbnailId value.
      *
-     * @return the motionThumbnailId value
+     * @return the motionThumbnailId value.
      */
     public String motionThumbnailId() {
         return this.motionThumbnailId;
@@ -93,7 +93,7 @@ public class VideoObject extends MediaObject {
     /**
      * Get the embedHtml value.
      *
-     * @return the embedHtml value
+     * @return the embedHtml value.
      */
     public String embedHtml() {
         return this.embedHtml;
@@ -102,7 +102,7 @@ public class VideoObject extends MediaObject {
     /**
      * Get the allowHttpsEmbed value.
      *
-     * @return the allowHttpsEmbed value
+     * @return the allowHttpsEmbed value.
      */
     public Boolean allowHttpsEmbed() {
         return this.allowHttpsEmbed;
@@ -111,7 +111,7 @@ public class VideoObject extends MediaObject {
     /**
      * Get the viewCount value.
      *
-     * @return the viewCount value
+     * @return the viewCount value.
      */
     public Integer viewCount() {
         return this.viewCount;
@@ -120,7 +120,7 @@ public class VideoObject extends MediaObject {
     /**
      * Get the thumbnail value.
      *
-     * @return the thumbnail value
+     * @return the thumbnail value.
      */
     public ImageObject thumbnail() {
         return this.thumbnail;
@@ -129,7 +129,7 @@ public class VideoObject extends MediaObject {
     /**
      * Get the videoId value.
      *
-     * @return the videoId value
+     * @return the videoId value.
      */
     public String videoId() {
         return this.videoId;
@@ -138,7 +138,7 @@ public class VideoObject extends MediaObject {
     /**
      * Get the allowMobileEmbed value.
      *
-     * @return the allowMobileEmbed value
+     * @return the allowMobileEmbed value.
      */
     public Boolean allowMobileEmbed() {
         return this.allowMobileEmbed;
@@ -147,10 +147,9 @@ public class VideoObject extends MediaObject {
     /**
      * Get the isSuperfresh value.
      *
-     * @return the isSuperfresh value
+     * @return the isSuperfresh value.
      */
     public Boolean isSuperfresh() {
         return this.isSuperfresh;
     }
-
 }

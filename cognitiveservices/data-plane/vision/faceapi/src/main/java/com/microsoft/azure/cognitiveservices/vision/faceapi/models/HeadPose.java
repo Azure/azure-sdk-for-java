@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Properties indicating head pose of the face.
  */
-public class HeadPose {
+public final class HeadPose {
     /**
      * The roll property.
      */
@@ -35,7 +35,7 @@ public class HeadPose {
     /**
      * Get the roll value.
      *
-     * @return the roll value
+     * @return the roll value.
      */
     public double roll() {
         return this.roll;
@@ -44,7 +44,7 @@ public class HeadPose {
     /**
      * Set the roll value.
      *
-     * @param roll the roll value to set
+     * @param roll the roll value to set.
      * @return the HeadPose object itself.
      */
     public HeadPose withRoll(double roll) {
@@ -55,7 +55,7 @@ public class HeadPose {
     /**
      * Get the yaw value.
      *
-     * @return the yaw value
+     * @return the yaw value.
      */
     public double yaw() {
         return this.yaw;
@@ -64,7 +64,7 @@ public class HeadPose {
     /**
      * Set the yaw value.
      *
-     * @param yaw the yaw value to set
+     * @param yaw the yaw value to set.
      * @return the HeadPose object itself.
      */
     public HeadPose withYaw(double yaw) {
@@ -75,7 +75,7 @@ public class HeadPose {
     /**
      * Get the pitch value.
      *
-     * @return the pitch value
+     * @return the pitch value.
      */
     public double pitch() {
         return this.pitch;
@@ -84,12 +84,11 @@ public class HeadPose {
     /**
      * Set the pitch value.
      *
-     * @param pitch the pitch value to set
+     * @param pitch the pitch value to set.
      * @return the HeadPose object itself.
      */
     public HeadPose withPitch(double pitch) {
         this.pitch = pitch;
         return this;
     }
-
 }

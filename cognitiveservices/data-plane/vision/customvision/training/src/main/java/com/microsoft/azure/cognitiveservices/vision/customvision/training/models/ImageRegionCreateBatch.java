@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Batch of image region information to create.
  */
-public class ImageRegionCreateBatch {
+public final class ImageRegionCreateBatch {
     /**
      * The regions property.
      */
@@ -24,7 +24,7 @@ public class ImageRegionCreateBatch {
     /**
      * Get the regions value.
      *
-     * @return the regions value
+     * @return the regions value.
      */
     public List<ImageRegionCreateEntry> regions() {
         return this.regions;
@@ -33,12 +33,11 @@ public class ImageRegionCreateBatch {
     /**
      * Set the regions value.
      *
-     * @param regions the regions value to set
+     * @param regions the regions value to set.
      * @return the ImageRegionCreateBatch object itself.
      */
     public ImageRegionCreateBatch withRegions(List<ImageRegionCreateEntry> regions) {
         this.regions = regions;
         return this;
     }
-
 }

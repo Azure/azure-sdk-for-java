@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The UserCollaborator model.
  */
-public class UserCollaborator {
+public final class UserCollaborator {
     /**
      * The email address of the user.
      */
@@ -23,7 +23,7 @@ public class UserCollaborator {
     /**
      * Get the email value.
      *
-     * @return the email value
+     * @return the email value.
      */
     public String email() {
         return this.email;
@@ -32,12 +32,11 @@ public class UserCollaborator {
     /**
      * Set the email value.
      *
-     * @param email the email value to set
+     * @param email the email value to set.
      * @return the UserCollaborator object itself.
      */
     public UserCollaborator withEmail(String email) {
         this.email = email;
         return this;
     }
-
 }

@@ -13,11 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The ImageModuleAction model.
+ * Defines an image list action.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageModuleAction.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageModuleAction")
-public class ImageModuleAction extends ImageAction {
+public final class ImageModuleAction extends ImageAction {
     /**
      * A list of images.
      */
@@ -27,10 +27,9 @@ public class ImageModuleAction extends ImageAction {
     /**
      * Get the data value.
      *
-     * @return the data value
+     * @return the data value.
      */
     public ImagesModule data() {
         return this.data;
     }
-
 }

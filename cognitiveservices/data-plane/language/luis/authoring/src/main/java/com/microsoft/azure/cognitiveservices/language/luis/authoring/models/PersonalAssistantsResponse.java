@@ -8,16 +8,16 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Response containing user's endpoint keys and the endpoint URLs of the
  * prebuilt Cortana applications.
  */
-public class PersonalAssistantsResponse {
+public final class PersonalAssistantsResponse {
     /**
      * The endpointKeys property.
      */
@@ -33,7 +33,7 @@ public class PersonalAssistantsResponse {
     /**
      * Get the endpointKeys value.
      *
-     * @return the endpointKeys value
+     * @return the endpointKeys value.
      */
     public List<UUID> endpointKeys() {
         return this.endpointKeys;
@@ -42,7 +42,7 @@ public class PersonalAssistantsResponse {
     /**
      * Set the endpointKeys value.
      *
-     * @param endpointKeys the endpointKeys value to set
+     * @param endpointKeys the endpointKeys value to set.
      * @return the PersonalAssistantsResponse object itself.
      */
     public PersonalAssistantsResponse withEndpointKeys(List<UUID> endpointKeys) {
@@ -53,7 +53,7 @@ public class PersonalAssistantsResponse {
     /**
      * Get the endpointUrls value.
      *
-     * @return the endpointUrls value
+     * @return the endpointUrls value.
      */
     public Map<String, String> endpointUrls() {
         return this.endpointUrls;
@@ -62,12 +62,11 @@ public class PersonalAssistantsResponse {
     /**
      * Set the endpointUrls value.
      *
-     * @param endpointUrls the endpointUrls value to set
+     * @param endpointUrls the endpointUrls value to set.
      * @return the PersonalAssistantsResponse object itself.
      */
     public PersonalAssistantsResponse withEndpointUrls(Map<String, String> endpointUrls) {
         this.endpointUrls = endpointUrls;
         return this;
     }
-
 }

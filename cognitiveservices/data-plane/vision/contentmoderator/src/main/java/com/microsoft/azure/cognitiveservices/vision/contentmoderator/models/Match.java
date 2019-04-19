@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The match details.
  */
-public class Match {
+public final class Match {
     /**
      * Confidence score of the image match.
      */
@@ -48,7 +48,7 @@ public class Match {
     /**
      * Get the score value.
      *
-     * @return the score value
+     * @return the score value.
      */
     public Double score() {
         return this.score;
@@ -57,7 +57,7 @@ public class Match {
     /**
      * Set the score value.
      *
-     * @param score the score value to set
+     * @param score the score value to set.
      * @return the Match object itself.
      */
     public Match withScore(Double score) {
@@ -68,7 +68,7 @@ public class Match {
     /**
      * Get the matchId value.
      *
-     * @return the matchId value
+     * @return the matchId value.
      */
     public Integer matchId() {
         return this.matchId;
@@ -77,7 +77,7 @@ public class Match {
     /**
      * Set the matchId value.
      *
-     * @param matchId the matchId value to set
+     * @param matchId the matchId value to set.
      * @return the Match object itself.
      */
     public Match withMatchId(Integer matchId) {
@@ -88,7 +88,7 @@ public class Match {
     /**
      * Get the source value.
      *
-     * @return the source value
+     * @return the source value.
      */
     public String source() {
         return this.source;
@@ -97,7 +97,7 @@ public class Match {
     /**
      * Set the source value.
      *
-     * @param source the source value to set
+     * @param source the source value to set.
      * @return the Match object itself.
      */
     public Match withSource(String source) {
@@ -108,7 +108,7 @@ public class Match {
     /**
      * Get the tags value.
      *
-     * @return the tags value
+     * @return the tags value.
      */
     public List<Integer> tags() {
         return this.tags;
@@ -117,7 +117,7 @@ public class Match {
     /**
      * Set the tags value.
      *
-     * @param tags the tags value to set
+     * @param tags the tags value to set.
      * @return the Match object itself.
      */
     public Match withTags(List<Integer> tags) {
@@ -128,7 +128,7 @@ public class Match {
     /**
      * Get the label value.
      *
-     * @return the label value
+     * @return the label value.
      */
     public String label() {
         return this.label;
@@ -137,12 +137,11 @@ public class Match {
     /**
      * Set the label value.
      *
-     * @param label the label value to set
+     * @param label the label value to set.
      * @return the Match object itself.
      */
     public Match withLabel(String label) {
         this.label = label;
         return this;
     }
-
 }

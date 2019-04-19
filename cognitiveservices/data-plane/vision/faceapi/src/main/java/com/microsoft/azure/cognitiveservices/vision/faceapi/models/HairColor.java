@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Hair color and associated confidence.
  */
-public class HairColor {
+public final class HairColor {
     /**
      * Name of the hair color. Possible values include: 'unknown', 'white',
      * 'gray', 'blond', 'brown', 'red', 'black', 'other'.
@@ -30,7 +30,7 @@ public class HairColor {
     /**
      * Get the color value.
      *
-     * @return the color value
+     * @return the color value.
      */
     public HairColorType color() {
         return this.color;
@@ -39,7 +39,7 @@ public class HairColor {
     /**
      * Set the color value.
      *
-     * @param color the color value to set
+     * @param color the color value to set.
      * @return the HairColor object itself.
      */
     public HairColor withColor(HairColorType color) {
@@ -50,7 +50,7 @@ public class HairColor {
     /**
      * Get the confidence value.
      *
-     * @return the confidence value
+     * @return the confidence value.
      */
     public double confidence() {
         return this.confidence;
@@ -59,12 +59,11 @@ public class HairColor {
     /**
      * Set the confidence value.
      *
-     * @param confidence the confidence value to set
+     * @param confidence the confidence value to set.
      * @return the HairColor object itself.
      */
     public HairColor withConfidence(double confidence) {
         this.confidence = confidence;
         return this;
     }
-
 }

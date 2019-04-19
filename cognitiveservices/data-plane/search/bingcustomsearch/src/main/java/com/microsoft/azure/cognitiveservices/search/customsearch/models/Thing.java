@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.customsearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * The Thing model.
@@ -50,7 +50,7 @@ public class Thing extends Response {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -59,7 +59,7 @@ public class Thing extends Response {
     /**
      * Get the url value.
      *
-     * @return the url value
+     * @return the url value.
      */
     public String url() {
         return this.url;
@@ -68,7 +68,7 @@ public class Thing extends Response {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public String description() {
         return this.description;
@@ -77,10 +77,9 @@ public class Thing extends Response {
     /**
      * Get the bingId value.
      *
-     * @return the bingId value
+     * @return the bingId value.
      */
     public String bingId() {
         return this.bingId;
     }
-
 }

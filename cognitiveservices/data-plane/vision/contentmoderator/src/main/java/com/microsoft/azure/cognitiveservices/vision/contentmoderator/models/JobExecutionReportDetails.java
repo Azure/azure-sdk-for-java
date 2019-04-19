@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Job Execution Report Values.
  */
-public class JobExecutionReportDetails {
+public final class JobExecutionReportDetails {
     /**
      * Time details.
      */
@@ -29,7 +29,7 @@ public class JobExecutionReportDetails {
     /**
      * Get the ts value.
      *
-     * @return the ts value
+     * @return the ts value.
      */
     public String ts() {
         return this.ts;
@@ -38,7 +38,7 @@ public class JobExecutionReportDetails {
     /**
      * Set the ts value.
      *
-     * @param ts the ts value to set
+     * @param ts the ts value to set.
      * @return the JobExecutionReportDetails object itself.
      */
     public JobExecutionReportDetails withTs(String ts) {
@@ -49,7 +49,7 @@ public class JobExecutionReportDetails {
     /**
      * Get the msg value.
      *
-     * @return the msg value
+     * @return the msg value.
      */
     public String msg() {
         return this.msg;
@@ -58,12 +58,11 @@ public class JobExecutionReportDetails {
     /**
      * Set the msg value.
      *
-     * @param msg the msg value to set
+     * @param msg the msg value to set.
      * @return the JobExecutionReportDetails object itself.
      */
     public JobExecutionReportDetails withMsg(String msg) {
         this.msg = msg;
         return this;
     }
-
 }

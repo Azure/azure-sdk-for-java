@@ -8,151 +8,259 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation;
 
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListPhraseListsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListFeaturesOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdatePhraseListOptionalParameter;
-import retrofit2.Retrofit;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.DELETE;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.PUT;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Features;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureClouds;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.FeaturesResponseObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternFeatureInfo;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PhraselistCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PhraseListFeatureInfo;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PhraselistUpdateObject;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Features.
+ * An instance of this class provides access to all the operations defined in
+ * Features.
  */
-public class FeaturesImpl implements Features {
-    /** The Retrofit service to perform REST calls. */
+public final class FeaturesImpl implements Features {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private FeaturesService service;
-    /** The service client containing this operation class. */
+
+    /**
+     * The service client containing this operation class.
+     */
     private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of FeaturesImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public FeaturesImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
-        this.service = retrofit.create(FeaturesService.class);
+    public FeaturesImpl(LUISAuthoringClientImpl client) {
+        this.service = RestProxy.create(FeaturesService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Features to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for Features to be used by the
+     * proxy service to perform REST calls.
      */
-    interface FeaturesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features addPhraseList" })
+    @Host("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0")
+    private interface FeaturesService {
+        @GET("apps/{appId}/versions/{versionId}/patterns")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<List<PatternFeatureInfo>>> listApplicationVersionPatternFeatures(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @QueryParam("skip") Integer skip, @QueryParam("take") Integer take);
+
         @POST("apps/{appId}/versions/{versionId}/phraselists")
-        Observable<Response<ResponseBody>> addPhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PhraselistCreateObject phraselistCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<Integer>> addPhraseList(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") PhraselistCreateObject phraselistCreateObject);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features listPhraseLists" })
         @GET("apps/{appId}/versions/{versionId}/phraselists")
-        Observable<Response<ResponseBody>> listPhraseLists(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<List<PhraseListFeatureInfo>>> listPhraseLists(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @QueryParam("skip") Integer skip, @QueryParam("take") Integer take);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features list" })
         @GET("apps/{appId}/versions/{versionId}/features")
-        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<FeaturesResponseObject>> list(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @QueryParam("skip") Integer skip, @QueryParam("take") Integer take);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features getPhraseList" })
         @GET("apps/{appId}/versions/{versionId}/phraselists/{phraselistId}")
-        Observable<Response<ResponseBody>> getPhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("phraselistId") int phraselistId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<PhraseListFeatureInfo>> getPhraseList(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @PathParam("phraselistId") int phraselistId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features updatePhraseList" })
         @PUT("apps/{appId}/versions/{versionId}/phraselists/{phraselistId}")
-        Observable<Response<ResponseBody>> updatePhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("phraselistId") int phraselistId, @Body PhraselistUpdateObject phraselistUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<OperationStatus>> updatePhraseList(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @PathParam("phraselistId") int phraselistId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") PhraselistUpdateObject phraselistUpdateObject);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features deletePhraseList" })
-        @HTTP(path = "apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deletePhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("phraselistId") int phraselistId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
+        @DELETE("apps/{appId}/versions/{versionId}/phraselists/{phraselistId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<OperationStatus>> deletePhraseList(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @PathParam("phraselistId") int phraselistId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud);
     }
 
     /**
-     * Creates a new phraselist feature.
+     * [DEPRECATED NOTICE: This operation will soon be removed] Gets all the pattern features.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;PatternFeatureInfo&gt; object if successful.
+     */
+    public List<PatternFeatureInfo> listApplicationVersionPatternFeatures(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return listApplicationVersionPatternFeaturesAsync(azureRegion, azureCloud, appId, versionId).block();
+    }
+
+    /**
+     * [DEPRECATED NOTICE: This operation will soon be removed] Gets all the pattern features.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<PatternFeatureInfo>>> listApplicationVersionPatternFeaturesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        final Integer skip = 0;
+        final Integer take = 100;
+        return service.listApplicationVersionPatternFeatures(appId, versionId, azureRegion, azureCloud, skip, take);
+    }
+
+    /**
+     * [DEPRECATED NOTICE: This operation will soon be removed] Gets all the pattern features.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<PatternFeatureInfo>> listApplicationVersionPatternFeaturesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return listApplicationVersionPatternFeaturesWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<List<PatternFeatureInfo>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * [DEPRECATED NOTICE: This operation will soon be removed] Gets all the pattern features.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;PatternFeatureInfo&gt; object if successful.
+     */
+    public List<PatternFeatureInfo> listApplicationVersionPatternFeatures(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        return listApplicationVersionPatternFeaturesAsync(azureRegion, azureCloud, appId, versionId, skip, take).block();
+    }
+
+    /**
+     * [DEPRECATED NOTICE: This operation will soon be removed] Gets all the pattern features.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<PatternFeatureInfo>>> listApplicationVersionPatternFeaturesWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        return service.listApplicationVersionPatternFeatures(appId, versionId, azureRegion, azureCloud, skip, take);
+    }
+
+    /**
+     * [DEPRECATED NOTICE: This operation will soon be removed] Gets all the pattern features.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<PatternFeatureInfo>> listApplicationVersionPatternFeaturesAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        return listApplicationVersionPatternFeaturesWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, skip, take)
+            .flatMap((SimpleResponse<List<PatternFeatureInfo>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Creates a new phraselist feature in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param phraselistCreateObject A Phraselist object containing Name, comma-separated Phrases and the isExchangeable boolean. Default value for isExchangeable is true.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the int object if successful.
      */
-    public int addPhraseList(UUID appId, String versionId, PhraselistCreateObject phraselistCreateObject) {
-        return addPhraseListWithServiceResponseAsync(appId, versionId, phraselistCreateObject).toBlocking().single().body();
+    public int addPhraseList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PhraselistCreateObject phraselistCreateObject) {
+        return addPhraseListAsync(azureRegion, azureCloud, appId, versionId, phraselistCreateObject).block();
     }
 
     /**
-     * Creates a new phraselist feature.
+     * Creates a new phraselist feature in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param phraselistCreateObject A Phraselist object containing Name, comma-separated Phrases and the isExchangeable boolean. Default value for isExchangeable is true.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<Integer> addPhraseListAsync(UUID appId, String versionId, PhraselistCreateObject phraselistCreateObject, final ServiceCallback<Integer> serviceCallback) {
-        return ServiceFuture.fromResponse(addPhraseListWithServiceResponseAsync(appId, versionId, phraselistCreateObject), serviceCallback);
-    }
-
-    /**
-     * Creates a new phraselist feature.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param phraselistCreateObject A Phraselist object containing Name, comma-separated Phrases and the isExchangeable boolean. Default value for isExchangeable is true.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Integer object
-     */
-    public Observable<Integer> addPhraseListAsync(UUID appId, String versionId, PhraselistCreateObject phraselistCreateObject) {
-        return addPhraseListWithServiceResponseAsync(appId, versionId, phraselistCreateObject).map(new Func1<ServiceResponse<Integer>, Integer>() {
-            @Override
-            public Integer call(ServiceResponse<Integer> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a new phraselist feature.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param phraselistCreateObject A Phraselist object containing Name, comma-separated Phrases and the isExchangeable boolean. Default value for isExchangeable is true.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Integer object
-     */
-    public Observable<ServiceResponse<Integer>> addPhraseListWithServiceResponseAsync(UUID appId, String versionId, PhraselistCreateObject phraselistCreateObject) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<Integer>> addPhraseListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PhraselistCreateObject phraselistCreateObject) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -164,88 +272,57 @@ public class FeaturesImpl implements Features {
             throw new IllegalArgumentException("Parameter phraselistCreateObject is required and cannot be null.");
         }
         Validator.validate(phraselistCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.addPhraseList(appId, versionId, phraselistCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
-                @Override
-                public Observable<ServiceResponse<Integer>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Integer> clientResponse = addPhraseListDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.addPhraseList(appId, versionId, azureRegion, azureCloud, phraselistCreateObject);
     }
-
-    private ServiceResponse<Integer> addPhraseListDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Integer, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<Integer>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
 
     /**
-     * Gets all the phraselist features.
+     * Creates a new phraselist feature in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listPhraseListsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param phraselistCreateObject A Phraselist object containing Name, comma-separated Phrases and the isExchangeable boolean. Default value for isExchangeable is true.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<Integer> addPhraseListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PhraselistCreateObject phraselistCreateObject) {
+        return addPhraseListWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, phraselistCreateObject)
+            .flatMap((SimpleResponse<Integer> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Gets all the phraselist features in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PhraseListFeatureInfo&gt; object if successful.
      */
-    public List<PhraseListFeatureInfo> listPhraseLists(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter) {
-        return listPhraseListsWithServiceResponseAsync(appId, versionId, listPhraseListsOptionalParameter).toBlocking().single().body();
+    public List<PhraseListFeatureInfo> listPhraseLists(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return listPhraseListsAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
     /**
-     * Gets all the phraselist features.
+     * Gets all the phraselist features in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listPhraseListsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<PhraseListFeatureInfo>> listPhraseListsAsync(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter, final ServiceCallback<List<PhraseListFeatureInfo>> serviceCallback) {
-        return ServiceFuture.fromResponse(listPhraseListsWithServiceResponseAsync(appId, versionId, listPhraseListsOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Gets all the phraselist features.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param listPhraseListsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PhraseListFeatureInfo&gt; object
-     */
-    public Observable<List<PhraseListFeatureInfo>> listPhraseListsAsync(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter) {
-        return listPhraseListsWithServiceResponseAsync(appId, versionId, listPhraseListsOptionalParameter).map(new Func1<ServiceResponse<List<PhraseListFeatureInfo>>, List<PhraseListFeatureInfo>>() {
-            @Override
-            public List<PhraseListFeatureInfo> call(ServiceResponse<List<PhraseListFeatureInfo>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets all the phraselist features.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param listPhraseListsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PhraseListFeatureInfo&gt; object
-     */
-    public Observable<ServiceResponse<List<PhraseListFeatureInfo>>> listPhraseListsWithServiceResponseAsync(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<List<PhraseListFeatureInfo>>> listPhraseListsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -253,25 +330,62 @@ public class FeaturesImpl implements Features {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        final Integer skip = listPhraseListsOptionalParameter != null ? listPhraseListsOptionalParameter.skip() : null;
-        final Integer take = listPhraseListsOptionalParameter != null ? listPhraseListsOptionalParameter.take() : null;
-
-        return listPhraseListsWithServiceResponseAsync(appId, versionId, skip, take);
+        final Integer skip = 0;
+        final Integer take = 100;
+        return service.listPhraseLists(appId, versionId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Gets all the phraselist features.
+     * Gets all the phraselist features in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<PhraseListFeatureInfo>> listPhraseListsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return listPhraseListsWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<List<PhraseListFeatureInfo>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Gets all the phraselist features in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param skip The number of entries to skip. Default value is 0.
      * @param take The number of entries to return. Maximum page size is 500. Default is 100.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PhraseListFeatureInfo&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;PhraseListFeatureInfo&gt; object if successful.
      */
-    public Observable<ServiceResponse<List<PhraseListFeatureInfo>>> listPhraseListsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public List<PhraseListFeatureInfo> listPhraseLists(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        return listPhraseListsAsync(azureRegion, azureCloud, appId, versionId, skip, take).block();
+    }
+
+    /**
+     * Gets all the phraselist features in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<PhraseListFeatureInfo>>> listPhraseListsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -279,151 +393,58 @@ public class FeaturesImpl implements Features {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.listPhraseLists(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PhraseListFeatureInfo>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<PhraseListFeatureInfo>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<PhraseListFeatureInfo>> clientResponse = listPhraseListsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<PhraseListFeatureInfo>> listPhraseListsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<PhraseListFeatureInfo>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<PhraseListFeatureInfo>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public FeaturesListPhraseListsParameters listPhraseLists() {
-        return new FeaturesListPhraseListsParameters(this);
+        return service.listPhraseLists(appId, versionId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Internal class implementing FeaturesListPhraseListsDefinition.
-     */
-    class FeaturesListPhraseListsParameters implements FeaturesListPhraseListsDefinition {
-        private FeaturesImpl parent;
-        private UUID appId;
-        private String versionId;
-        private Integer skip;
-        private Integer take;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        FeaturesListPhraseListsParameters(FeaturesImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public FeaturesListPhraseListsParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public FeaturesListPhraseListsParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public FeaturesListPhraseListsParameters withSkip(Integer skip) {
-            this.skip = skip;
-            return this;
-        }
-
-        @Override
-        public FeaturesListPhraseListsParameters withTake(Integer take) {
-            this.take = take;
-            return this;
-        }
-
-        @Override
-        public List<PhraseListFeatureInfo> execute() {
-        return listPhraseListsWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<List<PhraseListFeatureInfo>> executeAsync() {
-            return listPhraseListsWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<PhraseListFeatureInfo>>, List<PhraseListFeatureInfo>>() {
-                @Override
-                public List<PhraseListFeatureInfo> call(ServiceResponse<List<PhraseListFeatureInfo>> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
-    /**
-     * Gets all the extraction features for the specified application version.
+     * Gets all the phraselist features in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<PhraseListFeatureInfo>> listPhraseListsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        return listPhraseListsWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, skip, take)
+            .flatMap((SimpleResponse<List<PhraseListFeatureInfo>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Gets all the extraction phraselist and pattern features in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the FeaturesResponseObject object if successful.
      */
-    public FeaturesResponseObject list(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(appId, versionId, listOptionalParameter).toBlocking().single().body();
+    public FeaturesResponseObject list(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return listAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
     /**
-     * Gets all the extraction features for the specified application version.
+     * Gets all the extraction phraselist and pattern features in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<FeaturesResponseObject> listAsync(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter, final ServiceCallback<FeaturesResponseObject> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(appId, versionId, listOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Gets all the extraction features for the specified application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FeaturesResponseObject object
-     */
-    public Observable<FeaturesResponseObject> listAsync(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(appId, versionId, listOptionalParameter).map(new Func1<ServiceResponse<FeaturesResponseObject>, FeaturesResponseObject>() {
-            @Override
-            public FeaturesResponseObject call(ServiceResponse<FeaturesResponseObject> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets all the extraction features for the specified application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FeaturesResponseObject object
-     */
-    public Observable<ServiceResponse<FeaturesResponseObject>> listWithServiceResponseAsync(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<FeaturesResponseObject>> listWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -431,25 +452,62 @@ public class FeaturesImpl implements Features {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        final Integer skip = listOptionalParameter != null ? listOptionalParameter.skip() : null;
-        final Integer take = listOptionalParameter != null ? listOptionalParameter.take() : null;
-
-        return listWithServiceResponseAsync(appId, versionId, skip, take);
+        final Integer skip = 0;
+        final Integer take = 100;
+        return service.list(appId, versionId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Gets all the extraction features for the specified application version.
+     * Gets all the extraction phraselist and pattern features in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<FeaturesResponseObject> listAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return listWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<FeaturesResponseObject> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Gets all the extraction phraselist and pattern features in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param skip The number of entries to skip. Default value is 0.
      * @param take The number of entries to return. Maximum page size is 500. Default is 100.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FeaturesResponseObject object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the FeaturesResponseObject object if successful.
      */
-    public Observable<ServiceResponse<FeaturesResponseObject>> listWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public FeaturesResponseObject list(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        return listAsync(azureRegion, azureCloud, appId, versionId, skip, take).block();
+    }
+
+    /**
+     * Gets all the extraction phraselist and pattern features in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<FeaturesResponseObject>> listWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -457,150 +515,60 @@ public class FeaturesImpl implements Features {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.list(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FeaturesResponseObject>>>() {
-                @Override
-                public Observable<ServiceResponse<FeaturesResponseObject>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<FeaturesResponseObject> clientResponse = listDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<FeaturesResponseObject> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<FeaturesResponseObject, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<FeaturesResponseObject>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public FeaturesListParameters list() {
-        return new FeaturesListParameters(this);
+        return service.list(appId, versionId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Internal class implementing FeaturesListDefinition.
-     */
-    class FeaturesListParameters implements FeaturesListDefinition {
-        private FeaturesImpl parent;
-        private UUID appId;
-        private String versionId;
-        private Integer skip;
-        private Integer take;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        FeaturesListParameters(FeaturesImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public FeaturesListParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public FeaturesListParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public FeaturesListParameters withSkip(Integer skip) {
-            this.skip = skip;
-            return this;
-        }
-
-        @Override
-        public FeaturesListParameters withTake(Integer take) {
-            this.take = take;
-            return this;
-        }
-
-        @Override
-        public FeaturesResponseObject execute() {
-        return listWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<FeaturesResponseObject> executeAsync() {
-            return listWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<FeaturesResponseObject>, FeaturesResponseObject>() {
-                @Override
-                public FeaturesResponseObject call(ServiceResponse<FeaturesResponseObject> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Gets phraselist feature info.
+     * Gets all the extraction phraselist and pattern features in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<FeaturesResponseObject> listAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        return listWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, skip, take)
+            .flatMap((SimpleResponse<FeaturesResponseObject> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Gets phraselist feature info in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param phraselistId The ID of the feature to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PhraseListFeatureInfo object if successful.
      */
-    public PhraseListFeatureInfo getPhraseList(UUID appId, String versionId, int phraselistId) {
-        return getPhraseListWithServiceResponseAsync(appId, versionId, phraselistId).toBlocking().single().body();
+    public PhraseListFeatureInfo getPhraseList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId) {
+        return getPhraseListAsync(azureRegion, azureCloud, appId, versionId, phraselistId).block();
     }
 
     /**
-     * Gets phraselist feature info.
+     * Gets phraselist feature info in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param phraselistId The ID of the feature to be retrieved.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<PhraseListFeatureInfo> getPhraseListAsync(UUID appId, String versionId, int phraselistId, final ServiceCallback<PhraseListFeatureInfo> serviceCallback) {
-        return ServiceFuture.fromResponse(getPhraseListWithServiceResponseAsync(appId, versionId, phraselistId), serviceCallback);
-    }
-
-    /**
-     * Gets phraselist feature info.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param phraselistId The ID of the feature to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PhraseListFeatureInfo object
-     */
-    public Observable<PhraseListFeatureInfo> getPhraseListAsync(UUID appId, String versionId, int phraselistId) {
-        return getPhraseListWithServiceResponseAsync(appId, versionId, phraselistId).map(new Func1<ServiceResponse<PhraseListFeatureInfo>, PhraseListFeatureInfo>() {
-            @Override
-            public PhraseListFeatureInfo call(ServiceResponse<PhraseListFeatureInfo> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets phraselist feature info.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param phraselistId The ID of the feature to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PhraseListFeatureInfo object
-     */
-    public Observable<ServiceResponse<PhraseListFeatureInfo>> getPhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<PhraseListFeatureInfo>> getPhraseListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -608,92 +576,59 @@ public class FeaturesImpl implements Features {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getPhraseList(appId, versionId, phraselistId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PhraseListFeatureInfo>>>() {
-                @Override
-                public Observable<ServiceResponse<PhraseListFeatureInfo>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PhraseListFeatureInfo> clientResponse = getPhraseListDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getPhraseList(appId, versionId, phraselistId, azureRegion, azureCloud);
     }
-
-    private ServiceResponse<PhraseListFeatureInfo> getPhraseListDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PhraseListFeatureInfo, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PhraseListFeatureInfo>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
 
     /**
-     * Updates the phrases, the state and the name of the phraselist feature.
+     * Gets phraselist feature info in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param phraselistId The ID of the feature to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<PhraseListFeatureInfo> getPhraseListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId) {
+        return getPhraseListWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, phraselistId)
+            .flatMap((SimpleResponse<PhraseListFeatureInfo> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param phraselistId The ID of the feature to be updated.
-     * @param updatePhraseListOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus updatePhraseList(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter) {
-        return updatePhraseListWithServiceResponseAsync(appId, versionId, phraselistId, updatePhraseListOptionalParameter).toBlocking().single().body();
+    public OperationStatus updatePhraseList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId) {
+        return updatePhraseListAsync(azureRegion, azureCloud, appId, versionId, phraselistId).block();
     }
 
     /**
-     * Updates the phrases, the state and the name of the phraselist feature.
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param phraselistId The ID of the feature to be updated.
-     * @param updatePhraseListOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<OperationStatus> updatePhraseListAsync(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(updatePhraseListWithServiceResponseAsync(appId, versionId, phraselistId, updatePhraseListOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Updates the phrases, the state and the name of the phraselist feature.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param phraselistId The ID of the feature to be updated.
-     * @param updatePhraseListOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> updatePhraseListAsync(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter) {
-        return updatePhraseListWithServiceResponseAsync(appId, versionId, phraselistId, updatePhraseListOptionalParameter).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates the phrases, the state and the name of the phraselist feature.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param phraselistId The ID of the feature to be updated.
-     * @param updatePhraseListOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> updatePhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<OperationStatus>> updatePhraseListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -701,24 +636,62 @@ public class FeaturesImpl implements Features {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        final PhraselistUpdateObject phraselistUpdateObject = updatePhraseListOptionalParameter != null ? updatePhraseListOptionalParameter.phraselistUpdateObject() : null;
-
-        return updatePhraseListWithServiceResponseAsync(appId, versionId, phraselistId, phraselistUpdateObject);
+        final PhraselistUpdateObject phraselistUpdateObject = null;
+        return service.updatePhraseList(appId, versionId, phraselistId, azureRegion, azureCloud, phraselistUpdateObject);
     }
 
     /**
-     * Updates the phrases, the state and the name of the phraselist feature.
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param phraselistId The ID of the feature to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> updatePhraseListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId) {
+        return updatePhraseListWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, phraselistId)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param phraselistId The ID of the feature to be updated.
      * @param phraselistUpdateObject The new values for: - Just a boolean called IsActive, in which case the status of the feature will be changed. - Name, Pattern, Mode, and a boolean called IsActive to update the feature.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
      */
-    public Observable<ServiceResponse<OperationStatus>> updatePhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId, PhraselistUpdateObject phraselistUpdateObject) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public OperationStatus updatePhraseList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId, PhraselistUpdateObject phraselistUpdateObject) {
+        return updatePhraseListAsync(azureRegion, azureCloud, appId, versionId, phraselistId, phraselistUpdateObject).block();
+    }
+
+    /**
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param phraselistId The ID of the feature to be updated.
+     * @param phraselistUpdateObject The new values for: - Just a boolean called IsActive, in which case the status of the feature will be changed. - Name, Pattern, Mode, and a boolean called IsActive to update the feature.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<OperationStatus>> updatePhraseListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId, PhraselistUpdateObject phraselistUpdateObject) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -727,150 +700,60 @@ public class FeaturesImpl implements Features {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
         Validator.validate(phraselistUpdateObject);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.updatePhraseList(appId, versionId, phraselistId, phraselistUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = updatePhraseListDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<OperationStatus> updatePhraseListDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public FeaturesUpdatePhraseListParameters updatePhraseList() {
-        return new FeaturesUpdatePhraseListParameters(this);
+        return service.updatePhraseList(appId, versionId, phraselistId, azureRegion, azureCloud, phraselistUpdateObject);
     }
 
     /**
-     * Internal class implementing FeaturesUpdatePhraseListDefinition.
-     */
-    class FeaturesUpdatePhraseListParameters implements FeaturesUpdatePhraseListDefinition {
-        private FeaturesImpl parent;
-        private UUID appId;
-        private String versionId;
-        private int phraselistId;
-        private PhraselistUpdateObject phraselistUpdateObject;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        FeaturesUpdatePhraseListParameters(FeaturesImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public FeaturesUpdatePhraseListParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public FeaturesUpdatePhraseListParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public FeaturesUpdatePhraseListParameters withPhraselistId(int phraselistId) {
-            this.phraselistId = phraselistId;
-            return this;
-        }
-
-        @Override
-        public FeaturesUpdatePhraseListParameters withPhraselistUpdateObject(PhraselistUpdateObject phraselistUpdateObject) {
-            this.phraselistUpdateObject = phraselistUpdateObject;
-            return this;
-        }
-
-        @Override
-        public OperationStatus execute() {
-        return updatePhraseListWithServiceResponseAsync(appId, versionId, phraselistId, phraselistUpdateObject).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<OperationStatus> executeAsync() {
-            return updatePhraseListWithServiceResponseAsync(appId, versionId, phraselistId, phraselistUpdateObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-                @Override
-                public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Deletes a phraselist feature.
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param phraselistId The ID of the feature to be updated.
+     * @param phraselistUpdateObject The new values for: - Just a boolean called IsActive, in which case the status of the feature will be changed. - Name, Pattern, Mode, and a boolean called IsActive to update the feature.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> updatePhraseListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId, PhraselistUpdateObject phraselistUpdateObject) {
+        return updatePhraseListWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, phraselistId, phraselistUpdateObject)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Deletes a phraselist feature from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param phraselistId The ID of the feature to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus deletePhraseList(UUID appId, String versionId, int phraselistId) {
-        return deletePhraseListWithServiceResponseAsync(appId, versionId, phraselistId).toBlocking().single().body();
+    public OperationStatus deletePhraseList(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId) {
+        return deletePhraseListAsync(azureRegion, azureCloud, appId, versionId, phraselistId).block();
     }
 
     /**
-     * Deletes a phraselist feature.
+     * Deletes a phraselist feature from a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param phraselistId The ID of the feature to be deleted.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<OperationStatus> deletePhraseListAsync(UUID appId, String versionId, int phraselistId, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(deletePhraseListWithServiceResponseAsync(appId, versionId, phraselistId), serviceCallback);
-    }
-
-    /**
-     * Deletes a phraselist feature.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param phraselistId The ID of the feature to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> deletePhraseListAsync(UUID appId, String versionId, int phraselistId) {
-        return deletePhraseListWithServiceResponseAsync(appId, versionId, phraselistId).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes a phraselist feature.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param phraselistId The ID of the feature to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> deletePhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<OperationStatus>> deletePhraseListWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -878,26 +761,22 @@ public class FeaturesImpl implements Features {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.deletePhraseList(appId, versionId, phraselistId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = deletePhraseListDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.deletePhraseList(appId, versionId, phraselistId, azureRegion, azureCloud);
     }
 
-    private ServiceResponse<OperationStatus> deletePhraseListDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+    /**
+     * Deletes a phraselist feature from a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param phraselistId The ID of the feature to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> deletePhraseListAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull int phraselistId) {
+        return deletePhraseListWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, phraselistId)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
     }
-
 }

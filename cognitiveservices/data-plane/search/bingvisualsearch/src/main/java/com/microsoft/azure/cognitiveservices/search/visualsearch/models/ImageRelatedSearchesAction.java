@@ -13,11 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The ImageRelatedSearchesAction model.
+ * Defines an related search action.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageRelatedSearchesAction.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageRelatedSearchesAction")
-public class ImageRelatedSearchesAction extends ImageAction {
+public final class ImageRelatedSearchesAction extends ImageAction {
     /**
      * A list of queries related to the image.
      */
@@ -27,10 +27,9 @@ public class ImageRelatedSearchesAction extends ImageAction {
     /**
      * Get the data value.
      *
-     * @return the data value
+     * @return the data value.
      */
     public RelatedSearchesModule data() {
         return this.data;
     }
-
 }

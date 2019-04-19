@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.cognitiveservices.search.autosuggest.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import java.util.List;
 
 /**
  * Defines a response. All schemas that could be returned at the root of a
@@ -21,8 +21,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Response.class)
 @JsonTypeName("Response")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Answer", value = Answer.class),
     @JsonSubTypes.Type(name = "Thing", value = Thing.class),
+    @JsonSubTypes.Type(name = "Answer", value = Answer.class),
     @JsonSubTypes.Type(name = "ErrorResponse", value = ErrorResponse.class)
 })
 public class Response extends Identifiable {
@@ -65,7 +65,7 @@ public class Response extends Identifiable {
     /**
      * Get the readLink value.
      *
-     * @return the readLink value
+     * @return the readLink value.
      */
     public String readLink() {
         return this.readLink;
@@ -74,7 +74,7 @@ public class Response extends Identifiable {
     /**
      * Get the webSearchUrl value.
      *
-     * @return the webSearchUrl value
+     * @return the webSearchUrl value.
      */
     public String webSearchUrl() {
         return this.webSearchUrl;
@@ -83,7 +83,7 @@ public class Response extends Identifiable {
     /**
      * Get the potentialAction value.
      *
-     * @return the potentialAction value
+     * @return the potentialAction value.
      */
     public List<Action> potentialAction() {
         return this.potentialAction;
@@ -92,7 +92,7 @@ public class Response extends Identifiable {
     /**
      * Get the immediateAction value.
      *
-     * @return the immediateAction value
+     * @return the immediateAction value.
      */
     public List<Action> immediateAction() {
         return this.immediateAction;
@@ -101,7 +101,7 @@ public class Response extends Identifiable {
     /**
      * Get the preferredClickthroughUrl value.
      *
-     * @return the preferredClickthroughUrl value
+     * @return the preferredClickthroughUrl value.
      */
     public String preferredClickthroughUrl() {
         return this.preferredClickthroughUrl;
@@ -110,10 +110,9 @@ public class Response extends Identifiable {
     /**
      * Get the adaptiveCard value.
      *
-     * @return the adaptiveCard value
+     * @return the adaptiveCard value.
      */
     public String adaptiveCard() {
         return this.adaptiveCard;
     }
-
 }

@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Represents the detailed performance data for a trained iteration.
  */
-public class IterationPerformance {
+public final class IterationPerformance {
     /**
      * Gets the per-tag performance details for this iteration.
      */
@@ -54,7 +54,7 @@ public class IterationPerformance {
     /**
      * Get the perTagPerformance value.
      *
-     * @return the perTagPerformance value
+     * @return the perTagPerformance value.
      */
     public List<TagPerformance> perTagPerformance() {
         return this.perTagPerformance;
@@ -63,7 +63,7 @@ public class IterationPerformance {
     /**
      * Get the precision value.
      *
-     * @return the precision value
+     * @return the precision value.
      */
     public double precision() {
         return this.precision;
@@ -72,7 +72,7 @@ public class IterationPerformance {
     /**
      * Get the precisionStdDeviation value.
      *
-     * @return the precisionStdDeviation value
+     * @return the precisionStdDeviation value.
      */
     public double precisionStdDeviation() {
         return this.precisionStdDeviation;
@@ -81,7 +81,7 @@ public class IterationPerformance {
     /**
      * Get the recall value.
      *
-     * @return the recall value
+     * @return the recall value.
      */
     public double recall() {
         return this.recall;
@@ -90,7 +90,7 @@ public class IterationPerformance {
     /**
      * Get the recallStdDeviation value.
      *
-     * @return the recallStdDeviation value
+     * @return the recallStdDeviation value.
      */
     public double recallStdDeviation() {
         return this.recallStdDeviation;
@@ -99,10 +99,9 @@ public class IterationPerformance {
     /**
      * Get the averagePrecision value.
      *
-     * @return the averagePrecision value
+     * @return the averagePrecision value.
      */
     public Double averagePrecision() {
         return this.averagePrecision;
     }
-
 }

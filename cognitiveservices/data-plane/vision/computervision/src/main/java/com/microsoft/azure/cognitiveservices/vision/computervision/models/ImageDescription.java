@@ -8,9 +8,9 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
+import com.azure.common.implementation.serializer.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
+import java.util.List;
 
 /**
  * A collection of content tags, along with a list of captions sorted by
@@ -45,7 +45,7 @@ public class ImageDescription {
     /**
      * Get the tags value.
      *
-     * @return the tags value
+     * @return the tags value.
      */
     public List<String> tags() {
         return this.tags;
@@ -54,7 +54,7 @@ public class ImageDescription {
     /**
      * Set the tags value.
      *
-     * @param tags the tags value to set
+     * @param tags the tags value to set.
      * @return the ImageDescription object itself.
      */
     public ImageDescription withTags(List<String> tags) {
@@ -65,7 +65,7 @@ public class ImageDescription {
     /**
      * Get the captions value.
      *
-     * @return the captions value
+     * @return the captions value.
      */
     public List<ImageCaption> captions() {
         return this.captions;
@@ -74,7 +74,7 @@ public class ImageDescription {
     /**
      * Set the captions value.
      *
-     * @param captions the captions value to set
+     * @param captions the captions value to set.
      * @return the ImageDescription object itself.
      */
     public ImageDescription withCaptions(List<ImageCaption> captions) {
@@ -85,7 +85,7 @@ public class ImageDescription {
     /**
      * Get the requestId value.
      *
-     * @return the requestId value
+     * @return the requestId value.
      */
     public String requestId() {
         return this.requestId;
@@ -94,7 +94,7 @@ public class ImageDescription {
     /**
      * Set the requestId value.
      *
-     * @param requestId the requestId value to set
+     * @param requestId the requestId value to set.
      * @return the ImageDescription object itself.
      */
     public ImageDescription withRequestId(String requestId) {
@@ -105,7 +105,7 @@ public class ImageDescription {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public ImageMetadata metadata() {
         return this.metadata;
@@ -114,12 +114,11 @@ public class ImageDescription {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the ImageDescription object itself.
      */
     public ImageDescription withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }
-
 }

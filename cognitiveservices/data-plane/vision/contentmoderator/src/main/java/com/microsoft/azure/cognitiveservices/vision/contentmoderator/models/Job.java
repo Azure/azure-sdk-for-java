@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The Job object.
  */
-public class Job {
+public final class Job {
     /**
      * The job id.
      */
@@ -72,7 +72,7 @@ public class Job {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public String id() {
         return this.id;
@@ -81,7 +81,7 @@ public class Job {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the Job object itself.
      */
     public Job withId(String id) {
@@ -92,7 +92,7 @@ public class Job {
     /**
      * Get the teamName value.
      *
-     * @return the teamName value
+     * @return the teamName value.
      */
     public String teamName() {
         return this.teamName;
@@ -101,7 +101,7 @@ public class Job {
     /**
      * Set the teamName value.
      *
-     * @param teamName the teamName value to set
+     * @param teamName the teamName value to set.
      * @return the Job object itself.
      */
     public Job withTeamName(String teamName) {
@@ -112,7 +112,7 @@ public class Job {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public String status() {
         return this.status;
@@ -121,7 +121,7 @@ public class Job {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the Job object itself.
      */
     public Job withStatus(String status) {
@@ -132,7 +132,7 @@ public class Job {
     /**
      * Get the workflowId value.
      *
-     * @return the workflowId value
+     * @return the workflowId value.
      */
     public String workflowId() {
         return this.workflowId;
@@ -141,7 +141,7 @@ public class Job {
     /**
      * Set the workflowId value.
      *
-     * @param workflowId the workflowId value to set
+     * @param workflowId the workflowId value to set.
      * @return the Job object itself.
      */
     public Job withWorkflowId(String workflowId) {
@@ -152,7 +152,7 @@ public class Job {
     /**
      * Get the type value.
      *
-     * @return the type value
+     * @return the type value.
      */
     public String type() {
         return this.type;
@@ -161,7 +161,7 @@ public class Job {
     /**
      * Set the type value.
      *
-     * @param type the type value to set
+     * @param type the type value to set.
      * @return the Job object itself.
      */
     public Job withType(String type) {
@@ -172,7 +172,7 @@ public class Job {
     /**
      * Get the callBackEndpoint value.
      *
-     * @return the callBackEndpoint value
+     * @return the callBackEndpoint value.
      */
     public String callBackEndpoint() {
         return this.callBackEndpoint;
@@ -181,7 +181,7 @@ public class Job {
     /**
      * Set the callBackEndpoint value.
      *
-     * @param callBackEndpoint the callBackEndpoint value to set
+     * @param callBackEndpoint the callBackEndpoint value to set.
      * @return the Job object itself.
      */
     public Job withCallBackEndpoint(String callBackEndpoint) {
@@ -192,7 +192,7 @@ public class Job {
     /**
      * Get the reviewId value.
      *
-     * @return the reviewId value
+     * @return the reviewId value.
      */
     public String reviewId() {
         return this.reviewId;
@@ -201,7 +201,7 @@ public class Job {
     /**
      * Set the reviewId value.
      *
-     * @param reviewId the reviewId value to set
+     * @param reviewId the reviewId value to set.
      * @return the Job object itself.
      */
     public Job withReviewId(String reviewId) {
@@ -212,7 +212,7 @@ public class Job {
     /**
      * Get the resultMetaData value.
      *
-     * @return the resultMetaData value
+     * @return the resultMetaData value.
      */
     public List<KeyValuePair> resultMetaData() {
         return this.resultMetaData;
@@ -221,7 +221,7 @@ public class Job {
     /**
      * Set the resultMetaData value.
      *
-     * @param resultMetaData the resultMetaData value to set
+     * @param resultMetaData the resultMetaData value to set.
      * @return the Job object itself.
      */
     public Job withResultMetaData(List<KeyValuePair> resultMetaData) {
@@ -232,7 +232,7 @@ public class Job {
     /**
      * Get the jobExecutionReport value.
      *
-     * @return the jobExecutionReport value
+     * @return the jobExecutionReport value.
      */
     public List<JobExecutionReportDetails> jobExecutionReport() {
         return this.jobExecutionReport;
@@ -241,12 +241,11 @@ public class Job {
     /**
      * Set the jobExecutionReport value.
      *
-     * @param jobExecutionReport the jobExecutionReport value to set
+     * @param jobExecutionReport the jobExecutionReport value to set.
      * @return the Job object itself.
      */
     public Job withJobExecutionReport(List<JobExecutionReportDetails> jobExecutionReport) {
         this.jobExecutionReport = jobExecutionReport;
         return this;
     }
-
 }

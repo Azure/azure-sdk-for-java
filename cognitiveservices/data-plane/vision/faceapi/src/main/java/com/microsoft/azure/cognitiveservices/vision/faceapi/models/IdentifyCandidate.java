@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * All possible faces that may qualify.
  */
-public class IdentifyCandidate {
+public final class IdentifyCandidate {
     /**
      * Id of candidate.
      */
@@ -32,7 +32,7 @@ public class IdentifyCandidate {
     /**
      * Get the personId value.
      *
-     * @return the personId value
+     * @return the personId value.
      */
     public UUID personId() {
         return this.personId;
@@ -41,7 +41,7 @@ public class IdentifyCandidate {
     /**
      * Set the personId value.
      *
-     * @param personId the personId value to set
+     * @param personId the personId value to set.
      * @return the IdentifyCandidate object itself.
      */
     public IdentifyCandidate withPersonId(UUID personId) {
@@ -52,7 +52,7 @@ public class IdentifyCandidate {
     /**
      * Get the confidence value.
      *
-     * @return the confidence value
+     * @return the confidence value.
      */
     public double confidence() {
         return this.confidence;
@@ -61,12 +61,11 @@ public class IdentifyCandidate {
     /**
      * Set the confidence value.
      *
-     * @param confidence the confidence value to set
+     * @param confidence the confidence value to set.
      * @return the IdentifyCandidate object itself.
      */
     public IdentifyCandidate withConfidence(double confidence) {
         this.confidence = confidence;
         return this;
     }
-
 }

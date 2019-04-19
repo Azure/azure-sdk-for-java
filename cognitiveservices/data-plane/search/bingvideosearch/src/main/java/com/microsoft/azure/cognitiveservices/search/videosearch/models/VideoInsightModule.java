@@ -15,19 +15,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for VideoInsightModule.
  */
 public enum VideoInsightModule {
-    /** Enum value All. */
+    /**
+     * Enum value All.
+     */
     ALL("All"),
 
-    /** Enum value RelatedVideos. */
+    /**
+     * Enum value RelatedVideos.
+     */
     RELATED_VIDEOS("RelatedVideos"),
 
-    /** Enum value VideoResult. */
+    /**
+     * Enum value VideoResult.
+     */
     VIDEO_RESULT("VideoResult");
 
-    /** The actual serialized value for a VideoInsightModule instance. */
-    private String value;
+    /**
+     * The actual serialized value for a VideoInsightModule instance.
+     */
+    private final String value;
 
-    VideoInsightModule(String value) {
+    private VideoInsightModule(String value) {
         this.value = value;
     }
 

@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Image Properties.
  */
-public class Image {
+public final class Image {
     /**
      * Content Id.
      */
@@ -42,7 +42,7 @@ public class Image {
     /**
      * Get the contentId value.
      *
-     * @return the contentId value
+     * @return the contentId value.
      */
     public String contentId() {
         return this.contentId;
@@ -51,7 +51,7 @@ public class Image {
     /**
      * Set the contentId value.
      *
-     * @param contentId the contentId value to set
+     * @param contentId the contentId value to set.
      * @return the Image object itself.
      */
     public Image withContentId(String contentId) {
@@ -62,7 +62,7 @@ public class Image {
     /**
      * Get the additionalInfo value.
      *
-     * @return the additionalInfo value
+     * @return the additionalInfo value.
      */
     public List<ImageAdditionalInfoItem> additionalInfo() {
         return this.additionalInfo;
@@ -71,7 +71,7 @@ public class Image {
     /**
      * Set the additionalInfo value.
      *
-     * @param additionalInfo the additionalInfo value to set
+     * @param additionalInfo the additionalInfo value to set.
      * @return the Image object itself.
      */
     public Image withAdditionalInfo(List<ImageAdditionalInfoItem> additionalInfo) {
@@ -82,7 +82,7 @@ public class Image {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public Status status() {
         return this.status;
@@ -91,7 +91,7 @@ public class Image {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the Image object itself.
      */
     public Image withStatus(Status status) {
@@ -102,7 +102,7 @@ public class Image {
     /**
      * Get the trackingId value.
      *
-     * @return the trackingId value
+     * @return the trackingId value.
      */
     public String trackingId() {
         return this.trackingId;
@@ -111,12 +111,11 @@ public class Image {
     /**
      * Set the trackingId value.
      *
-     * @param trackingId the trackingId value to set
+     * @param trackingId the trackingId value to set.
      * @return the Image object itself.
      */
     public Image withTrackingId(String trackingId) {
         this.trackingId = trackingId;
         return this;
     }
-
 }

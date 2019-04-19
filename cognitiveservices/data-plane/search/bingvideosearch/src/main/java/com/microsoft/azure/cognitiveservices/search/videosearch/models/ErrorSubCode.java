@@ -15,43 +15,67 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for ErrorSubCode.
  */
 public enum ErrorSubCode {
-    /** Enum value UnexpectedError. */
+    /**
+     * Enum value UnexpectedError.
+     */
     UNEXPECTED_ERROR("UnexpectedError"),
 
-    /** Enum value ResourceError. */
+    /**
+     * Enum value ResourceError.
+     */
     RESOURCE_ERROR("ResourceError"),
 
-    /** Enum value NotImplemented. */
+    /**
+     * Enum value NotImplemented.
+     */
     NOT_IMPLEMENTED("NotImplemented"),
 
-    /** Enum value ParameterMissing. */
+    /**
+     * Enum value ParameterMissing.
+     */
     PARAMETER_MISSING("ParameterMissing"),
 
-    /** Enum value ParameterInvalidValue. */
+    /**
+     * Enum value ParameterInvalidValue.
+     */
     PARAMETER_INVALID_VALUE("ParameterInvalidValue"),
 
-    /** Enum value HttpNotAllowed. */
+    /**
+     * Enum value HttpNotAllowed.
+     */
     HTTP_NOT_ALLOWED("HttpNotAllowed"),
 
-    /** Enum value Blocked. */
+    /**
+     * Enum value Blocked.
+     */
     BLOCKED("Blocked"),
 
-    /** Enum value AuthorizationMissing. */
+    /**
+     * Enum value AuthorizationMissing.
+     */
     AUTHORIZATION_MISSING("AuthorizationMissing"),
 
-    /** Enum value AuthorizationRedundancy. */
+    /**
+     * Enum value AuthorizationRedundancy.
+     */
     AUTHORIZATION_REDUNDANCY("AuthorizationRedundancy"),
 
-    /** Enum value AuthorizationDisabled. */
+    /**
+     * Enum value AuthorizationDisabled.
+     */
     AUTHORIZATION_DISABLED("AuthorizationDisabled"),
 
-    /** Enum value AuthorizationExpired. */
+    /**
+     * Enum value AuthorizationExpired.
+     */
     AUTHORIZATION_EXPIRED("AuthorizationExpired");
 
-    /** The actual serialized value for a ErrorSubCode instance. */
-    private String value;
+    /**
+     * The actual serialized value for a ErrorSubCode instance.
+     */
+    private final String value;
 
-    ErrorSubCode(String value) {
+    private ErrorSubCode(String value) {
         this.value = value;
     }
 

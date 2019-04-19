@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The HierarchicalChildModelUpdateObject model.
  */
-public class HierarchicalChildModelUpdateObject {
+public final class HierarchicalChildModelUpdateObject {
     /**
      * The name property.
      */
@@ -23,7 +23,7 @@ public class HierarchicalChildModelUpdateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -32,12 +32,11 @@ public class HierarchicalChildModelUpdateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the HierarchicalChildModelUpdateObject object itself.
      */
     public HierarchicalChildModelUpdateObject withName(String name) {
         this.name = name;
         return this;
     }
-
 }

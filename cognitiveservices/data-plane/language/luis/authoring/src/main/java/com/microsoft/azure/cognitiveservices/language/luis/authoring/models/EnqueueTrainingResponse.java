@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Response model when requesting to train the model.
  */
-public class EnqueueTrainingResponse {
+public final class EnqueueTrainingResponse {
     /**
      * The train request status ID.
      */
@@ -30,7 +30,7 @@ public class EnqueueTrainingResponse {
     /**
      * Get the statusId value.
      *
-     * @return the statusId value
+     * @return the statusId value.
      */
     public Integer statusId() {
         return this.statusId;
@@ -39,7 +39,7 @@ public class EnqueueTrainingResponse {
     /**
      * Set the statusId value.
      *
-     * @param statusId the statusId value to set
+     * @param statusId the statusId value to set.
      * @return the EnqueueTrainingResponse object itself.
      */
     public EnqueueTrainingResponse withStatusId(Integer statusId) {
@@ -50,7 +50,7 @@ public class EnqueueTrainingResponse {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public String status() {
         return this.status;
@@ -59,12 +59,11 @@ public class EnqueueTrainingResponse {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the EnqueueTrainingResponse object itself.
      */
     public EnqueueTrainingResponse withStatus(String status) {
         this.status = status;
         return this;
     }
-
 }

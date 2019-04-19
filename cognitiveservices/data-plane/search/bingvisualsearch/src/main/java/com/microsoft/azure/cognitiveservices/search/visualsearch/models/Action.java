@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import java.util.List;
 
 /**
- * The Action model.
+ * Defines an action.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Action.class)
 @JsonTypeName("Action")
@@ -52,7 +52,7 @@ public class Action extends CreativeWork {
     /**
      * Get the result value.
      *
-     * @return the result value
+     * @return the result value.
      */
     public List<Thing> result() {
         return this.result;
@@ -61,7 +61,7 @@ public class Action extends CreativeWork {
     /**
      * Get the displayName value.
      *
-     * @return the displayName value
+     * @return the displayName value.
      */
     public String displayName() {
         return this.displayName;
@@ -70,7 +70,7 @@ public class Action extends CreativeWork {
     /**
      * Get the isTopAction value.
      *
-     * @return the isTopAction value
+     * @return the isTopAction value.
      */
     public Boolean isTopAction() {
         return this.isTopAction;
@@ -79,10 +79,9 @@ public class Action extends CreativeWork {
     /**
      * Get the serviceUrl value.
      *
-     * @return the serviceUrl value
+     * @return the serviceUrl value.
      */
     public String serviceUrl() {
         return this.serviceUrl;
     }
-
 }

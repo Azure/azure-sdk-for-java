@@ -8,119 +8,150 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 
+import com.azure.common.http.rest.SimpleResponse;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Body;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.RefreshIndex;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.TermList;
 import java.util.List;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in ListManagementTermLists.
+ * An instance of this class provides access to all the operations defined in
+ * ListManagementTermLists.
  */
 public interface ListManagementTermLists {
-
     /**
      * Returns list Id details of the term list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TermList object if successful.
      */
-    TermList getDetails(String listId);
+    TermList getDetails(@NonNull String listId);
 
     /**
      * Returns list Id details of the term list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<TermList> getDetailsAsync(String listId);
+    Mono<SimpleResponse<TermList>> getDetailsWithRestResponseAsync(@NonNull String listId);
 
-
+    /**
+     * Returns list Id details of the term list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<TermList> getDetailsAsync(@NonNull String listId);
 
     /**
      * Deletes term list with the list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the String object if successful.
      */
-    String delete(String listId);
+    String delete(@NonNull String listId);
 
     /**
      * Deletes term list with the list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<String> deleteAsync(String listId);
+    Mono<SimpleResponse<String>> deleteWithRestResponseAsync(@NonNull String listId);
 
-
+    /**
+     * Deletes term list with the list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<String> deleteAsync(@NonNull String listId);
 
     /**
      * Updates an Term List.
      *
      * @param listId List Id of the image list.
      * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TermList object if successful.
      */
-    TermList update(String listId, String contentType, BodyModel bodyParameter);
+    TermList update(@NonNull String listId, @NonNull String contentType, @NonNull Body body);
 
     /**
      * Updates an Term List.
      *
      * @param listId List Id of the image list.
      * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<TermList> updateAsync(String listId, String contentType, BodyModel bodyParameter);
+    Mono<SimpleResponse<TermList>> updateWithRestResponseAsync(@NonNull String listId, @NonNull String contentType, @NonNull Body body);
 
-
+    /**
+     * Updates an Term List.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<TermList> updateAsync(@NonNull String listId, @NonNull String contentType, @NonNull Body body);
 
     /**
      * Creates a Term List.
      *
      * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TermList object if successful.
      */
-    TermList create(String contentType, BodyModel bodyParameter);
+    TermList create(@NonNull String contentType, @NonNull Body body);
 
     /**
      * Creates a Term List.
      *
      * @param contentType The content type.
-     * @param bodyParameter Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<TermList> createAsync(String contentType, BodyModel bodyParameter);
+    Mono<SimpleResponse<TermList>> createWithRestResponseAsync(@NonNull String contentType, @NonNull Body body);
 
-
+    /**
+     * Creates a Term List.
+     *
+     * @param contentType The content type.
+     * @param body Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<TermList> createAsync(@NonNull String contentType, @NonNull Body body);
 
     /**
      * gets all the Term Lists.
      *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;TermList&gt; object if successful.
      */
     List<TermList> getAllTermLists();
@@ -128,34 +159,46 @@ public interface ListManagementTermLists {
     /**
      * gets all the Term Lists.
      *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;TermList&gt; object
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<List<TermList>> getAllTermListsAsync();
+    Mono<SimpleResponse<List<TermList>>> getAllTermListsWithRestResponseAsync();
 
-
+    /**
+     * gets all the Term Lists.
+     *
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<TermList>> getAllTermListsAsync();
 
     /**
      * Refreshes the index of the list with list Id equal to list ID passed.
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RefreshIndex object if successful.
      */
-    RefreshIndex refreshIndexMethod(String listId, String language);
+    RefreshIndex refreshIndexMethod(@NonNull String listId, @NonNull String language);
 
     /**
      * Refreshes the index of the list with list Id equal to list ID passed.
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RefreshIndex object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<RefreshIndex> refreshIndexMethodAsync(String listId, String language);
+    Mono<SimpleResponse<RefreshIndex>> refreshIndexMethodWithRestResponseAsync(@NonNull String listId, @NonNull String language);
 
-
+    /**
+     * Refreshes the index of the list with list Id equal to list ID passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<RefreshIndex> refreshIndexMethodAsync(@NonNull String listId, @NonNull String language);
 }

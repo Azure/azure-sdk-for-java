@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Evaluate response object.
  */
-public class Evaluate {
+public final class Evaluate {
     /**
      * The cache id.
      */
@@ -46,7 +46,7 @@ public class Evaluate {
     private Boolean isImageAdultClassified;
 
     /**
-     * The racy classication score.
+     * The racy classification score.
      */
     @JsonProperty(value = "RacyClassificationScore")
     private Double racyClassificationScore;
@@ -72,7 +72,7 @@ public class Evaluate {
     /**
      * Get the cacheID value.
      *
-     * @return the cacheID value
+     * @return the cacheID value.
      */
     public String cacheID() {
         return this.cacheID;
@@ -81,7 +81,7 @@ public class Evaluate {
     /**
      * Set the cacheID value.
      *
-     * @param cacheID the cacheID value to set
+     * @param cacheID the cacheID value to set.
      * @return the Evaluate object itself.
      */
     public Evaluate withCacheID(String cacheID) {
@@ -92,7 +92,7 @@ public class Evaluate {
     /**
      * Get the result value.
      *
-     * @return the result value
+     * @return the result value.
      */
     public Boolean result() {
         return this.result;
@@ -101,7 +101,7 @@ public class Evaluate {
     /**
      * Set the result value.
      *
-     * @param result the result value to set
+     * @param result the result value to set.
      * @return the Evaluate object itself.
      */
     public Evaluate withResult(Boolean result) {
@@ -112,7 +112,7 @@ public class Evaluate {
     /**
      * Get the trackingId value.
      *
-     * @return the trackingId value
+     * @return the trackingId value.
      */
     public String trackingId() {
         return this.trackingId;
@@ -121,7 +121,7 @@ public class Evaluate {
     /**
      * Set the trackingId value.
      *
-     * @param trackingId the trackingId value to set
+     * @param trackingId the trackingId value to set.
      * @return the Evaluate object itself.
      */
     public Evaluate withTrackingId(String trackingId) {
@@ -132,7 +132,7 @@ public class Evaluate {
     /**
      * Get the adultClassificationScore value.
      *
-     * @return the adultClassificationScore value
+     * @return the adultClassificationScore value.
      */
     public Double adultClassificationScore() {
         return this.adultClassificationScore;
@@ -141,7 +141,8 @@ public class Evaluate {
     /**
      * Set the adultClassificationScore value.
      *
-     * @param adultClassificationScore the adultClassificationScore value to set
+     * @param adultClassificationScore the adultClassificationScore value to
+     * set.
      * @return the Evaluate object itself.
      */
     public Evaluate withAdultClassificationScore(Double adultClassificationScore) {
@@ -152,7 +153,7 @@ public class Evaluate {
     /**
      * Get the isImageAdultClassified value.
      *
-     * @return the isImageAdultClassified value
+     * @return the isImageAdultClassified value.
      */
     public Boolean isImageAdultClassified() {
         return this.isImageAdultClassified;
@@ -161,7 +162,7 @@ public class Evaluate {
     /**
      * Set the isImageAdultClassified value.
      *
-     * @param isImageAdultClassified the isImageAdultClassified value to set
+     * @param isImageAdultClassified the isImageAdultClassified value to set.
      * @return the Evaluate object itself.
      */
     public Evaluate withIsImageAdultClassified(Boolean isImageAdultClassified) {
@@ -172,7 +173,7 @@ public class Evaluate {
     /**
      * Get the racyClassificationScore value.
      *
-     * @return the racyClassificationScore value
+     * @return the racyClassificationScore value.
      */
     public Double racyClassificationScore() {
         return this.racyClassificationScore;
@@ -181,7 +182,7 @@ public class Evaluate {
     /**
      * Set the racyClassificationScore value.
      *
-     * @param racyClassificationScore the racyClassificationScore value to set
+     * @param racyClassificationScore the racyClassificationScore value to set.
      * @return the Evaluate object itself.
      */
     public Evaluate withRacyClassificationScore(Double racyClassificationScore) {
@@ -192,7 +193,7 @@ public class Evaluate {
     /**
      * Get the isImageRacyClassified value.
      *
-     * @return the isImageRacyClassified value
+     * @return the isImageRacyClassified value.
      */
     public Boolean isImageRacyClassified() {
         return this.isImageRacyClassified;
@@ -201,7 +202,7 @@ public class Evaluate {
     /**
      * Set the isImageRacyClassified value.
      *
-     * @param isImageRacyClassified the isImageRacyClassified value to set
+     * @param isImageRacyClassified the isImageRacyClassified value to set.
      * @return the Evaluate object itself.
      */
     public Evaluate withIsImageRacyClassified(Boolean isImageRacyClassified) {
@@ -212,7 +213,7 @@ public class Evaluate {
     /**
      * Get the advancedInfo value.
      *
-     * @return the advancedInfo value
+     * @return the advancedInfo value.
      */
     public List<KeyValuePair> advancedInfo() {
         return this.advancedInfo;
@@ -221,7 +222,7 @@ public class Evaluate {
     /**
      * Set the advancedInfo value.
      *
-     * @param advancedInfo the advancedInfo value to set
+     * @param advancedInfo the advancedInfo value to set.
      * @return the Evaluate object itself.
      */
     public Evaluate withAdvancedInfo(List<KeyValuePair> advancedInfo) {
@@ -232,7 +233,7 @@ public class Evaluate {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public Status status() {
         return this.status;
@@ -241,12 +242,11 @@ public class Evaluate {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the Evaluate object itself.
      */
     public Evaluate withStatus(Status status) {
         this.status = status;
         return this;
     }
-
 }

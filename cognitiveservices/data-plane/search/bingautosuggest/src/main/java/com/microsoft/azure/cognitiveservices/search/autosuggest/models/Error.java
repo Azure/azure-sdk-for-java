@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines the error that occurred.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Error.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Error")
-public class Error {
+public final class Error {
     /**
      * The error code that identifies the category of error. Possible values
      * include: 'None', 'ServerError', 'InvalidRequest', 'RateLimitExceeded',
@@ -53,7 +53,7 @@ public class Error {
     /**
      * Get the code value.
      *
-     * @return the code value
+     * @return the code value.
      */
     public ErrorCode code() {
         return this.code;
@@ -62,7 +62,7 @@ public class Error {
     /**
      * Set the code value.
      *
-     * @param code the code value to set
+     * @param code the code value to set.
      * @return the Error object itself.
      */
     public Error withCode(ErrorCode code) {
@@ -73,7 +73,7 @@ public class Error {
     /**
      * Get the message value.
      *
-     * @return the message value
+     * @return the message value.
      */
     public String message() {
         return this.message;
@@ -82,7 +82,7 @@ public class Error {
     /**
      * Set the message value.
      *
-     * @param message the message value to set
+     * @param message the message value to set.
      * @return the Error object itself.
      */
     public Error withMessage(String message) {
@@ -93,7 +93,7 @@ public class Error {
     /**
      * Get the moreDetails value.
      *
-     * @return the moreDetails value
+     * @return the moreDetails value.
      */
     public String moreDetails() {
         return this.moreDetails;
@@ -102,7 +102,7 @@ public class Error {
     /**
      * Get the parameter value.
      *
-     * @return the parameter value
+     * @return the parameter value.
      */
     public String parameter() {
         return this.parameter;
@@ -111,10 +111,9 @@ public class Error {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public String value() {
         return this.value;
     }
-
 }

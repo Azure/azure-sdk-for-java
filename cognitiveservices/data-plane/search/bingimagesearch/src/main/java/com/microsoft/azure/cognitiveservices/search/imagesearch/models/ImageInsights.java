@@ -21,9 +21,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * [modules](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#modulesrequested)
  * to only Caption, then this object includes only the imageCaption field.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageInsights.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageInsights")
-public class ImageInsights extends Response {
+public final class ImageInsights extends Response {
     /**
      * A token that you use in a subsequent call to the Image Search API to get
      * more information about the image. For information about using this
@@ -122,7 +122,7 @@ public class ImageInsights extends Response {
     /**
      * Get the imageInsightsToken value.
      *
-     * @return the imageInsightsToken value
+     * @return the imageInsightsToken value.
      */
     public String imageInsightsToken() {
         return this.imageInsightsToken;
@@ -131,7 +131,7 @@ public class ImageInsights extends Response {
     /**
      * Get the bestRepresentativeQuery value.
      *
-     * @return the bestRepresentativeQuery value
+     * @return the bestRepresentativeQuery value.
      */
     public Query bestRepresentativeQuery() {
         return this.bestRepresentativeQuery;
@@ -140,7 +140,7 @@ public class ImageInsights extends Response {
     /**
      * Get the imageCaption value.
      *
-     * @return the imageCaption value
+     * @return the imageCaption value.
      */
     public ImageInsightsImageCaption imageCaption() {
         return this.imageCaption;
@@ -149,7 +149,7 @@ public class ImageInsights extends Response {
     /**
      * Get the relatedCollections value.
      *
-     * @return the relatedCollections value
+     * @return the relatedCollections value.
      */
     public RelatedCollectionsModule relatedCollections() {
         return this.relatedCollections;
@@ -158,7 +158,7 @@ public class ImageInsights extends Response {
     /**
      * Get the pagesIncluding value.
      *
-     * @return the pagesIncluding value
+     * @return the pagesIncluding value.
      */
     public ImagesModule pagesIncluding() {
         return this.pagesIncluding;
@@ -167,7 +167,7 @@ public class ImageInsights extends Response {
     /**
      * Get the shoppingSources value.
      *
-     * @return the shoppingSources value
+     * @return the shoppingSources value.
      */
     public AggregateOffer shoppingSources() {
         return this.shoppingSources;
@@ -176,7 +176,7 @@ public class ImageInsights extends Response {
     /**
      * Get the relatedSearches value.
      *
-     * @return the relatedSearches value
+     * @return the relatedSearches value.
      */
     public RelatedSearchesModule relatedSearches() {
         return this.relatedSearches;
@@ -185,7 +185,7 @@ public class ImageInsights extends Response {
     /**
      * Get the recipes value.
      *
-     * @return the recipes value
+     * @return the recipes value.
      */
     public RecipesModule recipes() {
         return this.recipes;
@@ -194,7 +194,7 @@ public class ImageInsights extends Response {
     /**
      * Get the visuallySimilarImages value.
      *
-     * @return the visuallySimilarImages value
+     * @return the visuallySimilarImages value.
      */
     public ImagesModule visuallySimilarImages() {
         return this.visuallySimilarImages;
@@ -203,7 +203,7 @@ public class ImageInsights extends Response {
     /**
      * Get the visuallySimilarProducts value.
      *
-     * @return the visuallySimilarProducts value
+     * @return the visuallySimilarProducts value.
      */
     public ImagesModule visuallySimilarProducts() {
         return this.visuallySimilarProducts;
@@ -212,7 +212,7 @@ public class ImageInsights extends Response {
     /**
      * Get the recognizedEntityGroups value.
      *
-     * @return the recognizedEntityGroups value
+     * @return the recognizedEntityGroups value.
      */
     public RecognizedEntitiesModule recognizedEntityGroups() {
         return this.recognizedEntityGroups;
@@ -221,10 +221,9 @@ public class ImageInsights extends Response {
     /**
      * Get the imageTags value.
      *
-     * @return the imageTags value
+     * @return the imageTags value.
      */
     public ImageTagsModule imageTags() {
         return this.imageTags;
     }
-
 }

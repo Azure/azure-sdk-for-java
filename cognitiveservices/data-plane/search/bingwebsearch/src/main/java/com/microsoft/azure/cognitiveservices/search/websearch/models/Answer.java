@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import java.util.List;
 
 /**
  * The Answer model.
@@ -20,8 +20,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Answer.class)
 @JsonTypeName("Answer")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Computation", value = Computation.class),
-    @JsonSubTypes.Type(name = "SearchResultsAnswer", value = SearchResultsAnswer.class)
+    @JsonSubTypes.Type(name = "SearchResultsAnswer", value = SearchResultsAnswer.class),
+    @JsonSubTypes.Type(name = "Computation", value = Computation.class)
 })
 public class Answer extends Response {
     /**
@@ -33,10 +33,9 @@ public class Answer extends Response {
     /**
      * Get the followUpQueries value.
      *
-     * @return the followUpQueries value
+     * @return the followUpQueries value.
      */
     public List<Query> followUpQueries() {
         return this.followUpQueries;
     }
-
 }

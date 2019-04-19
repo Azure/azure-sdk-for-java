@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
-import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * The ImageTag model.
  */
-public class ImageTag {
+public final class ImageTag {
     /**
      * The tagId property.
      */
@@ -32,12 +32,12 @@ public class ImageTag {
      * The created property.
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime created;
+    private OffsetDateTime created;
 
     /**
      * Get the tagId value.
      *
-     * @return the tagId value
+     * @return the tagId value.
      */
     public UUID tagId() {
         return this.tagId;
@@ -46,7 +46,7 @@ public class ImageTag {
     /**
      * Get the tagName value.
      *
-     * @return the tagName value
+     * @return the tagName value.
      */
     public String tagName() {
         return this.tagName;
@@ -55,10 +55,9 @@ public class ImageTag {
     /**
      * Get the created value.
      *
-     * @return the created value
+     * @return the created value.
      */
-    public DateTime created() {
+    public OffsetDateTime created() {
         return this.created;
     }
-
 }

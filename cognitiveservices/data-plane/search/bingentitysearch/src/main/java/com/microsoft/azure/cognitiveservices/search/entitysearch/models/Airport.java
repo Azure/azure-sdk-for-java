@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The Airport model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Airport.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Airport")
-public class Airport extends CivicStructure {
+public final class Airport extends CivicStructure {
     /**
      * The iataCode property.
      */
@@ -33,7 +33,7 @@ public class Airport extends CivicStructure {
     /**
      * Get the iataCode value.
      *
-     * @return the iataCode value
+     * @return the iataCode value.
      */
     public String iataCode() {
         return this.iataCode;
@@ -42,10 +42,9 @@ public class Airport extends CivicStructure {
     /**
      * Get the icaoCode value.
      *
-     * @return the icaoCode value
+     * @return the icaoCode value.
      */
     public String icaoCode() {
         return this.icaoCode;
     }
-
 }

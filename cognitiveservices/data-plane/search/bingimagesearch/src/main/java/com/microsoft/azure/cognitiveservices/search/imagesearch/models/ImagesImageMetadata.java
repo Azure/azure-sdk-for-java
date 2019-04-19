@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Defines a count of the number of websites where you can shop or perform
  * other actions related to the image.
  */
-public class ImagesImageMetadata {
+public final class ImagesImageMetadata {
     /**
      * The number of websites that offer goods of the products seen in the
      * image.
@@ -41,7 +41,7 @@ public class ImagesImageMetadata {
     /**
      * Get the shoppingSourcesCount value.
      *
-     * @return the shoppingSourcesCount value
+     * @return the shoppingSourcesCount value.
      */
     public Integer shoppingSourcesCount() {
         return this.shoppingSourcesCount;
@@ -50,7 +50,7 @@ public class ImagesImageMetadata {
     /**
      * Get the recipeSourcesCount value.
      *
-     * @return the recipeSourcesCount value
+     * @return the recipeSourcesCount value.
      */
     public Integer recipeSourcesCount() {
         return this.recipeSourcesCount;
@@ -59,10 +59,9 @@ public class ImagesImageMetadata {
     /**
      * Get the aggregateOffer value.
      *
-     * @return the aggregateOffer value
+     * @return the aggregateOffer value.
      */
     public AggregateOffer aggregateOffer() {
         return this.aggregateOffer;
     }
-
 }

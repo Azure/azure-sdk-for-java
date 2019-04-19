@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Sentiment of the input utterance.
  */
-public class Sentiment {
+public final class Sentiment {
     /**
      * The polarity of the sentiment, can be positive, neutral or negative.
      */
@@ -30,7 +30,7 @@ public class Sentiment {
     /**
      * Get the label value.
      *
-     * @return the label value
+     * @return the label value.
      */
     public String label() {
         return this.label;
@@ -39,7 +39,7 @@ public class Sentiment {
     /**
      * Set the label value.
      *
-     * @param label the label value to set
+     * @param label the label value to set.
      * @return the Sentiment object itself.
      */
     public Sentiment withLabel(String label) {
@@ -50,7 +50,7 @@ public class Sentiment {
     /**
      * Get the score value.
      *
-     * @return the score value
+     * @return the score value.
      */
     public Double score() {
         return this.score;
@@ -59,12 +59,11 @@ public class Sentiment {
     /**
      * Set the score value.
      *
-     * @param score the score value to set
+     * @param score the score value to set.
      * @return the Sentiment object itself.
      */
     public Sentiment withScore(Double score) {
         this.score = score;
         return this;
     }
-
 }

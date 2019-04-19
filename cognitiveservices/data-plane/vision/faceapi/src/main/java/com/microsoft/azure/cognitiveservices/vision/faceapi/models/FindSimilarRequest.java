@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.UUID;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Request body for find similar operation.
  */
-public class FindSimilarRequest {
+public final class FindSimilarRequest {
     /**
      * FaceId of the query face. User needs to call Face - Detect first to get
      * a valid faceId. Note that this faceId is not persisted and will expire
@@ -27,15 +27,27 @@ public class FindSimilarRequest {
     /**
      * An existing user-specified unique candidate face list, created in Face
      * List - Create a Face List. Face list contains a set of persistedFaceIds
-     * which are persisted and will never expire. Parameter faceListId and
-     * faceIds should not be provided at the same time.
+     * which are persisted and will never expire. Parameter faceListId,
+     * largeFaceListId and faceIds should not be provided at the same time.
      */
     @JsonProperty(value = "faceListId")
     private String faceListId;
 
     /**
+     * An existing user-specified unique candidate large face list, created in
+     * LargeFaceList - Create. Large face list contains a set of
+     * persistedFaceIds which are persisted and will never expire. Parameter
+     * faceListId, largeFaceListId and faceIds should not be provided at the
+     * same time.
+     */
+    @JsonProperty(value = "largeFaceListId")
+    private String largeFaceListId;
+
+    /**
      * An array of candidate faceIds. All of them are created by Face - Detect
-     * and the faceIds will expire 24 hours after the detection call.
+     * and the faceIds will expire 24 hours after the detection call. The
+     * number of faceIds is limited to 1000. Parameter faceListId,
+     * largeFaceListId and faceIds should not be provided at the same time.
      */
     @JsonProperty(value = "faceIds")
     private List<UUID> faceIds;
@@ -56,7 +68,7 @@ public class FindSimilarRequest {
     /**
      * Get the faceId value.
      *
-     * @return the faceId value
+     * @return the faceId value.
      */
     public UUID faceId() {
         return this.faceId;
@@ -65,7 +77,7 @@ public class FindSimilarRequest {
     /**
      * Set the faceId value.
      *
-     * @param faceId the faceId value to set
+     * @param faceId the faceId value to set.
      * @return the FindSimilarRequest object itself.
      */
     public FindSimilarRequest withFaceId(UUID faceId) {
@@ -76,7 +88,7 @@ public class FindSimilarRequest {
     /**
      * Get the faceListId value.
      *
-     * @return the faceListId value
+     * @return the faceListId value.
      */
     public String faceListId() {
         return this.faceListId;
@@ -85,7 +97,7 @@ public class FindSimilarRequest {
     /**
      * Set the faceListId value.
      *
-     * @param faceListId the faceListId value to set
+     * @param faceListId the faceListId value to set.
      * @return the FindSimilarRequest object itself.
      */
     public FindSimilarRequest withFaceListId(String faceListId) {
@@ -94,9 +106,29 @@ public class FindSimilarRequest {
     }
 
     /**
+     * Get the largeFaceListId value.
+     *
+     * @return the largeFaceListId value.
+     */
+    public String largeFaceListId() {
+        return this.largeFaceListId;
+    }
+
+    /**
+     * Set the largeFaceListId value.
+     *
+     * @param largeFaceListId the largeFaceListId value to set.
+     * @return the FindSimilarRequest object itself.
+     */
+    public FindSimilarRequest withLargeFaceListId(String largeFaceListId) {
+        this.largeFaceListId = largeFaceListId;
+        return this;
+    }
+
+    /**
      * Get the faceIds value.
      *
-     * @return the faceIds value
+     * @return the faceIds value.
      */
     public List<UUID> faceIds() {
         return this.faceIds;
@@ -105,7 +137,7 @@ public class FindSimilarRequest {
     /**
      * Set the faceIds value.
      *
-     * @param faceIds the faceIds value to set
+     * @param faceIds the faceIds value to set.
      * @return the FindSimilarRequest object itself.
      */
     public FindSimilarRequest withFaceIds(List<UUID> faceIds) {
@@ -116,7 +148,7 @@ public class FindSimilarRequest {
     /**
      * Get the maxNumOfCandidatesReturned value.
      *
-     * @return the maxNumOfCandidatesReturned value
+     * @return the maxNumOfCandidatesReturned value.
      */
     public Integer maxNumOfCandidatesReturned() {
         return this.maxNumOfCandidatesReturned;
@@ -125,7 +157,8 @@ public class FindSimilarRequest {
     /**
      * Set the maxNumOfCandidatesReturned value.
      *
-     * @param maxNumOfCandidatesReturned the maxNumOfCandidatesReturned value to set
+     * @param maxNumOfCandidatesReturned the maxNumOfCandidatesReturned value
+     * to set.
      * @return the FindSimilarRequest object itself.
      */
     public FindSimilarRequest withMaxNumOfCandidatesReturned(Integer maxNumOfCandidatesReturned) {
@@ -136,7 +169,7 @@ public class FindSimilarRequest {
     /**
      * Get the mode value.
      *
-     * @return the mode value
+     * @return the mode value.
      */
     public FindSimilarMatchMode mode() {
         return this.mode;
@@ -145,12 +178,11 @@ public class FindSimilarRequest {
     /**
      * Set the mode value.
      *
-     * @param mode the mode value to set
+     * @param mode the mode value to set.
      * @return the FindSimilarRequest object itself.
      */
     public FindSimilarRequest withMode(FindSimilarMatchMode mode) {
         this.mode = mode;
         return this;
     }
-
 }

@@ -8,24 +8,44 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for ExportFlavor.
  */
 public final class ExportFlavor extends ExpandableStringEnum<ExportFlavor> {
-    /** Static value Linux for ExportFlavor. */
+    /**
+     * Static value Linux for ExportFlavor.
+     */
     public static final ExportFlavor LINUX = fromString("Linux");
 
-    /** Static value Windows for ExportFlavor. */
+    /**
+     * Static value Windows for ExportFlavor.
+     */
     public static final ExportFlavor WINDOWS = fromString("Windows");
 
     /**
+     * Static value ONNX10 for ExportFlavor.
+     */
+    public static final ExportFlavor ONNX10 = fromString("ONNX10");
+
+    /**
+     * Static value ONNX12 for ExportFlavor.
+     */
+    public static final ExportFlavor ONNX12 = fromString("ONNX12");
+
+    /**
+     * Static value ARM for ExportFlavor.
+     */
+    public static final ExportFlavor ARM = fromString("ARM");
+
+    /**
      * Creates or finds a ExportFlavor from its string representation.
-     * @param name a name to look for
-     * @return the corresponding ExportFlavor
+     *
+     * @param name a name to look for.
+     * @return the corresponding ExportFlavor.
      */
     @JsonCreator
     public static ExportFlavor fromString(String name) {
@@ -33,7 +53,7 @@ public final class ExportFlavor extends ExpandableStringEnum<ExportFlavor> {
     }
 
     /**
-     * @return known ExportFlavor values
+     * @return known ExportFlavor values.
      */
     public static Collection<ExportFlavor> values() {
         return values(ExportFlavor.class);

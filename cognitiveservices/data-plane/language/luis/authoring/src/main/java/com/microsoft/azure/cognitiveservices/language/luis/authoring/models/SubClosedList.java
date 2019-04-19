@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * Sublist of items for a Closed list.
+ * Sublist of items for a list entity.
  */
 public class SubClosedList {
     /**
@@ -30,7 +30,7 @@ public class SubClosedList {
     /**
      * Get the canonicalForm value.
      *
-     * @return the canonicalForm value
+     * @return the canonicalForm value.
      */
     public String canonicalForm() {
         return this.canonicalForm;
@@ -39,7 +39,7 @@ public class SubClosedList {
     /**
      * Set the canonicalForm value.
      *
-     * @param canonicalForm the canonicalForm value to set
+     * @param canonicalForm the canonicalForm value to set.
      * @return the SubClosedList object itself.
      */
     public SubClosedList withCanonicalForm(String canonicalForm) {
@@ -50,7 +50,7 @@ public class SubClosedList {
     /**
      * Get the list value.
      *
-     * @return the list value
+     * @return the list value.
      */
     public List<String> list() {
         return this.list;
@@ -59,12 +59,11 @@ public class SubClosedList {
     /**
      * Set the list value.
      *
-     * @param list the list value to set
+     * @param list the list value to set.
      * @return the SubClosedList object itself.
      */
     public SubClosedList withList(List<String> list) {
         this.list = list;
         return this;
     }
-
 }

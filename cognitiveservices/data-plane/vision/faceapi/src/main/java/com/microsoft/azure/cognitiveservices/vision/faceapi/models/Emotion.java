@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Properties describing facial emotion in form of confidence ranging from 0 to
  * 1.
  */
-public class Emotion {
+public final class Emotion {
     /**
      * The anger property.
      */
@@ -66,7 +66,7 @@ public class Emotion {
     /**
      * Get the anger value.
      *
-     * @return the anger value
+     * @return the anger value.
      */
     public double anger() {
         return this.anger;
@@ -75,7 +75,7 @@ public class Emotion {
     /**
      * Set the anger value.
      *
-     * @param anger the anger value to set
+     * @param anger the anger value to set.
      * @return the Emotion object itself.
      */
     public Emotion withAnger(double anger) {
@@ -86,7 +86,7 @@ public class Emotion {
     /**
      * Get the contempt value.
      *
-     * @return the contempt value
+     * @return the contempt value.
      */
     public double contempt() {
         return this.contempt;
@@ -95,7 +95,7 @@ public class Emotion {
     /**
      * Set the contempt value.
      *
-     * @param contempt the contempt value to set
+     * @param contempt the contempt value to set.
      * @return the Emotion object itself.
      */
     public Emotion withContempt(double contempt) {
@@ -106,7 +106,7 @@ public class Emotion {
     /**
      * Get the disgust value.
      *
-     * @return the disgust value
+     * @return the disgust value.
      */
     public double disgust() {
         return this.disgust;
@@ -115,7 +115,7 @@ public class Emotion {
     /**
      * Set the disgust value.
      *
-     * @param disgust the disgust value to set
+     * @param disgust the disgust value to set.
      * @return the Emotion object itself.
      */
     public Emotion withDisgust(double disgust) {
@@ -126,7 +126,7 @@ public class Emotion {
     /**
      * Get the fear value.
      *
-     * @return the fear value
+     * @return the fear value.
      */
     public double fear() {
         return this.fear;
@@ -135,7 +135,7 @@ public class Emotion {
     /**
      * Set the fear value.
      *
-     * @param fear the fear value to set
+     * @param fear the fear value to set.
      * @return the Emotion object itself.
      */
     public Emotion withFear(double fear) {
@@ -146,7 +146,7 @@ public class Emotion {
     /**
      * Get the happiness value.
      *
-     * @return the happiness value
+     * @return the happiness value.
      */
     public double happiness() {
         return this.happiness;
@@ -155,7 +155,7 @@ public class Emotion {
     /**
      * Set the happiness value.
      *
-     * @param happiness the happiness value to set
+     * @param happiness the happiness value to set.
      * @return the Emotion object itself.
      */
     public Emotion withHappiness(double happiness) {
@@ -166,7 +166,7 @@ public class Emotion {
     /**
      * Get the neutral value.
      *
-     * @return the neutral value
+     * @return the neutral value.
      */
     public double neutral() {
         return this.neutral;
@@ -175,7 +175,7 @@ public class Emotion {
     /**
      * Set the neutral value.
      *
-     * @param neutral the neutral value to set
+     * @param neutral the neutral value to set.
      * @return the Emotion object itself.
      */
     public Emotion withNeutral(double neutral) {
@@ -186,7 +186,7 @@ public class Emotion {
     /**
      * Get the sadness value.
      *
-     * @return the sadness value
+     * @return the sadness value.
      */
     public double sadness() {
         return this.sadness;
@@ -195,7 +195,7 @@ public class Emotion {
     /**
      * Set the sadness value.
      *
-     * @param sadness the sadness value to set
+     * @param sadness the sadness value to set.
      * @return the Emotion object itself.
      */
     public Emotion withSadness(double sadness) {
@@ -206,7 +206,7 @@ public class Emotion {
     /**
      * Get the surprise value.
      *
-     * @return the surprise value
+     * @return the surprise value.
      */
     public double surprise() {
         return this.surprise;
@@ -215,12 +215,11 @@ public class Emotion {
     /**
      * Set the surprise value.
      *
-     * @param surprise the surprise value to set
+     * @param surprise the surprise value to set.
      * @return the Emotion object itself.
      */
     public Emotion withSurprise(double surprise) {
         this.surprise = surprise;
         return this;
     }
-
 }

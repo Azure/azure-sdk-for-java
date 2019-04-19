@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A combination of user defined name and user specified data for the person,
- * personGroup, and faceList.
+ * largePersonGroup/personGroup, and largeFaceList/faceList.
  */
 public class NameAndUserDataContract {
     /**
@@ -30,7 +30,7 @@ public class NameAndUserDataContract {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -39,7 +39,7 @@ public class NameAndUserDataContract {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the NameAndUserDataContract object itself.
      */
     public NameAndUserDataContract withName(String name) {
@@ -50,7 +50,7 @@ public class NameAndUserDataContract {
     /**
      * Get the userData value.
      *
-     * @return the userData value
+     * @return the userData value.
      */
     public String userData() {
         return this.userData;
@@ -59,12 +59,11 @@ public class NameAndUserDataContract {
     /**
      * Set the userData value.
      *
-     * @param userData the userData value to set
+     * @param userData the userData value to set.
      * @return the NameAndUserDataContract object itself.
      */
     public NameAndUserDataContract withUserData(String userData) {
         this.userData = userData;
         return this;
     }
-
 }

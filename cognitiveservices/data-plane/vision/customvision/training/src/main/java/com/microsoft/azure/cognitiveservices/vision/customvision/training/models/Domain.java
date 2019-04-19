@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * The Domain model.
  */
-public class Domain {
+public final class Domain {
     /**
      * The id property.
      */
@@ -48,7 +48,7 @@ public class Domain {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -57,7 +57,7 @@ public class Domain {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -66,7 +66,7 @@ public class Domain {
     /**
      * Get the type value.
      *
-     * @return the type value
+     * @return the type value.
      */
     public DomainType type() {
         return this.type;
@@ -75,7 +75,7 @@ public class Domain {
     /**
      * Get the exportable value.
      *
-     * @return the exportable value
+     * @return the exportable value.
      */
     public boolean exportable() {
         return this.exportable;
@@ -84,10 +84,9 @@ public class Domain {
     /**
      * Get the enabled value.
      *
-     * @return the enabled value
+     * @return the enabled value.
      */
     public boolean enabled() {
         return this.enabled;
     }
-
 }

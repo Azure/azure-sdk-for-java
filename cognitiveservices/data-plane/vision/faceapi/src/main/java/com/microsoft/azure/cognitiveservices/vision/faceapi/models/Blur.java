@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Properties describing any presence of blur within the image.
  */
-public class Blur {
+public final class Blur {
     /**
      * An enum value indicating level of blurriness. Possible values include:
      * 'Low', 'Medium', 'High'.
@@ -30,7 +30,7 @@ public class Blur {
     /**
      * Get the blurLevel value.
      *
-     * @return the blurLevel value
+     * @return the blurLevel value.
      */
     public BlurLevel blurLevel() {
         return this.blurLevel;
@@ -39,7 +39,7 @@ public class Blur {
     /**
      * Set the blurLevel value.
      *
-     * @param blurLevel the blurLevel value to set
+     * @param blurLevel the blurLevel value to set.
      * @return the Blur object itself.
      */
     public Blur withBlurLevel(BlurLevel blurLevel) {
@@ -50,7 +50,7 @@ public class Blur {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public double value() {
         return this.value;
@@ -59,12 +59,11 @@ public class Blur {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the Blur object itself.
      */
     public Blur withValue(double value) {
         this.value = value;
         return this;
     }
-
 }

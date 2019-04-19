@@ -15,22 +15,32 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for VideoLength.
  */
 public enum VideoLength {
-    /** Enum value All. */
+    /**
+     * Enum value All.
+     */
     ALL("All"),
 
-    /** Enum value Short. */
+    /**
+     * Enum value Short.
+     */
     SHORT("Short"),
 
-    /** Enum value Medium. */
+    /**
+     * Enum value Medium.
+     */
     MEDIUM("Medium"),
 
-    /** Enum value Long. */
+    /**
+     * Enum value Long.
+     */
     LONG("Long");
 
-    /** The actual serialized value for a VideoLength instance. */
-    private String value;
+    /**
+     * The actual serialized value for a VideoLength instance.
+     */
+    private final String value;
 
-    VideoLength(String value) {
+    private VideoLength(String value) {
         this.value = value;
     }
 

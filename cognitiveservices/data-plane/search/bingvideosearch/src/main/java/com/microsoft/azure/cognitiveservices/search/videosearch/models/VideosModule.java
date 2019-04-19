@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.videosearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The VideosModule model.
  */
-public class VideosModule {
+public final class VideosModule {
     /**
      * The value property.
      */
@@ -24,10 +24,9 @@ public class VideosModule {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<VideoObject> value() {
         return this.value;
     }
-
 }

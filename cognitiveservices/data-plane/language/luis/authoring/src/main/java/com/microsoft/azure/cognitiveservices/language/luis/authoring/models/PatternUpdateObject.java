@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object model for updating an existing Pattern feature.
  */
-public class PatternUpdateObject {
+public final class PatternUpdateObject {
     /**
      * The Regular Expression to match.
      */
@@ -35,7 +35,7 @@ public class PatternUpdateObject {
     /**
      * Get the pattern value.
      *
-     * @return the pattern value
+     * @return the pattern value.
      */
     public String pattern() {
         return this.pattern;
@@ -44,7 +44,7 @@ public class PatternUpdateObject {
     /**
      * Set the pattern value.
      *
-     * @param pattern the pattern value to set
+     * @param pattern the pattern value to set.
      * @return the PatternUpdateObject object itself.
      */
     public PatternUpdateObject withPattern(String pattern) {
@@ -55,7 +55,7 @@ public class PatternUpdateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -64,7 +64,7 @@ public class PatternUpdateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the PatternUpdateObject object itself.
      */
     public PatternUpdateObject withName(String name) {
@@ -75,7 +75,7 @@ public class PatternUpdateObject {
     /**
      * Get the isActive value.
      *
-     * @return the isActive value
+     * @return the isActive value.
      */
     public Boolean isActive() {
         return this.isActive;
@@ -84,12 +84,11 @@ public class PatternUpdateObject {
     /**
      * Set the isActive value.
      *
-     * @param isActive the isActive value to set
+     * @param isActive the isActive value to set.
      * @return the PatternUpdateObject object itself.
      */
     public PatternUpdateObject withIsActive(Boolean isActive) {
         this.isActive = isActive;
         return this;
     }
-
 }

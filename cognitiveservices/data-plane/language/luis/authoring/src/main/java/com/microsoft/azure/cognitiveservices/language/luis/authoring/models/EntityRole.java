@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * Entity extractor role.
  */
-public class EntityRole {
+public final class EntityRole {
     /**
      * The entity role ID.
      */
@@ -30,7 +30,7 @@ public class EntityRole {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -39,7 +39,7 @@ public class EntityRole {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the EntityRole object itself.
      */
     public EntityRole withId(UUID id) {
@@ -50,7 +50,7 @@ public class EntityRole {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -59,12 +59,11 @@ public class EntityRole {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the EntityRole object itself.
      */
     public EntityRole withName(String name) {
         this.name = name;
         return this;
     }
-
 }

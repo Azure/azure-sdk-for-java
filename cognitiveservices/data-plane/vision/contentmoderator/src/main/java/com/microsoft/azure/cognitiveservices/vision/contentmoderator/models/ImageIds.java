@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Image Id properties.
  */
-public class ImageIds {
+public final class ImageIds {
     /**
      * Source of the content.
      */
@@ -42,7 +42,7 @@ public class ImageIds {
     /**
      * Get the contentSource value.
      *
-     * @return the contentSource value
+     * @return the contentSource value.
      */
     public String contentSource() {
         return this.contentSource;
@@ -51,7 +51,7 @@ public class ImageIds {
     /**
      * Set the contentSource value.
      *
-     * @param contentSource the contentSource value to set
+     * @param contentSource the contentSource value to set.
      * @return the ImageIds object itself.
      */
     public ImageIds withContentSource(String contentSource) {
@@ -62,7 +62,7 @@ public class ImageIds {
     /**
      * Get the contentIds value.
      *
-     * @return the contentIds value
+     * @return the contentIds value.
      */
     public List<Integer> contentIds() {
         return this.contentIds;
@@ -71,7 +71,7 @@ public class ImageIds {
     /**
      * Set the contentIds value.
      *
-     * @param contentIds the contentIds value to set
+     * @param contentIds the contentIds value to set.
      * @return the ImageIds object itself.
      */
     public ImageIds withContentIds(List<Integer> contentIds) {
@@ -82,7 +82,7 @@ public class ImageIds {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public Status status() {
         return this.status;
@@ -91,7 +91,7 @@ public class ImageIds {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the ImageIds object itself.
      */
     public ImageIds withStatus(Status status) {
@@ -102,7 +102,7 @@ public class ImageIds {
     /**
      * Get the trackingId value.
      *
-     * @return the trackingId value
+     * @return the trackingId value.
      */
     public String trackingId() {
         return this.trackingId;
@@ -111,12 +111,11 @@ public class ImageIds {
     /**
      * Set the trackingId value.
      *
-     * @param trackingId the trackingId value to set
+     * @param trackingId the trackingId value to set.
      * @return the ImageIds object itself.
      */
     public ImageIds withTrackingId(String trackingId) {
         this.trackingId = trackingId;
         return this;
     }
-
 }

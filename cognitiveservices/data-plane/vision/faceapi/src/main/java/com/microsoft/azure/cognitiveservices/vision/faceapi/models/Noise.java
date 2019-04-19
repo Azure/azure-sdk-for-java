@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Properties describing noise level of the image.
  */
-public class Noise {
+public final class Noise {
     /**
      * An enum value indicating level of noise. Possible values include: 'Low',
      * 'Medium', 'High'.
@@ -33,7 +33,7 @@ public class Noise {
     /**
      * Get the noiseLevel value.
      *
-     * @return the noiseLevel value
+     * @return the noiseLevel value.
      */
     public NoiseLevel noiseLevel() {
         return this.noiseLevel;
@@ -42,7 +42,7 @@ public class Noise {
     /**
      * Set the noiseLevel value.
      *
-     * @param noiseLevel the noiseLevel value to set
+     * @param noiseLevel the noiseLevel value to set.
      * @return the Noise object itself.
      */
     public Noise withNoiseLevel(NoiseLevel noiseLevel) {
@@ -53,7 +53,7 @@ public class Noise {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public double value() {
         return this.value;
@@ -62,12 +62,11 @@ public class Noise {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the Noise object itself.
      */
     public Noise withValue(double value) {
         this.value = value;
         return this;
     }
-
 }

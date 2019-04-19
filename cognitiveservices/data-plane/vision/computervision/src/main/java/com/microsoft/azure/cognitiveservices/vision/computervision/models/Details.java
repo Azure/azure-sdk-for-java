@@ -15,16 +15,22 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for Details.
  */
 public enum Details {
-    /** Enum value Celebrities. */
+    /**
+     * Enum value Celebrities.
+     */
     CELEBRITIES("Celebrities"),
 
-    /** Enum value Landmarks. */
+    /**
+     * Enum value Landmarks.
+     */
     LANDMARKS("Landmarks");
 
-    /** The actual serialized value for a Details instance. */
-    private String value;
+    /**
+     * The actual serialized value for a Details instance.
+     */
+    private final String value;
 
-    Details(String value) {
+    private Details(String value) {
         this.value = value;
     }
 

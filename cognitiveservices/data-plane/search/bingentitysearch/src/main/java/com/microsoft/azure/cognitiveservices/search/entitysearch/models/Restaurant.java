@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The Restaurant model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Restaurant.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Restaurant")
-public class Restaurant extends FoodEstablishment {
+public final class Restaurant extends FoodEstablishment {
     /**
      * The acceptsReservations property.
      */
@@ -46,7 +46,7 @@ public class Restaurant extends FoodEstablishment {
     /**
      * Get the acceptsReservations value.
      *
-     * @return the acceptsReservations value
+     * @return the acceptsReservations value.
      */
     public Boolean acceptsReservations() {
         return this.acceptsReservations;
@@ -55,7 +55,7 @@ public class Restaurant extends FoodEstablishment {
     /**
      * Get the reservationUrl value.
      *
-     * @return the reservationUrl value
+     * @return the reservationUrl value.
      */
     public String reservationUrl() {
         return this.reservationUrl;
@@ -64,7 +64,7 @@ public class Restaurant extends FoodEstablishment {
     /**
      * Get the servesCuisine value.
      *
-     * @return the servesCuisine value
+     * @return the servesCuisine value.
      */
     public List<String> servesCuisine() {
         return this.servesCuisine;
@@ -73,10 +73,9 @@ public class Restaurant extends FoodEstablishment {
     /**
      * Get the menuUrl value.
      *
-     * @return the menuUrl value
+     * @return the menuUrl value.
      */
     public String menuUrl() {
         return this.menuUrl;
     }
-
 }

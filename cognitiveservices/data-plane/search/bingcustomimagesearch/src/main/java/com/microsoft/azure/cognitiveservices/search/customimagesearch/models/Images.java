@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.customimagesearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Defines an image answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Images.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Images")
-public class Images extends SearchResultsAnswer {
+public final class Images extends SearchResultsAnswer {
     /**
      * Used as part of deduping. Tells client the next offset that client
      * should use in the next pagination request.
@@ -36,7 +36,7 @@ public class Images extends SearchResultsAnswer {
     /**
      * Get the nextOffset value.
      *
-     * @return the nextOffset value
+     * @return the nextOffset value.
      */
     public Integer nextOffset() {
         return this.nextOffset;
@@ -45,7 +45,7 @@ public class Images extends SearchResultsAnswer {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<ImageObject> value() {
         return this.value;
@@ -54,12 +54,11 @@ public class Images extends SearchResultsAnswer {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the Images object itself.
      */
     public Images withValue(List<ImageObject> value) {
         this.value = value;
         return this;
     }
-
 }

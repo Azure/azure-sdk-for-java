@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Schema items of the body.
  */
-public class CreateReviewBodyItem {
+public final class CreateReviewBodyItem {
     /**
      * Type of the content. Possible values include: 'Image', 'Text'.
      */
@@ -48,7 +48,7 @@ public class CreateReviewBodyItem {
     /**
      * Get the type value.
      *
-     * @return the type value
+     * @return the type value.
      */
     public String type() {
         return this.type;
@@ -57,7 +57,7 @@ public class CreateReviewBodyItem {
     /**
      * Set the type value.
      *
-     * @param type the type value to set
+     * @param type the type value to set.
      * @return the CreateReviewBodyItem object itself.
      */
     public CreateReviewBodyItem withType(String type) {
@@ -68,7 +68,7 @@ public class CreateReviewBodyItem {
     /**
      * Get the content value.
      *
-     * @return the content value
+     * @return the content value.
      */
     public String content() {
         return this.content;
@@ -77,7 +77,7 @@ public class CreateReviewBodyItem {
     /**
      * Set the content value.
      *
-     * @param content the content value to set
+     * @param content the content value to set.
      * @return the CreateReviewBodyItem object itself.
      */
     public CreateReviewBodyItem withContent(String content) {
@@ -88,7 +88,7 @@ public class CreateReviewBodyItem {
     /**
      * Get the contentId value.
      *
-     * @return the contentId value
+     * @return the contentId value.
      */
     public String contentId() {
         return this.contentId;
@@ -97,7 +97,7 @@ public class CreateReviewBodyItem {
     /**
      * Set the contentId value.
      *
-     * @param contentId the contentId value to set
+     * @param contentId the contentId value to set.
      * @return the CreateReviewBodyItem object itself.
      */
     public CreateReviewBodyItem withContentId(String contentId) {
@@ -108,7 +108,7 @@ public class CreateReviewBodyItem {
     /**
      * Get the callbackEndpoint value.
      *
-     * @return the callbackEndpoint value
+     * @return the callbackEndpoint value.
      */
     public String callbackEndpoint() {
         return this.callbackEndpoint;
@@ -117,7 +117,7 @@ public class CreateReviewBodyItem {
     /**
      * Set the callbackEndpoint value.
      *
-     * @param callbackEndpoint the callbackEndpoint value to set
+     * @param callbackEndpoint the callbackEndpoint value to set.
      * @return the CreateReviewBodyItem object itself.
      */
     public CreateReviewBodyItem withCallbackEndpoint(String callbackEndpoint) {
@@ -128,7 +128,7 @@ public class CreateReviewBodyItem {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public List<CreateReviewBodyItemMetadataItem> metadata() {
         return this.metadata;
@@ -137,12 +137,11 @@ public class CreateReviewBodyItem {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the CreateReviewBodyItem object itself.
      */
     public CreateReviewBodyItem withMetadata(List<CreateReviewBodyItemMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
-
 }

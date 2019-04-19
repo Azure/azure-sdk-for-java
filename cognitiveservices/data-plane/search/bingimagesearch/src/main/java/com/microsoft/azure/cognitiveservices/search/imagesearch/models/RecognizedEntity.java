@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a recognized entity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = RecognizedEntity.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("RecognizedEntity")
-public class RecognizedEntity extends Response {
+public final class RecognizedEntity extends Response {
     /**
      * The entity that was recognized. The following are the possible entity
      * objects: Person.
@@ -36,7 +36,7 @@ public class RecognizedEntity extends Response {
     /**
      * Get the entity value.
      *
-     * @return the entity value
+     * @return the entity value.
      */
     public Thing entity() {
         return this.entity;
@@ -45,10 +45,9 @@ public class RecognizedEntity extends Response {
     /**
      * Get the matchConfidence value.
      *
-     * @return the matchConfidence value
+     * @return the matchConfidence value.
      */
     public Double matchConfidence() {
         return this.matchConfidence;
     }
-
 }

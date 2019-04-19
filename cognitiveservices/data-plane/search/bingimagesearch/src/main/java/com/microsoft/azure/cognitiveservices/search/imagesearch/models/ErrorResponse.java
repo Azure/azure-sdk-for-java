@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The top-level response that represents a failed request.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ErrorResponse.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ErrorResponse")
-public class ErrorResponse extends Response {
+public final class ErrorResponse extends Response {
     /**
      * A list of errors that describe the reasons why the request failed.
      */
@@ -28,7 +28,7 @@ public class ErrorResponse extends Response {
     /**
      * Get the errors value.
      *
-     * @return the errors value
+     * @return the errors value.
      */
     public List<Error> errors() {
         return this.errors;
@@ -37,12 +37,11 @@ public class ErrorResponse extends Response {
     /**
      * Set the errors value.
      *
-     * @param errors the errors value to set
+     * @param errors the errors value to set.
      * @return the ErrorResponse object itself.
      */
     public ErrorResponse withErrors(List<Error> errors) {
         this.errors = errors;
         return this;
     }
-
 }

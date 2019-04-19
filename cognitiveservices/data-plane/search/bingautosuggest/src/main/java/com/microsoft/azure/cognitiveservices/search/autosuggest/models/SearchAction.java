@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The SearchAction model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SearchAction.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("SearchAction")
-public class SearchAction extends Action {
+public final class SearchAction extends Action {
     /**
      * The displayText property.
      */
@@ -40,7 +40,7 @@ public class SearchAction extends Action {
     /**
      * Get the displayText value.
      *
-     * @return the displayText value
+     * @return the displayText value.
      */
     public String displayText() {
         return this.displayText;
@@ -49,7 +49,7 @@ public class SearchAction extends Action {
     /**
      * Get the query value.
      *
-     * @return the query value
+     * @return the query value.
      */
     public String query() {
         return this.query;
@@ -58,10 +58,9 @@ public class SearchAction extends Action {
     /**
      * Get the searchKind value.
      *
-     * @return the searchKind value
+     * @return the searchKind value.
      */
     public SearchKind searchKind() {
         return this.searchKind;
     }
-
 }

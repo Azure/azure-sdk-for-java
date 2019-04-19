@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Defines a date and time for a geographical location.
  */
-public class TimeZoneTimeZoneInformation {
+public final class TimeZoneTimeZoneInformation {
     /**
      * The name of the geographical location.For example, County; City; City,
      * State; City, State, Country; or Time Zone.
@@ -36,7 +36,7 @@ public class TimeZoneTimeZoneInformation {
     /**
      * Get the location value.
      *
-     * @return the location value
+     * @return the location value.
      */
     public String location() {
         return this.location;
@@ -45,7 +45,7 @@ public class TimeZoneTimeZoneInformation {
     /**
      * Set the location value.
      *
-     * @param location the location value to set
+     * @param location the location value to set.
      * @return the TimeZoneTimeZoneInformation object itself.
      */
     public TimeZoneTimeZoneInformation withLocation(String location) {
@@ -56,7 +56,7 @@ public class TimeZoneTimeZoneInformation {
     /**
      * Get the time value.
      *
-     * @return the time value
+     * @return the time value.
      */
     public String time() {
         return this.time;
@@ -65,7 +65,7 @@ public class TimeZoneTimeZoneInformation {
     /**
      * Set the time value.
      *
-     * @param time the time value to set
+     * @param time the time value to set.
      * @return the TimeZoneTimeZoneInformation object itself.
      */
     public TimeZoneTimeZoneInformation withTime(String time) {
@@ -76,7 +76,7 @@ public class TimeZoneTimeZoneInformation {
     /**
      * Get the utcOffset value.
      *
-     * @return the utcOffset value
+     * @return the utcOffset value.
      */
     public String utcOffset() {
         return this.utcOffset;
@@ -85,12 +85,11 @@ public class TimeZoneTimeZoneInformation {
     /**
      * Set the utcOffset value.
      *
-     * @param utcOffset the utcOffset value to set
+     * @param utcOffset the utcOffset value to set.
      * @return the TimeZoneTimeZoneInformation object itself.
      */
     public TimeZoneTimeZoneInformation withUtcOffset(String utcOffset) {
         this.utcOffset = utcOffset;
         return this;
     }
-
 }

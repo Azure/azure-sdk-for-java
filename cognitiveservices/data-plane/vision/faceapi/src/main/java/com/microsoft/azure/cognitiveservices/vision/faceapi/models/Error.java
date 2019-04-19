@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Error body.
  */
-public class Error {
+public final class Error {
     /**
      * The code property.
      */
@@ -29,7 +29,7 @@ public class Error {
     /**
      * Get the code value.
      *
-     * @return the code value
+     * @return the code value.
      */
     public String code() {
         return this.code;
@@ -38,7 +38,7 @@ public class Error {
     /**
      * Set the code value.
      *
-     * @param code the code value to set
+     * @param code the code value to set.
      * @return the Error object itself.
      */
     public Error withCode(String code) {
@@ -49,7 +49,7 @@ public class Error {
     /**
      * Get the message value.
      *
-     * @return the message value
+     * @return the message value.
      */
     public String message() {
         return this.message;
@@ -58,12 +58,11 @@ public class Error {
     /**
      * Set the message value.
      *
-     * @param message the message value to set
+     * @param message the message value to set.
      * @return the Error object itself.
      */
     public Error withMessage(String message) {
         this.message = message;
         return this;
     }
-
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Detect language result.
  */
-public class DetectedLanguage {
+public final class DetectedLanguage {
     /**
      * The detected language.
      */
@@ -35,7 +35,7 @@ public class DetectedLanguage {
     /**
      * Get the detectedLanguage value.
      *
-     * @return the detectedLanguage value
+     * @return the detectedLanguage value.
      */
     public String detectedLanguage() {
         return this.detectedLanguage;
@@ -44,7 +44,7 @@ public class DetectedLanguage {
     /**
      * Set the detectedLanguage value.
      *
-     * @param detectedLanguage the detectedLanguage value to set
+     * @param detectedLanguage the detectedLanguage value to set.
      * @return the DetectedLanguage object itself.
      */
     public DetectedLanguage withDetectedLanguage(String detectedLanguage) {
@@ -55,7 +55,7 @@ public class DetectedLanguage {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public Status status() {
         return this.status;
@@ -64,7 +64,7 @@ public class DetectedLanguage {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the DetectedLanguage object itself.
      */
     public DetectedLanguage withStatus(Status status) {
@@ -75,7 +75,7 @@ public class DetectedLanguage {
     /**
      * Get the trackingId value.
      *
-     * @return the trackingId value
+     * @return the trackingId value.
      */
     public String trackingId() {
         return this.trackingId;
@@ -84,12 +84,11 @@ public class DetectedLanguage {
     /**
      * Set the trackingId value.
      *
-     * @param trackingId the trackingId value to set
+     * @param trackingId the trackingId value to set.
      * @return the DetectedLanguage object itself.
      */
     public DetectedLanguage withTrackingId(String trackingId) {
         this.trackingId = trackingId;
         return this;
     }
-
 }

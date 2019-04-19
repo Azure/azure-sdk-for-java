@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The PrebuiltDomainObject model.
  */
-public class PrebuiltDomainObject {
+public final class PrebuiltDomainObject {
     /**
      * The domainName property.
      */
@@ -29,7 +29,7 @@ public class PrebuiltDomainObject {
     /**
      * Get the domainName value.
      *
-     * @return the domainName value
+     * @return the domainName value.
      */
     public String domainName() {
         return this.domainName;
@@ -38,7 +38,7 @@ public class PrebuiltDomainObject {
     /**
      * Set the domainName value.
      *
-     * @param domainName the domainName value to set
+     * @param domainName the domainName value to set.
      * @return the PrebuiltDomainObject object itself.
      */
     public PrebuiltDomainObject withDomainName(String domainName) {
@@ -49,7 +49,7 @@ public class PrebuiltDomainObject {
     /**
      * Get the modelName value.
      *
-     * @return the modelName value
+     * @return the modelName value.
      */
     public String modelName() {
         return this.modelName;
@@ -58,12 +58,11 @@ public class PrebuiltDomainObject {
     /**
      * Set the modelName value.
      *
-     * @param modelName the modelName value to set
+     * @param modelName the modelName value to set.
      * @return the PrebuiltDomainObject object itself.
      */
     public PrebuiltDomainObject withModelName(String modelName) {
         this.modelName = modelName;
         return this;
     }
-
 }

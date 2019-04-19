@@ -8,18 +8,24 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * Detected Face object.
  */
-public class DetectedFace {
+public final class DetectedFace {
     /**
      * The faceId property.
      */
     @JsonProperty(value = "faceId")
     private UUID faceId;
+
+    /**
+     * Possible values include: 'recognition_01', 'recognition_02'.
+     */
+    @JsonProperty(value = "recognitionModel")
+    private RecognitionModel recognitionModel;
 
     /**
      * The faceRectangle property.
@@ -42,7 +48,7 @@ public class DetectedFace {
     /**
      * Get the faceId value.
      *
-     * @return the faceId value
+     * @return the faceId value.
      */
     public UUID faceId() {
         return this.faceId;
@@ -51,7 +57,7 @@ public class DetectedFace {
     /**
      * Set the faceId value.
      *
-     * @param faceId the faceId value to set
+     * @param faceId the faceId value to set.
      * @return the DetectedFace object itself.
      */
     public DetectedFace withFaceId(UUID faceId) {
@@ -60,9 +66,29 @@ public class DetectedFace {
     }
 
     /**
+     * Get the recognitionModel value.
+     *
+     * @return the recognitionModel value.
+     */
+    public RecognitionModel recognitionModel() {
+        return this.recognitionModel;
+    }
+
+    /**
+     * Set the recognitionModel value.
+     *
+     * @param recognitionModel the recognitionModel value to set.
+     * @return the DetectedFace object itself.
+     */
+    public DetectedFace withRecognitionModel(RecognitionModel recognitionModel) {
+        this.recognitionModel = recognitionModel;
+        return this;
+    }
+
+    /**
      * Get the faceRectangle value.
      *
-     * @return the faceRectangle value
+     * @return the faceRectangle value.
      */
     public FaceRectangle faceRectangle() {
         return this.faceRectangle;
@@ -71,7 +97,7 @@ public class DetectedFace {
     /**
      * Set the faceRectangle value.
      *
-     * @param faceRectangle the faceRectangle value to set
+     * @param faceRectangle the faceRectangle value to set.
      * @return the DetectedFace object itself.
      */
     public DetectedFace withFaceRectangle(FaceRectangle faceRectangle) {
@@ -82,7 +108,7 @@ public class DetectedFace {
     /**
      * Get the faceLandmarks value.
      *
-     * @return the faceLandmarks value
+     * @return the faceLandmarks value.
      */
     public FaceLandmarks faceLandmarks() {
         return this.faceLandmarks;
@@ -91,7 +117,7 @@ public class DetectedFace {
     /**
      * Set the faceLandmarks value.
      *
-     * @param faceLandmarks the faceLandmarks value to set
+     * @param faceLandmarks the faceLandmarks value to set.
      * @return the DetectedFace object itself.
      */
     public DetectedFace withFaceLandmarks(FaceLandmarks faceLandmarks) {
@@ -102,7 +128,7 @@ public class DetectedFace {
     /**
      * Get the faceAttributes value.
      *
-     * @return the faceAttributes value
+     * @return the faceAttributes value.
      */
     public FaceAttributes faceAttributes() {
         return this.faceAttributes;
@@ -111,12 +137,11 @@ public class DetectedFace {
     /**
      * Set the faceAttributes value.
      *
-     * @param faceAttributes the faceAttributes value to set
+     * @param faceAttributes the faceAttributes value to set.
      * @return the DetectedFace object itself.
      */
     public DetectedFace withFaceAttributes(FaceAttributes faceAttributes) {
         this.faceAttributes = faceAttributes;
         return this;
     }
-
 }

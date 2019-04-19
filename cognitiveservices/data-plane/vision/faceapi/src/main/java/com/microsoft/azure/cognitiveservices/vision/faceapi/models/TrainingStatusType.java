@@ -15,22 +15,32 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for TrainingStatusType.
  */
 public enum TrainingStatusType {
-    /** Enum value nonstarted. */
+    /**
+     * Enum value nonstarted.
+     */
     NONSTARTED("nonstarted"),
 
-    /** Enum value running. */
+    /**
+     * Enum value running.
+     */
     RUNNING("running"),
 
-    /** Enum value succeeded. */
+    /**
+     * Enum value succeeded.
+     */
     SUCCEEDED("succeeded"),
 
-    /** Enum value failed. */
+    /**
+     * Enum value failed.
+     */
     FAILED("failed");
 
-    /** The actual serialized value for a TrainingStatusType instance. */
-    private String value;
+    /**
+     * The actual serialized value for a TrainingStatusType instance.
+     */
+    private final String value;
 
-    TrainingStatusType(String value) {
+    private TrainingStatusType(String value) {
         this.value = value;
     }
 

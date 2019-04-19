@@ -11,11 +11,11 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Model object for creating a regex entity model.
+ * Model object for creating a regular expression entity model.
  */
-public class RegexModelCreateObject {
+public final class RegexModelCreateObject {
     /**
-     * The regex entity pattern.
+     * The regular expression entity pattern.
      */
     @JsonProperty(value = "regexPattern")
     private String regexPattern;
@@ -29,7 +29,7 @@ public class RegexModelCreateObject {
     /**
      * Get the regexPattern value.
      *
-     * @return the regexPattern value
+     * @return the regexPattern value.
      */
     public String regexPattern() {
         return this.regexPattern;
@@ -38,7 +38,7 @@ public class RegexModelCreateObject {
     /**
      * Set the regexPattern value.
      *
-     * @param regexPattern the regexPattern value to set
+     * @param regexPattern the regexPattern value to set.
      * @return the RegexModelCreateObject object itself.
      */
     public RegexModelCreateObject withRegexPattern(String regexPattern) {
@@ -49,7 +49,7 @@ public class RegexModelCreateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -58,12 +58,11 @@ public class RegexModelCreateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the RegexModelCreateObject object itself.
      */
     public RegexModelCreateObject withName(String name) {
         this.name = name;
         return this;
     }
-
 }

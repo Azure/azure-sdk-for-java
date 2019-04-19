@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * The MediaObject model.
@@ -50,7 +50,7 @@ public class MediaObject extends CreativeWork {
     /**
      * Get the contentUrl value.
      *
-     * @return the contentUrl value
+     * @return the contentUrl value.
      */
     public String contentUrl() {
         return this.contentUrl;
@@ -59,7 +59,7 @@ public class MediaObject extends CreativeWork {
     /**
      * Get the hostPageUrl value.
      *
-     * @return the hostPageUrl value
+     * @return the hostPageUrl value.
      */
     public String hostPageUrl() {
         return this.hostPageUrl;
@@ -68,7 +68,7 @@ public class MediaObject extends CreativeWork {
     /**
      * Get the width value.
      *
-     * @return the width value
+     * @return the width value.
      */
     public Integer width() {
         return this.width;
@@ -77,10 +77,9 @@ public class MediaObject extends CreativeWork {
     /**
      * Get the height value.
      *
-     * @return the height value
+     * @return the height value.
      */
     public Integer height() {
         return this.height;
     }
-
 }

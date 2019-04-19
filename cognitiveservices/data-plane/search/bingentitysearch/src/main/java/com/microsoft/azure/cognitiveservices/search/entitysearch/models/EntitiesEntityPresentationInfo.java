@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Defines additional information about an entity such as type hints.
  */
-public class EntitiesEntityPresentationInfo {
+public final class EntitiesEntityPresentationInfo {
     /**
      * The supported scenario. Possible values include: 'DominantEntity',
      * 'DisambiguationItem', 'ListItem'.
@@ -41,7 +41,7 @@ public class EntitiesEntityPresentationInfo {
     /**
      * Get the entityScenario value.
      *
-     * @return the entityScenario value
+     * @return the entityScenario value.
      */
     public EntityScenario entityScenario() {
         return this.entityScenario;
@@ -50,7 +50,7 @@ public class EntitiesEntityPresentationInfo {
     /**
      * Set the entityScenario value.
      *
-     * @param entityScenario the entityScenario value to set
+     * @param entityScenario the entityScenario value to set.
      * @return the EntitiesEntityPresentationInfo object itself.
      */
     public EntitiesEntityPresentationInfo withEntityScenario(EntityScenario entityScenario) {
@@ -61,7 +61,7 @@ public class EntitiesEntityPresentationInfo {
     /**
      * Get the entityTypeHints value.
      *
-     * @return the entityTypeHints value
+     * @return the entityTypeHints value.
      */
     public List<EntityType> entityTypeHints() {
         return this.entityTypeHints;
@@ -70,10 +70,9 @@ public class EntitiesEntityPresentationInfo {
     /**
      * Get the entityTypeDisplayHint value.
      *
-     * @return the entityTypeDisplayHint value
+     * @return the entityTypeDisplayHint value.
      */
     public String entityTypeDisplayHint() {
         return this.entityTypeDisplayHint;
     }
-
 }

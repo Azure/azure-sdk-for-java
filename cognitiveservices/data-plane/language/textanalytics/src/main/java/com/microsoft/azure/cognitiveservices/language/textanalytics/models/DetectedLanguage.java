@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The DetectedLanguage model.
  */
-public class DetectedLanguage {
+public final class DetectedLanguage {
     /**
      * Long name of a detected language (e.g. English, French).
      */
@@ -37,7 +37,7 @@ public class DetectedLanguage {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -46,7 +46,7 @@ public class DetectedLanguage {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the DetectedLanguage object itself.
      */
     public DetectedLanguage withName(String name) {
@@ -57,7 +57,7 @@ public class DetectedLanguage {
     /**
      * Get the iso6391Name value.
      *
-     * @return the iso6391Name value
+     * @return the iso6391Name value.
      */
     public String iso6391Name() {
         return this.iso6391Name;
@@ -66,7 +66,7 @@ public class DetectedLanguage {
     /**
      * Set the iso6391Name value.
      *
-     * @param iso6391Name the iso6391Name value to set
+     * @param iso6391Name the iso6391Name value to set.
      * @return the DetectedLanguage object itself.
      */
     public DetectedLanguage withIso6391Name(String iso6391Name) {
@@ -77,7 +77,7 @@ public class DetectedLanguage {
     /**
      * Get the score value.
      *
-     * @return the score value
+     * @return the score value.
      */
     public Double score() {
         return this.score;
@@ -86,12 +86,11 @@ public class DetectedLanguage {
     /**
      * Set the score value.
      *
-     * @param score the score value to set
+     * @param score the score value to set.
      * @return the DetectedLanguage object itself.
      */
     public DetectedLanguage withScore(Double score) {
         this.score = score;
         return this;
     }
-
 }

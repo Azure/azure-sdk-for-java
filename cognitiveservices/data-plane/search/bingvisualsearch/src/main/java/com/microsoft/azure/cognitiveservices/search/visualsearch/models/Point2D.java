@@ -13,11 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The Point2D model.
+ * Defines a 2D point with X and Y coordinates.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Point2D.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Point2D")
-public class Point2D extends StructuredValue {
+public final class Point2D extends StructuredValue {
     /**
      * The x-coordinate of the point.
      */
@@ -33,7 +33,7 @@ public class Point2D extends StructuredValue {
     /**
      * Get the x value.
      *
-     * @return the x value
+     * @return the x value.
      */
     public double x() {
         return this.x;
@@ -42,7 +42,7 @@ public class Point2D extends StructuredValue {
     /**
      * Set the x value.
      *
-     * @param x the x value to set
+     * @param x the x value to set.
      * @return the Point2D object itself.
      */
     public Point2D withX(double x) {
@@ -53,7 +53,7 @@ public class Point2D extends StructuredValue {
     /**
      * Get the y value.
      *
-     * @return the y value
+     * @return the y value.
      */
     public double y() {
         return this.y;
@@ -62,12 +62,11 @@ public class Point2D extends StructuredValue {
     /**
      * Set the y value.
      *
-     * @param y the y value to set
+     * @param y the y value to set.
      * @return the Point2D object itself.
      */
     public Point2D withY(double y) {
         this.y = y;
         return this;
     }
-
 }

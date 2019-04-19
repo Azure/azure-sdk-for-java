@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * The application publish settings.
  */
-public class PublishSettings {
+public final class PublishSettings {
     /**
      * The application ID.
      */
@@ -22,21 +22,20 @@ public class PublishSettings {
     private UUID id;
 
     /**
-     * Setting sentiment analysis as true returns the Sentiment of the input
-     * utterance along with the resopnse.
+     * Setting sentiment analysis as true returns the sentiment of the input
+     * utterance along with the response.
      */
     @JsonProperty(value = "sentimentAnalysis", required = true)
     private boolean isSentimentAnalysisEnabled;
 
     /**
-     * Setting speech as public enables speech priming in your app.
+     * Enables speech priming in your app.
      */
     @JsonProperty(value = "speech", required = true)
     private boolean isSpeechEnabled;
 
     /**
-     * Setting spell checker as public enables spell checking the input
-     * utterance.
+     * Enables spell checking of the utterance.
      */
     @JsonProperty(value = "spellChecker", required = true)
     private boolean isSpellCheckerEnabled;
@@ -44,7 +43,7 @@ public class PublishSettings {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -53,7 +52,7 @@ public class PublishSettings {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the PublishSettings object itself.
      */
     public PublishSettings withId(UUID id) {
@@ -64,7 +63,7 @@ public class PublishSettings {
     /**
      * Get the isSentimentAnalysisEnabled value.
      *
-     * @return the isSentimentAnalysisEnabled value
+     * @return the isSentimentAnalysisEnabled value.
      */
     public boolean isSentimentAnalysisEnabled() {
         return this.isSentimentAnalysisEnabled;
@@ -73,7 +72,8 @@ public class PublishSettings {
     /**
      * Set the isSentimentAnalysisEnabled value.
      *
-     * @param isSentimentAnalysisEnabled the isSentimentAnalysisEnabled value to set
+     * @param isSentimentAnalysisEnabled the isSentimentAnalysisEnabled value
+     * to set.
      * @return the PublishSettings object itself.
      */
     public PublishSettings withIsSentimentAnalysisEnabled(boolean isSentimentAnalysisEnabled) {
@@ -84,7 +84,7 @@ public class PublishSettings {
     /**
      * Get the isSpeechEnabled value.
      *
-     * @return the isSpeechEnabled value
+     * @return the isSpeechEnabled value.
      */
     public boolean isSpeechEnabled() {
         return this.isSpeechEnabled;
@@ -93,7 +93,7 @@ public class PublishSettings {
     /**
      * Set the isSpeechEnabled value.
      *
-     * @param isSpeechEnabled the isSpeechEnabled value to set
+     * @param isSpeechEnabled the isSpeechEnabled value to set.
      * @return the PublishSettings object itself.
      */
     public PublishSettings withIsSpeechEnabled(boolean isSpeechEnabled) {
@@ -104,7 +104,7 @@ public class PublishSettings {
     /**
      * Get the isSpellCheckerEnabled value.
      *
-     * @return the isSpellCheckerEnabled value
+     * @return the isSpellCheckerEnabled value.
      */
     public boolean isSpellCheckerEnabled() {
         return this.isSpellCheckerEnabled;
@@ -113,12 +113,11 @@ public class PublishSettings {
     /**
      * Set the isSpellCheckerEnabled value.
      *
-     * @param isSpellCheckerEnabled the isSpellCheckerEnabled value to set
+     * @param isSpellCheckerEnabled the isSpellCheckerEnabled value to set.
      * @return the PublishSettings object itself.
      */
     public PublishSettings withIsSpellCheckerEnabled(boolean isSpellCheckerEnabled) {
         this.isSpellCheckerEnabled = isSpellCheckerEnabled;
         return this;
     }
-
 }

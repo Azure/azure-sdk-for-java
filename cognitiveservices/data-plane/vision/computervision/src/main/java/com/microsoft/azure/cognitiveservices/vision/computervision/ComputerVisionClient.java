@@ -8,33 +8,37 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision;
 
-import com.microsoft.azure.AzureClient;
-import com.microsoft.rest.RestClient;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.http.rest.StreamResponse;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AreaOfInterestResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.BatchReadFileInStreamResponse;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.BatchReadFileResponse;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorException;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.Details;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DetectResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DomainModelResults;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageAnalysis;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageDescription;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ListModelsResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrLanguages;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ReadOperationResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextInStreamResponse;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextResponse;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextOperationResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextRecognitionMode;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.VisualFeatureTypes;
+import java.nio.ByteBuffer;
+import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
  * The interface for ComputerVisionClient class.
  */
 public interface ComputerVisionClient {
-    /**
-     * Gets the REST client.
-     *
-     * @return the {@link RestClient} object.
-    */
-    RestClient restClient();
-
-    /**
-     * Gets the {@link AzureClient} used for long running operations.
-     * @return the azure client;
-     */
-    AzureClient getAzureClient();
-
-    /**
-     * Gets the User-Agent header for the client.
-     *
-     * @return the user agent string.
-     */
-    String userAgent();
-
     /**
      * Gets Supported Cognitive Services endpoints.
      *
@@ -46,59 +50,1353 @@ public interface ComputerVisionClient {
      * Sets Supported Cognitive Services endpoints.
      *
      * @param endpoint the endpoint value.
-     * @return the service client itself
+     * @return the service client itself.
      */
     ComputerVisionClient withEndpoint(String endpoint);
 
     /**
-     * Gets Gets or sets the preferred language for the response..
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @return the acceptLanguage value.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImageAnalysis object if successful.
      */
-    String acceptLanguage();
+    ImageAnalysis analyzeImage(@NonNull String url);
 
     /**
-     * Sets Gets or sets the preferred language for the response..
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param acceptLanguage the acceptLanguage value.
-     * @return the service client itself
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ComputerVisionClient withAcceptLanguage(String acceptLanguage);
+    Mono<SimpleResponse<ImageAnalysis>> analyzeImageWithRestResponseAsync(@NonNull String url);
 
     /**
-     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30..
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @return the longRunningOperationRetryTimeout value.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    int longRunningOperationRetryTimeout();
+    Mono<ImageAnalysis> analyzeImageAsync(@NonNull String url);
 
     /**
-     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30..
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
-     * @return the service client itself
+     * @param url Publicly reachable URL of an image.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English. Brands - detects various brands within an image, including the approximate location. The Brands argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImageAnalysis object if successful.
      */
-    ComputerVisionClient withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
+    ImageAnalysis analyzeImage(@NonNull String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
 
     /**
-     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true..
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @return the generateClientRequestId value.
+     * @param url Publicly reachable URL of an image.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English. Brands - detects various brands within an image, including the approximate location. The Brands argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    boolean generateClientRequestId();
+    Mono<SimpleResponse<ImageAnalysis>> analyzeImageWithRestResponseAsync(@NonNull String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
 
     /**
-     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true..
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param generateClientRequestId the generateClientRequestId value.
-     * @return the service client itself
+     * @param url Publicly reachable URL of an image.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English. Brands - detects various brands within an image, including the approximate location. The Brands argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ComputerVisionClient withGenerateClientRequestId(boolean generateClientRequestId);
+    Mono<ImageAnalysis> analyzeImageAsync(@NonNull String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
 
     /**
-     * Gets the ComputerVision object to access its operations.
-     * @return the ComputerVision object.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImageDescription object if successful.
      */
-    ComputerVision computerVision();
+    ImageDescription describeImage(@NonNull String url);
 
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<ImageDescription>> describeImageWithRestResponseAsync(@NonNull String url);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<ImageDescription> describeImageAsync(@NonNull String url);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImageDescription object if successful.
+     */
+    ImageDescription describeImage(@NonNull String url, Integer maxCandidates, String language);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<ImageDescription>> describeImageWithRestResponseAsync(@NonNull String url, Integer maxCandidates, String language);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<ImageDescription> describeImageAsync(@NonNull String url, Integer maxCandidates, String language);
+
+    /**
+     * Performs object detection on the specified image.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the DetectResult object if successful.
+     */
+    DetectResult detectObjects(@NonNull String url);
+
+    /**
+     * Performs object detection on the specified image.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<DetectResult>> detectObjectsWithRestResponseAsync(@NonNull String url);
+
+    /**
+     * Performs object detection on the specified image.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<DetectResult> detectObjectsAsync(@NonNull String url);
+
+    /**
+     * This operation returns the list of domain-specific models that are supported by the Computer Vision API. Currently, the API supports following domain-specific models: celebrity recognizer, landmark recognizer.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ListModelsResult object if successful.
+     */
+    ListModelsResult listModels();
+
+    /**
+     * This operation returns the list of domain-specific models that are supported by the Computer Vision API. Currently, the API supports following domain-specific models: celebrity recognizer, landmark recognizer.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<ListModelsResult>> listModelsWithRestResponseAsync();
+
+    /**
+     * This operation returns the list of domain-specific models that are supported by the Computer Vision API. Currently, the API supports following domain-specific models: celebrity recognizer, landmark recognizer.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<ListModelsResult> listModelsAsync();
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the DomainModelResults object if successful.
+     */
+    DomainModelResults analyzeImageByDomain(@NonNull String model, @NonNull String url);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainWithRestResponseAsync(@NonNull String model, @NonNull String url);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<DomainModelResults> analyzeImageByDomainAsync(@NonNull String model, @NonNull String url);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param url Publicly reachable URL of an image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the DomainModelResults object if successful.
+     */
+    DomainModelResults analyzeImageByDomain(@NonNull String model, @NonNull String url, String language);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param url Publicly reachable URL of an image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainWithRestResponseAsync(@NonNull String model, @NonNull String url, String language);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param url Publicly reachable URL of an image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<DomainModelResults> analyzeImageByDomainAsync(@NonNull String model, @NonNull String url, String language);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OcrResult object if successful.
+     */
+    OcrResult recognizePrintedText(@NonNull boolean detectOrientation, @NonNull String url);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OcrResult>> recognizePrintedTextWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull String url);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OcrResult> recognizePrintedTextAsync(@NonNull boolean detectOrientation, @NonNull String url);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OcrResult object if successful.
+     */
+    OcrResult recognizePrintedText(@NonNull boolean detectOrientation, @NonNull String url, OcrLanguages language);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OcrResult>> recognizePrintedTextWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull String url, OcrLanguages language);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OcrResult> recognizePrintedTextAsync(@NonNull boolean detectOrientation, @NonNull String url, OcrLanguages language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the TagResult object if successful.
+     */
+    TagResult tagImage(@NonNull String url);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<TagResult>> tagImageWithRestResponseAsync(@NonNull String url);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<TagResult> tagImageAsync(@NonNull String url);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the TagResult object if successful.
+     */
+    TagResult tagImage(@NonNull String url, String language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<TagResult>> tagImageWithRestResponseAsync(@NonNull String url, String language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<TagResult> tagImageAsync(@NonNull String url, String language);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     */
+    Flux<ByteBuffer> generateThumbnail(@NonNull int width, @NonNull int height, @NonNull String url);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<StreamResponse> generateThumbnailWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull String url);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Flux<ByteBuffer>> generateThumbnailAsync(@NonNull int width, @NonNull int height, @NonNull String url);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     */
+    Flux<ByteBuffer> generateThumbnail(@NonNull int width, @NonNull int height, @NonNull String url, Boolean smartCropping);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<StreamResponse> generateThumbnailWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull String url, Boolean smartCropping);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Flux<ByteBuffer>> generateThumbnailAsync(@NonNull int width, @NonNull int height, @NonNull String url, Boolean smartCropping);
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+     * A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the AreaOfInterestResult object if successful.
+     */
+    AreaOfInterestResult getAreaOfInterest(@NonNull String url);
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+     * A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<AreaOfInterestResult>> getAreaOfInterestWithRestResponseAsync(@NonNull String url);
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+     * A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<AreaOfInterestResult> getAreaOfInterestAsync(@NonNull String url);
+
+    /**
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void recognizeText(@NonNull TextRecognitionMode mode, @NonNull String url);
+
+    /**
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<RecognizeTextResponse> recognizeTextWithRestResponseAsync(@NonNull TextRecognitionMode mode, @NonNull String url);
+
+    /**
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Void> recognizeTextAsync(@NonNull TextRecognitionMode mode, @NonNull String url);
+
+    /**
+     * This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
+     *
+     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the TextOperationResult object if successful.
+     */
+    TextOperationResult getTextOperationResult(@NonNull String operationId);
+
+    /**
+     * This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
+     *
+     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<TextOperationResult>> getTextOperationResultWithRestResponseAsync(@NonNull String operationId);
+
+    /**
+     * This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
+     *
+     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<TextOperationResult> getTextOperationResultAsync(@NonNull String operationId);
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void batchReadFile(@NonNull TextRecognitionMode mode, @NonNull String url);
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<BatchReadFileResponse> batchReadFileWithRestResponseAsync(@NonNull TextRecognitionMode mode, @NonNull String url);
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Void> batchReadFileAsync(@NonNull TextRecognitionMode mode, @NonNull String url);
+
+    /**
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+     *
+     * @param operationId Id of read operation returned in the response of the "Batch Read File" interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ReadOperationResult object if successful.
+     */
+    ReadOperationResult getReadOperationResult(@NonNull String operationId);
+
+    /**
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+     *
+     * @param operationId Id of read operation returned in the response of the "Batch Read File" interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<ReadOperationResult>> getReadOperationResultWithRestResponseAsync(@NonNull String operationId);
+
+    /**
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+     *
+     * @param operationId Id of read operation returned in the response of the "Batch Read File" interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<ReadOperationResult> getReadOperationResultAsync(@NonNull String operationId);
+
+    /**
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImageAnalysis object if successful.
+     */
+    ImageAnalysis analyzeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<ImageAnalysis> analyzeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English. Brands - detects various brands within an image, including the approximate location. The Brands argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImageAnalysis object if successful.
+     */
+    ImageAnalysis analyzeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
+
+    /**
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English. Brands - detects various brands within an image, including the approximate location. The Brands argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<ImageAnalysis>> analyzeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
+
+    /**
+     * This operation extracts a rich set of visual features based on the image content.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English. Brands - detects various brands within an image, including the approximate location. The Brands argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<ImageAnalysis> analyzeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+     * A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the AreaOfInterestResult object if successful.
+     */
+    AreaOfInterestResult getAreaOfInterestInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+     * A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<AreaOfInterestResult>> getAreaOfInterestInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+     * A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<AreaOfInterestResult> getAreaOfInterestInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImageDescription object if successful.
+     */
+    ImageDescription describeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<ImageDescription>> describeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<ImageDescription> describeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ImageDescription object if successful.
+     */
+    ImageDescription describeImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Integer maxCandidates, String language);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<ImageDescription>> describeImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Integer maxCandidates, String language);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<ImageDescription> describeImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Integer maxCandidates, String language);
+
+    /**
+     * Performs object detection on the specified image.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the DetectResult object if successful.
+     */
+    DetectResult detectObjectsInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * Performs object detection on the specified image.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<DetectResult>> detectObjectsInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * Performs object detection on the specified image.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<DetectResult> detectObjectsInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     */
+    Flux<ByteBuffer> generateThumbnailInStream(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<StreamResponse> generateThumbnailInStreamWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Flux<ByteBuffer>> generateThumbnailInStreamAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Flux&lt;ByteBuffer&gt; object if successful.
+     */
+    Flux<ByteBuffer> generateThumbnailInStream(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean smartCropping);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<StreamResponse> generateThumbnailInStreamWithRestResponseAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean smartCropping);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     * A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Flux<ByteBuffer>> generateThumbnailInStreamAsync(@NonNull int width, @NonNull int height, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, Boolean smartCropping);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the DomainModelResults object if successful.
+     */
+    DomainModelResults analyzeImageByDomainInStream(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStreamWithRestResponseAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<DomainModelResults> analyzeImageByDomainInStreamAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the DomainModelResults object if successful.
+     */
+    DomainModelResults analyzeImageByDomainInStream(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<DomainModelResults>> analyzeImageByDomainInStreamWithRestResponseAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON.
+     * If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<DomainModelResults> analyzeImageByDomainInStreamAsync(@NonNull String model, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OcrResult object if successful.
+     */
+    OcrResult recognizePrintedTextInStream(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStreamWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OcrResult> recognizePrintedTextInStreamAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OcrResult object if successful.
+     */
+    OcrResult recognizePrintedTextInStream(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, OcrLanguages language);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<OcrResult>> recognizePrintedTextInStreamWithRestResponseAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, OcrLanguages language);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     * Upon success, the OCR results will be returned.
+     * Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<OcrResult> recognizePrintedTextInStreamAsync(@NonNull boolean detectOrientation, @NonNull long contentLength, @NonNull Flux<ByteBuffer> image, OcrLanguages language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the TagResult object if successful.
+     */
+    TagResult tagImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<TagResult>> tagImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<TagResult> tagImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the TagResult object if successful.
+     */
+    TagResult tagImageInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<TagResult>> tagImageInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     * Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     * A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<TagResult> tagImageInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, String language);
+
+    /**
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void recognizeTextInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
+
+    /**
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<RecognizeTextInStreamResponse> recognizeTextInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
+
+    /**
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Void> recognizeTextInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
+
+    /**
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void batchReadFileInStream(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
+
+    /**
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<BatchReadFileInStreamResponse> batchReadFileInStreamWithRestResponseAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
+
+    /**
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
+     *
+     * @param contentLength The content length.
+     * @param image An image stream.
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Void> batchReadFileInStreamAsync(@NonNull long contentLength, @NonNull Flux<ByteBuffer> image, @NonNull TextRecognitionMode mode);
 }

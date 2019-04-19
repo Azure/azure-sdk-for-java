@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Defines a rating.
@@ -37,7 +37,7 @@ public class Rating extends PropertiesItem {
     /**
      * Get the ratingValue value.
      *
-     * @return the ratingValue value
+     * @return the ratingValue value.
      */
     public double ratingValue() {
         return this.ratingValue;
@@ -46,7 +46,7 @@ public class Rating extends PropertiesItem {
     /**
      * Set the ratingValue value.
      *
-     * @param ratingValue the ratingValue value to set
+     * @param ratingValue the ratingValue value to set.
      * @return the Rating object itself.
      */
     public Rating withRatingValue(double ratingValue) {
@@ -57,10 +57,9 @@ public class Rating extends PropertiesItem {
     /**
      * Get the bestRating value.
      *
-     * @return the bestRating value
+     * @return the bestRating value.
      */
     public Double bestRating() {
         return this.bestRating;
     }
-
 }

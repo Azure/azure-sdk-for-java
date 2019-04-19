@@ -11,11 +11,11 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response when adding a labeled example.
+ * Response when adding a labeled example utterance.
  */
-public class LabelExampleResponse {
+public final class LabelExampleResponse {
     /**
-     * The sample's utterance.
+     * The example utterance.
      */
     @JsonProperty(value = "UtteranceText")
     private String utteranceText;
@@ -29,7 +29,7 @@ public class LabelExampleResponse {
     /**
      * Get the utteranceText value.
      *
-     * @return the utteranceText value
+     * @return the utteranceText value.
      */
     public String utteranceText() {
         return this.utteranceText;
@@ -38,7 +38,7 @@ public class LabelExampleResponse {
     /**
      * Set the utteranceText value.
      *
-     * @param utteranceText the utteranceText value to set
+     * @param utteranceText the utteranceText value to set.
      * @return the LabelExampleResponse object itself.
      */
     public LabelExampleResponse withUtteranceText(String utteranceText) {
@@ -49,7 +49,7 @@ public class LabelExampleResponse {
     /**
      * Get the exampleId value.
      *
-     * @return the exampleId value
+     * @return the exampleId value.
      */
     public Integer exampleId() {
         return this.exampleId;
@@ -58,12 +58,11 @@ public class LabelExampleResponse {
     /**
      * Set the exampleId value.
      *
-     * @param exampleId the exampleId value to set
+     * @param exampleId the exampleId value to set.
      * @return the LabelExampleResponse object itself.
      */
     public LabelExampleResponse withExampleId(Integer exampleId) {
         this.exampleId = exampleId;
         return this;
     }
-
 }

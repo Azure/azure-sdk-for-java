@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The HierarchicalModel model.
  */
-public class HierarchicalModel {
+public final class HierarchicalModel {
     /**
      * The name property.
      */
@@ -42,7 +42,7 @@ public class HierarchicalModel {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -51,7 +51,7 @@ public class HierarchicalModel {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the HierarchicalModel object itself.
      */
     public HierarchicalModel withName(String name) {
@@ -62,7 +62,7 @@ public class HierarchicalModel {
     /**
      * Get the children value.
      *
-     * @return the children value
+     * @return the children value.
      */
     public List<String> children() {
         return this.children;
@@ -71,7 +71,7 @@ public class HierarchicalModel {
     /**
      * Set the children value.
      *
-     * @param children the children value to set
+     * @param children the children value to set.
      * @return the HierarchicalModel object itself.
      */
     public HierarchicalModel withChildren(List<String> children) {
@@ -82,7 +82,7 @@ public class HierarchicalModel {
     /**
      * Get the inherits value.
      *
-     * @return the inherits value
+     * @return the inherits value.
      */
     public PrebuiltDomainObject inherits() {
         return this.inherits;
@@ -91,7 +91,7 @@ public class HierarchicalModel {
     /**
      * Set the inherits value.
      *
-     * @param inherits the inherits value to set
+     * @param inherits the inherits value to set.
      * @return the HierarchicalModel object itself.
      */
     public HierarchicalModel withInherits(PrebuiltDomainObject inherits) {
@@ -102,7 +102,7 @@ public class HierarchicalModel {
     /**
      * Get the roles value.
      *
-     * @return the roles value
+     * @return the roles value.
      */
     public List<String> roles() {
         return this.roles;
@@ -111,12 +111,11 @@ public class HierarchicalModel {
     /**
      * Set the roles value.
      *
-     * @param roles the roles value to set
+     * @param roles the roles value to set.
      * @return the HierarchicalModel object itself.
      */
     public HierarchicalModel withRoles(List<String> roles) {
         this.roles = roles;
         return this;
     }
-
 }

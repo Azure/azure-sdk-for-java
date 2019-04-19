@@ -15,16 +15,22 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for VideoQueryScenario.
  */
 public enum VideoQueryScenario {
-    /** Enum value List. */
+    /**
+     * Enum value List.
+     */
     LIST("List"),
 
-    /** Enum value SingleDominantVideo. */
+    /**
+     * Enum value SingleDominantVideo.
+     */
     SINGLE_DOMINANT_VIDEO("SingleDominantVideo");
 
-    /** The actual serialized value for a VideoQueryScenario instance. */
-    private String value;
+    /**
+     * The actual serialized value for a VideoQueryScenario instance.
+     */
+    private final String value;
 
-    VideoQueryScenario(String value) {
+    private VideoQueryScenario(String value) {
         this.value = value;
     }
 

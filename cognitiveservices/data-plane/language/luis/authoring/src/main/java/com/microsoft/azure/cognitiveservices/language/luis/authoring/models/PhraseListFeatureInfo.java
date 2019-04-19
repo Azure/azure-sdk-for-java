@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Phraselist Feature.
  */
-public class PhraseListFeatureInfo extends FeatureInfoObject {
+public final class PhraseListFeatureInfo extends FeatureInfoObject {
     /**
      * A list of comma-separated values.
      */
@@ -39,7 +39,7 @@ public class PhraseListFeatureInfo extends FeatureInfoObject {
     /**
      * Get the phrases value.
      *
-     * @return the phrases value
+     * @return the phrases value.
      */
     public String phrases() {
         return this.phrases;
@@ -48,7 +48,7 @@ public class PhraseListFeatureInfo extends FeatureInfoObject {
     /**
      * Set the phrases value.
      *
-     * @param phrases the phrases value to set
+     * @param phrases the phrases value to set.
      * @return the PhraseListFeatureInfo object itself.
      */
     public PhraseListFeatureInfo withPhrases(String phrases) {
@@ -59,7 +59,7 @@ public class PhraseListFeatureInfo extends FeatureInfoObject {
     /**
      * Get the isExchangeable value.
      *
-     * @return the isExchangeable value
+     * @return the isExchangeable value.
      */
     public Boolean isExchangeable() {
         return this.isExchangeable;
@@ -68,12 +68,11 @@ public class PhraseListFeatureInfo extends FeatureInfoObject {
     /**
      * Set the isExchangeable value.
      *
-     * @param isExchangeable the isExchangeable value to set
+     * @param isExchangeable the isExchangeable value to set.
      * @return the PhraseListFeatureInfo object itself.
      */
     public PhraseListFeatureInfo withIsExchangeable(Boolean isExchangeable) {
         this.isExchangeable = isExchangeable;
         return this;
     }
-
 }

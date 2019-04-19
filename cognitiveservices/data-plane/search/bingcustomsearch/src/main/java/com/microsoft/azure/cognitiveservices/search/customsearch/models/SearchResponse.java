@@ -16,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Defines the top-level object that the response includes when the request
  * succeeds.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SearchResponse.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("SearchResponse")
-public class SearchResponse extends Response {
+public final class SearchResponse extends Response {
     /**
      * An object that contains the query string that Bing used for the request.
      * This object contains the query string as entered by the user. It may
@@ -37,7 +37,7 @@ public class SearchResponse extends Response {
     /**
      * Get the queryContext value.
      *
-     * @return the queryContext value
+     * @return the queryContext value.
      */
     public QueryContext queryContext() {
         return this.queryContext;
@@ -46,10 +46,9 @@ public class SearchResponse extends Response {
     /**
      * Get the webPages value.
      *
-     * @return the webPages value
+     * @return the webPages value.
      */
     public WebWebAnswer webPages() {
         return this.webPages;
     }
-
 }

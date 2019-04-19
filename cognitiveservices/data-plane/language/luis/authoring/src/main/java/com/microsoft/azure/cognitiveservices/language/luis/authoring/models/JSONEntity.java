@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Exported Model - Extracted Entity from utterance.
  */
-public class JSONEntity {
+public final class JSONEntity {
     /**
      * The index within the utterance where the extracted entity starts.
      */
@@ -35,7 +35,7 @@ public class JSONEntity {
     /**
      * Get the startPos value.
      *
-     * @return the startPos value
+     * @return the startPos value.
      */
     public int startPos() {
         return this.startPos;
@@ -44,7 +44,7 @@ public class JSONEntity {
     /**
      * Set the startPos value.
      *
-     * @param startPos the startPos value to set
+     * @param startPos the startPos value to set.
      * @return the JSONEntity object itself.
      */
     public JSONEntity withStartPos(int startPos) {
@@ -55,7 +55,7 @@ public class JSONEntity {
     /**
      * Get the endPos value.
      *
-     * @return the endPos value
+     * @return the endPos value.
      */
     public int endPos() {
         return this.endPos;
@@ -64,7 +64,7 @@ public class JSONEntity {
     /**
      * Set the endPos value.
      *
-     * @param endPos the endPos value to set
+     * @param endPos the endPos value to set.
      * @return the JSONEntity object itself.
      */
     public JSONEntity withEndPos(int endPos) {
@@ -75,7 +75,7 @@ public class JSONEntity {
     /**
      * Get the entity value.
      *
-     * @return the entity value
+     * @return the entity value.
      */
     public String entity() {
         return this.entity;
@@ -84,12 +84,11 @@ public class JSONEntity {
     /**
      * Set the entity value.
      *
-     * @param entity the entity value to set
+     * @param entity the entity value to set.
      * @return the JSONEntity object itself.
      */
     public JSONEntity withEntity(String entity) {
         this.entity = entity;
         return this;
     }
-
 }

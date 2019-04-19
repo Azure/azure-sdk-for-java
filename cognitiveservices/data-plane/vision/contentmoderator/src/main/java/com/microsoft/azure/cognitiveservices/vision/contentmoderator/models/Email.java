@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Email Address details.
  */
-public class Email {
+public final class Email {
     /**
      * Detected Email Address from the input text content.
      */
@@ -41,7 +41,7 @@ public class Email {
     /**
      * Get the detected value.
      *
-     * @return the detected value
+     * @return the detected value.
      */
     public String detected() {
         return this.detected;
@@ -50,7 +50,7 @@ public class Email {
     /**
      * Set the detected value.
      *
-     * @param detected the detected value to set
+     * @param detected the detected value to set.
      * @return the Email object itself.
      */
     public Email withDetected(String detected) {
@@ -61,7 +61,7 @@ public class Email {
     /**
      * Get the subType value.
      *
-     * @return the subType value
+     * @return the subType value.
      */
     public String subType() {
         return this.subType;
@@ -70,7 +70,7 @@ public class Email {
     /**
      * Set the subType value.
      *
-     * @param subType the subType value to set
+     * @param subType the subType value to set.
      * @return the Email object itself.
      */
     public Email withSubType(String subType) {
@@ -81,7 +81,7 @@ public class Email {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -90,7 +90,7 @@ public class Email {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the Email object itself.
      */
     public Email withText(String text) {
@@ -101,7 +101,7 @@ public class Email {
     /**
      * Get the index value.
      *
-     * @return the index value
+     * @return the index value.
      */
     public Integer index() {
         return this.index;
@@ -110,12 +110,11 @@ public class Email {
     /**
      * Set the index value.
      *
-     * @param index the index value to set
+     * @param index the index value to set.
      * @return the Email object itself.
      */
     public Email withIndex(Integer index) {
         this.index = index;
         return this;
     }
-
 }

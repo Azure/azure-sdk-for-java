@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Pattern.Any Entity Extractor.
  */
-public class PatternAny {
+public final class PatternAny {
     /**
      * The name property.
      */
@@ -36,7 +36,7 @@ public class PatternAny {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -45,7 +45,7 @@ public class PatternAny {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the PatternAny object itself.
      */
     public PatternAny withName(String name) {
@@ -56,7 +56,7 @@ public class PatternAny {
     /**
      * Get the explicitList value.
      *
-     * @return the explicitList value
+     * @return the explicitList value.
      */
     public List<String> explicitList() {
         return this.explicitList;
@@ -65,7 +65,7 @@ public class PatternAny {
     /**
      * Set the explicitList value.
      *
-     * @param explicitList the explicitList value to set
+     * @param explicitList the explicitList value to set.
      * @return the PatternAny object itself.
      */
     public PatternAny withExplicitList(List<String> explicitList) {
@@ -76,7 +76,7 @@ public class PatternAny {
     /**
      * Get the roles value.
      *
-     * @return the roles value
+     * @return the roles value.
      */
     public List<String> roles() {
         return this.roles;
@@ -85,12 +85,11 @@ public class PatternAny {
     /**
      * Set the roles value.
      *
-     * @param roles the roles value to set
+     * @param roles the roles value to set.
      * @return the PatternAny object itself.
      */
     public PatternAny withRoles(List<String> roles) {
         this.roles = roles;
         return this;
     }
-
 }

@@ -9,12 +9,12 @@
 package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
- * The ImageAction model.
+ * Defines an image action.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageAction.class)
 @JsonTypeName("ImageAction")
@@ -35,10 +35,9 @@ public class ImageAction extends Action {
     /**
      * Get the actionType value.
      *
-     * @return the actionType value
+     * @return the actionType value.
      */
     public String actionType() {
         return this.actionType;
     }
-
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object model for creating a new entity extractor.
  */
-public class ModelCreateObject {
+public final class ModelCreateObject {
     /**
      * Name of the new entity extractor.
      */
@@ -23,7 +23,7 @@ public class ModelCreateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -32,12 +32,11 @@ public class ModelCreateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ModelCreateObject object itself.
      */
     public ModelCreateObject withName(String name) {
         this.name = name;
         return this;
     }
-
 }

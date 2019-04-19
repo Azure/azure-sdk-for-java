@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object model for updating the name or description of an application.
  */
-public class ApplicationUpdateObject {
+public final class ApplicationUpdateObject {
     /**
      * The application's new name.
      */
@@ -29,7 +29,7 @@ public class ApplicationUpdateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -38,7 +38,7 @@ public class ApplicationUpdateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ApplicationUpdateObject object itself.
      */
     public ApplicationUpdateObject withName(String name) {
@@ -49,7 +49,7 @@ public class ApplicationUpdateObject {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public String description() {
         return this.description;
@@ -58,12 +58,11 @@ public class ApplicationUpdateObject {
     /**
      * Set the description value.
      *
-     * @param description the description value to set
+     * @param description the description value to set.
      * @return the ApplicationUpdateObject object itself.
      */
     public ApplicationUpdateObject withDescription(String description) {
         this.description = description;
         return this;
     }
-
 }

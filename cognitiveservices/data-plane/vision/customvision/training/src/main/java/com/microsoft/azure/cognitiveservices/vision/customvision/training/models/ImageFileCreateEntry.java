@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ImageFileCreateEntry model.
  */
-public class ImageFileCreateEntry {
+public final class ImageFileCreateEntry {
     /**
      * The name property.
      */
@@ -43,7 +43,7 @@ public class ImageFileCreateEntry {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -52,7 +52,7 @@ public class ImageFileCreateEntry {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ImageFileCreateEntry object itself.
      */
     public ImageFileCreateEntry withName(String name) {
@@ -63,7 +63,7 @@ public class ImageFileCreateEntry {
     /**
      * Get the contents value.
      *
-     * @return the contents value
+     * @return the contents value.
      */
     public byte[] contents() {
         return this.contents;
@@ -72,7 +72,7 @@ public class ImageFileCreateEntry {
     /**
      * Set the contents value.
      *
-     * @param contents the contents value to set
+     * @param contents the contents value to set.
      * @return the ImageFileCreateEntry object itself.
      */
     public ImageFileCreateEntry withContents(byte[] contents) {
@@ -83,7 +83,7 @@ public class ImageFileCreateEntry {
     /**
      * Get the tagIds value.
      *
-     * @return the tagIds value
+     * @return the tagIds value.
      */
     public List<UUID> tagIds() {
         return this.tagIds;
@@ -92,7 +92,7 @@ public class ImageFileCreateEntry {
     /**
      * Set the tagIds value.
      *
-     * @param tagIds the tagIds value to set
+     * @param tagIds the tagIds value to set.
      * @return the ImageFileCreateEntry object itself.
      */
     public ImageFileCreateEntry withTagIds(List<UUID> tagIds) {
@@ -103,7 +103,7 @@ public class ImageFileCreateEntry {
     /**
      * Get the regions value.
      *
-     * @return the regions value
+     * @return the regions value.
      */
     public List<Region> regions() {
         return this.regions;
@@ -112,12 +112,11 @@ public class ImageFileCreateEntry {
     /**
      * Set the regions value.
      *
-     * @param regions the regions value to set
+     * @param regions the regions value to set.
      * @return the ImageFileCreateEntry object itself.
      */
     public ImageFileCreateEntry withRegions(List<Region> regions) {
         this.regions = regions;
         return this;
     }
-
 }

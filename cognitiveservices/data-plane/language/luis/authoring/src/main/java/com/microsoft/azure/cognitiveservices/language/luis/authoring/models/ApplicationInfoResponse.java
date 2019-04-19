@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * Response containing the Application Info.
  */
-public class ApplicationInfoResponse {
+public final class ApplicationInfoResponse {
     /**
      * The ID (GUID) of the application.
      */
@@ -34,19 +34,20 @@ public class ApplicationInfoResponse {
     private String description;
 
     /**
-     * The culture of the application. E.g.: en-us.
+     * The culture of the application. For example, "en-us".
      */
     @JsonProperty(value = "culture")
     private String culture;
 
     /**
-     * Defines the scenario for the new application. Optional. E.g.: IoT.
+     * Defines the scenario for the new application. Optional. For example,
+     * IoT.
      */
     @JsonProperty(value = "usageScenario")
     private String usageScenario;
 
     /**
-     * The domain for the new application. Optional. E.g.: Comics.
+     * The domain for the new application. Optional. For example, Comics.
      */
     @JsonProperty(value = "domain")
     private String domain;
@@ -84,7 +85,7 @@ public class ApplicationInfoResponse {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -93,7 +94,7 @@ public class ApplicationInfoResponse {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the ApplicationInfoResponse object itself.
      */
     public ApplicationInfoResponse withId(UUID id) {
@@ -104,7 +105,7 @@ public class ApplicationInfoResponse {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -113,7 +114,7 @@ public class ApplicationInfoResponse {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ApplicationInfoResponse object itself.
      */
     public ApplicationInfoResponse withName(String name) {
@@ -124,7 +125,7 @@ public class ApplicationInfoResponse {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public String description() {
         return this.description;
@@ -133,7 +134,7 @@ public class ApplicationInfoResponse {
     /**
      * Set the description value.
      *
-     * @param description the description value to set
+     * @param description the description value to set.
      * @return the ApplicationInfoResponse object itself.
      */
     public ApplicationInfoResponse withDescription(String description) {
@@ -144,7 +145,7 @@ public class ApplicationInfoResponse {
     /**
      * Get the culture value.
      *
-     * @return the culture value
+     * @return the culture value.
      */
     public String culture() {
         return this.culture;
@@ -153,7 +154,7 @@ public class ApplicationInfoResponse {
     /**
      * Set the culture value.
      *
-     * @param culture the culture value to set
+     * @param culture the culture value to set.
      * @return the ApplicationInfoResponse object itself.
      */
     public ApplicationInfoResponse withCulture(String culture) {
@@ -164,7 +165,7 @@ public class ApplicationInfoResponse {
     /**
      * Get the usageScenario value.
      *
-     * @return the usageScenario value
+     * @return the usageScenario value.
      */
     public String usageScenario() {
         return this.usageScenario;
@@ -173,7 +174,7 @@ public class ApplicationInfoResponse {
     /**
      * Set the usageScenario value.
      *
-     * @param usageScenario the usageScenario value to set
+     * @param usageScenario the usageScenario value to set.
      * @return the ApplicationInfoResponse object itself.
      */
     public ApplicationInfoResponse withUsageScenario(String usageScenario) {
@@ -184,7 +185,7 @@ public class ApplicationInfoResponse {
     /**
      * Get the domain value.
      *
-     * @return the domain value
+     * @return the domain value.
      */
     public String domain() {
         return this.domain;
@@ -193,7 +194,7 @@ public class ApplicationInfoResponse {
     /**
      * Set the domain value.
      *
-     * @param domain the domain value to set
+     * @param domain the domain value to set.
      * @return the ApplicationInfoResponse object itself.
      */
     public ApplicationInfoResponse withDomain(String domain) {
@@ -204,7 +205,7 @@ public class ApplicationInfoResponse {
     /**
      * Get the versionsCount value.
      *
-     * @return the versionsCount value
+     * @return the versionsCount value.
      */
     public Integer versionsCount() {
         return this.versionsCount;
@@ -213,7 +214,7 @@ public class ApplicationInfoResponse {
     /**
      * Set the versionsCount value.
      *
-     * @param versionsCount the versionsCount value to set
+     * @param versionsCount the versionsCount value to set.
      * @return the ApplicationInfoResponse object itself.
      */
     public ApplicationInfoResponse withVersionsCount(Integer versionsCount) {
@@ -224,7 +225,7 @@ public class ApplicationInfoResponse {
     /**
      * Get the createdDateTime value.
      *
-     * @return the createdDateTime value
+     * @return the createdDateTime value.
      */
     public String createdDateTime() {
         return this.createdDateTime;
@@ -233,7 +234,7 @@ public class ApplicationInfoResponse {
     /**
      * Set the createdDateTime value.
      *
-     * @param createdDateTime the createdDateTime value to set
+     * @param createdDateTime the createdDateTime value to set.
      * @return the ApplicationInfoResponse object itself.
      */
     public ApplicationInfoResponse withCreatedDateTime(String createdDateTime) {
@@ -244,7 +245,7 @@ public class ApplicationInfoResponse {
     /**
      * Get the endpoints value.
      *
-     * @return the endpoints value
+     * @return the endpoints value.
      */
     public Object endpoints() {
         return this.endpoints;
@@ -253,7 +254,7 @@ public class ApplicationInfoResponse {
     /**
      * Set the endpoints value.
      *
-     * @param endpoints the endpoints value to set
+     * @param endpoints the endpoints value to set.
      * @return the ApplicationInfoResponse object itself.
      */
     public ApplicationInfoResponse withEndpoints(Object endpoints) {
@@ -264,7 +265,7 @@ public class ApplicationInfoResponse {
     /**
      * Get the endpointHitsCount value.
      *
-     * @return the endpointHitsCount value
+     * @return the endpointHitsCount value.
      */
     public Integer endpointHitsCount() {
         return this.endpointHitsCount;
@@ -273,7 +274,7 @@ public class ApplicationInfoResponse {
     /**
      * Set the endpointHitsCount value.
      *
-     * @param endpointHitsCount the endpointHitsCount value to set
+     * @param endpointHitsCount the endpointHitsCount value to set.
      * @return the ApplicationInfoResponse object itself.
      */
     public ApplicationInfoResponse withEndpointHitsCount(Integer endpointHitsCount) {
@@ -284,7 +285,7 @@ public class ApplicationInfoResponse {
     /**
      * Get the activeVersion value.
      *
-     * @return the activeVersion value
+     * @return the activeVersion value.
      */
     public String activeVersion() {
         return this.activeVersion;
@@ -293,12 +294,11 @@ public class ApplicationInfoResponse {
     /**
      * Set the activeVersion value.
      *
-     * @param activeVersion the activeVersion value to set
+     * @param activeVersion the activeVersion value to set.
      * @return the ApplicationInfoResponse object itself.
      */
     public ApplicationInfoResponse withActiveVersion(String activeVersion) {
         this.activeVersion = activeVersion;
         return this;
     }
-
 }

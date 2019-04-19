@@ -15,19 +15,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for TrainingStatus.
  */
 public enum TrainingStatus {
-    /** Enum value NeedsTraining. */
+    /**
+     * Enum value NeedsTraining.
+     */
     NEEDS_TRAINING("NeedsTraining"),
 
-    /** Enum value InProgress. */
+    /**
+     * Enum value InProgress.
+     */
     IN_PROGRESS("InProgress"),
 
-    /** Enum value Trained. */
+    /**
+     * Enum value Trained.
+     */
     TRAINED("Trained");
 
-    /** The actual serialized value for a TrainingStatus instance. */
-    private String value;
+    /**
+     * The actual serialized value for a TrainingStatus instance.
+     */
+    private final String value;
 
-    TrainingStatus(String value) {
+    private TrainingStatus(String value) {
         this.value = value;
     }
 

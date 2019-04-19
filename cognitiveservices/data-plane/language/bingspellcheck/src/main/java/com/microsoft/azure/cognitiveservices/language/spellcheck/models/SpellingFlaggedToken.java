@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.spellcheck.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The SpellingFlaggedToken model.
  */
-public class SpellingFlaggedToken {
+public final class SpellingFlaggedToken {
     /**
      * The offset property.
      */
@@ -48,7 +48,7 @@ public class SpellingFlaggedToken {
     /**
      * Get the offset value.
      *
-     * @return the offset value
+     * @return the offset value.
      */
     public int offset() {
         return this.offset;
@@ -57,7 +57,7 @@ public class SpellingFlaggedToken {
     /**
      * Set the offset value.
      *
-     * @param offset the offset value to set
+     * @param offset the offset value to set.
      * @return the SpellingFlaggedToken object itself.
      */
     public SpellingFlaggedToken withOffset(int offset) {
@@ -68,7 +68,7 @@ public class SpellingFlaggedToken {
     /**
      * Get the token value.
      *
-     * @return the token value
+     * @return the token value.
      */
     public String token() {
         return this.token;
@@ -77,7 +77,7 @@ public class SpellingFlaggedToken {
     /**
      * Set the token value.
      *
-     * @param token the token value to set
+     * @param token the token value to set.
      * @return the SpellingFlaggedToken object itself.
      */
     public SpellingFlaggedToken withToken(String token) {
@@ -88,7 +88,7 @@ public class SpellingFlaggedToken {
     /**
      * Get the type value.
      *
-     * @return the type value
+     * @return the type value.
      */
     public ErrorType type() {
         return this.type;
@@ -97,7 +97,7 @@ public class SpellingFlaggedToken {
     /**
      * Set the type value.
      *
-     * @param type the type value to set
+     * @param type the type value to set.
      * @return the SpellingFlaggedToken object itself.
      */
     public SpellingFlaggedToken withType(ErrorType type) {
@@ -108,7 +108,7 @@ public class SpellingFlaggedToken {
     /**
      * Get the suggestions value.
      *
-     * @return the suggestions value
+     * @return the suggestions value.
      */
     public List<SpellingTokenSuggestion> suggestions() {
         return this.suggestions;
@@ -117,10 +117,9 @@ public class SpellingFlaggedToken {
     /**
      * Get the pingUrlSuffix value.
      *
-     * @return the pingUrlSuffix value
+     * @return the pingUrlSuffix value.
      */
     public String pingUrlSuffix() {
         return this.pingUrlSuffix;
     }
-
 }

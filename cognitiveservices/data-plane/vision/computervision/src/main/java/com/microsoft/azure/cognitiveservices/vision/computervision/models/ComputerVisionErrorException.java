@@ -8,38 +8,36 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import com.microsoft.rest.RestException;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
+import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.http.HttpResponse;
 
 /**
- * Exception thrown for an invalid response with ComputerVisionError
- * information.
+ * Exception thrown for an invalid response with ComputerVisionError information.
  */
-public class ComputerVisionErrorException extends RestException {
+public final class ComputerVisionErrorException extends ServiceRequestException {
     /**
      * Initializes a new instance of the ComputerVisionErrorException class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
+     * @param message the exception message or the response content if a message is not available.
+     * @param response the HTTP response.
      */
-    public ComputerVisionErrorException(final String message, final Response<ResponseBody> response) {
+    public ComputerVisionErrorException(String message, HttpResponse response) {
         super(message, response);
     }
 
     /**
      * Initializes a new instance of the ComputerVisionErrorException class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
-     * @param body the deserialized response body
+     * @param message the exception message or the response content if a message is not available.
+     * @param response the HTTP response.
+     * @param value the deserialized response value.
      */
-    public ComputerVisionErrorException(final String message, final Response<ResponseBody> response, final ComputerVisionError body) {
-        super(message, response, body);
+    public ComputerVisionErrorException(String message, HttpResponse response, ComputerVisionError value) {
+        super(message, response, value);
     }
 
     @Override
-    public ComputerVisionError body() {
-        return (ComputerVisionError) super.body();
+    public ComputerVisionError value() {
+        return (ComputerVisionError) super.value();
     }
 }

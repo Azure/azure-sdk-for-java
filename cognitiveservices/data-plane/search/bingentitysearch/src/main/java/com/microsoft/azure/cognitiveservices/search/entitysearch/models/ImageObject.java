@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines an image.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageObject.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageObject")
-public class ImageObject extends MediaObject {
+public final class ImageObject extends MediaObject {
     /**
      * The URL to a thumbnail of the image.
      */
@@ -27,10 +27,9 @@ public class ImageObject extends MediaObject {
     /**
      * Get the thumbnail value.
      *
-     * @return the thumbnail value
+     * @return the thumbnail value.
      */
     public ImageObject thumbnail() {
         return this.thumbnail;
     }
-
 }

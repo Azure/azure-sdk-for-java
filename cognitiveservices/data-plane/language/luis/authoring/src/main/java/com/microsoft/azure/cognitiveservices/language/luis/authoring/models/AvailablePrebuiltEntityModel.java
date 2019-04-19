@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Available Prebuilt entity model for using in an application.
  */
-public class AvailablePrebuiltEntityModel {
+public final class AvailablePrebuiltEntityModel {
     /**
      * The entity name.
      */
@@ -35,7 +35,7 @@ public class AvailablePrebuiltEntityModel {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -44,7 +44,7 @@ public class AvailablePrebuiltEntityModel {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the AvailablePrebuiltEntityModel object itself.
      */
     public AvailablePrebuiltEntityModel withName(String name) {
@@ -55,7 +55,7 @@ public class AvailablePrebuiltEntityModel {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public String description() {
         return this.description;
@@ -64,7 +64,7 @@ public class AvailablePrebuiltEntityModel {
     /**
      * Set the description value.
      *
-     * @param description the description value to set
+     * @param description the description value to set.
      * @return the AvailablePrebuiltEntityModel object itself.
      */
     public AvailablePrebuiltEntityModel withDescription(String description) {
@@ -75,7 +75,7 @@ public class AvailablePrebuiltEntityModel {
     /**
      * Get the examples value.
      *
-     * @return the examples value
+     * @return the examples value.
      */
     public String examples() {
         return this.examples;
@@ -84,12 +84,11 @@ public class AvailablePrebuiltEntityModel {
     /**
      * Set the examples value.
      *
-     * @param examples the examples value to set
+     * @param examples the examples value to set.
      * @return the AvailablePrebuiltEntityModel object itself.
      */
     public AvailablePrebuiltEntityModel withExamples(String examples) {
         this.examples = examples;
         return this;
     }
-
 }

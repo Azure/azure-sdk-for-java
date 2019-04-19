@@ -8,176 +8,143 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ScreenTextOptionalParameter;
+import com.azure.common.http.rest.SimpleResponse;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.DetectedLanguage;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Screen;
-import rx.Observable;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in TextModerations.
+ * An instance of this class provides access to all the operations defined in
+ * TextModerations.
  */
 public interface TextModerations {
     /**
-     * Detect profanity and match against custom and shared blacklists.
+     * Detect profanity and match against custom and shared blacklists
      * Detects profanity in more than 100 languages and match against custom and shared blacklists.
      *
      * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
      * @param textContent Content to screen.
-     * @param screenTextOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Screen object if successful.
      */
-    
-    Screen screenText(String textContentType, byte[] textContent, ScreenTextOptionalParameter screenTextOptionalParameter);
+    Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
 
     /**
-     * Detect profanity and match against custom and shared blacklists.
+     * Detect profanity and match against custom and shared blacklists
      * Detects profanity in more than 100 languages and match against custom and shared blacklists.
      *
      * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
      * @param textContent Content to screen.
-     * @param screenTextOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Screen object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    Observable<Screen> screenTextAsync(String textContentType, byte[] textContent, ScreenTextOptionalParameter screenTextOptionalParameter);
+    Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
 
     /**
-     * Detect profanity and match against custom and shared blacklists.
+     * Detect profanity and match against custom and shared blacklists
      * Detects profanity in more than 100 languages and match against custom and shared blacklists.
      *
-     * @return the first stage of the screenText call
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
+     * @param textContent Content to screen.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    TextModerationsScreenTextDefinitionStages.WithTextContentType screenText();
+    Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
 
     /**
-     * Grouping of screenText definition stages.
-     */
-    interface TextModerationsScreenTextDefinitionStages {
-        /**
-         * The stage of the definition to be specify textContentType.
-         */
-        interface WithTextContentType {
-            /**
-             * The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
-             *
-             * @return next definition stage
-             */
-            WithTextContent withTextContentType(String textContentType);
-        }
-        /**
-         * The stage of the definition to be specify textContent.
-         */
-        interface WithTextContent {
-            /**
-             * Content to screen.
-             *
-             * @return next definition stage
-             */
-            TextModerationsScreenTextDefinitionStages.WithExecute withTextContent(byte[] textContent);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Language of the text.
-             *
-             * @return next definition stage
-             */
-            TextModerationsScreenTextDefinitionStages.WithExecute withLanguage(String language);
-
-            /**
-             * Autocorrect text.
-             *
-             * @return next definition stage
-             */
-            TextModerationsScreenTextDefinitionStages.WithExecute withAutocorrect(Boolean autocorrect);
-
-            /**
-             * Detect personal identifiable information.
-             *
-             * @return next definition stage
-             */
-            TextModerationsScreenTextDefinitionStages.WithExecute withPII(Boolean pII);
-
-            /**
-             * The list Id.
-             *
-             * @return next definition stage
-             */
-            TextModerationsScreenTextDefinitionStages.WithExecute withListId(String listId);
-
-            /**
-             * Classify input.
-             *
-             * @return next definition stage
-             */
-            TextModerationsScreenTextDefinitionStages.WithExecute withClassify(Boolean classify);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends TextModerationsScreenTextDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Screen object if successful.
-             */
-            Screen execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Screen object
-             */
-            Observable<Screen> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of screenText definition.
-     */
-    interface TextModerationsScreenTextDefinition extends
-        TextModerationsScreenTextDefinitionStages.WithTextContentType,
-        TextModerationsScreenTextDefinitionStages.WithTextContent,
-        TextModerationsScreenTextDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * This operation will detect the language of given input content. Returns the
-      *  &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the
-      *  predominant language comprising the submitted text. Over 110 languages supported.
+     * Detect profanity and match against custom and shared blacklists
+     * Detects profanity in more than 100 languages and match against custom and shared blacklists.
      *
      * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
      * @param textContent Content to screen.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param language Language of the text.
+     * @param autocorrect Autocorrect text.
+     * @param pII Detect personal identifiable information.
+     * @param listId The list Id.
+     * @param classify Classify input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Screen object if successful.
+     */
+    Screen screenText(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify);
+
+    /**
+     * Detect profanity and match against custom and shared blacklists
+     * Detects profanity in more than 100 languages and match against custom and shared blacklists.
+     *
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
+     * @param textContent Content to screen.
+     * @param language Language of the text.
+     * @param autocorrect Autocorrect text.
+     * @param pII Detect personal identifiable information.
+     * @param listId The list Id.
+     * @param classify Classify input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<Screen>> screenTextWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify);
+
+    /**
+     * Detect profanity and match against custom and shared blacklists
+     * Detects profanity in more than 100 languages and match against custom and shared blacklists.
+     *
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
+     * @param textContent Content to screen.
+     * @param language Language of the text.
+     * @param autocorrect Autocorrect text.
+     * @param pII Detect personal identifiable information.
+     * @param listId The list Id.
+     * @param classify Classify input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Screen> screenTextAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent, String language, Boolean autocorrect, Boolean pII, String listId, Boolean classify);
+
+    /**
+     * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
+     *
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
+     * @param textContent Content to screen.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DetectedLanguage object if successful.
      */
-    DetectedLanguage detectLanguage(String textContentType, byte[] textContent);
+    DetectedLanguage detectLanguage(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
 
     /**
-     * This operation will detect the language of given input content. Returns the
-      *  &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the
-      *  predominant language comprising the submitted text. Over 110 languages supported.
+     * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
      *
      * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
      * @param textContent Content to screen.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DetectedLanguage object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<DetectedLanguage> detectLanguageAsync(String textContentType, byte[] textContent);
+    Mono<SimpleResponse<DetectedLanguage>> detectLanguageWithRestResponseAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
 
-
+    /**
+     * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
+     *
+     * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'.
+     * @param contentLength The content length.
+     * @param textContent Content to screen.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<DetectedLanguage> detectLanguageAsync(@NonNull String textContentType, @NonNull long contentLength, @NonNull Flux<ByteBuffer> textContent);
 }

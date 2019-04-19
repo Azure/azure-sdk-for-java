@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The response for a Match request.
  */
-public class MatchResponse {
+public final class MatchResponse {
     /**
      * The tracking id.
      */
@@ -48,7 +48,7 @@ public class MatchResponse {
     /**
      * Get the trackingId value.
      *
-     * @return the trackingId value
+     * @return the trackingId value.
      */
     public String trackingId() {
         return this.trackingId;
@@ -57,7 +57,7 @@ public class MatchResponse {
     /**
      * Set the trackingId value.
      *
-     * @param trackingId the trackingId value to set
+     * @param trackingId the trackingId value to set.
      * @return the MatchResponse object itself.
      */
     public MatchResponse withTrackingId(String trackingId) {
@@ -68,7 +68,7 @@ public class MatchResponse {
     /**
      * Get the cacheID value.
      *
-     * @return the cacheID value
+     * @return the cacheID value.
      */
     public String cacheID() {
         return this.cacheID;
@@ -77,7 +77,7 @@ public class MatchResponse {
     /**
      * Set the cacheID value.
      *
-     * @param cacheID the cacheID value to set
+     * @param cacheID the cacheID value to set.
      * @return the MatchResponse object itself.
      */
     public MatchResponse withCacheID(String cacheID) {
@@ -88,7 +88,7 @@ public class MatchResponse {
     /**
      * Get the isMatch value.
      *
-     * @return the isMatch value
+     * @return the isMatch value.
      */
     public Boolean isMatch() {
         return this.isMatch;
@@ -97,7 +97,7 @@ public class MatchResponse {
     /**
      * Set the isMatch value.
      *
-     * @param isMatch the isMatch value to set
+     * @param isMatch the isMatch value to set.
      * @return the MatchResponse object itself.
      */
     public MatchResponse withIsMatch(Boolean isMatch) {
@@ -108,7 +108,7 @@ public class MatchResponse {
     /**
      * Get the matches value.
      *
-     * @return the matches value
+     * @return the matches value.
      */
     public List<Match> matches() {
         return this.matches;
@@ -117,7 +117,7 @@ public class MatchResponse {
     /**
      * Set the matches value.
      *
-     * @param matches the matches value to set
+     * @param matches the matches value to set.
      * @return the MatchResponse object itself.
      */
     public MatchResponse withMatches(List<Match> matches) {
@@ -128,7 +128,7 @@ public class MatchResponse {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public Status status() {
         return this.status;
@@ -137,12 +137,11 @@ public class MatchResponse {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the MatchResponse object itself.
      */
     public MatchResponse withStatus(Status status) {
         this.status = status;
         return this;
     }
-
 }

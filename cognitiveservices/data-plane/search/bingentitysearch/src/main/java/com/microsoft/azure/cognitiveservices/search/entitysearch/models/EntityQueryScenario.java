@@ -8,33 +8,44 @@
 
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for EntityQueryScenario.
  */
 public final class EntityQueryScenario extends ExpandableStringEnum<EntityQueryScenario> {
-    /** Static value DominantEntity for EntityQueryScenario. */
+    /**
+     * Static value DominantEntity for EntityQueryScenario.
+     */
     public static final EntityQueryScenario DOMINANT_ENTITY = fromString("DominantEntity");
 
-    /** Static value DominantEntityWithDisambiguation for EntityQueryScenario. */
+    /**
+     * Static value DominantEntityWithDisambiguation for EntityQueryScenario.
+     */
     public static final EntityQueryScenario DOMINANT_ENTITY_WITH_DISAMBIGUATION = fromString("DominantEntityWithDisambiguation");
 
-    /** Static value Disambiguation for EntityQueryScenario. */
+    /**
+     * Static value Disambiguation for EntityQueryScenario.
+     */
     public static final EntityQueryScenario DISAMBIGUATION = fromString("Disambiguation");
 
-    /** Static value List for EntityQueryScenario. */
+    /**
+     * Static value List for EntityQueryScenario.
+     */
     public static final EntityQueryScenario LIST = fromString("List");
 
-    /** Static value ListWithPivot for EntityQueryScenario. */
+    /**
+     * Static value ListWithPivot for EntityQueryScenario.
+     */
     public static final EntityQueryScenario LIST_WITH_PIVOT = fromString("ListWithPivot");
 
     /**
      * Creates or finds a EntityQueryScenario from its string representation.
-     * @param name a name to look for
-     * @return the corresponding EntityQueryScenario
+     *
+     * @param name a name to look for.
+     * @return the corresponding EntityQueryScenario.
      */
     @JsonCreator
     public static EntityQueryScenario fromString(String name) {
@@ -42,7 +53,7 @@ public final class EntityQueryScenario extends ExpandableStringEnum<EntityQueryS
     }
 
     /**
-     * @return known EntityQueryScenario values
+     * @return known EntityQueryScenario values.
      */
     public static Collection<EntityQueryScenario> values() {
         return values(EntityQueryScenario.class);

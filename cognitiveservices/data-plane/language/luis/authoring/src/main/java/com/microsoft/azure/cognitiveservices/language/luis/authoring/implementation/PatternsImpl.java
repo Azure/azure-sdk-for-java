@@ -8,157 +8,140 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation;
 
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetPatternsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetIntentPatternsOptionalParameter;
-import retrofit2.Retrofit;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.DELETE;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.PUT;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureClouds;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternRuleCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternRuleInfo;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternRuleUpdateObject;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Patterns.
+ * An instance of this class provides access to all the operations defined in
+ * Patterns.
  */
-public class PatternsImpl implements Patterns {
-    /** The Retrofit service to perform REST calls. */
+public final class PatternsImpl implements Patterns {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private PatternsService service;
-    /** The service client containing this operation class. */
+
+    /**
+     * The service client containing this operation class.
+     */
     private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of PatternsImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PatternsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
-        this.service = retrofit.create(PatternsService.class);
+    public PatternsImpl(LUISAuthoringClientImpl client) {
+        this.service = RestProxy.create(PatternsService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Patterns to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for Patterns to be used by the
+     * proxy service to perform REST calls.
      */
-    interface PatternsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns addPattern" })
+    @Host("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0")
+    private interface PatternsService {
         @POST("apps/{appId}/versions/{versionId}/patternrule")
-        Observable<Response<ResponseBody>> addPattern(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PatternRuleCreateObject pattern, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<PatternRuleInfo>> addPattern(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") PatternRuleCreateObject pattern);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns getPatterns" })
         @GET("apps/{appId}/versions/{versionId}/patternrules")
-        Observable<Response<ResponseBody>> getPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<List<PatternRuleInfo>>> listPatterns(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @QueryParam("skip") Integer skip, @QueryParam("take") Integer take);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns updatePatterns" })
         @PUT("apps/{appId}/versions/{versionId}/patternrules")
-        Observable<Response<ResponseBody>> updatePatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<PatternRuleUpdateObject> patterns, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<List<PatternRuleInfo>>> updatePatterns(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") List<PatternRuleUpdateObject> patterns);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns batchAddPatterns" })
         @POST("apps/{appId}/versions/{versionId}/patternrules")
-        Observable<Response<ResponseBody>> batchAddPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<PatternRuleCreateObject> patterns, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<List<PatternRuleInfo>>> batchAddPatterns(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") List<PatternRuleCreateObject> patterns);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns deletePatterns" })
-        @HTTP(path = "apps/{appId}/versions/{versionId}/patternrules", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deletePatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<UUID> patternIds, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @DELETE("apps/{appId}/versions/{versionId}/patternrules")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<OperationStatus>> deletePatterns(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") List<UUID> patternIds);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns updatePattern" })
         @PUT("apps/{appId}/versions/{versionId}/patternrules/{patternId}")
-        Observable<Response<ResponseBody>> updatePattern(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("patternId") UUID patternId, @Body PatternRuleUpdateObject pattern, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<PatternRuleInfo>> updatePattern(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @PathParam("patternId") UUID patternId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") PatternRuleUpdateObject pattern);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns deletePattern" })
-        @HTTP(path = "apps/{appId}/versions/{versionId}/patternrules/{patternId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deletePattern(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("patternId") UUID patternId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @DELETE("apps/{appId}/versions/{versionId}/patternrules/{patternId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<OperationStatus>> deletePattern(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @PathParam("patternId") UUID patternId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns getIntentPatterns" })
         @GET("apps/{appId}/versions/{versionId}/intents/{intentId}/patternrules")
-        Observable<Response<ResponseBody>> getIntentPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<List<PatternRuleInfo>>> listIntentPatterns(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @PathParam("intentId") UUID intentId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @QueryParam("skip") Integer skip, @QueryParam("take") Integer take);
     }
 
     /**
-     * Adds one pattern to the specified application.
+     * Adds a pattern to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param pattern The input pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PatternRuleInfo object if successful.
      */
-    public PatternRuleInfo addPattern(UUID appId, String versionId, PatternRuleCreateObject pattern) {
-        return addPatternWithServiceResponseAsync(appId, versionId, pattern).toBlocking().single().body();
+    public PatternRuleInfo addPattern(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PatternRuleCreateObject pattern) {
+        return addPatternAsync(azureRegion, azureCloud, appId, versionId, pattern).block();
     }
 
     /**
-     * Adds one pattern to the specified application.
+     * Adds a pattern to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param pattern The input pattern.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<PatternRuleInfo> addPatternAsync(UUID appId, String versionId, PatternRuleCreateObject pattern, final ServiceCallback<PatternRuleInfo> serviceCallback) {
-        return ServiceFuture.fromResponse(addPatternWithServiceResponseAsync(appId, versionId, pattern), serviceCallback);
-    }
-
-    /**
-     * Adds one pattern to the specified application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param pattern The input pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PatternRuleInfo object
-     */
-    public Observable<PatternRuleInfo> addPatternAsync(UUID appId, String versionId, PatternRuleCreateObject pattern) {
-        return addPatternWithServiceResponseAsync(appId, versionId, pattern).map(new Func1<ServiceResponse<PatternRuleInfo>, PatternRuleInfo>() {
-            @Override
-            public PatternRuleInfo call(ServiceResponse<PatternRuleInfo> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Adds one pattern to the specified application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param pattern The input pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PatternRuleInfo object
-     */
-    public Observable<ServiceResponse<PatternRuleInfo>> addPatternWithServiceResponseAsync(UUID appId, String versionId, PatternRuleCreateObject pattern) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<PatternRuleInfo>> addPatternWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PatternRuleCreateObject pattern) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -170,88 +153,57 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter pattern is required and cannot be null.");
         }
         Validator.validate(pattern);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.addPattern(appId, versionId, pattern, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PatternRuleInfo>>>() {
-                @Override
-                public Observable<ServiceResponse<PatternRuleInfo>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PatternRuleInfo> clientResponse = addPatternDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.addPattern(appId, versionId, azureRegion, azureCloud, pattern);
     }
-
-    private ServiceResponse<PatternRuleInfo> addPatternDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PatternRuleInfo, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<PatternRuleInfo>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
 
     /**
-     * Returns an application version's patterns.
+     * Adds a pattern to a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param pattern The input pattern.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<PatternRuleInfo> addPatternAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull PatternRuleCreateObject pattern) {
+        return addPatternWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, pattern)
+            .flatMap((SimpleResponse<PatternRuleInfo> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Gets patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    public List<PatternRuleInfo> getPatterns(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter) {
-        return getPatternsWithServiceResponseAsync(appId, versionId, getPatternsOptionalParameter).toBlocking().single().body();
+    public List<PatternRuleInfo> listPatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return listPatternsAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<PatternRuleInfo>> getPatternsAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter, final ServiceCallback<List<PatternRuleInfo>> serviceCallback) {
-        return ServiceFuture.fromResponse(getPatternsWithServiceResponseAsync(appId, versionId, getPatternsOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Returns an application version's patterns.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
-     */
-    public Observable<List<PatternRuleInfo>> getPatternsAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter) {
-        return getPatternsWithServiceResponseAsync(appId, versionId, getPatternsOptionalParameter).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
-            @Override
-            public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Returns an application version's patterns.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
-     */
-    public Observable<ServiceResponse<List<PatternRuleInfo>>> getPatternsWithServiceResponseAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<List<PatternRuleInfo>>> listPatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -259,25 +211,62 @@ public class PatternsImpl implements Patterns {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        final Integer skip = getPatternsOptionalParameter != null ? getPatternsOptionalParameter.skip() : null;
-        final Integer take = getPatternsOptionalParameter != null ? getPatternsOptionalParameter.take() : null;
-
-        return getPatternsWithServiceResponseAsync(appId, versionId, skip, take);
+        final Integer skip = 0;
+        final Integer take = 100;
+        return service.listPatterns(appId, versionId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<PatternRuleInfo>> listPatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return listPatternsWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<List<PatternRuleInfo>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Gets patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param skip The number of entries to skip. Default value is 0.
      * @param take The number of entries to return. Maximum page size is 500. Default is 100.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    public Observable<ServiceResponse<List<PatternRuleInfo>>> getPatternsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public List<PatternRuleInfo> listPatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        return listPatternsAsync(azureRegion, azureCloud, appId, versionId, skip, take).block();
+    }
+
+    /**
+     * Gets patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<PatternRuleInfo>>> listPatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -285,150 +274,60 @@ public class PatternsImpl implements Patterns {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getPatterns(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<PatternRuleInfo>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<PatternRuleInfo>> clientResponse = getPatternsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<PatternRuleInfo>> getPatternsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<PatternRuleInfo>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<PatternRuleInfo>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public PatternsGetPatternsParameters getPatterns() {
-        return new PatternsGetPatternsParameters(this);
+        return service.listPatterns(appId, versionId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Internal class implementing PatternsGetPatternsDefinition.
-     */
-    class PatternsGetPatternsParameters implements PatternsGetPatternsDefinition {
-        private PatternsImpl parent;
-        private UUID appId;
-        private String versionId;
-        private Integer skip;
-        private Integer take;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PatternsGetPatternsParameters(PatternsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PatternsGetPatternsParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public PatternsGetPatternsParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public PatternsGetPatternsParameters withSkip(Integer skip) {
-            this.skip = skip;
-            return this;
-        }
-
-        @Override
-        public PatternsGetPatternsParameters withTake(Integer take) {
-            this.take = take;
-            return this;
-        }
-
-        @Override
-        public List<PatternRuleInfo> execute() {
-        return getPatternsWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<List<PatternRuleInfo>> executeAsync() {
-            return getPatternsWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
-                @Override
-                public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Updates patterns.
+     * Gets patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<PatternRuleInfo>> listPatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, Integer skip, Integer take) {
+        return listPatternsWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, skip, take)
+            .flatMap((SimpleResponse<List<PatternRuleInfo>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Updates patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patterns An array represents the patterns.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    public List<PatternRuleInfo> updatePatterns(UUID appId, String versionId, List<PatternRuleUpdateObject> patterns) {
-        return updatePatternsWithServiceResponseAsync(appId, versionId, patterns).toBlocking().single().body();
+    public List<PatternRuleInfo> updatePatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleUpdateObject> patterns) {
+        return updatePatternsAsync(azureRegion, azureCloud, appId, versionId, patterns).block();
     }
 
     /**
-     * Updates patterns.
+     * Updates patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patterns An array represents the patterns.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<PatternRuleInfo>> updatePatternsAsync(UUID appId, String versionId, List<PatternRuleUpdateObject> patterns, final ServiceCallback<List<PatternRuleInfo>> serviceCallback) {
-        return ServiceFuture.fromResponse(updatePatternsWithServiceResponseAsync(appId, versionId, patterns), serviceCallback);
-    }
-
-    /**
-     * Updates patterns.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param patterns An array represents the patterns.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
-     */
-    public Observable<List<PatternRuleInfo>> updatePatternsAsync(UUID appId, String versionId, List<PatternRuleUpdateObject> patterns) {
-        return updatePatternsWithServiceResponseAsync(appId, versionId, patterns).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
-            @Override
-            public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates patterns.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param patterns An array represents the patterns.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
-     */
-    public Observable<ServiceResponse<List<PatternRuleInfo>>> updatePatternsWithServiceResponseAsync(UUID appId, String versionId, List<PatternRuleUpdateObject> patterns) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<List<PatternRuleInfo>>> updatePatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleUpdateObject> patterns) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -440,87 +339,60 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter patterns is required and cannot be null.");
         }
         Validator.validate(patterns);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.updatePatterns(appId, versionId, patterns, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<PatternRuleInfo>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<PatternRuleInfo>> clientResponse = updatePatternsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<PatternRuleInfo>> updatePatternsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<PatternRuleInfo>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<PatternRuleInfo>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+        List<PatternRuleUpdateObject> patternsConverted = patterns;
+        return service.updatePatterns(appId, versionId, azureRegion, azureCloud, patternsConverted);
     }
 
     /**
-     * Adds a batch of patterns to the specified application.
+     * Updates patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param patterns An array represents the patterns.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<PatternRuleInfo>> updatePatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleUpdateObject> patterns) {
+        return updatePatternsWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, patterns)
+            .flatMap((SimpleResponse<List<PatternRuleInfo>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Adds a batch of patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patterns A JSON array containing patterns.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    public List<PatternRuleInfo> batchAddPatterns(UUID appId, String versionId, List<PatternRuleCreateObject> patterns) {
-        return batchAddPatternsWithServiceResponseAsync(appId, versionId, patterns).toBlocking().single().body();
+    public List<PatternRuleInfo> batchAddPatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleCreateObject> patterns) {
+        return batchAddPatternsAsync(azureRegion, azureCloud, appId, versionId, patterns).block();
     }
 
     /**
-     * Adds a batch of patterns to the specified application.
+     * Adds a batch of patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patterns A JSON array containing patterns.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<PatternRuleInfo>> batchAddPatternsAsync(UUID appId, String versionId, List<PatternRuleCreateObject> patterns, final ServiceCallback<List<PatternRuleInfo>> serviceCallback) {
-        return ServiceFuture.fromResponse(batchAddPatternsWithServiceResponseAsync(appId, versionId, patterns), serviceCallback);
-    }
-
-    /**
-     * Adds a batch of patterns to the specified application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param patterns A JSON array containing patterns.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
-     */
-    public Observable<List<PatternRuleInfo>> batchAddPatternsAsync(UUID appId, String versionId, List<PatternRuleCreateObject> patterns) {
-        return batchAddPatternsWithServiceResponseAsync(appId, versionId, patterns).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
-            @Override
-            public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Adds a batch of patterns to the specified application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param patterns A JSON array containing patterns.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
-     */
-    public Observable<ServiceResponse<List<PatternRuleInfo>>> batchAddPatternsWithServiceResponseAsync(UUID appId, String versionId, List<PatternRuleCreateObject> patterns) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<List<PatternRuleInfo>>> batchAddPatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleCreateObject> patterns) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -532,87 +404,60 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter patterns is required and cannot be null.");
         }
         Validator.validate(patterns);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.batchAddPatterns(appId, versionId, patterns, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<PatternRuleInfo>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<PatternRuleInfo>> clientResponse = batchAddPatternsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<PatternRuleInfo>> batchAddPatternsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<PatternRuleInfo>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<List<PatternRuleInfo>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+        List<PatternRuleCreateObject> patternsConverted = patterns;
+        return service.batchAddPatterns(appId, versionId, azureRegion, azureCloud, patternsConverted);
     }
 
     /**
-     * Deletes the patterns with the specified IDs.
+     * Adds a batch of patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param patterns A JSON array containing patterns.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<PatternRuleInfo>> batchAddPatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<PatternRuleCreateObject> patterns) {
+        return batchAddPatternsWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, patterns)
+            .flatMap((SimpleResponse<List<PatternRuleInfo>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Deletes a list of patterns in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternIds The patterns IDs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus deletePatterns(UUID appId, String versionId, List<UUID> patternIds) {
-        return deletePatternsWithServiceResponseAsync(appId, versionId, patternIds).toBlocking().single().body();
+    public OperationStatus deletePatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<UUID> patternIds) {
+        return deletePatternsAsync(azureRegion, azureCloud, appId, versionId, patternIds).block();
     }
 
     /**
-     * Deletes the patterns with the specified IDs.
+     * Deletes a list of patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternIds The patterns IDs.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<OperationStatus> deletePatternsAsync(UUID appId, String versionId, List<UUID> patternIds, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(deletePatternsWithServiceResponseAsync(appId, versionId, patternIds), serviceCallback);
-    }
-
-    /**
-     * Deletes the patterns with the specified IDs.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param patternIds The patterns IDs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> deletePatternsAsync(UUID appId, String versionId, List<UUID> patternIds) {
-        return deletePatternsWithServiceResponseAsync(appId, versionId, patternIds).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes the patterns with the specified IDs.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param patternIds The patterns IDs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> deletePatternsWithServiceResponseAsync(UUID appId, String versionId, List<UUID> patternIds) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<OperationStatus>> deletePatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<UUID> patternIds) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -624,91 +469,62 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter patternIds is required and cannot be null.");
         }
         Validator.validate(patternIds);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.deletePatterns(appId, versionId, patternIds, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = deletePatternsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<OperationStatus> deletePatternsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+        List<UUID> patternIdsConverted = patternIds;
+        return service.deletePatterns(appId, versionId, azureRegion, azureCloud, patternIdsConverted);
     }
 
     /**
-     * Updates a pattern.
+     * Deletes a list of patterns in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param patternIds The patterns IDs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> deletePatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull List<UUID> patternIds) {
+        return deletePatternsWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, patternIds)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Updates a pattern in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternId The pattern ID.
      * @param pattern An object representing a pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PatternRuleInfo object if successful.
      */
-    public PatternRuleInfo updatePattern(UUID appId, String versionId, UUID patternId, PatternRuleUpdateObject pattern) {
-        return updatePatternWithServiceResponseAsync(appId, versionId, patternId, pattern).toBlocking().single().body();
+    public PatternRuleInfo updatePattern(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId, @NonNull PatternRuleUpdateObject pattern) {
+        return updatePatternAsync(azureRegion, azureCloud, appId, versionId, patternId, pattern).block();
     }
 
     /**
-     * Updates a pattern.
+     * Updates a pattern in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternId The pattern ID.
      * @param pattern An object representing a pattern.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<PatternRuleInfo> updatePatternAsync(UUID appId, String versionId, UUID patternId, PatternRuleUpdateObject pattern, final ServiceCallback<PatternRuleInfo> serviceCallback) {
-        return ServiceFuture.fromResponse(updatePatternWithServiceResponseAsync(appId, versionId, patternId, pattern), serviceCallback);
-    }
-
-    /**
-     * Updates a pattern.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param patternId The pattern ID.
-     * @param pattern An object representing a pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PatternRuleInfo object
-     */
-    public Observable<PatternRuleInfo> updatePatternAsync(UUID appId, String versionId, UUID patternId, PatternRuleUpdateObject pattern) {
-        return updatePatternWithServiceResponseAsync(appId, versionId, patternId, pattern).map(new Func1<ServiceResponse<PatternRuleInfo>, PatternRuleInfo>() {
-            @Override
-            public PatternRuleInfo call(ServiceResponse<PatternRuleInfo> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates a pattern.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param patternId The pattern ID.
-     * @param pattern An object representing a pattern.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PatternRuleInfo object
-     */
-    public Observable<ServiceResponse<PatternRuleInfo>> updatePatternWithServiceResponseAsync(UUID appId, String versionId, UUID patternId, PatternRuleUpdateObject pattern) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<PatternRuleInfo>> updatePatternWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId, @NonNull PatternRuleUpdateObject pattern) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -723,87 +539,60 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter pattern is required and cannot be null.");
         }
         Validator.validate(pattern);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.updatePattern(appId, versionId, patternId, pattern, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PatternRuleInfo>>>() {
-                @Override
-                public Observable<ServiceResponse<PatternRuleInfo>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PatternRuleInfo> clientResponse = updatePatternDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PatternRuleInfo> updatePatternDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PatternRuleInfo, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PatternRuleInfo>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+        return service.updatePattern(appId, versionId, patternId, azureRegion, azureCloud, pattern);
     }
 
     /**
-     * Deletes the pattern with the specified ID.
+     * Updates a pattern in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternId The pattern ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param pattern An object representing a pattern.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<PatternRuleInfo> updatePatternAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId, @NonNull PatternRuleUpdateObject pattern) {
+        return updatePatternWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, patternId, pattern)
+            .flatMap((SimpleResponse<PatternRuleInfo> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Deletes the pattern with the specified ID from a version of the application..
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param patternId The pattern ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus deletePattern(UUID appId, String versionId, UUID patternId) {
-        return deletePatternWithServiceResponseAsync(appId, versionId, patternId).toBlocking().single().body();
+    public OperationStatus deletePattern(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId) {
+        return deletePatternAsync(azureRegion, azureCloud, appId, versionId, patternId).block();
     }
 
     /**
-     * Deletes the pattern with the specified ID.
+     * Deletes the pattern with the specified ID from a version of the application..
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param patternId The pattern ID.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<OperationStatus> deletePatternAsync(UUID appId, String versionId, UUID patternId, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(deletePatternWithServiceResponseAsync(appId, versionId, patternId), serviceCallback);
-    }
-
-    /**
-     * Deletes the pattern with the specified ID.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param patternId The pattern ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> deletePatternAsync(UUID appId, String versionId, UUID patternId) {
-        return deletePatternWithServiceResponseAsync(appId, versionId, patternId).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes the pattern with the specified ID.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param patternId The pattern ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> deletePatternWithServiceResponseAsync(UUID appId, String versionId, UUID patternId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<OperationStatus>> deletePatternWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -814,92 +603,59 @@ public class PatternsImpl implements Patterns {
         if (patternId == null) {
             throw new IllegalArgumentException("Parameter patternId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.deletePattern(appId, versionId, patternId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = deletePatternDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.deletePattern(appId, versionId, patternId, azureRegion, azureCloud);
     }
-
-    private ServiceResponse<OperationStatus> deletePatternDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Deletes the pattern with the specified ID from a version of the application..
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param patternId The pattern ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> deletePatternAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID patternId) {
+        return deletePatternWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, patternId)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Returns patterns for the specific intent in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    public List<PatternRuleInfo> getIntentPatterns(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter) {
-        return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, getIntentPatternsOptionalParameter).toBlocking().single().body();
+    public List<PatternRuleInfo> listIntentPatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId) {
+        return listIntentPatternsAsync(azureRegion, azureCloud, appId, versionId, intentId).block();
     }
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<PatternRuleInfo>> getIntentPatternsAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter, final ServiceCallback<List<PatternRuleInfo>> serviceCallback) {
-        return ServiceFuture.fromResponse(getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, getIntentPatternsOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Returns patterns to be retrieved for the specific intent.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
-     */
-    public Observable<List<PatternRuleInfo>> getIntentPatternsAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter) {
-        return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, getIntentPatternsOptionalParameter).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
-            @Override
-            public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Returns patterns to be retrieved for the specific intent.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
-     */
-    public Observable<ServiceResponse<List<PatternRuleInfo>>> getIntentPatternsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<List<PatternRuleInfo>>> listIntentPatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -910,26 +666,65 @@ public class PatternsImpl implements Patterns {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        final Integer skip = getIntentPatternsOptionalParameter != null ? getIntentPatternsOptionalParameter.skip() : null;
-        final Integer take = getIntentPatternsOptionalParameter != null ? getIntentPatternsOptionalParameter.take() : null;
-
-        return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, skip, take);
+        final Integer skip = 0;
+        final Integer take = 100;
+        return service.listIntentPatterns(appId, versionId, intentId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<PatternRuleInfo>> listIntentPatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId) {
+        return listIntentPatternsWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, intentId)
+            .flatMap((SimpleResponse<List<PatternRuleInfo>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Returns patterns for the specific intent in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
      * @param skip The number of entries to skip. Default value is 0.
      * @param take The number of entries to return. Maximum page size is 500. Default is 100.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PatternRuleInfo&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    public Observable<ServiceResponse<List<PatternRuleInfo>>> getIntentPatternsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Integer skip, Integer take) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public List<PatternRuleInfo> listIntentPatterns(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Integer skip, Integer take) {
+        return listIntentPatternsAsync(azureRegion, azureCloud, appId, versionId, intentId, skip, take).block();
+    }
+
+    /**
+     * Returns patterns for the specific intent in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<PatternRuleInfo>>> listIntentPatternsWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Integer skip, Integer take) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -940,96 +735,24 @@ public class PatternsImpl implements Patterns {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getIntentPatterns(appId, versionId, intentId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<PatternRuleInfo>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<PatternRuleInfo>> clientResponse = getIntentPatternsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<PatternRuleInfo>> getIntentPatternsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<PatternRuleInfo>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<PatternRuleInfo>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public PatternsGetIntentPatternsParameters getIntentPatterns() {
-        return new PatternsGetIntentPatternsParameters(this);
+        return service.listIntentPatterns(appId, versionId, intentId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Internal class implementing PatternsGetIntentPatternsDefinition.
+     * Returns patterns for the specific intent in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class PatternsGetIntentPatternsParameters implements PatternsGetIntentPatternsDefinition {
-        private PatternsImpl parent;
-        private UUID appId;
-        private String versionId;
-        private UUID intentId;
-        private Integer skip;
-        private Integer take;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PatternsGetIntentPatternsParameters(PatternsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PatternsGetIntentPatternsParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public PatternsGetIntentPatternsParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public PatternsGetIntentPatternsParameters withIntentId(UUID intentId) {
-            this.intentId = intentId;
-            return this;
-        }
-
-        @Override
-        public PatternsGetIntentPatternsParameters withSkip(Integer skip) {
-            this.skip = skip;
-            return this;
-        }
-
-        @Override
-        public PatternsGetIntentPatternsParameters withTake(Integer take) {
-            this.take = take;
-            return this;
-        }
-
-        @Override
-        public List<PatternRuleInfo> execute() {
-        return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, skip, take).toBlocking().single().body();
+    public Mono<List<PatternRuleInfo>> listIntentPatternsAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull UUID intentId, Integer skip, Integer take) {
+        return listIntentPatternsWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, intentId, skip, take)
+            .flatMap((SimpleResponse<List<PatternRuleInfo>> res) -> Mono.just(res.value()));
     }
-
-        @Override
-        public Observable<List<PatternRuleInfo>> executeAsync() {
-            return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, skip, take).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
-                @Override
-                public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
 }

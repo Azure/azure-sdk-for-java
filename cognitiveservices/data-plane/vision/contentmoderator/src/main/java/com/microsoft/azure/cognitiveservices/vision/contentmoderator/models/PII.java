@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Personal Identifier Information details.
  */
-public class PII {
+public final class PII {
     /**
      * The email property.
      */
@@ -48,7 +48,7 @@ public class PII {
     /**
      * Get the email value.
      *
-     * @return the email value
+     * @return the email value.
      */
     public List<Email> email() {
         return this.email;
@@ -57,7 +57,7 @@ public class PII {
     /**
      * Set the email value.
      *
-     * @param email the email value to set
+     * @param email the email value to set.
      * @return the PII object itself.
      */
     public PII withEmail(List<Email> email) {
@@ -68,7 +68,7 @@ public class PII {
     /**
      * Get the sSN value.
      *
-     * @return the sSN value
+     * @return the sSN value.
      */
     public List<SSN> sSN() {
         return this.sSN;
@@ -77,7 +77,7 @@ public class PII {
     /**
      * Set the sSN value.
      *
-     * @param sSN the sSN value to set
+     * @param sSN the sSN value to set.
      * @return the PII object itself.
      */
     public PII withSSN(List<SSN> sSN) {
@@ -88,7 +88,7 @@ public class PII {
     /**
      * Get the iPA value.
      *
-     * @return the iPA value
+     * @return the iPA value.
      */
     public List<IPA> iPA() {
         return this.iPA;
@@ -97,7 +97,7 @@ public class PII {
     /**
      * Set the iPA value.
      *
-     * @param iPA the iPA value to set
+     * @param iPA the iPA value to set.
      * @return the PII object itself.
      */
     public PII withIPA(List<IPA> iPA) {
@@ -108,7 +108,7 @@ public class PII {
     /**
      * Get the phone value.
      *
-     * @return the phone value
+     * @return the phone value.
      */
     public List<Phone> phone() {
         return this.phone;
@@ -117,7 +117,7 @@ public class PII {
     /**
      * Set the phone value.
      *
-     * @param phone the phone value to set
+     * @param phone the phone value to set.
      * @return the PII object itself.
      */
     public PII withPhone(List<Phone> phone) {
@@ -128,7 +128,7 @@ public class PII {
     /**
      * Get the address value.
      *
-     * @return the address value
+     * @return the address value.
      */
     public List<Address> address() {
         return this.address;
@@ -137,12 +137,11 @@ public class PII {
     /**
      * Set the address value.
      *
-     * @param address the address value to set
+     * @param address the address value to set.
      * @return the PII object itself.
      */
     public PII withAddress(List<Address> address) {
         this.address = address;
         return this;
     }
-
 }

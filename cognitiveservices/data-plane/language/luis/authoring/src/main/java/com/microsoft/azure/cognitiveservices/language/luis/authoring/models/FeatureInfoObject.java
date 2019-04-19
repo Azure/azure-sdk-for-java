@@ -35,7 +35,7 @@ public class FeatureInfoObject {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public Integer id() {
         return this.id;
@@ -44,7 +44,7 @@ public class FeatureInfoObject {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the FeatureInfoObject object itself.
      */
     public FeatureInfoObject withId(Integer id) {
@@ -55,7 +55,7 @@ public class FeatureInfoObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -64,7 +64,7 @@ public class FeatureInfoObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the FeatureInfoObject object itself.
      */
     public FeatureInfoObject withName(String name) {
@@ -75,7 +75,7 @@ public class FeatureInfoObject {
     /**
      * Get the isActive value.
      *
-     * @return the isActive value
+     * @return the isActive value.
      */
     public Boolean isActive() {
         return this.isActive;
@@ -84,12 +84,11 @@ public class FeatureInfoObject {
     /**
      * Set the isActive value.
      *
-     * @param isActive the isActive value to set
+     * @param isActive the isActive value to set.
      * @return the FeatureInfoObject object itself.
      */
     public FeatureInfoObject withIsActive(Boolean isActive) {
         this.isActive = isActive;
         return this;
     }
-
 }

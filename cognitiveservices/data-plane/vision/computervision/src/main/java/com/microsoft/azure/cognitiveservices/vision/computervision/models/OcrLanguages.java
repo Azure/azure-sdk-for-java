@@ -15,91 +15,147 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for OcrLanguages.
  */
 public enum OcrLanguages {
-    /** Enum value unk. */
+    /**
+     * Enum value unk.
+     */
     UNK("unk"),
 
-    /** Enum value zh-Hans. */
+    /**
+     * Enum value zh-Hans.
+     */
     ZH_HANS("zh-Hans"),
 
-    /** Enum value zh-Hant. */
+    /**
+     * Enum value zh-Hant.
+     */
     ZH_HANT("zh-Hant"),
 
-    /** Enum value cs. */
+    /**
+     * Enum value cs.
+     */
     CS("cs"),
 
-    /** Enum value da. */
+    /**
+     * Enum value da.
+     */
     DA("da"),
 
-    /** Enum value nl. */
+    /**
+     * Enum value nl.
+     */
     NL("nl"),
 
-    /** Enum value en. */
+    /**
+     * Enum value en.
+     */
     EN("en"),
 
-    /** Enum value fi. */
+    /**
+     * Enum value fi.
+     */
     FI("fi"),
 
-    /** Enum value fr. */
+    /**
+     * Enum value fr.
+     */
     FR("fr"),
 
-    /** Enum value de. */
+    /**
+     * Enum value de.
+     */
     DE("de"),
 
-    /** Enum value el. */
+    /**
+     * Enum value el.
+     */
     EL("el"),
 
-    /** Enum value hu. */
+    /**
+     * Enum value hu.
+     */
     HU("hu"),
 
-    /** Enum value it. */
+    /**
+     * Enum value it.
+     */
     IT("it"),
 
-    /** Enum value ja. */
+    /**
+     * Enum value ja.
+     */
     JA("ja"),
 
-    /** Enum value ko. */
+    /**
+     * Enum value ko.
+     */
     KO("ko"),
 
-    /** Enum value nb. */
+    /**
+     * Enum value nb.
+     */
     NB("nb"),
 
-    /** Enum value pl. */
+    /**
+     * Enum value pl.
+     */
     PL("pl"),
 
-    /** Enum value pt. */
+    /**
+     * Enum value pt.
+     */
     PT("pt"),
 
-    /** Enum value ru. */
+    /**
+     * Enum value ru.
+     */
     RU("ru"),
 
-    /** Enum value es. */
+    /**
+     * Enum value es.
+     */
     ES("es"),
 
-    /** Enum value sv. */
+    /**
+     * Enum value sv.
+     */
     SV("sv"),
 
-    /** Enum value tr. */
+    /**
+     * Enum value tr.
+     */
     TR("tr"),
 
-    /** Enum value ar. */
+    /**
+     * Enum value ar.
+     */
     AR("ar"),
 
-    /** Enum value ro. */
+    /**
+     * Enum value ro.
+     */
     RO("ro"),
 
-    /** Enum value sr-Cyrl. */
+    /**
+     * Enum value sr-Cyrl.
+     */
     SR_CYRL("sr-Cyrl"),
 
-    /** Enum value sr-Latn. */
+    /**
+     * Enum value sr-Latn.
+     */
     SR_LATN("sr-Latn"),
 
-    /** Enum value sk. */
+    /**
+     * Enum value sk.
+     */
     SK("sk");
 
-    /** The actual serialized value for a OcrLanguages instance. */
-    private String value;
+    /**
+     * The actual serialized value for a OcrLanguages instance.
+     */
+    private final String value;
 
-    OcrLanguages(String value) {
+    private OcrLanguages(String value) {
         this.value = value;
     }
 

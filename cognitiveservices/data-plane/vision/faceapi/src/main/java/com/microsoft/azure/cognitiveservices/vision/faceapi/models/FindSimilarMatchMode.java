@@ -15,16 +15,22 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for FindSimilarMatchMode.
  */
 public enum FindSimilarMatchMode {
-    /** Enum value matchPerson. */
+    /**
+     * Enum value matchPerson.
+     */
     MATCH_PERSON("matchPerson"),
 
-    /** Enum value matchFace. */
+    /**
+     * Enum value matchFace.
+     */
     MATCH_FACE("matchFace");
 
-    /** The actual serialized value for a FindSimilarMatchMode instance. */
-    private String value;
+    /**
+     * The actual serialized value for a FindSimilarMatchMode instance.
+     */
+    private final String value;
 
-    FindSimilarMatchMode(String value) {
+    private FindSimilarMatchMode(String value) {
         this.value = value;
     }
 

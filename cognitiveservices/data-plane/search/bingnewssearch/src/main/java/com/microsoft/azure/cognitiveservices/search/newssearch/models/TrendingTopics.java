@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.newssearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The TrendingTopics model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = TrendingTopics.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("TrendingTopics")
-public class TrendingTopics extends Answer {
+public final class TrendingTopics extends Answer {
     /**
      * A list of trending news topics on Bing.
      */
@@ -28,7 +28,7 @@ public class TrendingTopics extends Answer {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<NewsTopic> value() {
         return this.value;
@@ -37,12 +37,11 @@ public class TrendingTopics extends Answer {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the TrendingTopics object itself.
      */
     public TrendingTopics withValue(List<NewsTopic> value) {
         this.value = value;
         return this;
     }
-
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The JobId model.
  */
-public class JobId {
+public final class JobId {
     /**
      * Id of the created job.
      */
@@ -23,7 +23,7 @@ public class JobId {
     /**
      * Get the jobId value.
      *
-     * @return the jobId value
+     * @return the jobId value.
      */
     public String jobId() {
         return this.jobId;
@@ -32,12 +32,11 @@ public class JobId {
     /**
      * Set the jobId value.
      *
-     * @param jobId the jobId value to set
+     * @param jobId the jobId value to set.
      * @return the JobId object itself.
      */
     public JobId withJobId(String jobId) {
         this.jobId = jobId;
         return this;
     }
-
 }

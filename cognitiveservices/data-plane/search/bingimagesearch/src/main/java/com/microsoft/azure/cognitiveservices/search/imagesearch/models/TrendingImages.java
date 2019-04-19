@@ -8,18 +8,18 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The top-level object that the response includes when a trending images
  * request succeeds.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = TrendingImages.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("TrendingImages")
-public class TrendingImages extends Response {
+public final class TrendingImages extends Response {
     /**
      * A list that identifies categories of images and a list of trending
      * images in that category.
@@ -30,7 +30,7 @@ public class TrendingImages extends Response {
     /**
      * Get the categories value.
      *
-     * @return the categories value
+     * @return the categories value.
      */
     public List<TrendingImagesCategory> categories() {
         return this.categories;
@@ -39,12 +39,11 @@ public class TrendingImages extends Response {
     /**
      * Set the categories value.
      *
-     * @param categories the categories value to set
+     * @param categories the categories value to set.
      * @return the TrendingImages object itself.
      */
     public TrendingImages withCategories(List<TrendingImagesCategory> categories) {
         this.categories = categories;
         return this;
     }
-
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * OCR candidate text.
  */
-public class Candidate {
+public final class Candidate {
     /**
      * The text found.
      */
@@ -29,7 +29,7 @@ public class Candidate {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -38,7 +38,7 @@ public class Candidate {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the Candidate object itself.
      */
     public Candidate withText(String text) {
@@ -49,7 +49,7 @@ public class Candidate {
     /**
      * Get the confidence value.
      *
-     * @return the confidence value
+     * @return the confidence value.
      */
     public Double confidence() {
         return this.confidence;
@@ -58,12 +58,11 @@ public class Candidate {
     /**
      * Set the confidence value.
      *
-     * @param confidence the confidence value to set
+     * @param confidence the confidence value to set.
      * @return the Candidate object itself.
      */
     public Candidate withConfidence(Double confidence) {
         this.confidence = confidence;
         return this;
     }
-
 }

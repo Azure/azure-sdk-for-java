@@ -15,22 +15,32 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for GlassesType.
  */
 public enum GlassesType {
-    /** Enum value noGlasses. */
+    /**
+     * Enum value noGlasses.
+     */
     NO_GLASSES("noGlasses"),
 
-    /** Enum value readingGlasses. */
+    /**
+     * Enum value readingGlasses.
+     */
     READING_GLASSES("readingGlasses"),
 
-    /** Enum value sunglasses. */
+    /**
+     * Enum value sunglasses.
+     */
     SUNGLASSES("sunglasses"),
 
-    /** Enum value swimmingGoggles. */
+    /**
+     * Enum value swimmingGoggles.
+     */
     SWIMMING_GOGGLES("swimmingGoggles");
 
-    /** The actual serialized value for a GlassesType instance. */
-    private String value;
+    /**
+     * The actual serialized value for a GlassesType instance.
+     */
+    private final String value;
 
-    GlassesType(String value) {
+    private GlassesType(String value) {
         this.value = value;
     }
 

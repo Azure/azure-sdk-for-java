@@ -8,15 +8,15 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
-import org.joda.time.DateTime;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Image performance model.
  */
-public class ImagePerformance {
+public final class ImagePerformance {
     /**
      * The predictions property.
      */
@@ -33,7 +33,7 @@ public class ImagePerformance {
      * The created property.
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime created;
+    private OffsetDateTime created;
 
     /**
      * The width property.
@@ -74,7 +74,7 @@ public class ImagePerformance {
     /**
      * Get the predictions value.
      *
-     * @return the predictions value
+     * @return the predictions value.
      */
     public List<Prediction> predictions() {
         return this.predictions;
@@ -83,7 +83,7 @@ public class ImagePerformance {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -92,16 +92,16 @@ public class ImagePerformance {
     /**
      * Get the created value.
      *
-     * @return the created value
+     * @return the created value.
      */
-    public DateTime created() {
+    public OffsetDateTime created() {
         return this.created;
     }
 
     /**
      * Get the width value.
      *
-     * @return the width value
+     * @return the width value.
      */
     public int width() {
         return this.width;
@@ -110,7 +110,7 @@ public class ImagePerformance {
     /**
      * Get the height value.
      *
-     * @return the height value
+     * @return the height value.
      */
     public int height() {
         return this.height;
@@ -119,7 +119,7 @@ public class ImagePerformance {
     /**
      * Get the imageUri value.
      *
-     * @return the imageUri value
+     * @return the imageUri value.
      */
     public String imageUri() {
         return this.imageUri;
@@ -128,7 +128,7 @@ public class ImagePerformance {
     /**
      * Get the thumbnailUri value.
      *
-     * @return the thumbnailUri value
+     * @return the thumbnailUri value.
      */
     public String thumbnailUri() {
         return this.thumbnailUri;
@@ -137,7 +137,7 @@ public class ImagePerformance {
     /**
      * Get the tags value.
      *
-     * @return the tags value
+     * @return the tags value.
      */
     public List<ImageTag> tags() {
         return this.tags;
@@ -146,10 +146,9 @@ public class ImagePerformance {
     /**
      * Get the regions value.
      *
-     * @return the regions value
+     * @return the regions value.
      */
     public List<ImageRegion> regions() {
         return this.regions;
     }
-
 }

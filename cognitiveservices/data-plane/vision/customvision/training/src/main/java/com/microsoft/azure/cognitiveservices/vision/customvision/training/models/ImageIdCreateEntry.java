@@ -8,16 +8,16 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * The ImageIdCreateEntry model.
  */
-public class ImageIdCreateEntry {
+public final class ImageIdCreateEntry {
     /**
-     * The id property.
+     * Id of the image.
      */
     @JsonProperty(value = "id")
     private UUID id;
@@ -37,7 +37,7 @@ public class ImageIdCreateEntry {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -46,7 +46,7 @@ public class ImageIdCreateEntry {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the ImageIdCreateEntry object itself.
      */
     public ImageIdCreateEntry withId(UUID id) {
@@ -57,7 +57,7 @@ public class ImageIdCreateEntry {
     /**
      * Get the tagIds value.
      *
-     * @return the tagIds value
+     * @return the tagIds value.
      */
     public List<UUID> tagIds() {
         return this.tagIds;
@@ -66,7 +66,7 @@ public class ImageIdCreateEntry {
     /**
      * Set the tagIds value.
      *
-     * @param tagIds the tagIds value to set
+     * @param tagIds the tagIds value to set.
      * @return the ImageIdCreateEntry object itself.
      */
     public ImageIdCreateEntry withTagIds(List<UUID> tagIds) {
@@ -77,7 +77,7 @@ public class ImageIdCreateEntry {
     /**
      * Get the regions value.
      *
-     * @return the regions value
+     * @return the regions value.
      */
     public List<Region> regions() {
         return this.regions;
@@ -86,12 +86,11 @@ public class ImageIdCreateEntry {
     /**
      * Set the regions value.
      *
-     * @param regions the regions value to set
+     * @param regions the regions value to set.
      * @return the ImageIdCreateEntry object itself.
      */
     public ImageIdCreateEntry withRegions(List<Region> regions) {
         this.regions = regions;
         return this;
     }
-
 }

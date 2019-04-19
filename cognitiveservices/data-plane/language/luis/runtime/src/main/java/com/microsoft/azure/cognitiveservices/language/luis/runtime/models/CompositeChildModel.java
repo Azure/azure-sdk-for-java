@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Child entity in a LUIS Composite Entity.
  */
-public class CompositeChildModel {
+public final class CompositeChildModel {
     /**
      * Type of child entity.
      */
@@ -29,7 +29,7 @@ public class CompositeChildModel {
     /**
      * Get the type value.
      *
-     * @return the type value
+     * @return the type value.
      */
     public String type() {
         return this.type;
@@ -38,7 +38,7 @@ public class CompositeChildModel {
     /**
      * Set the type value.
      *
-     * @param type the type value to set
+     * @param type the type value to set.
      * @return the CompositeChildModel object itself.
      */
     public CompositeChildModel withType(String type) {
@@ -49,7 +49,7 @@ public class CompositeChildModel {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public String value() {
         return this.value;
@@ -58,12 +58,11 @@ public class CompositeChildModel {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the CompositeChildModel object itself.
      */
     public CompositeChildModel withValue(String value) {
         this.value = value;
         return this;
     }
-
 }

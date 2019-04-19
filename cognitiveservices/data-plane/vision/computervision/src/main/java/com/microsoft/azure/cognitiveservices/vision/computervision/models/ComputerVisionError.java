@@ -11,18 +11,14 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ComputerVisionError model.
+ * Details about the API request error.
  */
-public class ComputerVisionError {
+public final class ComputerVisionError {
     /**
-     * The error code. Possible values include: 'InvalidImageUrl',
-     * 'InvalidImageFormat', 'InvalidImageSize', 'NotSupportedVisualFeature',
-     * 'NotSupportedImage', 'InvalidDetails', 'NotSupportedLanguage',
-     * 'BadArgument', 'FailedToProcess', 'Timeout', 'InternalServerError',
-     * 'Unspecified', 'StorageException'.
+     * The error code.
      */
     @JsonProperty(value = "code", required = true)
-    private ComputerVisionErrorCodes code;
+    private Object code;
 
     /**
      * A message explaining the error reported by the service.
@@ -39,19 +35,19 @@ public class ComputerVisionError {
     /**
      * Get the code value.
      *
-     * @return the code value
+     * @return the code value.
      */
-    public ComputerVisionErrorCodes code() {
+    public Object code() {
         return this.code;
     }
 
     /**
      * Set the code value.
      *
-     * @param code the code value to set
+     * @param code the code value to set.
      * @return the ComputerVisionError object itself.
      */
-    public ComputerVisionError withCode(ComputerVisionErrorCodes code) {
+    public ComputerVisionError withCode(Object code) {
         this.code = code;
         return this;
     }
@@ -59,7 +55,7 @@ public class ComputerVisionError {
     /**
      * Get the message value.
      *
-     * @return the message value
+     * @return the message value.
      */
     public String message() {
         return this.message;
@@ -68,7 +64,7 @@ public class ComputerVisionError {
     /**
      * Set the message value.
      *
-     * @param message the message value to set
+     * @param message the message value to set.
      * @return the ComputerVisionError object itself.
      */
     public ComputerVisionError withMessage(String message) {
@@ -79,7 +75,7 @@ public class ComputerVisionError {
     /**
      * Get the requestId value.
      *
-     * @return the requestId value
+     * @return the requestId value.
      */
     public String requestId() {
         return this.requestId;
@@ -88,12 +84,11 @@ public class ComputerVisionError {
     /**
      * Set the requestId value.
      *
-     * @param requestId the requestId value to set
+     * @param requestId the requestId value to set.
      * @return the ComputerVisionError object itself.
      */
     public ComputerVisionError withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
-
 }

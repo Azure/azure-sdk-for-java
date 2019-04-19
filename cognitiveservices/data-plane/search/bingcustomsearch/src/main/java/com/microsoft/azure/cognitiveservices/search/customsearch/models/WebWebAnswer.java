@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.customsearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Defines a list of relevant webpage links.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = WebWebAnswer.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Web/WebAnswer")
-public class WebWebAnswer extends SearchResultsAnswer {
+public final class WebWebAnswer extends SearchResultsAnswer {
     /**
      * A list of webpages that are relevant to the query.
      */
@@ -36,7 +36,7 @@ public class WebWebAnswer extends SearchResultsAnswer {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<WebPage> value() {
         return this.value;
@@ -45,7 +45,7 @@ public class WebWebAnswer extends SearchResultsAnswer {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the WebWebAnswer object itself.
      */
     public WebWebAnswer withValue(List<WebPage> value) {
@@ -56,10 +56,9 @@ public class WebWebAnswer extends SearchResultsAnswer {
     /**
      * Get the someResultsRemoved value.
      *
-     * @return the someResultsRemoved value
+     * @return the someResultsRemoved value.
      */
     public Boolean someResultsRemoved() {
         return this.someResultsRemoved;
     }
-
 }

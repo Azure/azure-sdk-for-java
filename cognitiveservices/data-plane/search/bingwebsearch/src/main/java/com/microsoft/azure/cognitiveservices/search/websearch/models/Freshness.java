@@ -8,27 +8,34 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for Freshness.
  */
 public final class Freshness extends ExpandableStringEnum<Freshness> {
-    /** Static value Day for Freshness. */
+    /**
+     * Static value Day for Freshness.
+     */
     public static final Freshness DAY = fromString("Day");
 
-    /** Static value Week for Freshness. */
+    /**
+     * Static value Week for Freshness.
+     */
     public static final Freshness WEEK = fromString("Week");
 
-    /** Static value Month for Freshness. */
+    /**
+     * Static value Month for Freshness.
+     */
     public static final Freshness MONTH = fromString("Month");
 
     /**
      * Creates or finds a Freshness from its string representation.
-     * @param name a name to look for
-     * @return the corresponding Freshness
+     *
+     * @param name a name to look for.
+     * @return the corresponding Freshness.
      */
     @JsonCreator
     public static Freshness fromString(String name) {
@@ -36,7 +43,7 @@ public final class Freshness extends ExpandableStringEnum<Freshness> {
     }
 
     /**
-     * @return known Freshness values
+     * @return known Freshness values.
      */
     public static Collection<Freshness> values() {
         return values(Freshness.class);

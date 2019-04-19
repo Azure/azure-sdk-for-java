@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Properties describing hair attributes.
  */
-public class Hair {
+public final class Hair {
     /**
      * A number describing confidence level of whether the person is bald.
      */
@@ -37,7 +37,7 @@ public class Hair {
     /**
      * Get the bald value.
      *
-     * @return the bald value
+     * @return the bald value.
      */
     public double bald() {
         return this.bald;
@@ -46,7 +46,7 @@ public class Hair {
     /**
      * Set the bald value.
      *
-     * @param bald the bald value to set
+     * @param bald the bald value to set.
      * @return the Hair object itself.
      */
     public Hair withBald(double bald) {
@@ -57,7 +57,7 @@ public class Hair {
     /**
      * Get the invisible value.
      *
-     * @return the invisible value
+     * @return the invisible value.
      */
     public boolean invisible() {
         return this.invisible;
@@ -66,7 +66,7 @@ public class Hair {
     /**
      * Set the invisible value.
      *
-     * @param invisible the invisible value to set
+     * @param invisible the invisible value to set.
      * @return the Hair object itself.
      */
     public Hair withInvisible(boolean invisible) {
@@ -77,7 +77,7 @@ public class Hair {
     /**
      * Get the hairColor value.
      *
-     * @return the hairColor value
+     * @return the hairColor value.
      */
     public List<HairColor> hairColor() {
         return this.hairColor;
@@ -86,12 +86,11 @@ public class Hair {
     /**
      * Set the hairColor value.
      *
-     * @param hairColor the hairColor value to set
+     * @param hairColor the hairColor value to set.
      * @return the Hair object itself.
      */
     public Hair withHairColor(List<HairColor> hairColor) {
         this.hairColor = hairColor;
         return this;
     }
-
 }

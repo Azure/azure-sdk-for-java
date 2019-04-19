@@ -8,376 +8,451 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupsOptionalParameter;
+import com.azure.common.http.rest.RestVoidResponse;
+import com.azure.common.http.rest.SimpleResponse;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersonGroup;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.TrainingStatus;
 import java.util.List;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in PersonGroups.
+ * An instance of this class provides access to all the operations defined in
+ * PersonGroups.
  */
 public interface PersonGroups {
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    
-    void create(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
+    void create(@NonNull String personGroupId);
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    Observable<Void> createAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
+    Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String personGroupId);
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
-     *
-     * @return the first stage of the create call
-     */
-    PersonGroupsCreateDefinitionStages.WithPersonGroupId create();
-
-    /**
-     * Grouping of create definition stages.
-     */
-    interface PersonGroupsCreateDefinitionStages {
-        /**
-         * The stage of the definition to be specify personGroupId.
-         */
-        interface WithPersonGroupId {
-            /**
-             * Id referencing a particular person group.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsCreateDefinitionStages.WithExecute withPersonGroupId(String personGroupId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * User defined name, maximum length is 128.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsCreateDefinitionStages.WithExecute withName(String name);
-
-            /**
-             * User specified data. Length should not exceed 16KB.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsCreateDefinitionStages.WithExecute withUserData(String userData);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PersonGroupsCreateDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             */
-            void execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return a representation of the deferred computation of this call if successful.
-             */
-            Observable<Void> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of create definition.
-     */
-    interface PersonGroupsCreateDefinition extends
-        PersonGroupsCreateDefinitionStages.WithPersonGroupId,
-        PersonGroupsCreateDefinitionStages.WithExecute {
-    }
-
-
-    /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also
-      *  be deleted.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    void delete(String personGroupId);
+    Mono<Void> createAsync(@NonNull String personGroupId);
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also
-      *  be deleted.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    Observable<Void> deleteAsync(String personGroupId);
-
-
+    void create(@NonNull String personGroupId, String name, String userData, RecognitionModel recognitionModel);
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<RestVoidResponse> createWithRestResponseAsync(@NonNull String personGroupId, String name, String userData, RecognitionModel recognitionModel);
+
+    /**
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     * &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     * &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     * &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     * &lt;br /&gt;
+     * * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+     * &lt;br /&gt;
+     * 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Void> createAsync(@NonNull String personGroupId, String name, String userData, RecognitionModel recognitionModel);
+
+    /**
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(@NonNull String personGroupId);
+
+    /**
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<RestVoidResponse> deleteWithRestResponseAsync(@NonNull String personGroupId);
+
+    /**
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Void> deleteAsync(@NonNull String personGroupId);
+
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the PersonGroup object if successful.
      */
-    PersonGroup get(String personGroupId);
+    PersonGroup get(@NonNull String personGroupId);
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PersonGroup object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<PersonGroup> getAsync(String personGroupId);
-
+    Mono<SimpleResponse<PersonGroup>> getWithRestResponseAsync(@NonNull String personGroupId);
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request
-     *   body will not be updated.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    void update(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
+    Mono<PersonGroup> getAsync(@NonNull String personGroupId);
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request
-     *   body will not be updated.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the PersonGroup object if successful.
      */
-    
-    Observable<Void> updateAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
+    PersonGroup get(@NonNull String personGroupId, Boolean returnRecognitionModel);
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request
-     *   body will not be updated.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
      *
-     * @return the first stage of the update call
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    PersonGroupsUpdateDefinitionStages.WithPersonGroupId update();
+    Mono<SimpleResponse<PersonGroup>> getWithRestResponseAsync(@NonNull String personGroupId, Boolean returnRecognitionModel);
 
     /**
-     * Grouping of update definition stages.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    interface PersonGroupsUpdateDefinitionStages {
-        /**
-         * The stage of the definition to be specify personGroupId.
-         */
-        interface WithPersonGroupId {
-            /**
-             * Id referencing a particular person group.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsUpdateDefinitionStages.WithExecute withPersonGroupId(String personGroupId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * User defined name, maximum length is 128.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsUpdateDefinitionStages.WithExecute withName(String name);
-
-            /**
-             * User specified data. Length should not exceed 16KB.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsUpdateDefinitionStages.WithExecute withUserData(String userData);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PersonGroupsUpdateDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             */
-            void execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return a representation of the deferred computation of this call if successful.
-             */
-            Observable<Void> executeAsync();
-        }
-    }
+    Mono<PersonGroup> getAsync(@NonNull String personGroupId, Boolean returnRecognitionModel);
 
     /**
-     * The entirety of update definition.
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    interface PersonGroupsUpdateDefinition extends
-        PersonGroupsUpdateDefinitionStages.WithPersonGroupId,
-        PersonGroupsUpdateDefinitionStages.WithExecute {
-    }
+    void update(@NonNull String personGroupId);
 
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId);
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Void> updateAsync(@NonNull String personGroupId);
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void update(@NonNull String personGroupId, String name, String userData);
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<RestVoidResponse> updateWithRestResponseAsync(@NonNull String personGroupId, String name, String userData);
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Void> updateAsync(@NonNull String personGroupId, String name, String userData);
 
     /**
      * Retrieve the training status of a person group (completed or ongoing).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the TrainingStatus object if successful.
      */
-    TrainingStatus getTrainingStatus(String personGroupId);
+    TrainingStatus getTrainingStatus(@NonNull String personGroupId);
 
     /**
      * Retrieve the training status of a person group (completed or ongoing).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TrainingStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<TrainingStatus> getTrainingStatusAsync(String personGroupId);
-
+    Mono<SimpleResponse<TrainingStatus>> getTrainingStatusWithRestResponseAsync(@NonNull String personGroupId);
 
     /**
-     * List person groups and their information.
+     * Retrieve the training status of a person group (completed or ongoing).
      *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<TrainingStatus> getTrainingStatusAsync(@NonNull String personGroupId);
+
+    /**
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
+     *
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;PersonGroup&gt; object if successful.
      */
-    
-    List<PersonGroup> list(ListPersonGroupsOptionalParameter listOptionalParameter);
+    List<PersonGroup> list();
 
     /**
-     * List person groups and their information.
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PersonGroup&gt; object
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    Observable<List<PersonGroup>> listAsync(ListPersonGroupsOptionalParameter listOptionalParameter);
+    Mono<SimpleResponse<List<PersonGroup>>> listWithRestResponseAsync();
 
     /**
-     * List person groups and their information.
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
-     * @return the first stage of the list call
+     * @return a Mono which performs the network request upon subscription.
      */
-    PersonGroupsListDefinitionStages.WithExecute list();
+    Mono<List<PersonGroup>> listAsync();
 
     /**
-     * Grouping of list definition stages.
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;PersonGroup&gt; object if successful.
      */
-    interface PersonGroupsListDefinitionStages {
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * List person groups from the least personGroupId greater than the "start".
-             *
-             * @return next definition stage
-             */
-            PersonGroupsListDefinitionStages.WithExecute withStart(String start);
-
-            /**
-             * The number of person groups to list.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsListDefinitionStages.WithExecute withTop(Integer top);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PersonGroupsListDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;PersonGroup&gt; object if successful.
-             */
-            List<PersonGroup> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;PersonGroup&gt; object
-             */
-            Observable<List<PersonGroup>> executeAsync();
-        }
-    }
+    List<PersonGroup> list(String start, Integer top, Boolean returnRecognitionModel);
 
     /**
-     * The entirety of list definition.
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    interface PersonGroupsListDefinition extends
-        PersonGroupsListDefinitionStages.WithExecute {
-    }
+    Mono<SimpleResponse<List<PersonGroup>>> listWithRestResponseAsync(String start, Integer top, Boolean returnRecognitionModel);
 
+    /**
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * * Person groups are stored in alphabetical order of personGroupId.
+     * * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * &lt;br /&gt;
+     * For example, total 5 person groups: "group1", ..., "group5".
+     * &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     * &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     * &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<List<PersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel);
 
     /**
      * Queue a person group training task, the training task may not be started immediately.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void train(String personGroupId);
+    void train(@NonNull String personGroupId);
 
     /**
      * Queue a person group training task, the training task may not be started immediately.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<Void> trainAsync(String personGroupId);
+    Mono<RestVoidResponse> trainWithRestResponseAsync(@NonNull String personGroupId);
 
-
+    /**
+     * Queue a person group training task, the training task may not be started immediately.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Void> trainAsync(@NonNull String personGroupId);
 }

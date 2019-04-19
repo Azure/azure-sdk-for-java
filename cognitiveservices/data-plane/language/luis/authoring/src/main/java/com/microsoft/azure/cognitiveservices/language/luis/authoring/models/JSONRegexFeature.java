@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Exported Model - A Pattern feature.
  */
-public class JSONRegexFeature {
+public final class JSONRegexFeature {
     /**
      * The Regular Expression to match.
      */
@@ -35,7 +35,7 @@ public class JSONRegexFeature {
     /**
      * Get the pattern value.
      *
-     * @return the pattern value
+     * @return the pattern value.
      */
     public String pattern() {
         return this.pattern;
@@ -44,7 +44,7 @@ public class JSONRegexFeature {
     /**
      * Set the pattern value.
      *
-     * @param pattern the pattern value to set
+     * @param pattern the pattern value to set.
      * @return the JSONRegexFeature object itself.
      */
     public JSONRegexFeature withPattern(String pattern) {
@@ -55,7 +55,7 @@ public class JSONRegexFeature {
     /**
      * Get the activated value.
      *
-     * @return the activated value
+     * @return the activated value.
      */
     public Boolean activated() {
         return this.activated;
@@ -64,7 +64,7 @@ public class JSONRegexFeature {
     /**
      * Set the activated value.
      *
-     * @param activated the activated value to set
+     * @param activated the activated value to set.
      * @return the JSONRegexFeature object itself.
      */
     public JSONRegexFeature withActivated(Boolean activated) {
@@ -75,7 +75,7 @@ public class JSONRegexFeature {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -84,12 +84,11 @@ public class JSONRegexFeature {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the JSONRegexFeature object itself.
      */
     public JSONRegexFeature withName(String name) {
         this.name = name;
         return this;
     }
-
 }

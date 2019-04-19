@@ -15,19 +15,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for SafeSearch.
  */
 public enum SafeSearch {
-    /** Enum value Off. */
+    /**
+     * Enum value Off.
+     */
     OFF("Off"),
 
-    /** Enum value Moderate. */
+    /**
+     * Enum value Moderate.
+     */
     MODERATE("Moderate"),
 
-    /** Enum value Strict. */
+    /**
+     * Enum value Strict.
+     */
     STRICT("Strict");
 
-    /** The actual serialized value for a SafeSearch instance. */
-    private String value;
+    /**
+     * The actual serialized value for a SafeSearch instance.
+     */
+    private final String value;
 
-    SafeSearch(String value) {
+    private SafeSearch(String value) {
         this.value = value;
     }
 

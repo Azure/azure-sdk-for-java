@@ -8,15 +8,15 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.runtime.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Prediction, based on the input query, containing intent(s) and entities.
  */
-public class LuisResult {
+public final class LuisResult {
     /**
-     * The input utterance that was analized.
+     * The input utterance that was analyzed.
      */
     @JsonProperty(value = "query")
     private String query;
@@ -58,9 +58,15 @@ public class LuisResult {
     private Sentiment sentimentAnalysis;
 
     /**
+     * The connectedServiceResult property.
+     */
+    @JsonProperty(value = "connectedServiceResult")
+    private LuisResult connectedServiceResult;
+
+    /**
      * Get the query value.
      *
-     * @return the query value
+     * @return the query value.
      */
     public String query() {
         return this.query;
@@ -69,7 +75,7 @@ public class LuisResult {
     /**
      * Set the query value.
      *
-     * @param query the query value to set
+     * @param query the query value to set.
      * @return the LuisResult object itself.
      */
     public LuisResult withQuery(String query) {
@@ -80,7 +86,7 @@ public class LuisResult {
     /**
      * Get the alteredQuery value.
      *
-     * @return the alteredQuery value
+     * @return the alteredQuery value.
      */
     public String alteredQuery() {
         return this.alteredQuery;
@@ -89,7 +95,7 @@ public class LuisResult {
     /**
      * Set the alteredQuery value.
      *
-     * @param alteredQuery the alteredQuery value to set
+     * @param alteredQuery the alteredQuery value to set.
      * @return the LuisResult object itself.
      */
     public LuisResult withAlteredQuery(String alteredQuery) {
@@ -100,7 +106,7 @@ public class LuisResult {
     /**
      * Get the topScoringIntent value.
      *
-     * @return the topScoringIntent value
+     * @return the topScoringIntent value.
      */
     public IntentModel topScoringIntent() {
         return this.topScoringIntent;
@@ -109,7 +115,7 @@ public class LuisResult {
     /**
      * Set the topScoringIntent value.
      *
-     * @param topScoringIntent the topScoringIntent value to set
+     * @param topScoringIntent the topScoringIntent value to set.
      * @return the LuisResult object itself.
      */
     public LuisResult withTopScoringIntent(IntentModel topScoringIntent) {
@@ -120,7 +126,7 @@ public class LuisResult {
     /**
      * Get the intents value.
      *
-     * @return the intents value
+     * @return the intents value.
      */
     public List<IntentModel> intents() {
         return this.intents;
@@ -129,7 +135,7 @@ public class LuisResult {
     /**
      * Set the intents value.
      *
-     * @param intents the intents value to set
+     * @param intents the intents value to set.
      * @return the LuisResult object itself.
      */
     public LuisResult withIntents(List<IntentModel> intents) {
@@ -140,7 +146,7 @@ public class LuisResult {
     /**
      * Get the entities value.
      *
-     * @return the entities value
+     * @return the entities value.
      */
     public List<EntityModel> entities() {
         return this.entities;
@@ -149,7 +155,7 @@ public class LuisResult {
     /**
      * Set the entities value.
      *
-     * @param entities the entities value to set
+     * @param entities the entities value to set.
      * @return the LuisResult object itself.
      */
     public LuisResult withEntities(List<EntityModel> entities) {
@@ -160,7 +166,7 @@ public class LuisResult {
     /**
      * Get the compositeEntities value.
      *
-     * @return the compositeEntities value
+     * @return the compositeEntities value.
      */
     public List<CompositeEntityModel> compositeEntities() {
         return this.compositeEntities;
@@ -169,7 +175,7 @@ public class LuisResult {
     /**
      * Set the compositeEntities value.
      *
-     * @param compositeEntities the compositeEntities value to set
+     * @param compositeEntities the compositeEntities value to set.
      * @return the LuisResult object itself.
      */
     public LuisResult withCompositeEntities(List<CompositeEntityModel> compositeEntities) {
@@ -180,7 +186,7 @@ public class LuisResult {
     /**
      * Get the sentimentAnalysis value.
      *
-     * @return the sentimentAnalysis value
+     * @return the sentimentAnalysis value.
      */
     public Sentiment sentimentAnalysis() {
         return this.sentimentAnalysis;
@@ -189,7 +195,7 @@ public class LuisResult {
     /**
      * Set the sentimentAnalysis value.
      *
-     * @param sentimentAnalysis the sentimentAnalysis value to set
+     * @param sentimentAnalysis the sentimentAnalysis value to set.
      * @return the LuisResult object itself.
      */
     public LuisResult withSentimentAnalysis(Sentiment sentimentAnalysis) {
@@ -197,4 +203,23 @@ public class LuisResult {
         return this;
     }
 
+    /**
+     * Get the connectedServiceResult value.
+     *
+     * @return the connectedServiceResult value.
+     */
+    public LuisResult connectedServiceResult() {
+        return this.connectedServiceResult;
+    }
+
+    /**
+     * Set the connectedServiceResult value.
+     *
+     * @param connectedServiceResult the connectedServiceResult value to set.
+     * @return the LuisResult object itself.
+     */
+    public LuisResult withConnectedServiceResult(LuisResult connectedServiceResult) {
+        this.connectedServiceResult = connectedServiceResult;
+        return this;
+    }
 }

@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.newssearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Defines a news article.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = NewsArticle.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("NewsArticle")
-public class NewsArticle extends Article {
+public final class NewsArticle extends Article {
     /**
      * The news category that the article belongs to. For example, Sports. If
      * the news category cannot be determined, the article does not include
@@ -45,7 +45,7 @@ public class NewsArticle extends Article {
     /**
      * Get the category value.
      *
-     * @return the category value
+     * @return the category value.
      */
     public String category() {
         return this.category;
@@ -54,7 +54,7 @@ public class NewsArticle extends Article {
     /**
      * Get the headline value.
      *
-     * @return the headline value
+     * @return the headline value.
      */
     public Boolean headline() {
         return this.headline;
@@ -63,10 +63,9 @@ public class NewsArticle extends Article {
     /**
      * Get the clusteredArticles value.
      *
-     * @return the clusteredArticles value
+     * @return the clusteredArticles value.
      */
     public List<NewsArticle> clusteredArticles() {
         return this.clusteredArticles;
     }
-
 }

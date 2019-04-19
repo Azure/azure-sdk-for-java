@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.autosuggest.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Defines a thing.
@@ -32,10 +32,9 @@ public class Thing extends Response {
     /**
      * Get the url value.
      *
-     * @return the url value
+     * @return the url value.
      */
     public String url() {
         return this.url;
     }
-
 }

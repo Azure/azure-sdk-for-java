@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Information on a recognized word.
  */
-public class OcrWord {
+public final class OcrWord {
     /**
      * Bounding box of a recognized word. The four integers represent the
      * x-coordinate of the left edge, the y-coordinate of the top edge, width,
@@ -34,7 +34,7 @@ public class OcrWord {
     /**
      * Get the boundingBox value.
      *
-     * @return the boundingBox value
+     * @return the boundingBox value.
      */
     public String boundingBox() {
         return this.boundingBox;
@@ -43,7 +43,7 @@ public class OcrWord {
     /**
      * Set the boundingBox value.
      *
-     * @param boundingBox the boundingBox value to set
+     * @param boundingBox the boundingBox value to set.
      * @return the OcrWord object itself.
      */
     public OcrWord withBoundingBox(String boundingBox) {
@@ -54,7 +54,7 @@ public class OcrWord {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -63,12 +63,11 @@ public class OcrWord {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the OcrWord object itself.
      */
     public OcrWord withText(String text) {
         this.text = text;
         return this;
     }
-
 }

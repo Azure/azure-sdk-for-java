@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The CreateVideoReviewsBodyItemVideoFramesItem model.
  */
-public class CreateVideoReviewsBodyItemVideoFramesItem {
+public final class CreateVideoReviewsBodyItemVideoFramesItem {
     /**
      * Id of the frame.
      */
@@ -48,7 +48,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public String id() {
         return this.id;
@@ -57,7 +57,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the CreateVideoReviewsBodyItemVideoFramesItem object itself.
      */
     public CreateVideoReviewsBodyItemVideoFramesItem withId(String id) {
@@ -68,7 +68,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     /**
      * Get the timestamp value.
      *
-     * @return the timestamp value
+     * @return the timestamp value.
      */
     public int timestamp() {
         return this.timestamp;
@@ -77,7 +77,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     /**
      * Set the timestamp value.
      *
-     * @param timestamp the timestamp value to set
+     * @param timestamp the timestamp value to set.
      * @return the CreateVideoReviewsBodyItemVideoFramesItem object itself.
      */
     public CreateVideoReviewsBodyItemVideoFramesItem withTimestamp(int timestamp) {
@@ -88,7 +88,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     /**
      * Get the frameImage value.
      *
-     * @return the frameImage value
+     * @return the frameImage value.
      */
     public String frameImage() {
         return this.frameImage;
@@ -97,7 +97,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     /**
      * Set the frameImage value.
      *
-     * @param frameImage the frameImage value to set
+     * @param frameImage the frameImage value to set.
      * @return the CreateVideoReviewsBodyItemVideoFramesItem object itself.
      */
     public CreateVideoReviewsBodyItemVideoFramesItem withFrameImage(String frameImage) {
@@ -108,7 +108,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     /**
      * Get the reviewerResultTags value.
      *
-     * @return the reviewerResultTags value
+     * @return the reviewerResultTags value.
      */
     public List<CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem> reviewerResultTags() {
         return this.reviewerResultTags;
@@ -117,7 +117,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     /**
      * Set the reviewerResultTags value.
      *
-     * @param reviewerResultTags the reviewerResultTags value to set
+     * @param reviewerResultTags the reviewerResultTags value to set.
      * @return the CreateVideoReviewsBodyItemVideoFramesItem object itself.
      */
     public CreateVideoReviewsBodyItemVideoFramesItem withReviewerResultTags(List<CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem> reviewerResultTags) {
@@ -128,7 +128,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public List<CreateVideoReviewsBodyItemVideoFramesItemMetadataItem> metadata() {
         return this.metadata;
@@ -137,12 +137,11 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the CreateVideoReviewsBodyItemVideoFramesItem object itself.
      */
     public CreateVideoReviewsBodyItemVideoFramesItem withMetadata(List<CreateVideoReviewsBodyItemVideoFramesItemMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
-
 }

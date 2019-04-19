@@ -13,35 +13,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * An object providing possible image types and matching confidence levels.
  */
-public class ImageType {
+public final class ImageType {
     /**
      * Confidence level that the image is a clip art.
      */
     @JsonProperty(value = "clipArtType")
-    private double clipArtType;
+    private int clipArtType;
 
     /**
      * Confidence level that the image is a line drawing.
      */
     @JsonProperty(value = "lineDrawingType")
-    private double lineDrawingType;
+    private int lineDrawingType;
 
     /**
      * Get the clipArtType value.
      *
-     * @return the clipArtType value
+     * @return the clipArtType value.
      */
-    public double clipArtType() {
+    public int clipArtType() {
         return this.clipArtType;
     }
 
     /**
      * Set the clipArtType value.
      *
-     * @param clipArtType the clipArtType value to set
+     * @param clipArtType the clipArtType value to set.
      * @return the ImageType object itself.
      */
-    public ImageType withClipArtType(double clipArtType) {
+    public ImageType withClipArtType(int clipArtType) {
         this.clipArtType = clipArtType;
         return this;
     }
@@ -49,21 +49,20 @@ public class ImageType {
     /**
      * Get the lineDrawingType value.
      *
-     * @return the lineDrawingType value
+     * @return the lineDrawingType value.
      */
-    public double lineDrawingType() {
+    public int lineDrawingType() {
         return this.lineDrawingType;
     }
 
     /**
      * Set the lineDrawingType value.
      *
-     * @param lineDrawingType the lineDrawingType value to set
+     * @param lineDrawingType the lineDrawingType value to set.
      * @return the ImageType object itself.
      */
-    public ImageType withLineDrawingType(double lineDrawingType) {
+    public ImageType withLineDrawingType(int lineDrawingType) {
         this.lineDrawingType = lineDrawingType;
         return this;
     }
-
 }

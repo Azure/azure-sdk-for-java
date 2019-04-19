@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * All term Id response properties.
  */
-public class TermsData {
+public final class TermsData {
     /**
      * Language of the terms.
      */
@@ -42,7 +42,7 @@ public class TermsData {
     /**
      * Get the language value.
      *
-     * @return the language value
+     * @return the language value.
      */
     public String language() {
         return this.language;
@@ -51,7 +51,7 @@ public class TermsData {
     /**
      * Set the language value.
      *
-     * @param language the language value to set
+     * @param language the language value to set.
      * @return the TermsData object itself.
      */
     public TermsData withLanguage(String language) {
@@ -62,7 +62,7 @@ public class TermsData {
     /**
      * Get the terms value.
      *
-     * @return the terms value
+     * @return the terms value.
      */
     public List<TermsInList> terms() {
         return this.terms;
@@ -71,7 +71,7 @@ public class TermsData {
     /**
      * Set the terms value.
      *
-     * @param terms the terms value to set
+     * @param terms the terms value to set.
      * @return the TermsData object itself.
      */
     public TermsData withTerms(List<TermsInList> terms) {
@@ -82,7 +82,7 @@ public class TermsData {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public Status status() {
         return this.status;
@@ -91,7 +91,7 @@ public class TermsData {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the TermsData object itself.
      */
     public TermsData withStatus(Status status) {
@@ -102,7 +102,7 @@ public class TermsData {
     /**
      * Get the trackingId value.
      *
-     * @return the trackingId value
+     * @return the trackingId value.
      */
     public String trackingId() {
         return this.trackingId;
@@ -111,12 +111,11 @@ public class TermsData {
     /**
      * Set the trackingId value.
      *
-     * @param trackingId the trackingId value to set
+     * @param trackingId the trackingId value to set.
      * @return the TermsData object itself.
      */
     public TermsData withTrackingId(String trackingId) {
         this.trackingId = trackingId;
         return this;
     }
-
 }

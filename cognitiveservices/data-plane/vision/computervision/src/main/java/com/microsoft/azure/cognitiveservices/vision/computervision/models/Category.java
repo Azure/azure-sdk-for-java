@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * An object describing identified category.
  */
-public class Category {
+public final class Category {
     /**
      * Name of the category.
      */
@@ -27,7 +27,7 @@ public class Category {
     private double score;
 
     /**
-     * The detail property.
+     * Details of the identified category.
      */
     @JsonProperty(value = "detail")
     private CategoryDetail detail;
@@ -35,7 +35,7 @@ public class Category {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -44,7 +44,7 @@ public class Category {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the Category object itself.
      */
     public Category withName(String name) {
@@ -55,7 +55,7 @@ public class Category {
     /**
      * Get the score value.
      *
-     * @return the score value
+     * @return the score value.
      */
     public double score() {
         return this.score;
@@ -64,7 +64,7 @@ public class Category {
     /**
      * Set the score value.
      *
-     * @param score the score value to set
+     * @param score the score value to set.
      * @return the Category object itself.
      */
     public Category withScore(double score) {
@@ -75,7 +75,7 @@ public class Category {
     /**
      * Get the detail value.
      *
-     * @return the detail value
+     * @return the detail value.
      */
     public CategoryDetail detail() {
         return this.detail;
@@ -84,12 +84,11 @@ public class Category {
     /**
      * Set the detail value.
      *
-     * @param detail the detail value to set
+     * @param detail the detail value to set.
      * @return the Category object itself.
      */
     public Category withDetail(CategoryDetail detail) {
         this.detail = detail;
         return this;
     }
-
 }

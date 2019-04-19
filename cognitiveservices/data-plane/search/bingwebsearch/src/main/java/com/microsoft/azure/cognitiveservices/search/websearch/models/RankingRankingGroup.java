@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Defines a search results group, such as mainline.
  */
-public class RankingRankingGroup {
+public final class RankingRankingGroup {
     /**
      * A list of search result items to display in the group.
      */
@@ -24,7 +24,7 @@ public class RankingRankingGroup {
     /**
      * Get the items value.
      *
-     * @return the items value
+     * @return the items value.
      */
     public List<RankingRankingItem> items() {
         return this.items;
@@ -33,12 +33,11 @@ public class RankingRankingGroup {
     /**
      * Set the items value.
      *
-     * @param items the items value to set
+     * @param items the items value to set.
      * @return the RankingRankingGroup object itself.
      */
     public RankingRankingGroup withItems(List<RankingRankingItem> items) {
         this.items = items;
         return this;
     }
-
 }

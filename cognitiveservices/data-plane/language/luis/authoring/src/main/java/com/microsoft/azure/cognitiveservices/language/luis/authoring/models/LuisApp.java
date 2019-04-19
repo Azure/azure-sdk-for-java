@@ -8,17 +8,18 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.Map;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Exported Model - An exported LUIS Application.
  */
-public class LuisApp {
+public final class LuisApp {
     /**
      * Unmatched properties from the message are deserialized this collection.
      */
+    @JsonProperty(value = "")
     private Map<String, Object> additionalProperties;
 
     /**
@@ -58,7 +59,7 @@ public class LuisApp {
     private List<HierarchicalModel> entities;
 
     /**
-     * List of closed lists.
+     * List of list entities.
      */
     @JsonProperty(value = "closedLists")
     private List<ClosedList> closedLists;
@@ -106,7 +107,7 @@ public class LuisApp {
     private List<PatternRule> patterns;
 
     /**
-     * List of sample utterances.
+     * List of example utterances.
      */
     @JsonProperty(value = "utterances")
     private List<JSONUtterance> utterances;
@@ -114,7 +115,7 @@ public class LuisApp {
     /**
      * Get the additionalProperties value.
      *
-     * @return the additionalProperties value
+     * @return the additionalProperties value.
      */
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
@@ -123,7 +124,7 @@ public class LuisApp {
     /**
      * Set the additionalProperties value.
      *
-     * @param additionalProperties the additionalProperties value to set
+     * @param additionalProperties the additionalProperties value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withAdditionalProperties(Map<String, Object> additionalProperties) {
@@ -134,7 +135,7 @@ public class LuisApp {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -143,7 +144,7 @@ public class LuisApp {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withName(String name) {
@@ -154,7 +155,7 @@ public class LuisApp {
     /**
      * Get the versionId value.
      *
-     * @return the versionId value
+     * @return the versionId value.
      */
     public String versionId() {
         return this.versionId;
@@ -163,7 +164,7 @@ public class LuisApp {
     /**
      * Set the versionId value.
      *
-     * @param versionId the versionId value to set
+     * @param versionId the versionId value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withVersionId(String versionId) {
@@ -174,7 +175,7 @@ public class LuisApp {
     /**
      * Get the desc value.
      *
-     * @return the desc value
+     * @return the desc value.
      */
     public String desc() {
         return this.desc;
@@ -183,7 +184,7 @@ public class LuisApp {
     /**
      * Set the desc value.
      *
-     * @param desc the desc value to set
+     * @param desc the desc value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withDesc(String desc) {
@@ -194,7 +195,7 @@ public class LuisApp {
     /**
      * Get the culture value.
      *
-     * @return the culture value
+     * @return the culture value.
      */
     public String culture() {
         return this.culture;
@@ -203,7 +204,7 @@ public class LuisApp {
     /**
      * Set the culture value.
      *
-     * @param culture the culture value to set
+     * @param culture the culture value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withCulture(String culture) {
@@ -214,7 +215,7 @@ public class LuisApp {
     /**
      * Get the intents value.
      *
-     * @return the intents value
+     * @return the intents value.
      */
     public List<HierarchicalModel> intents() {
         return this.intents;
@@ -223,7 +224,7 @@ public class LuisApp {
     /**
      * Set the intents value.
      *
-     * @param intents the intents value to set
+     * @param intents the intents value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withIntents(List<HierarchicalModel> intents) {
@@ -234,7 +235,7 @@ public class LuisApp {
     /**
      * Get the entities value.
      *
-     * @return the entities value
+     * @return the entities value.
      */
     public List<HierarchicalModel> entities() {
         return this.entities;
@@ -243,7 +244,7 @@ public class LuisApp {
     /**
      * Set the entities value.
      *
-     * @param entities the entities value to set
+     * @param entities the entities value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withEntities(List<HierarchicalModel> entities) {
@@ -254,7 +255,7 @@ public class LuisApp {
     /**
      * Get the closedLists value.
      *
-     * @return the closedLists value
+     * @return the closedLists value.
      */
     public List<ClosedList> closedLists() {
         return this.closedLists;
@@ -263,7 +264,7 @@ public class LuisApp {
     /**
      * Set the closedLists value.
      *
-     * @param closedLists the closedLists value to set
+     * @param closedLists the closedLists value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withClosedLists(List<ClosedList> closedLists) {
@@ -274,7 +275,7 @@ public class LuisApp {
     /**
      * Get the composites value.
      *
-     * @return the composites value
+     * @return the composites value.
      */
     public List<HierarchicalModel> composites() {
         return this.composites;
@@ -283,7 +284,7 @@ public class LuisApp {
     /**
      * Set the composites value.
      *
-     * @param composites the composites value to set
+     * @param composites the composites value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withComposites(List<HierarchicalModel> composites) {
@@ -294,7 +295,7 @@ public class LuisApp {
     /**
      * Get the patternAnyEntities value.
      *
-     * @return the patternAnyEntities value
+     * @return the patternAnyEntities value.
      */
     public List<PatternAny> patternAnyEntities() {
         return this.patternAnyEntities;
@@ -303,7 +304,7 @@ public class LuisApp {
     /**
      * Set the patternAnyEntities value.
      *
-     * @param patternAnyEntities the patternAnyEntities value to set
+     * @param patternAnyEntities the patternAnyEntities value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withPatternAnyEntities(List<PatternAny> patternAnyEntities) {
@@ -314,7 +315,7 @@ public class LuisApp {
     /**
      * Get the regexEntities value.
      *
-     * @return the regexEntities value
+     * @return the regexEntities value.
      */
     public List<RegexEntity> regexEntities() {
         return this.regexEntities;
@@ -323,7 +324,7 @@ public class LuisApp {
     /**
      * Set the regexEntities value.
      *
-     * @param regexEntities the regexEntities value to set
+     * @param regexEntities the regexEntities value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withRegexEntities(List<RegexEntity> regexEntities) {
@@ -334,7 +335,7 @@ public class LuisApp {
     /**
      * Get the prebuiltEntities value.
      *
-     * @return the prebuiltEntities value
+     * @return the prebuiltEntities value.
      */
     public List<PrebuiltEntity> prebuiltEntities() {
         return this.prebuiltEntities;
@@ -343,7 +344,7 @@ public class LuisApp {
     /**
      * Set the prebuiltEntities value.
      *
-     * @param prebuiltEntities the prebuiltEntities value to set
+     * @param prebuiltEntities the prebuiltEntities value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withPrebuiltEntities(List<PrebuiltEntity> prebuiltEntities) {
@@ -354,7 +355,7 @@ public class LuisApp {
     /**
      * Get the regexFeatures value.
      *
-     * @return the regexFeatures value
+     * @return the regexFeatures value.
      */
     public List<JSONRegexFeature> regexFeatures() {
         return this.regexFeatures;
@@ -363,7 +364,7 @@ public class LuisApp {
     /**
      * Set the regexFeatures value.
      *
-     * @param regexFeatures the regexFeatures value to set
+     * @param regexFeatures the regexFeatures value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withRegexFeatures(List<JSONRegexFeature> regexFeatures) {
@@ -374,7 +375,7 @@ public class LuisApp {
     /**
      * Get the modelFeatures value.
      *
-     * @return the modelFeatures value
+     * @return the modelFeatures value.
      */
     public List<JSONModelFeature> modelFeatures() {
         return this.modelFeatures;
@@ -383,7 +384,7 @@ public class LuisApp {
     /**
      * Set the modelFeatures value.
      *
-     * @param modelFeatures the modelFeatures value to set
+     * @param modelFeatures the modelFeatures value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withModelFeatures(List<JSONModelFeature> modelFeatures) {
@@ -394,7 +395,7 @@ public class LuisApp {
     /**
      * Get the patterns value.
      *
-     * @return the patterns value
+     * @return the patterns value.
      */
     public List<PatternRule> patterns() {
         return this.patterns;
@@ -403,7 +404,7 @@ public class LuisApp {
     /**
      * Set the patterns value.
      *
-     * @param patterns the patterns value to set
+     * @param patterns the patterns value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withPatterns(List<PatternRule> patterns) {
@@ -414,7 +415,7 @@ public class LuisApp {
     /**
      * Get the utterances value.
      *
-     * @return the utterances value
+     * @return the utterances value.
      */
     public List<JSONUtterance> utterances() {
         return this.utterances;
@@ -423,12 +424,11 @@ public class LuisApp {
     /**
      * Set the utterances value.
      *
-     * @param utterances the utterances value to set
+     * @param utterances the utterances value to set.
      * @return the LuisApp object itself.
      */
     public LuisApp withUtterances(List<JSONUtterance> utterances) {
         this.utterances = utterances;
         return this;
     }
-
 }

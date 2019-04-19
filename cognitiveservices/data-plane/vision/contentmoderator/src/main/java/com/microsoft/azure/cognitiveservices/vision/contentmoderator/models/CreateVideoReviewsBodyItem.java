@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Schema items of the body.
  */
-public class CreateVideoReviewsBodyItem {
+public final class CreateVideoReviewsBodyItem {
     /**
      * Optional metadata details.
      */
@@ -74,7 +74,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Get the videoFrames value.
      *
-     * @return the videoFrames value
+     * @return the videoFrames value.
      */
     public List<CreateVideoReviewsBodyItemVideoFramesItem> videoFrames() {
         return this.videoFrames;
@@ -83,7 +83,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Set the videoFrames value.
      *
-     * @param videoFrames the videoFrames value to set
+     * @param videoFrames the videoFrames value to set.
      * @return the CreateVideoReviewsBodyItem object itself.
      */
     public CreateVideoReviewsBodyItem withVideoFrames(List<CreateVideoReviewsBodyItemVideoFramesItem> videoFrames) {
@@ -94,7 +94,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public List<CreateVideoReviewsBodyItemMetadataItem> metadata() {
         return this.metadata;
@@ -103,7 +103,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the CreateVideoReviewsBodyItem object itself.
      */
     public CreateVideoReviewsBodyItem withMetadata(List<CreateVideoReviewsBodyItemMetadataItem> metadata) {
@@ -114,7 +114,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Get the type value.
      *
-     * @return the type value
+     * @return the type value.
      */
     public String type() {
         return this.type;
@@ -123,7 +123,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Set the type value.
      *
-     * @param type the type value to set
+     * @param type the type value to set.
      * @return the CreateVideoReviewsBodyItem object itself.
      */
     public CreateVideoReviewsBodyItem withType(String type) {
@@ -134,7 +134,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Get the content value.
      *
-     * @return the content value
+     * @return the content value.
      */
     public String content() {
         return this.content;
@@ -143,7 +143,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Set the content value.
      *
-     * @param content the content value to set
+     * @param content the content value to set.
      * @return the CreateVideoReviewsBodyItem object itself.
      */
     public CreateVideoReviewsBodyItem withContent(String content) {
@@ -154,7 +154,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Get the contentId value.
      *
-     * @return the contentId value
+     * @return the contentId value.
      */
     public String contentId() {
         return this.contentId;
@@ -163,7 +163,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Set the contentId value.
      *
-     * @param contentId the contentId value to set
+     * @param contentId the contentId value to set.
      * @return the CreateVideoReviewsBodyItem object itself.
      */
     public CreateVideoReviewsBodyItem withContentId(String contentId) {
@@ -174,7 +174,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public String status() {
         return this.status;
@@ -183,7 +183,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the CreateVideoReviewsBodyItem object itself.
      */
     public CreateVideoReviewsBodyItem withStatus(String status) {
@@ -194,7 +194,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Get the timescale value.
      *
-     * @return the timescale value
+     * @return the timescale value.
      */
     public Integer timescale() {
         return this.timescale;
@@ -203,7 +203,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Set the timescale value.
      *
-     * @param timescale the timescale value to set
+     * @param timescale the timescale value to set.
      * @return the CreateVideoReviewsBodyItem object itself.
      */
     public CreateVideoReviewsBodyItem withTimescale(Integer timescale) {
@@ -214,7 +214,7 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Get the callbackEndpoint value.
      *
-     * @return the callbackEndpoint value
+     * @return the callbackEndpoint value.
      */
     public String callbackEndpoint() {
         return this.callbackEndpoint;
@@ -223,12 +223,11 @@ public class CreateVideoReviewsBodyItem {
     /**
      * Set the callbackEndpoint value.
      *
-     * @param callbackEndpoint the callbackEndpoint value to set
+     * @param callbackEndpoint the callbackEndpoint value to set.
      * @return the CreateVideoReviewsBodyItem object itself.
      */
     public CreateVideoReviewsBodyItem withCallbackEndpoint(String callbackEndpoint) {
         this.callbackEndpoint = callbackEndpoint;
         return this;
     }
-
 }

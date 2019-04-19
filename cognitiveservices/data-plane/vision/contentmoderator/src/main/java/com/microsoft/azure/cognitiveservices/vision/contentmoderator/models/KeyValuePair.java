@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The key value pair object properties.
  */
-public class KeyValuePair {
+public final class KeyValuePair {
     /**
      * The key parameter.
      */
@@ -29,7 +29,7 @@ public class KeyValuePair {
     /**
      * Get the key value.
      *
-     * @return the key value
+     * @return the key value.
      */
     public String key() {
         return this.key;
@@ -38,7 +38,7 @@ public class KeyValuePair {
     /**
      * Set the key value.
      *
-     * @param key the key value to set
+     * @param key the key value to set.
      * @return the KeyValuePair object itself.
      */
     public KeyValuePair withKey(String key) {
@@ -49,7 +49,7 @@ public class KeyValuePair {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public String value() {
         return this.value;
@@ -58,12 +58,11 @@ public class KeyValuePair {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the KeyValuePair object itself.
      */
     public KeyValuePair withValue(String value) {
         this.value = value;
         return this;
     }
-
 }

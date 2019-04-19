@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.runtime.models;
 
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /**
  * An entity extracted from the utterance.
@@ -18,6 +18,7 @@ public class EntityModel {
     /**
      * Unmatched properties from the message are deserialized this collection.
      */
+    @JsonProperty(value = "")
     private Map<String, Object> additionalProperties;
 
     /**
@@ -49,7 +50,7 @@ public class EntityModel {
     /**
      * Get the additionalProperties value.
      *
-     * @return the additionalProperties value
+     * @return the additionalProperties value.
      */
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
@@ -58,7 +59,7 @@ public class EntityModel {
     /**
      * Set the additionalProperties value.
      *
-     * @param additionalProperties the additionalProperties value to set
+     * @param additionalProperties the additionalProperties value to set.
      * @return the EntityModel object itself.
      */
     public EntityModel withAdditionalProperties(Map<String, Object> additionalProperties) {
@@ -69,7 +70,7 @@ public class EntityModel {
     /**
      * Get the entity value.
      *
-     * @return the entity value
+     * @return the entity value.
      */
     public String entity() {
         return this.entity;
@@ -78,7 +79,7 @@ public class EntityModel {
     /**
      * Set the entity value.
      *
-     * @param entity the entity value to set
+     * @param entity the entity value to set.
      * @return the EntityModel object itself.
      */
     public EntityModel withEntity(String entity) {
@@ -89,7 +90,7 @@ public class EntityModel {
     /**
      * Get the type value.
      *
-     * @return the type value
+     * @return the type value.
      */
     public String type() {
         return this.type;
@@ -98,7 +99,7 @@ public class EntityModel {
     /**
      * Set the type value.
      *
-     * @param type the type value to set
+     * @param type the type value to set.
      * @return the EntityModel object itself.
      */
     public EntityModel withType(String type) {
@@ -109,7 +110,7 @@ public class EntityModel {
     /**
      * Get the startIndex value.
      *
-     * @return the startIndex value
+     * @return the startIndex value.
      */
     public int startIndex() {
         return this.startIndex;
@@ -118,7 +119,7 @@ public class EntityModel {
     /**
      * Set the startIndex value.
      *
-     * @param startIndex the startIndex value to set
+     * @param startIndex the startIndex value to set.
      * @return the EntityModel object itself.
      */
     public EntityModel withStartIndex(int startIndex) {
@@ -129,7 +130,7 @@ public class EntityModel {
     /**
      * Get the endIndex value.
      *
-     * @return the endIndex value
+     * @return the endIndex value.
      */
     public int endIndex() {
         return this.endIndex;
@@ -138,12 +139,11 @@ public class EntityModel {
     /**
      * Set the endIndex value.
      *
-     * @param endIndex the endIndex value to set
+     * @param endIndex the endIndex value to set.
      * @return the EntityModel object itself.
      */
     public EntityModel withEndIndex(int endIndex) {
         this.endIndex = endIndex;
         return this;
     }
-
 }

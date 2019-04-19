@@ -8,24 +8,29 @@
 
 package com.microsoft.azure.cognitiveservices.language.spellcheck.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for ActionType.
  */
 public final class ActionType extends ExpandableStringEnum<ActionType> {
-    /** Static value Edit for ActionType. */
+    /**
+     * Static value Edit for ActionType.
+     */
     public static final ActionType EDIT = fromString("Edit");
 
-    /** Static value Load for ActionType. */
+    /**
+     * Static value Load for ActionType.
+     */
     public static final ActionType LOAD = fromString("Load");
 
     /**
      * Creates or finds a ActionType from its string representation.
-     * @param name a name to look for
-     * @return the corresponding ActionType
+     *
+     * @param name a name to look for.
+     * @return the corresponding ActionType.
      */
     @JsonCreator
     public static ActionType fromString(String name) {
@@ -33,7 +38,7 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
     }
 
     /**
-     * @return known ActionType values
+     * @return known ActionType values.
      */
     public static Collection<ActionType> values() {
         return values(ActionType.class);

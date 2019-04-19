@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The PredictionQueryResult model.
  */
-public class PredictionQueryResult {
+public final class PredictionQueryResult {
     /**
      * The token property.
      */
@@ -30,7 +30,7 @@ public class PredictionQueryResult {
     /**
      * Get the token value.
      *
-     * @return the token value
+     * @return the token value.
      */
     public PredictionQueryToken token() {
         return this.token;
@@ -39,10 +39,9 @@ public class PredictionQueryResult {
     /**
      * Get the results value.
      *
-     * @return the results value
+     * @return the results value.
      */
     public List<StoredImagePrediction> results() {
         return this.results;
     }
-
 }

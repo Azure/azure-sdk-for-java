@@ -8,24 +8,34 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for OperationStatusType.
  */
 public final class OperationStatusType extends ExpandableStringEnum<OperationStatusType> {
-    /** Static value Failed for OperationStatusType. */
+    /**
+     * Static value Failed for OperationStatusType.
+     */
     public static final OperationStatusType FAILED = fromString("Failed");
 
-    /** Static value Success for OperationStatusType. */
+    /**
+     * Static value FAILED for OperationStatusType.
+     */
+    public static final OperationStatusType FAILED = fromString("FAILED");
+
+    /**
+     * Static value Success for OperationStatusType.
+     */
     public static final OperationStatusType SUCCESS = fromString("Success");
 
     /**
      * Creates or finds a OperationStatusType from its string representation.
-     * @param name a name to look for
-     * @return the corresponding OperationStatusType
+     *
+     * @param name a name to look for.
+     * @return the corresponding OperationStatusType.
      */
     @JsonCreator
     public static OperationStatusType fromString(String name) {
@@ -33,7 +43,7 @@ public final class OperationStatusType extends ExpandableStringEnum<OperationSta
     }
 
     /**
-     * @return known OperationStatusType values
+     * @return known OperationStatusType values.
      */
     public static Collection<OperationStatusType> values() {
         return values(OperationStatusType.class);

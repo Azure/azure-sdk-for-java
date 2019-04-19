@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Defines a group of previously recognized entities.
  */
-public class RecognizedEntityGroup {
+public final class RecognizedEntityGroup {
     /**
      * The regions of the image that contain entities.
      */
@@ -34,7 +34,7 @@ public class RecognizedEntityGroup {
     /**
      * Get the recognizedEntityRegions value.
      *
-     * @return the recognizedEntityRegions value
+     * @return the recognizedEntityRegions value.
      */
     public List<RecognizedEntityRegion> recognizedEntityRegions() {
         return this.recognizedEntityRegions;
@@ -43,7 +43,7 @@ public class RecognizedEntityGroup {
     /**
      * Set the recognizedEntityRegions value.
      *
-     * @param recognizedEntityRegions the recognizedEntityRegions value to set
+     * @param recognizedEntityRegions the recognizedEntityRegions value to set.
      * @return the RecognizedEntityGroup object itself.
      */
     public RecognizedEntityGroup withRecognizedEntityRegions(List<RecognizedEntityRegion> recognizedEntityRegions) {
@@ -54,7 +54,7 @@ public class RecognizedEntityGroup {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -63,12 +63,11 @@ public class RecognizedEntityGroup {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the RecognizedEntityGroup object itself.
      */
     public RecognizedEntityGroup withName(String name) {
         this.name = name;
         return this;
     }
-
 }

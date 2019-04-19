@@ -8,21 +8,21 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * An object describing supported model by name and categories.
  */
-public class ModelDescription {
+public final class ModelDescription {
     /**
-     * The name property.
+     * The name of the model.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * The categories property.
+     * Categories of the model.
      */
     @JsonProperty(value = "categories")
     private List<String> categories;
@@ -30,7 +30,7 @@ public class ModelDescription {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -39,7 +39,7 @@ public class ModelDescription {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ModelDescription object itself.
      */
     public ModelDescription withName(String name) {
@@ -50,7 +50,7 @@ public class ModelDescription {
     /**
      * Get the categories value.
      *
-     * @return the categories value
+     * @return the categories value.
      */
     public List<String> categories() {
         return this.categories;
@@ -59,12 +59,11 @@ public class ModelDescription {
     /**
      * Set the categories value.
      *
-     * @param categories the categories value to set
+     * @param categories the categories value to set.
      * @return the ModelDescription object itself.
      */
     public ModelDescription withCategories(List<String> categories) {
         this.categories = categories;
         return this;
     }
-
 }

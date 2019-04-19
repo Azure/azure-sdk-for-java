@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Defines the entity type and position of the extracted entity within the
  * example.
  */
-public class EntityLabel {
+public final class EntityLabel {
     /**
      * The entity type.
      */
@@ -36,7 +36,7 @@ public class EntityLabel {
     /**
      * Get the entityName value.
      *
-     * @return the entityName value
+     * @return the entityName value.
      */
     public String entityName() {
         return this.entityName;
@@ -45,7 +45,7 @@ public class EntityLabel {
     /**
      * Set the entityName value.
      *
-     * @param entityName the entityName value to set
+     * @param entityName the entityName value to set.
      * @return the EntityLabel object itself.
      */
     public EntityLabel withEntityName(String entityName) {
@@ -56,7 +56,7 @@ public class EntityLabel {
     /**
      * Get the startTokenIndex value.
      *
-     * @return the startTokenIndex value
+     * @return the startTokenIndex value.
      */
     public int startTokenIndex() {
         return this.startTokenIndex;
@@ -65,7 +65,7 @@ public class EntityLabel {
     /**
      * Set the startTokenIndex value.
      *
-     * @param startTokenIndex the startTokenIndex value to set
+     * @param startTokenIndex the startTokenIndex value to set.
      * @return the EntityLabel object itself.
      */
     public EntityLabel withStartTokenIndex(int startTokenIndex) {
@@ -76,7 +76,7 @@ public class EntityLabel {
     /**
      * Get the endTokenIndex value.
      *
-     * @return the endTokenIndex value
+     * @return the endTokenIndex value.
      */
     public int endTokenIndex() {
         return this.endTokenIndex;
@@ -85,12 +85,11 @@ public class EntityLabel {
     /**
      * Set the endTokenIndex value.
      *
-     * @param endTokenIndex the endTokenIndex value to set
+     * @param endTokenIndex the endTokenIndex value to set.
      * @return the EntityLabel object itself.
      */
     public EntityLabel withEndTokenIndex(int endTokenIndex) {
         this.endTokenIndex = endTokenIndex;
         return this;
     }
-
 }

@@ -8,41 +8,89 @@
 
 package com.microsoft.azure.cognitiveservices.language.textanalytics.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The LanguageBatchResultItem model.
  */
-public class LanguageBatchResultItem {
+public final class LanguageBatchResultItem {
     /**
-     * Unique document identifier.
+     * Unique, non-empty document identifier.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * A list of extracted languages.
      */
-    @JsonProperty(value = "detectedLanguages", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "detectedLanguages")
     private List<DetectedLanguage> detectedLanguages;
+
+    /**
+     * (Optional) if showStats=true was specified in the request this field
+     * will contain information about the document payload.
+     */
+    @JsonProperty(value = "statistics")
+    private DocumentStatistics statistics;
 
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public String id() {
         return this.id;
     }
 
     /**
+     * Set the id value.
+     *
+     * @param id the id value to set.
+     * @return the LanguageBatchResultItem object itself.
+     */
+    public LanguageBatchResultItem withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the detectedLanguages value.
      *
-     * @return the detectedLanguages value
+     * @return the detectedLanguages value.
      */
     public List<DetectedLanguage> detectedLanguages() {
         return this.detectedLanguages;
     }
 
+    /**
+     * Set the detectedLanguages value.
+     *
+     * @param detectedLanguages the detectedLanguages value to set.
+     * @return the LanguageBatchResultItem object itself.
+     */
+    public LanguageBatchResultItem withDetectedLanguages(List<DetectedLanguage> detectedLanguages) {
+        this.detectedLanguages = detectedLanguages;
+        return this;
+    }
+
+    /**
+     * Get the statistics value.
+     *
+     * @return the statistics value.
+     */
+    public DocumentStatistics statistics() {
+        return this.statistics;
+    }
+
+    /**
+     * Set the statistics value.
+     *
+     * @param statistics the statistics value to set.
+     * @return the LanguageBatchResultItem object itself.
+     */
+    public LanguageBatchResultItem withStatistics(DocumentStatistics statistics) {
+        this.statistics = statistics;
+        return this;
+    }
 }

@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.videosearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The TrendingVideosCategory model.
  */
-public class TrendingVideosCategory {
+public final class TrendingVideosCategory {
     /**
      * The title property.
      */
@@ -30,7 +30,7 @@ public class TrendingVideosCategory {
     /**
      * Get the title value.
      *
-     * @return the title value
+     * @return the title value.
      */
     public String title() {
         return this.title;
@@ -39,7 +39,7 @@ public class TrendingVideosCategory {
     /**
      * Set the title value.
      *
-     * @param title the title value to set
+     * @param title the title value to set.
      * @return the TrendingVideosCategory object itself.
      */
     public TrendingVideosCategory withTitle(String title) {
@@ -50,7 +50,7 @@ public class TrendingVideosCategory {
     /**
      * Get the subcategories value.
      *
-     * @return the subcategories value
+     * @return the subcategories value.
      */
     public List<TrendingVideosSubcategory> subcategories() {
         return this.subcategories;
@@ -59,12 +59,11 @@ public class TrendingVideosCategory {
     /**
      * Set the subcategories value.
      *
-     * @param subcategories the subcategories value to set
+     * @param subcategories the subcategories value to set.
      * @return the TrendingVideosCategory object itself.
      */
     public TrendingVideosCategory withSubcategories(List<TrendingVideosSubcategory> subcategories) {
         this.subcategories = subcategories;
         return this;
     }
-
 }

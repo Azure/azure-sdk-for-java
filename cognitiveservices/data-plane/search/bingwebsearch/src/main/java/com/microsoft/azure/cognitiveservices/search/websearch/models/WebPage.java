@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Defines a webpage that is relevant to the query.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = WebPage.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("WebPage")
-public class WebPage extends CreativeWork {
+public final class WebPage extends CreativeWork {
     /**
      * The display URL of the webpage. The URL is meant for display purposes
      * only and is not well formed.
@@ -66,7 +66,7 @@ public class WebPage extends CreativeWork {
     /**
      * Get the displayUrl value.
      *
-     * @return the displayUrl value
+     * @return the displayUrl value.
      */
     public String displayUrl() {
         return this.displayUrl;
@@ -75,7 +75,7 @@ public class WebPage extends CreativeWork {
     /**
      * Get the snippet value.
      *
-     * @return the snippet value
+     * @return the snippet value.
      */
     public String snippet() {
         return this.snippet;
@@ -84,7 +84,7 @@ public class WebPage extends CreativeWork {
     /**
      * Get the deepLinks value.
      *
-     * @return the deepLinks value
+     * @return the deepLinks value.
      */
     public List<WebPage> deepLinks() {
         return this.deepLinks;
@@ -93,7 +93,7 @@ public class WebPage extends CreativeWork {
     /**
      * Get the dateLastCrawled value.
      *
-     * @return the dateLastCrawled value
+     * @return the dateLastCrawled value.
      */
     public String dateLastCrawled() {
         return this.dateLastCrawled;
@@ -102,7 +102,7 @@ public class WebPage extends CreativeWork {
     /**
      * Get the searchTags value.
      *
-     * @return the searchTags value
+     * @return the searchTags value.
      */
     public List<WebMetaTag> searchTags() {
         return this.searchTags;
@@ -111,10 +111,9 @@ public class WebPage extends CreativeWork {
     /**
      * Get the primaryImageOfPage value.
      *
-     * @return the primaryImageOfPage value
+     * @return the primaryImageOfPage value.
      */
     public ImageObject primaryImageOfPage() {
         return this.primaryImageOfPage;
     }
-
 }

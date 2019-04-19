@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The TrendingVideosTile model.
  */
-public class TrendingVideosTile {
+public final class TrendingVideosTile {
     /**
      * The query property.
      */
@@ -29,7 +29,7 @@ public class TrendingVideosTile {
     /**
      * Get the query value.
      *
-     * @return the query value
+     * @return the query value.
      */
     public Query query() {
         return this.query;
@@ -38,7 +38,7 @@ public class TrendingVideosTile {
     /**
      * Set the query value.
      *
-     * @param query the query value to set
+     * @param query the query value to set.
      * @return the TrendingVideosTile object itself.
      */
     public TrendingVideosTile withQuery(Query query) {
@@ -49,7 +49,7 @@ public class TrendingVideosTile {
     /**
      * Get the image value.
      *
-     * @return the image value
+     * @return the image value.
      */
     public ImageObject image() {
         return this.image;
@@ -58,12 +58,11 @@ public class TrendingVideosTile {
     /**
      * Set the image value.
      *
-     * @param image the image value to set
+     * @param image the image value to set.
      * @return the TrendingVideosTile object itself.
      */
     public TrendingVideosTile withImage(ImageObject image) {
         this.image = image;
         return this;
     }
-
 }

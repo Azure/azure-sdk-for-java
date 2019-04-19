@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Defines the category of trending images.
  */
-public class TrendingImagesCategory {
+public final class TrendingImagesCategory {
     /**
      * The name of the image category. For example, Popular People Searches.
      */
@@ -33,7 +33,7 @@ public class TrendingImagesCategory {
     /**
      * Get the title value.
      *
-     * @return the title value
+     * @return the title value.
      */
     public String title() {
         return this.title;
@@ -42,7 +42,7 @@ public class TrendingImagesCategory {
     /**
      * Set the title value.
      *
-     * @param title the title value to set
+     * @param title the title value to set.
      * @return the TrendingImagesCategory object itself.
      */
     public TrendingImagesCategory withTitle(String title) {
@@ -53,7 +53,7 @@ public class TrendingImagesCategory {
     /**
      * Get the tiles value.
      *
-     * @return the tiles value
+     * @return the tiles value.
      */
     public List<TrendingImagesTile> tiles() {
         return this.tiles;
@@ -62,12 +62,11 @@ public class TrendingImagesCategory {
     /**
      * Set the tiles value.
      *
-     * @param tiles the tiles value to set
+     * @param tiles the tiles value to set.
      * @return the TrendingImagesCategory object itself.
      */
     public TrendingImagesCategory withTiles(List<TrendingImagesTile> tiles) {
         this.tiles = tiles;
         return this;
     }
-
 }

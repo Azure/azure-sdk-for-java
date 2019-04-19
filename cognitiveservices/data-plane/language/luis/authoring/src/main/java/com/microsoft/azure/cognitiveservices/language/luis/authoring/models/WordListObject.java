@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * Sublist of items for a Closed list.
+ * Sublist of items for a list entity.
  */
-public class WordListObject {
+public final class WordListObject {
     /**
      * The standard form that the list represents.
      */
@@ -30,7 +30,7 @@ public class WordListObject {
     /**
      * Get the canonicalForm value.
      *
-     * @return the canonicalForm value
+     * @return the canonicalForm value.
      */
     public String canonicalForm() {
         return this.canonicalForm;
@@ -39,7 +39,7 @@ public class WordListObject {
     /**
      * Set the canonicalForm value.
      *
-     * @param canonicalForm the canonicalForm value to set
+     * @param canonicalForm the canonicalForm value to set.
      * @return the WordListObject object itself.
      */
     public WordListObject withCanonicalForm(String canonicalForm) {
@@ -50,7 +50,7 @@ public class WordListObject {
     /**
      * Get the list value.
      *
-     * @return the list value
+     * @return the list value.
      */
     public List<String> list() {
         return this.list;
@@ -59,12 +59,11 @@ public class WordListObject {
     /**
      * Set the list value.
      *
-     * @param list the list value to set
+     * @param list the list value to set.
      * @return the WordListObject object itself.
      */
     public WordListObject withList(List<String> list) {
         this.list = list;
         return this;
     }
-
 }

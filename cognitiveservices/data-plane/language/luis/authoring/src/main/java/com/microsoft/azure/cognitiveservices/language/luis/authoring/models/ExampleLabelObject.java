@@ -8,27 +8,27 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * A labeled example.
+ * A labeled example utterance.
  */
-public class ExampleLabelObject {
+public final class ExampleLabelObject {
     /**
-     * The sample's utterance.
+     * The example utterance.
      */
     @JsonProperty(value = "text")
     private String text;
 
     /**
-     * The idenfied entities within the utterance.
+     * The identified entities within the example utterance.
      */
     @JsonProperty(value = "entityLabels")
     private List<EntityLabelObject> entityLabels;
 
     /**
-     * The idenfitied intent representing the utterance.
+     * The identified intent representing the example utterance.
      */
     @JsonProperty(value = "intentName")
     private String intentName;
@@ -36,7 +36,7 @@ public class ExampleLabelObject {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -45,7 +45,7 @@ public class ExampleLabelObject {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the ExampleLabelObject object itself.
      */
     public ExampleLabelObject withText(String text) {
@@ -56,7 +56,7 @@ public class ExampleLabelObject {
     /**
      * Get the entityLabels value.
      *
-     * @return the entityLabels value
+     * @return the entityLabels value.
      */
     public List<EntityLabelObject> entityLabels() {
         return this.entityLabels;
@@ -65,7 +65,7 @@ public class ExampleLabelObject {
     /**
      * Set the entityLabels value.
      *
-     * @param entityLabels the entityLabels value to set
+     * @param entityLabels the entityLabels value to set.
      * @return the ExampleLabelObject object itself.
      */
     public ExampleLabelObject withEntityLabels(List<EntityLabelObject> entityLabels) {
@@ -76,7 +76,7 @@ public class ExampleLabelObject {
     /**
      * Get the intentName value.
      *
-     * @return the intentName value
+     * @return the intentName value.
      */
     public String intentName() {
         return this.intentName;
@@ -85,12 +85,11 @@ public class ExampleLabelObject {
     /**
      * Set the intentName value.
      *
-     * @param intentName the intentName value to set
+     * @param intentName the intentName value to set.
      * @return the ExampleLabelObject object itself.
      */
     public ExampleLabelObject withIntentName(String intentName) {
         this.intentName = intentName;
         return this;
     }
-
 }

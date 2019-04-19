@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Result of image analysis using a specific domain model including additional
  * metadata.
  */
-public class DomainModelResults {
+public final class DomainModelResults {
     /**
      * Model-specific response.
      */
@@ -36,7 +36,7 @@ public class DomainModelResults {
     /**
      * Get the result value.
      *
-     * @return the result value
+     * @return the result value.
      */
     public Object result() {
         return this.result;
@@ -45,7 +45,7 @@ public class DomainModelResults {
     /**
      * Set the result value.
      *
-     * @param result the result value to set
+     * @param result the result value to set.
      * @return the DomainModelResults object itself.
      */
     public DomainModelResults withResult(Object result) {
@@ -56,7 +56,7 @@ public class DomainModelResults {
     /**
      * Get the requestId value.
      *
-     * @return the requestId value
+     * @return the requestId value.
      */
     public String requestId() {
         return this.requestId;
@@ -65,7 +65,7 @@ public class DomainModelResults {
     /**
      * Set the requestId value.
      *
-     * @param requestId the requestId value to set
+     * @param requestId the requestId value to set.
      * @return the DomainModelResults object itself.
      */
     public DomainModelResults withRequestId(String requestId) {
@@ -76,7 +76,7 @@ public class DomainModelResults {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public ImageMetadata metadata() {
         return this.metadata;
@@ -85,12 +85,11 @@ public class DomainModelResults {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the DomainModelResults object itself.
      */
     public DomainModelResults withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }
-
 }

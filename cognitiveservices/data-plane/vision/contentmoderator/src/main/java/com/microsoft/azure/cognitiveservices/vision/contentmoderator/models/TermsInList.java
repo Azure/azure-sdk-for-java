@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Terms in list Id passed.
  */
-public class TermsInList {
+public final class TermsInList {
     /**
      * Added term details.
      */
@@ -23,7 +23,7 @@ public class TermsInList {
     /**
      * Get the term value.
      *
-     * @return the term value
+     * @return the term value.
      */
     public String term() {
         return this.term;
@@ -32,12 +32,11 @@ public class TermsInList {
     /**
      * Set the term value.
      *
-     * @param term the term value to set
+     * @param term the term value to set.
      * @return the TermsInList object itself.
      */
     public TermsInList withTerm(String term) {
         this.term = term;
         return this;
     }
-
 }

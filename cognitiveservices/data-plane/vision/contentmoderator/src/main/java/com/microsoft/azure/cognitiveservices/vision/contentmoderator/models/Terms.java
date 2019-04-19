@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Terms properties.
  */
-public class Terms {
+public final class Terms {
     /**
      * Term data details.
      */
@@ -29,7 +29,7 @@ public class Terms {
     /**
      * Get the data value.
      *
-     * @return the data value
+     * @return the data value.
      */
     public TermsData data() {
         return this.data;
@@ -38,7 +38,7 @@ public class Terms {
     /**
      * Set the data value.
      *
-     * @param data the data value to set
+     * @param data the data value to set.
      * @return the Terms object itself.
      */
     public Terms withData(TermsData data) {
@@ -49,7 +49,7 @@ public class Terms {
     /**
      * Get the paging value.
      *
-     * @return the paging value
+     * @return the paging value.
      */
     public TermsPaging paging() {
         return this.paging;
@@ -58,12 +58,11 @@ public class Terms {
     /**
      * Set the paging value.
      *
-     * @param paging the paging value to set
+     * @param paging the paging value to set.
      * @return the Terms object itself.
      */
     public Terms withPaging(TermsPaging paging) {
         this.paging = paging;
         return this;
     }
-
 }

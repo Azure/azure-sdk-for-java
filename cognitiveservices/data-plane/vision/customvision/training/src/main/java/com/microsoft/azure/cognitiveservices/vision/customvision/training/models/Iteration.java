@@ -8,14 +8,15 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
-import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Iteration model to be sent over JSON.
  */
-public class Iteration {
+public final class Iteration {
     /**
      * Gets the id of the iteration.
      */
@@ -25,15 +26,8 @@ public class Iteration {
     /**
      * Gets or sets the name of the iteration.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", required = true)
     private String name;
-
-    /**
-     * Gets or sets a value indicating whether the iteration is the default
-     * iteration for the project.
-     */
-    @JsonProperty(value = "isDefault")
-    private boolean isDefault;
 
     /**
      * Gets the current iteration status.
@@ -45,19 +39,19 @@ public class Iteration {
      * Gets the time this iteration was completed.
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime created;
+    private OffsetDateTime created;
 
     /**
      * Gets the time this iteration was last modified.
      */
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime lastModified;
+    private OffsetDateTime lastModified;
 
     /**
      * Gets the time this iteration was last modified.
      */
     @JsonProperty(value = "trainedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime trainedAt;
+    private OffsetDateTime trainedAt;
 
     /**
      * Gets the project id of the iteration.
@@ -70,6 +64,12 @@ public class Iteration {
      */
     @JsonProperty(value = "exportable", access = JsonProperty.Access.WRITE_ONLY)
     private boolean exportable;
+
+    /**
+     * A set of platforms this iteration can export to.
+     */
+    @JsonProperty(value = "exportableTo", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> exportableTo;
 
     /**
      * Get or sets a guid of the domain the iteration has been trained on.
@@ -85,9 +85,34 @@ public class Iteration {
     private Classifier classificationType;
 
     /**
+     * Gets the training type of the iteration. Possible values include:
+     * 'Regular', 'Advanced'.
+     */
+    @JsonProperty(value = "trainingType", access = JsonProperty.Access.WRITE_ONLY)
+    private TrainingType trainingType;
+
+    /**
+     * Gets the reserved advanced training budget for the iteration.
+     */
+    @JsonProperty(value = "reservedBudgetInHours", access = JsonProperty.Access.WRITE_ONLY)
+    private int reservedBudgetInHours;
+
+    /**
+     * Name of the published model.
+     */
+    @JsonProperty(value = "publishName", access = JsonProperty.Access.WRITE_ONLY)
+    private String publishName;
+
+    /**
+     * Resource Provider Id this iteration was originally published to.
+     */
+    @JsonProperty(value = "originalPublishResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String originalPublishResourceId;
+
+    /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -96,7 +121,7 @@ public class Iteration {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -105,7 +130,7 @@ public class Iteration {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the Iteration object itself.
      */
     public Iteration withName(String name) {
@@ -114,29 +139,9 @@ public class Iteration {
     }
 
     /**
-     * Get the isDefault value.
-     *
-     * @return the isDefault value
-     */
-    public boolean isDefault() {
-        return this.isDefault;
-    }
-
-    /**
-     * Set the isDefault value.
-     *
-     * @param isDefault the isDefault value to set
-     * @return the Iteration object itself.
-     */
-    public Iteration withIsDefault(boolean isDefault) {
-        this.isDefault = isDefault;
-        return this;
-    }
-
-    /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public String status() {
         return this.status;
@@ -145,34 +150,34 @@ public class Iteration {
     /**
      * Get the created value.
      *
-     * @return the created value
+     * @return the created value.
      */
-    public DateTime created() {
+    public OffsetDateTime created() {
         return this.created;
     }
 
     /**
      * Get the lastModified value.
      *
-     * @return the lastModified value
+     * @return the lastModified value.
      */
-    public DateTime lastModified() {
+    public OffsetDateTime lastModified() {
         return this.lastModified;
     }
 
     /**
      * Get the trainedAt value.
      *
-     * @return the trainedAt value
+     * @return the trainedAt value.
      */
-    public DateTime trainedAt() {
+    public OffsetDateTime trainedAt() {
         return this.trainedAt;
     }
 
     /**
      * Get the projectId value.
      *
-     * @return the projectId value
+     * @return the projectId value.
      */
     public UUID projectId() {
         return this.projectId;
@@ -181,16 +186,25 @@ public class Iteration {
     /**
      * Get the exportable value.
      *
-     * @return the exportable value
+     * @return the exportable value.
      */
     public boolean exportable() {
         return this.exportable;
     }
 
     /**
+     * Get the exportableTo value.
+     *
+     * @return the exportableTo value.
+     */
+    public List<String> exportableTo() {
+        return this.exportableTo;
+    }
+
+    /**
      * Get the domainId value.
      *
-     * @return the domainId value
+     * @return the domainId value.
      */
     public UUID domainId() {
         return this.domainId;
@@ -199,10 +213,45 @@ public class Iteration {
     /**
      * Get the classificationType value.
      *
-     * @return the classificationType value
+     * @return the classificationType value.
      */
     public Classifier classificationType() {
         return this.classificationType;
     }
 
+    /**
+     * Get the trainingType value.
+     *
+     * @return the trainingType value.
+     */
+    public TrainingType trainingType() {
+        return this.trainingType;
+    }
+
+    /**
+     * Get the reservedBudgetInHours value.
+     *
+     * @return the reservedBudgetInHours value.
+     */
+    public int reservedBudgetInHours() {
+        return this.reservedBudgetInHours;
+    }
+
+    /**
+     * Get the publishName value.
+     *
+     * @return the publishName value.
+     */
+    public String publishName() {
+        return this.publishName;
+    }
+
+    /**
+     * Get the originalPublishResourceId value.
+     *
+     * @return the originalPublishResourceId value.
+     */
+    public String originalPublishResourceId() {
+        return this.originalPublishResourceId;
+    }
 }

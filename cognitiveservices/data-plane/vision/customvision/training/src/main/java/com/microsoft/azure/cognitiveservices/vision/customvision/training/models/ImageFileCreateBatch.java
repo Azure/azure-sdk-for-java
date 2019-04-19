@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ImageFileCreateBatch model.
  */
-public class ImageFileCreateBatch {
+public final class ImageFileCreateBatch {
     /**
      * The images property.
      */
@@ -31,7 +31,7 @@ public class ImageFileCreateBatch {
     /**
      * Get the images value.
      *
-     * @return the images value
+     * @return the images value.
      */
     public List<ImageFileCreateEntry> images() {
         return this.images;
@@ -40,7 +40,7 @@ public class ImageFileCreateBatch {
     /**
      * Set the images value.
      *
-     * @param images the images value to set
+     * @param images the images value to set.
      * @return the ImageFileCreateBatch object itself.
      */
     public ImageFileCreateBatch withImages(List<ImageFileCreateEntry> images) {
@@ -51,7 +51,7 @@ public class ImageFileCreateBatch {
     /**
      * Get the tagIds value.
      *
-     * @return the tagIds value
+     * @return the tagIds value.
      */
     public List<UUID> tagIds() {
         return this.tagIds;
@@ -60,12 +60,11 @@ public class ImageFileCreateBatch {
     /**
      * Set the tagIds value.
      *
-     * @param tagIds the tagIds value to set
+     * @param tagIds the tagIds value to set.
      * @return the ImageFileCreateBatch object itself.
      */
     public ImageFileCreateBatch withTagIds(List<UUID> tagIds) {
         this.tagIds = tagIds;
         return this;
     }
-
 }

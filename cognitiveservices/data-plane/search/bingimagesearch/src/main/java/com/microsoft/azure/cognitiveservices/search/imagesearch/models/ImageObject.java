@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines an image.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageObject.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageObject")
-public class ImageObject extends MediaObject {
+public final class ImageObject extends MediaObject {
     /**
      * The URL to a thumbnail of the image.
      */
@@ -38,7 +38,7 @@ public class ImageObject extends MediaObject {
      * pie, this object includes a count of the number of websites where you
      * can buy an apple pie. To indicate the number of offers in your UX,
      * include badging such as a shopping cart icon that contains the count.
-     * When the user clicks on the icon, use imageInisghtsToken to get the list
+     * When the user clicks on the icon, use imageInsightsToken to get the list
      * of websites.
      */
     @JsonProperty(value = "insightsMetadata", access = JsonProperty.Access.WRITE_ONLY)
@@ -67,7 +67,7 @@ public class ImageObject extends MediaObject {
     /**
      * Get the thumbnail value.
      *
-     * @return the thumbnail value
+     * @return the thumbnail value.
      */
     public ImageObject thumbnail() {
         return this.thumbnail;
@@ -76,7 +76,7 @@ public class ImageObject extends MediaObject {
     /**
      * Get the imageInsightsToken value.
      *
-     * @return the imageInsightsToken value
+     * @return the imageInsightsToken value.
      */
     public String imageInsightsToken() {
         return this.imageInsightsToken;
@@ -85,7 +85,7 @@ public class ImageObject extends MediaObject {
     /**
      * Get the insightsMetadata value.
      *
-     * @return the insightsMetadata value
+     * @return the insightsMetadata value.
      */
     public ImagesImageMetadata insightsMetadata() {
         return this.insightsMetadata;
@@ -94,7 +94,7 @@ public class ImageObject extends MediaObject {
     /**
      * Get the imageId value.
      *
-     * @return the imageId value
+     * @return the imageId value.
      */
     public String imageId() {
         return this.imageId;
@@ -103,7 +103,7 @@ public class ImageObject extends MediaObject {
     /**
      * Get the accentColor value.
      *
-     * @return the accentColor value
+     * @return the accentColor value.
      */
     public String accentColor() {
         return this.accentColor;
@@ -112,10 +112,9 @@ public class ImageObject extends MediaObject {
     /**
      * Get the visualWords value.
      *
-     * @return the visualWords value
+     * @return the visualWords value.
      */
     public String visualWords() {
         return this.visualWords;
     }
-
 }

@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
-import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * Represents a project.
  */
-public class Project {
+public final class Project {
     /**
      * Gets the project id.
      */
@@ -25,43 +25,49 @@ public class Project {
     /**
      * Gets or sets the name of the project.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Gets or sets the description of the project.
      */
-    @JsonProperty(value = "description")
+    @JsonProperty(value = "description", required = true)
     private String description;
 
     /**
      * Gets or sets the project settings.
      */
-    @JsonProperty(value = "settings")
+    @JsonProperty(value = "settings", required = true)
     private ProjectSettings settings;
 
     /**
      * Gets the date this project was created.
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime created;
+    private OffsetDateTime created;
 
     /**
-     * Gets the date this project was last modifed.
+     * Gets the date this project was last modified.
      */
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime lastModified;
+    private OffsetDateTime lastModified;
 
     /**
-     * Gets the thumbnail url representing the project.
+     * Gets the thumbnail url representing the image.
      */
     @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
 
     /**
+     * Gets if the DR mode is on.
+     */
+    @JsonProperty(value = "drModeEnabled", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean drModeEnabled;
+
+    /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -70,7 +76,7 @@ public class Project {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -79,7 +85,7 @@ public class Project {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the Project object itself.
      */
     public Project withName(String name) {
@@ -90,7 +96,7 @@ public class Project {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public String description() {
         return this.description;
@@ -99,7 +105,7 @@ public class Project {
     /**
      * Set the description value.
      *
-     * @param description the description value to set
+     * @param description the description value to set.
      * @return the Project object itself.
      */
     public Project withDescription(String description) {
@@ -110,7 +116,7 @@ public class Project {
     /**
      * Get the settings value.
      *
-     * @return the settings value
+     * @return the settings value.
      */
     public ProjectSettings settings() {
         return this.settings;
@@ -119,7 +125,7 @@ public class Project {
     /**
      * Set the settings value.
      *
-     * @param settings the settings value to set
+     * @param settings the settings value to set.
      * @return the Project object itself.
      */
     public Project withSettings(ProjectSettings settings) {
@@ -130,28 +136,36 @@ public class Project {
     /**
      * Get the created value.
      *
-     * @return the created value
+     * @return the created value.
      */
-    public DateTime created() {
+    public OffsetDateTime created() {
         return this.created;
     }
 
     /**
      * Get the lastModified value.
      *
-     * @return the lastModified value
+     * @return the lastModified value.
      */
-    public DateTime lastModified() {
+    public OffsetDateTime lastModified() {
         return this.lastModified;
     }
 
     /**
      * Get the thumbnailUri value.
      *
-     * @return the thumbnailUri value
+     * @return the thumbnailUri value.
      */
     public String thumbnailUri() {
         return this.thumbnailUri;
     }
 
+    /**
+     * Get the drModeEnabled value.
+     *
+     * @return the drModeEnabled value.
+     */
+    public Boolean drModeEnabled() {
+        return this.drModeEnabled;
+    }
 }

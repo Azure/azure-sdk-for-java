@@ -13,7 +13,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The MatchRecord model.
  */
-public class MatchRecord {
+public final class MatchRecord {
+    /**
+     * (optional) If a well-known item with Wikipedia link is recognized, a
+     * decimal number denoting the confidence level of the Wikipedia info will
+     * be returned.
+     */
+    @JsonProperty(value = "wikipediaScore")
+    private Double wikipediaScore;
+
+    /**
+     * (optional) If an entity type is recognized, a decimal number denoting
+     * the confidence level of the entity type will be returned.
+     */
+    @JsonProperty(value = "entityTypeScore")
+    private Double entityTypeScore;
+
     /**
      * Entity text as appears in the request.
      */
@@ -33,9 +48,49 @@ public class MatchRecord {
     private Integer length;
 
     /**
+     * Get the wikipediaScore value.
+     *
+     * @return the wikipediaScore value.
+     */
+    public Double wikipediaScore() {
+        return this.wikipediaScore;
+    }
+
+    /**
+     * Set the wikipediaScore value.
+     *
+     * @param wikipediaScore the wikipediaScore value to set.
+     * @return the MatchRecord object itself.
+     */
+    public MatchRecord withWikipediaScore(Double wikipediaScore) {
+        this.wikipediaScore = wikipediaScore;
+        return this;
+    }
+
+    /**
+     * Get the entityTypeScore value.
+     *
+     * @return the entityTypeScore value.
+     */
+    public Double entityTypeScore() {
+        return this.entityTypeScore;
+    }
+
+    /**
+     * Set the entityTypeScore value.
+     *
+     * @param entityTypeScore the entityTypeScore value to set.
+     * @return the MatchRecord object itself.
+     */
+    public MatchRecord withEntityTypeScore(Double entityTypeScore) {
+        this.entityTypeScore = entityTypeScore;
+        return this;
+    }
+
+    /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -44,7 +99,7 @@ public class MatchRecord {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the MatchRecord object itself.
      */
     public MatchRecord withText(String text) {
@@ -55,7 +110,7 @@ public class MatchRecord {
     /**
      * Get the offset value.
      *
-     * @return the offset value
+     * @return the offset value.
      */
     public Integer offset() {
         return this.offset;
@@ -64,7 +119,7 @@ public class MatchRecord {
     /**
      * Set the offset value.
      *
-     * @param offset the offset value to set
+     * @param offset the offset value to set.
      * @return the MatchRecord object itself.
      */
     public MatchRecord withOffset(Integer offset) {
@@ -75,7 +130,7 @@ public class MatchRecord {
     /**
      * Get the length value.
      *
-     * @return the length value
+     * @return the length value.
      */
     public Integer length() {
         return this.length;
@@ -84,12 +139,11 @@ public class MatchRecord {
     /**
      * Set the length value.
      *
-     * @param length the length value to set
+     * @param length the length value to set.
      * @return the MatchRecord object itself.
      */
     public MatchRecord withLength(Integer length) {
         this.length = length;
         return this;
     }
-
 }

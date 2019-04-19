@@ -8,24 +8,29 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for Classifier.
  */
 public final class Classifier extends ExpandableStringEnum<Classifier> {
-    /** Static value Multiclass for Classifier. */
+    /**
+     * Static value Multiclass for Classifier.
+     */
     public static final Classifier MULTICLASS = fromString("Multiclass");
 
-    /** Static value Multilabel for Classifier. */
+    /**
+     * Static value Multilabel for Classifier.
+     */
     public static final Classifier MULTILABEL = fromString("Multilabel");
 
     /**
      * Creates or finds a Classifier from its string representation.
-     * @param name a name to look for
-     * @return the corresponding Classifier
+     *
+     * @param name a name to look for.
+     * @return the corresponding Classifier.
      */
     @JsonCreator
     public static Classifier fromString(String name) {
@@ -33,7 +38,7 @@ public final class Classifier extends ExpandableStringEnum<Classifier> {
     }
 
     /**
-     * @return known Classifier values
+     * @return known Classifier values.
      */
     public static Collection<Classifier> values() {
         return values(Classifier.class);

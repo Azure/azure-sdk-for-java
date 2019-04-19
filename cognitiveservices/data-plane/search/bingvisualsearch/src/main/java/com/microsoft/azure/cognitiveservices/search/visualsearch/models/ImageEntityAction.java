@@ -8,29 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The ImageEntityAction model.
+ * Defines an entity action.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageEntityAction.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageEntityAction")
-public class ImageEntityAction extends ImageAction {
-    /**
-     * Information about the entity.
-     */
-    @JsonProperty(value = "data", access = JsonProperty.Access.WRITE_ONLY)
-    private Thing data;
-
-    /**
-     * Get the data value.
-     *
-     * @return the data value
-     */
-    public Thing data() {
-        return this.data;
-    }
-
+public final class ImageEntityAction extends ImageAction {
 }

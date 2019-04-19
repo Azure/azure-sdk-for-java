@@ -8,29 +8,29 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.GetAllTermsOptionalParameter;
+import com.azure.common.http.rest.SimpleResponse;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Terms;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in ListManagementTerms.
+ * An instance of this class provides access to all the operations defined in
+ * ListManagementTerms.
  */
 public interface ListManagementTerms {
-
     /**
      * Add a term to the term list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
      * @param term Term to be deleted.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Object object if successful.
      */
-    Object addTerm(String listId, String term, String language);
+    Object addTerm(@NonNull String listId, @NonNull String term, @NonNull String language);
 
     /**
      * Add a term to the term list with list Id equal to list Id passed.
@@ -38,12 +38,21 @@ public interface ListManagementTerms {
      * @param listId List Id of the image list.
      * @param term Term to be deleted.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<Object> addTermAsync(String listId, String term, String language);
+    Mono<SimpleResponse<Object>> addTermWithRestResponseAsync(@NonNull String listId, @NonNull String term, @NonNull String language);
 
-
+    /**
+     * Add a term to the term list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param term Term to be deleted.
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Object> addTermAsync(@NonNull String listId, @NonNull String term, @NonNull String language);
 
     /**
      * Deletes a term from the list with list Id equal to the list Id passed.
@@ -51,12 +60,12 @@ public interface ListManagementTerms {
      * @param listId List Id of the image list.
      * @param term Term to be deleted.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the String object if successful.
      */
-    String deleteTerm(String listId, String term, String language);
+    String deleteTerm(@NonNull String listId, @NonNull String term, @NonNull String language);
 
     /**
      * Deletes a term from the list with list Id equal to the list Id passed.
@@ -64,143 +73,121 @@ public interface ListManagementTerms {
      * @param listId List Id of the image list.
      * @param term Term to be deleted.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<String> deleteTermAsync(String listId, String term, String language);
+    Mono<SimpleResponse<String>> deleteTermWithRestResponseAsync(@NonNull String listId, @NonNull String term, @NonNull String language);
 
+    /**
+     * Deletes a term from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param term Term to be deleted.
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<String> deleteTermAsync(@NonNull String listId, @NonNull String term, @NonNull String language);
 
     /**
      * Gets all terms from the list with list Id equal to the list Id passed.
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Terms object if successful.
      */
-    
-    Terms getAllTerms(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter);
+    Terms getAllTerms(@NonNull String listId, @NonNull String language);
 
     /**
      * Gets all terms from the list with list Id equal to the list Id passed.
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Terms object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    Observable<Terms> getAllTermsAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter);
+    Mono<SimpleResponse<Terms>> getAllTermsWithRestResponseAsync(@NonNull String listId, @NonNull String language);
 
     /**
      * Gets all terms from the list with list Id equal to the list Id passed.
      *
-     * @return the first stage of the getAllTerms call
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ListManagementTermsGetAllTermsDefinitionStages.WithListId getAllTerms();
+    Mono<Terms> getAllTermsAsync(@NonNull String listId, @NonNull String language);
 
     /**
-     * Grouping of getAllTerms definition stages.
+     * Gets all terms from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @param offset The pagination start index.
+     * @param limit The max limit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Terms object if successful.
      */
-    interface ListManagementTermsGetAllTermsDefinitionStages {
-        /**
-         * The stage of the definition to be specify listId.
-         */
-        interface WithListId {
-            /**
-             * List Id of the image list.
-             *
-             * @return next definition stage
-             */
-            WithLanguage withListId(String listId);
-        }
-        /**
-         * The stage of the definition to be specify language.
-         */
-        interface WithLanguage {
-            /**
-             * Language of the terms.
-             *
-             * @return next definition stage
-             */
-            ListManagementTermsGetAllTermsDefinitionStages.WithExecute withLanguage(String language);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The pagination start index.
-             *
-             * @return next definition stage
-             */
-            ListManagementTermsGetAllTermsDefinitionStages.WithExecute withOffset(Integer offset);
-
-            /**
-             * The max limit.
-             *
-             * @return next definition stage
-             */
-            ListManagementTermsGetAllTermsDefinitionStages.WithExecute withLimit(Integer limit);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ListManagementTermsGetAllTermsDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Terms object if successful.
-             */
-            Terms execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Terms object
-             */
-            Observable<Terms> executeAsync();
-        }
-    }
+    Terms getAllTerms(@NonNull String listId, @NonNull String language, Integer offset, Integer limit);
 
     /**
-     * The entirety of getAllTerms definition.
+     * Gets all terms from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @param offset The pagination start index.
+     * @param limit The max limit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    interface ListManagementTermsGetAllTermsDefinition extends
-        ListManagementTermsGetAllTermsDefinitionStages.WithListId,
-        ListManagementTermsGetAllTermsDefinitionStages.WithLanguage,
-        ListManagementTermsGetAllTermsDefinitionStages.WithExecute {
-    }
+    Mono<SimpleResponse<Terms>> getAllTermsWithRestResponseAsync(@NonNull String listId, @NonNull String language, Integer offset, Integer limit);
 
+    /**
+     * Gets all terms from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @param offset The pagination start index.
+     * @param limit The max limit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Terms> getAllTermsAsync(@NonNull String listId, @NonNull String language, Integer offset, Integer limit);
 
     /**
      * Deletes all terms from the list with list Id equal to the list Id passed.
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the String object if successful.
      */
-    String deleteAllTerms(String listId, String language);
+    String deleteAllTerms(@NonNull String listId, @NonNull String language);
 
     /**
      * Deletes all terms from the list with list Id equal to the list Id passed.
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<String> deleteAllTermsAsync(String listId, String language);
+    Mono<SimpleResponse<String>> deleteAllTermsWithRestResponseAsync(@NonNull String listId, @NonNull String language);
 
-
+    /**
+     * Deletes all terms from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<String> deleteAllTermsAsync(@NonNull String listId, @NonNull String language);
 }

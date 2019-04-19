@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Defines the entity type and position of the extracted entity within the
  * example.
  */
-public class EntityLabelObject {
+public final class EntityLabelObject {
     /**
      * The entity type.
      */
@@ -36,7 +36,7 @@ public class EntityLabelObject {
     /**
      * Get the entityName value.
      *
-     * @return the entityName value
+     * @return the entityName value.
      */
     public String entityName() {
         return this.entityName;
@@ -45,7 +45,7 @@ public class EntityLabelObject {
     /**
      * Set the entityName value.
      *
-     * @param entityName the entityName value to set
+     * @param entityName the entityName value to set.
      * @return the EntityLabelObject object itself.
      */
     public EntityLabelObject withEntityName(String entityName) {
@@ -56,7 +56,7 @@ public class EntityLabelObject {
     /**
      * Get the startCharIndex value.
      *
-     * @return the startCharIndex value
+     * @return the startCharIndex value.
      */
     public int startCharIndex() {
         return this.startCharIndex;
@@ -65,7 +65,7 @@ public class EntityLabelObject {
     /**
      * Set the startCharIndex value.
      *
-     * @param startCharIndex the startCharIndex value to set
+     * @param startCharIndex the startCharIndex value to set.
      * @return the EntityLabelObject object itself.
      */
     public EntityLabelObject withStartCharIndex(int startCharIndex) {
@@ -76,7 +76,7 @@ public class EntityLabelObject {
     /**
      * Get the endCharIndex value.
      *
-     * @return the endCharIndex value
+     * @return the endCharIndex value.
      */
     public int endCharIndex() {
         return this.endCharIndex;
@@ -85,12 +85,11 @@ public class EntityLabelObject {
     /**
      * Set the endCharIndex value.
      *
-     * @param endCharIndex the endCharIndex value to set
+     * @param endCharIndex the endCharIndex value to set.
      * @return the EntityLabelObject object itself.
      */
     public EntityLabelObject withEndCharIndex(int endCharIndex) {
         this.endCharIndex = endCharIndex;
         return this;
     }
-
 }

@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a contractual rule for link attribution.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ContractualRulesLinkAttribution.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ContractualRules/LinkAttribution")
-public class ContractualRulesLinkAttribution extends ContractualRulesAttribution {
+public final class ContractualRulesLinkAttribution extends ContractualRulesAttribution {
     /**
      * The attribution text.
      */
@@ -40,7 +40,7 @@ public class ContractualRulesLinkAttribution extends ContractualRulesAttribution
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -49,7 +49,7 @@ public class ContractualRulesLinkAttribution extends ContractualRulesAttribution
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the ContractualRulesLinkAttribution object itself.
      */
     public ContractualRulesLinkAttribution withText(String text) {
@@ -60,7 +60,7 @@ public class ContractualRulesLinkAttribution extends ContractualRulesAttribution
     /**
      * Get the url value.
      *
-     * @return the url value
+     * @return the url value.
      */
     public String url() {
         return this.url;
@@ -69,7 +69,7 @@ public class ContractualRulesLinkAttribution extends ContractualRulesAttribution
     /**
      * Set the url value.
      *
-     * @param url the url value to set
+     * @param url the url value to set.
      * @return the ContractualRulesLinkAttribution object itself.
      */
     public ContractualRulesLinkAttribution withUrl(String url) {
@@ -80,10 +80,9 @@ public class ContractualRulesLinkAttribution extends ContractualRulesAttribution
     /**
      * Get the optionalForListDisplay value.
      *
-     * @return the optionalForListDisplay value
+     * @return the optionalForListDisplay value.
      */
     public Boolean optionalForListDisplay() {
         return this.optionalForListDisplay;
     }
-
 }

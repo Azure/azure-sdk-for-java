@@ -11,9 +11,9 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Sublist of items for a Closed list.
+ * Sublist of items for a list entity.
  */
-public class SubClosedListResponse extends SubClosedList {
+public final class SubClosedListResponse extends SubClosedList {
     /**
      * The sublist ID.
      */
@@ -23,7 +23,7 @@ public class SubClosedListResponse extends SubClosedList {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public int id() {
         return this.id;
@@ -32,12 +32,11 @@ public class SubClosedListResponse extends SubClosedList {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the SubClosedListResponse object itself.
      */
     public SubClosedListResponse withId(int id) {
         this.id = id;
         return this;
     }
-
 }

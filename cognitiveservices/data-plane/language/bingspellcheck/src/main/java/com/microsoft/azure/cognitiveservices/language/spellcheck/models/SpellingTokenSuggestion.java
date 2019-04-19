@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The SpellingTokenSuggestion model.
  */
-public class SpellingTokenSuggestion {
+public final class SpellingTokenSuggestion {
     /**
      * The suggestion property.
      */
@@ -35,7 +35,7 @@ public class SpellingTokenSuggestion {
     /**
      * Get the suggestion value.
      *
-     * @return the suggestion value
+     * @return the suggestion value.
      */
     public String suggestion() {
         return this.suggestion;
@@ -44,7 +44,7 @@ public class SpellingTokenSuggestion {
     /**
      * Set the suggestion value.
      *
-     * @param suggestion the suggestion value to set
+     * @param suggestion the suggestion value to set.
      * @return the SpellingTokenSuggestion object itself.
      */
     public SpellingTokenSuggestion withSuggestion(String suggestion) {
@@ -55,7 +55,7 @@ public class SpellingTokenSuggestion {
     /**
      * Get the score value.
      *
-     * @return the score value
+     * @return the score value.
      */
     public Double score() {
         return this.score;
@@ -64,10 +64,9 @@ public class SpellingTokenSuggestion {
     /**
      * Get the pingUrlSuffix value.
      *
-     * @return the pingUrlSuffix value
+     * @return the pingUrlSuffix value.
      */
     public String pingUrlSuffix() {
         return this.pingUrlSuffix;
     }
-
 }

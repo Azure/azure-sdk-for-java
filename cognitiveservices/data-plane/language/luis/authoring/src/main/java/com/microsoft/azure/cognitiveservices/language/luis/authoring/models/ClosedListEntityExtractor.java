@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
- * Closed List Entity Extractor.
+ * List Entity Extractor.
  */
-public class ClosedListEntityExtractor {
+public final class ClosedListEntityExtractor {
     /**
      * The ID of the Entity Model.
      */
@@ -37,9 +37,9 @@ public class ClosedListEntityExtractor {
     /**
      * Possible values include: 'Entity Extractor', 'Hierarchical Entity
      * Extractor', 'Hierarchical Child Entity Extractor', 'Composite Entity
-     * Extractor', 'Closed List Entity Extractor', 'Prebuilt Entity Extractor',
-     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regex Entity
-     * Extractor'.
+     * Extractor', 'List Entity Extractor', 'Prebuilt Entity Extractor',
+     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regular Expression
+     * Entity Extractor'.
      */
     @JsonProperty(value = "readableType", required = true)
     private String readableType;
@@ -51,7 +51,7 @@ public class ClosedListEntityExtractor {
     private List<EntityRole> roles;
 
     /**
-     * List of sub-lists.
+     * List of sublists.
      */
     @JsonProperty(value = "subLists")
     private List<SubClosedListResponse> subLists;
@@ -59,7 +59,7 @@ public class ClosedListEntityExtractor {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -68,7 +68,7 @@ public class ClosedListEntityExtractor {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the ClosedListEntityExtractor object itself.
      */
     public ClosedListEntityExtractor withId(UUID id) {
@@ -79,7 +79,7 @@ public class ClosedListEntityExtractor {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -88,7 +88,7 @@ public class ClosedListEntityExtractor {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ClosedListEntityExtractor object itself.
      */
     public ClosedListEntityExtractor withName(String name) {
@@ -99,7 +99,7 @@ public class ClosedListEntityExtractor {
     /**
      * Get the typeId value.
      *
-     * @return the typeId value
+     * @return the typeId value.
      */
     public Integer typeId() {
         return this.typeId;
@@ -108,7 +108,7 @@ public class ClosedListEntityExtractor {
     /**
      * Set the typeId value.
      *
-     * @param typeId the typeId value to set
+     * @param typeId the typeId value to set.
      * @return the ClosedListEntityExtractor object itself.
      */
     public ClosedListEntityExtractor withTypeId(Integer typeId) {
@@ -119,7 +119,7 @@ public class ClosedListEntityExtractor {
     /**
      * Get the readableType value.
      *
-     * @return the readableType value
+     * @return the readableType value.
      */
     public String readableType() {
         return this.readableType;
@@ -128,7 +128,7 @@ public class ClosedListEntityExtractor {
     /**
      * Set the readableType value.
      *
-     * @param readableType the readableType value to set
+     * @param readableType the readableType value to set.
      * @return the ClosedListEntityExtractor object itself.
      */
     public ClosedListEntityExtractor withReadableType(String readableType) {
@@ -139,7 +139,7 @@ public class ClosedListEntityExtractor {
     /**
      * Get the roles value.
      *
-     * @return the roles value
+     * @return the roles value.
      */
     public List<EntityRole> roles() {
         return this.roles;
@@ -148,7 +148,7 @@ public class ClosedListEntityExtractor {
     /**
      * Set the roles value.
      *
-     * @param roles the roles value to set
+     * @param roles the roles value to set.
      * @return the ClosedListEntityExtractor object itself.
      */
     public ClosedListEntityExtractor withRoles(List<EntityRole> roles) {
@@ -159,7 +159,7 @@ public class ClosedListEntityExtractor {
     /**
      * Get the subLists value.
      *
-     * @return the subLists value
+     * @return the subLists value.
      */
     public List<SubClosedListResponse> subLists() {
         return this.subLists;
@@ -168,12 +168,11 @@ public class ClosedListEntityExtractor {
     /**
      * Set the subLists value.
      *
-     * @param subLists the subLists value to set
+     * @param subLists the subLists value to set.
      * @return the ClosedListEntityExtractor object itself.
      */
     public ClosedListEntityExtractor withSubLists(List<SubClosedListResponse> subLists) {
         this.subLists = subLists;
         return this;
     }
-
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * An intent detected from the utterance.
  */
-public class IntentModel {
+public final class IntentModel {
     /**
      * Name of the intent, as defined in LUIS.
      */
@@ -29,7 +29,7 @@ public class IntentModel {
     /**
      * Get the intent value.
      *
-     * @return the intent value
+     * @return the intent value.
      */
     public String intent() {
         return this.intent;
@@ -38,7 +38,7 @@ public class IntentModel {
     /**
      * Set the intent value.
      *
-     * @param intent the intent value to set
+     * @param intent the intent value to set.
      * @return the IntentModel object itself.
      */
     public IntentModel withIntent(String intent) {
@@ -49,7 +49,7 @@ public class IntentModel {
     /**
      * Get the score value.
      *
-     * @return the score value
+     * @return the score value.
      */
     public Double score() {
         return this.score;
@@ -58,12 +58,11 @@ public class IntentModel {
     /**
      * Set the score value.
      *
-     * @param score the score value to set
+     * @param score the score value to set.
      * @return the IntentModel object itself.
      */
     public IntentModel withScore(Double score) {
         this.score = score;
         return this;
     }
-
 }

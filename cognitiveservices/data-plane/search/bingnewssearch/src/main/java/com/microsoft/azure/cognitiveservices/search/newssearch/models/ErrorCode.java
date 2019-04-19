@@ -8,36 +8,49 @@
 
 package com.microsoft.azure.cognitiveservices.search.newssearch.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for ErrorCode.
  */
 public final class ErrorCode extends ExpandableStringEnum<ErrorCode> {
-    /** Static value None for ErrorCode. */
+    /**
+     * Static value None for ErrorCode.
+     */
     public static final ErrorCode NONE = fromString("None");
 
-    /** Static value ServerError for ErrorCode. */
+    /**
+     * Static value ServerError for ErrorCode.
+     */
     public static final ErrorCode SERVER_ERROR = fromString("ServerError");
 
-    /** Static value InvalidRequest for ErrorCode. */
+    /**
+     * Static value InvalidRequest for ErrorCode.
+     */
     public static final ErrorCode INVALID_REQUEST = fromString("InvalidRequest");
 
-    /** Static value RateLimitExceeded for ErrorCode. */
+    /**
+     * Static value RateLimitExceeded for ErrorCode.
+     */
     public static final ErrorCode RATE_LIMIT_EXCEEDED = fromString("RateLimitExceeded");
 
-    /** Static value InvalidAuthorization for ErrorCode. */
+    /**
+     * Static value InvalidAuthorization for ErrorCode.
+     */
     public static final ErrorCode INVALID_AUTHORIZATION = fromString("InvalidAuthorization");
 
-    /** Static value InsufficientAuthorization for ErrorCode. */
+    /**
+     * Static value InsufficientAuthorization for ErrorCode.
+     */
     public static final ErrorCode INSUFFICIENT_AUTHORIZATION = fromString("InsufficientAuthorization");
 
     /**
      * Creates or finds a ErrorCode from its string representation.
-     * @param name a name to look for
-     * @return the corresponding ErrorCode
+     *
+     * @param name a name to look for.
+     * @return the corresponding ErrorCode.
      */
     @JsonCreator
     public static ErrorCode fromString(String name) {
@@ -45,7 +58,7 @@ public final class ErrorCode extends ExpandableStringEnum<ErrorCode> {
     }
 
     /**
-     * @return known ErrorCode values
+     * @return known ErrorCode values.
      */
     public static Collection<ErrorCode> values() {
         return values(ErrorCode.class);

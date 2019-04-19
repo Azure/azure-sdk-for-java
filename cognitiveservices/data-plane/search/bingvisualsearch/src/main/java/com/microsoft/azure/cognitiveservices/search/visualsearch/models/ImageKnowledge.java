@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
- * The ImageKnowledge model.
+ * Defines a visual search API response.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageKnowledge.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageKnowledge")
-public class ImageKnowledge extends Response {
+public final class ImageKnowledge extends Response {
     /**
      * A list of visual search tags.
      */
@@ -34,7 +34,7 @@ public class ImageKnowledge extends Response {
     /**
      * Get the tags value.
      *
-     * @return the tags value
+     * @return the tags value.
      */
     public List<ImageTag> tags() {
         return this.tags;
@@ -43,10 +43,9 @@ public class ImageKnowledge extends Response {
     /**
      * Get the image value.
      *
-     * @return the image value
+     * @return the image value.
      */
     public ImageObject image() {
         return this.image;
     }
-
 }

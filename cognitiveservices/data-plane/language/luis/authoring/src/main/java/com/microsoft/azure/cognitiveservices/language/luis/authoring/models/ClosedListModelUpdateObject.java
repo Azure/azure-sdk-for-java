@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * Object model for updating a closed list.
+ * Object model for updating a list entity.
  */
-public class ClosedListModelUpdateObject {
+public final class ClosedListModelUpdateObject {
     /**
      * The new sublists for the feature.
      */
@@ -22,7 +22,7 @@ public class ClosedListModelUpdateObject {
     private List<WordListObject> subLists;
 
     /**
-     * The new name of the closed list feature.
+     * The new name of the list entity.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -30,7 +30,7 @@ public class ClosedListModelUpdateObject {
     /**
      * Get the subLists value.
      *
-     * @return the subLists value
+     * @return the subLists value.
      */
     public List<WordListObject> subLists() {
         return this.subLists;
@@ -39,7 +39,7 @@ public class ClosedListModelUpdateObject {
     /**
      * Set the subLists value.
      *
-     * @param subLists the subLists value to set
+     * @param subLists the subLists value to set.
      * @return the ClosedListModelUpdateObject object itself.
      */
     public ClosedListModelUpdateObject withSubLists(List<WordListObject> subLists) {
@@ -50,7 +50,7 @@ public class ClosedListModelUpdateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -59,12 +59,11 @@ public class ClosedListModelUpdateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ClosedListModelUpdateObject object itself.
      */
     public ClosedListModelUpdateObject withName(String name) {
         this.name = name;
         return this;
     }
-
 }

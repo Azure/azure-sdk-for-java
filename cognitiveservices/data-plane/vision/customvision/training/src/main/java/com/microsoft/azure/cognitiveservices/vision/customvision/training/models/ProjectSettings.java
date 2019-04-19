@@ -8,13 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents settings associated with a project.
  */
-public class ProjectSettings {
+public final class ProjectSettings {
     /**
      * Gets or sets the id of the Domain to use with this project.
      */
@@ -29,9 +30,16 @@ public class ProjectSettings {
     private Classifier classificationType;
 
     /**
+     * A list of ExportPlatform that the trained model should be able to
+     * support.
+     */
+    @JsonProperty(value = "targetExportPlatforms")
+    private List<String> targetExportPlatforms;
+
+    /**
      * Get the domainId value.
      *
-     * @return the domainId value
+     * @return the domainId value.
      */
     public UUID domainId() {
         return this.domainId;
@@ -40,7 +48,7 @@ public class ProjectSettings {
     /**
      * Set the domainId value.
      *
-     * @param domainId the domainId value to set
+     * @param domainId the domainId value to set.
      * @return the ProjectSettings object itself.
      */
     public ProjectSettings withDomainId(UUID domainId) {
@@ -51,7 +59,7 @@ public class ProjectSettings {
     /**
      * Get the classificationType value.
      *
-     * @return the classificationType value
+     * @return the classificationType value.
      */
     public Classifier classificationType() {
         return this.classificationType;
@@ -60,7 +68,7 @@ public class ProjectSettings {
     /**
      * Set the classificationType value.
      *
-     * @param classificationType the classificationType value to set
+     * @param classificationType the classificationType value to set.
      * @return the ProjectSettings object itself.
      */
     public ProjectSettings withClassificationType(Classifier classificationType) {
@@ -68,4 +76,23 @@ public class ProjectSettings {
         return this;
     }
 
+    /**
+     * Get the targetExportPlatforms value.
+     *
+     * @return the targetExportPlatforms value.
+     */
+    public List<String> targetExportPlatforms() {
+        return this.targetExportPlatforms;
+    }
+
+    /**
+     * Set the targetExportPlatforms value.
+     *
+     * @param targetExportPlatforms the targetExportPlatforms value to set.
+     * @return the ProjectSettings object itself.
+     */
+    public ProjectSettings withTargetExportPlatforms(List<String> targetExportPlatforms) {
+        this.targetExportPlatforms = targetExportPlatforms;
+        return this;
+    }
 }

@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Result of the List Domain Models operation.
  */
-public class ListModelsResult {
+public final class ListModelsResult {
     /**
      * An array of supported models.
      */
@@ -24,10 +24,9 @@ public class ListModelsResult {
     /**
      * Get the modelsProperty value.
      *
-     * @return the modelsProperty value
+     * @return the modelsProperty value.
      */
     public List<ModelDescription> modelsProperty() {
         return this.modelsProperty;
     }
-
 }

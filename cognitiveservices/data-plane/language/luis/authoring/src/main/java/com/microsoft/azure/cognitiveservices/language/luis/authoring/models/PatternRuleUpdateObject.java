@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * Object model for updating a pattern.
  */
-public class PatternRuleUpdateObject {
+public final class PatternRuleUpdateObject {
     /**
      * The pattern ID.
      */
@@ -36,7 +36,7 @@ public class PatternRuleUpdateObject {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -45,7 +45,7 @@ public class PatternRuleUpdateObject {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the PatternRuleUpdateObject object itself.
      */
     public PatternRuleUpdateObject withId(UUID id) {
@@ -56,7 +56,7 @@ public class PatternRuleUpdateObject {
     /**
      * Get the pattern value.
      *
-     * @return the pattern value
+     * @return the pattern value.
      */
     public String pattern() {
         return this.pattern;
@@ -65,7 +65,7 @@ public class PatternRuleUpdateObject {
     /**
      * Set the pattern value.
      *
-     * @param pattern the pattern value to set
+     * @param pattern the pattern value to set.
      * @return the PatternRuleUpdateObject object itself.
      */
     public PatternRuleUpdateObject withPattern(String pattern) {
@@ -76,7 +76,7 @@ public class PatternRuleUpdateObject {
     /**
      * Get the intent value.
      *
-     * @return the intent value
+     * @return the intent value.
      */
     public String intent() {
         return this.intent;
@@ -85,12 +85,11 @@ public class PatternRuleUpdateObject {
     /**
      * Set the intent value.
      *
-     * @param intent the intent value to set
+     * @param intent the intent value to set.
      * @return the PatternRuleUpdateObject object itself.
      */
     public PatternRuleUpdateObject withIntent(String intent) {
         this.intent = intent;
         return this;
     }
-
 }

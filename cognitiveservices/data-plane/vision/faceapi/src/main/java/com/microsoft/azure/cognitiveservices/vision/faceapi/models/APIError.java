@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Error information returned by the API.
  */
-public class APIError {
+public final class APIError {
     /**
      * The error property.
      */
@@ -23,7 +23,7 @@ public class APIError {
     /**
      * Get the error value.
      *
-     * @return the error value
+     * @return the error value.
      */
     public Error error() {
         return this.error;
@@ -32,12 +32,11 @@ public class APIError {
     /**
      * Set the error value.
      *
-     * @param error the error value to set
+     * @param error the error value to set.
      * @return the APIError object itself.
      */
     public APIError withError(Error error) {
         this.error = error;
         return this;
     }
-
 }

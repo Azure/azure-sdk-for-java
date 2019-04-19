@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * An object describing a single recognized line of text.
  */
-public class OcrLine {
+public final class OcrLine {
     /**
      * Bounding box of a recognized line. The four integers represent the
      * x-coordinate of the left edge, the y-coordinate of the top edge, width,
@@ -35,7 +35,7 @@ public class OcrLine {
     /**
      * Get the boundingBox value.
      *
-     * @return the boundingBox value
+     * @return the boundingBox value.
      */
     public String boundingBox() {
         return this.boundingBox;
@@ -44,7 +44,7 @@ public class OcrLine {
     /**
      * Set the boundingBox value.
      *
-     * @param boundingBox the boundingBox value to set
+     * @param boundingBox the boundingBox value to set.
      * @return the OcrLine object itself.
      */
     public OcrLine withBoundingBox(String boundingBox) {
@@ -55,7 +55,7 @@ public class OcrLine {
     /**
      * Get the words value.
      *
-     * @return the words value
+     * @return the words value.
      */
     public List<OcrWord> words() {
         return this.words;
@@ -64,12 +64,11 @@ public class OcrLine {
     /**
      * Set the words value.
      *
-     * @param words the words value to set
+     * @param words the words value to set.
      * @return the OcrLine object itself.
      */
     public OcrLine withWords(List<OcrWord> words) {
         this.words = words;
         return this;
     }
-
 }

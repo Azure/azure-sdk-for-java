@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * Object model for creating a closed list.
+ * Object model for creating a list entity.
  */
-public class ClosedListModelCreateObject {
+public final class ClosedListModelCreateObject {
     /**
      * Sublists for the feature.
      */
@@ -22,7 +22,7 @@ public class ClosedListModelCreateObject {
     private List<WordListObject> subLists;
 
     /**
-     * Name of the closed list feature.
+     * Name of the list entity.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -30,7 +30,7 @@ public class ClosedListModelCreateObject {
     /**
      * Get the subLists value.
      *
-     * @return the subLists value
+     * @return the subLists value.
      */
     public List<WordListObject> subLists() {
         return this.subLists;
@@ -39,7 +39,7 @@ public class ClosedListModelCreateObject {
     /**
      * Set the subLists value.
      *
-     * @param subLists the subLists value to set
+     * @param subLists the subLists value to set.
      * @return the ClosedListModelCreateObject object itself.
      */
     public ClosedListModelCreateObject withSubLists(List<WordListObject> subLists) {
@@ -50,7 +50,7 @@ public class ClosedListModelCreateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -59,12 +59,11 @@ public class ClosedListModelCreateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ClosedListModelCreateObject object itself.
      */
     public ClosedListModelCreateObject withName(String name) {
         this.name = name;
         return this;
     }
-
 }

@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Defines information about a local entity, such as a restaurant or hotel.
@@ -19,8 +19,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Place.class)
 @JsonTypeName("Place")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "CivicStructure", value = CivicStructure.class),
     @JsonSubTypes.Type(name = "LocalBusiness", value = LocalBusiness.class),
+    @JsonSubTypes.Type(name = "CivicStructure", value = CivicStructure.class),
     @JsonSubTypes.Type(name = "TouristAttraction", value = TouristAttraction.class)
 })
 public class Place extends Thing {
@@ -39,7 +39,7 @@ public class Place extends Thing {
     /**
      * Get the address value.
      *
-     * @return the address value
+     * @return the address value.
      */
     public PostalAddress address() {
         return this.address;
@@ -48,10 +48,9 @@ public class Place extends Thing {
     /**
      * Get the telephone value.
      *
-     * @return the telephone value
+     * @return the telephone value.
      */
     public String telephone() {
         return this.telephone;
     }
-
 }

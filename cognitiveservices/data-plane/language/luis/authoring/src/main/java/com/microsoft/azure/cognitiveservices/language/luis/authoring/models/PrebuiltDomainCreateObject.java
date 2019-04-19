@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A prebuilt domain create object containing the name and culture of the
  * domain.
  */
-public class PrebuiltDomainCreateObject {
+public final class PrebuiltDomainCreateObject {
     /**
      * The domain name.
      */
@@ -30,7 +30,7 @@ public class PrebuiltDomainCreateObject {
     /**
      * Get the domainName value.
      *
-     * @return the domainName value
+     * @return the domainName value.
      */
     public String domainName() {
         return this.domainName;
@@ -39,7 +39,7 @@ public class PrebuiltDomainCreateObject {
     /**
      * Set the domainName value.
      *
-     * @param domainName the domainName value to set
+     * @param domainName the domainName value to set.
      * @return the PrebuiltDomainCreateObject object itself.
      */
     public PrebuiltDomainCreateObject withDomainName(String domainName) {
@@ -50,7 +50,7 @@ public class PrebuiltDomainCreateObject {
     /**
      * Get the culture value.
      *
-     * @return the culture value
+     * @return the culture value.
      */
     public String culture() {
         return this.culture;
@@ -59,12 +59,11 @@ public class PrebuiltDomainCreateObject {
     /**
      * Set the culture value.
      *
-     * @param culture the culture value to set
+     * @param culture the culture value to set.
      * @return the PrebuiltDomainCreateObject object itself.
      */
     public PrebuiltDomainCreateObject withCulture(String culture) {
         this.culture = culture;
         return this;
     }
-
 }

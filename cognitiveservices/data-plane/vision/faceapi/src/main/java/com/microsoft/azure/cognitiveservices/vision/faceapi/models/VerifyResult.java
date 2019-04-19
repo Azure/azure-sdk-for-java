@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Result of the verify operation.
  */
-public class VerifyResult {
+public final class VerifyResult {
     /**
      * True if the two faces belong to the same person or the face belongs to
      * the person, otherwise false.
@@ -34,7 +34,7 @@ public class VerifyResult {
     /**
      * Get the isIdentical value.
      *
-     * @return the isIdentical value
+     * @return the isIdentical value.
      */
     public boolean isIdentical() {
         return this.isIdentical;
@@ -43,7 +43,7 @@ public class VerifyResult {
     /**
      * Set the isIdentical value.
      *
-     * @param isIdentical the isIdentical value to set
+     * @param isIdentical the isIdentical value to set.
      * @return the VerifyResult object itself.
      */
     public VerifyResult withIsIdentical(boolean isIdentical) {
@@ -54,7 +54,7 @@ public class VerifyResult {
     /**
      * Get the confidence value.
      *
-     * @return the confidence value
+     * @return the confidence value.
      */
     public double confidence() {
         return this.confidence;
@@ -63,12 +63,11 @@ public class VerifyResult {
     /**
      * Set the confidence value.
      *
-     * @param confidence the confidence value to set
+     * @param confidence the confidence value to set.
      * @return the VerifyResult object itself.
      */
     public VerifyResult withConfidence(double confidence) {
         this.confidence = confidence;
         return this;
     }
-
 }

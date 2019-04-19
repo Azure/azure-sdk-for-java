@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The list of job ids.
  */
-public class JobListResult {
+public final class JobListResult {
     /**
      * The job id.
      */
@@ -24,7 +24,7 @@ public class JobListResult {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<String> value() {
         return this.value;
@@ -33,12 +33,11 @@ public class JobListResult {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the JobListResult object itself.
      */
     public JobListResult withValue(List<String> value) {
         this.value = value;
         return this;
     }
-
 }

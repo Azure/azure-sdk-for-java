@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a contractual rule for license attribution.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ContractualRulesLicenseAttribution.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ContractualRules/LicenseAttribution")
-public class ContractualRulesLicenseAttribution extends ContractualRulesAttribution {
+public final class ContractualRulesLicenseAttribution extends ContractualRulesAttribution {
     /**
      * The license under which the content may be used.
      */
@@ -33,7 +33,7 @@ public class ContractualRulesLicenseAttribution extends ContractualRulesAttribut
     /**
      * Get the license value.
      *
-     * @return the license value
+     * @return the license value.
      */
     public License license() {
         return this.license;
@@ -42,10 +42,9 @@ public class ContractualRulesLicenseAttribution extends ContractualRulesAttribut
     /**
      * Get the licenseNotice value.
      *
-     * @return the licenseNotice value
+     * @return the licenseNotice value.
      */
     public String licenseNotice() {
         return this.licenseNotice;
     }
-
 }

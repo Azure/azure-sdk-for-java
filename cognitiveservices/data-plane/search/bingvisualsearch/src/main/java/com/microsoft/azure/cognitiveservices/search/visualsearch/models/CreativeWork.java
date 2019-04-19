@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import java.util.List;
 
 /**
  * The most generic kind of creative work, including books, movies,
@@ -53,7 +53,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the thumbnailUrl value.
      *
-     * @return the thumbnailUrl value
+     * @return the thumbnailUrl value.
      */
     public String thumbnailUrl() {
         return this.thumbnailUrl;
@@ -62,7 +62,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the provider value.
      *
-     * @return the provider value
+     * @return the provider value.
      */
     public List<Thing> provider() {
         return this.provider;
@@ -71,7 +71,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the datePublished value.
      *
-     * @return the datePublished value
+     * @return the datePublished value.
      */
     public String datePublished() {
         return this.datePublished;
@@ -80,10 +80,9 @@ public class CreativeWork extends Thing {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
     }
-
 }

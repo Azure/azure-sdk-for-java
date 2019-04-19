@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Exported Model - Utterance that was used to train the model.
  */
-public class JSONUtterance {
+public final class JSONUtterance {
     /**
      * The utterance.
      */
@@ -36,7 +36,7 @@ public class JSONUtterance {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -45,7 +45,7 @@ public class JSONUtterance {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the JSONUtterance object itself.
      */
     public JSONUtterance withText(String text) {
@@ -56,7 +56,7 @@ public class JSONUtterance {
     /**
      * Get the intent value.
      *
-     * @return the intent value
+     * @return the intent value.
      */
     public String intent() {
         return this.intent;
@@ -65,7 +65,7 @@ public class JSONUtterance {
     /**
      * Set the intent value.
      *
-     * @param intent the intent value to set
+     * @param intent the intent value to set.
      * @return the JSONUtterance object itself.
      */
     public JSONUtterance withIntent(String intent) {
@@ -76,7 +76,7 @@ public class JSONUtterance {
     /**
      * Get the entities value.
      *
-     * @return the entities value
+     * @return the entities value.
      */
     public List<JSONEntity> entities() {
         return this.entities;
@@ -85,12 +85,11 @@ public class JSONUtterance {
     /**
      * Set the entities value.
      *
-     * @param entities the entities value to set
+     * @param entities the entities value to set.
      * @return the JSONUtterance object itself.
      */
     public JSONUtterance withEntities(List<JSONEntity> entities) {
         this.entities = entities;
         return this;
     }
-
 }

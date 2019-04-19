@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.newssearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * The Article model.
@@ -31,10 +31,9 @@ public class Article extends CreativeWork {
     /**
      * Get the wordCount value.
      *
-     * @return the wordCount value
+     * @return the wordCount value.
      */
     public Integer wordCount() {
         return this.wordCount;
     }
-
 }

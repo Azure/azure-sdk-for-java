@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The results of a image tag operation, including any tags and image metadata.
  */
-public class TagResult {
+public final class TagResult {
     /**
      * A list of tags with confidence level.
      */
@@ -36,7 +36,7 @@ public class TagResult {
     /**
      * Get the tags value.
      *
-     * @return the tags value
+     * @return the tags value.
      */
     public List<ImageTag> tags() {
         return this.tags;
@@ -45,7 +45,7 @@ public class TagResult {
     /**
      * Set the tags value.
      *
-     * @param tags the tags value to set
+     * @param tags the tags value to set.
      * @return the TagResult object itself.
      */
     public TagResult withTags(List<ImageTag> tags) {
@@ -56,7 +56,7 @@ public class TagResult {
     /**
      * Get the requestId value.
      *
-     * @return the requestId value
+     * @return the requestId value.
      */
     public String requestId() {
         return this.requestId;
@@ -65,7 +65,7 @@ public class TagResult {
     /**
      * Set the requestId value.
      *
-     * @param requestId the requestId value to set
+     * @param requestId the requestId value to set.
      * @return the TagResult object itself.
      */
     public TagResult withRequestId(String requestId) {
@@ -76,7 +76,7 @@ public class TagResult {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public ImageMetadata metadata() {
         return this.metadata;
@@ -85,12 +85,11 @@ public class TagResult {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the TagResult object itself.
      */
     public TagResult withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }
-
 }

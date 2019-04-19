@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * An object describing possible celebrity identification.
  */
-public class CelebritiesModel {
+public final class CelebritiesModel {
     /**
      * Name of the celebrity.
      */
@@ -21,13 +21,14 @@ public class CelebritiesModel {
     private String name;
 
     /**
-     * Level of confidence ranging from 0 to 1.
+     * Confidence level for the celebrity recognition as a value ranging from 0
+     * to 1.
      */
     @JsonProperty(value = "confidence")
     private double confidence;
 
     /**
-     * The faceRectangle property.
+     * Location of the identified face in the image.
      */
     @JsonProperty(value = "faceRectangle")
     private FaceRectangle faceRectangle;
@@ -35,7 +36,7 @@ public class CelebritiesModel {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -44,7 +45,7 @@ public class CelebritiesModel {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the CelebritiesModel object itself.
      */
     public CelebritiesModel withName(String name) {
@@ -55,7 +56,7 @@ public class CelebritiesModel {
     /**
      * Get the confidence value.
      *
-     * @return the confidence value
+     * @return the confidence value.
      */
     public double confidence() {
         return this.confidence;
@@ -64,7 +65,7 @@ public class CelebritiesModel {
     /**
      * Set the confidence value.
      *
-     * @param confidence the confidence value to set
+     * @param confidence the confidence value to set.
      * @return the CelebritiesModel object itself.
      */
     public CelebritiesModel withConfidence(double confidence) {
@@ -75,7 +76,7 @@ public class CelebritiesModel {
     /**
      * Get the faceRectangle value.
      *
-     * @return the faceRectangle value
+     * @return the faceRectangle value.
      */
     public FaceRectangle faceRectangle() {
         return this.faceRectangle;
@@ -84,12 +85,11 @@ public class CelebritiesModel {
     /**
      * Set the faceRectangle value.
      *
-     * @param faceRectangle the faceRectangle value to set
+     * @param faceRectangle the faceRectangle value to set.
      * @return the CelebritiesModel object itself.
      */
     public CelebritiesModel withFaceRectangle(FaceRectangle faceRectangle) {
         this.faceRectangle = faceRectangle;
         return this;
     }
-
 }

@@ -8,18 +8,18 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Defines a region of the image where an entity was found and a list of
  * entities that might match it.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = RecognizedEntityRegion.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("RecognizedEntityRegion")
-public class RecognizedEntityRegion extends Response {
+public final class RecognizedEntityRegion extends Response {
     /**
      * A region of the image that contains an entity. The values of the
      * rectangle are relative to the width and height of the original image and
@@ -43,7 +43,7 @@ public class RecognizedEntityRegion extends Response {
     /**
      * Get the region value.
      *
-     * @return the region value
+     * @return the region value.
      */
     public NormalizedRectangle region() {
         return this.region;
@@ -52,10 +52,9 @@ public class RecognizedEntityRegion extends Response {
     /**
      * Get the matchingEntities value.
      *
-     * @return the matchingEntities value
+     * @return the matchingEntities value.
      */
     public List<RecognizedEntity> matchingEntities() {
         return this.matchingEntities;
     }
-
 }

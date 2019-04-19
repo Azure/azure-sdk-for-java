@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.cognitiveservices.search.autosuggest.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import java.util.List;
 
 /**
  * The most generic kind of creative work, including books, movies,
@@ -123,7 +123,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the thumbnailUrl value.
      *
-     * @return the thumbnailUrl value
+     * @return the thumbnailUrl value.
      */
     public String thumbnailUrl() {
         return this.thumbnailUrl;
@@ -132,7 +132,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the about value.
      *
-     * @return the about value
+     * @return the about value.
      */
     public List<Thing> about() {
         return this.about;
@@ -141,7 +141,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the mentions value.
      *
-     * @return the mentions value
+     * @return the mentions value.
      */
     public List<Thing> mentions() {
         return this.mentions;
@@ -150,7 +150,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the provider value.
      *
-     * @return the provider value
+     * @return the provider value.
      */
     public List<Thing> provider() {
         return this.provider;
@@ -159,7 +159,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the creator value.
      *
-     * @return the creator value
+     * @return the creator value.
      */
     public Thing creator() {
         return this.creator;
@@ -168,7 +168,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -177,7 +177,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the discussionUrl value.
      *
-     * @return the discussionUrl value
+     * @return the discussionUrl value.
      */
     public String discussionUrl() {
         return this.discussionUrl;
@@ -186,7 +186,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the commentCount value.
      *
-     * @return the commentCount value
+     * @return the commentCount value.
      */
     public Integer commentCount() {
         return this.commentCount;
@@ -195,7 +195,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the mainEntity value.
      *
-     * @return the mainEntity value
+     * @return the mainEntity value.
      */
     public Thing mainEntity() {
         return this.mainEntity;
@@ -204,7 +204,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the headLine value.
      *
-     * @return the headLine value
+     * @return the headLine value.
      */
     public String headLine() {
         return this.headLine;
@@ -213,7 +213,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the copyrightHolder value.
      *
-     * @return the copyrightHolder value
+     * @return the copyrightHolder value.
      */
     public Thing copyrightHolder() {
         return this.copyrightHolder;
@@ -222,7 +222,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the copyrightYear value.
      *
-     * @return the copyrightYear value
+     * @return the copyrightYear value.
      */
     public Integer copyrightYear() {
         return this.copyrightYear;
@@ -231,7 +231,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the disclaimer value.
      *
-     * @return the disclaimer value
+     * @return the disclaimer value.
      */
     public String disclaimer() {
         return this.disclaimer;
@@ -240,7 +240,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the isAccessibleForFree value.
      *
-     * @return the isAccessibleForFree value
+     * @return the isAccessibleForFree value.
      */
     public Boolean isAccessibleForFree() {
         return this.isAccessibleForFree;
@@ -249,7 +249,7 @@ public class CreativeWork extends Thing {
     /**
      * Get the genre value.
      *
-     * @return the genre value
+     * @return the genre value.
      */
     public List<String> genre() {
         return this.genre;
@@ -258,10 +258,9 @@ public class CreativeWork extends Thing {
     /**
      * Get the isFamilyFriendly value.
      *
-     * @return the isFamilyFriendly value
+     * @return the isFamilyFriendly value.
      */
     public Boolean isFamilyFriendly() {
         return this.isFamilyFriendly;
     }
-
 }

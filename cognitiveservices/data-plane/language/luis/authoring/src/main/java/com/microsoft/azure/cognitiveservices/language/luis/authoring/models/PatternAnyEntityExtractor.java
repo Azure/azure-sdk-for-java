@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Pattern.Any Entity Extractor.
  */
-public class PatternAnyEntityExtractor {
+public final class PatternAnyEntityExtractor {
     /**
      * The ID of the Entity Model.
      */
@@ -37,9 +37,9 @@ public class PatternAnyEntityExtractor {
     /**
      * Possible values include: 'Entity Extractor', 'Hierarchical Entity
      * Extractor', 'Hierarchical Child Entity Extractor', 'Composite Entity
-     * Extractor', 'Closed List Entity Extractor', 'Prebuilt Entity Extractor',
-     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regex Entity
-     * Extractor'.
+     * Extractor', 'List Entity Extractor', 'Prebuilt Entity Extractor',
+     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regular Expression
+     * Entity Extractor'.
      */
     @JsonProperty(value = "readableType", required = true)
     private String readableType;
@@ -59,7 +59,7 @@ public class PatternAnyEntityExtractor {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -68,7 +68,7 @@ public class PatternAnyEntityExtractor {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the PatternAnyEntityExtractor object itself.
      */
     public PatternAnyEntityExtractor withId(UUID id) {
@@ -79,7 +79,7 @@ public class PatternAnyEntityExtractor {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -88,7 +88,7 @@ public class PatternAnyEntityExtractor {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the PatternAnyEntityExtractor object itself.
      */
     public PatternAnyEntityExtractor withName(String name) {
@@ -99,7 +99,7 @@ public class PatternAnyEntityExtractor {
     /**
      * Get the typeId value.
      *
-     * @return the typeId value
+     * @return the typeId value.
      */
     public Integer typeId() {
         return this.typeId;
@@ -108,7 +108,7 @@ public class PatternAnyEntityExtractor {
     /**
      * Set the typeId value.
      *
-     * @param typeId the typeId value to set
+     * @param typeId the typeId value to set.
      * @return the PatternAnyEntityExtractor object itself.
      */
     public PatternAnyEntityExtractor withTypeId(Integer typeId) {
@@ -119,7 +119,7 @@ public class PatternAnyEntityExtractor {
     /**
      * Get the readableType value.
      *
-     * @return the readableType value
+     * @return the readableType value.
      */
     public String readableType() {
         return this.readableType;
@@ -128,7 +128,7 @@ public class PatternAnyEntityExtractor {
     /**
      * Set the readableType value.
      *
-     * @param readableType the readableType value to set
+     * @param readableType the readableType value to set.
      * @return the PatternAnyEntityExtractor object itself.
      */
     public PatternAnyEntityExtractor withReadableType(String readableType) {
@@ -139,7 +139,7 @@ public class PatternAnyEntityExtractor {
     /**
      * Get the roles value.
      *
-     * @return the roles value
+     * @return the roles value.
      */
     public List<EntityRole> roles() {
         return this.roles;
@@ -148,7 +148,7 @@ public class PatternAnyEntityExtractor {
     /**
      * Set the roles value.
      *
-     * @param roles the roles value to set
+     * @param roles the roles value to set.
      * @return the PatternAnyEntityExtractor object itself.
      */
     public PatternAnyEntityExtractor withRoles(List<EntityRole> roles) {
@@ -159,7 +159,7 @@ public class PatternAnyEntityExtractor {
     /**
      * Get the explicitList value.
      *
-     * @return the explicitList value
+     * @return the explicitList value.
      */
     public List<ExplicitListItem> explicitList() {
         return this.explicitList;
@@ -168,12 +168,11 @@ public class PatternAnyEntityExtractor {
     /**
      * Set the explicitList value.
      *
-     * @param explicitList the explicitList value to set
+     * @param explicitList the explicitList value to set.
      * @return the PatternAnyEntityExtractor object itself.
      */
     public PatternAnyEntityExtractor withExplicitList(List<ExplicitListItem> explicitList) {
         this.explicitList = explicitList;
         return this;
     }
-
 }

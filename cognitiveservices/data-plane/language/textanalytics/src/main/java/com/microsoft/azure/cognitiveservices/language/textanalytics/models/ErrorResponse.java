@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The ErrorResponse model.
  */
-public class ErrorResponse {
+public final class ErrorResponse {
     /**
      * The code property.
      */
@@ -41,7 +41,7 @@ public class ErrorResponse {
     /**
      * Get the code value.
      *
-     * @return the code value
+     * @return the code value.
      */
     public String code() {
         return this.code;
@@ -50,7 +50,7 @@ public class ErrorResponse {
     /**
      * Set the code value.
      *
-     * @param code the code value to set
+     * @param code the code value to set.
      * @return the ErrorResponse object itself.
      */
     public ErrorResponse withCode(String code) {
@@ -61,7 +61,7 @@ public class ErrorResponse {
     /**
      * Get the message value.
      *
-     * @return the message value
+     * @return the message value.
      */
     public String message() {
         return this.message;
@@ -70,7 +70,7 @@ public class ErrorResponse {
     /**
      * Set the message value.
      *
-     * @param message the message value to set
+     * @param message the message value to set.
      * @return the ErrorResponse object itself.
      */
     public ErrorResponse withMessage(String message) {
@@ -81,7 +81,7 @@ public class ErrorResponse {
     /**
      * Get the target value.
      *
-     * @return the target value
+     * @return the target value.
      */
     public String target() {
         return this.target;
@@ -90,7 +90,7 @@ public class ErrorResponse {
     /**
      * Set the target value.
      *
-     * @param target the target value to set
+     * @param target the target value to set.
      * @return the ErrorResponse object itself.
      */
     public ErrorResponse withTarget(String target) {
@@ -101,7 +101,7 @@ public class ErrorResponse {
     /**
      * Get the innerError value.
      *
-     * @return the innerError value
+     * @return the innerError value.
      */
     public InternalError innerError() {
         return this.innerError;
@@ -110,12 +110,11 @@ public class ErrorResponse {
     /**
      * Set the innerError value.
      *
-     * @param innerError the innerError value to set
+     * @param innerError the innerError value to set.
      * @return the ErrorResponse object itself.
      */
     public ErrorResponse withInnerError(InternalError innerError) {
         this.innerError = innerError;
         return this;
     }
-
 }

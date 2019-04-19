@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.textanalytics.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The EntityRecord model.
  */
-public class EntityRecord {
+public final class EntityRecord {
     /**
      * Entity formal name.
      */
@@ -24,7 +24,7 @@ public class EntityRecord {
     /**
      * List of instances this entity appears in the text.
      */
-    @JsonProperty(value = "matches", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "matches")
     private List<MatchRecord> matches;
 
     /**
@@ -40,7 +40,7 @@ public class EntityRecord {
     private String wikipediaId;
 
     /**
-     * URL for the entity's English Wikipedia page.
+     * URL for the entity's Wikipedia page.
      */
     @JsonProperty(value = "wikipediaUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String wikipediaUrl;
@@ -53,9 +53,21 @@ public class EntityRecord {
     private String bingId;
 
     /**
+     * Entity type from Named Entity Recognition model.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
+    /**
+     * Entity sub type from Named Entity Recognition model.
+     */
+    @JsonProperty(value = "subType")
+    private String subType;
+
+    /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -64,7 +76,7 @@ public class EntityRecord {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the EntityRecord object itself.
      */
     public EntityRecord withName(String name) {
@@ -75,16 +87,27 @@ public class EntityRecord {
     /**
      * Get the matches value.
      *
-     * @return the matches value
+     * @return the matches value.
      */
     public List<MatchRecord> matches() {
         return this.matches;
     }
 
     /**
+     * Set the matches value.
+     *
+     * @param matches the matches value to set.
+     * @return the EntityRecord object itself.
+     */
+    public EntityRecord withMatches(List<MatchRecord> matches) {
+        this.matches = matches;
+        return this;
+    }
+
+    /**
      * Get the wikipediaLanguage value.
      *
-     * @return the wikipediaLanguage value
+     * @return the wikipediaLanguage value.
      */
     public String wikipediaLanguage() {
         return this.wikipediaLanguage;
@@ -93,7 +116,7 @@ public class EntityRecord {
     /**
      * Set the wikipediaLanguage value.
      *
-     * @param wikipediaLanguage the wikipediaLanguage value to set
+     * @param wikipediaLanguage the wikipediaLanguage value to set.
      * @return the EntityRecord object itself.
      */
     public EntityRecord withWikipediaLanguage(String wikipediaLanguage) {
@@ -104,7 +127,7 @@ public class EntityRecord {
     /**
      * Get the wikipediaId value.
      *
-     * @return the wikipediaId value
+     * @return the wikipediaId value.
      */
     public String wikipediaId() {
         return this.wikipediaId;
@@ -113,7 +136,7 @@ public class EntityRecord {
     /**
      * Set the wikipediaId value.
      *
-     * @param wikipediaId the wikipediaId value to set
+     * @param wikipediaId the wikipediaId value to set.
      * @return the EntityRecord object itself.
      */
     public EntityRecord withWikipediaId(String wikipediaId) {
@@ -124,7 +147,7 @@ public class EntityRecord {
     /**
      * Get the wikipediaUrl value.
      *
-     * @return the wikipediaUrl value
+     * @return the wikipediaUrl value.
      */
     public String wikipediaUrl() {
         return this.wikipediaUrl;
@@ -133,7 +156,7 @@ public class EntityRecord {
     /**
      * Get the bingId value.
      *
-     * @return the bingId value
+     * @return the bingId value.
      */
     public String bingId() {
         return this.bingId;
@@ -142,7 +165,7 @@ public class EntityRecord {
     /**
      * Set the bingId value.
      *
-     * @param bingId the bingId value to set
+     * @param bingId the bingId value to set.
      * @return the EntityRecord object itself.
      */
     public EntityRecord withBingId(String bingId) {
@@ -150,4 +173,43 @@ public class EntityRecord {
         return this;
     }
 
+    /**
+     * Get the type value.
+     *
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set.
+     * @return the EntityRecord object itself.
+     */
+    public EntityRecord withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Get the subType value.
+     *
+     * @return the subType value.
+     */
+    public String subType() {
+        return this.subType;
+    }
+
+    /**
+     * Set the subType value.
+     *
+     * @param subType the subType value to set.
+     * @return the EntityRecord object itself.
+     */
+    public EntityRecord withSubType(String subType) {
+        this.subType = subType;
+        return this;
+    }
 }

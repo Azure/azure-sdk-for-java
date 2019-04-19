@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Available culture for using in a new application.
  */
-public class AvailableCulture {
+public final class AvailableCulture {
     /**
      * The language name.
      */
@@ -29,7 +29,7 @@ public class AvailableCulture {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -38,7 +38,7 @@ public class AvailableCulture {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the AvailableCulture object itself.
      */
     public AvailableCulture withName(String name) {
@@ -49,7 +49,7 @@ public class AvailableCulture {
     /**
      * Get the code value.
      *
-     * @return the code value
+     * @return the code value.
      */
     public String code() {
         return this.code;
@@ -58,12 +58,11 @@ public class AvailableCulture {
     /**
      * Set the code value.
      *
-     * @param code the code value to set
+     * @param code the code value to set.
      * @return the AvailableCulture object itself.
      */
     public AvailableCulture withCode(String code) {
         this.code = code;
         return this;
     }
-
 }

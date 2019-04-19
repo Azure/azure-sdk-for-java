@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * PersonFace object.
  */
-public class PersistedFace {
+public final class PersistedFace {
     /**
      * The persistedFaceId of the target face, which is persisted and will not
      * expire. Different from faceId created by Face - Detect and will expire
@@ -32,7 +32,7 @@ public class PersistedFace {
     /**
      * Get the persistedFaceId value.
      *
-     * @return the persistedFaceId value
+     * @return the persistedFaceId value.
      */
     public UUID persistedFaceId() {
         return this.persistedFaceId;
@@ -41,7 +41,7 @@ public class PersistedFace {
     /**
      * Set the persistedFaceId value.
      *
-     * @param persistedFaceId the persistedFaceId value to set
+     * @param persistedFaceId the persistedFaceId value to set.
      * @return the PersistedFace object itself.
      */
     public PersistedFace withPersistedFaceId(UUID persistedFaceId) {
@@ -52,7 +52,7 @@ public class PersistedFace {
     /**
      * Get the userData value.
      *
-     * @return the userData value
+     * @return the userData value.
      */
     public String userData() {
         return this.userData;
@@ -61,12 +61,11 @@ public class PersistedFace {
     /**
      * Set the userData value.
      *
-     * @param userData the userData value to set
+     * @param userData the userData value to set.
      * @return the PersistedFace object itself.
      */
     public PersistedFace withUserData(String userData) {
         this.userData = userData;
         return this;
     }
-
 }

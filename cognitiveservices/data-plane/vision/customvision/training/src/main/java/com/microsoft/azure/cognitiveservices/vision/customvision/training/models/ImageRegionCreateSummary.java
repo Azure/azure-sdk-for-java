@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The ImageRegionCreateSummary model.
  */
-public class ImageRegionCreateSummary {
+public final class ImageRegionCreateSummary {
     /**
      * The created property.
      */
@@ -36,7 +36,7 @@ public class ImageRegionCreateSummary {
     /**
      * Get the created value.
      *
-     * @return the created value
+     * @return the created value.
      */
     public List<ImageRegionCreateResult> created() {
         return this.created;
@@ -45,7 +45,7 @@ public class ImageRegionCreateSummary {
     /**
      * Set the created value.
      *
-     * @param created the created value to set
+     * @param created the created value to set.
      * @return the ImageRegionCreateSummary object itself.
      */
     public ImageRegionCreateSummary withCreated(List<ImageRegionCreateResult> created) {
@@ -56,7 +56,7 @@ public class ImageRegionCreateSummary {
     /**
      * Get the duplicated value.
      *
-     * @return the duplicated value
+     * @return the duplicated value.
      */
     public List<ImageRegionCreateEntry> duplicated() {
         return this.duplicated;
@@ -65,7 +65,7 @@ public class ImageRegionCreateSummary {
     /**
      * Set the duplicated value.
      *
-     * @param duplicated the duplicated value to set
+     * @param duplicated the duplicated value to set.
      * @return the ImageRegionCreateSummary object itself.
      */
     public ImageRegionCreateSummary withDuplicated(List<ImageRegionCreateEntry> duplicated) {
@@ -76,7 +76,7 @@ public class ImageRegionCreateSummary {
     /**
      * Get the exceeded value.
      *
-     * @return the exceeded value
+     * @return the exceeded value.
      */
     public List<ImageRegionCreateEntry> exceeded() {
         return this.exceeded;
@@ -85,12 +85,11 @@ public class ImageRegionCreateSummary {
     /**
      * Set the exceeded value.
      *
-     * @param exceeded the exceeded value to set
+     * @param exceeded the exceeded value to set.
      * @return the ImageRegionCreateSummary object itself.
      */
     public ImageRegionCreateSummary withExceeded(List<ImageRegionCreateEntry> exceeded) {
         this.exceeded = exceeded;
         return this;
     }
-
 }

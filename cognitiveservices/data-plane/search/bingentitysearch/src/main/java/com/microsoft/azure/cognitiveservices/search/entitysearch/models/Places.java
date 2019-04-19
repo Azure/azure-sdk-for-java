@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Defines a local entity answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Places.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Places")
-public class Places extends SearchResultsAnswer {
+public final class Places extends SearchResultsAnswer {
     /**
      * A list of local entities, such as restaurants or hotels.
      */
@@ -28,7 +28,7 @@ public class Places extends SearchResultsAnswer {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<Thing> value() {
         return this.value;
@@ -37,12 +37,11 @@ public class Places extends SearchResultsAnswer {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the Places object itself.
      */
     public Places withValue(List<Thing> value) {
         this.value = value;
         return this;
     }
-
 }

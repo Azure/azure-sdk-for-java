@@ -13,24 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The ImageCreateResult model.
  */
-public class ImageCreateResult {
+public final class ImageCreateResult {
     /**
-     * The sourceUrl property.
+     * Source URL of the image.
      */
     @JsonProperty(value = "sourceUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceUrl;
 
     /**
-     * Possible values include: 'OK', 'OKDuplicate', 'ErrorSource',
-     * 'ErrorImageFormat', 'ErrorImageSize', 'ErrorStorage',
-     * 'ErrorLimitExceed', 'ErrorTagLimitExceed', 'ErrorRegionLimitExceed',
-     * 'ErrorUnknown'.
+     * Status of the image creation. Possible values include: 'OK',
+     * 'OKDuplicate', 'ErrorSource', 'ErrorImageFormat', 'ErrorImageSize',
+     * 'ErrorStorage', 'ErrorLimitExceed', 'ErrorTagLimitExceed',
+     * 'ErrorRegionLimitExceed', 'ErrorUnknown',
+     * 'ErrorNegativeAndRegularTagOnSameImage'.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private ImageUploadStatus status;
+    private ImageCreateStatus status;
 
     /**
-     * The image property.
+     * The image.
      */
     @JsonProperty(value = "image", access = JsonProperty.Access.WRITE_ONLY)
     private Image image;
@@ -38,7 +39,7 @@ public class ImageCreateResult {
     /**
      * Get the sourceUrl value.
      *
-     * @return the sourceUrl value
+     * @return the sourceUrl value.
      */
     public String sourceUrl() {
         return this.sourceUrl;
@@ -47,19 +48,18 @@ public class ImageCreateResult {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
-    public ImageUploadStatus status() {
+    public ImageCreateStatus status() {
         return this.status;
     }
 
     /**
      * Get the image value.
      *
-     * @return the image value
+     * @return the image value.
      */
     public Image image() {
         return this.image;
     }
-
 }

@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A model object containing the name of the custom prebuilt intent or entity
  * and the name of the domain to which this model belongs.
  */
-public class PrebuiltDomainModelCreateObject {
+public final class PrebuiltDomainModelCreateObject {
     /**
      * The domain name.
      */
@@ -30,7 +30,7 @@ public class PrebuiltDomainModelCreateObject {
     /**
      * Get the domainName value.
      *
-     * @return the domainName value
+     * @return the domainName value.
      */
     public String domainName() {
         return this.domainName;
@@ -39,7 +39,7 @@ public class PrebuiltDomainModelCreateObject {
     /**
      * Set the domainName value.
      *
-     * @param domainName the domainName value to set
+     * @param domainName the domainName value to set.
      * @return the PrebuiltDomainModelCreateObject object itself.
      */
     public PrebuiltDomainModelCreateObject withDomainName(String domainName) {
@@ -50,7 +50,7 @@ public class PrebuiltDomainModelCreateObject {
     /**
      * Get the modelName value.
      *
-     * @return the modelName value
+     * @return the modelName value.
      */
     public String modelName() {
         return this.modelName;
@@ -59,12 +59,11 @@ public class PrebuiltDomainModelCreateObject {
     /**
      * Set the modelName value.
      *
-     * @param modelName the modelName value to set
+     * @param modelName the modelName value to set.
      * @return the PrebuiltDomainModelCreateObject object itself.
      */
     public PrebuiltDomainModelCreateObject withModelName(String modelName) {
         this.modelName = modelName;
         return this;
     }
-
 }

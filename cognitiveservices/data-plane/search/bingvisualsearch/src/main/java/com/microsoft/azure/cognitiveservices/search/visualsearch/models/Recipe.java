@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a cooking recipe.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Recipe.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Recipe")
-public class Recipe extends CreativeWork {
+public final class Recipe extends CreativeWork {
     /**
      * The amount of time the food takes to cook. For example, PT25M. For
      * information about the time format, see
@@ -45,7 +45,7 @@ public class Recipe extends CreativeWork {
     /**
      * Get the cookTime value.
      *
-     * @return the cookTime value
+     * @return the cookTime value.
      */
     public String cookTime() {
         return this.cookTime;
@@ -54,7 +54,7 @@ public class Recipe extends CreativeWork {
     /**
      * Get the prepTime value.
      *
-     * @return the prepTime value
+     * @return the prepTime value.
      */
     public String prepTime() {
         return this.prepTime;
@@ -63,10 +63,9 @@ public class Recipe extends CreativeWork {
     /**
      * Get the totalTime value.
      *
-     * @return the totalTime value
+     * @return the totalTime value.
      */
     public String totalTime() {
         return this.totalTime;
     }
-
 }

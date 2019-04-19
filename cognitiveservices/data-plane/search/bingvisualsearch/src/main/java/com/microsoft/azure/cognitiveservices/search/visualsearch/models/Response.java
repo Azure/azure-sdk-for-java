@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Defines a response. All schemas that return at the root of the response must
@@ -20,9 +20,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Response.class)
 @JsonTypeName("Response")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "Thing", value = Thing.class),
     @JsonSubTypes.Type(name = "ImageKnowledge", value = ImageKnowledge.class),
-    @JsonSubTypes.Type(name = "ErrorResponse", value = ErrorResponse.class),
-    @JsonSubTypes.Type(name = "Thing", value = Thing.class)
+    @JsonSubTypes.Type(name = "ErrorResponse", value = ErrorResponse.class)
 })
 public class Response extends Identifiable {
     /**
@@ -42,7 +42,7 @@ public class Response extends Identifiable {
     /**
      * Get the readLink value.
      *
-     * @return the readLink value
+     * @return the readLink value.
      */
     public String readLink() {
         return this.readLink;
@@ -51,10 +51,9 @@ public class Response extends Identifiable {
     /**
      * Get the webSearchUrl value.
      *
-     * @return the webSearchUrl value
+     * @return the webSearchUrl value.
      */
     public String webSearchUrl() {
         return this.webSearchUrl;
     }
-
 }

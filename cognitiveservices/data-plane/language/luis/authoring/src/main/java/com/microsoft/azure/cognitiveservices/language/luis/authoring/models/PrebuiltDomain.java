@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Prebuilt Domain.
  */
-public class PrebuiltDomain {
+public final class PrebuiltDomain {
     /**
      * The name property.
      */
@@ -54,7 +54,7 @@ public class PrebuiltDomain {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -63,7 +63,7 @@ public class PrebuiltDomain {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the PrebuiltDomain object itself.
      */
     public PrebuiltDomain withName(String name) {
@@ -74,7 +74,7 @@ public class PrebuiltDomain {
     /**
      * Get the culture value.
      *
-     * @return the culture value
+     * @return the culture value.
      */
     public String culture() {
         return this.culture;
@@ -83,7 +83,7 @@ public class PrebuiltDomain {
     /**
      * Set the culture value.
      *
-     * @param culture the culture value to set
+     * @param culture the culture value to set.
      * @return the PrebuiltDomain object itself.
      */
     public PrebuiltDomain withCulture(String culture) {
@@ -94,7 +94,7 @@ public class PrebuiltDomain {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public String description() {
         return this.description;
@@ -103,7 +103,7 @@ public class PrebuiltDomain {
     /**
      * Set the description value.
      *
-     * @param description the description value to set
+     * @param description the description value to set.
      * @return the PrebuiltDomain object itself.
      */
     public PrebuiltDomain withDescription(String description) {
@@ -114,7 +114,7 @@ public class PrebuiltDomain {
     /**
      * Get the examples value.
      *
-     * @return the examples value
+     * @return the examples value.
      */
     public String examples() {
         return this.examples;
@@ -123,7 +123,7 @@ public class PrebuiltDomain {
     /**
      * Set the examples value.
      *
-     * @param examples the examples value to set
+     * @param examples the examples value to set.
      * @return the PrebuiltDomain object itself.
      */
     public PrebuiltDomain withExamples(String examples) {
@@ -134,7 +134,7 @@ public class PrebuiltDomain {
     /**
      * Get the intents value.
      *
-     * @return the intents value
+     * @return the intents value.
      */
     public List<PrebuiltDomainItem> intents() {
         return this.intents;
@@ -143,7 +143,7 @@ public class PrebuiltDomain {
     /**
      * Set the intents value.
      *
-     * @param intents the intents value to set
+     * @param intents the intents value to set.
      * @return the PrebuiltDomain object itself.
      */
     public PrebuiltDomain withIntents(List<PrebuiltDomainItem> intents) {
@@ -154,7 +154,7 @@ public class PrebuiltDomain {
     /**
      * Get the entities value.
      *
-     * @return the entities value
+     * @return the entities value.
      */
     public List<PrebuiltDomainItem> entities() {
         return this.entities;
@@ -163,12 +163,11 @@ public class PrebuiltDomain {
     /**
      * Set the entities value.
      *
-     * @param entities the entities value to set
+     * @param entities the entities value to set.
      * @return the PrebuiltDomain object itself.
      */
     public PrebuiltDomain withEntities(List<PrebuiltDomainItem> entities) {
         this.entities = entities;
         return this;
     }
-
 }

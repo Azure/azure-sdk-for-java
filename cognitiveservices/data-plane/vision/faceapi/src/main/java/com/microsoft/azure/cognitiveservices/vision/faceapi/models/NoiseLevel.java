@@ -15,19 +15,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for NoiseLevel.
  */
 public enum NoiseLevel {
-    /** Enum value Low. */
+    /**
+     * Enum value Low.
+     */
     LOW("Low"),
 
-    /** Enum value Medium. */
+    /**
+     * Enum value Medium.
+     */
     MEDIUM("Medium"),
 
-    /** Enum value High. */
+    /**
+     * Enum value High.
+     */
     HIGH("High");
 
-    /** The actual serialized value for a NoiseLevel instance. */
-    private String value;
+    /**
+     * The actual serialized value for a NoiseLevel instance.
+     */
+    private final String value;
 
-    NoiseLevel(String value) {
+    private NoiseLevel(String value) {
         this.value = value;
     }
 

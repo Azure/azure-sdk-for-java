@@ -13,10 +13,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object model for updating an application's publish settings.
  */
-public class PublishSettingUpdateObject {
+public final class PublishSettingUpdateObject {
     /**
      * Setting sentiment analysis as true returns the Sentiment of the input
-     * utterance along with the resopnse.
+     * utterance along with the response.
      */
     @JsonProperty(value = "sentimentAnalysis")
     private boolean sentimentAnalysis;
@@ -37,7 +37,7 @@ public class PublishSettingUpdateObject {
     /**
      * Get the sentimentAnalysis value.
      *
-     * @return the sentimentAnalysis value
+     * @return the sentimentAnalysis value.
      */
     public boolean sentimentAnalysis() {
         return this.sentimentAnalysis;
@@ -46,7 +46,7 @@ public class PublishSettingUpdateObject {
     /**
      * Set the sentimentAnalysis value.
      *
-     * @param sentimentAnalysis the sentimentAnalysis value to set
+     * @param sentimentAnalysis the sentimentAnalysis value to set.
      * @return the PublishSettingUpdateObject object itself.
      */
     public PublishSettingUpdateObject withSentimentAnalysis(boolean sentimentAnalysis) {
@@ -57,7 +57,7 @@ public class PublishSettingUpdateObject {
     /**
      * Get the speech value.
      *
-     * @return the speech value
+     * @return the speech value.
      */
     public boolean speech() {
         return this.speech;
@@ -66,7 +66,7 @@ public class PublishSettingUpdateObject {
     /**
      * Set the speech value.
      *
-     * @param speech the speech value to set
+     * @param speech the speech value to set.
      * @return the PublishSettingUpdateObject object itself.
      */
     public PublishSettingUpdateObject withSpeech(boolean speech) {
@@ -77,7 +77,7 @@ public class PublishSettingUpdateObject {
     /**
      * Get the spellChecker value.
      *
-     * @return the spellChecker value
+     * @return the spellChecker value.
      */
     public boolean spellChecker() {
         return this.spellChecker;
@@ -86,12 +86,11 @@ public class PublishSettingUpdateObject {
     /**
      * Set the spellChecker value.
      *
-     * @param spellChecker the spellChecker value to set
+     * @param spellChecker the spellChecker value to set.
      * @return the PublishSettingUpdateObject object itself.
      */
     public PublishSettingUpdateObject withSpellChecker(boolean spellChecker) {
         this.spellChecker = spellChecker;
         return this;
     }
-
 }

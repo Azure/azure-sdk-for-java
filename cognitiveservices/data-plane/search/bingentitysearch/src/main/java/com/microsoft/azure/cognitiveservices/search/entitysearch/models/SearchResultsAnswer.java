@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * The SearchResultsAnswer model.
@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SearchResultsAnswer.class)
 @JsonTypeName("SearchResultsAnswer")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Entities", value = EntitiesModel.class),
+    @JsonSubTypes.Type(name = "Entities", value = Entities.class),
     @JsonSubTypes.Type(name = "Places", value = Places.class)
 })
 public class SearchResultsAnswer extends Answer {
@@ -32,10 +32,9 @@ public class SearchResultsAnswer extends Answer {
     /**
      * Get the queryContext value.
      *
-     * @return the queryContext value
+     * @return the queryContext value.
      */
     public QueryContext queryContext() {
         return this.queryContext;
     }
-
 }

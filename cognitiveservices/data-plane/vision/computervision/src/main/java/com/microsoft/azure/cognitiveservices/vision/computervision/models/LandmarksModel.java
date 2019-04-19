@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A landmark recognized in the image.
  */
-public class LandmarksModel {
+public final class LandmarksModel {
     /**
      * Name of the landmark.
      */
@@ -21,7 +21,8 @@ public class LandmarksModel {
     private String name;
 
     /**
-     * Confidence level for the landmark recognition.
+     * Confidence level for the landmark recognition as a value ranging from 0
+     * to 1.
      */
     @JsonProperty(value = "confidence")
     private double confidence;
@@ -29,7 +30,7 @@ public class LandmarksModel {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -38,7 +39,7 @@ public class LandmarksModel {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the LandmarksModel object itself.
      */
     public LandmarksModel withName(String name) {
@@ -49,7 +50,7 @@ public class LandmarksModel {
     /**
      * Get the confidence value.
      *
-     * @return the confidence value
+     * @return the confidence value.
      */
     public double confidence() {
         return this.confidence;
@@ -58,12 +59,11 @@ public class LandmarksModel {
     /**
      * Set the confidence value.
      *
-     * @param confidence the confidence value to set
+     * @param confidence the confidence value to set.
      * @return the LandmarksModel object itself.
      */
     public LandmarksModel withConfidence(double confidence) {
         this.confidence = confidence;
         return this;
     }
-
 }

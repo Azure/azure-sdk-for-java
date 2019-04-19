@@ -9,9 +9,9 @@
 package com.microsoft.azure.cognitiveservices.search.customimagesearch.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Defines a search result answer.
@@ -33,10 +33,9 @@ public class SearchResultsAnswer extends Answer {
     /**
      * Get the totalEstimatedMatches value.
      *
-     * @return the totalEstimatedMatches value
+     * @return the totalEstimatedMatches value.
      */
     public Long totalEstimatedMatches() {
         return this.totalEstimatedMatches;
     }
-
 }

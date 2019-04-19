@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Defines a list of related queries made by others.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = RelatedSearchesRelatedSearchAnswer.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("RelatedSearches/RelatedSearchAnswer")
-public class RelatedSearchesRelatedSearchAnswer extends SearchResultsAnswer {
+public final class RelatedSearchesRelatedSearchAnswer extends SearchResultsAnswer {
     /**
      * A list of related queries that were made by others.
      */
@@ -28,7 +28,7 @@ public class RelatedSearchesRelatedSearchAnswer extends SearchResultsAnswer {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<Query> value() {
         return this.value;
@@ -37,12 +37,11 @@ public class RelatedSearchesRelatedSearchAnswer extends SearchResultsAnswer {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the RelatedSearchesRelatedSearchAnswer object itself.
      */
     public RelatedSearchesRelatedSearchAnswer withValue(List<Query> value) {
         this.value = value;
         return this;
     }
-
 }

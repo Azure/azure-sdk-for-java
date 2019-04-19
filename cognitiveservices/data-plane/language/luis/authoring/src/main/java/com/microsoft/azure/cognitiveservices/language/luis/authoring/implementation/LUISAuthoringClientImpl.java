@@ -8,127 +8,26 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation;
 
-import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.AzureServiceClient;
+import com.azure.common.ServiceClient;
+import com.azure.common.http.HttpPipeline;
+import com.azure.common.implementation.RestProxy;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.AzureAccounts;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Features;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.LUISAuthoringClient;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Models;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.Settings;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Trains;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.rest.RestClient;
+import reactor.util.annotation.NonNull;
 
 /**
- * Initializes a new instance of the LUISAuthoringClientImpl class.
+ * Initializes a new instance of the LUISAuthoringClient type.
  */
-public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISAuthoringClient {
-    /** the {@link AzureClient} used for long running operations. */
-    private AzureClient azureClient;
-
-    /**
-     * Gets the {@link AzureClient} used for long running operations.
-     * @return the azure client;
-     */
-    public AzureClient getAzureClient() {
-        return this.azureClient;
-    }
-
-    /** Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com). */
-    private String endpoint;
-
-    /**
-     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
-     *
-     * @return the endpoint value.
-     */
-    public String endpoint() {
-        return this.endpoint;
-    }
-
-    /**
-     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
-     *
-     * @param endpoint the endpoint value.
-     * @return the service client itself
-     */
-    public LUISAuthoringClientImpl withEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-        return this;
-    }
-
-    /** Gets or sets the preferred language for the response. */
-    private String acceptLanguage;
-
-    /**
-     * Gets Gets or sets the preferred language for the response.
-     *
-     * @return the acceptLanguage value.
-     */
-    public String acceptLanguage() {
-        return this.acceptLanguage;
-    }
-
-    /**
-     * Sets Gets or sets the preferred language for the response.
-     *
-     * @param acceptLanguage the acceptLanguage value.
-     * @return the service client itself
-     */
-    public LUISAuthoringClientImpl withAcceptLanguage(String acceptLanguage) {
-        this.acceptLanguage = acceptLanguage;
-        return this;
-    }
-
-    /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
-    private int longRunningOperationRetryTimeout;
-
-    /**
-     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
-     *
-     * @return the longRunningOperationRetryTimeout value.
-     */
-    public int longRunningOperationRetryTimeout() {
-        return this.longRunningOperationRetryTimeout;
-    }
-
-    /**
-     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
-     *
-     * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
-     * @return the service client itself
-     */
-    public LUISAuthoringClientImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
-        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
-        return this;
-    }
-
-    /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
-    private boolean generateClientRequestId;
-
-    /**
-     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
-     *
-     * @return the generateClientRequestId value.
-     */
-    public boolean generateClientRequestId() {
-        return this.generateClientRequestId;
-    }
-
-    /**
-     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
-     *
-     * @param generateClientRequestId the generateClientRequestId value.
-     * @return the service client itself
-     */
-    public LUISAuthoringClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
-        this.generateClientRequestId = generateClientRequestId;
-        return this;
-    }
-
+public final class LUISAuthoringClientImpl extends ServiceClient implements LUISAuthoringClient {
     /**
      * The Features object to access its operations.
      */
@@ -136,6 +35,7 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
 
     /**
      * Gets the Features object to access its operations.
+     *
      * @return the Features object.
      */
     public Features features() {
@@ -149,6 +49,7 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
 
     /**
      * Gets the Examples object to access its operations.
+     *
      * @return the Examples object.
      */
     public Examples examples() {
@@ -162,6 +63,7 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
 
     /**
      * Gets the Models object to access its operations.
+     *
      * @return the Models object.
      */
     public Models models() {
@@ -175,6 +77,7 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
 
     /**
      * Gets the Apps object to access its operations.
+     *
      * @return the Apps object.
      */
     public Apps apps() {
@@ -188,6 +91,7 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
 
     /**
      * Gets the Versions object to access its operations.
+     *
      * @return the Versions object.
      */
     public Versions versions() {
@@ -201,6 +105,7 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
 
     /**
      * Gets the Trains object to access its operations.
+     *
      * @return the Trains object.
      */
     public Trains trains() {
@@ -214,6 +119,7 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
 
     /**
      * Gets the Permissions object to access its operations.
+     *
      * @return the Permissions object.
      */
     public Permissions permissions() {
@@ -227,6 +133,7 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
 
     /**
      * Gets the Patterns object to access its operations.
+     *
      * @return the Patterns object.
      */
     public Patterns patterns() {
@@ -234,57 +141,56 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
     }
 
     /**
-     * Initializes an instance of LUISAuthoringClient client.
-     *
-     * @param credentials the management credentials for Azure
+     * The Settings object to access its operations.
      */
-    public LUISAuthoringClientImpl(ServiceClientCredentials credentials) {
-        this("https://{endpoint}/luis/api/v2.0", credentials);
+    private Settings settings;
+
+    /**
+     * Gets the Settings object to access its operations.
+     *
+     * @return the Settings object.
+     */
+    public Settings settings() {
+        return this.settings;
+    }
+
+    /**
+     * The AzureAccounts object to access its operations.
+     */
+    private AzureAccounts azureAccounts;
+
+    /**
+     * Gets the AzureAccounts object to access its operations.
+     *
+     * @return the AzureAccounts object.
+     */
+    public AzureAccounts azureAccounts() {
+        return this.azureAccounts;
+    }
+
+    /**
+     * Initializes an instance of LUISAuthoringClient client.
+     */
+    public LUISAuthoringClientImpl() {
+        this(RestProxy.createDefaultPipeline());
     }
 
     /**
      * Initializes an instance of LUISAuthoringClient client.
      *
-     * @param baseUrl the base URL of the host
-     * @param credentials the management credentials for Azure
+     * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    public LUISAuthoringClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        super(baseUrl, credentials);
-        initialize();
-    }
-
-    /**
-     * Initializes an instance of LUISAuthoringClient client.
-     *
-     * @param restClient the REST client to connect to Azure.
-     */
-    public LUISAuthoringClientImpl(RestClient restClient) {
-        super(restClient);
-        initialize();
-    }
-
-    protected void initialize() {
-        this.acceptLanguage = "en-US";
-        this.longRunningOperationRetryTimeout = 30;
-        this.generateClientRequestId = true;
-        this.features = new FeaturesImpl(restClient().retrofit(), this);
-        this.examples = new ExamplesImpl(restClient().retrofit(), this);
-        this.models = new ModelsImpl(restClient().retrofit(), this);
-        this.apps = new AppsImpl(restClient().retrofit(), this);
-        this.versions = new VersionsImpl(restClient().retrofit(), this);
-        this.trains = new TrainsImpl(restClient().retrofit(), this);
-        this.permissions = new PermissionsImpl(restClient().retrofit(), this);
-        this.patterns = new PatternsImpl(restClient().retrofit(), this);
-        this.azureClient = new AzureClient(this);
-    }
-
-    /**
-     * Gets the User-Agent header for the client.
-     *
-     * @return the user agent string.
-     */
-    @Override
-    public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "LUISAuthoringClient", "2.0");
+    public LUISAuthoringClientImpl(@NonNull HttpPipeline httpPipeline) {
+        super(httpPipeline);
+        this.features = new FeaturesImpl(this);
+        this.examples = new ExamplesImpl(this);
+        this.models = new ModelsImpl(this);
+        this.apps = new AppsImpl(this);
+        this.versions = new VersionsImpl(this);
+        this.trains = new TrainsImpl(this);
+        this.permissions = new PermissionsImpl(this);
+        this.patterns = new PatternsImpl(this);
+        this.settings = new SettingsImpl(this);
+        this.azureAccounts = new AzureAccountsImpl(this);
     }
 }

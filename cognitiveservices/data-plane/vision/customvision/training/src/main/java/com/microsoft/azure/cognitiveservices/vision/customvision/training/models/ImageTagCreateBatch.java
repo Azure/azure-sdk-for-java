@@ -8,15 +8,15 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * The ImageTagCreateBatch model.
+ * Batch of image tags.
  */
-public class ImageTagCreateBatch {
+public final class ImageTagCreateBatch {
     /**
-     * The tags property.
+     * Image Tag entries to include in this batch.
      */
     @JsonProperty(value = "tags")
     private List<ImageTagCreateEntry> tags;
@@ -24,7 +24,7 @@ public class ImageTagCreateBatch {
     /**
      * Get the tags value.
      *
-     * @return the tags value
+     * @return the tags value.
      */
     public List<ImageTagCreateEntry> tags() {
         return this.tags;
@@ -33,12 +33,11 @@ public class ImageTagCreateBatch {
     /**
      * Set the tags value.
      *
-     * @param tags the tags value to set
+     * @param tags the tags value to set.
      * @return the ImageTagCreateBatch object itself.
      */
     public ImageTagCreateBatch withTags(List<ImageTagCreateEntry> tags) {
         this.tags = tags;
         return this;
     }
-
 }

@@ -8,39 +8,54 @@
 
 package com.microsoft.azure.cognitiveservices.search.customimagesearch.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for ImageLicense.
  */
 public final class ImageLicense extends ExpandableStringEnum<ImageLicense> {
-    /** Static value All for ImageLicense. */
+    /**
+     * Static value All for ImageLicense.
+     */
     public static final ImageLicense ALL = fromString("All");
 
-    /** Static value Any for ImageLicense. */
+    /**
+     * Static value Any for ImageLicense.
+     */
     public static final ImageLicense ANY = fromString("Any");
 
-    /** Static value Public for ImageLicense. */
+    /**
+     * Static value Public for ImageLicense.
+     */
     public static final ImageLicense PUBLIC = fromString("Public");
 
-    /** Static value Share for ImageLicense. */
+    /**
+     * Static value Share for ImageLicense.
+     */
     public static final ImageLicense SHARE = fromString("Share");
 
-    /** Static value ShareCommercially for ImageLicense. */
+    /**
+     * Static value ShareCommercially for ImageLicense.
+     */
     public static final ImageLicense SHARE_COMMERCIALLY = fromString("ShareCommercially");
 
-    /** Static value Modify for ImageLicense. */
+    /**
+     * Static value Modify for ImageLicense.
+     */
     public static final ImageLicense MODIFY = fromString("Modify");
 
-    /** Static value ModifyCommercially for ImageLicense. */
+    /**
+     * Static value ModifyCommercially for ImageLicense.
+     */
     public static final ImageLicense MODIFY_COMMERCIALLY = fromString("ModifyCommercially");
 
     /**
      * Creates or finds a ImageLicense from its string representation.
-     * @param name a name to look for
-     * @return the corresponding ImageLicense
+     *
+     * @param name a name to look for.
+     * @return the corresponding ImageLicense.
      */
     @JsonCreator
     public static ImageLicense fromString(String name) {
@@ -48,7 +63,7 @@ public final class ImageLicense extends ExpandableStringEnum<ImageLicense> {
     }
 
     /**
-     * @return known ImageLicense values
+     * @return known ImageLicense values.
      */
     public static Collection<ImageLicense> values() {
         return values(ImageLicense.class);

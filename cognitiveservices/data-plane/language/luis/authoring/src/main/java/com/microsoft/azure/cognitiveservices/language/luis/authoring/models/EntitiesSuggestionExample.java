@@ -8,15 +8,15 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Predicted/suggested entity.
  */
-public class EntitiesSuggestionExample {
+public final class EntitiesSuggestionExample {
     /**
-     * The utterance. E.g.: what's the weather like in seattle?.
+     * The utterance. For example, "What's the weather like in seattle?".
      */
     @JsonProperty(value = "text")
     private String text;
@@ -42,7 +42,7 @@ public class EntitiesSuggestionExample {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -51,7 +51,7 @@ public class EntitiesSuggestionExample {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the EntitiesSuggestionExample object itself.
      */
     public EntitiesSuggestionExample withText(String text) {
@@ -62,7 +62,7 @@ public class EntitiesSuggestionExample {
     /**
      * Get the tokenizedText value.
      *
-     * @return the tokenizedText value
+     * @return the tokenizedText value.
      */
     public List<String> tokenizedText() {
         return this.tokenizedText;
@@ -71,7 +71,7 @@ public class EntitiesSuggestionExample {
     /**
      * Set the tokenizedText value.
      *
-     * @param tokenizedText the tokenizedText value to set
+     * @param tokenizedText the tokenizedText value to set.
      * @return the EntitiesSuggestionExample object itself.
      */
     public EntitiesSuggestionExample withTokenizedText(List<String> tokenizedText) {
@@ -82,7 +82,7 @@ public class EntitiesSuggestionExample {
     /**
      * Get the intentPredictions value.
      *
-     * @return the intentPredictions value
+     * @return the intentPredictions value.
      */
     public List<IntentPrediction> intentPredictions() {
         return this.intentPredictions;
@@ -91,7 +91,7 @@ public class EntitiesSuggestionExample {
     /**
      * Set the intentPredictions value.
      *
-     * @param intentPredictions the intentPredictions value to set
+     * @param intentPredictions the intentPredictions value to set.
      * @return the EntitiesSuggestionExample object itself.
      */
     public EntitiesSuggestionExample withIntentPredictions(List<IntentPrediction> intentPredictions) {
@@ -102,7 +102,7 @@ public class EntitiesSuggestionExample {
     /**
      * Get the entityPredictions value.
      *
-     * @return the entityPredictions value
+     * @return the entityPredictions value.
      */
     public List<EntityPrediction> entityPredictions() {
         return this.entityPredictions;
@@ -111,12 +111,11 @@ public class EntitiesSuggestionExample {
     /**
      * Set the entityPredictions value.
      *
-     * @param entityPredictions the entityPredictions value to set
+     * @param entityPredictions the entityPredictions value to set.
      * @return the EntitiesSuggestionExample object itself.
      */
     public EntitiesSuggestionExample withEntityPredictions(List<EntityPrediction> entityPredictions) {
         this.entityPredictions = entityPredictions;
         return this;
     }
-
 }

@@ -8,160 +8,138 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation;
 
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CloneOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListVersionsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateVersionsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportMethodVersionsOptionalParameter;
-import retrofit2.Retrofit;
+import com.azure.common.annotations.BodyParam;
+import com.azure.common.annotations.DELETE;
+import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.GET;
+import com.azure.common.annotations.Host;
+import com.azure.common.annotations.HostParam;
+import com.azure.common.annotations.PathParam;
+import com.azure.common.annotations.POST;
+import com.azure.common.annotations.PUT;
+import com.azure.common.annotations.QueryParam;
+import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.http.rest.SimpleResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.Validator;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions;
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureClouds;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LuisApp;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.TaskUpdateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.VersionInfo;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in Versions.
+ * An instance of this class provides access to all the operations defined in
+ * Versions.
  */
-public class VersionsImpl implements Versions {
-    /** The Retrofit service to perform REST calls. */
+public final class VersionsImpl implements Versions {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private VersionsService service;
-    /** The service client containing this operation class. */
+
+    /**
+     * The service client containing this operation class.
+     */
     private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of VersionsImpl.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public VersionsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
-        this.service = retrofit.create(VersionsService.class);
+    public VersionsImpl(LUISAuthoringClientImpl client) {
+        this.service = RestProxy.create(VersionsService.class, client);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Versions to be
-     * used by Retrofit to perform actually REST calls.
+     * The interface defining all the services for Versions to be used by the
+     * proxy service to perform REST calls.
      */
-    interface VersionsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions clone" })
+    @Host("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0")
+    private interface VersionsService {
         @POST("apps/{appId}/versions/{versionId}/clone")
-        Observable<Response<ResponseBody>> clone(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body TaskUpdateObject versionCloneObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<String>> clone(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") TaskUpdateObject versionCloneObject);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions list" })
         @GET("apps/{appId}/versions")
-        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<List<VersionInfo>>> list(@PathParam("appId") UUID appId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @QueryParam("skip") Integer skip, @QueryParam("take") Integer take);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions get" })
         @GET("apps/{appId}/versions/{versionId}/")
-        Observable<Response<ResponseBody>> get(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<VersionInfo>> get(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions update" })
         @PUT("apps/{appId}/versions/{versionId}/")
-        Observable<Response<ResponseBody>> update(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body TaskUpdateObject versionUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<OperationStatus>> update(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") TaskUpdateObject versionUpdateObject);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions delete" })
-        @HTTP(path = "apps/{appId}/versions/{versionId}/", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @DELETE("apps/{appId}/versions/{versionId}/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<OperationStatus>> delete(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions export" })
         @GET("apps/{appId}/versions/{versionId}/export")
-        Observable<Response<ResponseBody>> export(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<LuisApp>> export(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions importMethod" })
         @POST("apps/{appId}/versions/import")
-        Observable<Response<ResponseBody>> importMethod(@Path("appId") UUID appId, @Query("versionId") String versionId, @Body LuisApp luisApp, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<String>> importMethod(@PathParam("appId") UUID appId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @QueryParam("versionId") String versionId, @BodyParam("application/json; charset=utf-8") LuisApp luisApp);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions deleteUnlabelledUtterance" })
-        @HTTP(path = "apps/{appId}/versions/{versionId}/suggest", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteUnlabelledUtterance(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body String utterance, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
+        @DELETE("apps/{appId}/versions/{versionId}/suggest")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<OperationStatus>> deleteUnlabelledUtterance(@PathParam("appId") UUID appId, @PathParam("versionId") String versionId, @HostParam("AzureRegion") AzureRegions azureRegion, @HostParam("AzureCloud") AzureClouds azureCloud, @BodyParam("application/json; charset=utf-8") String utterance);
     }
 
-
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param cloneOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the String object if successful.
      */
-    public String clone(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter) {
-        return cloneWithServiceResponseAsync(appId, versionId, cloneOptionalParameter).toBlocking().single().body();
+    public String clone(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return cloneAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param cloneOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<String> cloneAsync(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter, final ServiceCallback<String> serviceCallback) {
-        return ServiceFuture.fromResponse(cloneWithServiceResponseAsync(appId, versionId, cloneOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Creates a new version using the current snapshot of the selected application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param cloneOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<String> cloneAsync(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter) {
-        return cloneWithServiceResponseAsync(appId, versionId, cloneOptionalParameter).map(new Func1<ServiceResponse<String>, String>() {
-            @Override
-            public String call(ServiceResponse<String> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a new version using the current snapshot of the selected application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param cloneOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<ServiceResponse<String>> cloneWithServiceResponseAsync(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<String>> cloneWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -169,23 +147,60 @@ public class VersionsImpl implements Versions {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        final String version = cloneOptionalParameter != null ? cloneOptionalParameter.version() : null;
-
-        return cloneWithServiceResponseAsync(appId, versionId, version);
+        TaskUpdateObject versionCloneObject = new TaskUpdateObject();
+        versionCloneObject.withVersion(null);
+        return service.clone(appId, versionId, azureRegion, azureCloud, versionCloneObject);
     }
 
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<String> cloneAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return cloneWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<String> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Creates a new version from the selected version.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param version The new version for the cloned model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the String object if successful.
      */
-    public Observable<ServiceResponse<String>> cloneWithServiceResponseAsync(UUID appId, String versionId, String version) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public String clone(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String version) {
+        return cloneAsync(azureRegion, azureCloud, appId, versionId, version).block();
+    }
+
+    /**
+     * Creates a new version from the selected version.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param version The new version for the cloned model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<String>> cloneWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String version) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -193,304 +208,169 @@ public class VersionsImpl implements Versions {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        TaskUpdateObject versionCloneObject = null;
-        if (version != null) {
-            versionCloneObject = new TaskUpdateObject();
-            versionCloneObject.withVersion(version);
-        }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.clone(appId, versionId, this.client.acceptLanguage(), versionCloneObject, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
-                @Override
-                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<String> clientResponse = cloneDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<String> cloneDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<String, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<String>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public VersionsCloneParameters clone() {
-        return new VersionsCloneParameters(this);
+        TaskUpdateObject versionCloneObject = new TaskUpdateObject();
+        versionCloneObject.withVersion(version);
+        return service.clone(appId, versionId, azureRegion, azureCloud, versionCloneObject);
     }
 
     /**
-     * Internal class implementing VersionsCloneDefinition.
-     */
-    class VersionsCloneParameters implements VersionsCloneDefinition {
-        private VersionsImpl parent;
-        private UUID appId;
-        private String versionId;
-        private String version;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        VersionsCloneParameters(VersionsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public VersionsCloneParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public VersionsCloneParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public VersionsCloneParameters withVersion(String version) {
-            this.version = version;
-            return this;
-        }
-
-        @Override
-        public String execute() {
-        return cloneWithServiceResponseAsync(appId, versionId, version).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<String> executeAsync() {
-            return cloneWithServiceResponseAsync(appId, versionId, version).map(new Func1<ServiceResponse<String>, String>() {
-                @Override
-                public String call(ServiceResponse<String> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
-    /**
-     * Gets the application versions info.
+     * Creates a new version from the selected version.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param versionId The version ID.
+     * @param version The new version for the cloned model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<String> cloneAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String version) {
+        return cloneWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, version)
+            .flatMap((SimpleResponse<String> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Gets a list of versions for this application ID.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;VersionInfo&gt; object if successful.
      */
-    public List<VersionInfo> list(UUID appId, ListVersionsOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(appId, listOptionalParameter).toBlocking().single().body();
+    public List<VersionInfo> list(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        return listAsync(azureRegion, azureCloud, appId).block();
     }
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<List<VersionInfo>> listAsync(UUID appId, ListVersionsOptionalParameter listOptionalParameter, final ServiceCallback<List<VersionInfo>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(appId, listOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Gets the application versions info.
-     *
-     * @param appId The application ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;VersionInfo&gt; object
-     */
-    public Observable<List<VersionInfo>> listAsync(UUID appId, ListVersionsOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(appId, listOptionalParameter).map(new Func1<ServiceResponse<List<VersionInfo>>, List<VersionInfo>>() {
-            @Override
-            public List<VersionInfo> call(ServiceResponse<List<VersionInfo>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the application versions info.
-     *
-     * @param appId The application ID.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;VersionInfo&gt; object
-     */
-    public Observable<ServiceResponse<List<VersionInfo>>> listWithServiceResponseAsync(UUID appId, ListVersionsOptionalParameter listOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<List<VersionInfo>>> listWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        final Integer skip = listOptionalParameter != null ? listOptionalParameter.skip() : null;
-        final Integer take = listOptionalParameter != null ? listOptionalParameter.take() : null;
-
-        return listWithServiceResponseAsync(appId, skip, take);
+        final Integer skip = 0;
+        final Integer take = 100;
+        return service.list(appId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<VersionInfo>> listAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId) {
+        return listWithRestResponseAsync(azureRegion, azureCloud, appId)
+            .flatMap((SimpleResponse<List<VersionInfo>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Gets a list of versions for this application ID.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param skip The number of entries to skip. Default value is 0.
      * @param take The number of entries to return. Maximum page size is 500. Default is 100.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;VersionInfo&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List&lt;VersionInfo&gt; object if successful.
      */
-    public Observable<ServiceResponse<List<VersionInfo>>> listWithServiceResponseAsync(UUID appId, Integer skip, Integer take) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public List<VersionInfo> list(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, Integer skip, Integer take) {
+        return listAsync(azureRegion, azureCloud, appId, skip, take).block();
+    }
+
+    /**
+     * Gets a list of versions for this application ID.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<List<VersionInfo>>> listWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, Integer skip, Integer take) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.list(appId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VersionInfo>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<VersionInfo>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<VersionInfo>> clientResponse = listDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<VersionInfo>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<VersionInfo>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<VersionInfo>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public VersionsListParameters list() {
-        return new VersionsListParameters(this);
+        return service.list(appId, azureRegion, azureCloud, skip, take);
     }
 
     /**
-     * Internal class implementing VersionsListDefinition.
-     */
-    class VersionsListParameters implements VersionsListDefinition {
-        private VersionsImpl parent;
-        private UUID appId;
-        private Integer skip;
-        private Integer take;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        VersionsListParameters(VersionsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public VersionsListParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public VersionsListParameters withSkip(Integer skip) {
-            this.skip = skip;
-            return this;
-        }
-
-        @Override
-        public VersionsListParameters withTake(Integer take) {
-            this.take = take;
-            return this;
-        }
-
-        @Override
-        public List<VersionInfo> execute() {
-        return listWithServiceResponseAsync(appId, skip, take).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<List<VersionInfo>> executeAsync() {
-            return listWithServiceResponseAsync(appId, skip, take).map(new Func1<ServiceResponse<List<VersionInfo>>, List<VersionInfo>>() {
-                @Override
-                public List<VersionInfo> call(ServiceResponse<List<VersionInfo>> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Gets the version info.
+     * Gets a list of versions for this application ID.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param skip The number of entries to skip. Default value is 0.
+     * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<List<VersionInfo>> listAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, Integer skip, Integer take) {
+        return listWithRestResponseAsync(azureRegion, azureCloud, appId, skip, take)
+            .flatMap((SimpleResponse<List<VersionInfo>> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Gets the version information such as date created, last modified date, endpoint URL, count of intents and entities, training and publishing status.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the VersionInfo object if successful.
      */
-    public VersionInfo get(UUID appId, String versionId) {
-        return getWithServiceResponseAsync(appId, versionId).toBlocking().single().body();
+    public VersionInfo get(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return getAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
     /**
-     * Gets the version info.
+     * Gets the version information such as date created, last modified date, endpoint URL, count of intents and entities, training and publishing status.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<VersionInfo> getAsync(UUID appId, String versionId, final ServiceCallback<VersionInfo> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(appId, versionId), serviceCallback);
-    }
-
-    /**
-     * Gets the version info.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the VersionInfo object
-     */
-    public Observable<VersionInfo> getAsync(UUID appId, String versionId) {
-        return getWithServiceResponseAsync(appId, versionId).map(new Func1<ServiceResponse<VersionInfo>, VersionInfo>() {
-            @Override
-            public VersionInfo call(ServiceResponse<VersionInfo> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the version info.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the VersionInfo object
-     */
-    public Observable<ServiceResponse<VersionInfo>> getWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<VersionInfo>> getWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -498,88 +378,56 @@ public class VersionsImpl implements Versions {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.get(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VersionInfo>>>() {
-                @Override
-                public Observable<ServiceResponse<VersionInfo>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<VersionInfo> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.get(appId, versionId, azureRegion, azureCloud);
     }
 
-    private ServiceResponse<VersionInfo> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<VersionInfo, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<VersionInfo>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+    /**
+     * Gets the version information such as date created, last modified date, endpoint URL, count of intents and entities, training and publishing status.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<VersionInfo> getAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return getWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<VersionInfo> res) -> Mono.just(res.value()));
     }
-
 
     /**
      * Updates the name or description of the application version.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus update(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter) {
-        return updateWithServiceResponseAsync(appId, versionId, updateOptionalParameter).toBlocking().single().body();
+    public OperationStatus update(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return updateAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
     /**
      * Updates the name or description of the application version.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<OperationStatus> updateAsync(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(appId, versionId, updateOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Updates the name or description of the application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> updateAsync(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter) {
-        return updateWithServiceResponseAsync(appId, versionId, updateOptionalParameter).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates the name or description of the application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<OperationStatus>> updateWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -587,23 +435,60 @@ public class VersionsImpl implements Versions {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        final String version = updateOptionalParameter != null ? updateOptionalParameter.version() : null;
-
-        return updateWithServiceResponseAsync(appId, versionId, version);
+        TaskUpdateObject versionUpdateObject = new TaskUpdateObject();
+        versionUpdateObject.withVersion(null);
+        return service.update(appId, versionId, azureRegion, azureCloud, versionUpdateObject);
     }
 
     /**
      * Updates the name or description of the application version.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> updateAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return updateWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Updates the name or description of the application version.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param version The new version for the cloned model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the OperationStatus object if successful.
      */
-    public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, String versionId, String version) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public OperationStatus update(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String version) {
+        return updateAsync(azureRegion, azureCloud, appId, versionId, version).block();
+    }
+
+    /**
+     * Updates the name or description of the application version.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param version The new version for the cloned model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<OperationStatus>> updateWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String version) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -613,139 +498,57 @@ public class VersionsImpl implements Versions {
         }
         TaskUpdateObject versionUpdateObject = new TaskUpdateObject();
         versionUpdateObject.withVersion(version);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.update(appId, versionId, this.client.acceptLanguage(), versionUpdateObject, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<OperationStatus> updateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public VersionsUpdateParameters update() {
-        return new VersionsUpdateParameters(this);
+        return service.update(appId, versionId, azureRegion, azureCloud, versionUpdateObject);
     }
 
     /**
-     * Internal class implementing VersionsUpdateDefinition.
+     * Updates the name or description of the application version.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param version The new version for the cloned model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    class VersionsUpdateParameters implements VersionsUpdateDefinition {
-        private VersionsImpl parent;
-        private UUID appId;
-        private String versionId;
-        private String version;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        VersionsUpdateParameters(VersionsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public VersionsUpdateParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public VersionsUpdateParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public VersionsUpdateParameters withVersion(String version) {
-            this.version = version;
-            return this;
-        }
-
-        @Override
-        public OperationStatus execute() {
-        return updateWithServiceResponseAsync(appId, versionId, version).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<OperationStatus> executeAsync() {
-            return updateWithServiceResponseAsync(appId, versionId, version).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-                @Override
-                public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                    return response.body();
-                }
-            });
-        }
+    public Mono<OperationStatus> updateAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, String version) {
+        return updateWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, version)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
     }
 
     /**
      * Deletes an application version.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus delete(UUID appId, String versionId) {
-        return deleteWithServiceResponseAsync(appId, versionId).toBlocking().single().body();
+    public OperationStatus delete(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return deleteAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
     /**
      * Deletes an application version.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<OperationStatus> deleteAsync(UUID appId, String versionId, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(appId, versionId), serviceCallback);
-    }
-
-    /**
-     * Deletes an application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> deleteAsync(UUID appId, String versionId) {
-        return deleteWithServiceResponseAsync(appId, versionId).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes an application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<OperationStatus>> deleteWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -753,83 +556,56 @@ public class VersionsImpl implements Versions {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.delete(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.delete(appId, versionId, azureRegion, azureCloud);
     }
 
-    private ServiceResponse<OperationStatus> deleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+    /**
+     * Deletes an application version.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> deleteAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return deleteWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
     }
 
     /**
      * Exports a LUIS application to JSON format.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the LuisApp object if successful.
      */
-    public LuisApp export(UUID appId, String versionId) {
-        return exportWithServiceResponseAsync(appId, versionId).toBlocking().single().body();
+    public LuisApp export(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return exportAsync(azureRegion, azureCloud, appId, versionId).block();
     }
 
     /**
      * Exports a LUIS application to JSON format.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<LuisApp> exportAsync(UUID appId, String versionId, final ServiceCallback<LuisApp> serviceCallback) {
-        return ServiceFuture.fromResponse(exportWithServiceResponseAsync(appId, versionId), serviceCallback);
-    }
-
-    /**
-     * Exports a LUIS application to JSON format.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the LuisApp object
-     */
-    public Observable<LuisApp> exportAsync(UUID appId, String versionId) {
-        return exportWithServiceResponseAsync(appId, versionId).map(new Func1<ServiceResponse<LuisApp>, LuisApp>() {
-            @Override
-            public LuisApp call(ServiceResponse<LuisApp> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Exports a LUIS application to JSON format.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the LuisApp object
-     */
-    public Observable<ServiceResponse<LuisApp>> exportWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<LuisApp>> exportWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -837,88 +613,56 @@ public class VersionsImpl implements Versions {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.export(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LuisApp>>>() {
-                @Override
-                public Observable<ServiceResponse<LuisApp>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<LuisApp> clientResponse = exportDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.export(appId, versionId, azureRegion, azureCloud);
     }
 
-    private ServiceResponse<LuisApp> exportDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<LuisApp, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<LuisApp>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+    /**
+     * Exports a LUIS application to JSON format.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<LuisApp> exportAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId) {
+        return exportWithRestResponseAsync(azureRegion, azureCloud, appId, versionId)
+            .flatMap((SimpleResponse<LuisApp> res) -> Mono.just(res.value()));
     }
-
 
     /**
      * Imports a new version into a LUIS application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param luisApp A LUIS application structure.
-     * @param importMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the String object if successful.
      */
-    public String importMethod(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter) {
-        return importMethodWithServiceResponseAsync(appId, luisApp, importMethodOptionalParameter).toBlocking().single().body();
+    public String importMethod(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull LuisApp luisApp) {
+        return importMethodAsync(azureRegion, azureCloud, appId, luisApp).block();
     }
 
     /**
      * Imports a new version into a LUIS application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param luisApp A LUIS application structure.
-     * @param importMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<String> importMethodAsync(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter, final ServiceCallback<String> serviceCallback) {
-        return ServiceFuture.fromResponse(importMethodWithServiceResponseAsync(appId, luisApp, importMethodOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Imports a new version into a LUIS application.
-     *
-     * @param appId The application ID.
-     * @param luisApp A LUIS application structure.
-     * @param importMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<String> importMethodAsync(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter) {
-        return importMethodWithServiceResponseAsync(appId, luisApp, importMethodOptionalParameter).map(new Func1<ServiceResponse<String>, String>() {
-            @Override
-            public String call(ServiceResponse<String> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Imports a new version into a LUIS application.
-     *
-     * @param appId The application ID.
-     * @param luisApp A LUIS application structure.
-     * @param importMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    public Observable<ServiceResponse<String>> importMethodWithServiceResponseAsync(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<String>> importMethodWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull LuisApp luisApp) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -927,23 +671,59 @@ public class VersionsImpl implements Versions {
             throw new IllegalArgumentException("Parameter luisApp is required and cannot be null.");
         }
         Validator.validate(luisApp);
-        final String versionId = importMethodOptionalParameter != null ? importMethodOptionalParameter.versionId() : null;
-
-        return importMethodWithServiceResponseAsync(appId, luisApp, versionId);
+        final String versionId = null;
+        return service.importMethod(appId, azureRegion, azureCloud, versionId, luisApp);
     }
 
     /**
      * Imports a new version into a LUIS application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param luisApp A LUIS application structure.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<String> importMethodAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull LuisApp luisApp) {
+        return importMethodWithRestResponseAsync(azureRegion, azureCloud, appId, luisApp)
+            .flatMap((SimpleResponse<String> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param luisApp A LUIS application structure.
      * @param versionId The new versionId to import. If not specified, the versionId will be read from the imported object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the String object if successful.
      */
-    public Observable<ServiceResponse<String>> importMethodWithServiceResponseAsync(UUID appId, LuisApp luisApp, String versionId) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public String importMethod(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull LuisApp luisApp, String versionId) {
+        return importMethodAsync(azureRegion, azureCloud, appId, luisApp, versionId).block();
+    }
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param luisApp A LUIS application structure.
+     * @param versionId The new versionId to import. If not specified, the versionId will be read from the imported object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<SimpleResponse<String>> importMethodWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull LuisApp luisApp, String versionId) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -952,143 +732,59 @@ public class VersionsImpl implements Versions {
             throw new IllegalArgumentException("Parameter luisApp is required and cannot be null.");
         }
         Validator.validate(luisApp);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.importMethod(appId, versionId, luisApp, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
-                @Override
-                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<String> clientResponse = importMethodDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<String> importMethodDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<String, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<String>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public VersionsImportMethodParameters importMethod() {
-        return new VersionsImportMethodParameters(this);
+        return service.importMethod(appId, azureRegion, azureCloud, versionId, luisApp);
     }
 
     /**
-     * Internal class implementing VersionsImportMethodDefinition.
-     */
-    class VersionsImportMethodParameters implements VersionsImportMethodDefinition {
-        private VersionsImpl parent;
-        private UUID appId;
-        private LuisApp luisApp;
-        private String versionId;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        VersionsImportMethodParameters(VersionsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public VersionsImportMethodParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public VersionsImportMethodParameters withLuisApp(LuisApp luisApp) {
-            this.luisApp = luisApp;
-            return this;
-        }
-
-        @Override
-        public VersionsImportMethodParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public String execute() {
-        return importMethodWithServiceResponseAsync(appId, luisApp, versionId).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<String> executeAsync() {
-            return importMethodWithServiceResponseAsync(appId, luisApp, versionId).map(new Func1<ServiceResponse<String>, String>() {
-                @Override
-                public String call(ServiceResponse<String> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Deleted an unlabelled utterance.
+     * Imports a new version into a LUIS application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param luisApp A LUIS application structure.
+     * @param versionId The new versionId to import. If not specified, the versionId will be read from the imported object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<String> importMethodAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull LuisApp luisApp, String versionId) {
+        return importMethodWithRestResponseAsync(azureRegion, azureCloud, appId, luisApp, versionId)
+            .flatMap((SimpleResponse<String> res) -> Mono.just(res.value()));
+    }
+
+    /**
+     * Deleted an unlabelled utterance in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param utterance The utterance text to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus deleteUnlabelledUtterance(UUID appId, String versionId, String utterance) {
-        return deleteUnlabelledUtteranceWithServiceResponseAsync(appId, versionId, utterance).toBlocking().single().body();
+    public OperationStatus deleteUnlabelledUtterance(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String utterance) {
+        return deleteUnlabelledUtteranceAsync(azureRegion, azureCloud, appId, versionId, utterance).block();
     }
 
     /**
-     * Deleted an unlabelled utterance.
+     * Deleted an unlabelled utterance in a version of the application.
      *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param utterance The utterance text to delete.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    public ServiceFuture<OperationStatus> deleteUnlabelledUtteranceAsync(UUID appId, String versionId, String utterance, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteUnlabelledUtteranceWithServiceResponseAsync(appId, versionId, utterance), serviceCallback);
-    }
-
-    /**
-     * Deleted an unlabelled utterance.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param utterance The utterance text to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> deleteUnlabelledUtteranceAsync(UUID appId, String versionId, String utterance) {
-        return deleteUnlabelledUtteranceWithServiceResponseAsync(appId, versionId, utterance).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deleted an unlabelled utterance.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param utterance The utterance text to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> deleteUnlabelledUtteranceWithServiceResponseAsync(UUID appId, String versionId, String utterance) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+    public Mono<SimpleResponse<OperationStatus>> deleteUnlabelledUtteranceWithRestResponseAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String utterance) {
+        if (azureRegion == null) {
+            throw new IllegalArgumentException("Parameter azureRegion is required and cannot be null.");
+        }
+        if (azureCloud == null) {
+            throw new IllegalArgumentException("Parameter azureCloud is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1099,26 +795,22 @@ public class VersionsImpl implements Versions {
         if (utterance == null) {
             throw new IllegalArgumentException("Parameter utterance is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.deleteUnlabelledUtterance(appId, versionId, utterance, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = deleteUnlabelledUtteranceDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.deleteUnlabelledUtterance(appId, versionId, azureRegion, azureCloud, utterance);
     }
 
-    private ServiceResponse<OperationStatus> deleteUnlabelledUtteranceDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
+    /**
+     * Deleted an unlabelled utterance in a version of the application.
+     *
+     * @param azureRegion Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth', 'virginia'.
+     * @param azureCloud Supported Azure Clouds for Cognitive Services endpoints. Possible values include: 'com', 'us'.
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param utterance The utterance text to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    public Mono<OperationStatus> deleteUnlabelledUtteranceAsync(@NonNull AzureRegions azureRegion, @NonNull AzureClouds azureCloud, @NonNull UUID appId, @NonNull String versionId, @NonNull String utterance) {
+        return deleteUnlabelledUtteranceWithRestResponseAsync(azureRegion, azureCloud, appId, versionId, utterance)
+            .flatMap((SimpleResponse<OperationStatus> res) -> Mono.just(res.value()));
     }
-
 }

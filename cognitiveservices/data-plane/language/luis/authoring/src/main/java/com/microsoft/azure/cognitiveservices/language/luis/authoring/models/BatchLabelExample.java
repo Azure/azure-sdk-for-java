@@ -11,9 +11,9 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response when adding a batch of labeled examples.
+ * Response when adding a batch of labeled example utterances.
  */
-public class BatchLabelExample {
+public final class BatchLabelExample {
     /**
      * The value property.
      */
@@ -35,7 +35,7 @@ public class BatchLabelExample {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public LabelExampleResponse value() {
         return this.value;
@@ -44,7 +44,7 @@ public class BatchLabelExample {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the BatchLabelExample object itself.
      */
     public BatchLabelExample withValue(LabelExampleResponse value) {
@@ -55,7 +55,7 @@ public class BatchLabelExample {
     /**
      * Get the hasError value.
      *
-     * @return the hasError value
+     * @return the hasError value.
      */
     public Boolean hasError() {
         return this.hasError;
@@ -64,7 +64,7 @@ public class BatchLabelExample {
     /**
      * Set the hasError value.
      *
-     * @param hasError the hasError value to set
+     * @param hasError the hasError value to set.
      * @return the BatchLabelExample object itself.
      */
     public BatchLabelExample withHasError(Boolean hasError) {
@@ -75,7 +75,7 @@ public class BatchLabelExample {
     /**
      * Get the error value.
      *
-     * @return the error value
+     * @return the error value.
      */
     public OperationStatus error() {
         return this.error;
@@ -84,12 +84,11 @@ public class BatchLabelExample {
     /**
      * Set the error value.
      *
-     * @param error the error value to set
+     * @param error the error value to set.
      * @return the BatchLabelExample object itself.
      */
     public BatchLabelExample withError(OperationStatus error) {
         this.error = error;
         return this;
     }
-
 }

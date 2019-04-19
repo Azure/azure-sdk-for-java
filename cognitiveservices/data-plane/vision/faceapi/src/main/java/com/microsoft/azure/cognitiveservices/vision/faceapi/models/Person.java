@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.UUID;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Person object.
  */
-public class Person extends NameAndUserDataContract {
+public final class Person extends NameAndUserDataContract {
     /**
      * PersonId of the target face list.
      */
@@ -33,7 +33,7 @@ public class Person extends NameAndUserDataContract {
     /**
      * Get the personId value.
      *
-     * @return the personId value
+     * @return the personId value.
      */
     public UUID personId() {
         return this.personId;
@@ -42,7 +42,7 @@ public class Person extends NameAndUserDataContract {
     /**
      * Set the personId value.
      *
-     * @param personId the personId value to set
+     * @param personId the personId value to set.
      * @return the Person object itself.
      */
     public Person withPersonId(UUID personId) {
@@ -53,7 +53,7 @@ public class Person extends NameAndUserDataContract {
     /**
      * Get the persistedFaceIds value.
      *
-     * @return the persistedFaceIds value
+     * @return the persistedFaceIds value.
      */
     public List<UUID> persistedFaceIds() {
         return this.persistedFaceIds;
@@ -62,12 +62,11 @@ public class Person extends NameAndUserDataContract {
     /**
      * Set the persistedFaceIds value.
      *
-     * @param persistedFaceIds the persistedFaceIds value to set
+     * @param persistedFaceIds the persistedFaceIds value to set.
      * @return the Person object itself.
      */
     public Person withPersistedFaceIds(List<UUID> persistedFaceIds) {
         this.persistedFaceIds = persistedFaceIds;
         return this;
     }
-
 }

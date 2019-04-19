@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * An object providing additional metadata describing color attributes.
  */
-public class ColorInfo {
+public final class ColorInfo {
     /**
      * Possible dominant foreground color.
      */
@@ -43,12 +43,12 @@ public class ColorInfo {
      * A value indicating if the image is black and white.
      */
     @JsonProperty(value = "isBWImg")
-    private Boolean isBWImg;
+    private boolean isBWImg;
 
     /**
      * Get the dominantColorForeground value.
      *
-     * @return the dominantColorForeground value
+     * @return the dominantColorForeground value.
      */
     public String dominantColorForeground() {
         return this.dominantColorForeground;
@@ -57,7 +57,7 @@ public class ColorInfo {
     /**
      * Set the dominantColorForeground value.
      *
-     * @param dominantColorForeground the dominantColorForeground value to set
+     * @param dominantColorForeground the dominantColorForeground value to set.
      * @return the ColorInfo object itself.
      */
     public ColorInfo withDominantColorForeground(String dominantColorForeground) {
@@ -68,7 +68,7 @@ public class ColorInfo {
     /**
      * Get the dominantColorBackground value.
      *
-     * @return the dominantColorBackground value
+     * @return the dominantColorBackground value.
      */
     public String dominantColorBackground() {
         return this.dominantColorBackground;
@@ -77,7 +77,7 @@ public class ColorInfo {
     /**
      * Set the dominantColorBackground value.
      *
-     * @param dominantColorBackground the dominantColorBackground value to set
+     * @param dominantColorBackground the dominantColorBackground value to set.
      * @return the ColorInfo object itself.
      */
     public ColorInfo withDominantColorBackground(String dominantColorBackground) {
@@ -88,7 +88,7 @@ public class ColorInfo {
     /**
      * Get the dominantColors value.
      *
-     * @return the dominantColors value
+     * @return the dominantColors value.
      */
     public List<String> dominantColors() {
         return this.dominantColors;
@@ -97,7 +97,7 @@ public class ColorInfo {
     /**
      * Set the dominantColors value.
      *
-     * @param dominantColors the dominantColors value to set
+     * @param dominantColors the dominantColors value to set.
      * @return the ColorInfo object itself.
      */
     public ColorInfo withDominantColors(List<String> dominantColors) {
@@ -108,7 +108,7 @@ public class ColorInfo {
     /**
      * Get the accentColor value.
      *
-     * @return the accentColor value
+     * @return the accentColor value.
      */
     public String accentColor() {
         return this.accentColor;
@@ -117,7 +117,7 @@ public class ColorInfo {
     /**
      * Set the accentColor value.
      *
-     * @param accentColor the accentColor value to set
+     * @param accentColor the accentColor value to set.
      * @return the ColorInfo object itself.
      */
     public ColorInfo withAccentColor(String accentColor) {
@@ -128,21 +128,20 @@ public class ColorInfo {
     /**
      * Get the isBWImg value.
      *
-     * @return the isBWImg value
+     * @return the isBWImg value.
      */
-    public Boolean isBWImg() {
+    public boolean isBWImg() {
         return this.isBWImg;
     }
 
     /**
      * Set the isBWImg value.
      *
-     * @param isBWImg the isBWImg value to set
+     * @param isBWImg the isBWImg value to set.
      * @return the ColorInfo object itself.
      */
-    public ColorInfo withIsBWImg(Boolean isBWImg) {
+    public ColorInfo withIsBWImg(boolean isBWImg) {
         this.isBWImg = isBWImg;
         return this;
     }
-
 }

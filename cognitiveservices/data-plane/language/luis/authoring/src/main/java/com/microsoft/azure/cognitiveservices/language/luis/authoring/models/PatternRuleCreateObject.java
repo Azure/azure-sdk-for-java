@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object model for creating a pattern.
  */
-public class PatternRuleCreateObject {
+public final class PatternRuleCreateObject {
     /**
      * The pattern text.
      */
@@ -29,7 +29,7 @@ public class PatternRuleCreateObject {
     /**
      * Get the pattern value.
      *
-     * @return the pattern value
+     * @return the pattern value.
      */
     public String pattern() {
         return this.pattern;
@@ -38,7 +38,7 @@ public class PatternRuleCreateObject {
     /**
      * Set the pattern value.
      *
-     * @param pattern the pattern value to set
+     * @param pattern the pattern value to set.
      * @return the PatternRuleCreateObject object itself.
      */
     public PatternRuleCreateObject withPattern(String pattern) {
@@ -49,7 +49,7 @@ public class PatternRuleCreateObject {
     /**
      * Get the intent value.
      *
-     * @return the intent value
+     * @return the intent value.
      */
     public String intent() {
         return this.intent;
@@ -58,12 +58,11 @@ public class PatternRuleCreateObject {
     /**
      * Set the intent value.
      *
-     * @param intent the intent value to set
+     * @param intent the intent value to set.
      * @return the PatternRuleCreateObject object itself.
      */
     public PatternRuleCreateObject withIntent(String intent) {
         this.intent = intent;
         return this;
     }
-
 }

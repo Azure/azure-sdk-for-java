@@ -8,182 +8,174 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddImageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddImageUrlInputOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddImageFileInputOptionalParameter;
+import com.azure.common.http.rest.SimpleResponse;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModelModel;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Image;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ImageIds;
-import rx.Observable;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
 
 /**
- * An instance of this class provides access to all the operations defined
- * in ListManagementImages.
+ * An instance of this class provides access to all the operations defined in
+ * ListManagementImages.
  */
 public interface ListManagementImages {
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param addImageOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Image object if successful.
      */
-    
-    Image addImage(String listId, AddImageOptionalParameter addImageOptionalParameter);
+    Image addImage(@NonNull String listId);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param addImageOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Image object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    Observable<Image> addImageAsync(String listId, AddImageOptionalParameter addImageOptionalParameter);
+    Mono<SimpleResponse<Image>> addImageWithRestResponseAsync(@NonNull String listId);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
-     * @return the first stage of the addImage call
+     * @param listId List Id of the image list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ListManagementImagesAddImageDefinitionStages.WithListId addImage();
+    Mono<Image> addImageAsync(@NonNull String listId);
 
     /**
-     * Grouping of addImage definition stages.
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Image object if successful.
      */
-    interface ListManagementImagesAddImageDefinitionStages {
-        /**
-         * The stage of the definition to be specify listId.
-         */
-        interface WithListId {
-            /**
-             * List Id of the image list.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageDefinitionStages.WithExecute withListId(String listId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Tag for the image.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageDefinitionStages.WithExecute withTag(Integer tag);
-
-            /**
-             * The image label.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageDefinitionStages.WithExecute withLabel(String label);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ListManagementImagesAddImageDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Image object if successful.
-             */
-            Image execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Image object
-             */
-            Observable<Image> executeAsync();
-        }
-    }
+    Image addImage(@NonNull String listId, Integer tag, String label);
 
     /**
-     * The entirety of addImage definition.
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    interface ListManagementImagesAddImageDefinition extends
-        ListManagementImagesAddImageDefinitionStages.WithListId,
-        ListManagementImagesAddImageDefinitionStages.WithExecute {
-    }
+    Mono<SimpleResponse<Image>> addImageWithRestResponseAsync(@NonNull String listId, Integer tag, String label);
 
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Image> addImageAsync(@NonNull String listId, Integer tag, String label);
 
     /**
      * Deletes all images from the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the String object if successful.
      */
-    String deleteAllImages(String listId);
+    String deleteAllImages(@NonNull String listId);
 
     /**
      * Deletes all images from the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<String> deleteAllImagesAsync(String listId);
+    Mono<SimpleResponse<String>> deleteAllImagesWithRestResponseAsync(@NonNull String listId);
 
-
+    /**
+     * Deletes all images from the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<String> deleteAllImagesAsync(@NonNull String listId);
 
     /**
      * Gets all image Ids from the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImageIds object if successful.
      */
-    ImageIds getAllImageIds(String listId);
+    ImageIds getAllImageIds(@NonNull String listId);
 
     /**
      * Gets all image Ids from the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageIds object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<ImageIds> getAllImageIdsAsync(String listId);
+    Mono<SimpleResponse<ImageIds>> getAllImageIdsWithRestResponseAsync(@NonNull String listId);
 
-
+    /**
+     * Gets all image Ids from the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<ImageIds> getAllImageIdsAsync(@NonNull String listId);
 
     /**
      * Deletes an image from the list with list Id and image Id passed.
      *
      * @param listId List Id of the image list.
      * @param imageId Id of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the String object if successful.
      */
-    String deleteImage(String listId, String imageId);
+    String deleteImage(@NonNull String listId, @NonNull String imageId);
 
     /**
      * Deletes an image from the list with list Id and image Id passed.
      *
      * @param listId List Id of the image list.
      * @param imageId Id of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    Observable<String> deleteImageAsync(String listId, String imageId);
+    Mono<SimpleResponse<String>> deleteImageWithRestResponseAsync(@NonNull String listId, @NonNull String imageId);
 
+    /**
+     * Deletes an image from the list with list Id and image Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageId Id of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<String> deleteImageAsync(@NonNull String listId, @NonNull String imageId);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -191,14 +183,12 @@ public interface ListManagementImages {
      * @param listId List Id of the image list.
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param addImageUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Image object if successful.
      */
-    
-    Image addImageUrlInput(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter);
+    Image addImageUrlInput(@NonNull String listId, @NonNull String contentType, @NonNull BodyModel imageUrl);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -206,215 +196,136 @@ public interface ListManagementImages {
      * @param listId List Id of the image list.
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param addImageUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Image object
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter);
-
-    /**
-     * Add an image to the list with list Id equal to list Id passed.
-     *
-     * @return the first stage of the addImageUrlInput call
-     */
-    ListManagementImagesAddImageUrlInputDefinitionStages.WithListId addImageUrlInput();
-
-    /**
-     * Grouping of addImageUrlInput definition stages.
-     */
-    interface ListManagementImagesAddImageUrlInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify listId.
-         */
-        interface WithListId {
-            /**
-             * List Id of the image list.
-             *
-             * @return next definition stage
-             */
-            WithContentType withListId(String listId);
-        }
-        /**
-         * The stage of the definition to be specify contentType.
-         */
-        interface WithContentType {
-            /**
-             * The content type.
-             *
-             * @return next definition stage
-             */
-            WithImageUrl withContentType(String contentType);
-        }
-        /**
-         * The stage of the definition to be specify imageUrl.
-         */
-        interface WithImageUrl {
-            /**
-             * The image url.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageUrlInputDefinitionStages.WithExecute withImageUrl(BodyModelModel imageUrl);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Tag for the image.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageUrlInputDefinitionStages.WithExecute withTag(Integer tag);
-
-            /**
-             * The image label.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageUrlInputDefinitionStages.WithExecute withLabel(String label);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ListManagementImagesAddImageUrlInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Image object if successful.
-             */
-            Image execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Image object
-             */
-            Observable<Image> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of addImageUrlInput definition.
-     */
-    interface ListManagementImagesAddImageUrlInputDefinition extends
-        ListManagementImagesAddImageUrlInputDefinitionStages.WithListId,
-        ListManagementImagesAddImageUrlInputDefinitionStages.WithContentType,
-        ListManagementImagesAddImageUrlInputDefinitionStages.WithImageUrl,
-        ListManagementImagesAddImageUrlInputDefinitionStages.WithExecute {
-    }
+    Mono<SimpleResponse<Image>> addImageUrlInputWithRestResponseAsync(@NonNull String listId, @NonNull String contentType, @NonNull BodyModel imageUrl);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param imageStream The image file.
-     * @param addImageFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Image> addImageUrlInputAsync(@NonNull String listId, @NonNull String contentType, @NonNull BodyModel imageUrl);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Image object if successful.
      */
-    
-    Image addImageFileInput(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter);
+    Image addImageUrlInput(@NonNull String listId, @NonNull String contentType, @NonNull BodyModel imageUrl, Integer tag, String label);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param imageStream The image file.
-     * @param addImageFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Image object
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    
-    Observable<Image> addImageFileInputAsync(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter);
+    Mono<SimpleResponse<Image>> addImageUrlInputWithRestResponseAsync(@NonNull String listId, @NonNull String contentType, @NonNull BodyModel imageUrl, Integer tag, String label);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
-     * @return the first stage of the addImageFileInput call
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    ListManagementImagesAddImageFileInputDefinitionStages.WithListId addImageFileInput();
+    Mono<Image> addImageUrlInputAsync(@NonNull String listId, @NonNull String contentType, @NonNull BodyModel imageUrl, Integer tag, String label);
 
     /**
-     * Grouping of addImageFileInput definition stages.
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Image object if successful.
      */
-    interface ListManagementImagesAddImageFileInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify listId.
-         */
-        interface WithListId {
-            /**
-             * List Id of the image list.
-             *
-             * @return next definition stage
-             */
-            WithImageStream withListId(String listId);
-        }
-        /**
-         * The stage of the definition to be specify imageStream.
-         */
-        interface WithImageStream {
-            /**
-             * The image file.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageFileInputDefinitionStages.WithExecute withImageStream(byte[] imageStream);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Tag for the image.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageFileInputDefinitionStages.WithExecute withTag(Integer tag);
-
-            /**
-             * The image label.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageFileInputDefinitionStages.WithExecute withLabel(String label);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ListManagementImagesAddImageFileInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Image object if successful.
-             */
-            Image execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Image object
-             */
-            Observable<Image> executeAsync();
-        }
-    }
+    Image addImageFileInput(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
 
     /**
-     * The entirety of addImageFileInput definition.
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
      */
-    interface ListManagementImagesAddImageFileInputDefinition extends
-        ListManagementImagesAddImageFileInputDefinitionStages.WithListId,
-        ListManagementImagesAddImageFileInputDefinitionStages.WithImageStream,
-        ListManagementImagesAddImageFileInputDefinitionStages.WithExecute {
-    }
+    Mono<SimpleResponse<Image>> addImageFileInputWithRestResponseAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
 
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Image> addImageFileInputAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws APIErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Image object if successful.
+     */
+    Image addImageFileInput(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Integer tag, String label);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<SimpleResponse<Image>> addImageFileInputWithRestResponseAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Integer tag, String label);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentLength The content length.
+     * @param imageStream The image file.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    Mono<Image> addImageFileInputAsync(@NonNull String listId, @NonNull long contentLength, @NonNull Flux<ByteBuffer> imageStream, Integer tag, String label);
 }

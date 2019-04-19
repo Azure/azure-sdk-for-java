@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object model for publishing a specific application version.
  */
-public class ApplicationPublishObject {
+public final class ApplicationPublishObject {
     /**
      * The version ID to publish.
      */
@@ -28,15 +28,9 @@ public class ApplicationPublishObject {
     private Boolean isStaging;
 
     /**
-     * The target region that the application is published to.
-     */
-    @JsonProperty(value = "region")
-    private String region;
-
-    /**
      * Get the versionId value.
      *
-     * @return the versionId value
+     * @return the versionId value.
      */
     public String versionId() {
         return this.versionId;
@@ -45,7 +39,7 @@ public class ApplicationPublishObject {
     /**
      * Set the versionId value.
      *
-     * @param versionId the versionId value to set
+     * @param versionId the versionId value to set.
      * @return the ApplicationPublishObject object itself.
      */
     public ApplicationPublishObject withVersionId(String versionId) {
@@ -56,7 +50,7 @@ public class ApplicationPublishObject {
     /**
      * Get the isStaging value.
      *
-     * @return the isStaging value
+     * @return the isStaging value.
      */
     public Boolean isStaging() {
         return this.isStaging;
@@ -65,32 +59,11 @@ public class ApplicationPublishObject {
     /**
      * Set the isStaging value.
      *
-     * @param isStaging the isStaging value to set
+     * @param isStaging the isStaging value to set.
      * @return the ApplicationPublishObject object itself.
      */
     public ApplicationPublishObject withIsStaging(Boolean isStaging) {
         this.isStaging = isStaging;
         return this;
     }
-
-    /**
-     * Get the region value.
-     *
-     * @return the region value
-     */
-    public String region() {
-        return this.region;
-    }
-
-    /**
-     * Set the region value.
-     *
-     * @param region the region value to set
-     * @return the ApplicationPublishObject object itself.
-     */
-    public ApplicationPublishObject withRegion(String region) {
-        this.region = region;
-        return this;
-    }
-
 }

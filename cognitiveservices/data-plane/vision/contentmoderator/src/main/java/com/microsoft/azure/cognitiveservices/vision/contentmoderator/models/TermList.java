@@ -9,11 +9,12 @@
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /**
  * Term List  Properties.
  */
-public class TermList {
+public final class TermList {
     /**
      * Term list Id.
      */
@@ -36,12 +37,12 @@ public class TermList {
      * Term list metadata.
      */
     @JsonProperty(value = "Metadata")
-    private TermListMetadata metadata;
+    private Map<String, String> metadata;
 
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public Integer id() {
         return this.id;
@@ -50,7 +51,7 @@ public class TermList {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the TermList object itself.
      */
     public TermList withId(Integer id) {
@@ -61,7 +62,7 @@ public class TermList {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -70,7 +71,7 @@ public class TermList {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the TermList object itself.
      */
     public TermList withName(String name) {
@@ -81,7 +82,7 @@ public class TermList {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public String description() {
         return this.description;
@@ -90,7 +91,7 @@ public class TermList {
     /**
      * Set the description value.
      *
-     * @param description the description value to set
+     * @param description the description value to set.
      * @return the TermList object itself.
      */
     public TermList withDescription(String description) {
@@ -101,21 +102,20 @@ public class TermList {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
-    public TermListMetadata metadata() {
+    public Map<String, String> metadata() {
         return this.metadata;
     }
 
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the TermList object itself.
      */
-    public TermList withMetadata(TermListMetadata metadata) {
+    public TermList withMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
-
 }

@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a news article.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = NewsArticle.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("NewsArticle")
-public class NewsArticle extends Article {
+public final class NewsArticle extends Article {
 }

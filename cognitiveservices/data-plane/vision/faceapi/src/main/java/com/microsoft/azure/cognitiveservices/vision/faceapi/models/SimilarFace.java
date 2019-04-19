@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * Response body for find similar face operation.
  */
-public class SimilarFace {
+public final class SimilarFace {
     /**
      * FaceId of candidate face when find by faceIds. faceId is created by Face
      * - Detect and will expire 24 hours after the detection call.
@@ -40,7 +40,7 @@ public class SimilarFace {
     /**
      * Get the faceId value.
      *
-     * @return the faceId value
+     * @return the faceId value.
      */
     public UUID faceId() {
         return this.faceId;
@@ -49,7 +49,7 @@ public class SimilarFace {
     /**
      * Set the faceId value.
      *
-     * @param faceId the faceId value to set
+     * @param faceId the faceId value to set.
      * @return the SimilarFace object itself.
      */
     public SimilarFace withFaceId(UUID faceId) {
@@ -60,7 +60,7 @@ public class SimilarFace {
     /**
      * Get the persistedFaceId value.
      *
-     * @return the persistedFaceId value
+     * @return the persistedFaceId value.
      */
     public UUID persistedFaceId() {
         return this.persistedFaceId;
@@ -69,7 +69,7 @@ public class SimilarFace {
     /**
      * Set the persistedFaceId value.
      *
-     * @param persistedFaceId the persistedFaceId value to set
+     * @param persistedFaceId the persistedFaceId value to set.
      * @return the SimilarFace object itself.
      */
     public SimilarFace withPersistedFaceId(UUID persistedFaceId) {
@@ -80,7 +80,7 @@ public class SimilarFace {
     /**
      * Get the confidence value.
      *
-     * @return the confidence value
+     * @return the confidence value.
      */
     public double confidence() {
         return this.confidence;
@@ -89,12 +89,11 @@ public class SimilarFace {
     /**
      * Set the confidence value.
      *
-     * @param confidence the confidence value to set
+     * @param confidence the confidence value to set.
      * @return the SimilarFace object itself.
      */
     public SimilarFace withConfidence(double confidence) {
         this.confidence = confidence;
         return this;
     }
-
 }

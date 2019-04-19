@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The EntityWithResolution model.
  */
-public class EntityWithResolution extends EntityModel {
+public final class EntityWithResolution extends EntityModel {
     /**
      * Resolution values for pre-built LUIS entities.
      */
@@ -23,7 +23,7 @@ public class EntityWithResolution extends EntityModel {
     /**
      * Get the resolution value.
      *
-     * @return the resolution value
+     * @return the resolution value.
      */
     public Object resolution() {
         return this.resolution;
@@ -32,12 +32,11 @@ public class EntityWithResolution extends EntityModel {
     /**
      * Set the resolution value.
      *
-     * @param resolution the resolution value to set
+     * @param resolution the resolution value to set.
      * @return the EntityWithResolution object itself.
      */
     public EntityWithResolution withResolution(Object resolution) {
         this.resolution = resolution;
         return this;
     }
-
 }

@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.cognitiveservices.search.entitysearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import java.util.List;
 
 /**
  * Defines a response. All schemas that could be returned at the root of a
@@ -22,8 +22,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("Response")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Thing", value = Thing.class),
-    @JsonSubTypes.Type(name = "SearchResponse", value = SearchResponse.class),
     @JsonSubTypes.Type(name = "Answer", value = Answer.class),
+    @JsonSubTypes.Type(name = "SearchResponse", value = SearchResponse.class),
     @JsonSubTypes.Type(name = "ErrorResponse", value = ErrorResponse.class)
 })
 public class Response extends Identifiable {
@@ -42,7 +42,7 @@ public class Response extends Identifiable {
     /**
      * Get the contractualRules value.
      *
-     * @return the contractualRules value
+     * @return the contractualRules value.
      */
     public List<ContractualRulesContractualRule> contractualRules() {
         return this.contractualRules;
@@ -51,10 +51,9 @@ public class Response extends Identifiable {
     /**
      * Get the webSearchUrl value.
      *
-     * @return the webSearchUrl value
+     * @return the webSearchUrl value.
      */
     public String webSearchUrl() {
         return this.webSearchUrl;
     }
-
 }

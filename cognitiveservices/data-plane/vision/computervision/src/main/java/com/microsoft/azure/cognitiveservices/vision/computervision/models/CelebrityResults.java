@@ -8,15 +8,15 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * List of celebrities recognized in the image.
+ * Result of domain-specific classifications for the domain of celebrities.
  */
-public class CelebrityResults {
+public final class CelebrityResults {
     /**
-     * The celebrities property.
+     * List of celebrities recognized in the image.
      */
     @JsonProperty(value = "celebrities")
     private List<CelebritiesModel> celebrities;
@@ -36,7 +36,7 @@ public class CelebrityResults {
     /**
      * Get the celebrities value.
      *
-     * @return the celebrities value
+     * @return the celebrities value.
      */
     public List<CelebritiesModel> celebrities() {
         return this.celebrities;
@@ -45,7 +45,7 @@ public class CelebrityResults {
     /**
      * Set the celebrities value.
      *
-     * @param celebrities the celebrities value to set
+     * @param celebrities the celebrities value to set.
      * @return the CelebrityResults object itself.
      */
     public CelebrityResults withCelebrities(List<CelebritiesModel> celebrities) {
@@ -56,7 +56,7 @@ public class CelebrityResults {
     /**
      * Get the requestId value.
      *
-     * @return the requestId value
+     * @return the requestId value.
      */
     public String requestId() {
         return this.requestId;
@@ -65,7 +65,7 @@ public class CelebrityResults {
     /**
      * Set the requestId value.
      *
-     * @param requestId the requestId value to set
+     * @param requestId the requestId value to set.
      * @return the CelebrityResults object itself.
      */
     public CelebrityResults withRequestId(String requestId) {
@@ -76,7 +76,7 @@ public class CelebrityResults {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public ImageMetadata metadata() {
         return this.metadata;
@@ -85,12 +85,11 @@ public class CelebrityResults {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the CelebrityResults object itself.
      */
     public CelebrityResults withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }
-
 }

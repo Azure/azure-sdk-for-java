@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A JSON object consisting of coordinates specifying the four corners of a
  * cropped rectangle within the input image.
  */
-public class CropArea {
+public final class CropArea {
     /**
      * The top coordinate of the region to be cropped. The coordinate is a
      * fractional value of the original image's height and is measured from the
@@ -54,7 +54,7 @@ public class CropArea {
     /**
      * Get the top value.
      *
-     * @return the top value
+     * @return the top value.
      */
     public double top() {
         return this.top;
@@ -63,7 +63,7 @@ public class CropArea {
     /**
      * Set the top value.
      *
-     * @param top the top value to set
+     * @param top the top value to set.
      * @return the CropArea object itself.
      */
     public CropArea withTop(double top) {
@@ -74,7 +74,7 @@ public class CropArea {
     /**
      * Get the bottom value.
      *
-     * @return the bottom value
+     * @return the bottom value.
      */
     public double bottom() {
         return this.bottom;
@@ -83,7 +83,7 @@ public class CropArea {
     /**
      * Set the bottom value.
      *
-     * @param bottom the bottom value to set
+     * @param bottom the bottom value to set.
      * @return the CropArea object itself.
      */
     public CropArea withBottom(double bottom) {
@@ -94,7 +94,7 @@ public class CropArea {
     /**
      * Get the left value.
      *
-     * @return the left value
+     * @return the left value.
      */
     public double left() {
         return this.left;
@@ -103,7 +103,7 @@ public class CropArea {
     /**
      * Set the left value.
      *
-     * @param left the left value to set
+     * @param left the left value to set.
      * @return the CropArea object itself.
      */
     public CropArea withLeft(double left) {
@@ -114,7 +114,7 @@ public class CropArea {
     /**
      * Get the right value.
      *
-     * @return the right value
+     * @return the right value.
      */
     public double right() {
         return this.right;
@@ -123,12 +123,11 @@ public class CropArea {
     /**
      * Set the right value.
      *
-     * @param right the right value to set
+     * @param right the right value to set.
      * @return the CropArea object itself.
      */
     public CropArea withRight(double right) {
         this.right = right;
         return this;
     }
-
 }

@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a contractual rule for media attribution.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ContractualRulesMediaAttribution.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ContractualRules/MediaAttribution")
-public class ContractualRulesMediaAttribution extends ContractualRulesAttribution {
+public final class ContractualRulesMediaAttribution extends ContractualRulesAttribution {
     /**
      * The URL that you use to create of hyperlink of the media content. For
      * example, if the target is an image, you would use the URL to make the
@@ -29,10 +29,9 @@ public class ContractualRulesMediaAttribution extends ContractualRulesAttributio
     /**
      * Get the url value.
      *
-     * @return the url value
+     * @return the url value.
      */
     public String url() {
         return this.url;
     }
-
 }

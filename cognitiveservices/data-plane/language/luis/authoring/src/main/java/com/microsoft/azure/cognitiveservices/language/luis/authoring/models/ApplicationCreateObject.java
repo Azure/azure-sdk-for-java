@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Properties for creating a new LUIS Application.
  */
-public class ApplicationCreateObject {
+public final class ApplicationCreateObject {
     /**
      * The culture for the new application. It is the language that your app
      * understands and speaks. E.g.: "en-us". Note: the culture cannot be
@@ -55,7 +55,7 @@ public class ApplicationCreateObject {
     /**
      * Get the culture value.
      *
-     * @return the culture value
+     * @return the culture value.
      */
     public String culture() {
         return this.culture;
@@ -64,7 +64,7 @@ public class ApplicationCreateObject {
     /**
      * Set the culture value.
      *
-     * @param culture the culture value to set
+     * @param culture the culture value to set.
      * @return the ApplicationCreateObject object itself.
      */
     public ApplicationCreateObject withCulture(String culture) {
@@ -75,7 +75,7 @@ public class ApplicationCreateObject {
     /**
      * Get the domain value.
      *
-     * @return the domain value
+     * @return the domain value.
      */
     public String domain() {
         return this.domain;
@@ -84,7 +84,7 @@ public class ApplicationCreateObject {
     /**
      * Set the domain value.
      *
-     * @param domain the domain value to set
+     * @param domain the domain value to set.
      * @return the ApplicationCreateObject object itself.
      */
     public ApplicationCreateObject withDomain(String domain) {
@@ -95,7 +95,7 @@ public class ApplicationCreateObject {
     /**
      * Get the description value.
      *
-     * @return the description value
+     * @return the description value.
      */
     public String description() {
         return this.description;
@@ -104,7 +104,7 @@ public class ApplicationCreateObject {
     /**
      * Set the description value.
      *
-     * @param description the description value to set
+     * @param description the description value to set.
      * @return the ApplicationCreateObject object itself.
      */
     public ApplicationCreateObject withDescription(String description) {
@@ -115,7 +115,7 @@ public class ApplicationCreateObject {
     /**
      * Get the initialVersionId value.
      *
-     * @return the initialVersionId value
+     * @return the initialVersionId value.
      */
     public String initialVersionId() {
         return this.initialVersionId;
@@ -124,7 +124,7 @@ public class ApplicationCreateObject {
     /**
      * Set the initialVersionId value.
      *
-     * @param initialVersionId the initialVersionId value to set
+     * @param initialVersionId the initialVersionId value to set.
      * @return the ApplicationCreateObject object itself.
      */
     public ApplicationCreateObject withInitialVersionId(String initialVersionId) {
@@ -135,7 +135,7 @@ public class ApplicationCreateObject {
     /**
      * Get the usageScenario value.
      *
-     * @return the usageScenario value
+     * @return the usageScenario value.
      */
     public String usageScenario() {
         return this.usageScenario;
@@ -144,7 +144,7 @@ public class ApplicationCreateObject {
     /**
      * Set the usageScenario value.
      *
-     * @param usageScenario the usageScenario value to set
+     * @param usageScenario the usageScenario value to set.
      * @return the ApplicationCreateObject object itself.
      */
     public ApplicationCreateObject withUsageScenario(String usageScenario) {
@@ -155,7 +155,7 @@ public class ApplicationCreateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -164,12 +164,11 @@ public class ApplicationCreateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ApplicationCreateObject object itself.
      */
     public ApplicationCreateObject withName(String name) {
         this.name = name;
         return this;
     }
-
 }

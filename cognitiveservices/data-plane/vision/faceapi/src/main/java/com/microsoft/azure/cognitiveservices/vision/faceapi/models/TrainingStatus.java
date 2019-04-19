@@ -8,37 +8,48 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /**
  * Training status object.
  */
-public class TrainingStatus {
+public final class TrainingStatus {
     /**
      * Training status: notstarted, running, succeeded, failed. If the training
      * process is waiting to perform, the status is notstarted. If the training
      * is ongoing, the status is running. Status succeed means this person
-     * group is ready for Face - Identify. Status failed is often caused by no
-     * person or no persisted face exist in the person group. Possible values
-     * include: 'nonstarted', 'running', 'succeeded', 'failed'.
+     * group or large person group is ready for Face - Identify, or this large
+     * face list is ready for Face - Find Similar. Status failed is often
+     * caused by no person or no persisted face exist in the person group or
+     * large person group, or no persisted face exist in the large face list.
+     * Possible values include: 'nonstarted', 'running', 'succeeded', 'failed'.
      */
     @JsonProperty(value = "status", required = true)
     private TrainingStatusType status;
 
     /**
-     * A combined UTC date and time string that describes person group created
-     * time.
+     * A combined UTC date and time string that describes the created time of
+     * the person group, large person group or large face list.
      */
     @JsonProperty(value = "createdDateTime", required = true)
-    private DateTime created;
+    private OffsetDateTime created;
 
     /**
-     * Person group last modify time in the UTC, could be null value when the
-     * person group is not successfully trained.
+     * A combined UTC date and time string that describes the last modify time
+     * of the person group, large person group or large face list, could be
+     * null value when the group is not successfully trained.
      */
     @JsonProperty(value = "lastActionDateTime")
-    private DateTime lastAction;
+    private OffsetDateTime lastAction;
+
+    /**
+     * A combined UTC date and time string that describes the last successful
+     * training time of the person group, large person group or large face
+     * list.
+     */
+    @JsonProperty(value = "lastSuccessfulTrainingDateTime")
+    private OffsetDateTime lastSuccessfulTraining;
 
     /**
      * Show failure message when training failed (omitted when training
@@ -50,7 +61,7 @@ public class TrainingStatus {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public TrainingStatusType status() {
         return this.status;
@@ -59,7 +70,7 @@ public class TrainingStatus {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the TrainingStatus object itself.
      */
     public TrainingStatus withStatus(TrainingStatusType status) {
@@ -70,19 +81,19 @@ public class TrainingStatus {
     /**
      * Get the created value.
      *
-     * @return the created value
+     * @return the created value.
      */
-    public DateTime created() {
+    public OffsetDateTime created() {
         return this.created;
     }
 
     /**
      * Set the created value.
      *
-     * @param created the created value to set
+     * @param created the created value to set.
      * @return the TrainingStatus object itself.
      */
-    public TrainingStatus withCreated(DateTime created) {
+    public TrainingStatus withCreated(OffsetDateTime created) {
         this.created = created;
         return this;
     }
@@ -90,27 +101,47 @@ public class TrainingStatus {
     /**
      * Get the lastAction value.
      *
-     * @return the lastAction value
+     * @return the lastAction value.
      */
-    public DateTime lastAction() {
+    public OffsetDateTime lastAction() {
         return this.lastAction;
     }
 
     /**
      * Set the lastAction value.
      *
-     * @param lastAction the lastAction value to set
+     * @param lastAction the lastAction value to set.
      * @return the TrainingStatus object itself.
      */
-    public TrainingStatus withLastAction(DateTime lastAction) {
+    public TrainingStatus withLastAction(OffsetDateTime lastAction) {
         this.lastAction = lastAction;
+        return this;
+    }
+
+    /**
+     * Get the lastSuccessfulTraining value.
+     *
+     * @return the lastSuccessfulTraining value.
+     */
+    public OffsetDateTime lastSuccessfulTraining() {
+        return this.lastSuccessfulTraining;
+    }
+
+    /**
+     * Set the lastSuccessfulTraining value.
+     *
+     * @param lastSuccessfulTraining the lastSuccessfulTraining value to set.
+     * @return the TrainingStatus object itself.
+     */
+    public TrainingStatus withLastSuccessfulTraining(OffsetDateTime lastSuccessfulTraining) {
+        this.lastSuccessfulTraining = lastSuccessfulTraining;
         return this;
     }
 
     /**
      * Get the message value.
      *
-     * @return the message value
+     * @return the message value.
      */
     public String message() {
         return this.message;
@@ -119,12 +150,11 @@ public class TrainingStatus {
     /**
      * Set the message value.
      *
-     * @param message the message value to set
+     * @param message the message value to set.
      * @return the TrainingStatus object itself.
      */
     public TrainingStatus withMessage(String message) {
         this.message = message;
         return this;
     }
-
 }

@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Request object the contains found faces.
  */
-public class FoundFaces {
+public final class FoundFaces {
     /**
      * The evaluate status.
      */
@@ -60,7 +60,7 @@ public class FoundFaces {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public Status status() {
         return this.status;
@@ -69,7 +69,7 @@ public class FoundFaces {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the FoundFaces object itself.
      */
     public FoundFaces withStatus(Status status) {
@@ -80,7 +80,7 @@ public class FoundFaces {
     /**
      * Get the trackingId value.
      *
-     * @return the trackingId value
+     * @return the trackingId value.
      */
     public String trackingId() {
         return this.trackingId;
@@ -89,7 +89,7 @@ public class FoundFaces {
     /**
      * Set the trackingId value.
      *
-     * @param trackingId the trackingId value to set
+     * @param trackingId the trackingId value to set.
      * @return the FoundFaces object itself.
      */
     public FoundFaces withTrackingId(String trackingId) {
@@ -100,7 +100,7 @@ public class FoundFaces {
     /**
      * Get the cacheId value.
      *
-     * @return the cacheId value
+     * @return the cacheId value.
      */
     public String cacheId() {
         return this.cacheId;
@@ -109,7 +109,7 @@ public class FoundFaces {
     /**
      * Set the cacheId value.
      *
-     * @param cacheId the cacheId value to set
+     * @param cacheId the cacheId value to set.
      * @return the FoundFaces object itself.
      */
     public FoundFaces withCacheId(String cacheId) {
@@ -120,7 +120,7 @@ public class FoundFaces {
     /**
      * Get the result value.
      *
-     * @return the result value
+     * @return the result value.
      */
     public Boolean result() {
         return this.result;
@@ -129,7 +129,7 @@ public class FoundFaces {
     /**
      * Set the result value.
      *
-     * @param result the result value to set
+     * @param result the result value to set.
      * @return the FoundFaces object itself.
      */
     public FoundFaces withResult(Boolean result) {
@@ -140,7 +140,7 @@ public class FoundFaces {
     /**
      * Get the count value.
      *
-     * @return the count value
+     * @return the count value.
      */
     public Integer count() {
         return this.count;
@@ -149,7 +149,7 @@ public class FoundFaces {
     /**
      * Set the count value.
      *
-     * @param count the count value to set
+     * @param count the count value to set.
      * @return the FoundFaces object itself.
      */
     public FoundFaces withCount(Integer count) {
@@ -160,7 +160,7 @@ public class FoundFaces {
     /**
      * Get the advancedInfo value.
      *
-     * @return the advancedInfo value
+     * @return the advancedInfo value.
      */
     public List<KeyValuePair> advancedInfo() {
         return this.advancedInfo;
@@ -169,7 +169,7 @@ public class FoundFaces {
     /**
      * Set the advancedInfo value.
      *
-     * @param advancedInfo the advancedInfo value to set
+     * @param advancedInfo the advancedInfo value to set.
      * @return the FoundFaces object itself.
      */
     public FoundFaces withAdvancedInfo(List<KeyValuePair> advancedInfo) {
@@ -180,7 +180,7 @@ public class FoundFaces {
     /**
      * Get the faces value.
      *
-     * @return the faces value
+     * @return the faces value.
      */
     public List<Face> faces() {
         return this.faces;
@@ -189,12 +189,11 @@ public class FoundFaces {
     /**
      * Set the faces value.
      *
-     * @param faces the faces value to set
+     * @param faces the faces value to set.
      * @return the FoundFaces object itself.
      */
     public FoundFaces withFaces(List<Face> faces) {
         this.faces = faces;
         return this;
     }
-
 }

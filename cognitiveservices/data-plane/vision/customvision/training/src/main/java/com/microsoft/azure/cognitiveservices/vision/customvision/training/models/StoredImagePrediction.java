@@ -8,85 +8,100 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.UUID;
-import org.joda.time.DateTime;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * result of an image classification request.
  */
-public class StoredImagePrediction {
+public final class StoredImagePrediction {
     /**
-     * The imageUri property.
+     * The URI to the (resized) prediction image.
      */
-    @JsonProperty(value = "imageUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String imageUri;
+    @JsonProperty(value = "resizedImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String resizedImageUri;
 
     /**
-     * The thumbnailUri property.
+     * The URI to the thumbnail of the original prediction image.
      */
     @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
 
     /**
-     * The domain property.
+     * The URI to the original prediction image.
+     */
+    @JsonProperty(value = "originalImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String originalImageUri;
+
+    /**
+     * Domain used for the prediction.
      */
     @JsonProperty(value = "domain", access = JsonProperty.Access.WRITE_ONLY)
     private UUID domain;
 
     /**
-     * The id property.
+     * Prediction Id.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
-     * The project property.
+     * Project Id.
      */
     @JsonProperty(value = "project", access = JsonProperty.Access.WRITE_ONLY)
     private UUID project;
 
     /**
-     * The iteration property.
+     * Iteration Id.
      */
     @JsonProperty(value = "iteration", access = JsonProperty.Access.WRITE_ONLY)
     private UUID iteration;
 
     /**
-     * The created property.
+     * Date this prediction was created.
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime created;
+    private OffsetDateTime created;
 
     /**
-     * The predictions property.
+     * List of predictions.
      */
     @JsonProperty(value = "predictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<Prediction> predictions;
 
     /**
-     * Get the imageUri value.
+     * Get the resizedImageUri value.
      *
-     * @return the imageUri value
+     * @return the resizedImageUri value.
      */
-    public String imageUri() {
-        return this.imageUri;
+    public String resizedImageUri() {
+        return this.resizedImageUri;
     }
 
     /**
      * Get the thumbnailUri value.
      *
-     * @return the thumbnailUri value
+     * @return the thumbnailUri value.
      */
     public String thumbnailUri() {
         return this.thumbnailUri;
     }
 
     /**
+     * Get the originalImageUri value.
+     *
+     * @return the originalImageUri value.
+     */
+    public String originalImageUri() {
+        return this.originalImageUri;
+    }
+
+    /**
      * Get the domain value.
      *
-     * @return the domain value
+     * @return the domain value.
      */
     public UUID domain() {
         return this.domain;
@@ -95,7 +110,7 @@ public class StoredImagePrediction {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -104,7 +119,7 @@ public class StoredImagePrediction {
     /**
      * Get the project value.
      *
-     * @return the project value
+     * @return the project value.
      */
     public UUID project() {
         return this.project;
@@ -113,7 +128,7 @@ public class StoredImagePrediction {
     /**
      * Get the iteration value.
      *
-     * @return the iteration value
+     * @return the iteration value.
      */
     public UUID iteration() {
         return this.iteration;
@@ -122,19 +137,18 @@ public class StoredImagePrediction {
     /**
      * Get the created value.
      *
-     * @return the created value
+     * @return the created value.
      */
-    public DateTime created() {
+    public OffsetDateTime created() {
         return this.created;
     }
 
     /**
      * Get the predictions value.
      *
-     * @return the predictions value
+     * @return the predictions value.
      */
     public List<Prediction> predictions() {
         return this.predictions;
     }
-
 }

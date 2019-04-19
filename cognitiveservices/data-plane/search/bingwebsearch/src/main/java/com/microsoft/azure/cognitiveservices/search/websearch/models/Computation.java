@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines an expression and its answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Computation.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Computation")
-public class Computation extends Answer {
+public final class Computation extends Answer {
     /**
      * The math or conversion expression. If the query contains a request to
      * convert units of measure (for example, meters to feet), this field
@@ -44,7 +44,7 @@ public class Computation extends Answer {
     /**
      * Get the expression value.
      *
-     * @return the expression value
+     * @return the expression value.
      */
     public String expression() {
         return this.expression;
@@ -53,7 +53,7 @@ public class Computation extends Answer {
     /**
      * Set the expression value.
      *
-     * @param expression the expression value to set
+     * @param expression the expression value to set.
      * @return the Computation object itself.
      */
     public Computation withExpression(String expression) {
@@ -64,7 +64,7 @@ public class Computation extends Answer {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public String value() {
         return this.value;
@@ -73,12 +73,11 @@ public class Computation extends Answer {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the Computation object itself.
      */
     public Computation withValue(String value) {
         this.value = value;
         return this;
     }
-
 }

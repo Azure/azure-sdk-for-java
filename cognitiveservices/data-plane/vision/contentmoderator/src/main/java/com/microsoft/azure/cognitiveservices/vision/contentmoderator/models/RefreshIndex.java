@@ -8,13 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Refresh Index Response.
  */
-public class RefreshIndex {
+public final class RefreshIndex {
     /**
      * Content source Id.
      */
@@ -31,7 +32,7 @@ public class RefreshIndex {
      * Advanced info list.
      */
     @JsonProperty(value = "AdvancedInfo")
-    private List<RefreshIndexAdvancedInfoItem> advancedInfo;
+    private List<Map<String, String>> advancedInfo;
 
     /**
      * Refresh index status.
@@ -48,7 +49,7 @@ public class RefreshIndex {
     /**
      * Get the contentSourceId value.
      *
-     * @return the contentSourceId value
+     * @return the contentSourceId value.
      */
     public String contentSourceId() {
         return this.contentSourceId;
@@ -57,7 +58,7 @@ public class RefreshIndex {
     /**
      * Set the contentSourceId value.
      *
-     * @param contentSourceId the contentSourceId value to set
+     * @param contentSourceId the contentSourceId value to set.
      * @return the RefreshIndex object itself.
      */
     public RefreshIndex withContentSourceId(String contentSourceId) {
@@ -68,7 +69,7 @@ public class RefreshIndex {
     /**
      * Get the isUpdateSuccess value.
      *
-     * @return the isUpdateSuccess value
+     * @return the isUpdateSuccess value.
      */
     public Boolean isUpdateSuccess() {
         return this.isUpdateSuccess;
@@ -77,7 +78,7 @@ public class RefreshIndex {
     /**
      * Set the isUpdateSuccess value.
      *
-     * @param isUpdateSuccess the isUpdateSuccess value to set
+     * @param isUpdateSuccess the isUpdateSuccess value to set.
      * @return the RefreshIndex object itself.
      */
     public RefreshIndex withIsUpdateSuccess(Boolean isUpdateSuccess) {
@@ -88,19 +89,19 @@ public class RefreshIndex {
     /**
      * Get the advancedInfo value.
      *
-     * @return the advancedInfo value
+     * @return the advancedInfo value.
      */
-    public List<RefreshIndexAdvancedInfoItem> advancedInfo() {
+    public List<Map<String, String>> advancedInfo() {
         return this.advancedInfo;
     }
 
     /**
      * Set the advancedInfo value.
      *
-     * @param advancedInfo the advancedInfo value to set
+     * @param advancedInfo the advancedInfo value to set.
      * @return the RefreshIndex object itself.
      */
-    public RefreshIndex withAdvancedInfo(List<RefreshIndexAdvancedInfoItem> advancedInfo) {
+    public RefreshIndex withAdvancedInfo(List<Map<String, String>> advancedInfo) {
         this.advancedInfo = advancedInfo;
         return this;
     }
@@ -108,7 +109,7 @@ public class RefreshIndex {
     /**
      * Get the status value.
      *
-     * @return the status value
+     * @return the status value.
      */
     public Status status() {
         return this.status;
@@ -117,7 +118,7 @@ public class RefreshIndex {
     /**
      * Set the status value.
      *
-     * @param status the status value to set
+     * @param status the status value to set.
      * @return the RefreshIndex object itself.
      */
     public RefreshIndex withStatus(Status status) {
@@ -128,7 +129,7 @@ public class RefreshIndex {
     /**
      * Get the trackingId value.
      *
-     * @return the trackingId value
+     * @return the trackingId value.
      */
     public String trackingId() {
         return this.trackingId;
@@ -137,12 +138,11 @@ public class RefreshIndex {
     /**
      * Set the trackingId value.
      *
-     * @param trackingId the trackingId value to set
+     * @param trackingId the trackingId value to set.
      * @return the RefreshIndex object itself.
      */
     public RefreshIndex withTrackingId(String trackingId) {
         this.trackingId = trackingId;
         return this;
     }
-
 }

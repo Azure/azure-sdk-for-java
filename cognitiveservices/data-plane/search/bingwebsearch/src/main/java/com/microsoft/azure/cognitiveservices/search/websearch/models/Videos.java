@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.websearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Defines a video answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Videos.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Videos")
-public class Videos extends SearchResultsAnswer {
+public final class Videos extends SearchResultsAnswer {
     /**
      * A list of video objects that are relevant to the query.
      */
@@ -46,7 +46,7 @@ public class Videos extends SearchResultsAnswer {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<VideoObject> value() {
         return this.value;
@@ -55,7 +55,7 @@ public class Videos extends SearchResultsAnswer {
     /**
      * Set the value value.
      *
-     * @param value the value value to set
+     * @param value the value value to set.
      * @return the Videos object itself.
      */
     public Videos withValue(List<VideoObject> value) {
@@ -66,7 +66,7 @@ public class Videos extends SearchResultsAnswer {
     /**
      * Get the nextOffset value.
      *
-     * @return the nextOffset value
+     * @return the nextOffset value.
      */
     public Integer nextOffset() {
         return this.nextOffset;
@@ -75,7 +75,7 @@ public class Videos extends SearchResultsAnswer {
     /**
      * Get the queryExpansions value.
      *
-     * @return the queryExpansions value
+     * @return the queryExpansions value.
      */
     public List<Query> queryExpansions() {
         return this.queryExpansions;
@@ -84,10 +84,9 @@ public class Videos extends SearchResultsAnswer {
     /**
      * Get the relatedSearches value.
      *
-     * @return the relatedSearches value
+     * @return the relatedSearches value.
      */
     public List<Query> relatedSearches() {
         return this.relatedSearches;
     }
-
 }

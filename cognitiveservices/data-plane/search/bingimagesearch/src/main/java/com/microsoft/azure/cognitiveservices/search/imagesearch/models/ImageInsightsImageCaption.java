@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Defines an image's caption.
  */
-public class ImageInsightsImageCaption {
+public final class ImageInsightsImageCaption {
     /**
      * A caption about the image.
      */
@@ -41,7 +41,7 @@ public class ImageInsightsImageCaption {
     /**
      * Get the caption value.
      *
-     * @return the caption value
+     * @return the caption value.
      */
     public String caption() {
         return this.caption;
@@ -50,7 +50,7 @@ public class ImageInsightsImageCaption {
     /**
      * Set the caption value.
      *
-     * @param caption the caption value to set
+     * @param caption the caption value to set.
      * @return the ImageInsightsImageCaption object itself.
      */
     public ImageInsightsImageCaption withCaption(String caption) {
@@ -61,7 +61,7 @@ public class ImageInsightsImageCaption {
     /**
      * Get the dataSourceUrl value.
      *
-     * @return the dataSourceUrl value
+     * @return the dataSourceUrl value.
      */
     public String dataSourceUrl() {
         return this.dataSourceUrl;
@@ -70,7 +70,7 @@ public class ImageInsightsImageCaption {
     /**
      * Set the dataSourceUrl value.
      *
-     * @param dataSourceUrl the dataSourceUrl value to set
+     * @param dataSourceUrl the dataSourceUrl value to set.
      * @return the ImageInsightsImageCaption object itself.
      */
     public ImageInsightsImageCaption withDataSourceUrl(String dataSourceUrl) {
@@ -81,7 +81,7 @@ public class ImageInsightsImageCaption {
     /**
      * Get the relatedSearches value.
      *
-     * @return the relatedSearches value
+     * @return the relatedSearches value.
      */
     public List<Query> relatedSearches() {
         return this.relatedSearches;
@@ -90,12 +90,11 @@ public class ImageInsightsImageCaption {
     /**
      * Set the relatedSearches value.
      *
-     * @param relatedSearches the relatedSearches value to set
+     * @param relatedSearches the relatedSearches value to set.
      * @return the ImageInsightsImageCaption object itself.
      */
     public ImageInsightsImageCaption withRelatedSearches(List<Query> relatedSearches) {
         this.relatedSearches = relatedSearches;
         return this;
     }
-
 }

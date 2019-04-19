@@ -8,21 +8,22 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The ImageCreateSummary model.
  */
-public class ImageCreateSummary {
+public final class ImageCreateSummary {
     /**
-     * The isBatchSuccessful property.
+     * True if all of the images in the batch were created successfully,
+     * otherwise false.
      */
     @JsonProperty(value = "isBatchSuccessful", access = JsonProperty.Access.WRITE_ONLY)
     private boolean isBatchSuccessful;
 
     /**
-     * The images property.
+     * List of the image creation results.
      */
     @JsonProperty(value = "images", access = JsonProperty.Access.WRITE_ONLY)
     private List<ImageCreateResult> images;
@@ -30,7 +31,7 @@ public class ImageCreateSummary {
     /**
      * Get the isBatchSuccessful value.
      *
-     * @return the isBatchSuccessful value
+     * @return the isBatchSuccessful value.
      */
     public boolean isBatchSuccessful() {
         return this.isBatchSuccessful;
@@ -39,10 +40,9 @@ public class ImageCreateSummary {
     /**
      * Get the images value.
      *
-     * @return the images value
+     * @return the images value.
      */
     public List<ImageCreateResult> images() {
         return this.images;
     }
-
 }

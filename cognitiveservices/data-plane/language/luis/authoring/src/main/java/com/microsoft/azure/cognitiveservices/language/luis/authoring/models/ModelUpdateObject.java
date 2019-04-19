@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object model for updating an intent classifier.
  */
-public class ModelUpdateObject {
+public final class ModelUpdateObject {
     /**
      * The entity's new name.
      */
@@ -23,7 +23,7 @@ public class ModelUpdateObject {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -32,12 +32,11 @@ public class ModelUpdateObject {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ModelUpdateObject object itself.
      */
     public ModelUpdateObject withName(String name) {
         this.name = name;
         return this;
     }
-
 }

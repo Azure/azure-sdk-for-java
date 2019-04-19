@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Address details.
  */
-public class Address {
+public final class Address {
     /**
      * Detected Address.
      */
@@ -29,7 +29,7 @@ public class Address {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -38,7 +38,7 @@ public class Address {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the Address object itself.
      */
     public Address withText(String text) {
@@ -49,7 +49,7 @@ public class Address {
     /**
      * Get the index value.
      *
-     * @return the index value
+     * @return the index value.
      */
     public Integer index() {
         return this.index;
@@ -58,12 +58,11 @@ public class Address {
     /**
      * Set the index value.
      *
-     * @param index the index value to set
+     * @param index the index value to set.
      * @return the Address object itself.
      */
     public Address withIndex(Integer index) {
         this.index = index;
         return this;
     }
-
 }

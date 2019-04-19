@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.search.imagesearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Defines a list of recipes.
  */
-public class RecipesModule {
+public final class RecipesModule {
     /**
      * A list of recipes.
      */
@@ -24,10 +24,9 @@ public class RecipesModule {
     /**
      * Get the value value.
      *
-     * @return the value value
+     * @return the value value.
      */
     public List<Recipe> value() {
         return this.value;
     }
-
 }

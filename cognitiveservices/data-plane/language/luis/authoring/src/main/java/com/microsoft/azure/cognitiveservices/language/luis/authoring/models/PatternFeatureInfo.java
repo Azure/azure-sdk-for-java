@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Pattern feature.
  */
-public class PatternFeatureInfo extends FeatureInfoObject {
+public final class PatternFeatureInfo extends FeatureInfoObject {
     /**
      * The Regular Expression to match.
      */
@@ -23,7 +23,7 @@ public class PatternFeatureInfo extends FeatureInfoObject {
     /**
      * Get the pattern value.
      *
-     * @return the pattern value
+     * @return the pattern value.
      */
     public String pattern() {
         return this.pattern;
@@ -32,12 +32,11 @@ public class PatternFeatureInfo extends FeatureInfoObject {
     /**
      * Set the pattern value.
      *
-     * @param pattern the pattern value to set
+     * @param pattern the pattern value to set.
      * @return the PatternFeatureInfo object itself.
      */
     public PatternFeatureInfo withPattern(String pattern) {
         this.pattern = pattern;
         return this;
     }
-
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Error information returned by the API.
  */
-public class APIError {
+public final class APIError {
     /**
      * HTTP Status code.
      */
@@ -29,7 +29,7 @@ public class APIError {
     /**
      * Get the statusCode value.
      *
-     * @return the statusCode value
+     * @return the statusCode value.
      */
     public String statusCode() {
         return this.statusCode;
@@ -38,7 +38,7 @@ public class APIError {
     /**
      * Set the statusCode value.
      *
-     * @param statusCode the statusCode value to set
+     * @param statusCode the statusCode value to set.
      * @return the APIError object itself.
      */
     public APIError withStatusCode(String statusCode) {
@@ -49,7 +49,7 @@ public class APIError {
     /**
      * Get the message value.
      *
-     * @return the message value
+     * @return the message value.
      */
     public String message() {
         return this.message;
@@ -58,12 +58,11 @@ public class APIError {
     /**
      * Set the message value.
      *
-     * @param message the message value to set
+     * @param message the message value to set.
      * @return the APIError object itself.
      */
     public APIError withMessage(String message) {
         this.message = message;
         return this;
     }
-
 }

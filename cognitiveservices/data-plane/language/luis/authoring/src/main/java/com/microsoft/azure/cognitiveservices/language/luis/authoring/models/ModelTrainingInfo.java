@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * Model Training Info.
  */
-public class ModelTrainingInfo {
+public final class ModelTrainingInfo {
     /**
      * The ID (GUID) of the model.
      */
@@ -30,7 +30,7 @@ public class ModelTrainingInfo {
     /**
      * Get the modelId value.
      *
-     * @return the modelId value
+     * @return the modelId value.
      */
     public UUID modelId() {
         return this.modelId;
@@ -39,7 +39,7 @@ public class ModelTrainingInfo {
     /**
      * Set the modelId value.
      *
-     * @param modelId the modelId value to set
+     * @param modelId the modelId value to set.
      * @return the ModelTrainingInfo object itself.
      */
     public ModelTrainingInfo withModelId(UUID modelId) {
@@ -50,7 +50,7 @@ public class ModelTrainingInfo {
     /**
      * Get the details value.
      *
-     * @return the details value
+     * @return the details value.
      */
     public ModelTrainingDetails details() {
         return this.details;
@@ -59,12 +59,11 @@ public class ModelTrainingInfo {
     /**
      * Set the details value.
      *
-     * @param details the details value to set
+     * @param details the details value to set.
      * @return the ModelTrainingInfo object itself.
      */
     public ModelTrainingInfo withDetails(ModelTrainingDetails details) {
         this.details = details;
         return this;
     }
-
 }

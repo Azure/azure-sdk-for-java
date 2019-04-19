@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An array of face groups based on face similarity.
  */
-public class GroupResult {
+public final class GroupResult {
     /**
      * A partition of the original faces based on face similarity. Groups are
      * ranked by number of faces.
@@ -33,7 +33,7 @@ public class GroupResult {
     /**
      * Get the groups value.
      *
-     * @return the groups value
+     * @return the groups value.
      */
     public List<List<UUID>> groups() {
         return this.groups;
@@ -42,7 +42,7 @@ public class GroupResult {
     /**
      * Set the groups value.
      *
-     * @param groups the groups value to set
+     * @param groups the groups value to set.
      * @return the GroupResult object itself.
      */
     public GroupResult withGroups(List<List<UUID>> groups) {
@@ -53,7 +53,7 @@ public class GroupResult {
     /**
      * Get the messyGroup value.
      *
-     * @return the messyGroup value
+     * @return the messyGroup value.
      */
     public List<UUID> messyGroup() {
         return this.messyGroup;
@@ -62,12 +62,11 @@ public class GroupResult {
     /**
      * Set the messyGroup value.
      *
-     * @param messyGroup the messyGroup value to set
+     * @param messyGroup the messyGroup value to set.
      * @return the GroupResult object itself.
      */
     public GroupResult withMessyGroup(List<UUID> messyGroup) {
         this.messyGroup = messyGroup;
         return this;
     }
-
 }

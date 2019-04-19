@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Face list object.
  */
-public class FaceList extends NameAndUserDataContract {
+public final class FaceList extends MetaDataContract {
     /**
      * FaceListId of the target face list.
      */
@@ -30,7 +30,7 @@ public class FaceList extends NameAndUserDataContract {
     /**
      * Get the faceListId value.
      *
-     * @return the faceListId value
+     * @return the faceListId value.
      */
     public String faceListId() {
         return this.faceListId;
@@ -39,7 +39,7 @@ public class FaceList extends NameAndUserDataContract {
     /**
      * Set the faceListId value.
      *
-     * @param faceListId the faceListId value to set
+     * @param faceListId the faceListId value to set.
      * @return the FaceList object itself.
      */
     public FaceList withFaceListId(String faceListId) {
@@ -50,7 +50,7 @@ public class FaceList extends NameAndUserDataContract {
     /**
      * Get the persistedFaces value.
      *
-     * @return the persistedFaces value
+     * @return the persistedFaces value.
      */
     public List<PersistedFace> persistedFaces() {
         return this.persistedFaces;
@@ -59,12 +59,11 @@ public class FaceList extends NameAndUserDataContract {
     /**
      * Set the persistedFaces value.
      *
-     * @param persistedFaces the persistedFaces value to set
+     * @param persistedFaces the persistedFaces value to set.
      * @return the FaceList object itself.
      */
     public FaceList withPersistedFaces(List<PersistedFace> persistedFaces) {
         this.persistedFaces = persistedFaces;
         return this;
     }
-
 }

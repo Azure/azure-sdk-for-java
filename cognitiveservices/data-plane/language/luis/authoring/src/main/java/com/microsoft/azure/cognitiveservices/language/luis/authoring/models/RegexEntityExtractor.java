@@ -8,14 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.UUID;
 
 /**
- * Regex Entity Extractor.
+ * Regular Expression Entity Extractor.
  */
-public class RegexEntityExtractor {
+public final class RegexEntityExtractor {
     /**
      * The ID of the Entity Model.
      */
@@ -37,9 +37,9 @@ public class RegexEntityExtractor {
     /**
      * Possible values include: 'Entity Extractor', 'Hierarchical Entity
      * Extractor', 'Hierarchical Child Entity Extractor', 'Composite Entity
-     * Extractor', 'Closed List Entity Extractor', 'Prebuilt Entity Extractor',
-     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regex Entity
-     * Extractor'.
+     * Extractor', 'List Entity Extractor', 'Prebuilt Entity Extractor',
+     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regular Expression
+     * Entity Extractor'.
      */
     @JsonProperty(value = "readableType", required = true)
     private String readableType;
@@ -51,7 +51,7 @@ public class RegexEntityExtractor {
     private List<EntityRole> roles;
 
     /**
-     * The Regex entity pattern.
+     * The Regular Expression entity pattern.
      */
     @JsonProperty(value = "regexPattern")
     private String regexPattern;
@@ -59,7 +59,7 @@ public class RegexEntityExtractor {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -68,7 +68,7 @@ public class RegexEntityExtractor {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the RegexEntityExtractor object itself.
      */
     public RegexEntityExtractor withId(UUID id) {
@@ -79,7 +79,7 @@ public class RegexEntityExtractor {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -88,7 +88,7 @@ public class RegexEntityExtractor {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the RegexEntityExtractor object itself.
      */
     public RegexEntityExtractor withName(String name) {
@@ -99,7 +99,7 @@ public class RegexEntityExtractor {
     /**
      * Get the typeId value.
      *
-     * @return the typeId value
+     * @return the typeId value.
      */
     public Integer typeId() {
         return this.typeId;
@@ -108,7 +108,7 @@ public class RegexEntityExtractor {
     /**
      * Set the typeId value.
      *
-     * @param typeId the typeId value to set
+     * @param typeId the typeId value to set.
      * @return the RegexEntityExtractor object itself.
      */
     public RegexEntityExtractor withTypeId(Integer typeId) {
@@ -119,7 +119,7 @@ public class RegexEntityExtractor {
     /**
      * Get the readableType value.
      *
-     * @return the readableType value
+     * @return the readableType value.
      */
     public String readableType() {
         return this.readableType;
@@ -128,7 +128,7 @@ public class RegexEntityExtractor {
     /**
      * Set the readableType value.
      *
-     * @param readableType the readableType value to set
+     * @param readableType the readableType value to set.
      * @return the RegexEntityExtractor object itself.
      */
     public RegexEntityExtractor withReadableType(String readableType) {
@@ -139,7 +139,7 @@ public class RegexEntityExtractor {
     /**
      * Get the roles value.
      *
-     * @return the roles value
+     * @return the roles value.
      */
     public List<EntityRole> roles() {
         return this.roles;
@@ -148,7 +148,7 @@ public class RegexEntityExtractor {
     /**
      * Set the roles value.
      *
-     * @param roles the roles value to set
+     * @param roles the roles value to set.
      * @return the RegexEntityExtractor object itself.
      */
     public RegexEntityExtractor withRoles(List<EntityRole> roles) {
@@ -159,7 +159,7 @@ public class RegexEntityExtractor {
     /**
      * Get the regexPattern value.
      *
-     * @return the regexPattern value
+     * @return the regexPattern value.
      */
     public String regexPattern() {
         return this.regexPattern;
@@ -168,12 +168,11 @@ public class RegexEntityExtractor {
     /**
      * Set the regexPattern value.
      *
-     * @param regexPattern the regexPattern value to set
+     * @param regexPattern the regexPattern value to set.
      * @return the RegexEntityExtractor object itself.
      */
     public RegexEntityExtractor withRegexPattern(String regexPattern) {
         this.regexPattern = regexPattern;
         return this;
     }
-
 }

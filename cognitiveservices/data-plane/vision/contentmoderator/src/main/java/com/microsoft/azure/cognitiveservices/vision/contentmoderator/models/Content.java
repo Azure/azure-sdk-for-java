@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The Content model.
  */
-public class Content {
+public final class Content {
     /**
      * Content to evaluate for a job.
      */
@@ -23,7 +23,7 @@ public class Content {
     /**
      * Get the contentValue value.
      *
-     * @return the contentValue value
+     * @return the contentValue value.
      */
     public String contentValue() {
         return this.contentValue;
@@ -32,12 +32,11 @@ public class Content {
     /**
      * Set the contentValue value.
      *
-     * @param contentValue the contentValue value to set
+     * @param contentValue the contentValue value to set.
      * @return the Content object itself.
      */
     public Content withContentValue(String contentValue) {
         this.contentValue = contentValue;
         return this;
     }
-
 }

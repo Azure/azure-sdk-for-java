@@ -15,52 +15,82 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for FaceAttributeType.
  */
 public enum FaceAttributeType {
-    /** Enum value age. */
+    /**
+     * Enum value age.
+     */
     AGE("age"),
 
-    /** Enum value gender. */
+    /**
+     * Enum value gender.
+     */
     GENDER("gender"),
 
-    /** Enum value headPose. */
+    /**
+     * Enum value headPose.
+     */
     HEAD_POSE("headPose"),
 
-    /** Enum value smile. */
+    /**
+     * Enum value smile.
+     */
     SMILE("smile"),
 
-    /** Enum value facialHair. */
+    /**
+     * Enum value facialHair.
+     */
     FACIAL_HAIR("facialHair"),
 
-    /** Enum value glasses. */
+    /**
+     * Enum value glasses.
+     */
     GLASSES("glasses"),
 
-    /** Enum value emotion. */
+    /**
+     * Enum value emotion.
+     */
     EMOTION("emotion"),
 
-    /** Enum value hair. */
+    /**
+     * Enum value hair.
+     */
     HAIR("hair"),
 
-    /** Enum value makeup. */
+    /**
+     * Enum value makeup.
+     */
     MAKEUP("makeup"),
 
-    /** Enum value occlusion. */
+    /**
+     * Enum value occlusion.
+     */
     OCCLUSION("occlusion"),
 
-    /** Enum value accessories. */
+    /**
+     * Enum value accessories.
+     */
     ACCESSORIES("accessories"),
 
-    /** Enum value blur. */
+    /**
+     * Enum value blur.
+     */
     BLUR("blur"),
 
-    /** Enum value exposure. */
+    /**
+     * Enum value exposure.
+     */
     EXPOSURE("exposure"),
 
-    /** Enum value noise. */
+    /**
+     * Enum value noise.
+     */
     NOISE("noise");
 
-    /** The actual serialized value for a FaceAttributeType instance. */
-    private String value;
+    /**
+     * The actual serialized value for a FaceAttributeType instance.
+     */
+    private final String value;
 
-    FaceAttributeType(String value) {
+    private FaceAttributeType(String value) {
         this.value = value;
     }
 

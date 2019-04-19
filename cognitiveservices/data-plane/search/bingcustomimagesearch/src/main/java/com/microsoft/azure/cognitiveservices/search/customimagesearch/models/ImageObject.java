@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines an image.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageObject.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageObject")
-public class ImageObject extends MediaObject {
+public final class ImageObject extends MediaObject {
     /**
      * The URL to a thumbnail of the image.
      */
@@ -55,7 +55,7 @@ public class ImageObject extends MediaObject {
     /**
      * Get the thumbnail value.
      *
-     * @return the thumbnail value
+     * @return the thumbnail value.
      */
     public ImageObject thumbnail() {
         return this.thumbnail;
@@ -64,7 +64,7 @@ public class ImageObject extends MediaObject {
     /**
      * Get the imageInsightsToken value.
      *
-     * @return the imageInsightsToken value
+     * @return the imageInsightsToken value.
      */
     public String imageInsightsToken() {
         return this.imageInsightsToken;
@@ -73,7 +73,7 @@ public class ImageObject extends MediaObject {
     /**
      * Get the imageId value.
      *
-     * @return the imageId value
+     * @return the imageId value.
      */
     public String imageId() {
         return this.imageId;
@@ -82,7 +82,7 @@ public class ImageObject extends MediaObject {
     /**
      * Get the accentColor value.
      *
-     * @return the accentColor value
+     * @return the accentColor value.
      */
     public String accentColor() {
         return this.accentColor;
@@ -91,10 +91,9 @@ public class ImageObject extends MediaObject {
     /**
      * Get the visualWords value.
      *
-     * @return the visualWords value
+     * @return the visualWords value.
      */
     public String visualWords() {
         return this.visualWords;
     }
-
 }

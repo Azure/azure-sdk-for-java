@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.language.spellcheck.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The SpellCheck model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SpellCheck.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("SpellCheck")
-public class SpellCheck extends Answer {
+public final class SpellCheck extends Answer {
     /**
      * The flaggedTokens property.
      */
@@ -28,7 +28,7 @@ public class SpellCheck extends Answer {
     /**
      * Get the flaggedTokens value.
      *
-     * @return the flaggedTokens value
+     * @return the flaggedTokens value.
      */
     public List<SpellingFlaggedToken> flaggedTokens() {
         return this.flaggedTokens;
@@ -37,12 +37,11 @@ public class SpellCheck extends Answer {
     /**
      * Set the flaggedTokens value.
      *
-     * @param flaggedTokens the flaggedTokens value to set
+     * @param flaggedTokens the flaggedTokens value to set.
      * @return the SpellCheck object itself.
      */
     public SpellCheck withFlaggedTokens(List<SpellingFlaggedToken> flaggedTokens) {
         this.flaggedTokens = flaggedTokens;
         return this;
     }
-
 }

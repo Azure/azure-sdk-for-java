@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A suggested intent.
  */
-public class IntentPrediction {
+public final class IntentPrediction {
     /**
      * The intent's name.
      */
@@ -29,7 +29,7 @@ public class IntentPrediction {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -38,7 +38,7 @@ public class IntentPrediction {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the IntentPrediction object itself.
      */
     public IntentPrediction withName(String name) {
@@ -49,7 +49,7 @@ public class IntentPrediction {
     /**
      * Get the score value.
      *
-     * @return the score value
+     * @return the score value.
      */
     public Double score() {
         return this.score;
@@ -58,12 +58,11 @@ public class IntentPrediction {
     /**
      * Set the score value.
      *
-     * @param score the score value to set
+     * @param score the score value to set.
      * @return the IntentPrediction object itself.
      */
     public IntentPrediction withScore(Double score) {
         this.score = score;
         return this;
     }
-
 }

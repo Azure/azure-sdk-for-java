@@ -8,39 +8,54 @@
 
 package com.microsoft.azure.cognitiveservices.search.autosuggest.models;
 
-import java.util.Collection;
+import com.azure.common.implementation.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Defines values for ScenarioType.
  */
 public final class ScenarioType extends ExpandableStringEnum<ScenarioType> {
-    /** Static value Unknown for ScenarioType. */
+    /**
+     * Static value Unknown for ScenarioType.
+     */
     public static final ScenarioType UNKNOWN = fromString("Unknown");
 
-    /** Static value Web for ScenarioType. */
+    /**
+     * Static value Web for ScenarioType.
+     */
     public static final ScenarioType WEB = fromString("Web");
 
-    /** Static value StoreApps for ScenarioType. */
+    /**
+     * Static value StoreApps for ScenarioType.
+     */
     public static final ScenarioType STORE_APPS = fromString("StoreApps");
 
-    /** Static value SearchHistory for ScenarioType. */
+    /**
+     * Static value SearchHistory for ScenarioType.
+     */
     public static final ScenarioType SEARCH_HISTORY = fromString("SearchHistory");
 
-    /** Static value PersonalSearchDocuments for ScenarioType. */
+    /**
+     * Static value PersonalSearchDocuments for ScenarioType.
+     */
     public static final ScenarioType PERSONAL_SEARCH_DOCUMENTS = fromString("PersonalSearchDocuments");
 
-    /** Static value PersonalSearchTags for ScenarioType. */
+    /**
+     * Static value PersonalSearchTags for ScenarioType.
+     */
     public static final ScenarioType PERSONAL_SEARCH_TAGS = fromString("PersonalSearchTags");
 
-    /** Static value Custom for ScenarioType. */
+    /**
+     * Static value Custom for ScenarioType.
+     */
     public static final ScenarioType CUSTOM = fromString("Custom");
 
     /**
      * Creates or finds a ScenarioType from its string representation.
-     * @param name a name to look for
-     * @return the corresponding ScenarioType
+     *
+     * @param name a name to look for.
+     * @return the corresponding ScenarioType.
      */
     @JsonCreator
     public static ScenarioType fromString(String name) {
@@ -48,7 +63,7 @@ public final class ScenarioType extends ExpandableStringEnum<ScenarioType> {
     }
 
     /**
-     * @return known ScenarioType values
+     * @return known ScenarioType values.
      */
     public static Collection<ScenarioType> values() {
         return values(ScenarioType.class);

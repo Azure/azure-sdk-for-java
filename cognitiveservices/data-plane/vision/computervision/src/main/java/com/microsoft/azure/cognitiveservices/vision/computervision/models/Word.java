@@ -8,29 +8,35 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * The Word model.
+ * Json object representing a recognized word.
  */
-public class Word {
+public final class Word {
     /**
-     * The boundingBox property.
+     * Bounding box of a recognized word.
      */
-    @JsonProperty(value = "boundingBox")
+    @JsonProperty(value = "boundingBox", required = true)
     private List<Integer> boundingBox;
 
     /**
-     * The text property.
+     * The text content of the word.
      */
-    @JsonProperty(value = "text")
+    @JsonProperty(value = "text", required = true)
     private String text;
+
+    /**
+     * Qualitative confidence measure. Possible values include: 'High', 'Low'.
+     */
+    @JsonProperty(value = "confidence")
+    private TextRecognitionResultConfidenceClass confidence;
 
     /**
      * Get the boundingBox value.
      *
-     * @return the boundingBox value
+     * @return the boundingBox value.
      */
     public List<Integer> boundingBox() {
         return this.boundingBox;
@@ -39,7 +45,7 @@ public class Word {
     /**
      * Set the boundingBox value.
      *
-     * @param boundingBox the boundingBox value to set
+     * @param boundingBox the boundingBox value to set.
      * @return the Word object itself.
      */
     public Word withBoundingBox(List<Integer> boundingBox) {
@@ -50,7 +56,7 @@ public class Word {
     /**
      * Get the text value.
      *
-     * @return the text value
+     * @return the text value.
      */
     public String text() {
         return this.text;
@@ -59,7 +65,7 @@ public class Word {
     /**
      * Set the text value.
      *
-     * @param text the text value to set
+     * @param text the text value to set.
      * @return the Word object itself.
      */
     public Word withText(String text) {
@@ -67,4 +73,23 @@ public class Word {
         return this;
     }
 
+    /**
+     * Get the confidence value.
+     *
+     * @return the confidence value.
+     */
+    public TextRecognitionResultConfidenceClass confidence() {
+        return this.confidence;
+    }
+
+    /**
+     * Set the confidence value.
+     *
+     * @param confidence the confidence value to set.
+     * @return the Word object itself.
+     */
+    public Word withConfidence(TextRecognitionResultConfidenceClass confidence) {
+        this.confidence = confidence;
+        return this;
+    }
 }

@@ -8,37 +8,36 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.runtime.models;
 
-import com.microsoft.rest.RestException;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
+import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.http.HttpResponse;
 
 /**
  * Exception thrown for an invalid response with APIError information.
  */
-public class APIErrorException extends RestException {
+public final class APIErrorException extends ServiceRequestException {
     /**
      * Initializes a new instance of the APIErrorException class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
+     * @param message the exception message or the response content if a message is not available.
+     * @param response the HTTP response.
      */
-    public APIErrorException(final String message, final Response<ResponseBody> response) {
+    public APIErrorException(String message, HttpResponse response) {
         super(message, response);
     }
 
     /**
      * Initializes a new instance of the APIErrorException class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
-     * @param body the deserialized response body
+     * @param message the exception message or the response content if a message is not available.
+     * @param response the HTTP response.
+     * @param value the deserialized response value.
      */
-    public APIErrorException(final String message, final Response<ResponseBody> response, final APIError body) {
-        super(message, response, body);
+    public APIErrorException(String message, HttpResponse response, APIError value) {
+        super(message, response, value);
     }
 
     @Override
-    public APIError body() {
-        return (APIError) super.body();
+    public APIError value() {
+        return (APIError) super.value();
     }
 }

@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
- * The ImageTag model.
+ * A visual search tag.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageTag.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageTag")
-public class ImageTag extends Thing {
+public final class ImageTag extends Thing {
     /**
      * Display name for this tag. For the default tag, the display name is
      * empty.
@@ -44,7 +44,7 @@ public class ImageTag extends Thing {
     /**
      * Get the displayName value.
      *
-     * @return the displayName value
+     * @return the displayName value.
      */
     public String displayName() {
         return this.displayName;
@@ -53,7 +53,7 @@ public class ImageTag extends Thing {
     /**
      * Get the boundingBox value.
      *
-     * @return the boundingBox value
+     * @return the boundingBox value.
      */
     public ImageTagRegion boundingBox() {
         return this.boundingBox;
@@ -62,10 +62,9 @@ public class ImageTag extends Thing {
     /**
      * Get the actions value.
      *
-     * @return the actions value
+     * @return the actions value.
      */
     public List<ImageAction> actions() {
         return this.actions;
     }
-
 }

@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /**
  * The base child entity type.
@@ -30,7 +30,7 @@ public class ChildEntity {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public UUID id() {
         return this.id;
@@ -39,7 +39,7 @@ public class ChildEntity {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the ChildEntity object itself.
      */
     public ChildEntity withId(UUID id) {
@@ -50,7 +50,7 @@ public class ChildEntity {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name value.
      */
     public String name() {
         return this.name;
@@ -59,12 +59,11 @@ public class ChildEntity {
     /**
      * Set the name value.
      *
-     * @param name the name value to set
+     * @param name the name value to set.
      * @return the ChildEntity object itself.
      */
     public ChildEntity withName(String name) {
         this.name = name;
         return this;
     }
-
 }

@@ -11,9 +11,9 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Explicit list item.
+ * Explicit (exception) list item.
  */
-public class ExplicitListItem {
+public final class ExplicitListItem {
     /**
      * The explicit list item ID.
      */
@@ -29,7 +29,7 @@ public class ExplicitListItem {
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the id value.
      */
     public Long id() {
         return this.id;
@@ -38,7 +38,7 @@ public class ExplicitListItem {
     /**
      * Set the id value.
      *
-     * @param id the id value to set
+     * @param id the id value to set.
      * @return the ExplicitListItem object itself.
      */
     public ExplicitListItem withId(Long id) {
@@ -49,7 +49,7 @@ public class ExplicitListItem {
     /**
      * Get the explicitListItem value.
      *
-     * @return the explicitListItem value
+     * @return the explicitListItem value.
      */
     public String explicitListItem() {
         return this.explicitListItem;
@@ -58,12 +58,11 @@ public class ExplicitListItem {
     /**
      * Set the explicitListItem value.
      *
-     * @param explicitListItem the explicitListItem value to set
+     * @param explicitListItem the explicitListItem value to set.
      * @return the ExplicitListItem object itself.
      */
     public ExplicitListItem withExplicitListItem(String explicitListItem) {
         this.explicitListItem = explicitListItem;
         return this;
     }
-
 }

@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Schema items of the body.
  */
-public class VideoFrameBodyItem {
+public final class VideoFrameBodyItem {
     /**
      * Timestamp of the frame.
      */
@@ -42,7 +42,7 @@ public class VideoFrameBodyItem {
     /**
      * Get the timestamp value.
      *
-     * @return the timestamp value
+     * @return the timestamp value.
      */
     public String timestamp() {
         return this.timestamp;
@@ -51,7 +51,7 @@ public class VideoFrameBodyItem {
     /**
      * Set the timestamp value.
      *
-     * @param timestamp the timestamp value to set
+     * @param timestamp the timestamp value to set.
      * @return the VideoFrameBodyItem object itself.
      */
     public VideoFrameBodyItem withTimestamp(String timestamp) {
@@ -62,7 +62,7 @@ public class VideoFrameBodyItem {
     /**
      * Get the frameImage value.
      *
-     * @return the frameImage value
+     * @return the frameImage value.
      */
     public String frameImage() {
         return this.frameImage;
@@ -71,7 +71,7 @@ public class VideoFrameBodyItem {
     /**
      * Set the frameImage value.
      *
-     * @param frameImage the frameImage value to set
+     * @param frameImage the frameImage value to set.
      * @return the VideoFrameBodyItem object itself.
      */
     public VideoFrameBodyItem withFrameImage(String frameImage) {
@@ -82,7 +82,7 @@ public class VideoFrameBodyItem {
     /**
      * Get the reviewerResultTags value.
      *
-     * @return the reviewerResultTags value
+     * @return the reviewerResultTags value.
      */
     public List<VideoFrameBodyItemReviewerResultTagsItem> reviewerResultTags() {
         return this.reviewerResultTags;
@@ -91,7 +91,7 @@ public class VideoFrameBodyItem {
     /**
      * Set the reviewerResultTags value.
      *
-     * @param reviewerResultTags the reviewerResultTags value to set
+     * @param reviewerResultTags the reviewerResultTags value to set.
      * @return the VideoFrameBodyItem object itself.
      */
     public VideoFrameBodyItem withReviewerResultTags(List<VideoFrameBodyItemReviewerResultTagsItem> reviewerResultTags) {
@@ -102,7 +102,7 @@ public class VideoFrameBodyItem {
     /**
      * Get the metadata value.
      *
-     * @return the metadata value
+     * @return the metadata value.
      */
     public List<VideoFrameBodyItemMetadataItem> metadata() {
         return this.metadata;
@@ -111,12 +111,11 @@ public class VideoFrameBodyItem {
     /**
      * Set the metadata value.
      *
-     * @param metadata the metadata value to set
+     * @param metadata the metadata value to set.
      * @return the VideoFrameBodyItem object itself.
      */
     public VideoFrameBodyItem withMetadata(List<VideoFrameBodyItemMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
-
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The InternalError model.
  */
-public class InternalError {
+public final class InternalError {
     /**
      * The code property.
      */
@@ -35,7 +35,7 @@ public class InternalError {
     /**
      * Get the code value.
      *
-     * @return the code value
+     * @return the code value.
      */
     public String code() {
         return this.code;
@@ -44,7 +44,7 @@ public class InternalError {
     /**
      * Set the code value.
      *
-     * @param code the code value to set
+     * @param code the code value to set.
      * @return the InternalError object itself.
      */
     public InternalError withCode(String code) {
@@ -55,7 +55,7 @@ public class InternalError {
     /**
      * Get the message value.
      *
-     * @return the message value
+     * @return the message value.
      */
     public String message() {
         return this.message;
@@ -64,7 +64,7 @@ public class InternalError {
     /**
      * Set the message value.
      *
-     * @param message the message value to set
+     * @param message the message value to set.
      * @return the InternalError object itself.
      */
     public InternalError withMessage(String message) {
@@ -75,7 +75,7 @@ public class InternalError {
     /**
      * Get the innerError value.
      *
-     * @return the innerError value
+     * @return the innerError value.
      */
     public InternalError innerError() {
         return this.innerError;
@@ -84,12 +84,11 @@ public class InternalError {
     /**
      * Set the innerError value.
      *
-     * @param innerError the innerError value to set
+     * @param innerError the innerError value to set.
      * @return the InternalError object itself.
      */
     public InternalError withInnerError(InternalError innerError) {
         this.innerError = innerError;
         return this;
     }
-
 }

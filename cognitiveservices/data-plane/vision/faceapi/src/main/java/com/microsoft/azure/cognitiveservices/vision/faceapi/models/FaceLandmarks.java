@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A collection of 27-point face landmarks pointing to the important positions
  * of face components.
  */
-public class FaceLandmarks {
+public final class FaceLandmarks {
     /**
      * The pupilLeft property.
      */
@@ -180,7 +180,7 @@ public class FaceLandmarks {
     /**
      * Get the pupilLeft value.
      *
-     * @return the pupilLeft value
+     * @return the pupilLeft value.
      */
     public Coordinate pupilLeft() {
         return this.pupilLeft;
@@ -189,7 +189,7 @@ public class FaceLandmarks {
     /**
      * Set the pupilLeft value.
      *
-     * @param pupilLeft the pupilLeft value to set
+     * @param pupilLeft the pupilLeft value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withPupilLeft(Coordinate pupilLeft) {
@@ -200,7 +200,7 @@ public class FaceLandmarks {
     /**
      * Get the pupilRight value.
      *
-     * @return the pupilRight value
+     * @return the pupilRight value.
      */
     public Coordinate pupilRight() {
         return this.pupilRight;
@@ -209,7 +209,7 @@ public class FaceLandmarks {
     /**
      * Set the pupilRight value.
      *
-     * @param pupilRight the pupilRight value to set
+     * @param pupilRight the pupilRight value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withPupilRight(Coordinate pupilRight) {
@@ -220,7 +220,7 @@ public class FaceLandmarks {
     /**
      * Get the noseTip value.
      *
-     * @return the noseTip value
+     * @return the noseTip value.
      */
     public Coordinate noseTip() {
         return this.noseTip;
@@ -229,7 +229,7 @@ public class FaceLandmarks {
     /**
      * Set the noseTip value.
      *
-     * @param noseTip the noseTip value to set
+     * @param noseTip the noseTip value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withNoseTip(Coordinate noseTip) {
@@ -240,7 +240,7 @@ public class FaceLandmarks {
     /**
      * Get the mouthLeft value.
      *
-     * @return the mouthLeft value
+     * @return the mouthLeft value.
      */
     public Coordinate mouthLeft() {
         return this.mouthLeft;
@@ -249,7 +249,7 @@ public class FaceLandmarks {
     /**
      * Set the mouthLeft value.
      *
-     * @param mouthLeft the mouthLeft value to set
+     * @param mouthLeft the mouthLeft value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withMouthLeft(Coordinate mouthLeft) {
@@ -260,7 +260,7 @@ public class FaceLandmarks {
     /**
      * Get the mouthRight value.
      *
-     * @return the mouthRight value
+     * @return the mouthRight value.
      */
     public Coordinate mouthRight() {
         return this.mouthRight;
@@ -269,7 +269,7 @@ public class FaceLandmarks {
     /**
      * Set the mouthRight value.
      *
-     * @param mouthRight the mouthRight value to set
+     * @param mouthRight the mouthRight value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withMouthRight(Coordinate mouthRight) {
@@ -280,7 +280,7 @@ public class FaceLandmarks {
     /**
      * Get the eyebrowLeftOuter value.
      *
-     * @return the eyebrowLeftOuter value
+     * @return the eyebrowLeftOuter value.
      */
     public Coordinate eyebrowLeftOuter() {
         return this.eyebrowLeftOuter;
@@ -289,7 +289,7 @@ public class FaceLandmarks {
     /**
      * Set the eyebrowLeftOuter value.
      *
-     * @param eyebrowLeftOuter the eyebrowLeftOuter value to set
+     * @param eyebrowLeftOuter the eyebrowLeftOuter value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyebrowLeftOuter(Coordinate eyebrowLeftOuter) {
@@ -300,7 +300,7 @@ public class FaceLandmarks {
     /**
      * Get the eyebrowLeftInner value.
      *
-     * @return the eyebrowLeftInner value
+     * @return the eyebrowLeftInner value.
      */
     public Coordinate eyebrowLeftInner() {
         return this.eyebrowLeftInner;
@@ -309,7 +309,7 @@ public class FaceLandmarks {
     /**
      * Set the eyebrowLeftInner value.
      *
-     * @param eyebrowLeftInner the eyebrowLeftInner value to set
+     * @param eyebrowLeftInner the eyebrowLeftInner value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyebrowLeftInner(Coordinate eyebrowLeftInner) {
@@ -320,7 +320,7 @@ public class FaceLandmarks {
     /**
      * Get the eyeLeftOuter value.
      *
-     * @return the eyeLeftOuter value
+     * @return the eyeLeftOuter value.
      */
     public Coordinate eyeLeftOuter() {
         return this.eyeLeftOuter;
@@ -329,7 +329,7 @@ public class FaceLandmarks {
     /**
      * Set the eyeLeftOuter value.
      *
-     * @param eyeLeftOuter the eyeLeftOuter value to set
+     * @param eyeLeftOuter the eyeLeftOuter value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyeLeftOuter(Coordinate eyeLeftOuter) {
@@ -340,7 +340,7 @@ public class FaceLandmarks {
     /**
      * Get the eyeLeftTop value.
      *
-     * @return the eyeLeftTop value
+     * @return the eyeLeftTop value.
      */
     public Coordinate eyeLeftTop() {
         return this.eyeLeftTop;
@@ -349,7 +349,7 @@ public class FaceLandmarks {
     /**
      * Set the eyeLeftTop value.
      *
-     * @param eyeLeftTop the eyeLeftTop value to set
+     * @param eyeLeftTop the eyeLeftTop value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyeLeftTop(Coordinate eyeLeftTop) {
@@ -360,7 +360,7 @@ public class FaceLandmarks {
     /**
      * Get the eyeLeftBottom value.
      *
-     * @return the eyeLeftBottom value
+     * @return the eyeLeftBottom value.
      */
     public Coordinate eyeLeftBottom() {
         return this.eyeLeftBottom;
@@ -369,7 +369,7 @@ public class FaceLandmarks {
     /**
      * Set the eyeLeftBottom value.
      *
-     * @param eyeLeftBottom the eyeLeftBottom value to set
+     * @param eyeLeftBottom the eyeLeftBottom value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyeLeftBottom(Coordinate eyeLeftBottom) {
@@ -380,7 +380,7 @@ public class FaceLandmarks {
     /**
      * Get the eyeLeftInner value.
      *
-     * @return the eyeLeftInner value
+     * @return the eyeLeftInner value.
      */
     public Coordinate eyeLeftInner() {
         return this.eyeLeftInner;
@@ -389,7 +389,7 @@ public class FaceLandmarks {
     /**
      * Set the eyeLeftInner value.
      *
-     * @param eyeLeftInner the eyeLeftInner value to set
+     * @param eyeLeftInner the eyeLeftInner value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyeLeftInner(Coordinate eyeLeftInner) {
@@ -400,7 +400,7 @@ public class FaceLandmarks {
     /**
      * Get the eyebrowRightInner value.
      *
-     * @return the eyebrowRightInner value
+     * @return the eyebrowRightInner value.
      */
     public Coordinate eyebrowRightInner() {
         return this.eyebrowRightInner;
@@ -409,7 +409,7 @@ public class FaceLandmarks {
     /**
      * Set the eyebrowRightInner value.
      *
-     * @param eyebrowRightInner the eyebrowRightInner value to set
+     * @param eyebrowRightInner the eyebrowRightInner value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyebrowRightInner(Coordinate eyebrowRightInner) {
@@ -420,7 +420,7 @@ public class FaceLandmarks {
     /**
      * Get the eyebrowRightOuter value.
      *
-     * @return the eyebrowRightOuter value
+     * @return the eyebrowRightOuter value.
      */
     public Coordinate eyebrowRightOuter() {
         return this.eyebrowRightOuter;
@@ -429,7 +429,7 @@ public class FaceLandmarks {
     /**
      * Set the eyebrowRightOuter value.
      *
-     * @param eyebrowRightOuter the eyebrowRightOuter value to set
+     * @param eyebrowRightOuter the eyebrowRightOuter value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyebrowRightOuter(Coordinate eyebrowRightOuter) {
@@ -440,7 +440,7 @@ public class FaceLandmarks {
     /**
      * Get the eyeRightInner value.
      *
-     * @return the eyeRightInner value
+     * @return the eyeRightInner value.
      */
     public Coordinate eyeRightInner() {
         return this.eyeRightInner;
@@ -449,7 +449,7 @@ public class FaceLandmarks {
     /**
      * Set the eyeRightInner value.
      *
-     * @param eyeRightInner the eyeRightInner value to set
+     * @param eyeRightInner the eyeRightInner value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyeRightInner(Coordinate eyeRightInner) {
@@ -460,7 +460,7 @@ public class FaceLandmarks {
     /**
      * Get the eyeRightTop value.
      *
-     * @return the eyeRightTop value
+     * @return the eyeRightTop value.
      */
     public Coordinate eyeRightTop() {
         return this.eyeRightTop;
@@ -469,7 +469,7 @@ public class FaceLandmarks {
     /**
      * Set the eyeRightTop value.
      *
-     * @param eyeRightTop the eyeRightTop value to set
+     * @param eyeRightTop the eyeRightTop value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyeRightTop(Coordinate eyeRightTop) {
@@ -480,7 +480,7 @@ public class FaceLandmarks {
     /**
      * Get the eyeRightBottom value.
      *
-     * @return the eyeRightBottom value
+     * @return the eyeRightBottom value.
      */
     public Coordinate eyeRightBottom() {
         return this.eyeRightBottom;
@@ -489,7 +489,7 @@ public class FaceLandmarks {
     /**
      * Set the eyeRightBottom value.
      *
-     * @param eyeRightBottom the eyeRightBottom value to set
+     * @param eyeRightBottom the eyeRightBottom value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyeRightBottom(Coordinate eyeRightBottom) {
@@ -500,7 +500,7 @@ public class FaceLandmarks {
     /**
      * Get the eyeRightOuter value.
      *
-     * @return the eyeRightOuter value
+     * @return the eyeRightOuter value.
      */
     public Coordinate eyeRightOuter() {
         return this.eyeRightOuter;
@@ -509,7 +509,7 @@ public class FaceLandmarks {
     /**
      * Set the eyeRightOuter value.
      *
-     * @param eyeRightOuter the eyeRightOuter value to set
+     * @param eyeRightOuter the eyeRightOuter value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withEyeRightOuter(Coordinate eyeRightOuter) {
@@ -520,7 +520,7 @@ public class FaceLandmarks {
     /**
      * Get the noseRootLeft value.
      *
-     * @return the noseRootLeft value
+     * @return the noseRootLeft value.
      */
     public Coordinate noseRootLeft() {
         return this.noseRootLeft;
@@ -529,7 +529,7 @@ public class FaceLandmarks {
     /**
      * Set the noseRootLeft value.
      *
-     * @param noseRootLeft the noseRootLeft value to set
+     * @param noseRootLeft the noseRootLeft value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withNoseRootLeft(Coordinate noseRootLeft) {
@@ -540,7 +540,7 @@ public class FaceLandmarks {
     /**
      * Get the noseRootRight value.
      *
-     * @return the noseRootRight value
+     * @return the noseRootRight value.
      */
     public Coordinate noseRootRight() {
         return this.noseRootRight;
@@ -549,7 +549,7 @@ public class FaceLandmarks {
     /**
      * Set the noseRootRight value.
      *
-     * @param noseRootRight the noseRootRight value to set
+     * @param noseRootRight the noseRootRight value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withNoseRootRight(Coordinate noseRootRight) {
@@ -560,7 +560,7 @@ public class FaceLandmarks {
     /**
      * Get the noseLeftAlarTop value.
      *
-     * @return the noseLeftAlarTop value
+     * @return the noseLeftAlarTop value.
      */
     public Coordinate noseLeftAlarTop() {
         return this.noseLeftAlarTop;
@@ -569,7 +569,7 @@ public class FaceLandmarks {
     /**
      * Set the noseLeftAlarTop value.
      *
-     * @param noseLeftAlarTop the noseLeftAlarTop value to set
+     * @param noseLeftAlarTop the noseLeftAlarTop value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withNoseLeftAlarTop(Coordinate noseLeftAlarTop) {
@@ -580,7 +580,7 @@ public class FaceLandmarks {
     /**
      * Get the noseRightAlarTop value.
      *
-     * @return the noseRightAlarTop value
+     * @return the noseRightAlarTop value.
      */
     public Coordinate noseRightAlarTop() {
         return this.noseRightAlarTop;
@@ -589,7 +589,7 @@ public class FaceLandmarks {
     /**
      * Set the noseRightAlarTop value.
      *
-     * @param noseRightAlarTop the noseRightAlarTop value to set
+     * @param noseRightAlarTop the noseRightAlarTop value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withNoseRightAlarTop(Coordinate noseRightAlarTop) {
@@ -600,7 +600,7 @@ public class FaceLandmarks {
     /**
      * Get the noseLeftAlarOutTip value.
      *
-     * @return the noseLeftAlarOutTip value
+     * @return the noseLeftAlarOutTip value.
      */
     public Coordinate noseLeftAlarOutTip() {
         return this.noseLeftAlarOutTip;
@@ -609,7 +609,7 @@ public class FaceLandmarks {
     /**
      * Set the noseLeftAlarOutTip value.
      *
-     * @param noseLeftAlarOutTip the noseLeftAlarOutTip value to set
+     * @param noseLeftAlarOutTip the noseLeftAlarOutTip value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withNoseLeftAlarOutTip(Coordinate noseLeftAlarOutTip) {
@@ -620,7 +620,7 @@ public class FaceLandmarks {
     /**
      * Get the noseRightAlarOutTip value.
      *
-     * @return the noseRightAlarOutTip value
+     * @return the noseRightAlarOutTip value.
      */
     public Coordinate noseRightAlarOutTip() {
         return this.noseRightAlarOutTip;
@@ -629,7 +629,7 @@ public class FaceLandmarks {
     /**
      * Set the noseRightAlarOutTip value.
      *
-     * @param noseRightAlarOutTip the noseRightAlarOutTip value to set
+     * @param noseRightAlarOutTip the noseRightAlarOutTip value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withNoseRightAlarOutTip(Coordinate noseRightAlarOutTip) {
@@ -640,7 +640,7 @@ public class FaceLandmarks {
     /**
      * Get the upperLipTop value.
      *
-     * @return the upperLipTop value
+     * @return the upperLipTop value.
      */
     public Coordinate upperLipTop() {
         return this.upperLipTop;
@@ -649,7 +649,7 @@ public class FaceLandmarks {
     /**
      * Set the upperLipTop value.
      *
-     * @param upperLipTop the upperLipTop value to set
+     * @param upperLipTop the upperLipTop value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withUpperLipTop(Coordinate upperLipTop) {
@@ -660,7 +660,7 @@ public class FaceLandmarks {
     /**
      * Get the upperLipBottom value.
      *
-     * @return the upperLipBottom value
+     * @return the upperLipBottom value.
      */
     public Coordinate upperLipBottom() {
         return this.upperLipBottom;
@@ -669,7 +669,7 @@ public class FaceLandmarks {
     /**
      * Set the upperLipBottom value.
      *
-     * @param upperLipBottom the upperLipBottom value to set
+     * @param upperLipBottom the upperLipBottom value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withUpperLipBottom(Coordinate upperLipBottom) {
@@ -680,7 +680,7 @@ public class FaceLandmarks {
     /**
      * Get the underLipTop value.
      *
-     * @return the underLipTop value
+     * @return the underLipTop value.
      */
     public Coordinate underLipTop() {
         return this.underLipTop;
@@ -689,7 +689,7 @@ public class FaceLandmarks {
     /**
      * Set the underLipTop value.
      *
-     * @param underLipTop the underLipTop value to set
+     * @param underLipTop the underLipTop value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withUnderLipTop(Coordinate underLipTop) {
@@ -700,7 +700,7 @@ public class FaceLandmarks {
     /**
      * Get the underLipBottom value.
      *
-     * @return the underLipBottom value
+     * @return the underLipBottom value.
      */
     public Coordinate underLipBottom() {
         return this.underLipBottom;
@@ -709,12 +709,11 @@ public class FaceLandmarks {
     /**
      * Set the underLipBottom value.
      *
-     * @param underLipBottom the underLipBottom value to set
+     * @param underLipBottom the underLipBottom value to set.
      * @return the FaceLandmarks object itself.
      */
     public FaceLandmarks withUnderLipBottom(Coordinate underLipBottom) {
         this.underLipBottom = underLipBottom;
         return this;
     }
-
 }

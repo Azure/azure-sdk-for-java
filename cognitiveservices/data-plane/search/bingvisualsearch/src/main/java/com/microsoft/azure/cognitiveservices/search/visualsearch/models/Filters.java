@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A key-value object consisting of filters that may be specified to limit the
  * results returned by the API. Current available filters: site.
  */
-public class Filters {
+public final class Filters {
     /**
      * The URL of the site to return similar images and similar products from.
      * (e.g., "www.bing.com", "bing.com").
@@ -25,7 +25,7 @@ public class Filters {
     /**
      * Get the site value.
      *
-     * @return the site value
+     * @return the site value.
      */
     public String site() {
         return this.site;
@@ -34,12 +34,11 @@ public class Filters {
     /**
      * Set the site value.
      *
-     * @param site the site value to set
+     * @param site the site value to set.
      * @return the Filters object itself.
      */
     public Filters withSite(String site) {
         this.site = site;
         return this;
     }
-
 }
