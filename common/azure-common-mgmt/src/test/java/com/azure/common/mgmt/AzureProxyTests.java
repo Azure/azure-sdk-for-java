@@ -485,7 +485,7 @@ public class AzureProxyTests {
                             @Override
                             public void accept(OperationStatus<MockResource> mockResourceOperationStatus) {
                                 fail();
-                           }
+                            }
                         },
                         new Consumer<Throwable>() {
                             @Override
@@ -852,12 +852,12 @@ public class AzureProxyTests {
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {
         HttpPipeline pipeline = new HttpPipeline(httpClient);
 
-        return AzureProxy.create(serviceClass, null, pipeline, serializer);
+        return AzureProxy.create(serviceClass, null, pipeline, SERIALIZER);
     }
 
     private static void assertContains(String value, String expectedSubstring) {
         assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 
-    private static final SerializerAdapter serializer = new JacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 }
