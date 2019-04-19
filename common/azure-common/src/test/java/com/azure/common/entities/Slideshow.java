@@ -19,35 +19,39 @@ public class Slideshow {
     @JsonProperty("slide")
     private Slide[] slides;
 
+    /**
+     * Gets the title of the slideshow.
+     *
+     * @return The title of the slideshow.
+     */
     public String title() {
         return title;
     }
 
-    public void title(String title) {
-        this.title = title;
-    }
-
+    /**
+     * Gets the date of publication.
+     *
+     * @return The date of publication.
+     */
     public String date() {
         return date;
     }
 
-    public void date(String date) {
-        this.date = date;
-    }
-
+    /**
+     * Gets the slideshow author.
+     *
+     * @return Author of the slideshow.
+     */
     public String author() {
         return author;
     }
 
-    public void author(String author) {
-        this.author = author;
-    }
-
+    /**
+     * Gets the slides in the slideshow.
+     *
+     * @return The slides in the slideshow.
+     */
     public Slide[] slides() {
         return slides;
-    }
-
-    public void slides(Slide[] slides) {
-        this.slides = slides;
     }
 }

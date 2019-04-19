@@ -16,27 +16,30 @@ public class Slide {
     @JsonProperty("item")
     private String[] items;
 
+    /**
+     * Gets the type of slide.
+     *
+     * @return The type of slide.
+     */
     public String type() {
         return type;
     }
 
-    public void type(String type) {
-        this.type = type;
-    }
-
+    /**
+     * Gets the slide title.
+     *
+     * @return The title of the slide.
+     */
     public String title() {
         return title;
     }
 
-    public void title(String title) {
-        this.title = title;
-    }
-
+    /**
+     * Gets the content strings of the slide.
+     *
+     * @return The content strings of the slide.
+     */
     public String[] items() {
         return items;
-    }
-
-    public void items(String[] items) {
-        this.items = items;
     }
 }
