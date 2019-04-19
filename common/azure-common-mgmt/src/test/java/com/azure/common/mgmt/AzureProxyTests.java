@@ -184,7 +184,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .get("1", "mine", "a");
         assertNotNull(resource);
-        assertEquals("a", resource.name);
+        assertEquals("a", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(0, httpClient.createRequests());
@@ -200,7 +200,7 @@ public class AzureProxyTests {
                 .getAsync("1", "mine", "b")
                 .block();
         assertNotNull(resource);
-        assertEquals("b", resource.name);
+        assertEquals("b", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(0, httpClient.createRequests());
@@ -215,7 +215,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .create("1", "mine", "c");
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -231,7 +231,7 @@ public class AzureProxyTests {
         final MockResource resource = mockService
                 .createWithLocation("1", "mine", "c");
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -246,7 +246,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createWithLocationAndPolls("1", "mine", "c", 2);
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -261,7 +261,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createWithAzureAsyncOperation("1", "mine", "c");
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -276,7 +276,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createWithAzureAsyncOperationAndPolls("1", "mine", "c", 2);
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -291,7 +291,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createWithProvisioningState("1", "mine", "c");
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -306,7 +306,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createWithProvisioningStateAndPolls("1", "mine", "c", 3);
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(3, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -322,7 +322,7 @@ public class AzureProxyTests {
                 .createAsync("1", "mine", "c")
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -338,7 +338,7 @@ public class AzureProxyTests {
                 .createAsyncWithLocation("1", "mine", "c")
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -354,7 +354,7 @@ public class AzureProxyTests {
                 .createAsyncWithLocationAndPolls("1", "mine", "c", 3)
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -370,7 +370,7 @@ public class AzureProxyTests {
                 .createAsyncWithAzureAsyncOperation("1", "mine", "c")
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -386,7 +386,7 @@ public class AzureProxyTests {
                 .createAsyncWithAzureAsyncOperationAndPolls("1", "mine", "c", 3)
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -431,7 +431,7 @@ public class AzureProxyTests {
                 .createAsyncWithProvisioningState("1", "mine", "c")
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -447,7 +447,7 @@ public class AzureProxyTests {
                 .createAsyncWithProvisioningStateAndPolls("1", "mine", "c", 5)
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(5, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -523,7 +523,7 @@ public class AzureProxyTests {
 
         assertEquals(2, inProgressCount.get());
         assertNotNull(resource.get());
-        assertEquals("c", resource.get().name);
+        assertEquals("c", resource.get().name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -621,7 +621,7 @@ public class AzureProxyTests {
 
         assertEquals(3, inProgressCount.get());
         assertNotNull(resource.get());
-        assertEquals("c", resource.get().name);
+        assertEquals("c", resource.get().name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -651,7 +651,7 @@ public class AzureProxyTests {
 
         assertEquals(3, inProgressCount.get());
         assertNotNull(resource.get());
-        assertEquals("c", resource.get().name);
+        assertEquals("c", resource.get().name());
 
         assertEquals(4, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -681,7 +681,7 @@ public class AzureProxyTests {
 
         assertEquals(0, inProgressCount.get());
         assertNotNull(resource.get());
-        assertEquals("c", resource.get().name);
+        assertEquals("c", resource.get().name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
