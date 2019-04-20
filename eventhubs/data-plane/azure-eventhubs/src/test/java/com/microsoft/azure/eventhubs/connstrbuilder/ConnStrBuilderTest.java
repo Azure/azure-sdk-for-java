@@ -13,7 +13,7 @@ import org.junit.Test;
 import java.time.Duration;
 import java.util.function.Consumer;
 
-public class ConnStrBuilderTest extends ApiTestBase {
+public class ConnStrBuilderTest {
     static final String correctConnectionString = "Endpoint=sb://endpoint1;EntityPath=eventhub1;SharedAccessKeyName=somevalue;SharedAccessKey=something;OperationTimeout=PT5S;TransportType=AMQP";
     static final Consumer<ConnectionStringBuilder> validateConnStrBuilder = new Consumer<ConnectionStringBuilder>() {
         @Override
