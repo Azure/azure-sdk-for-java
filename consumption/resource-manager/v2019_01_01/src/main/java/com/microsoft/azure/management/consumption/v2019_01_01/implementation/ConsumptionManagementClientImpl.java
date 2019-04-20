@@ -146,6 +146,19 @@ public class ConsumptionManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The UsageDetailsListsInner object to access its operations.
+     */
+    private UsageDetailsListsInner usageDetailsLists;
+
+    /**
+     * Gets the UsageDetailsListsInner object to access its operations.
+     * @return the UsageDetailsListsInner object.
+     */
+    public UsageDetailsListsInner usageDetailsLists() {
+        return this.usageDetailsLists;
+    }
+
+    /**
      * The MarketplacesInner object to access its operations.
      */
     private MarketplacesInner marketplaces;
@@ -337,6 +350,7 @@ public class ConsumptionManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.usageDetails = new UsageDetailsInner(restClient().retrofit(), this);
+        this.usageDetailsLists = new UsageDetailsListsInner(restClient().retrofit(), this);
         this.marketplaces = new MarketplacesInner(restClient().retrofit(), this);
         this.budgets = new BudgetsInner(restClient().retrofit(), this);
         this.tags = new TagsInner(restClient().retrofit(), this);
