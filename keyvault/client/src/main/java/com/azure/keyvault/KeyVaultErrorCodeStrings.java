@@ -3,6 +3,8 @@
 
 package com.azure.keyvault;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -32,28 +34,18 @@ class KeyVaultErrorCodeStrings {
      */
     static String getErrorString(String propertyName) {
         loadProperties();
-        if (errorStrings.contains(propertyName)) {
-            return errorStrings.getProperty(propertyName);
-        } else {
-            loadDefaults();
-            return errorStringsDefault.get(propertyName);
-        }
+        return errorStrings.getProperty(propertyName);
     }
 
     private static void loadProperties() {
+        if(errorStrings != null){
+            return;
+        }
         try (InputStream fileInputStream = KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
             errorStrings = new Properties();
             errorStrings.load(fileInputStream);
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
-    }
-
-    private static void loadDefaults() {
-        if (errorStringsDefault == null) {
-            errorStringsDefault = new HashMap<>();
-            errorStringsDefault.put(CREDENTIALS_REQUIRED, "Azure Key Vault Credentials are Required");
-            errorStringsDefault.put(VAULT_END_POINT_REQUIRED, "Azure Key Vault's Endpoint Url' is required.");
         }
     }
 }
