@@ -5,7 +5,6 @@ package com.microsoft.azure.batch.interceptor;
 
 import com.microsoft.azure.batch.DetailLevel;
 
-import javax.xml.soap.Detail;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
