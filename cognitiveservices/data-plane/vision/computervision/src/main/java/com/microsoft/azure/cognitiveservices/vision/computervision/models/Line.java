@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Json object representing a recognized text line.
+ * An object representing a recognized text line.
  */
 public class Line {
     /**

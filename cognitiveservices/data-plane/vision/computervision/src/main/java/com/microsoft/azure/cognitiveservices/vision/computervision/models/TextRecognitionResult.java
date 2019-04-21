@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Json object representing a recognized text region.
+ * An object representing a recognized text region.
  */
 public class TextRecognitionResult {
     /**
@@ -42,7 +42,7 @@ public class TextRecognitionResult {
 
     /**
      * The unit used in the Width, Height and BoundingBox. For images, the unit
-     * is "pixel". For PDF, the unit is "inch". Possible values include:
+     * is 'pixel'. For PDF, the unit is 'inch'. Possible values include:
      * 'pixel', 'inch'.
      */
     @JsonProperty(value = "unit")
@@ -135,7 +135,7 @@ public class TextRecognitionResult {
     }
 
     /**
-     * Get the unit used in the Width, Height and BoundingBox. For images, the unit is "pixel". For PDF, the unit is "inch". Possible values include: 'pixel', 'inch'.
+     * Get the unit used in the Width, Height and BoundingBox. For images, the unit is 'pixel'. For PDF, the unit is 'inch'. Possible values include: 'pixel', 'inch'.
      *
      * @return the unit value
      */
@@ -144,7 +144,7 @@ public class TextRecognitionResult {
     }
 
     /**
-     * Set the unit used in the Width, Height and BoundingBox. For images, the unit is "pixel". For PDF, the unit is "inch". Possible values include: 'pixel', 'inch'.
+     * Set the unit used in the Width, Height and BoundingBox. For images, the unit is 'pixel'. For PDF, the unit is 'inch'. Possible values include: 'pixel', 'inch'.
      *
      * @param unit the unit value to set
      * @return the TextRecognitionResult object itself.

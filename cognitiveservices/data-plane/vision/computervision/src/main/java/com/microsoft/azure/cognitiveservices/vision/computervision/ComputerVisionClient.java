@@ -972,51 +972,47 @@ public interface ComputerVisionClient {
     Observable<ServiceResponse<TextOperationResult>> getTextOperationResultWithServiceResponseAsync(String operationId);
 
     /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.​.
      *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void batchReadFile(String url, TextRecognitionMode mode);
+    void batchReadFile(String url);
 
     /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.​.
      *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> batchReadFileAsync(String url, TextRecognitionMode mode, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> batchReadFileAsync(String url, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.​.
      *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    Observable<Void> batchReadFileAsync(String url, TextRecognitionMode mode);
+    Observable<Void> batchReadFileAsync(String url);
 
     /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.​.
      *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    Observable<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>> batchReadFileWithServiceResponseAsync(String url, TextRecognitionMode mode);
+    Observable<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>> batchReadFileWithServiceResponseAsync(String url);
 
     /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
      *
-     * @param operationId Id of read operation returned in the response of the "Batch Read File" interface.
+     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1025,9 +1021,9 @@ public interface ComputerVisionClient {
     ReadOperationResult getReadOperationResult(String operationId);
 
     /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
      *
-     * @param operationId Id of read operation returned in the response of the "Batch Read File" interface.
+     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1035,18 +1031,18 @@ public interface ComputerVisionClient {
     ServiceFuture<ReadOperationResult> getReadOperationResultAsync(String operationId, final ServiceCallback<ReadOperationResult> serviceCallback);
 
     /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
      *
-     * @param operationId Id of read operation returned in the response of the "Batch Read File" interface.
+     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ReadOperationResult object
      */
     Observable<ReadOperationResult> getReadOperationResultAsync(String operationId);
 
     /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
      *
-     * @param operationId Id of read operation returned in the response of the "Batch Read File" interface.
+     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ReadOperationResult object
      */
@@ -1823,7 +1819,7 @@ public interface ComputerVisionClient {
     Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>> recognizeTextInStreamWithServiceResponseAsync(byte[] image, TextRecognitionMode mode);
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
@@ -1834,7 +1830,7 @@ public interface ComputerVisionClient {
     void batchReadFileInStream(byte[] image, TextRecognitionMode mode);
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
@@ -1845,7 +1841,7 @@ public interface ComputerVisionClient {
     ServiceFuture<Void> batchReadFileInStreamAsync(byte[] image, TextRecognitionMode mode, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
@@ -1855,7 +1851,7 @@ public interface ComputerVisionClient {
     Observable<Void> batchReadFileInStreamAsync(byte[] image, TextRecognitionMode mode);
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
