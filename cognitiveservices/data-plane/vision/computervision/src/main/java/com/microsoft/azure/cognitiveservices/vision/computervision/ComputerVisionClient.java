@@ -1822,42 +1822,38 @@ public interface ComputerVisionClient {
      * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void batchReadFileInStream(byte[] image, TextRecognitionMode mode);
+    void batchReadFileInStream(byte[] image);
 
     /**
      * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> batchReadFileInStreamAsync(byte[] image, TextRecognitionMode mode, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> batchReadFileInStreamAsync(byte[] image, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    Observable<Void> batchReadFileInStreamAsync(byte[] image, TextRecognitionMode mode);
+    Observable<Void> batchReadFileInStreamAsync(byte[] image);
 
     /**
      * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    Observable<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>> batchReadFileInStreamWithServiceResponseAsync(byte[] image, TextRecognitionMode mode);
+    Observable<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>> batchReadFileInStreamWithServiceResponseAsync(byte[] image);
 
 }

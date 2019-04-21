@@ -318,7 +318,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisionClient batchReadFileInStream" })
         @POST("read/core/asyncBatchAnalyze")
-        Observable<Response<ResponseBody>> batchReadFileInStream(@Body RequestBody image, @Query("mode") TextRecognitionMode mode, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> batchReadFileInStream(@Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -3327,38 +3327,35 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void batchReadFileInStream(byte[] image, TextRecognitionMode mode) {
-        batchReadFileInStreamWithServiceResponseAsync(image, mode).toBlocking().single().body();
+    public void batchReadFileInStream(byte[] image) {
+        batchReadFileInStreamWithServiceResponseAsync(image).toBlocking().single().body();
     }
 
     /**
      * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> batchReadFileInStreamAsync(byte[] image, TextRecognitionMode mode, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(batchReadFileInStreamWithServiceResponseAsync(image, mode), serviceCallback);
+    public ServiceFuture<Void> batchReadFileInStreamAsync(byte[] image, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(batchReadFileInStreamWithServiceResponseAsync(image), serviceCallback);
     }
 
     /**
      * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<Void> batchReadFileInStreamAsync(byte[] image, TextRecognitionMode mode) {
-        return batchReadFileInStreamWithServiceResponseAsync(image, mode).map(new Func1<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>, Void>() {
+    public Observable<Void> batchReadFileInStreamAsync(byte[] image) {
+        return batchReadFileInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>, Void>() {
             @Override
             public Void call(ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders> response) {
                 return response.body();
@@ -3370,23 +3367,19 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>> batchReadFileInStreamWithServiceResponseAsync(byte[] image, TextRecognitionMode mode) {
+    public Observable<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>> batchReadFileInStreamWithServiceResponseAsync(byte[] image) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        if (mode == null) {
-            throw new IllegalArgumentException("Parameter mode is required and cannot be null.");
-        }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.batchReadFileInStream(imageConverted, mode, this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.batchReadFileInStream(imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, BatchReadFileInStreamHeaders>> call(Response<ResponseBody> response) {
