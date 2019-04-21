@@ -26,15 +26,16 @@ import rx.Observable;
 public interface PersonGroups {
     /**
      * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
-     &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
      &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
-     &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
-     &lt;br /&gt;
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
      * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
      * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
      * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
-     &lt;br /&gt;
-     'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -45,15 +46,16 @@ public interface PersonGroups {
 
     /**
      * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
-     &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
      &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
-     &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
-     &lt;br /&gt;
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
      * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
      * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
      * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
-     &lt;br /&gt;
-     'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -64,15 +66,16 @@ public interface PersonGroups {
 
     /**
      * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
-     &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
      &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
-     &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
-     &lt;br /&gt;
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
      * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
      * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
      * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
-     &lt;br /&gt;
-     'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -82,15 +85,16 @@ public interface PersonGroups {
 
     /**
      * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
-     &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
      &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
-     &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
-     &lt;br /&gt;
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
      * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
      * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
      * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
-     &lt;br /&gt;
-     'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -99,15 +103,16 @@ public interface PersonGroups {
     Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId);
     /**
      * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
-     &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
      &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
-     &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
-     &lt;br /&gt;
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
      * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
      * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
      * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
-     &lt;br /&gt;
-     'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param name User defined name, maximum length is 128.
@@ -121,15 +126,16 @@ public interface PersonGroups {
 
     /**
      * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
-     &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
      &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
-     &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
-     &lt;br /&gt;
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
      * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
      * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
      * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
-     &lt;br /&gt;
-     'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param name User defined name, maximum length is 128.
@@ -143,15 +149,16 @@ public interface PersonGroups {
 
     /**
      * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
-     &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
      &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
-     &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
-     &lt;br /&gt;
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
      * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
      * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
      * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
-     &lt;br /&gt;
-     'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param name User defined name, maximum length is 128.
@@ -164,15 +171,16 @@ public interface PersonGroups {
 
     /**
      * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
-     &lt;br /&gt; A person group is the container of the uploaded person data, including face images and face recognition features.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
      &lt;br /&gt; After creation, use [PersonGroup Person - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group, and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to get this group ready for [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
-     &lt;br /&gt; The person's face, image, and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
-     &lt;br /&gt;
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
      * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
      * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
      * to handle larger scale face identification problem, please consider using [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
-     &lt;br /&gt;
-     'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param name User defined name, maximum length is 128.
@@ -425,10 +433,10 @@ public interface PersonGroups {
     Observable<ServiceResponse<TrainingStatus>> getTrainingStatusWithServiceResponseAsync(String personGroupId);
 
     /**
-     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 person groups: "group1", ..., "group5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
@@ -443,10 +451,10 @@ public interface PersonGroups {
     List<PersonGroup> list();
 
     /**
-     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 person groups: "group1", ..., "group5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
@@ -460,10 +468,10 @@ public interface PersonGroups {
     ServiceFuture<List<PersonGroup>> listAsync(final ServiceCallback<List<PersonGroup>> serviceCallback);
 
     /**
-     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 person groups: "group1", ..., "group5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
@@ -476,10 +484,10 @@ public interface PersonGroups {
     Observable<List<PersonGroup>> listAsync();
 
     /**
-     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 person groups: "group1", ..., "group5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
@@ -491,10 +499,10 @@ public interface PersonGroups {
      */
     Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync();
     /**
-     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 person groups: "group1", ..., "group5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
@@ -512,10 +520,10 @@ public interface PersonGroups {
     List<PersonGroup> list(String start, Integer top, Boolean returnRecognitionModel);
 
     /**
-     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 person groups: "group1", ..., "group5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
@@ -532,10 +540,10 @@ public interface PersonGroups {
     ServiceFuture<List<PersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel, final ServiceCallback<List<PersonGroup>> serviceCallback);
 
     /**
-     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 person groups: "group1", ..., "group5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
@@ -551,10 +559,10 @@ public interface PersonGroups {
     Observable<List<PersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel);
 
     /**
-     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
-     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
      &lt;br /&gt;
      For example, total 5 person groups: "group1", ..., "group5".
      &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
