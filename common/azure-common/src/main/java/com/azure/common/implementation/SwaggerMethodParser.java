@@ -64,8 +64,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private Type returnType;
     private Type returnValueWireType;
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
-    private Map<Integer, UnexpectedException> exceptionMapping;
-    private UnexpectedException defaultException;
+    private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
+    private UnexpectedExceptionInformation defaultException;
 
     /**
      * Create a SwaggerMethodParser object using the provided fully qualified method name.
@@ -354,16 +354,16 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link UnexpectedException} that will be used to generate a RestException if the HTTP response status
+     * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP response status
      * code is not one of the expected status codes.
      *
-     * If an UnexpectedException is not found for the status code the default UnexpectedException will be returned.
+     * If an UnexpectedExceptionInformation is not found for the status code the default UnexpectedExceptionInformation will be returned.
      *
      * @param code Exception HTTP status code return from a REST API.
-     * @return the UnexpectedException to generate an exception to throw or return.
+     * @return the UnexpectedExceptionInformation to generate an exception to throw or return.
      */
     @Override
-    public UnexpectedException getUnexpectedException(int code) {
+    public UnexpectedExceptionInformation getUnexpectedException(int code) {
         if (exceptionMapping == null) {
             exceptionMapping = processUnexpectedResponseExceptionTypes();
         }
@@ -504,11 +504,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return result;
     }
 
-    private Map<Integer, UnexpectedException> processUnexpectedResponseExceptionTypes() {
-        HashMap<Integer, UnexpectedException> exceptionHashMap = new HashMap<>();
+    private Map<Integer, UnexpectedExceptionInformation> processUnexpectedResponseExceptionTypes() {
+        HashMap<Integer, UnexpectedExceptionInformation> exceptionHashMap = new HashMap<>();
 
         for (UnexpectedResponseExceptionType exceptionAnnotation : unexpectedResponseExceptionTypes) {
-            UnexpectedException exception = new UnexpectedException(exceptionAnnotation.value());
+            UnexpectedExceptionInformation exception = new UnexpectedExceptionInformation(exceptionAnnotation.value());
             if (exceptionAnnotation.code().length == 0) {
                 defaultException = exception;
             } else {
@@ -519,7 +519,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         if (defaultException == null) {
-            defaultException = new UnexpectedException(ServiceRequestException.class);
+            defaultException = new UnexpectedExceptionInformation(ServiceRequestException.class);
         }
 
         return exceptionHashMap;
