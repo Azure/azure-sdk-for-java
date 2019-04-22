@@ -27,7 +27,7 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Map<String, Integer>> listAvailableClustersAsync();
+    Observable<AvailableClustersList> listAvailableClustersAsync();
 
     /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.

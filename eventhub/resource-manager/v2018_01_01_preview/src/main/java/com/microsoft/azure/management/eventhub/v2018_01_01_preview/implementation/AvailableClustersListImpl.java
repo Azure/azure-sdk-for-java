@@ -10,6 +10,7 @@ package com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementati
 
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.AvailableClustersList;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import java.util.List;
 import java.util.Map;
 
 class AvailableClustersListImpl extends WrapperImpl<AvailableClustersListInner> implements AvailableClustersList {
@@ -25,8 +26,8 @@ class AvailableClustersListImpl extends WrapperImpl<AvailableClustersListInner> 
     }
 
     @Override
-    public Map<String, Integer> availableClusters() {
-        return this.inner().availableClusters();
+    public List<Map<String, Integer>> value() {
+        return this.inner().value();
     }
 
 }

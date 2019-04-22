@@ -12,6 +12,7 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation.EventHubManager;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation.AvailableClustersListInner;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,8 +20,8 @@ import java.util.Map;
  */
 public interface AvailableClustersList extends HasInner<AvailableClustersListInner>, HasManager<EventHubManager> {
     /**
-     * @return the availableClusters value.
+     * @return the value value.
      */
-    Map<String, Integer> availableClusters();
+    List<Map<String, Integer>> value();
 
 }

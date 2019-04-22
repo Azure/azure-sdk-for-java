@@ -22,6 +22,7 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.eventhub.v2018_01_01_preview.AvailableClustersList;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.EHNamespaceIdListResult;
 
 class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, ClusterInner, ClustersInner, EventHubManager>  implements Clusters {
@@ -103,10 +104,16 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
     }
 
     @Override
-    public Observable<Map<String, Integer>> listAvailableClustersAsync() {
+    public Observable<AvailableClustersList> listAvailableClustersAsync() {
         ClustersInner client = this.inner();
         return client.listAvailableClustersAsync()
-    ;}
+        .map(new Func1<AvailableClustersListInner, AvailableClustersList>() {
+            @Override
+            public AvailableClustersList call(AvailableClustersListInner inner) {
+                return new AvailableClustersListImpl(inner, manager());
+            }
+        });
+    }
 
     @Override
     protected ClusterImpl wrapModel(ClusterInner inner) {

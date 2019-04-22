@@ -8,38 +8,38 @@
 
 package com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation;
 
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Enumeration of the pre-provisioned Event Hubs Cluster count per region with
- * clusters readily available.
+ * The response of the List Available Clusters operation.
  */
 public class AvailableClustersListInner {
     /**
-     * Pre-provisioned Event Hubs Cluster count per region with such clusters
-     * available.
+     * The count of readily available and pre-provisioned Event Hubs Clusters
+     * per region.
      */
-    @JsonProperty(value = "availableClusters")
-    private Map<String, Integer> availableClusters;
+    @JsonProperty(value = "value")
+    private List<Map<String, Integer>> value;
 
     /**
-     * Get pre-provisioned Event Hubs Cluster count per region with such clusters available.
+     * Get the count of readily available and pre-provisioned Event Hubs Clusters per region.
      *
-     * @return the availableClusters value
+     * @return the value value
      */
-    public Map<String, Integer> availableClusters() {
-        return this.availableClusters;
+    public List<Map<String, Integer>> value() {
+        return this.value;
     }
 
     /**
-     * Set pre-provisioned Event Hubs Cluster count per region with such clusters available.
+     * Set the count of readily available and pre-provisioned Event Hubs Clusters per region.
      *
-     * @param availableClusters the availableClusters value to set
+     * @param value the value value to set
      * @return the AvailableClustersListInner object itself.
      */
-    public AvailableClustersListInner withAvailableClusters(Map<String, Integer> availableClusters) {
-        this.availableClusters = availableClusters;
+    public AvailableClustersListInner withValue(List<Map<String, Integer>> value) {
+        this.value = value;
         return this;
     }
 
