@@ -40,6 +40,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -250,7 +251,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * method arguments.
      *
      * @param swaggerMethodArguments the arguments that will be used to create the query parameters'
-     *                               values
+     *     values
      * @return an Iterable with the encoded query parameters
      */
     public Iterable<EncodedParameter> encodedQueryParameters(Object[] swaggerMethodArguments) {
@@ -281,26 +282,27 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * method arguments.
      *
      * @param swaggerMethodArguments the arguments that will be used to create the form parameters'
-     *                               values
+     *     values
      * @return an Iterable with the encoded form parameters
      */
     public Iterable<EncodedParameter> encodedFormParameters(Object[] swaggerMethodArguments) {
+        if (formSubstitutions == null) {
+            return Collections.emptyList();
+        }
         final List<EncodedParameter> result = new ArrayList<>();
-        if (formSubstitutions != null) {
-            final PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
+        final PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
 
-            for (Substitution formSubstitution : formSubstitutions) {
-                final int parameterIndex = formSubstitution.methodParameterIndex();
-                if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
-                    final Object methodArgument = swaggerMethodArguments[formSubstitution.methodParameterIndex()];
-                    String parameterValue = serialize(methodArgument);
-                    if (parameterValue != null) {
-                        if (formSubstitution.shouldEncode() && escaper != null) {
-                            parameterValue = escaper.escape(parameterValue);
-                        }
-
-                        result.add(new EncodedParameter(formSubstitution.urlParameterName(), parameterValue));
+        for (Substitution formSubstitution : formSubstitutions) {
+            final int parameterIndex = formSubstitution.methodParameterIndex();
+            if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
+                final Object methodArgument = swaggerMethodArguments[formSubstitution.methodParameterIndex()];
+                String parameterValue = serialize(methodArgument);
+                if (parameterValue != null) {
+                    if (formSubstitution.shouldEncode() && escaper != null) {
+                        parameterValue = escaper.escape(parameterValue);
                     }
+
+                    result.add(new EncodedParameter(formSubstitution.urlParameterName(), parameterValue));
                 }
             }
         }
