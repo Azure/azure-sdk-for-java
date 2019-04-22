@@ -7,7 +7,7 @@ import com.azure.common.annotations.HeaderCollection;
 
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.rest.ResponseBase;
-import com.azure.common.implementation.UnexpectedException;
+import com.azure.common.implementation.UnexpectedExceptionInformation;
 import com.azure.common.implementation.util.TypeUtil;
 import reactor.core.publisher.Mono;
 
@@ -77,13 +77,13 @@ public interface HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link UnexpectedException} that will be used to generate a RestException if the HTTP response status
+     * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP response status
      * code is not one of the expected status codes.
      *
      * @param code Exception HTTP status code return from a REST API.
-     * @return the UnexpectedException to generate an exception to throw or return.
+     * @return the UnexpectedExceptionInformation to generate an exception to throw or return.
      */
-    default UnexpectedException getUnexpectedException(int code) {
-        return new UnexpectedException(ServiceRequestException.class);
+    default UnexpectedExceptionInformation getUnexpectedException(int code) {
+        return new UnexpectedExceptionInformation(ServiceRequestException.class);
     }
 }
