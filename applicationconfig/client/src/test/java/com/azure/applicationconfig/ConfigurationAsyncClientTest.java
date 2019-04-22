@@ -6,12 +6,11 @@ import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.test.TestBase;
-import com.azure.common.test.TestMode;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
+import com.azure.common.test.TestBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -23,13 +22,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import javax.security.auth.login.Configuration;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -574,7 +573,30 @@ public class ConfigurationAsyncClientTest extends TestBase {
     }
 
     @Test
-    public void listWithKeyAndMultipleLabels() {
+    public void listWithMultipleKeys() {
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String key2 = sdkContext.randomResourceName(keyPrefix, 16);
+        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value(key);
+        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value(key2);
+
+        StepVerifier.create(client.addSetting(setting))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+
+        StepVerifier.create(client.addSetting(setting2))
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .verifyComplete();
+
+        StepVerifier.create(client.listSettings(new SettingSelector().keys(key, key2)).collectList())
+                .assertNext(response -> {
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(result, setting)));
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(result, setting2)));
+                })
+                .verifyComplete();
+    }
+
+    @Test
+    public void listWithMultipleLabels() {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final String label2 = sdkContext.randomResourceName(labelPrefix, 16);
@@ -585,13 +607,15 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .assertNext(response -> assertConfigurationEquals(setting, response))
                 .verifyComplete();
 
-        StepVerifier.create(client.addSetting(setting2))
+        StepVerifier.create(client.addSetting(setting2).delayElement(Duration.ofSeconds(3)))
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
 
-        StepVerifier.create(client.listSettings(new SettingSelector().keys(key).labels(label, label2)))
-                .assertNext(response -> assertConfigurationEquals(setting2, response))
-                .assertNext(response -> assertConfigurationEquals(setting, response))
+        StepVerifier.create(client.listSettings(new SettingSelector().labels(label, label2)).collectList())
+                .assertNext(response -> {
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(result, setting)));
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(result, setting2)));
+                })
                 .verifyComplete();
     }
 
@@ -742,25 +766,74 @@ public class ConfigurationAsyncClientTest extends TestBase {
     }
 
     @Test
-    public void listRevisionsMultipleLabels() {
+    public void listRevisionsWithMultipleKeys() {
+        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String key2 = sdkContext.randomResourceName(keyPrefix, 16);
+        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value(key);
+        final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value(key + "updated");
+        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value(key2);
+        final ConfigurationSetting setting2Update = new ConfigurationSetting(setting2).value(key2 + "updated");
+
+        StepVerifier.create(client.addSetting(setting))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+
+        StepVerifier.create(client.updateSetting(settingUpdate).delayElement(Duration.ofSeconds(3)))
+                .assertNext(response -> assertConfigurationEquals(settingUpdate, response))
+                .verifyComplete();
+
+        StepVerifier.create(client.addSetting(setting2))
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .verifyComplete();
+
+        StepVerifier.create(client.updateSetting(setting2Update).delayElement(Duration.ofSeconds(3)))
+                .assertNext(response -> assertConfigurationEquals(setting2Update, response))
+                .verifyComplete();
+
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(key, key2)).collectList())
+                .assertNext(response -> {
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting, result)));
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(settingUpdate, result)));
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting2, result)));
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting2Update, result)));
+                })
+                .verifyComplete();
+    }
+
+    @Test
+    public void listRevisionsWithMultipleLabels() {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final String label2 = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value(label).label(label);
+        final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value(label + "updated");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value(label2).label(label2);
+        final ConfigurationSetting setting2Update = new ConfigurationSetting(setting2).value(label2 + "updated");
 
         StepVerifier.create(client.addSetting(setting))
-            .assertNext(response -> assertConfigurationEquals(setting, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+
+        StepVerifier.create(client.updateSetting(settingUpdate))
+                .assertNext(response -> assertConfigurationEquals(settingUpdate, response))
+                .verifyComplete();
 
         StepVerifier.create(client.addSetting(setting2))
-            .assertNext(response -> assertConfigurationEquals(setting2, response))
-            .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .verifyComplete();
 
-        StepVerifier.create(client.listSettings(new SettingSelector().keys(key).labels(label, label2)))
-            .assertNext(response -> assertConfigurationEquals(setting, response))
-            .assertNext(response -> assertConfigurationEquals(setting2, response))
-            .verifyComplete();
+        StepVerifier.create(client.updateSetting(setting2Update))
+                .assertNext(response -> assertConfigurationEquals(setting2Update, response))
+                .verifyComplete();
+
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(key).labels(label, label2)).collectList())
+                .assertNext(response -> {
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting, result)));
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(settingUpdate, result)));
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting2, result)));
+                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting2Update, result)));
+                })
+                .verifyComplete();
     }
     /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
@@ -912,34 +985,47 @@ public class ConfigurationAsyncClientTest extends TestBase {
      *
      * @param expected ConfigurationSetting expected to be returned by the service
      * @param actual ConfigurationSetting contained in the RestResponse body
+     * @return True if the ConfigurationSettings are value equivalent
      */
     private static void assertConfigurationEquals(ConfigurationSetting expected, ConfigurationSetting actual) {
+        assertTrue(configurationsEqual(expected, actual));
+    }
+
+    private static boolean configurationsEqual(ConfigurationSetting expected, ConfigurationSetting actual) {
+        if (expected == actual) {
+            return true;
+        }
+
         if (expected == null) {
-            assertNull(actual);
-            return;
+            return false;
         }
 
-        assertNotNull(actual);
-        assertEquals(expected.key(), actual.key());
-
-        // This is because we have the no label which is deciphered in the service as "\0".
-        if (ConfigurationSetting.NO_LABEL.equals(expected.label())) {
-            assertNull(actual.label());
-        } else {
-            assertEquals(expected.label(), actual.label());
+        if (!Objects.equals(expected.key(), actual.key())
+            || !Objects.equals(expected.value(), actual.value())
+            || !Objects.equals(expected.contentType(), actual.contentType())) {
+            return false;
         }
 
-        assertEquals(expected.value(), actual.value());
-        assertEquals(expected.contentType(), actual.contentType());
-
-        if (expected.tags() != null) {
-            assertEquals(expected.tags().size(), actual.tags().size());
-
-            expected.tags().forEach((key, value) -> {
-                assertTrue(actual.tags().containsKey(key));
-                assertEquals(value, actual.tags().get(key));
-            });
+        if (ConfigurationSetting.NO_LABEL.equals(expected.label()) && actual.label() != null) {
+            return false;
+        } else if (!Objects.equals(expected.label(), actual.label())) {
+            return false;
         }
+
+        if (expected.tags() != null && expected.tags().size() != 0 && actual.tags() != null) {
+            if (!Objects.equals(expected.tags().size(), actual.tags().size())) {
+                return false;
+            }
+
+            for (Map.Entry<String, String> tag : expected.tags().entrySet()) {
+                if (!actual.tags().containsKey(tag.getKey())
+                    || !Objects.equals(tag.getValue(), actual.tags().get(tag.getKey()))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
