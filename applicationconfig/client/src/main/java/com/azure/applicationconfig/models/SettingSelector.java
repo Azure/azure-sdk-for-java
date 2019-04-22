@@ -15,8 +15,8 @@ import java.util.Arrays;
  * <ul>
  *     <li>
  *         Providing {@link SettingSelector#labels() labels} will filter
- *         {@link ConfigurationSetting ConfigurationSettings} that match that label name in conjunction with the key
- *         that is passed in to the service request.
+ *         {@link ConfigurationSetting ConfigurationSettings} that match any label name in conjunction with the keys
+ *         that are passed in to the service request.
  *     </li>
  *     <li>
  *         Providing {@link SettingSelector#acceptDateTime() acceptDateTime} will return the representation of matching
@@ -45,7 +45,7 @@ public class SettingSelector {
     }
 
     /**
-     * Gets the expression to filter {@link ConfigurationSetting#key() key} on for the request.
+     * Gets the expressions to filter {@link ConfigurationSetting#key() keys} on for the request.
      *
      * <p>
      * Examples:
@@ -56,14 +56,14 @@ public class SettingSelector {
      *     <li>If keys = "*abc*", settings with a key containing "abc" are returned.</li>
      * </ol>
      *
-     * @return The expression to filter ConfigurationSetting keys on.
+     * @return The expressions to filter ConfigurationSetting keys on.
      */
     public String[] keys() {
         return (keys == null) ? new String[0] : Arrays.copyOf(keys, keys.length);
     }
 
     /**
-     * Sets the expression to filter {@link ConfigurationSetting#key() key} on for the request.
+     * Sets the expressions to filter {@link ConfigurationSetting#key() keys} on for the request.
      *
      * <p>
      * Examples:
@@ -72,9 +72,10 @@ public class SettingSelector {
      *     <li>If {@code keys = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
      *     <li>If {@code keys = "abc*"}, settings with a key starting with "abc" are returned.</li>
      *     <li>If {@code keys = "*abc*"}, settings with a key containing "abc" are returned.</li>
+     *     <li>If {@code keys = "abc,def"}, settings with a key equal to "abc" or "def" are returned.</li>
      * </ul>
      *
-     * @param keys The expression to filter ConfigurationSetting keys on.
+     * @param keys The expressions to filter ConfigurationSetting keys on.
      * @return The updated SettingSelector object
      */
     public SettingSelector keys(String... keys) {
@@ -98,7 +99,7 @@ public class SettingSelector {
      *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
      *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
      *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
-     *     <li>If {@code label = abc,def}, settings with labels "abc" or "def" are returned.</li>
+     *     <li>If {@code label = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
      * </ul>
      *
      * @return labels The labels used to filter GET requests from the service.

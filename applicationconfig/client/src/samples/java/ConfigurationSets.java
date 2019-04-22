@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 /**
  * Sample demonstrates how to use Azure Application Configuration to switch between "beta" and "production"

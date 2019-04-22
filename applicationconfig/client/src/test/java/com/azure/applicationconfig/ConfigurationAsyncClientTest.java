@@ -572,6 +572,10 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .verifyComplete();
     }
 
+    /**
+     * Verifies that ConfigurationSettings can be added and that we can fetch those ConfigurationSettings from the
+     * service when filtering by their keys.
+     */
     @Test
     public void listWithMultipleKeys() {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
@@ -595,6 +599,10 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .verifyComplete();
     }
 
+    /**
+     * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
+     * from the service when filtering by their labels.
+     */
     @Test
     public void listWithMultipleLabels() {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
@@ -765,6 +773,9 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .verifyComplete();
     }
 
+    /**
+     * Verifies that we can get all the revisions for all settings with the specified keys.
+     */
     @Test
     public void listRevisionsWithMultipleKeys() {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
@@ -800,6 +811,9 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .verifyComplete();
     }
 
+    /**
+     * Verifies that we can get all revisions for all settings with the specified labels.
+     */
     @Test
     public void listRevisionsWithMultipleLabels() {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
@@ -991,6 +1005,12 @@ public class ConfigurationAsyncClientTest extends TestBase {
         assertTrue(configurationsEqual(expected, actual));
     }
 
+    /**
+     * Helper method to verify that two ConfigurationSettings are datawise equal.
+     * @param expected ConfigurationSetting expected to be returned by the service.
+     * @param actual ConfigurationSetting returned by the service.
+     * @return True if the ConfigurationSettings are the same setting or their member variables are equivalent.
+     */
     private static boolean configurationsEqual(ConfigurationSetting expected, ConfigurationSetting actual) {
         if (expected == actual) {
             return true;
