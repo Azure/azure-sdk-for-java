@@ -1,11 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.implementation.serializer.jackson;
 
+import com.azure.common.implementation.CollectionFormat;
+import com.azure.common.implementation.serializer.MalformedValueException;
+import com.azure.common.implementation.serializer.SerializerAdapter;
+import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -16,10 +17,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.azure.common.implementation.CollectionFormat;
-import com.azure.common.implementation.serializer.MalformedValueException;
-import com.azure.common.implementation.serializer.SerializerAdapter;
-import com.azure.common.implementation.serializer.SerializerEncoding;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -169,11 +166,9 @@ public class JacksonAdapter implements SerializerAdapter {
         JavaType result;
         if (type == null) {
             result = null;
-        }
-        else if (type instanceof JavaType) {
+        } else if (type instanceof JavaType) {
             result = (JavaType) type;
-        }
-        else if (type instanceof ParameterizedType) {
+        } else if (type instanceof ParameterizedType) {
             final ParameterizedType parameterizedType = (ParameterizedType) type;
             final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
             JavaType[] javaTypeArguments = new JavaType[actualTypeArguments.length];
@@ -181,8 +176,7 @@ public class JacksonAdapter implements SerializerAdapter {
                 javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
             }
             result = mapper.getTypeFactory().constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments);
-        }
-        else {
+        } else {
             result = mapper.getTypeFactory().constructType(type);
         }
         return result;

@@ -11,21 +11,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class SendLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SendLinkHandler.class);
     private final AmqpSender msgSender;
-    private final Object firstFlow;
-    private boolean isFirstFlow;
+    private AtomicBoolean isFirstFlow;
 
     public SendLinkHandler(final AmqpSender sender) {
         super(sender);
 
         this.msgSender = sender;
-        this.firstFlow = new Object();
-        this.isFirstFlow = true;
+        this.isFirstFlow = new AtomicBoolean(true);
     }
 
     @Override
@@ -49,10 +48,10 @@ public class SendLinkHandler extends BaseLinkHandler {
                     TRACE_LOGGER.info(String.format(Locale.US, "onLinkRemoteOpen linkName[%s], remoteTarget[%s]", sender.getName(), link.getRemoteTarget()));
                 }
 
-                synchronized (this.firstFlow) {
-                    this.isFirstFlow = false;
+                if (this.isFirstFlow.compareAndSet(true, false)) {
                     this.msgSender.onOpenComplete(null);
                 }
+
             } else {
                 if (TRACE_LOGGER.isInfoEnabled()) {
                     TRACE_LOGGER.info(
@@ -85,13 +84,8 @@ public class SendLinkHandler extends BaseLinkHandler {
 
     @Override
     public void onLinkFlow(Event event) {
-        if (this.isFirstFlow) {
-            synchronized (this.firstFlow) {
-                if (this.isFirstFlow) {
-                    this.msgSender.onOpenComplete(null);
-                    this.isFirstFlow = false;
-                }
-            }
+        if (this.isFirstFlow.compareAndSet(true, false)) {
+            this.msgSender.onOpenComplete(null);
         }
 
         Sender sender = event.getSender();

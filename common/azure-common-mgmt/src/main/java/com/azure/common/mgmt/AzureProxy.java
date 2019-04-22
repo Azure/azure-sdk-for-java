@@ -1,36 +1,33 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.mgmt;
 
 import com.azure.common.AzureEnvironment;
 import com.azure.common.credentials.AsyncServiceClientCredentials;
-import com.azure.common.mgmt.annotations.AzureHost;
-import com.azure.common.mgmt.policy.AsyncCredentialsPolicy;
-import com.azure.common.mgmt.serializer.AzureJacksonAdapter;
-import com.azure.common.implementation.exception.InvalidReturnTypeException;
-import com.azure.common.implementation.OperationDescription;
-import com.azure.common.implementation.RestProxy;
-import com.azure.common.implementation.SwaggerInterfaceParser;
-import com.azure.common.implementation.SwaggerMethodParser;
 import com.azure.common.credentials.ServiceClientCredentials;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpPipeline;
-import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.policy.CookiePolicy;
 import com.azure.common.http.policy.CredentialsPolicy;
+import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
+import com.azure.common.implementation.OperationDescription;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.SwaggerInterfaceParser;
+import com.azure.common.implementation.SwaggerMethodParser;
+import com.azure.common.implementation.exception.InvalidReturnTypeException;
 import com.azure.common.implementation.serializer.HttpResponseDecoder;
 import com.azure.common.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.serializer.SerializerEncoding;
 import com.azure.common.implementation.util.TypeUtil;
+import com.azure.common.mgmt.annotations.AzureHost;
+import com.azure.common.mgmt.policy.AsyncCredentialsPolicy;
+import com.azure.common.mgmt.serializer.AzureJacksonAdapter;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -322,12 +319,10 @@ public final class AzureProxy extends RestProxy {
                                     pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                     if (pollStrategy != null) {
                                         result = Mono.just(pollStrategy);
-                                    }
-                                    else {
+                                    } else {
                                         result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
                                     }
-                                }
-                                else if (originalHttpRequestMethod == HttpMethod.PUT || originalHttpRequestMethod == HttpMethod.PATCH) {
+                                } else if (originalHttpRequestMethod == HttpMethod.PUT || originalHttpRequestMethod == HttpMethod.PATCH) {
                                     if (httpStatusCode == 201) {
                                         pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                         if (pollStrategy == null) {
@@ -339,8 +334,7 @@ public final class AzureProxy extends RestProxy {
                                             pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpDecodedResponse.sourceResponse(), delayInMilliseconds);
                                         }
                                     }
-                                }
-                                else {
+                                } else {
                                     if (httpStatusCode == 202) {
                                         pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                         if (pollStrategy == null) {

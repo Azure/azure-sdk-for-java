@@ -394,9 +394,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         this.prefetchedMessages.clear();
 
         if (this.getIsClosingOrClosed()) {
-            if (this.closeTimer != null)
+            if (this.closeTimer != null) {
                 this.closeTimer.cancel(false);
-
+            }
             this.drainPendingReceives(exception);
             this.linkClose.complete(null);
         } else {
@@ -511,9 +511,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 source.setAddress(receivePath);
 
                 final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider.getFilter(MessageReceiver.this.lastReceivedMessage);
-                if (filterMap != null)
+                if (filterMap != null) {
                     source.setFilter(filterMap);
-
+                }
                 final Receiver receiver = session.receiver(TrackingUtil.getLinkName(session));
                 receiver.setSource(source);
 
@@ -526,13 +526,13 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
 
                 final Map<Symbol, Object> linkProperties = MessageReceiver.this.settingsProvider.getProperties();
-                if (linkProperties != null)
+                if (linkProperties != null) {
                     receiver.setProperties(linkProperties);
-
+                }
                 final Symbol[] desiredCapabilities = MessageReceiver.this.settingsProvider.getDesiredCapabilities();
-                if (desiredCapabilities != null)
+                if (desiredCapabilities != null) {
                     receiver.setDesiredCapabilities(desiredCapabilities);
-
+                }
                 final ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this);
                 BaseHandler.setHandler(receiver, handler);
 
@@ -569,9 +569,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                     new OperationResult<Void, Exception>() {
                         @Override
                         public void onComplete(Void result) {
-                            if (MessageReceiver.this.getIsClosingOrClosed())
+                            if (MessageReceiver.this.getIsClosingOrClosed()) {
                                 return;
-
+                            }
                             underlyingFactory.getSession(
                                     receivePath,
                                     onSessionOpen,
@@ -633,10 +633,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                         creatingLink = false;
 
                         if (!linkOpen.getWork().isDone()) {
-                            final Receiver link;
                             final Exception lastReportedLinkError;
                             synchronized (errorConditionLock) {
-                                link = MessageReceiver.this.receiveLink;
                                 lastReportedLinkError = MessageReceiver.this.lastKnownLinkError;
                             }
 

@@ -21,6 +21,7 @@ import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterPatch
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterResizeParameters;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ErrorResponseException;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ExecuteScriptActionParameters;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.UpdateGatewaySettingsParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -119,6 +120,18 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Clusters beginRotateDiskEncryptionKey" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/rotatediskencryptionkey")
         Observable<Response<ResponseBody>> beginRotateDiskEncryptionKey(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Body ClusterDiskEncryptionParameters parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Clusters getGatewaySettings" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/getGatewaySettings")
+        Observable<Response<ResponseBody>> getGatewaySettings(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Clusters updateGatewaySettings" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/updateGatewaySettings")
+        Observable<Response<ResponseBody>> updateGatewaySettings(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Body UpdateGatewaySettingsParameters parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Clusters beginUpdateGatewaySettings" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/updateGatewaySettings")
+        Observable<Response<ResponseBody>> beginUpdateGatewaySettings(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Body UpdateGatewaySettingsParameters parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Clusters executeScriptActions" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/executeScriptActions")
@@ -1430,6 +1443,262 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     }
 
     private ServiceResponse<Void> beginRotateDiskEncryptionKeyDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the gateway settings for the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the GatewaySettingsInner object if successful.
+     */
+    public GatewaySettingsInner getGatewaySettings(String resourceGroupName, String clusterName) {
+        return getGatewaySettingsWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the gateway settings for the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<GatewaySettingsInner> getGatewaySettingsAsync(String resourceGroupName, String clusterName, final ServiceCallback<GatewaySettingsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getGatewaySettingsWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    }
+
+    /**
+     * Gets the gateway settings for the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the GatewaySettingsInner object
+     */
+    public Observable<GatewaySettingsInner> getGatewaySettingsAsync(String resourceGroupName, String clusterName) {
+        return getGatewaySettingsWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<GatewaySettingsInner>, GatewaySettingsInner>() {
+            @Override
+            public GatewaySettingsInner call(ServiceResponse<GatewaySettingsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the gateway settings for the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the GatewaySettingsInner object
+     */
+    public Observable<ServiceResponse<GatewaySettingsInner>> getGatewaySettingsWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getGatewaySettings(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GatewaySettingsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<GatewaySettingsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<GatewaySettingsInner> clientResponse = getGatewaySettingsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<GatewaySettingsInner> getGatewaySettingsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<GatewaySettingsInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<GatewaySettingsInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Configures the gateway settings on the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void updateGatewaySettings(String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters) {
+        updateGatewaySettingsWithServiceResponseAsync(resourceGroupName, clusterName, parameters).toBlocking().last().body();
+    }
+
+    /**
+     * Configures the gateway settings on the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updateGatewaySettingsAsync(String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateGatewaySettingsWithServiceResponseAsync(resourceGroupName, clusterName, parameters), serviceCallback);
+    }
+
+    /**
+     * Configures the gateway settings on the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> updateGatewaySettingsAsync(String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters) {
+        return updateGatewaySettingsWithServiceResponseAsync(resourceGroupName, clusterName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Configures the gateway settings on the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> updateGatewaySettingsWithServiceResponseAsync(String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        Observable<Response<ResponseBody>> observable = service.updateGatewaySettings(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Configures the gateway settings on the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginUpdateGatewaySettings(String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters) {
+        beginUpdateGatewaySettingsWithServiceResponseAsync(resourceGroupName, clusterName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Configures the gateway settings on the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginUpdateGatewaySettingsAsync(String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateGatewaySettingsWithServiceResponseAsync(resourceGroupName, clusterName, parameters), serviceCallback);
+    }
+
+    /**
+     * Configures the gateway settings on the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginUpdateGatewaySettingsAsync(String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters) {
+        return beginUpdateGatewaySettingsWithServiceResponseAsync(resourceGroupName, clusterName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Configures the gateway settings on the specified cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginUpdateGatewaySettingsWithServiceResponseAsync(String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.beginUpdateGatewaySettings(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginUpdateGatewaySettingsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginUpdateGatewaySettingsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())

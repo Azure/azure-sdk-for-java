@@ -146,8 +146,9 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
             @Override
             public Iterable<EventData> apply(Collection<Message> amqpMessages) {
                 PassByRef<MessageWrapper> lastMessageRef = null;
-                if (PartitionReceiverImpl.this.receiverOptions != null && PartitionReceiverImpl.this.receiverOptions.getReceiverRuntimeMetricEnabled())
+                if (PartitionReceiverImpl.this.receiverOptions != null && PartitionReceiverImpl.this.receiverOptions.getReceiverRuntimeMetricEnabled()) {
                     lastMessageRef = new PassByRef<>();
+                }
 
                 final Iterable<EventData> events = EventDataUtil.toEventDataCollection(amqpMessages, lastMessageRef);
 
@@ -181,10 +182,10 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
                     return this.receivePump.stop();
                 }
             } else {
-                if (this.receivePump != null && this.receivePump.isRunning())
+                if (this.receivePump != null && this.receivePump.isRunning()) {
                     throw new IllegalArgumentException(
-                            "Unexpected value for parameter 'receiveHandler'. PartitionReceiver was already registered with a PartitionReceiveHandler instance. Only 1 instance can be registered.");
-
+                        "Unexpected value for parameter 'receiveHandler'. PartitionReceiver was already registered with a PartitionReceiveHandler instance. Only 1 instance can be registered.");
+                }
                 this.receivePump = new ReceivePump(
                         this.eventHubName,
                         this.consumerGroupName,

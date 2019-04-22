@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.common.http;
 
@@ -27,7 +24,7 @@ public final class HttpPipelineCallContext {
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
     HttpPipelineCallContext(HttpRequest httpRequest) {
-       this(httpRequest, ContextData.NONE);
+        this(httpRequest, ContextData.NONE);
     }
 
     /**
