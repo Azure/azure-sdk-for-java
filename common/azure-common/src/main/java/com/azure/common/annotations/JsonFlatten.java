@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.common.implementation.serializer;
+package com.azure.common.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
