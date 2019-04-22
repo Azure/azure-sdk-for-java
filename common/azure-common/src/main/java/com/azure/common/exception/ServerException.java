@@ -7,6 +7,10 @@ import com.azure.common.http.HttpResponse;
 
 /**
  * The exception thrown when there is a server error with status code of 5XX.
+ *
+ * A runtime exception indicating server (HTTP 5XX status codes) failure caused by one of the following scenarios:
+ * An internal server error.
+ * Or The requested resource cannot be served.
  */
 public class ServerException extends HttpRequestException {
 
