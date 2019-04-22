@@ -34,6 +34,6 @@ public final class TestContext {
     }
 
     public static boolean isTestConfigurationSet() {
-        return System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME) != null;
+        return CONNECTION_STRING != null;
     }
 }
