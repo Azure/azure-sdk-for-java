@@ -128,7 +128,7 @@ public class SecurityExceptionsTest extends ApiTestBase {
     }
 
     @Test(expected = IllegalEntityException.class)
-    public void testSendToNonExistantEventHub() throws Throwable {
+    public void testSendToNonExistentEventHub() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
                 .setEndpoint(correctConnectionString.getEndpoint())
@@ -141,7 +141,7 @@ public class SecurityExceptionsTest extends ApiTestBase {
     }
 
     @Test(expected = IllegalEntityException.class)
-    public void testReceiveFromNonExistantEventHub() throws Throwable {
+    public void testReceiveFromNonExistentEventHub() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
                 .setEndpoint(correctConnectionString.getEndpoint())
