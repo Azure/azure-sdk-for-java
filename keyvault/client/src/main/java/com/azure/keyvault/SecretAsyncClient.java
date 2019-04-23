@@ -256,7 +256,7 @@ public final class SecretAsyncClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
-     * secretAsyncClient.recoverDeletedSecret("deletedSecretName").subscribe(recoveredSecretResponse ->
+     * secretAsyncClient.recoverDeletedSecret("deletedSecretName").subscribe(recoveredSecretResponse -&gt;
      *   System.out.println(String.format("Recovered Secret with name %s", recoveredSecretResponse.value().name())));
      * </pre>
      *
@@ -316,14 +316,14 @@ public final class SecretAsyncClient extends ServiceClient {
      * <p>It is possible to get full Secrets with values from this information. Convert the {@link Flux} containing {@link SecretAttributes secretAttributes} to
      * {@link Flux} containing {@link Secret secrets} using {@link SecretAsyncClient#getSecret(String secretName)} within {@link Flux#flatMap(Function)}.</p>
      * <pre>
-     * Flux<SecretAttributes> secretAttributes = secretAsyncClient.listSecrets();
-     * Flux<Secret> secrets = secretAttributes.flatMap(secretAttr -&gt;
+     * Flux-&lt;SecretAttributes-&gt; secretAttributes = secretAsyncClient.listSecrets();
+     * Flux-&lt;Secret-&gt; secrets = secretAttributes.flatMap(secretAttr -&gt;
      *   Flux.just(secretAsyncClient.getSecret(secretAttr.name())))
      *     .flatMap(secretMonoResponse -&gt;
      *       secretMonoResponse.flatMap(secretResponse -&gt;
      *         Mono.just(secretResponse.value())));
      *
-     * secrets.subscribe(secret -> System.out.println((secret.value())));
+     * secrets.subscribe(secret -&gt; System.out.println((secret.value())));
      * </pre>
      *
      * @return A {@link Flux} containing {@link SecretAttributes} of all the secrets in the vault.
@@ -351,14 +351,14 @@ public final class SecretAsyncClient extends ServiceClient {
      * containing {@link SecretAttributes secretAttributes} to {@link Flux} containing {@link Secret secrets} using
      * {@link SecretAsyncClient#getSecret(String secretName, String secretVersion)} within {@link Flux#flatMap(Function)}.</p>
      * <pre>
-     * Flux<SecretAttributes> secretAttributes = secretAsyncClient.listSecretVersions("secretName");
-     * Flux<Secret> secrets = secretAttributes.flatMap(secretAttr -&gt;
+     * Flux-&lt;SecretAttributes-&gt; secretAttributes = secretAsyncClient.listSecretVersions("secretName");
+     * Flux-&lt;Secret-&gt; secrets = secretAttributes.flatMap(secretAttr -&gt;
      *   Flux.just(secretAsyncClient.getSecret(secretAttr.name(), secretAttr.version())))
      *     .flatMap(secretMonoResponse -&gt;
      *       secretMonoResponse.flatMap(secretResponse -&gt;
      *         Mono.just(secretResponse.value())));
      *
-     * secrets.subscribe(secret -> System.out.println((secret.value())));
+     * secrets.subscribe(secret -&gt; System.out.println((secret.value())));
      * </pre>
      *
      * @param name The name of the secret.

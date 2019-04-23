@@ -326,7 +326,7 @@ public final class SecretClient extends ServiceClient {
      * <p>It is possible to get full Secrets with values from this information. Loop over the {@link SecretAttributes secretAttributes} and
      * call {@link SecretClient#getSecret(SecretAttributes)} . This will return the {@link Secret} secrets with values included of its latest version.</p>
      * <pre>
-     * List<Secret> secrets = new ArrayList();
+     * List-&lt;Secret-&gt; secrets = new ArrayList();
      * secretClient.listSecrets().stream().map(secretClient::getSecret).forEach(secretResponse -&gt;
      *   secrets.add(secretResponse.value()));
      * </pre>
@@ -357,7 +357,7 @@ public final class SecretClient extends ServiceClient {
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretAttributes secretAttributes} and
      * call {@link SecretClient#getSecret(SecretAttributes)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
      * <pre>
-     * List<Secret> secretVersions = new ArrayList();
+     * List-&lt;Secret-&gt; secretVersions = new ArrayList();
      * secretClient.listSecretVersions("secretName").stream().map(secretClient::getSecret).forEach(secretResponse -&gt;
      *   secretVersions.add(secretResponse.value()));
      * </pre>
