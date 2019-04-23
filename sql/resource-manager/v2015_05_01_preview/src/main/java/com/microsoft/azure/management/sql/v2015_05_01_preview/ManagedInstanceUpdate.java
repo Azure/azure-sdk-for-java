@@ -98,7 +98,7 @@ public class ManagedInstanceUpdate {
     private String collation;
 
     /**
-     * The Dns Zone taht the managed instance is in.
+     * The Dns Zone that the managed instance is in.
      */
     @JsonProperty(value = "properties.dnsZone", access = JsonProperty.Access.WRITE_ONLY)
     private String dnsZone;
@@ -138,7 +138,7 @@ public class ManagedInstanceUpdate {
 
     /**
      * Id of the timezone. Allowed values are timezones supported by Windows.
-     * Winodws keeps details on supported timezones, including the id, in
+     * Windows keeps details on supported timezones, including the id, in
      * registry under
      * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time
      * Zones.
@@ -367,7 +367,7 @@ public class ManagedInstanceUpdate {
     }
 
     /**
-     * Get the Dns Zone taht the managed instance is in.
+     * Get the Dns Zone that the managed instance is in.
      *
      * @return the dnsZone value
      */
@@ -477,7 +477,7 @@ public class ManagedInstanceUpdate {
 
     /**
      * Get id of the timezone. Allowed values are timezones supported by Windows.
-     Winodws keeps details on supported timezones, including the id, in registry under
+     Windows keeps details on supported timezones, including the id, in registry under
      KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
      You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
      List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
@@ -491,7 +491,7 @@ public class ManagedInstanceUpdate {
 
     /**
      * Set id of the timezone. Allowed values are timezones supported by Windows.
-     Winodws keeps details on supported timezones, including the id, in registry under
+     Windows keeps details on supported timezones, including the id, in registry under
      KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
      You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
      List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
