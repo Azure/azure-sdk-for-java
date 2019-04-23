@@ -4,10 +4,13 @@
 package com.azure.applicationconfig.models;
 
 import com.azure.applicationconfig.ConfigurationAsyncClient;
+import com.azure.common.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * A set of options for selecting configuration settings from Application Configuration service.
@@ -59,7 +62,7 @@ public class SettingSelector {
      * @return The expressions to filter ConfigurationSetting keys on.
      */
     public String[] keys() {
-        return (keys == null) ? new String[0] : Arrays.copyOf(keys, keys.length);
+        return keys == null ? new String[0] : ImplUtils.clone(keys);
     }
 
     /**
@@ -92,20 +95,20 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code label = "*"}, settings with any label are returned.</li>
-     *     <li>If {@code label = "\0"}, settings without any label are returned.</li>
-     *     <li>If {@code label = ""}, settings without any label are returned.</li>
-     *     <li>If {@code label = null}, settings without any label are returned.</li>
-     *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
-     *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
-     *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
-     *     <li>If {@code label = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
+     *     <li>If {@code labels = "*"}, settings with any label are returned.</li>
+     *     <li>If {@code labels = "\0"}, settings without any label are returned.</li>
+     *     <li>If {@code labels = ""}, settings without any label are returned.</li>
+     *     <li>If {@code labels = null}, settings without any label are returned.</li>
+     *     <li>If {@code labels = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
+     *     <li>If {@code labels = "abc*"}, settings with a label starting with "abc" are returned.</li>
+     *     <li>If {@code labels = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     *     <li>If {@code labels = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
      * </ul>
      *
      * @return labels The labels used to filter GET requests from the service.
      */
     public String[] labels() {
-        return (labels == null) ? new String[0] : Arrays.copyOf(labels, labels.length);
+        return labels == null ? new String[0] : ImplUtils.clone(labels);
     }
 
     /**
@@ -114,12 +117,12 @@ public class SettingSelector {
      * <p>
      * Examples:
      * <ul>
-     *     <li>If {@code label = "*"}, settings with any label are returned.</li>
-     *     <li>If {@code label = "\0"}, settings without any label are returned. (This is the default label.)</li>
-     *     <li>If {@code label = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
-     *     <li>If {@code label = "abc*"}, settings with a label starting with "abc" are returned.</li>
-     *     <li>If {@code label = "*abc*"}, settings with a label containing "abc" are returned.</li>
-     *     <li>If {@code label = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
+     *     <li>If {@code labels = "*"}, settings with any label are returned.</li>
+     *     <li>If {@code labels = "\0"}, settings without any label are returned. (This is the default label.)</li>
+     *     <li>If {@code labels = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
+     *     <li>If {@code labels = "abc*"}, settings with a label starting with "abc" are returned.</li>
+     *     <li>If {@code labels = "*abc*"}, settings with a label containing "abc" are returned.</li>
+     *     <li>If {@code labels = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
      * </ul>
      *
      * @param labels The ConfigurationSetting labels to match. If the provided value is {@code null} or {@code ""}, all
@@ -161,7 +164,7 @@ public class SettingSelector {
      * @return The set of {@link ConfigurationSetting} fields to return for a GET request.
      */
     public SettingFields[] fields() {
-        return (fields == null) ? new SettingFields[0] : Arrays.copyOf(fields, fields.length);
+        return fields == null ? new SettingFields[0] : ImplUtils.clone(fields);
     }
 
     /**

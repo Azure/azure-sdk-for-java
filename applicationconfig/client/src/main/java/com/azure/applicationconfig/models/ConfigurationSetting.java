@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.models;
 
+import com.azure.common.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * ConfigurationSetting is a resource identified by unique combination of {@link ConfigurationSetting#key() key} and
@@ -212,5 +214,40 @@ public class ConfigurationSetting {
     public ConfigurationSetting tags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        ConfigurationSetting other = (ConfigurationSetting) obj;
+        if (other == null) {
+            return false;
+        }
+
+        if (!Objects.equals(this.key, other.key)
+            || !Objects.equals(this.value, other.value)
+            || !Objects.equals(this.contentType, other.contentType)
+            || !Objects.equals(this.label, other.label)
+            || !Objects.equals(this.etag, other.etag)) {
+            return false;
+        }
+
+        if (!ImplUtils.isNullOrEmpty(this.tags)) {
+            if (ImplUtils.isNullOrEmpty(other.tags)) {
+                return false;
+            }
+
+            for (Map.Entry<String, String> otherTag : other.tags().entrySet()) {
+                if (!this.tags.containsKey(otherTag.getKey())
+                    || !Objects.equals(otherTag.getValue(), this.tags.get(otherTag.getKey()))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

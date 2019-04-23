@@ -13,6 +13,7 @@ import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.util.ImplUtils;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -323,7 +324,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
     }
 
     private static String getSelectQuery(SettingFields[] set) {
-        if (set == null || set.length == 0) {
+        if (ImplUtils.isNullOrEmpty(set)) {
             return null;
         }
 

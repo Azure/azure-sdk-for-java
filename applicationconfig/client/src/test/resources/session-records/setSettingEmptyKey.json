@@ -1,44 +1,44 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://conniey-config.azconfig.io/kv/",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv/",
     "Headers" : {
-      "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 11.0.2; Mac OS X 10.14.4",
-      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+      "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 1.8.0_202; Windows 10 10.0",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Tue, 09 Apr 2019 04:52:08 GMT",
+      "date" : "Tue, 23 Apr 2019 18:32:38 GMT",
       "server" : "nginx/1.13.9",
       "content-length" : "0",
       "connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "405",
-      "x-ms-request-id" : "d6b8bf86-d7cb-4ead-ab50-c005b3462d3b",
-      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
-      "x-ms-client-request-id" : "18fbc9e7-d50a-4efb-8edb-c8464e01cbc9",
-      "x-ms-correlation-request-id" : "d6b8bf86-d7cb-4ead-ab50-c005b3462d3b"
+      "x-ms-request-id" : "10d3db7b-e449-4849-9e0d-aadfbcf3858c",
+      "x-ms-client-request-id" : "32e4dfa2-6b4a-4182-b916-515696cfed6f",
+      "x-ms-correlation-request-id" : "10d3db7b-e449-4849-9e0d-aadfbcf3858c",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://conniey-config.azconfig.io/kv?key=key43881%2a",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?key=key97255%2a&label=",
     "Headers" : {
-      "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 11.0.2; Mac OS X 10.14.4",
-      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+      "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 1.8.0_202; Windows 10 10.0",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Tue, 09 Apr 2019 04:52:08 GMT",
+      "date" : "Tue, 23 Apr 2019 18:32:38 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
-      "connection" : "keep-alive",
       "content-type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8",
+      "connection" : "close",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "09afffb5-e0ea-4833-9f32-f87c19b0df38",
+      "x-ms-request-id" : "5dfbe4ec-eab2-4b0d-a7b5-dc98e28d7e1c",
       "Body" : "{\"items\":[]}",
-      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
-      "x-ms-client-request-id" : "445ed4c4-0d17-4651-8cfa-3dee7b395a2a",
-      "x-ms-correlation-request-id" : "09afffb5-e0ea-4833-9f32-f87c19b0df38"
+      "x-ms-client-request-id" : "4bf98a48-dd98-4090-a852-8f1104cfe7d3",
+      "x-ms-correlation-request-id" : "5dfbe4ec-eab2-4b0d-a7b5-dc98e28d7e1c",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;"
     }
   } ],
-  "variables" : [ "key43881", "9dcbb0f1" ]
+  "variables" : [ "key97255", "cd56f7ad" ]
 }

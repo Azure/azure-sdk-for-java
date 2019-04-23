@@ -1,25 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://conniey-config.azconfig.io/kv?key=key68400%2a",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?key=key62685%2a&label=",
     "Headers" : {
-      "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 11.0.2; Mac OS X 10.14.4",
-      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+      "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 1.8.0_202; Windows 10 10.0",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Tue, 09 Apr 2019 20:42:36 GMT",
+      "date" : "Tue, 23 Apr 2019 18:32:36 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
-      "connection" : "keep-alive",
       "content-type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8",
+      "connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "3f7b661c-1883-46bd-8943-b982ebb92381",
+      "x-ms-request-id" : "bbc9c4ad-5118-4db3-83e1-baf36d1edf68",
       "Body" : "{\"items\":[]}",
-      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
-      "x-ms-client-request-id" : "4b088fd8-fffe-47fe-a0fc-3c00d7842143",
-      "x-ms-correlation-request-id" : "3f7b661c-1883-46bd-8943-b982ebb92381"
+      "x-ms-client-request-id" : "005ff551-229d-4673-ad65-070d2ea64a17",
+      "x-ms-correlation-request-id" : "bbc9c4ad-5118-4db3-83e1-baf36d1edf68",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;"
     }
   } ],
-  "variables" : [ "key68400", "6c4269ae" ]
+  "variables" : [ "key62685", "862f2082" ]
 }

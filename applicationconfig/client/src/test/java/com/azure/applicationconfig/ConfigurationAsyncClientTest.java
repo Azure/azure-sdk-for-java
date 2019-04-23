@@ -22,15 +22,17 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import javax.security.auth.login.Configuration;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -582,6 +584,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
         final String key2 = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value(key);
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value(key2);
+        final Set<ConfigurationSetting> toSelect = new HashSet<>(Arrays.asList(setting, setting2));
 
         StepVerifier.create(client.addSetting(setting))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
@@ -591,12 +594,12 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
 
-        StepVerifier.create(client.listSettings(new SettingSelector().keys(key, key2)).collectList())
-                .assertNext(response -> {
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(result, setting)));
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(result, setting2)));
-                })
+        StepVerifier.create(client.listSettings(new SettingSelector().keys(key, key2)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(value, response)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(value, response)))
                 .verifyComplete();
+
+        assertTrue(toSelect.isEmpty());
     }
 
     /**
@@ -610,21 +613,22 @@ public class ConfigurationAsyncClientTest extends TestBase {
         final String label2 = sdkContext.randomResourceName(labelPrefix, 16);
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value(label).label(label);
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value(label2).label(label2);
+        final Set<ConfigurationSetting> toSelect = new HashSet<>(Arrays.asList(setting, setting2));
 
         StepVerifier.create(client.addSetting(setting))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
                 .verifyComplete();
 
-        StepVerifier.create(client.addSetting(setting2).delayElement(Duration.ofSeconds(3)))
+        StepVerifier.create(client.addSetting(setting2))
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
 
-        StepVerifier.create(client.listSettings(new SettingSelector().labels(label, label2)).collectList())
-                .assertNext(response -> {
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(result, setting)));
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(result, setting2)));
-                })
+        StepVerifier.create(client.listSettings(new SettingSelector().labels(label, label2)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(response, value)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(response, value)))
                 .verifyComplete();
+
+        assertTrue(toSelect.isEmpty());
     }
 
     /**
@@ -784,6 +788,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
         final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value(key + "updated");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value(key2);
         final ConfigurationSetting setting2Update = new ConfigurationSetting(setting2).value(key2 + "updated");
+        final Set<ConfigurationSetting> toSelect = new HashSet<>(Arrays.asList(setting, settingUpdate, setting2, setting2Update));
 
         StepVerifier.create(client.addSetting(setting))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
@@ -801,14 +806,14 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .assertNext(response -> assertConfigurationEquals(setting2Update, response))
                 .verifyComplete();
 
-        StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(key, key2)).collectList())
-                .assertNext(response -> {
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting, result)));
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(settingUpdate, result)));
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting2, result)));
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting2Update, result)));
-                })
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(key, key2)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(value, response)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(value, response)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(value, response)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(value, response)))
                 .verifyComplete();
+
+        assertTrue(toSelect.isEmpty());
     }
 
     /**
@@ -823,6 +828,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
         final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value(label + "updated");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value(label2).label(label2);
         final ConfigurationSetting setting2Update = new ConfigurationSetting(setting2).value(label2 + "updated");
+        final Set<ConfigurationSetting> toSelect = new HashSet<>(Arrays.asList(setting, settingUpdate, setting2, setting2Update));
 
         StepVerifier.create(client.addSetting(setting))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
@@ -840,14 +846,14 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .assertNext(response -> assertConfigurationEquals(setting2Update, response))
                 .verifyComplete();
 
-        StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(key).labels(label, label2)).collectList())
-                .assertNext(response -> {
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting, result)));
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(settingUpdate, result)));
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting2, result)));
-                    assertTrue(response.stream().anyMatch(result -> configurationsEqual(setting2Update, result)));
-                })
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(key).labels(label, label2)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(value, response)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(value, response)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(value, response)))
+                .consumeNextWith(response -> toSelect.removeIf(value -> configurationsEqual(value, response)))
                 .verifyComplete();
+
+        assertTrue(toSelect.isEmpty());
     }
     /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
@@ -1002,6 +1008,10 @@ public class ConfigurationAsyncClientTest extends TestBase {
      * @return True if the ConfigurationSettings are value equivalent
      */
     private static void assertConfigurationEquals(ConfigurationSetting expected, ConfigurationSetting actual) {
+        if (expected != null && ConfigurationSetting.NO_LABEL.equals(expected.label())) {
+            actual.label(ConfigurationSetting.NO_LABEL);
+        }
+
         assertTrue(configurationsEqual(expected, actual));
     }
 
