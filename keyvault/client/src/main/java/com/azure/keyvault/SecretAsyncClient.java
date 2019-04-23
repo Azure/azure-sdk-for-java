@@ -377,8 +377,7 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A stream of {@link SecretAttributes} from the next page of results.
      */
     private Flux<SecretAttributes> listSecretsNext(String nextPageLink) {
-        Mono<PagedResponse<SecretAttributes>> result = service.getSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchSecrets);
+        return service.getSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchSecrets);
     }
 
     private Publisher<SecretAttributes> extractAndFetchSecrets(PagedResponse<SecretAttributes> page) {
@@ -397,8 +396,7 @@ public final class SecretAsyncClient extends ServiceClient {
      * @return A stream of {@link SecretAttributes} from the next page of results.
      */
     private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink) {
-        Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchDeletedSecrets);
+        return service.getDeletedSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchDeletedSecrets);
     }
 
     private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(PagedResponse<DeletedSecret> page) {

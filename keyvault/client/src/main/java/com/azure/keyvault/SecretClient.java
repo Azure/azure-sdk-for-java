@@ -89,10 +89,10 @@ public final class SecretClient extends ServiceClient {
     public Response<Secret> setSecret(Secret secret) {
         Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
         SecretRequestParameters parameters = new SecretRequestParameters()
-                                            .value(secret.value())
-                                            .tags(secret.tags())
-                                            .contentType(secret.contentType())
-                                            .secretAttributes(new SecretRequestAttributes(secret));
+            .value(secret.value())
+            .tags(secret.tags())
+            .contentType(secret.contentType())
+            .secretAttributes(new SecretRequestAttributes(secret));
 
         return service.setSecret(vaultEndpoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
     }
