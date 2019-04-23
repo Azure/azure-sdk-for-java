@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class ReceivePumpEventHubTest extends ApiTestBase {
-    static final String cgName = TestContext.getConsumerGroupName();
-    static final String partitionId = "0";
+    private static final String CONSUMER_GROUP_NAME = TestContext.getConsumerGroupName();
+    private static final String PARTITION_ID = "0";
 
     static EventHubClient ehClient;
 
@@ -38,7 +38,7 @@ public class ReceivePumpEventHubTest extends ApiTestBase {
 
     @Before
     public void initializeTest() throws EventHubException {
-        receiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.now()));
+        receiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()));
     }
 
     @Test(expected = TimeoutException.class)
