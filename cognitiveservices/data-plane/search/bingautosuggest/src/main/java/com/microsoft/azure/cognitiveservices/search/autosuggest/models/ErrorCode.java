@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.search.autosuggest.models;
 
-import com.azure.common.implementation.ExpandableStringEnum;
+import com.azure.common.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 

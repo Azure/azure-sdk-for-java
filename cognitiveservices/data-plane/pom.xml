@@ -13,7 +13,7 @@
   </parent>
   <groupId>com.microsoft.azure.cognitiveservices</groupId>
   <artifactId>azure-cognitiveservices-parent</artifactId>
-  <version>1.0.2</version>
+  <version>2.0.0-beta</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Cognitive Services SDK Parent</name>
@@ -91,7 +91,7 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>${slf4j-test.version}</version>
+        <version>${slf4j-api.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -112,6 +112,7 @@
     <module>./search/bingcustomsearch</module>
     <module>./search/bingentitysearch</module>
     <module>./search/bingimagesearch</module>
+    <module>./search/binglocalsearch</module>
     <module>./search/bingnewssearch</module>
     <module>./search/bingvideosearch</module>
     <module>./search/bingvisualsearch</module>

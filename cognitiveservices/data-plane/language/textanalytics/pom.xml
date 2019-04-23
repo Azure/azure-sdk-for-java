@@ -8,11 +8,11 @@
   <parent>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
     <artifactId>azure-cognitiveservices-parent</artifactId>
-    <version>1.0.2</version>
+    <version>2.0.0-beta</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
     <artifactId>azure-cognitiveservices-textanalytics</artifactId>
-    <version>1.0.2-beta</version>
+    <version>2.0.0-beta</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Text Analytics</name>
     <description>This package contains Microsoft Cognitive Service Text Analytics SDK.</description>
@@ -111,4 +111,48 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+
+    <profile>
+      <id>run-shade-plugin</id>
+      <activation>
+        <property><name>runShadePlugin</name></property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>2.4.1</version>
+            <configuration>
+            </configuration>
+            <executions>
+              <execution>
+                <id>shade-plugin</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+                <configuration>
+                  <filters>
+                    <filter>
+                      <artifact>*:*</artifact>
+                      <excludes>
+                        <exclude>META-INF/*.SF</exclude>
+                        <exclude>META-INF/*.DSA</exclude>
+                        <exclude>META-INF/*.RSA</exclude>
+                      </excludes>
+                    </filter>
+                  </filters>
+                  <transformers>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                  </transformers>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

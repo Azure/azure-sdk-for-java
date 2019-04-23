@@ -8,11 +8,11 @@
   <parent>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
     <artifactId>azure-cognitiveservices-parent</artifactId>
-    <version>1.0.2</version>
+    <version>2.0.0-beta</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
     <artifactId>azure-cognitiveservices-videosearch</artifactId>
-    <version>1.0.2</version>
+    <version>2.0.0-beta</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Video Search</name>
     <description>This package contains Microsoft Cognitive Service Video Search SDK.</description>

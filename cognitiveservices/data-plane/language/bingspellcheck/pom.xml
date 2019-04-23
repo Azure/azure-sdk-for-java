@@ -8,10 +8,10 @@
     <parent>
       <groupId>com.microsoft.azure.cognitiveservices</groupId>
       <artifactId>azure-cognitiveservices-parent</artifactId>
-      <version>1.0.2</version>
+      <version>2.0.0-beta</version>
       <relativePath>../../pom.xml</relativePath>
     </parent>
-    <version>1.0.2</version>
+    <version>2.0.0-beta</version>
     <artifactId>azure-cognitiveservices-spellcheck</artifactId>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Spell Check</name>
