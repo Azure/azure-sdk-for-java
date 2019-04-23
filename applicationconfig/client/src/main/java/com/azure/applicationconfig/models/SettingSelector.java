@@ -8,9 +8,6 @@ import com.azure.common.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 /**
  * A set of options for selecting configuration settings from Application Configuration service.
