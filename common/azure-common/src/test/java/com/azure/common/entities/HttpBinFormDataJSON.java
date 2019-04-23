@@ -15,7 +15,7 @@ public class HttpBinFormDataJSON {
     @JsonProperty
     private String url;
     @JsonProperty
-    private Map<String,String> headers;
+    private Map<String, String> headers;
     @JsonProperty
     private Form form;
 
