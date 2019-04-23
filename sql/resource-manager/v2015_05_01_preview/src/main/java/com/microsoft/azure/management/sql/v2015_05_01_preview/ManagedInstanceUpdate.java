@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.sql.v2015_05_01_preview;
 
+import org.joda.time.DateTime;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -22,6 +23,18 @@ public class ManagedInstanceUpdate {
      */
     @JsonProperty(value = "sku")
     private Sku sku;
+
+    /**
+     * Specifies the mode of database creation.
+     *
+     * Default: Regular instance creation.
+     *
+     * Restore: Creates an instance by restoring a set of backups to specific
+     * point in time. RestorePointInTime and SourceManagedInstanceId must be
+     * specified. Possible values include: 'Default', 'PointInTimeRestore'.
+     */
+    @JsonProperty(value = "properties.managedInstanceCreateMode")
+    private ManagedServerCreateMode managedInstanceCreateMode;
 
     /**
      * The fully qualified domain name of the managed instance.
@@ -57,19 +70,23 @@ public class ManagedInstanceUpdate {
     private String state;
 
     /**
-     * The license type. Possible values are 'LicenseIncluded' and 'BasePrice'.
+     * The license type. Possible values are 'LicenseIncluded' (regular price
+     * inclusive of a new SQL license) and 'BasePrice' (discounted AHB price
+     * for bringing your own SQL licenses). Possible values include:
+     * 'LicenseIncluded', 'BasePrice'.
      */
     @JsonProperty(value = "properties.licenseType")
-    private String licenseType;
+    private ManagedInstanceLicenseType licenseType;
 
     /**
-     * The number of VCores.
+     * The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
      */
     @JsonProperty(value = "properties.vCores")
     private Integer vCores;
 
     /**
-     * The maximum storage size in GB.
+     * Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments
+     * of 32 GB allowed only.
      */
     @JsonProperty(value = "properties.storageSizeInGB")
     private Integer storageSizeInGB;
@@ -100,11 +117,24 @@ public class ManagedInstanceUpdate {
     private Boolean publicDataEndpointEnabled;
 
     /**
-     * Connection type used for connecting to the instance. Possible values
-     * include: 'Proxy', 'Redirect', 'Default'.
+     * The resource identifier of the source managed instance associated with
+     * create operation of this instance.
+     */
+    @JsonProperty(value = "properties.sourceManagedInstanceId")
+    private String sourceManagedInstanceId;
+
+    /**
+     * Specifies the point in time (ISO8601 format) of the source database that
+     * will be restored to create the new database.
+     */
+    @JsonProperty(value = "properties.restorePointInTime")
+    private DateTime restorePointInTime;
+
+    /**
+     * Proxy override of the managed instance.
      */
     @JsonProperty(value = "properties.proxyOverride")
-    private ManagedInstanceProxyOverride proxyOverride;
+    private String proxyOverride;
 
     /**
      * Id of the timezone. Allowed values are timezones supported by Windows.
@@ -121,6 +151,12 @@ public class ManagedInstanceUpdate {
      */
     @JsonProperty(value = "properties.timezoneId")
     private String timezoneId;
+
+    /**
+     * The Id of the instance pool this managed server belongs to.
+     */
+    @JsonProperty(value = "properties.instancePoolId")
+    private String instancePoolId;
 
     /**
      * Resource tags.
@@ -145,6 +181,30 @@ public class ManagedInstanceUpdate {
      */
     public ManagedInstanceUpdate withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get specifies the mode of database creation.
+     Default: Regular instance creation.
+     Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. Possible values include: 'Default', 'PointInTimeRestore'.
+     *
+     * @return the managedInstanceCreateMode value
+     */
+    public ManagedServerCreateMode managedInstanceCreateMode() {
+        return this.managedInstanceCreateMode;
+    }
+
+    /**
+     * Set specifies the mode of database creation.
+     Default: Regular instance creation.
+     Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. Possible values include: 'Default', 'PointInTimeRestore'.
+     *
+     * @param managedInstanceCreateMode the managedInstanceCreateMode value to set
+     * @return the ManagedInstanceUpdate object itself.
+     */
+    public ManagedInstanceUpdate withManagedInstanceCreateMode(ManagedServerCreateMode managedInstanceCreateMode) {
+        this.managedInstanceCreateMode = managedInstanceCreateMode;
         return this;
     }
 
@@ -227,27 +287,27 @@ public class ManagedInstanceUpdate {
     }
 
     /**
-     * Get the license type. Possible values are 'LicenseIncluded' and 'BasePrice'.
+     * Get the license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). Possible values include: 'LicenseIncluded', 'BasePrice'.
      *
      * @return the licenseType value
      */
-    public String licenseType() {
+    public ManagedInstanceLicenseType licenseType() {
         return this.licenseType;
     }
 
     /**
-     * Set the license type. Possible values are 'LicenseIncluded' and 'BasePrice'.
+     * Set the license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). Possible values include: 'LicenseIncluded', 'BasePrice'.
      *
      * @param licenseType the licenseType value to set
      * @return the ManagedInstanceUpdate object itself.
      */
-    public ManagedInstanceUpdate withLicenseType(String licenseType) {
+    public ManagedInstanceUpdate withLicenseType(ManagedInstanceLicenseType licenseType) {
         this.licenseType = licenseType;
         return this;
     }
 
     /**
-     * Get the number of VCores.
+     * Get the number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
      *
      * @return the vCores value
      */
@@ -256,7 +316,7 @@ public class ManagedInstanceUpdate {
     }
 
     /**
-     * Set the number of VCores.
+     * Set the number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
      *
      * @param vCores the vCores value to set
      * @return the ManagedInstanceUpdate object itself.
@@ -267,7 +327,7 @@ public class ManagedInstanceUpdate {
     }
 
     /**
-     * Get the maximum storage size in GB.
+     * Get storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only.
      *
      * @return the storageSizeInGB value
      */
@@ -276,7 +336,7 @@ public class ManagedInstanceUpdate {
     }
 
     /**
-     * Set the maximum storage size in GB.
+     * Set storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only.
      *
      * @param storageSizeInGB the storageSizeInGB value to set
      * @return the ManagedInstanceUpdate object itself.
@@ -356,21 +416,61 @@ public class ManagedInstanceUpdate {
     }
 
     /**
-     * Get connection type used for connecting to the instance. Possible values include: 'Proxy', 'Redirect', 'Default'.
+     * Get the resource identifier of the source managed instance associated with create operation of this instance.
+     *
+     * @return the sourceManagedInstanceId value
+     */
+    public String sourceManagedInstanceId() {
+        return this.sourceManagedInstanceId;
+    }
+
+    /**
+     * Set the resource identifier of the source managed instance associated with create operation of this instance.
+     *
+     * @param sourceManagedInstanceId the sourceManagedInstanceId value to set
+     * @return the ManagedInstanceUpdate object itself.
+     */
+    public ManagedInstanceUpdate withSourceManagedInstanceId(String sourceManagedInstanceId) {
+        this.sourceManagedInstanceId = sourceManagedInstanceId;
+        return this;
+    }
+
+    /**
+     * Get specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.
+     *
+     * @return the restorePointInTime value
+     */
+    public DateTime restorePointInTime() {
+        return this.restorePointInTime;
+    }
+
+    /**
+     * Set specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.
+     *
+     * @param restorePointInTime the restorePointInTime value to set
+     * @return the ManagedInstanceUpdate object itself.
+     */
+    public ManagedInstanceUpdate withRestorePointInTime(DateTime restorePointInTime) {
+        this.restorePointInTime = restorePointInTime;
+        return this;
+    }
+
+    /**
+     * Get proxy override of the managed instance.
      *
      * @return the proxyOverride value
      */
-    public ManagedInstanceProxyOverride proxyOverride() {
+    public String proxyOverride() {
         return this.proxyOverride;
     }
 
     /**
-     * Set connection type used for connecting to the instance. Possible values include: 'Proxy', 'Redirect', 'Default'.
+     * Set proxy override of the managed instance.
      *
      * @param proxyOverride the proxyOverride value to set
      * @return the ManagedInstanceUpdate object itself.
      */
-    public ManagedInstanceUpdate withProxyOverride(ManagedInstanceProxyOverride proxyOverride) {
+    public ManagedInstanceUpdate withProxyOverride(String proxyOverride) {
         this.proxyOverride = proxyOverride;
         return this;
     }
@@ -402,6 +502,26 @@ public class ManagedInstanceUpdate {
      */
     public ManagedInstanceUpdate withTimezoneId(String timezoneId) {
         this.timezoneId = timezoneId;
+        return this;
+    }
+
+    /**
+     * Get the Id of the instance pool this managed server belongs to.
+     *
+     * @return the instancePoolId value
+     */
+    public String instancePoolId() {
+        return this.instancePoolId;
+    }
+
+    /**
+     * Set the Id of the instance pool this managed server belongs to.
+     *
+     * @param instancePoolId the instancePoolId value to set
+     * @return the ManagedInstanceUpdate object itself.
+     */
+    public ManagedInstanceUpdate withInstancePoolId(String instancePoolId) {
+        this.instancePoolId = instancePoolId;
         return this;
     }
 

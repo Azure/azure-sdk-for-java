@@ -18,6 +18,7 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.implementation.SqlManager;
+import org.joda.time.DateTime;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.implementation.ManagedInstanceInner;
 
 /**
@@ -60,14 +61,24 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
     ResourceIdentity identity();
 
     /**
+     * @return the instancePoolId value.
+     */
+    String instancePoolId();
+
+    /**
      * @return the licenseType value.
      */
-    String licenseType();
+    ManagedInstanceLicenseType licenseType();
+
+    /**
+     * @return the managedInstanceCreateMode value.
+     */
+    ManagedServerCreateMode managedInstanceCreateMode();
 
     /**
      * @return the proxyOverride value.
      */
-    ManagedInstanceProxyOverride proxyOverride();
+    String proxyOverride();
 
     /**
      * @return the publicDataEndpointEnabled value.
@@ -75,9 +86,19 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
     Boolean publicDataEndpointEnabled();
 
     /**
+     * @return the restorePointInTime value.
+     */
+    DateTime restorePointInTime();
+
+    /**
      * @return the sku value.
      */
     Sku sku();
+
+    /**
+     * @return the sourceManagedInstanceId value.
+     */
+    String sourceManagedInstanceId();
 
     /**
      * @return the state value.
@@ -177,13 +198,33 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
         }
 
         /**
+         * The stage of the managedinstance update allowing to specify InstancePoolId.
+         */
+        interface WithInstancePoolId {
+            /**
+             * Specifies instancePoolId.
+             */
+            WithCreate withInstancePoolId(String instancePoolId);
+        }
+
+        /**
          * The stage of the managedinstance update allowing to specify LicenseType.
          */
         interface WithLicenseType {
             /**
              * Specifies licenseType.
              */
-            WithCreate withLicenseType(String licenseType);
+            WithCreate withLicenseType(ManagedInstanceLicenseType licenseType);
+        }
+
+        /**
+         * The stage of the managedinstance update allowing to specify ManagedInstanceCreateMode.
+         */
+        interface WithManagedInstanceCreateMode {
+            /**
+             * Specifies managedInstanceCreateMode.
+             */
+            WithCreate withManagedInstanceCreateMode(ManagedServerCreateMode managedInstanceCreateMode);
         }
 
         /**
@@ -193,7 +234,7 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
             /**
              * Specifies proxyOverride.
              */
-            WithCreate withProxyOverride(ManagedInstanceProxyOverride proxyOverride);
+            WithCreate withProxyOverride(String proxyOverride);
         }
 
         /**
@@ -207,6 +248,16 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
         }
 
         /**
+         * The stage of the managedinstance update allowing to specify RestorePointInTime.
+         */
+        interface WithRestorePointInTime {
+            /**
+             * Specifies restorePointInTime.
+             */
+            WithCreate withRestorePointInTime(DateTime restorePointInTime);
+        }
+
+        /**
          * The stage of the managedinstance update allowing to specify Sku.
          */
         interface WithSku {
@@ -214,6 +265,16 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
              * Specifies sku.
              */
             WithCreate withSku(Sku sku);
+        }
+
+        /**
+         * The stage of the managedinstance update allowing to specify SourceManagedInstanceId.
+         */
+        interface WithSourceManagedInstanceId {
+            /**
+             * Specifies sourceManagedInstanceId.
+             */
+            WithCreate withSourceManagedInstanceId(String sourceManagedInstanceId);
         }
 
         /**
@@ -261,13 +322,13 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ManagedInstance>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdministratorLogin, DefinitionStages.WithAdministratorLoginPassword, DefinitionStages.WithCollation, DefinitionStages.WithDnsZonePartner, DefinitionStages.WithIdentity, DefinitionStages.WithLicenseType, DefinitionStages.WithProxyOverride, DefinitionStages.WithPublicDataEndpointEnabled, DefinitionStages.WithSku, DefinitionStages.WithStorageSizeInGB, DefinitionStages.WithSubnetId, DefinitionStages.WithTimezoneId, DefinitionStages.WithVCores {
+        interface WithCreate extends Creatable<ManagedInstance>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdministratorLogin, DefinitionStages.WithAdministratorLoginPassword, DefinitionStages.WithCollation, DefinitionStages.WithDnsZonePartner, DefinitionStages.WithIdentity, DefinitionStages.WithInstancePoolId, DefinitionStages.WithLicenseType, DefinitionStages.WithManagedInstanceCreateMode, DefinitionStages.WithProxyOverride, DefinitionStages.WithPublicDataEndpointEnabled, DefinitionStages.WithRestorePointInTime, DefinitionStages.WithSku, DefinitionStages.WithSourceManagedInstanceId, DefinitionStages.WithStorageSizeInGB, DefinitionStages.WithSubnetId, DefinitionStages.WithTimezoneId, DefinitionStages.WithVCores {
         }
     }
     /**
      * The template for a ManagedInstance update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ManagedInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLogin, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithCollation, UpdateStages.WithDnsZonePartner, UpdateStages.WithLicenseType, UpdateStages.WithProxyOverride, UpdateStages.WithPublicDataEndpointEnabled, UpdateStages.WithSku, UpdateStages.WithStorageSizeInGB, UpdateStages.WithSubnetId, UpdateStages.WithTimezoneId, UpdateStages.WithVCores {
+    interface Update extends Appliable<ManagedInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLogin, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithCollation, UpdateStages.WithDnsZonePartner, UpdateStages.WithInstancePoolId, UpdateStages.WithLicenseType, UpdateStages.WithManagedInstanceCreateMode, UpdateStages.WithProxyOverride, UpdateStages.WithPublicDataEndpointEnabled, UpdateStages.WithRestorePointInTime, UpdateStages.WithSku, UpdateStages.WithSourceManagedInstanceId, UpdateStages.WithStorageSizeInGB, UpdateStages.WithSubnetId, UpdateStages.WithTimezoneId, UpdateStages.WithVCores {
     }
 
     /**
@@ -315,13 +376,33 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
         }
 
         /**
+         * The stage of the managedinstance {0} allowing to specify InstancePoolId.
+         */
+        interface WithInstancePoolId {
+            /**
+             * Specifies instancePoolId.
+             */
+            Update withInstancePoolId(String instancePoolId);
+        }
+
+        /**
          * The stage of the managedinstance {0} allowing to specify LicenseType.
          */
         interface WithLicenseType {
             /**
              * Specifies licenseType.
              */
-            Update withLicenseType(String licenseType);
+            Update withLicenseType(ManagedInstanceLicenseType licenseType);
+        }
+
+        /**
+         * The stage of the managedinstance {0} allowing to specify ManagedInstanceCreateMode.
+         */
+        interface WithManagedInstanceCreateMode {
+            /**
+             * Specifies managedInstanceCreateMode.
+             */
+            Update withManagedInstanceCreateMode(ManagedServerCreateMode managedInstanceCreateMode);
         }
 
         /**
@@ -331,7 +412,7 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
             /**
              * Specifies proxyOverride.
              */
-            Update withProxyOverride(ManagedInstanceProxyOverride proxyOverride);
+            Update withProxyOverride(String proxyOverride);
         }
 
         /**
@@ -345,6 +426,16 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
         }
 
         /**
+         * The stage of the managedinstance {0} allowing to specify RestorePointInTime.
+         */
+        interface WithRestorePointInTime {
+            /**
+             * Specifies restorePointInTime.
+             */
+            Update withRestorePointInTime(DateTime restorePointInTime);
+        }
+
+        /**
          * The stage of the managedinstance {0} allowing to specify Sku.
          */
         interface WithSku {
@@ -352,6 +443,16 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
              * Specifies sku.
              */
             Update withSku(Sku sku);
+        }
+
+        /**
+         * The stage of the managedinstance {0} allowing to specify SourceManagedInstanceId.
+         */
+        interface WithSourceManagedInstanceId {
+            /**
+             * Specifies sourceManagedInstanceId.
+             */
+            Update withSourceManagedInstanceId(String sourceManagedInstanceId);
         }
 
         /**

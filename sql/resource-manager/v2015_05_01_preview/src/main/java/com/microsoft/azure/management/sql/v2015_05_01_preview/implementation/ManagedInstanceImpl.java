@@ -12,9 +12,11 @@ import com.microsoft.azure.arm.resources.models.implementation.GroupableResource
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstance;
 import rx.Observable;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceUpdate;
+import org.joda.time.DateTime;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ResourceIdentity;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.Sku;
-import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceProxyOverride;
+import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedServerCreateMode;
+import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceLicenseType;
 import rx.functions.Func1;
 
 class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, ManagedInstanceInner, ManagedInstanceImpl, SqlManager> implements ManagedInstance, ManagedInstance.Definition, ManagedInstance.Update {
@@ -103,12 +105,22 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
-    public String licenseType() {
+    public String instancePoolId() {
+        return this.inner().instancePoolId();
+    }
+
+    @Override
+    public ManagedInstanceLicenseType licenseType() {
         return this.inner().licenseType();
     }
 
     @Override
-    public ManagedInstanceProxyOverride proxyOverride() {
+    public ManagedServerCreateMode managedInstanceCreateMode() {
+        return this.inner().managedInstanceCreateMode();
+    }
+
+    @Override
+    public String proxyOverride() {
         return this.inner().proxyOverride();
     }
 
@@ -118,8 +130,18 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
+    public DateTime restorePointInTime() {
+        return this.inner().restorePointInTime();
+    }
+
+    @Override
     public Sku sku() {
         return this.inner().sku();
+    }
+
+    @Override
+    public String sourceManagedInstanceId() {
+        return this.inner().sourceManagedInstanceId();
     }
 
     @Override
@@ -194,7 +216,17 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
-    public ManagedInstanceImpl withLicenseType(String licenseType) {
+    public ManagedInstanceImpl withInstancePoolId(String instancePoolId) {
+        if (isInCreateMode()) {
+            this.inner().withInstancePoolId(instancePoolId);
+        } else {
+            this.updateParameter.withInstancePoolId(instancePoolId);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withLicenseType(ManagedInstanceLicenseType licenseType) {
         if (isInCreateMode()) {
             this.inner().withLicenseType(licenseType);
         } else {
@@ -204,7 +236,17 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
-    public ManagedInstanceImpl withProxyOverride(ManagedInstanceProxyOverride proxyOverride) {
+    public ManagedInstanceImpl withManagedInstanceCreateMode(ManagedServerCreateMode managedInstanceCreateMode) {
+        if (isInCreateMode()) {
+            this.inner().withManagedInstanceCreateMode(managedInstanceCreateMode);
+        } else {
+            this.updateParameter.withManagedInstanceCreateMode(managedInstanceCreateMode);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withProxyOverride(String proxyOverride) {
         if (isInCreateMode()) {
             this.inner().withProxyOverride(proxyOverride);
         } else {
@@ -224,11 +266,31 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
+    public ManagedInstanceImpl withRestorePointInTime(DateTime restorePointInTime) {
+        if (isInCreateMode()) {
+            this.inner().withRestorePointInTime(restorePointInTime);
+        } else {
+            this.updateParameter.withRestorePointInTime(restorePointInTime);
+        }
+        return this;
+    }
+
+    @Override
     public ManagedInstanceImpl withSku(Sku sku) {
         if (isInCreateMode()) {
             this.inner().withSku(sku);
         } else {
             this.updateParameter.withSku(sku);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withSourceManagedInstanceId(String sourceManagedInstanceId) {
+        if (isInCreateMode()) {
+            this.inner().withSourceManagedInstanceId(sourceManagedInstanceId);
+        } else {
+            this.updateParameter.withSourceManagedInstanceId(sourceManagedInstanceId);
         }
         return this;
     }
