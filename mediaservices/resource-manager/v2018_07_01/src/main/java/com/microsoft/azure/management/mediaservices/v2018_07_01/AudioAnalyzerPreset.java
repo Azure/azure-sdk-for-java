@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * operations, including speech transcription. Currently, the preset supports
  * processing of content with a single audio track.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.AudioAnalyzerPreset")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.VideoAnalyzerPreset", value = VideoAnalyzerPreset.class)
@@ -26,20 +26,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 public class AudioAnalyzerPreset extends Preset {
     /**
      * The language for the audio payload in the input using the BCP-47 format
-     * of 'language tag-region' (e.g: 'en-US'). The list of supported languages
-     * are, 'en-US', 'en-GB', 'es-ES', 'es-MX', 'fr-FR', 'it-IT', 'ja-JP',
-     * 'pt-BR', 'zh-CN', 'de-DE', 'ar-EG', 'ru-RU', 'hi-IN'. If not specified,
-     * automatic language detection would be employed. This feature currently
-     * supports English, Chinese, French, German, Italian, Japanese, Spanish,
-     * Russian, and Portuguese. The automatic detection works best with audio
-     * recordings with clearly discernable speech. If automatic detection fails
-     * to find the language, transcription would fallback to English.
+     * of 'language tag-region' (e.g: 'en-US').  The list of supported
+     * languages are English ('en-US' and 'en-GB'), Spanish ('es-ES' and
+     * 'es-MX'), French ('fr-FR'), Italian ('it-IT'), Japanese ('ja-JP'),
+     * Portuguese ('pt-BR'), Chinese ('zh-CN'), German ('de-DE'), Arabic
+     * ('ar-EG' and 'ar-SY'), Russian ('ru-RU'), Hindi ('hi-IN'), and Korean
+     * ('ko-KR'). If you know the language of your content, it is recommended
+     * that you specify it. If the language isn't specified or set to null,
+     * automatic language detection will choose the first language detected and
+     * process with the selected language for the duration of the file. This
+     * language detection feature currently supports English, Chinese, French,
+     * German, Italian, Japanese, Spanish, Russian, and Portuguese. It does not
+     * currently support dynamically switching between languages after the
+     * first language is detected. The automatic detection works best with
+     * audio recordings with clearly discernable speech. If automatic detection
+     * fails to find the language, transcription would fallback to 'en-US'.".
      */
     @JsonProperty(value = "audioLanguage")
     private String audioLanguage;
 
     /**
-     * Get the language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). The list of supported languages are, 'en-US', 'en-GB', 'es-ES', 'es-MX', 'fr-FR', 'it-IT', 'ja-JP', 'pt-BR', 'zh-CN', 'de-DE', 'ar-EG', 'ru-RU', 'hi-IN'. If not specified, automatic language detection would be employed. This feature currently supports English, Chinese, French, German, Italian, Japanese, Spanish, Russian, and Portuguese. The automatic detection works best with audio recordings with clearly discernable speech. If automatic detection fails to find the language, transcription would fallback to English.
+     * Get the language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US').  The list of supported languages are English ('en-US' and 'en-GB'), Spanish ('es-ES' and 'es-MX'), French ('fr-FR'), Italian ('it-IT'), Japanese ('ja-JP'), Portuguese ('pt-BR'), Chinese ('zh-CN'), German ('de-DE'), Arabic ('ar-EG' and 'ar-SY'), Russian ('ru-RU'), Hindi ('hi-IN'), and Korean ('ko-KR'). If you know the language of your content, it is recommended that you specify it. If the language isn't specified or set to null, automatic language detection will choose the first language detected and process with the selected language for the duration of the file. This language detection feature currently supports English, Chinese, French, German, Italian, Japanese, Spanish, Russian, and Portuguese. It does not currently support dynamically switching between languages after the first language is detected. The automatic detection works best with audio recordings with clearly discernable speech. If automatic detection fails to find the language, transcription would fallback to 'en-US'.".
      *
      * @return the audioLanguage value
      */
@@ -48,7 +55,7 @@ public class AudioAnalyzerPreset extends Preset {
     }
 
     /**
-     * Set the language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). The list of supported languages are, 'en-US', 'en-GB', 'es-ES', 'es-MX', 'fr-FR', 'it-IT', 'ja-JP', 'pt-BR', 'zh-CN', 'de-DE', 'ar-EG', 'ru-RU', 'hi-IN'. If not specified, automatic language detection would be employed. This feature currently supports English, Chinese, French, German, Italian, Japanese, Spanish, Russian, and Portuguese. The automatic detection works best with audio recordings with clearly discernable speech. If automatic detection fails to find the language, transcription would fallback to English.
+     * Set the language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US').  The list of supported languages are English ('en-US' and 'en-GB'), Spanish ('es-ES' and 'es-MX'), French ('fr-FR'), Italian ('it-IT'), Japanese ('ja-JP'), Portuguese ('pt-BR'), Chinese ('zh-CN'), German ('de-DE'), Arabic ('ar-EG' and 'ar-SY'), Russian ('ru-RU'), Hindi ('hi-IN'), and Korean ('ko-KR'). If you know the language of your content, it is recommended that you specify it. If the language isn't specified or set to null, automatic language detection will choose the first language detected and process with the selected language for the duration of the file. This language detection feature currently supports English, Chinese, French, German, Italian, Japanese, Spanish, Russian, and Portuguese. It does not currently support dynamically switching between languages after the first language is detected. The automatic detection works best with audio recordings with clearly discernable speech. If automatic detection fails to find the language, transcription would fallback to 'en-US'.".
      *
      * @param audioLanguage the audioLanguage value to set
      * @return the AudioAnalyzerPreset object itself.

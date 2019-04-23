@@ -3,6 +3,9 @@
 
 package com.azure.common.http;
 
+import com.azure.common.entities.HttpBinFormDataJSON;
+import com.azure.common.entities.HttpBinFormDataJSON.Form;
+import com.azure.common.entities.HttpBinFormDataJSON.PizzaSize;
 import com.azure.common.entities.HttpBinJSON;
 import com.azure.common.implementation.Base64Url;
 import com.azure.common.implementation.DateTimeRfc1123;
@@ -18,10 +21,12 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
@@ -42,6 +47,7 @@ public class MockHttpClient implements HttpClient {
         try {
             final URL requestUrl = request.url();
             final String requestHost = requestUrl.getHost();
+            final String contentType = request.headers().value("Content-Type");
             if ("httpbin.org".equalsIgnoreCase(requestHost)) {
                 final String requestPath = requestUrl.getPath();
                 final String requestPathLower = requestPath.toLowerCase();
@@ -149,11 +155,22 @@ public class MockHttpClient implements HttpClient {
                     response = new MockHttpResponse(request, 200, json);
                 }
                 else if (requestPathLower.equals("/post")) {
-                    final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url().toString();
-                    json.data = createHttpBinResponseDataForRequest(request);
-                    json.headers = toMap(request.headers());
-                    response = new MockHttpResponse(request, 200, json);
+                    if ("x-www-form-urlencoded".equalsIgnoreCase(contentType)) {
+                        Map<String, String> parsed = bodyToMap(request);
+                        final HttpBinFormDataJSON json = new HttpBinFormDataJSON();
+                        json.form = new Form();
+                        json.form.customerName = parsed.get("custname");
+                        json.form.customerEmail = parsed.get("custemail");
+                        json.form.customerTelephone = parsed.get("custtel");
+                        json.form.pizzaSize = PizzaSize.valueOf(parsed.get("size"));
+                        json.form.toppings = Arrays.asList(parsed.get("toppings").split(","));
+                    } else {
+                        final HttpBinJSON json = new HttpBinJSON();
+                        json.url = request.url().toString();
+                        json.data = createHttpBinResponseDataForRequest(request);
+                        json.headers = toMap(request.headers());
+                        response = new MockHttpResponse(request, 200, json);
+                    }
                 }
                 else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
@@ -227,6 +244,21 @@ public class MockHttpClient implements HttpClient {
         final Map<String, String> result = new HashMap<>();
         for (final HttpHeader header : headers) {
             result.put(header.name(), header.value());
+        }
+        return result;
+    }
+
+    private static Map<String, String> bodyToMap(HttpRequest request) {
+        final Map<String, String> result = new HashMap<>();
+        String body = bodyToString(request);
+        for (String keyValPair : body.split("&")) {
+            String[] parts = keyValPair.split("=");
+            assert parts.length == 2;
+            if (result.containsKey(parts[0])) {
+                result.put(parts[0], result.get(parts[0]) + "," + parts[1]);
+            } else {
+                result.put(parts[0], parts[1]);
+            }
         }
         return result;
     }
