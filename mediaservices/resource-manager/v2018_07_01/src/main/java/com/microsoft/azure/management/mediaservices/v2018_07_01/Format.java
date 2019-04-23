@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Base class for output.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("Format")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.ImageFormat", value = ImageFormat.class),
@@ -33,7 +33,7 @@ public class Format {
      * type of the audio/video codec. Any unsubstituted macros will be
      * collapsed and removed from the filename.
      */
-    @JsonProperty(value = "filenamePattern")
+    @JsonProperty(value = "filenamePattern", required = true)
     private String filenamePattern;
 
     /**

@@ -104,6 +104,11 @@ class StreamingLocatorImpl extends CreatableUpdatableImpl<StreamingLocator, Stre
     }
 
     @Override
+    public List<String> filters() {
+        return this.inner().filters();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -173,6 +178,12 @@ class StreamingLocatorImpl extends CreatableUpdatableImpl<StreamingLocator, Stre
     @Override
     public StreamingLocatorImpl withEndTime(DateTime endTime) {
         this.inner().withEndTime(endTime);
+        return this;
+    }
+
+    @Override
+    public StreamingLocatorImpl withFilters(List<String> filters) {
+        this.inner().withFilters(filters);
         return this;
     }
 

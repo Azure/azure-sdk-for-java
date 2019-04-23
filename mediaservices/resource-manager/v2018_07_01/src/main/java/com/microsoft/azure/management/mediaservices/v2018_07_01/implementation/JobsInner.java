@@ -65,7 +65,7 @@ public class JobsInner {
     interface JobsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mediaservices.v2018_07_01.Jobs list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("transformName") String transformName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("transformName") String transformName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Query("$orderby") String orderby, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mediaservices.v2018_07_01.Jobs get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}")
@@ -209,9 +209,8 @@ public class JobsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        final Integer top = null;
-        final Integer skip = null;
-        return service.list(this.client.subscriptionId(), resourceGroupName, accountName, transformName, this.client.apiVersion(), filter, top, skip, this.client.acceptLanguage(), this.client.userAgent())
+        final String orderby = null;
+        return service.list(this.client.subscriptionId(), resourceGroupName, accountName, transformName, this.client.apiVersion(), filter, orderby, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<JobInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<JobInner>>> call(Response<ResponseBody> response) {
@@ -233,15 +232,14 @@ public class JobsInner {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param filter Restricts the set of items returned.
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param skip Specifies a non-negative integer n that excludes the first n items of the queried collection from the result. The service returns items starting at position n+1.
+     * @param orderby Specifies the the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ApiErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;JobInner&gt; object if successful.
      */
-    public PagedList<JobInner> list(final String resourceGroupName, final String accountName, final String transformName, final String filter, final Integer top, final Integer skip) {
-        ServiceResponse<Page<JobInner>> response = listSinglePageAsync(resourceGroupName, accountName, transformName, filter, top, skip).toBlocking().single();
+    public PagedList<JobInner> list(final String resourceGroupName, final String accountName, final String transformName, final String filter, final String orderby) {
+        ServiceResponse<Page<JobInner>> response = listSinglePageAsync(resourceGroupName, accountName, transformName, filter, orderby).toBlocking().single();
         return new PagedList<JobInner>(response.body()) {
             @Override
             public Page<JobInner> nextPage(String nextPageLink) {
@@ -258,15 +256,14 @@ public class JobsInner {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param filter Restricts the set of items returned.
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param skip Specifies a non-negative integer n that excludes the first n items of the queried collection from the result. The service returns items starting at position n+1.
+     * @param orderby Specifies the the key by which the result collection should be ordered.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<JobInner>> listAsync(final String resourceGroupName, final String accountName, final String transformName, final String filter, final Integer top, final Integer skip, final ListOperationCallback<JobInner> serviceCallback) {
+    public ServiceFuture<List<JobInner>> listAsync(final String resourceGroupName, final String accountName, final String transformName, final String filter, final String orderby, final ListOperationCallback<JobInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName, accountName, transformName, filter, top, skip),
+            listSinglePageAsync(resourceGroupName, accountName, transformName, filter, orderby),
             new Func1<String, Observable<ServiceResponse<Page<JobInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<JobInner>>> call(String nextPageLink) {
@@ -284,13 +281,12 @@ public class JobsInner {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param filter Restricts the set of items returned.
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param skip Specifies a non-negative integer n that excludes the first n items of the queried collection from the result. The service returns items starting at position n+1.
+     * @param orderby Specifies the the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobInner&gt; object
      */
-    public Observable<Page<JobInner>> listAsync(final String resourceGroupName, final String accountName, final String transformName, final String filter, final Integer top, final Integer skip) {
-        return listWithServiceResponseAsync(resourceGroupName, accountName, transformName, filter, top, skip)
+    public Observable<Page<JobInner>> listAsync(final String resourceGroupName, final String accountName, final String transformName, final String filter, final String orderby) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName, transformName, filter, orderby)
             .map(new Func1<ServiceResponse<Page<JobInner>>, Page<JobInner>>() {
                 @Override
                 public Page<JobInner> call(ServiceResponse<Page<JobInner>> response) {
@@ -307,13 +303,12 @@ public class JobsInner {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param filter Restricts the set of items returned.
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param skip Specifies a non-negative integer n that excludes the first n items of the queried collection from the result. The service returns items starting at position n+1.
+     * @param orderby Specifies the the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;JobInner&gt; object
      */
-    public Observable<ServiceResponse<Page<JobInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String transformName, final String filter, final Integer top, final Integer skip) {
-        return listSinglePageAsync(resourceGroupName, accountName, transformName, filter, top, skip)
+    public Observable<ServiceResponse<Page<JobInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String transformName, final String filter, final String orderby) {
+        return listSinglePageAsync(resourceGroupName, accountName, transformName, filter, orderby)
             .concatMap(new Func1<ServiceResponse<Page<JobInner>>, Observable<ServiceResponse<Page<JobInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<JobInner>>> call(ServiceResponse<Page<JobInner>> page) {
@@ -334,12 +329,11 @@ public class JobsInner {
     ServiceResponse<PageImpl<JobInner>> * @param accountName The Media Services account name.
     ServiceResponse<PageImpl<JobInner>> * @param transformName The Transform name.
     ServiceResponse<PageImpl<JobInner>> * @param filter Restricts the set of items returned.
-    ServiceResponse<PageImpl<JobInner>> * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-    ServiceResponse<PageImpl<JobInner>> * @param skip Specifies a non-negative integer n that excludes the first n items of the queried collection from the result. The service returns items starting at position n+1.
+    ServiceResponse<PageImpl<JobInner>> * @param orderby Specifies the the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;JobInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<JobInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName, final String transformName, final String filter, final Integer top, final Integer skip) {
+    public Observable<ServiceResponse<Page<JobInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName, final String transformName, final String filter, final String orderby) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -355,7 +349,7 @@ public class JobsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), resourceGroupName, accountName, transformName, this.client.apiVersion(), filter, top, skip, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), resourceGroupName, accountName, transformName, this.client.apiVersion(), filter, orderby, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<JobInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<JobInner>>> call(Response<ResponseBody> response) {
@@ -699,7 +693,7 @@ public class JobsInner {
 
     /**
      * Update Job.
-     * Updates a Job.
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -717,7 +711,7 @@ public class JobsInner {
 
     /**
      * Update Job.
-     * Updates a Job.
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -734,7 +728,7 @@ public class JobsInner {
 
     /**
      * Update Job.
-     * Updates a Job.
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -755,7 +749,7 @@ public class JobsInner {
 
     /**
      * Update Job.
-     * Updates a Job.
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

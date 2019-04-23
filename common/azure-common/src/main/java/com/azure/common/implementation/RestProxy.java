@@ -272,7 +272,7 @@ public class RestProxy implements InvocationHandler {
                 .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, null));
     }
 
-    private static Exception instantiateUnexpectedException(UnexpectedException exception,
+    private static Exception instantiateUnexpectedException(UnexpectedExceptionInformation exception,
                                                             HttpResponse httpResponse,
                                                             String responseContent,
                                                             Object responseDecodedContent) {
