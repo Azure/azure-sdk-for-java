@@ -147,17 +147,18 @@ public class MockHttpClient implements HttpClient {
                     if ("x-www-form-urlencoded".equalsIgnoreCase(contentType)) {
                         Map<String, String> parsed = bodyToMap(request);
                         final HttpBinFormDataJSON json = new HttpBinFormDataJSON();
-                        json.form = new Form();
-                        json.form.customerName = parsed.get("custname");
-                        json.form.customerEmail = parsed.get("custemail");
-                        json.form.customerTelephone = parsed.get("custtel");
-                        json.form.pizzaSize = PizzaSize.valueOf(parsed.get("size"));
-                        json.form.toppings = Arrays.asList(parsed.get("toppings").split(","));
+                        Form form = new Form();
+                        form.customerName(parsed.get("custname"));
+                        form.customerEmail(parsed.get("custemail"));
+                        form.customerTelephone(parsed.get("custtel"));
+                        form.pizzaSize(PizzaSize.valueOf(parsed.get("size")));
+                        form.toppings(Arrays.asList(parsed.get("toppings").split(",")));
+                        json.form(form);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
-                        json.url = request.url().toString();
-                        json.data = createHttpBinResponseDataForRequest(request);
-                        json.headers = toMap(request.headers());
+                        json.url(request.url().toString());
+                        json.data(createHttpBinResponseDataForRequest(request));
+                        json.headers(toMap(request.headers()));
                         response = new MockHttpResponse(request, 200, json);
                     }
                 } else if (requestPathLower.equals("/put")) {
