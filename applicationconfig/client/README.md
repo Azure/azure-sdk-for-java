@@ -12,7 +12,6 @@ Use the client library for App Configuration to create and manage application co
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
-- [Apache Maven][maven] 3.0 or above
 - [Azure Subscription][azure_subscription]
 - [App Configuration Store][app_config_store]
 
@@ -56,10 +55,18 @@ Alternatively, get the connection string from the Azure Portal.
 
 #### Create Client
 
-Once you have the value of the connection string you can create the ConfigurationClient:
+Once you have the value of the connection string you can create the configuration client:
 
-```java
+```Java
 ConfigurationClient client = ConfigurationClient.builder()
+        .credentials(new ConfigurationClientCredentials(connectionString))
+        .build();
+```
+
+or
+
+```Java
+ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
         .credentials(new ConfigurationClientCredentials(connectionString))
         .build();
 ```
@@ -68,28 +75,36 @@ ConfigurationClient client = ConfigurationClient.builder()
 
 ### Configuration Setting
 
-Is the fundamental resource within a Configuration Store. In its simplest form it is a key and a value. However, there are additional properties such as the modifiable content type and tags fields that allow the value to be interpreted or associated in different ways.
+A configuration setting is the fundamental resource within a Configuration Store. In its simplest form it is a key and a value. However, there are additional properties such as the modifiable content type and tags fields that allow the value to be interpreted or associated in different ways.
 
 The Label property of a Configuration Setting provides a way to separate Configuration Settings into different dimensions. These dimensions are user defined and can take any form. Some common examples of dimensions to use for a label include regions, semantic versions, or environments. Many applications have a required set of configuration keys that have varying values as the application exists across different dimensions. For example, MaxRequests may be 100 in "NorthAmerica", and 200 in "WestEurope". By creating a Configuration Setting named MaxRequests with a label of "NorthAmerica" and another, only with a different value, in the "WestEurope" label, a solution can be achieved that allows the application to seamlessly retrieve Configuration Settings as it runs in these two dimensions.
 
-Properties of a Configuration Setting:
+### Synchronous and Asynchronous Clients
+
+A client is used to interact with the service, there are two forms of the client which are synchronous and asynchronous.
+
+Benefit of using a synchronous client is that requests to the service are guaranteed to complete before execution continues, the downside is that a long running request blocks.
 
 ```Java
-String key;
+ConfigurationClient client = ConfigurationClient.builder()
+        .credentials(new ConfigurationClientCredentials(connectionString))
+        .build();
+        
+ConfigurationSetting setting = client.setSetting("some_key", "some_value");
+System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+```
 
-String label;
+Benefit of using an asynchronous client is that execution continues once the request is sent and that an observer or subscriber is triggered once the service responds, the downside is that there is no gaurantee in completion order.
 
-String value;
-
-String contentType;
-
-String etag;
-
-OffsetDateTime lastModified;
-
-boolean locked;
-
-Map<String, String> tags;
+```Java
+ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
+        .credentials(new ConfigurationClientCredentials(connectionString))
+        .build();
+        
+client.setSetting("some_key", "some_value").subscribe(response -> {
+    ConfigurationSetting setting = response.value();
+    System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+});
 ```
 
 ## Examples
@@ -149,7 +164,7 @@ ConfigurationSetting setting = client.deleteSetting("some_key");
 
 ### General
 
-When you interact with App Configuration using the .NET SDK, errors returned by the service correspond to the same HTTP status codes returned for [REST API][azconfig_rest] requests.
+When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][azconfig_rest] requests.
 
 For example, if you try to retrieve a Configuration Setting that doesn't exist in your Configuration Store, a `404` error is returned, indicating `Not Found`.
 
