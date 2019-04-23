@@ -24,8 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TransportTypeTest extends ApiTestBase {
-
-    public volatile boolean isProxySelectorInvoked = false;
+    private volatile boolean isProxySelectorInvoked = false;
 
     @Test
     public void transportTypeAmqpCreatesConnectionWithPort5671() throws Exception {
@@ -89,7 +88,8 @@ public class TransportTypeTest extends ApiTestBase {
     public void transportTypeAmqpWebSocketsWithProxyCreatesConnectionWithCorrectPorts() throws Exception {
         int proxyPort = 8899;
         ProxyServer proxyServer = ProxyServer.create("localhost", proxyPort);
-        proxyServer.start(throwable -> {});
+        proxyServer.start(throwable -> {
+        });
 
         ProxySelector defaultProxySelector = ProxySelector.getDefault();
         this.isProxySelectorInvoked = false;
