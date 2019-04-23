@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
@@ -142,18 +143,18 @@ public class SecretAttributes {
     }
 
     /**
-     * Set the notBefore value.
+     * Set the {@link LocalDateTime notBefore} time value. The time gets converted to UTC time.
      *
-     * @param notBefore the notBefore value to set
-     * @return the Attributes object itself.
+     * @param notBefore the notBefore time value to set
+     * @return the SecretAttributes object itself.
      */
-    public SecretAttributes notBefore(OffsetDateTime notBefore) {
-        this.notBefore = OffsetDateTime.ofInstant(notBefore.toInstant(), ZoneOffset.UTC);
+    public SecretAttributes notBefore(LocalDateTime notBefore) {
+        this.notBefore = OffsetDateTime.of(notBefore, ZoneOffset.UTC);
         return this;
     }
 
     /**
-     * Get the expires value.
+     * Get the Secret Expiry time in UTC.
      *
      * @return the expires value
      */
@@ -165,48 +166,48 @@ public class SecretAttributes {
     }
 
     /**
-     * Set the expires value.
+     * Set the {@link LocalDateTime expiry} time for the Secret. The time gets converted to UTC time.
      *
-     * @param expires the expires value to set
-     * @return the Attributes object itself.
+     * @param expires the expiry time to set for the secret.
+     * @return the SecretAttributes object itself.
      */
-    public SecretAttributes expires(OffsetDateTime expires) {
-        this.expires = OffsetDateTime.ofInstant(expires.toInstant(), ZoneOffset.UTC);
+    public SecretAttributes expires(LocalDateTime expires) {
+        this.expires = OffsetDateTime.of(expires, ZoneOffset.UTC);
         return this;
     }
 
     /**
-     * Get the created value.
+     * Get the the UTC time at which secret was created.
      *
-     * @return the created value
+     * @return the created time value.
      */
     public OffsetDateTime created() {
         return created;
     }
 
     /**
-     * Get the updated value.
+     * Get the UTC time at which secret was last updated.
      *
-     * @return the updated value
+     * @return the updated time value.
      */
     public OffsetDateTime updated() {
         return updated;
     }
 
     /**
-     * Get the id value.
+     * Get the secret identifier value.
      *
-     * @return the id value
+     * @return the secret identifier value.
      */
     public String id() {
         return this.id;
     }
 
     /**
-     * Set the id value.
+     * Set the secret identifier value.
      *
-     * @param id the id value to set
-     * @return the Secret object itself.
+     * @param id the secret identifier value to set
+     * @return the SecretAttributes object itself.
      */
     public SecretAttributes id(String id) {
         unpackId(id);
@@ -226,7 +227,7 @@ public class SecretAttributes {
      * Set the contentType value.
      *
      * @param contentType the contentType value to set
-     * @return the Secret object itself.
+     * @return the SecretAttributes object itself.
      */
     public SecretAttributes contentType(String contentType) {
         this.contentType = contentType;
@@ -246,7 +247,7 @@ public class SecretAttributes {
      * Set the tags value.
      *
      * @param tags the tags value to set
-     * @return the Secret object itself.
+     * @return the SecretAttributes object itself.
      */
     public SecretAttributes tags(Map<String, String> tags) {
         this.tags = tags;

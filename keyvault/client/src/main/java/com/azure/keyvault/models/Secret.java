@@ -5,7 +5,7 @@ package com.azure.keyvault.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -60,35 +60,33 @@ public class Secret extends SecretAttributes {
     }
 
     /**
-     * Set the {@link OffsetDateTime notBefore} value.
+     * Set the {@link LocalDateTime notBefore} time value. The time value gets converted to UTC time.
      *
-     * @param notBefore the notBefore value to set
+     * @param notBefore the not before time value to set
      * @return the Secret object itself.
      */
     @Override
-    public Secret notBefore(OffsetDateTime notBefore) {
+    public Secret notBefore(LocalDateTime notBefore) {
         super.notBefore(notBefore);
         return this;
     }
 
     /**
-     * Set the {@link OffsetDateTime expires} value.
+     * Set the {@link LocalDateTime expires} time value. The time value gets converted to UTC time.
      *
      * @param expires the expiry time value to set
      * @return the Secret object itself.
      */
     @Override
-    public Secret expires(OffsetDateTime expires) {
+    public Secret expires(LocalDateTime expires) {
         super.expires(expires);
         return this;
     }
 
     /**
-     * Set the id value.
+     * Set the secret identifier value.
      *
-     *<p> The id value of a {@link Secret secret} follows the following format: http://myvault.azure.net/secrets/{secret-name}/{secret-version}. </p>
-     *
-     * @param id the id value to set
+     * @param id the secret identifier value to set
      * @return the Secret object itself.
      */
     @Override
@@ -98,9 +96,9 @@ public class Secret extends SecretAttributes {
     }
 
     /**
-     * Set the contentType value.
+     * Set the contentType value. It represents the type of the secret's value.
      *
-     * @param contentType the contentType value to set
+     * @param contentType the content type value to set
      * @return the Secret object itself.
      */
     @Override

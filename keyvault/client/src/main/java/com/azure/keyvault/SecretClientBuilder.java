@@ -7,7 +7,6 @@ import com.azure.common.credentials.ServiceClientCredentials;
 import com.azure.common.credentials.TokenCredentials;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
-import com.azure.keyvault.models.Secret;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.RetryPolicy;
@@ -22,35 +21,38 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Configures and builds instance of {@link SecretClient client} to manage {@link Secret secrets} in the specified key vault.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link SecretClient client},
+ * calling {@link SecretClientBuilder#build() build} constructs an instance of the client.
  *
- * <p>Minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build {@link SecretAsyncClient}
- * are {@link String vaultEndpoint} and {@link ServiceClientCredentials credentials}. If a custom {@link HttpPipeline pipeline}
- * is specified as configuration option, then no other configuration option needs to be specified.</p>
- *
+ * <p> The Minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build {@link SecretClient}
+ * are {@link String vaultEndpoint} and {@link ServiceClientCredentials credentials}. </p>
  * <pre>
- *    SecretClient secretClient = SecretClient.builder()
- *                                .vaultEndpoint("https://myvault.vault.azure.net/")
- *                                .credentials(keyVaultCredentials)
- *                                .build()
- *
- *    SecretClient secretClientWithCustomPipeline = SecretClient.builder()
- *                                                  .pipeline(customHttpPipeline)
- *                                                  .build()
+ * SecretClient.builder()
+ *   .vaultEndpoint("https://myvault.vault.azure.net/")
+ *   .credentials(keyVaultCredentials)
+ *   .build();
  * </pre>
  *
- * <p>The {@link HttpLogDetailLevel logdetailLevel}, multiple custom {@link HttpPipeline policies} and custom
- * {@link HttpClient httpClient} be optionally configured in the {@link SecretClientBuilder}.</p>
- *
+ * <p>The {@link HttpLogDetailLevel log detail Level}, multiple custom {@link HttpLoggingPolicy policies} and custom
+ * {@link HttpClient http client} can be optionally configured in the {@link SecretClientBuilder}.</p>
  * <pre>
- *    SecretClient secretClient = SecretClient.builder()
- *                                .vaultEndpoint("https://myvault.vault.azure.net/")
- *                                .credentials(keyVaultCredentials)
- *                                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
- *                                .addPolicy(customPolicyOne)
- *                                .addPolicy(customPolicyTwo)
- *                                .httpClient(client)
- *                                .build()
+ * SecretClient.builder()
+ *   .vaultEndpoint("https://myvault.vault.azure.net/")
+ *   .credentials(keyVaultCredentials)
+ *   .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+ *   .addPolicy(customPolicyOne)
+ *   .addPolicy(customPolicyTwo)
+ *   .httpClient(client)
+ *   .build();
+ * </pre>
+ *
+ * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String vaultEndpoint}
+ * can be specified. It provides finer control over the construction of {@link SecretClient client}</p>
+ * <pre>
+ * SecretClient.builder()
+ *   .pipeline(new HttpPipeline(customPoliciesList))
+ *   .vaultEndpoint("https://myvault.vault.azure.net/")
+ *   .build()
  * </pre>
  */
 public final class SecretClientBuilder {
@@ -76,7 +78,9 @@ public final class SecretClientBuilder {
      *
      * <p>If {@link SecretClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link SecretClientBuilder#vaultEndpoint(String) serviceEndpoint} are used to create the
-     * {@link SecretClientBuilder client}. All other builder settings are ignored.</p>
+     * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
+     * then {@link SecretClientBuilder#credentials(ServiceClientCredentials) key vault credentials and
+     * {@link SecretClientBuilder#vaultEndpoint(String)} key vault endpoint are required to build the {@link SecretClient client}.}</p>
      *
      * @return A SecretClient with the options set from the builder.
      * @throws IllegalStateException If {@link SecretClientBuilder#credentials(ServiceClientCredentials)} or
@@ -84,16 +88,16 @@ public final class SecretClientBuilder {
      */
     public SecretClient build() {
 
+        if (vaultEndpoint == null) {
+            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+        }
+
         if (pipeline != null) {
             return new SecretClient(vaultEndpoint, pipeline);
         }
 
         if (credentials == null) {
             throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIALS_REQUIRED));
-        }
-
-        if (vaultEndpoint == null) {
-            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -116,10 +120,14 @@ public final class SecretClientBuilder {
      *
      * @param vaultEndPoint The vault endpoint url is used as destination on Azure to send requests to.
      * @return The updated Builder object.
-     * @throws MalformedURLException if {@code vaultEndpoint} is null or it cannot be parsed into a valid URL.
+     * @throws IllegalStateException if {@code vaultEndpoint} is null or it cannot be parsed into a valid URL.
      */
-    public SecretClientBuilder vaultEndpoint(String vaultEndPoint) throws MalformedURLException {
-        this.vaultEndpoint = new URL(vaultEndPoint);
+    public SecretClientBuilder vaultEndpoint(String vaultEndPoint) {
+        try {
+            this.vaultEndpoint = new URL(vaultEndPoint);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.");
+        }
         return this;
     }
 

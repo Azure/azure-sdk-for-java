@@ -14,7 +14,6 @@ import com.azure.keyvault.implementation.SecretAttributesPage;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretAttributes;
-import org.apache.commons.lang3.Validate;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,23 +23,16 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * The {@link SecretClient secretAsyncClient} provides synchronous methods to manage to {@link Secret secrets} in the Azure Key Vault.
+ * The secretClient provides synchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
+ * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Secret secrets}. The client
+ * also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key Vault.
  *
- * <p>A {@link Secret secret} is a resource managed by Key Vault. It is represented by non-null fields secret.name and secret.value.
- * The secret.expires, secret.contentType and secret.notBefore values in the {@link Secret secret} are optional. The secret.enabled
- * field is set to true by default in Azure Key Vault, if not specified. The secret.id, secret.created, secret.updated, secret.recoveryLevel
- * fields are auto assigned when the secret is created in the key vault.</p>
- *
- * <p>Samples to construct {@link SecretClient}</p>
+ * <p><strong>Samples to construct the client</strong></p>
  * <pre>
  *    SecretClient secretClient = SecretClient.builder()
  *                                .vaultEndpoint("https://myvault.vault.azure.net/")
  *                                .credentials(keyVaultCredentials)
  *                                .build()
- *
- *    SecretClient secretClientWithCustomPipeline = SecretClient.builder()
- *                                                  .pipeline(customHttpPipeline)
- *                                                  .build()
  * </pre>
  */
 public final class SecretClient extends ServiceClient {
@@ -52,8 +44,7 @@ public final class SecretClient extends ServiceClient {
     private final SecretService service;
 
     /**
-     * Creates a SecretClient that uses {@code pipeline} to
-     * service requests
+     * Creates a SecretClient that uses {@code pipeline} to service requests
      *
      * @param vaultEndpoint URL for the Azure KeyVault service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
@@ -75,19 +66,20 @@ public final class SecretClient extends ServiceClient {
 
     /**
      * The set operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault creates a new version of that secret.
-     * This operation requires the secrets/set permission.
+     * This operation requires the {@code secrets/set} permission.
      *
-     * <p>The {@code secret} is required along with its non-null fields secret.name and secret.value. The secret.expires,
+     * <p>The {@code secret} is required and its fields secret.name and secret.value fields cannot be null. The secret.expires,
      * secret.contentType and secret.notBefore values in {@code secret} are optional. If not specified, no values are set
      * for the fields. The secret.enabled field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>Code Samples</p>
+     * <p><strong>Code Samples</strong></p>
      * <pre>
-     *   Secret keySecret = new Secret("secretName", "secretValue")
-     *             .notBefore(OffsetDateTime.of(LocalDateTime.parse("2000-01-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),ZoneOffset.UTC))
-     *             .expires(OffsetDateTime.of(LocalDateTime.parse("2050-01-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),ZoneOffset.UTC));
+     * Secret secret = new Secret("secretName", "secretValue")
+     *   .notBefore(LocalDateTime.of(2000,12,24,12,30))
+     *   .expires(LocalDateTime.of(2050,1,1,0,0));
      *
-     *   Secret retKeySecret = secretClient.setSecret(keySecret).value();
+     * Secret retSecret = secretClient.(keySecret).value();
+     * System.out.println(String.format("Secret is created with name %s and value %s",retSecret.name(), retSecret.value()));
      * </pre>
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
@@ -96,9 +88,6 @@ public final class SecretClient extends ServiceClient {
      */
     public Response<Secret> setSecret(Secret secret) {
         Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
-        Objects.requireNonNull(secret.name(), "The Secret name cannot be null.");
-        Objects.requireNonNull(secret.value(), "The Secret value cannot be null.");
-
         SecretRequestParameters parameters = new SecretRequestParameters()
                                             .value(secret.value())
                                             .tags(secret.tags())
@@ -110,22 +99,19 @@ public final class SecretClient extends ServiceClient {
 
     /**
      * The set operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault creates a new version of that secret.
-     * This operation requires the secrets/set permission.
+     * This operation requires the {@code secrets/set} permission.
      *
-     * <p>Code Samples</p>
+     * <p><strong>Code Samples</strong></p>
      * <pre>
-     *   Secret secret = secretClient.setSecret("secretName", "secretValue").value();
+     * Secret secret = secretClient.setSecret("secretName", "secretValue").value();
+     * System.out.println(String.format("Secret is created with name %s and value %s",secret.name(), secret.value()));
      * </pre>
      *
      * @param name The name of the secret. It is required and cannot be null.
      * @param value The value of the secret. It is required and cannot be null.
-     * @throws NullPointerException if {@code name} or {@code value} parameter is {@code null}.
      * @return A {@link Response} whose {@link Response#value()} contains the created {@link Secret}.
      */
     public Response<Secret> setSecret(String name, String value) {
-        Objects.requireNonNull(name, "The Secret name cannot be null.");
-        Objects.requireNonNull(value, "The Secret value cannot be null.");
-
         SecretRequestParameters parameters = new SecretRequestParameters()
                                             .value(value);
         return service.setSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
@@ -133,61 +119,79 @@ public final class SecretClient extends ServiceClient {
 
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
-     * This operation requires the secrets/get permission.
+     * This operation requires the {@code secrets/get} permission.
      *
-     * <p>Code Samples</p>
+     * <p><strong>Code Samples</strong></p>
      * <pre>
-     *    Secret secret = secretClient.getSecret("secretName").value();
-     *    String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
-     *    Secret secretWithVersion = secretClient.getSecret("secretName",secretVersion).value();
+     * String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
+     * Secret secretWithVersion = secretClient.getSecret("secretName",secretVersion).value();
+     * System.out.println(String.format("Secret is returned with name %s and value %s",secretWithVersion.name(), secretWithVersion.value()));
      * </pre>
      *
      * @param name The name of the secret, cannot be null.
      * @param version The version of the secret to retrieve. If this is an empty String or null, this call is equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
-     * @throws NullPointerException if {@code name} or {@code version} parameter is {@code null}.
      * @return A {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
      * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} and {@code version} doesn't exist in the key vault.
      */
     public Response<Secret> getSecret(String name, String version) {
-        Objects.requireNonNull(name, "The Secret name cannot be null.");
-        if (version == null) {
-            return service.getSecret(vaultEndpoint, name, "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
-        } else {
-            return service.getSecret(vaultEndpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
-        }
+        return version == null ? service.getSecret(vaultEndpoint, name, "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block()
+            : service.getSecret(vaultEndpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+
+    }
+
+    /**
+     * Get the secret which represents {@link SecretAttributes secretAttributes} from the key vault. Returns the latest version of the secret,
+     * if {@code secretAttributes.version} is not set. The get operation is applicable to any secret stored in Azure Key Vault.
+     * This operation requires the {@code secrets/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <pre>
+     * //Pass the secretAttributes of the secret to fetch.
+     * Secret secret = secretClient.getSecret(secretAttributes).value();
+     * System.out.println(String.format("Secret is returned with name %s and value %s",secret.name(), secret.value()));
+     * </pre>
+     *
+     * @param secretAttributes the {@link SecretAttributes} attributes of the secret being requested.
+     * @return A {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
+     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code secretAttributes.name} and {@code secretAttributes.version} doesn't exist in the key vault.
+     */
+    public Response<Secret> getSecret(SecretAttributes secretAttributes) {
+        Objects.requireNonNull(secretAttributes, "The Secret attributes parameter cannot be null.");
+        return secretAttributes.version() == null ? service.getSecret(vaultEndpoint, secretAttributes.name(), "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block()
+            : service.getSecret(vaultEndpoint, secretAttributes.name(), secretAttributes.version(), API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
     }
 
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
-     * This operation requires the secrets/get permission.
+     * This operation requires the {@code secrets/get} permission.
      *
-     * <p>Code Samples</p>
+     * <p><strong>Code Samples</strong></p>
      * <pre>
-     *    Secret secretWithVersion = secretClient.getSecret("user1pass","6A385B124DEF4096AF1361A85B16C204").value();
+     * Secret secret = secretClient.getSecret("secretName").value();
+     * System.out.println(String.format("Secret is returned with name %s and value %s",secret.name(), secret.value()));
      * </pre>
      *
      * @param name The name of the secret.
-     * @throws NullPointerException if {@code name} parameter is {@code null}.
      * @return A {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
      * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
     public Response<Secret> getSecret(String name) {
-        Objects.requireNonNull(name, "The Secret name cannot be null.");
         return getSecret(name, "");
     }
 
     /**
      * Updates the attributes associated with a specified secret in the key vault. The update operation changes specified
      * attributes of an existing stored secret and attributes that are not specified in the request are left unchanged.
-     * The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
+     * The value of a secret itself cannot be changed. This operation requires the {@code secrets/set} permission.
      *
-     * <p>The {@code secretAttributes} is required along with its non-null fields secretAttributes.name and secretAttributes.version.</p>
+     * <p>The {@code secretAttributes} is required and its fields secretAttributes.name and secretAttributes.version cannot be null.</p>
      *
-     * <p>Code Samples</p>
+     * <p><strong>Code Samples</strong></p>
      * <pre>
-     *   Secret secret = secretClient.getSecret("secretName").value();
-     *   secret.notBefore(OffsetDateTime.of(LocalDateTime.parse("2020-01-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),ZoneOffset.UTC));
-     *   SecretAttributes updatedSecretAttributes = secretClient.updateSecretAttributes(secret).value();
+     * Secret secret = secretClient.getSecret("secretName").value();
+     * secret.notBefore(LocalDateTime.of(2030,01,01,12,00));
+     * SecretAttributes updatedSecretAttributes = secretClient.updateSecretAttributes(secret).value();
+     * Secret updatedSecret = secretClient.getSecret(updatedSecretAttributes.name()).value();
      * </pre>
      *
      * @param secretAttributes the {@link SecretAttributes} object with updated properties.
@@ -197,9 +201,6 @@ public final class SecretClient extends ServiceClient {
      */
     public Response<SecretAttributes> updateSecretAttributes(SecretAttributes secretAttributes) {
         Objects.requireNonNull(secretAttributes, "The secretAttributes input parameter cannot be null.");
-        Objects.requireNonNull(secretAttributes.name(), "The Secret name cannot be null.");
-        Objects.requireNonNull(secretAttributes.version(), "The Secret version cannot be null.");
-
         SecretRequestParameters parameters = new SecretRequestParameters()
                 .tags(secretAttributes.tags())
                 .contentType(secretAttributes.contentType())
@@ -210,81 +211,89 @@ public final class SecretClient extends ServiceClient {
 
     /**
      * Deletes a secret from the key vault. The delete operation applies to any secret stored in Azure Key Vault but
-     * it cannot be applied to an individual version of a secret. This operation requires the secrets/delete permission.
+     * it cannot be applied to an individual version of a secret. This operation requires the {@code secrets/delete} permission.
      *
-     * <p>Code Samples</p>
+     * <p><strong>Code Samples</strong></p>
      * <pre>
-     *     DeletedSecret deletedSecret =  secretClient.deleteSecret("secretName").value();
+     * DeletedSecret deletedSecret = secretClient.deleteSecret("secretName").value();
      * </pre>
      *
      * @param name The name of the secret to be deleted.
-     * @throws NullPointerException if {@code name} is {@code null}.
      * @return A {@link Response} whose {@link Response#value()} contains the deleted {@link DeletedSecret}.
      * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
     public Response<DeletedSecret> deleteSecret(String name) {
-        Objects.requireNonNull(name, "The Secret name cannot be null.");
         return service.deleteSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
     }
 
     /**
      * The get deleted secret operation returns the secrets that have been deleted for a vault enabled for soft-delete.
-     * This operation requires the secrets/list permission.
+     * This operation requires the {@code secrets/list} permission.
      *
-     * <p>Code Samples</p>
+     * <p><strong>Code Samples</strong></p>
      * <pre>
-     *   DeletedSecret deletedSecret = secretClient.getDeletedSecret("secretName").value();
+     * //Assuming secret is deleted on a soft-delete enabled key vault.
+     * DeletedSecret deletedSecret = secretClient.getDeletedSecret("secretName").value();
      * </pre>
      *
      * @param name The name of the deleted secret.
-     * @throws NullPointerException if {@code name} is {@code null}.
      * @return A {@link Response} whose {@link Response#value()} contains the deleted {@link DeletedSecret}.
      * @throws com.azure.common.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
      */
     public Response<DeletedSecret> getDeletedSecret(String name) {
-        Objects.requireNonNull(name, "The Secret name cannot be null.");
         return service.getDeletedSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
     }
 
     /**
      * The purge deleted secret operation removes the secret permanently, without the possibility of recovery.
-     * This operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge permission.
+     * This operation can only be enabled on a soft-delete enabled vault. This operation requires the {@code secrets/purge} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <pre>
+     * //Assuming secret is deleted on a soft-delete enabled key vault.
+     * secretClient.purgeDeletedSecret("deletedSecretName");
+     * </pre>
      *
      * @param name The name of the secret.
-     * @throws NullPointerException if {@code name} is {@code null}.
      * @return A {@link VoidResponse}.
      * @throws com.azure.common.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
      */
     public VoidResponse purgeDeletedSecret(String name) {
-        Objects.requireNonNull(name, "The Secret name cannot be null.");
         return service.purgeDeletedSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
     }
 
     /**
      * Recovers the deleted secret in the key vault to its latest version and can only be performed on a soft-delete enabled vault.
-     * This operation requires the secrets/recover permission.
+     * This operation requires the {@code secrets/recover} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <pre>
+     * //Assuming secret is deleted on a soft-delete enabled key vault.
+     * Secret recoveredSecret =  secretClient.recoverDeletedSecret("deletedSecretName").value();
+     * </pre>
      *
      * @param name The name of the deleted secret to be recovered.
-     * @throws NullPointerException if {@code name} is {@code null}.
      * @return A {@link Response} whose {@link Response#value()} contains the recovered {@link Secret}.
      * @throws com.azure.common.exception.ServiceRequestException when a deleted secret with {@code name} doesn't exist in the key vault.
      */
     public Response<Secret> recoverDeletedSecret(String name) {
-        Objects.requireNonNull(name, "The Secret name cannot be null.");
         return service.recoverDeletedSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
     }
 
     /**
      * Requests a backup of the specified secret be downloaded to the client. All versions of the secret will be downloaded.
-     * This operation requires the secrets/backup permission.
+     * This operation requires the {@code secrets/backup} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <pre>
+     * byte[] secretBackup = secretClient.backupSecret("secretName").value();
+     * </pre>
      *
      * @param name The name of the secret.
-     * @throws NullPointerException if {@code name} is {@code null}.
      * @return A {@link Response} whose {@link Response#value()} contains the backed up secret blob.
      * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code name} doesn't exist in the key vault.
      */
     public Response<byte[]> backupSecret(String name) {
-        Objects.requireNonNull(name, "The Secret name cannot be null.");
         return service.backupSecret(vaultEndpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
                 .flatMap(base64URLResponse ->  Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
                             base64URLResponse.statusCode(), base64URLResponse.headers(), base64URLResponse.value().value()))).block();
@@ -292,15 +301,19 @@ public final class SecretClient extends ServiceClient {
 
     /**
      * Restores a backed up secret, and all its versions, to a vault.
-     * This operation requires the secrets/restore permission.
+     * This operation requires the {@code secrets/restore} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <pre>
+     * //Pass the secret backup byte array of the secret to be restored.
+     * Secret restoredSecret = secretClient.restoreSecret(secretBackupByteArray).value();
+     * </pre>
      *
      * @param backup The backup blob associated with the secret.
-     * @throws NullPointerException if {@code SecretBackup} is {@code null}.
      * @return A {@link Response} whose {@link Response#value()} contains the restored {@link Secret}.
      * @throws com.azure.common.exception.ServiceRequestException when the {@code backup} is corrupted.
      */
     public Response<Secret> restoreSecret(byte[] backup) {
-        Objects.requireNonNull(backup, "The Secret backup parameter cannot be null.");
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().secretBackup(backup);
         return service.restoreSecret(vaultEndpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
     }
@@ -308,144 +321,64 @@ public final class SecretClient extends ServiceClient {
     /**
      * List the secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual secret response
      * in the list is represented by {@link SecretAttributes} as only the base secret identifier and its attributes are
-     * provided in the response. The secret values and individual secret versions are not listed in the response. This operation requires the secrets/list permission.
+     * provided in the response. The secret values and individual secret versions are not listed in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values from this information. Loop over the {@link SecretAttributes secretAttributes} and
-     * call {@link SecretClient#getSecret(String secretName)} . This will return the {@link Secret} secrets with values included of its latest version.</p>
+     * call {@link SecretClient#getSecret(SecretAttributes)} . This will return the {@link Secret} secrets with values included of its latest version.</p>
      * <pre>
-     *   List<SecretAttributes> secretAttributes = secretClient.listSecrets();
-     *   List<Secret> secrets = new ArrayList();
-     *   for (SecretAttributes secretAttr : secretAttributes) {
-     *       secrets.add(secretClient.getSecret(secretAttr.name()).value());
-     *   }
+     * List<Secret> secrets = new ArrayList();
+     * secretClient.listSecrets().stream().map(secretClient::getSecret).forEach(secretResponse -&gt;
+     *   secrets.add(secretResponse.value()));
      * </pre>
      *
      * @return A {@link List} containing {@link SecretAttributes} of all the secrets in the vault. The {@link SecretAttributes} contains all the information about the secret, except its value.
      */
     public List<SecretAttributes> listSecrets() {
-        Mono<PagedResponse<SecretAttributes>> result = service.getSecrets(vaultEndpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchSecrets).collectList().block();
+        return service.getSecrets(vaultEndpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .flatMapMany(this::extractAndFetchSecrets).collectList().block();
     }
 
     /**
      * Lists {@link DeletedSecret secrets} of the key vault. The get deleted secrets operation returns the secrets that
-     * have been deleted for a vault enabled for soft-delete. This operation requires the secrets/list permission.
+     * have been deleted for a vault enabled for soft-delete. This operation requires the {@code secrets/list} permission.
      *
      * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public List<DeletedSecret> listDeletedSecrets() {
-        Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchDeletedSecrets).collectList().block();
+        return service.getDeletedSecrets(vaultEndpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .flatMapMany(this::extractAndFetchDeletedSecrets).collectList().block();
     }
 
     /**
      * List all versions of the specified secret. The individual secret response in the list is represented by {@link SecretAttributes}
      * as only the base secret identifier and its attributes are provided in the response. The secret values are
-     * not provided in the response. This operation requires the secrets/list permission.
+     * not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretAttributes secretAttributes} and
-     * call {@link SecretClient#getSecret(String secretName, String secretVersion)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
+     * call {@link SecretClient#getSecret(SecretAttributes)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
      * <pre>
-     *   List<SecretAttributes> secretAttributes = secretClient.listSecretVersions("secretName");
-     *   List<Secret> secretVersions = new ArrayList();
-     *   for (SecretAttributes secretAttr : secretAttributes) {
-     *       secretVersions.add(secretClient.getSecret(secretAttr.name(), secretAttr.version()).value());
-     *   }
+     * List<Secret> secretVersions = new ArrayList();
+     * secretClient.listSecretVersions("secretName").stream().map(secretClient::getSecret).forEach(secretResponse -&gt;
+     *   secretVersions.add(secretResponse.value()));
      * </pre>
      *
      * @param name The name of the secret.
-     * @throws NullPointerException thrown if name parameter is null.
-     * @throws IllegalArgumentException thrown if name parameter is empty.
      * @return A {@link List} containing {@link SecretAttributes} of all the versions of the specified secret in the vault. List is empty if secret with {@code name} does not exist in key vault
      */
     public List<SecretAttributes> listSecretVersions(String name) {
-        //TODO: replace this with ImplUtils string is empty or null check, once Issue: Azure/azure-sdk-for-java#3373 is completed and merged.
-        Objects.requireNonNull(name, "The Secret name cannot be null.");
-        Validate.isTrue(!name.isEmpty(), "The Secret name cannot be empty");
-        Mono<PagedResponse<SecretAttributes>> result = service.getSecretVersions(vaultEndpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchSecrets).collectList().block();
-    }
-
-    /**
-     * List secrets in the key vault. The list secrets operation is applicable to the entire vault.
-     * The individual secret response in the list is represented by {@link SecretAttributes} as only the base secret identifier
-     * and its attributes are provided in the response. The secret values and individual secret versions are not
-     * provided in the response. This operation requires the secrets/list permission.
-     *
-     * <p>It is possible to get full Secrets with values from this information. Loop over the {@link SecretAttributes secretAttributes} and
-     * call {@link SecretClient#getSecret(String secretName)} . This will return the {@link Secret} secrets with values included of its latest version.</p>
-     * <pre>
-     *   List<SecretAttributes> secretAttributes = secretClient.listSecrets(25);
-     *   List<Secret> secrets = new ArrayList();
-     *   for (SecretAttributes secretAttr : secretAttributes) {
-     *       secrets.add(secretClient.getSecret(secretAttr.name()).value());
-     *   }
-     * </pre>
-     *
-     * @param maxPageResults Maximum number of results to return in a page.
-     * @throws IllegalArgumentException thrown if maxPageResults parameter is 0 or less than 0.
-     * @return A {@link List} containing {@link SecretAttributes} of all the secrets in the key vault.
-     */
-    public List<SecretAttributes> listSecrets(int maxPageResults) {
-        Validate.isTrue(maxPageResults > 0, "The maximum page results parameter needs to be greater than 0.");
-        Mono<PagedResponse<SecretAttributes>> result = service.getSecrets(vaultEndpoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchSecrets).collectList().block();
-    }
-
-    /**
-     * Lists {@link DeletedSecret} secrets of the key vault. The list deleted secrets operation returns the secrets that
-     * have been deleted for a vault enabled for soft-delete. This operation requires the secrets/list permission.
-     *
-     * @param maxPageResults Maximum number of results to return in a page.
-     * @throws IllegalArgumentException thrown if maxPageResults parameter is 0 or less than 0.
-     * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
-     */
-    public List<DeletedSecret> listDeletedSecrets(int maxPageResults) {
-        Validate.isTrue(maxPageResults > 0, "The maximum page results parameter needs to be greater than 0.");
-        Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchDeletedSecrets).collectList().block();
-    }
-
-    /**
-     * List all versions of the specified secret. The individual secret response in the list is represented by {@link SecretAttributes}
-     * as only the base secret identifier and its attributes are provided in the response. The secret values are
-     * not provided in the response. This operations requires the secrets/list permission.
-     *
-     * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretAttributes secretAttributes} and
-     * call {@link SecretClient#getSecret(String secretName, String secretVersion)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
-     * <pre>
-     *   List<SecretAttributes> secretAttributes = secretClient.listSecretVersions("secretName", 25);
-     *   List<Secret> secretVersions = new ArrayList();
-     *   for (SecretAttributes secretAttr : secretAttributes) {
-     *         secretVersions.add(secretClient.getSecret(secretAttr.name(), secretAttr.version()).value());
-     *   }
-     * </pre>
-     *
-     * @param name The name of the secret.
-     * @param maxPageResults Maximum number of results to return in a page.
-     * @throws IllegalArgumentException thrown if {@code name} or {@code maxPageResults} is 0 or less than 0.
-     * @return A {@link List} containing {@link SecretAttributes} of all the versions of the secret in the key vault. List is empty if secret with {@code name} does not exist in key vault
-     */
-    public List<SecretAttributes> listSecretVersions(String name, int maxPageResults) {
-        Objects.requireNonNull(name, "The Secret name cannot be null.");
-        //TODO: replace this with ImplUtils string is empty or null check, once Issue: Azure/azure-sdk-for-java#3373 is completed and merged.
-        Validate.isTrue(!name.isEmpty(), "The Secret name cannot be empty");
-        Objects.requireNonNull(maxPageResults, "The maximum page results parameter cannot be null.");
-        Validate.isTrue(maxPageResults > 0, "The maximum page results parameter needs to be greater than 0.");
-        Mono<PagedResponse<SecretAttributes>> result = service.getSecretVersions(vaultEndpoint, name, maxPageResults, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchSecrets).collectList().block();
+        return  service.getSecretVersions(vaultEndpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .flatMapMany(this::extractAndFetchSecrets).collectList().block();
     }
 
     /**
      * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretClient#listSecrets()} or {@link SecretClient#listSecrets(int)}.
+     * {@link SecretClient#listSecrets()}.
      *
      * @param nextPageLink The {@link SecretAttributesPage#nextLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link SecretAttributes} from the next page of results.
      */
     private Flux<SecretAttributes> listSecretsNext(String nextPageLink) {
-        Mono<PagedResponse<SecretAttributes>> result = service.getSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchSecrets);
+        return service.getSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchSecrets);
     }
 
     private Publisher<SecretAttributes> extractAndFetchSecrets(PagedResponse<SecretAttributes> page) {
@@ -458,14 +391,13 @@ public final class SecretClient extends ServiceClient {
 
     /**
      * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretClient#listDeletedSecrets()} or {@link SecretClient#listDeletedSecrets(int)}.
+     * {@link SecretClient#listDeletedSecrets()}.
      *
      * @param nextPageLink The {@link com.azure.keyvault.implementation.DeletedSecretPage#nextLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link SecretAttributes} from the next page of results.
      */
     private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink) {
-        Mono<PagedResponse<DeletedSecret>> result = service.getDeletedSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
-        return result.flatMapMany(this::extractAndFetchDeletedSecrets);
+        return service.getDeletedSecrets(vaultEndpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(this::extractAndFetchDeletedSecrets);
     }
 
     private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(PagedResponse<DeletedSecret> page) {

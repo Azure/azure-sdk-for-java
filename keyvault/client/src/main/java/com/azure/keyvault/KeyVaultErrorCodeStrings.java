@@ -3,8 +3,6 @@
 
 package com.azure.keyvault;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -38,7 +36,7 @@ class KeyVaultErrorCodeStrings {
     }
 
     private static void loadProperties() {
-        if(errorStrings != null){
+        if (errorStrings != null) {
             return;
         }
         try (InputStream fileInputStream = KeyVaultErrorCodeStrings.class.getClassLoader().getResource((ERROR_STRINGS_FILE_NAME)).openStream()) {
