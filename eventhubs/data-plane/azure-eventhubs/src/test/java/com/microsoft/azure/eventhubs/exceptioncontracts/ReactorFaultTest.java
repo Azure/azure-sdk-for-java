@@ -3,7 +3,11 @@
 
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.impl.EventHubClientImpl;
 import com.microsoft.azure.eventhubs.impl.MessagingFactory;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
@@ -15,7 +19,6 @@ import org.apache.qpid.proton.engine.impl.ConnectionImpl;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -24,15 +27,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class ReactorFaultTest extends ApiTestBase {
-    static final String PARTITION_ID = "0";
-    static ConnectionStringBuilder connStr;
+    private static ConnectionStringBuilder connStr;
 
     @BeforeClass
-    public static void initialize() throws Exception {
+    public static void initialize() {
         connStr = TestContext.getConnectionString();
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test()
     public void VerifyReactorRestartsOnProtonBugs() throws Exception {
         final EventHubClient eventHubClient = EventHubClient.createSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
@@ -79,7 +80,6 @@ public class ReactorFaultTest extends ApiTestBase {
         }
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test()
     public void VerifyTransportAbort() throws Exception {
         final EventHubClient eventHubClient = EventHubClient.createSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
