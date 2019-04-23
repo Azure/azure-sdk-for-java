@@ -310,7 +310,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
      * @param accountName The name of Cognitive Services account.
      * @param sku Gets or sets the SKU of the resource.
      * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-     * @param properties Additional properties for Account. Only provided fileds will be updated.
+     * @param properties Additional properties for Account. Only provided fields will be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -327,7 +327,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
      * @param accountName The name of Cognitive Services account.
      * @param sku Gets or sets the SKU of the resource.
      * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-     * @param properties Additional properties for Account. Only provided fileds will be updated.
+     * @param properties Additional properties for Account. Only provided fields will be updated.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -343,7 +343,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
      * @param accountName The name of Cognitive Services account.
      * @param sku Gets or sets the SKU of the resource.
      * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-     * @param properties Additional properties for Account. Only provided fileds will be updated.
+     * @param properties Additional properties for Account. Only provided fields will be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountInner object
      */
@@ -363,7 +363,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
      * @param accountName The name of Cognitive Services account.
      * @param sku Gets or sets the SKU of the resource.
      * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-     * @param properties Additional properties for Account. Only provided fileds will be updated.
+     * @param properties Additional properties for Account. Only provided fields will be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountInner object
      */

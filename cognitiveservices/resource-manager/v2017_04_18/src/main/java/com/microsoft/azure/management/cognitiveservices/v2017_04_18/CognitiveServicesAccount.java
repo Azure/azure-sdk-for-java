@@ -166,7 +166,7 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
         interface WithProperties {
             /**
              * Specifies properties.
-             * @param properties Additional properties for Account. Only provided fileds will be updated
+             * @param properties Additional properties for Account. Only provided fields will be updated
              * @return the next update stage
              */
             Update withProperties(Object properties);

@@ -32,7 +32,7 @@ public class CognitiveServicesAccountUpdateParameters {
     private Map<String, String> tags;
 
     /**
-     * Additional properties for Account. Only provided fileds will be updated.
+     * Additional properties for Account. Only provided fields will be updated.
      */
     @JsonProperty(value = "properties")
     private Object properties;
@@ -78,7 +78,7 @@ public class CognitiveServicesAccountUpdateParameters {
     }
 
     /**
-     * Get additional properties for Account. Only provided fileds will be updated.
+     * Get additional properties for Account. Only provided fields will be updated.
      *
      * @return the properties value
      */
@@ -87,7 +87,7 @@ public class CognitiveServicesAccountUpdateParameters {
     }
 
     /**
-     * Set additional properties for Account. Only provided fileds will be updated.
+     * Set additional properties for Account. Only provided fields will be updated.
      *
      * @param properties the properties value to set
      * @return the CognitiveServicesAccountUpdateParameters object itself.
