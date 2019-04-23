@@ -77,7 +77,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private volatile CompletableFuture<?> closeTimer;
     private int prefetchCount;
     private Exception lastKnownLinkError;
-    private String linkCreationTime;
 
     private MessageReceiver(final MessagingFactory factory,
                             final String name,
@@ -492,8 +491,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                             "clientId[%s], path[%s], operationTimeout[%s], creating a receive link",
                             this.getClientId(), this.receivePath, this.operationTimeout));
         }
-
-        this.linkCreationTime = Instant.now().toString();
 
         this.scheduleLinkOpenTimeout(TimeoutTracker.create(this.operationTimeout));
 
