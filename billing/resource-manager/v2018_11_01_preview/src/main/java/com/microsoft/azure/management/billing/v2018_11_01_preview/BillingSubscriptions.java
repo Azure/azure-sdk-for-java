@@ -17,15 +17,24 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner> {
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Lists billing subscriptions by billing profile name.
      *
      * @param billingAccountName billing Account Id.
-     * @param invoiceSectionName InvoiceSection Id.
-     * @param billingSubscriptionName Billing Subscription Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<TransferBillingSubscriptionResult> transferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName);
+    Observable<BillingSubscriptionsListResult> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName);
+
+    /**
+     * Lists billing subscription by invoice section name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BillingSubscriptionsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName);
 
     /**
      * Get a single billing subscription by name.
@@ -36,6 +45,26 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSectionBillingAccountBillingSubscriptionSummary> getAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName);
+    Observable<BillingSubscriptionSummary> getAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName);
+
+    /**
+     * Transfers the subscription from one invoice section to another within a billing account.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @param billingSubscriptionName Billing Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<TransferBillingSubscriptionResult> transferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName);
+
+    /**
+     * Lists billing subscriptions by billing account name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BillingSubscriptionSummary> listByBillingAccountNameAsync(final String billingAccountName);
 
 }

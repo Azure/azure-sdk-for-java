@@ -46,6 +46,6 @@ public interface BillingRoleDefinition extends HasInner<BillingRoleDefinitionInn
     /**
      * @return the value value.
      */
-    List<BillingPermissions> value();
+    List<BillingPermissionsProperties> value();
 
 }

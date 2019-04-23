@@ -51,10 +51,169 @@ public class DepartmentsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface DepartmentsService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Departments listByBillingAccountName" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments")
+        Observable<Response<ResponseBody>> listByBillingAccountName(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Departments get" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}")
         Observable<Response<ResponseBody>> get(@Path("billingAccountName") String billingAccountName, @Path("departmentName") String departmentName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+    }
+
+    /**
+     * Lists all departments for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the DepartmentListResultInner object if successful.
+     */
+    public DepartmentListResultInner listByBillingAccountName(String billingAccountName) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists all departments for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<DepartmentListResultInner> listByBillingAccountNameAsync(String billingAccountName, final ServiceCallback<DepartmentListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByBillingAccountNameWithServiceResponseAsync(billingAccountName), serviceCallback);
+    }
+
+    /**
+     * Lists all departments for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DepartmentListResultInner object
+     */
+    public Observable<DepartmentListResultInner> listByBillingAccountNameAsync(String billingAccountName) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName).map(new Func1<ServiceResponse<DepartmentListResultInner>, DepartmentListResultInner>() {
+            @Override
+            public DepartmentListResultInner call(ServiceResponse<DepartmentListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists all departments for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DepartmentListResultInner object
+     */
+    public Observable<ServiceResponse<DepartmentListResultInner>> listByBillingAccountNameWithServiceResponseAsync(String billingAccountName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String expand = null;
+        final String filter = null;
+        return service.listByBillingAccountName(billingAccountName, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DepartmentListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<DepartmentListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<DepartmentListResultInner> clientResponse = listByBillingAccountNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists all departments for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param expand May be used to expand the enrollmentAccounts.
+     * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the DepartmentListResultInner object if successful.
+     */
+    public DepartmentListResultInner listByBillingAccountName(String billingAccountName, String expand, String filter) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName, expand, filter).toBlocking().single().body();
+    }
+
+    /**
+     * Lists all departments for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param expand May be used to expand the enrollmentAccounts.
+     * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<DepartmentListResultInner> listByBillingAccountNameAsync(String billingAccountName, String expand, String filter, final ServiceCallback<DepartmentListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByBillingAccountNameWithServiceResponseAsync(billingAccountName, expand, filter), serviceCallback);
+    }
+
+    /**
+     * Lists all departments for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param expand May be used to expand the enrollmentAccounts.
+     * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DepartmentListResultInner object
+     */
+    public Observable<DepartmentListResultInner> listByBillingAccountNameAsync(String billingAccountName, String expand, String filter) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName, expand, filter).map(new Func1<ServiceResponse<DepartmentListResultInner>, DepartmentListResultInner>() {
+            @Override
+            public DepartmentListResultInner call(ServiceResponse<DepartmentListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists all departments for a user which he has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param expand May be used to expand the enrollmentAccounts.
+     * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DepartmentListResultInner object
+     */
+    public Observable<ServiceResponse<DepartmentListResultInner>> listByBillingAccountNameWithServiceResponseAsync(String billingAccountName, String expand, String filter) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByBillingAccountName(billingAccountName, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DepartmentListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<DepartmentListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<DepartmentListResultInner> clientResponse = listByBillingAccountNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<DepartmentListResultInner> listByBillingAccountNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<DepartmentListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<DepartmentListResultInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
     }
 
     /**

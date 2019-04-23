@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccounts;
 import rx.Observable;
 import rx.functions.Func1;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccountListResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccount;
 
 class EnrollmentAccountsImpl extends WrapperImpl<EnrollmentAccountsInner> implements EnrollmentAccounts {
@@ -32,9 +33,21 @@ class EnrollmentAccountsImpl extends WrapperImpl<EnrollmentAccountsInner> implem
     }
 
     @Override
-    public Observable<EnrollmentAccount> getByEnrollmentAccountAccountIdAsync(String billingAccountName, String enrollmentAccountName) {
+    public Observable<EnrollmentAccountListResult> listByBillingAccountNameAsync(String billingAccountName) {
         EnrollmentAccountsInner client = this.inner();
-        return client.getByEnrollmentAccountAccountIdAsync(billingAccountName, enrollmentAccountName)
+        return client.listByBillingAccountNameAsync(billingAccountName)
+        .map(new Func1<EnrollmentAccountListResultInner, EnrollmentAccountListResult>() {
+            @Override
+            public EnrollmentAccountListResult call(EnrollmentAccountListResultInner inner) {
+                return new EnrollmentAccountListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<EnrollmentAccount> getByEnrollmentAccountIdAsync(String billingAccountName, String enrollmentAccountName) {
+        EnrollmentAccountsInner client = this.inner();
+        return client.getByEnrollmentAccountIdAsync(billingAccountName, enrollmentAccountName)
         .map(new Func1<EnrollmentAccountInner, EnrollmentAccount>() {
             @Override
             public EnrollmentAccount call(EnrollmentAccountInner inner) {

@@ -8,42 +8,41 @@
 
 package com.microsoft.azure.management.billing.v2018_11_01_preview;
 
-import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import rx.Observable;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.BillingPermissionsInner;
+import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * The set of allowed action and not allowed actions a caller has on a billing
- * account.
+ * Type representing BillingPermissions.
  */
-public class BillingPermissions {
+public interface BillingPermissions extends HasInner<BillingPermissionsInner> {
     /**
-     * The set of actions that the caller is allowed to do.
-     */
-    @JsonProperty(value = "actions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> actions;
-
-    /**
-     * The set of actions the caller is not allowed to do.
-     */
-    @JsonProperty(value = "notActions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> notActions;
-
-    /**
-     * Get the set of actions that the caller is allowed to do.
+     * Lists all billing permissions for the caller under a billing account.
      *
-     * @return the actions value
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
      */
-    public List<String> actions() {
-        return this.actions;
-    }
+    Observable<BillingPermissionsListResult> listByBillingAccountAsync(String billingAccountName);
 
     /**
-     * Get the set of actions the caller is not allowed to do.
+     * Lists all billing permissions for the caller under invoice section.
      *
-     * @return the notActions value
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
      */
-    public List<String> notActions() {
-        return this.notActions;
-    }
+    Observable<BillingPermissionsListResult> listByInvoiceSectionsAsync(String billingAccountName, String invoiceSectionName);
+
+    /**
+     * Lists all billingPermissions for the caller has for a billing account.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BillingPermissionsListResult> listByBillingProfileAsync(String billingAccountName, String billingProfileName);
 
 }

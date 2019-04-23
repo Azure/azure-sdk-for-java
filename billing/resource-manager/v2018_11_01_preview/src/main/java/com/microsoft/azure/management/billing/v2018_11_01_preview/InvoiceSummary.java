@@ -9,18 +9,16 @@
 package com.microsoft.azure.management.billing.v2018_11_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.InvoiceSummaryInner;
-import com.microsoft.azure.arm.model.Indexable;
-import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.BillingManager;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.InvoiceSummaryInner;
 import java.util.List;
 import org.joda.time.DateTime;
 
 /**
  * Type representing InvoiceSummary.
  */
-public interface InvoiceSummary extends HasInner<InvoiceSummaryInner>, Indexable, Refreshable<InvoiceSummary>, HasManager<BillingManager> {
+public interface InvoiceSummary extends HasInner<InvoiceSummaryInner>, HasManager<BillingManager> {
     /**
      * @return the amountDue value.
      */

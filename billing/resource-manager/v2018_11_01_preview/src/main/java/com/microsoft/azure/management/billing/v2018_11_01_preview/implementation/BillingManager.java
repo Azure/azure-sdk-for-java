@@ -17,45 +17,25 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccounts;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.AvailableBalanceByBillingProfiles;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethodsByBillingProfiles;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfilesByBillingAccountNames;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.AvailableBalances;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethods;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsByBillingAccountNames;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsWithCreateSubscriptionPermissions;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.DepartmentsByBillingAccountNames;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Departments;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccountsByBillingAccountNames;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccounts;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoicesByBillingAccounts;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoicePricesheets;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoicesByBillingProfiles;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Invoices;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsByBillingSubscriptions;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionsByBillingProfiles;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionsByInvoiceSections;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.PriceSheets;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptions;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsByBillingAccounts;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsByInvoiceSections;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Products;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsByBillingAccounts;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsByBillingProfiles;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsByInvoiceSections;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.Policys;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.Transactions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.Policies;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPropertys;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Transfers;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.RecipientTransfers;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Operations;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountBillingPermissions;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsBillingPermissions;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileBillingPermissions;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountBillingRoleDefinitions;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionBillingRoleDefinitions;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileBillingRoleDefinitions;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountBillingRoleAssignments;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionBillingRoleAssignments;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileBillingRoleAssignments;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPermissions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleDefinitions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleAssignments;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Agreements;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -65,45 +45,25 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class BillingManager extends ManagerCore<BillingManager, BillingManagementClientImpl> {
     private BillingAccounts billingAccounts;
-    private AvailableBalanceByBillingProfiles availableBalanceByBillingProfiles;
-    private PaymentMethodsByBillingProfiles paymentMethodsByBillingProfiles;
-    private BillingProfilesByBillingAccountNames billingProfilesByBillingAccountNames;
+    private AvailableBalances availableBalances;
+    private PaymentMethods paymentMethods;
     private BillingProfiles billingProfiles;
-    private InvoiceSectionsByBillingAccountNames invoiceSectionsByBillingAccountNames;
     private InvoiceSections invoiceSections;
-    private InvoiceSectionsWithCreateSubscriptionPermissions invoiceSectionsWithCreateSubscriptionPermissions;
-    private DepartmentsByBillingAccountNames departmentsByBillingAccountNames;
     private Departments departments;
-    private EnrollmentAccountsByBillingAccountNames enrollmentAccountsByBillingAccountNames;
     private EnrollmentAccounts enrollmentAccounts;
-    private InvoicesByBillingAccounts invoicesByBillingAccounts;
-    private InvoicePricesheets invoicePricesheets;
-    private InvoicesByBillingProfiles invoicesByBillingProfiles;
     private Invoices invoices;
-    private ProductsByBillingSubscriptions productsByBillingSubscriptions;
-    private BillingSubscriptionsByBillingProfiles billingSubscriptionsByBillingProfiles;
-    private BillingSubscriptionsByInvoiceSections billingSubscriptionsByInvoiceSections;
+    private PriceSheets priceSheets;
     private BillingSubscriptions billingSubscriptions;
-    private ProductsByBillingAccounts productsByBillingAccounts;
-    private ProductsByInvoiceSections productsByInvoiceSections;
     private Products products;
-    private TransactionsByBillingAccounts transactionsByBillingAccounts;
-    private TransactionsByBillingProfiles transactionsByBillingProfiles;
-    private TransactionsByInvoiceSections transactionsByInvoiceSections;
-    private Policys policys;
+    private Transactions transactions;
+    private Policies policies;
     private BillingPropertys billingPropertys;
     private Transfers transfers;
     private RecipientTransfers recipientTransfers;
     private Operations operations;
-    private BillingAccountBillingPermissions billingAccountBillingPermissions;
-    private InvoiceSectionsBillingPermissions invoiceSectionsBillingPermissions;
-    private BillingProfileBillingPermissions billingProfileBillingPermissions;
-    private BillingAccountBillingRoleDefinitions billingAccountBillingRoleDefinitions;
-    private InvoiceSectionBillingRoleDefinitions invoiceSectionBillingRoleDefinitions;
-    private BillingProfileBillingRoleDefinitions billingProfileBillingRoleDefinitions;
-    private BillingAccountBillingRoleAssignments billingAccountBillingRoleAssignments;
-    private InvoiceSectionBillingRoleAssignments invoiceSectionBillingRoleAssignments;
-    private BillingProfileBillingRoleAssignments billingProfileBillingRoleAssignments;
+    private BillingPermissions billingPermissions;
+    private BillingRoleDefinitions billingRoleDefinitions;
+    private BillingRoleAssignments billingRoleAssignments;
     private Agreements agreements;
     /**
     * Get a Configurable instance that can be used to create BillingManager with optional configuration.
@@ -163,33 +123,23 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage AvailableBalanceByBillingProfiles.
+     * @return Entry point to manage AvailableBalances.
      */
-    public AvailableBalanceByBillingProfiles availableBalanceByBillingProfiles() {
-        if (this.availableBalanceByBillingProfiles == null) {
-            this.availableBalanceByBillingProfiles = new AvailableBalanceByBillingProfilesImpl(this);
+    public AvailableBalances availableBalances() {
+        if (this.availableBalances == null) {
+            this.availableBalances = new AvailableBalancesImpl(this);
         }
-        return this.availableBalanceByBillingProfiles;
+        return this.availableBalances;
     }
 
     /**
-     * @return Entry point to manage PaymentMethodsByBillingProfiles.
+     * @return Entry point to manage PaymentMethods.
      */
-    public PaymentMethodsByBillingProfiles paymentMethodsByBillingProfiles() {
-        if (this.paymentMethodsByBillingProfiles == null) {
-            this.paymentMethodsByBillingProfiles = new PaymentMethodsByBillingProfilesImpl(this);
+    public PaymentMethods paymentMethods() {
+        if (this.paymentMethods == null) {
+            this.paymentMethods = new PaymentMethodsImpl(this);
         }
-        return this.paymentMethodsByBillingProfiles;
-    }
-
-    /**
-     * @return Entry point to manage BillingProfilesByBillingAccountNames.
-     */
-    public BillingProfilesByBillingAccountNames billingProfilesByBillingAccountNames() {
-        if (this.billingProfilesByBillingAccountNames == null) {
-            this.billingProfilesByBillingAccountNames = new BillingProfilesByBillingAccountNamesImpl(this);
-        }
-        return this.billingProfilesByBillingAccountNames;
+        return this.paymentMethods;
     }
 
     /**
@@ -203,16 +153,6 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage InvoiceSectionsByBillingAccountNames.
-     */
-    public InvoiceSectionsByBillingAccountNames invoiceSectionsByBillingAccountNames() {
-        if (this.invoiceSectionsByBillingAccountNames == null) {
-            this.invoiceSectionsByBillingAccountNames = new InvoiceSectionsByBillingAccountNamesImpl(this);
-        }
-        return this.invoiceSectionsByBillingAccountNames;
-    }
-
-    /**
      * @return Entry point to manage InvoiceSections.
      */
     public InvoiceSections invoiceSections() {
@@ -220,26 +160,6 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.invoiceSections = new InvoiceSectionsImpl(this);
         }
         return this.invoiceSections;
-    }
-
-    /**
-     * @return Entry point to manage InvoiceSectionsWithCreateSubscriptionPermissions.
-     */
-    public InvoiceSectionsWithCreateSubscriptionPermissions invoiceSectionsWithCreateSubscriptionPermissions() {
-        if (this.invoiceSectionsWithCreateSubscriptionPermissions == null) {
-            this.invoiceSectionsWithCreateSubscriptionPermissions = new InvoiceSectionsWithCreateSubscriptionPermissionsImpl(this);
-        }
-        return this.invoiceSectionsWithCreateSubscriptionPermissions;
-    }
-
-    /**
-     * @return Entry point to manage DepartmentsByBillingAccountNames.
-     */
-    public DepartmentsByBillingAccountNames departmentsByBillingAccountNames() {
-        if (this.departmentsByBillingAccountNames == null) {
-            this.departmentsByBillingAccountNames = new DepartmentsByBillingAccountNamesImpl(this);
-        }
-        return this.departmentsByBillingAccountNames;
     }
 
     /**
@@ -253,16 +173,6 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage EnrollmentAccountsByBillingAccountNames.
-     */
-    public EnrollmentAccountsByBillingAccountNames enrollmentAccountsByBillingAccountNames() {
-        if (this.enrollmentAccountsByBillingAccountNames == null) {
-            this.enrollmentAccountsByBillingAccountNames = new EnrollmentAccountsByBillingAccountNamesImpl(this);
-        }
-        return this.enrollmentAccountsByBillingAccountNames;
-    }
-
-    /**
      * @return Entry point to manage EnrollmentAccounts.
      */
     public EnrollmentAccounts enrollmentAccounts() {
@@ -270,36 +180,6 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.enrollmentAccounts = new EnrollmentAccountsImpl(this);
         }
         return this.enrollmentAccounts;
-    }
-
-    /**
-     * @return Entry point to manage InvoicesByBillingAccounts.
-     */
-    public InvoicesByBillingAccounts invoicesByBillingAccounts() {
-        if (this.invoicesByBillingAccounts == null) {
-            this.invoicesByBillingAccounts = new InvoicesByBillingAccountsImpl(this);
-        }
-        return this.invoicesByBillingAccounts;
-    }
-
-    /**
-     * @return Entry point to manage InvoicePricesheets.
-     */
-    public InvoicePricesheets invoicePricesheets() {
-        if (this.invoicePricesheets == null) {
-            this.invoicePricesheets = new InvoicePricesheetsImpl(this);
-        }
-        return this.invoicePricesheets;
-    }
-
-    /**
-     * @return Entry point to manage InvoicesByBillingProfiles.
-     */
-    public InvoicesByBillingProfiles invoicesByBillingProfiles() {
-        if (this.invoicesByBillingProfiles == null) {
-            this.invoicesByBillingProfiles = new InvoicesByBillingProfilesImpl(this);
-        }
-        return this.invoicesByBillingProfiles;
     }
 
     /**
@@ -313,33 +193,13 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage ProductsByBillingSubscriptions.
+     * @return Entry point to manage PriceSheets.
      */
-    public ProductsByBillingSubscriptions productsByBillingSubscriptions() {
-        if (this.productsByBillingSubscriptions == null) {
-            this.productsByBillingSubscriptions = new ProductsByBillingSubscriptionsImpl(this);
+    public PriceSheets priceSheets() {
+        if (this.priceSheets == null) {
+            this.priceSheets = new PriceSheetsImpl(this);
         }
-        return this.productsByBillingSubscriptions;
-    }
-
-    /**
-     * @return Entry point to manage BillingSubscriptionsByBillingProfiles.
-     */
-    public BillingSubscriptionsByBillingProfiles billingSubscriptionsByBillingProfiles() {
-        if (this.billingSubscriptionsByBillingProfiles == null) {
-            this.billingSubscriptionsByBillingProfiles = new BillingSubscriptionsByBillingProfilesImpl(this);
-        }
-        return this.billingSubscriptionsByBillingProfiles;
-    }
-
-    /**
-     * @return Entry point to manage BillingSubscriptionsByInvoiceSections.
-     */
-    public BillingSubscriptionsByInvoiceSections billingSubscriptionsByInvoiceSections() {
-        if (this.billingSubscriptionsByInvoiceSections == null) {
-            this.billingSubscriptionsByInvoiceSections = new BillingSubscriptionsByInvoiceSectionsImpl(this);
-        }
-        return this.billingSubscriptionsByInvoiceSections;
+        return this.priceSheets;
     }
 
     /**
@@ -353,26 +213,6 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage ProductsByBillingAccounts.
-     */
-    public ProductsByBillingAccounts productsByBillingAccounts() {
-        if (this.productsByBillingAccounts == null) {
-            this.productsByBillingAccounts = new ProductsByBillingAccountsImpl(this);
-        }
-        return this.productsByBillingAccounts;
-    }
-
-    /**
-     * @return Entry point to manage ProductsByInvoiceSections.
-     */
-    public ProductsByInvoiceSections productsByInvoiceSections() {
-        if (this.productsByInvoiceSections == null) {
-            this.productsByInvoiceSections = new ProductsByInvoiceSectionsImpl(this);
-        }
-        return this.productsByInvoiceSections;
-    }
-
-    /**
      * @return Entry point to manage Products.
      */
     public Products products() {
@@ -383,43 +223,23 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage TransactionsByBillingAccounts.
+     * @return Entry point to manage Transactions.
      */
-    public TransactionsByBillingAccounts transactionsByBillingAccounts() {
-        if (this.transactionsByBillingAccounts == null) {
-            this.transactionsByBillingAccounts = new TransactionsByBillingAccountsImpl(this);
+    public Transactions transactions() {
+        if (this.transactions == null) {
+            this.transactions = new TransactionsImpl(this);
         }
-        return this.transactionsByBillingAccounts;
+        return this.transactions;
     }
 
     /**
-     * @return Entry point to manage TransactionsByBillingProfiles.
+     * @return Entry point to manage Policies.
      */
-    public TransactionsByBillingProfiles transactionsByBillingProfiles() {
-        if (this.transactionsByBillingProfiles == null) {
-            this.transactionsByBillingProfiles = new TransactionsByBillingProfilesImpl(this);
+    public Policies policies() {
+        if (this.policies == null) {
+            this.policies = new PoliciesImpl(this);
         }
-        return this.transactionsByBillingProfiles;
-    }
-
-    /**
-     * @return Entry point to manage TransactionsByInvoiceSections.
-     */
-    public TransactionsByInvoiceSections transactionsByInvoiceSections() {
-        if (this.transactionsByInvoiceSections == null) {
-            this.transactionsByInvoiceSections = new TransactionsByInvoiceSectionsImpl(this);
-        }
-        return this.transactionsByInvoiceSections;
-    }
-
-    /**
-     * @return Entry point to manage Policys.
-     */
-    public Policys policys() {
-        if (this.policys == null) {
-            this.policys = new PolicysImpl(this);
-        }
-        return this.policys;
+        return this.policies;
     }
 
     /**
@@ -463,93 +283,33 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage BillingAccountBillingPermissions.
+     * @return Entry point to manage BillingPermissions.
      */
-    public BillingAccountBillingPermissions billingAccountBillingPermissions() {
-        if (this.billingAccountBillingPermissions == null) {
-            this.billingAccountBillingPermissions = new BillingAccountBillingPermissionsImpl(this);
+    public BillingPermissions billingPermissions() {
+        if (this.billingPermissions == null) {
+            this.billingPermissions = new BillingPermissionsImpl(this);
         }
-        return this.billingAccountBillingPermissions;
+        return this.billingPermissions;
     }
 
     /**
-     * @return Entry point to manage InvoiceSectionsBillingPermissions.
+     * @return Entry point to manage BillingRoleDefinitions.
      */
-    public InvoiceSectionsBillingPermissions invoiceSectionsBillingPermissions() {
-        if (this.invoiceSectionsBillingPermissions == null) {
-            this.invoiceSectionsBillingPermissions = new InvoiceSectionsBillingPermissionsImpl(this);
+    public BillingRoleDefinitions billingRoleDefinitions() {
+        if (this.billingRoleDefinitions == null) {
+            this.billingRoleDefinitions = new BillingRoleDefinitionsImpl(this);
         }
-        return this.invoiceSectionsBillingPermissions;
+        return this.billingRoleDefinitions;
     }
 
     /**
-     * @return Entry point to manage BillingProfileBillingPermissions.
+     * @return Entry point to manage BillingRoleAssignments.
      */
-    public BillingProfileBillingPermissions billingProfileBillingPermissions() {
-        if (this.billingProfileBillingPermissions == null) {
-            this.billingProfileBillingPermissions = new BillingProfileBillingPermissionsImpl(this);
+    public BillingRoleAssignments billingRoleAssignments() {
+        if (this.billingRoleAssignments == null) {
+            this.billingRoleAssignments = new BillingRoleAssignmentsImpl(this);
         }
-        return this.billingProfileBillingPermissions;
-    }
-
-    /**
-     * @return Entry point to manage BillingAccountBillingRoleDefinitions.
-     */
-    public BillingAccountBillingRoleDefinitions billingAccountBillingRoleDefinitions() {
-        if (this.billingAccountBillingRoleDefinitions == null) {
-            this.billingAccountBillingRoleDefinitions = new BillingAccountBillingRoleDefinitionsImpl(this);
-        }
-        return this.billingAccountBillingRoleDefinitions;
-    }
-
-    /**
-     * @return Entry point to manage InvoiceSectionBillingRoleDefinitions.
-     */
-    public InvoiceSectionBillingRoleDefinitions invoiceSectionBillingRoleDefinitions() {
-        if (this.invoiceSectionBillingRoleDefinitions == null) {
-            this.invoiceSectionBillingRoleDefinitions = new InvoiceSectionBillingRoleDefinitionsImpl(this);
-        }
-        return this.invoiceSectionBillingRoleDefinitions;
-    }
-
-    /**
-     * @return Entry point to manage BillingProfileBillingRoleDefinitions.
-     */
-    public BillingProfileBillingRoleDefinitions billingProfileBillingRoleDefinitions() {
-        if (this.billingProfileBillingRoleDefinitions == null) {
-            this.billingProfileBillingRoleDefinitions = new BillingProfileBillingRoleDefinitionsImpl(this);
-        }
-        return this.billingProfileBillingRoleDefinitions;
-    }
-
-    /**
-     * @return Entry point to manage BillingAccountBillingRoleAssignments.
-     */
-    public BillingAccountBillingRoleAssignments billingAccountBillingRoleAssignments() {
-        if (this.billingAccountBillingRoleAssignments == null) {
-            this.billingAccountBillingRoleAssignments = new BillingAccountBillingRoleAssignmentsImpl(this);
-        }
-        return this.billingAccountBillingRoleAssignments;
-    }
-
-    /**
-     * @return Entry point to manage InvoiceSectionBillingRoleAssignments.
-     */
-    public InvoiceSectionBillingRoleAssignments invoiceSectionBillingRoleAssignments() {
-        if (this.invoiceSectionBillingRoleAssignments == null) {
-            this.invoiceSectionBillingRoleAssignments = new InvoiceSectionBillingRoleAssignmentsImpl(this);
-        }
-        return this.invoiceSectionBillingRoleAssignments;
-    }
-
-    /**
-     * @return Entry point to manage BillingProfileBillingRoleAssignments.
-     */
-    public BillingProfileBillingRoleAssignments billingProfileBillingRoleAssignments() {
-        if (this.billingProfileBillingRoleAssignments == null) {
-            this.billingProfileBillingRoleAssignments = new BillingProfileBillingRoleAssignmentsImpl(this);
-        }
-        return this.billingProfileBillingRoleAssignments;
+        return this.billingRoleAssignments;
     }
 
     /**

@@ -17,15 +17,14 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Products extends HasInner<ProductsInner> {
     /**
-     * The operation to transfer a Product to another InvoiceSection.
+     * Lists products by invoice section name.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoice Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingAccountProductSummary> transferAsync(String billingAccountName, String invoiceSectionName, String productName);
+    Observable<ProductsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName);
 
     /**
      * Get a single product by name.
@@ -36,6 +35,47 @@ public interface Products extends HasInner<ProductsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSectionBillingAccountProductSummary> getAsync(String billingAccountName, String invoiceSectionName, String productName);
+    Observable<ProductSummary> getAsync(String billingAccountName, String invoiceSectionName, String productName);
+
+    /**
+     * The operation to transfer a Product to another invoice section.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @param productName Invoice Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ProductSummary> transferAsync(String billingAccountName, String invoiceSectionName, String productName);
+
+    /**
+     * Cancel auto renew for product by product id and billing account name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param productName Invoice Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<UpdateAutoRenewOperationSummary> updateAutoRenewByBillingAccountNameAsync(String billingAccountName, String productName);
+
+    /**
+     * Cancel auto renew for product by product id and invoice section name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @param productName Invoice Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<UpdateAutoRenewOperationSummary> updateAutoRenewByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, String productName);
+
+    /**
+     * Lists products by billing account name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ProductSummary> listByBillingAccountNameAsync(final String billingAccountName);
 
 }

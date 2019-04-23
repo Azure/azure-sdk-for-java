@@ -84,7 +84,7 @@ public class TransfersInner {
     }
 
     /**
-     * Initiates the request to transfer the GTM or legacy subscriptions or RIs to GTM.
+     * Initiates the request to transfer the legacy subscriptions or RIs.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -99,7 +99,7 @@ public class TransfersInner {
     }
 
     /**
-     * Initiates the request to transfer the GTM or legacy subscriptions or RIs to GTM.
+     * Initiates the request to transfer the legacy subscriptions or RIs.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -113,7 +113,7 @@ public class TransfersInner {
     }
 
     /**
-     * Initiates the request to transfer the GTM or legacy subscriptions or RIs to GTM.
+     * Initiates the request to transfer the legacy subscriptions or RIs.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -131,7 +131,7 @@ public class TransfersInner {
     }
 
     /**
-     * Initiates the request to transfer the GTM or legacy subscriptions or RIs to GTM.
+     * Initiates the request to transfer the legacy subscriptions or RIs.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
