@@ -24,6 +24,7 @@ import com.azure.common.entities.HttpBinFormDataJSON;
 import com.azure.common.entities.HttpBinFormDataJSON.PizzaSize;
 import com.azure.common.entities.HttpBinHeaders;
 import com.azure.common.entities.HttpBinJSON;
+import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipeline;
@@ -1607,15 +1608,15 @@ public abstract class RestProxyTests {
         Service26 service = RestProxy.create(Service26.class, new HttpPipeline());
         HttpBinFormDataJSON response = service.postForm("Foo", "123", "foo@bar.com", PizzaSize.LARGE, Arrays.asList("Bacon", "Onion"));
         assertNotNull(response);
-        assertNotNull(response.form);
-        assertEquals("Foo", response.form.customerName);
-        assertEquals("123", response.form.customerTelephone);
-        assertEquals("foo@bar.com", response.form.customerEmail);
-        assertEquals(PizzaSize.LARGE, response.form.pizzaSize);
+        assertNotNull(response.form());
+        assertEquals("Foo", response.form().customerName());
+        assertEquals("123", response.form().customerTelephone());
+        assertEquals("foo@bar.com", response.form().customerEmail());
+        assertEquals(PizzaSize.LARGE, response.form().pizzaSize());
 
-        assertEquals(2, response.form.toppings.size());
-        assertEquals("Bacon", response.form.toppings.get(0));
-        assertEquals("Onion", response.form.toppings.get(1));
+        assertEquals(2, response.form().toppings().size());
+        assertEquals("Bacon", response.form().toppings().get(0));
+        assertEquals("Onion", response.form().toppings().get(1));
     }
 
     // Helpers

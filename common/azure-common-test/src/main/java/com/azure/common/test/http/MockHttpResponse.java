@@ -165,9 +165,9 @@ public class MockHttpResponse extends HttpResponse {
 
     /**
      * Adds the header {@code name} and {@code value} to the existing set of HTTP headers.
-     * @param name
-     * @param value
-     * @return
+     * @param name The header to add
+     * @param value The header value.
+     * @return The updated response object.
      */
     public MockHttpResponse addHeader(String name, String value) {
         headers.set(name, value);
