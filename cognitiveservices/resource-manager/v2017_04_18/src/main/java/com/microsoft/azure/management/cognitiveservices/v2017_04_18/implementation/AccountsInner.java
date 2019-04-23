@@ -284,9 +284,11 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
         }
         final Sku sku = null;
         final Map<String, String> tags = null;
+        final Object properties = null;
         CognitiveServicesAccountUpdateParameters parameters = new CognitiveServicesAccountUpdateParameters();
         parameters.withSku(null);
         parameters.withTags(null);
+        parameters.withProperties(null);
         return service.update(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CognitiveServicesAccountInner>>>() {
                 @Override
@@ -308,13 +310,14 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
      * @param accountName The name of Cognitive Services account.
      * @param sku Gets or sets the SKU of the resource.
      * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
+     * @param properties Additional properties for Account. Only provided fields will be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CognitiveServicesAccountInner object if successful.
      */
-    public CognitiveServicesAccountInner update(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, sku, tags).toBlocking().single().body();
+    public CognitiveServicesAccountInner update(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags, Object properties) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, sku, tags, properties).toBlocking().single().body();
     }
 
     /**
@@ -324,12 +327,13 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
      * @param accountName The name of Cognitive Services account.
      * @param sku Gets or sets the SKU of the resource.
      * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
+     * @param properties Additional properties for Account. Only provided fields will be updated.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<CognitiveServicesAccountInner> updateAsync(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags, final ServiceCallback<CognitiveServicesAccountInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, sku, tags), serviceCallback);
+    public ServiceFuture<CognitiveServicesAccountInner> updateAsync(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags, Object properties, final ServiceCallback<CognitiveServicesAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, sku, tags, properties), serviceCallback);
     }
 
     /**
@@ -339,11 +343,12 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
      * @param accountName The name of Cognitive Services account.
      * @param sku Gets or sets the SKU of the resource.
      * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
+     * @param properties Additional properties for Account. Only provided fields will be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountInner object
      */
-    public Observable<CognitiveServicesAccountInner> updateAsync(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, sku, tags).map(new Func1<ServiceResponse<CognitiveServicesAccountInner>, CognitiveServicesAccountInner>() {
+    public Observable<CognitiveServicesAccountInner> updateAsync(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags, Object properties) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, sku, tags, properties).map(new Func1<ServiceResponse<CognitiveServicesAccountInner>, CognitiveServicesAccountInner>() {
             @Override
             public CognitiveServicesAccountInner call(ServiceResponse<CognitiveServicesAccountInner> response) {
                 return response.body();
@@ -358,10 +363,11 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
      * @param accountName The name of Cognitive Services account.
      * @param sku Gets or sets the SKU of the resource.
      * @param tags Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
+     * @param properties Additional properties for Account. Only provided fields will be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CognitiveServicesAccountInner object
      */
-    public Observable<ServiceResponse<CognitiveServicesAccountInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags) {
+    public Observable<ServiceResponse<CognitiveServicesAccountInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, Sku sku, Map<String, String> tags, Object properties) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -379,6 +385,7 @@ public class AccountsInner implements InnerSupportsGet<CognitiveServicesAccountI
         CognitiveServicesAccountUpdateParameters parameters = new CognitiveServicesAccountUpdateParameters();
         parameters.withSku(sku);
         parameters.withTags(tags);
+        parameters.withProperties(properties);
         return service.update(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CognitiveServicesAccountInner>>>() {
                 @Override

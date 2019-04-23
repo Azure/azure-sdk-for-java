@@ -22,16 +22,10 @@ public class CognitiveServicesAccountCreateParameters {
     private Sku sku;
 
     /**
-     * Required. Gets or sets the Kind of the resource. Possible values
-     * include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7',
-     * 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision',
-     * 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction',
-     * 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker',
-     * 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics',
-     * 'TextTranslation', 'WebLM'.
+     * Required. Gets or sets the Kind of the resource.
      */
     @JsonProperty(value = "kind", required = true)
-    private Kind kind;
+    private String kind;
 
     /**
      * Required. Gets or sets the location of the resource. This will be one of
@@ -60,7 +54,7 @@ public class CognitiveServicesAccountCreateParameters {
     private Object properties;
 
     /**
-     * Get the sku value.
+     * Get required. Gets or sets the SKU of the resource.
      *
      * @return the sku value
      */
@@ -69,7 +63,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Set the sku value.
+     * Set required. Gets or sets the SKU of the resource.
      *
      * @param sku the sku value to set
      * @return the CognitiveServicesAccountCreateParameters object itself.
@@ -80,27 +74,27 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Get the kind value.
+     * Get required. Gets or sets the Kind of the resource.
      *
      * @return the kind value
      */
-    public Kind kind() {
+    public String kind() {
         return this.kind;
     }
 
     /**
-     * Set the kind value.
+     * Set required. Gets or sets the Kind of the resource.
      *
      * @param kind the kind value to set
      * @return the CognitiveServicesAccountCreateParameters object itself.
      */
-    public CognitiveServicesAccountCreateParameters withKind(Kind kind) {
+    public CognitiveServicesAccountCreateParameters withKind(String kind) {
         this.kind = kind;
         return this;
     }
 
     /**
-     * Get the location value.
+     * Get required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update the request will succeed.
      *
      * @return the location value
      */
@@ -109,7 +103,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Set the location value.
+     * Set required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update the request will succeed.
      *
      * @param location the location value to set
      * @return the CognitiveServicesAccountCreateParameters object itself.
@@ -120,7 +114,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Get the tags value.
+     * Get gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
      *
      * @return the tags value
      */
@@ -129,7 +123,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
      *
      * @param tags the tags value to set
      * @return the CognitiveServicesAccountCreateParameters object itself.
@@ -140,7 +134,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Get the properties value.
+     * Get must exist in the request. Must be an empty object. Must not be null.
      *
      * @return the properties value
      */
@@ -149,7 +143,7 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Set the properties value.
+     * Set must exist in the request. Must be an empty object. Must not be null.
      *
      * @param properties the properties value to set
      * @return the CognitiveServicesAccountCreateParameters object itself.
