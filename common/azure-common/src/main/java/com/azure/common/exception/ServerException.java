@@ -45,15 +45,4 @@ public class ServerException extends HttpRequestException {
     public ServerException(String message, HttpResponse response, Throwable cause) {
         super(message, response, cause);
     }
-
-    /**
-     * Initializes a new instance of the ServerException class.
-     *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
-     * @param httpStatus the HTTP response status code
-     */
-    public ServerException(final String message, final HttpResponse response, final int httpStatus) {
-        super(message, response, httpStatus);
-    }
 }
