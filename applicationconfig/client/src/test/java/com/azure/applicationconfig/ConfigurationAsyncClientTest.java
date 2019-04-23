@@ -582,8 +582,8 @@ public class ConfigurationAsyncClientTest extends TestBase {
     public void listWithMultipleKeys() {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final String key2 = sdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value(key);
-        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value(key2);
+        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
+        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
         final Set<ConfigurationSetting> toSelect = new HashSet<>(Arrays.asList(setting, setting2));
 
         StepVerifier.create(client.addSetting(setting))
@@ -611,8 +611,8 @@ public class ConfigurationAsyncClientTest extends TestBase {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final String label2 = sdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value(label).label(label);
-        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value(label2).label(label2);
+        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
+        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
         final Set<ConfigurationSetting> toSelect = new HashSet<>(Arrays.asList(setting, setting2));
 
         StepVerifier.create(client.addSetting(setting))
@@ -784,10 +784,10 @@ public class ConfigurationAsyncClientTest extends TestBase {
     public void listRevisionsWithMultipleKeys() {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final String key2 = sdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value(key);
-        final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value(key + "updated");
-        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value(key2);
-        final ConfigurationSetting setting2Update = new ConfigurationSetting(setting2).value(key2 + "updated");
+        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
+        final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value("updatedValue");
+        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
+        final ConfigurationSetting setting2Update = new ConfigurationSetting(setting2).value("updatedValue");
         final Set<ConfigurationSetting> toSelect = new HashSet<>(Arrays.asList(setting, settingUpdate, setting2, setting2Update));
 
         StepVerifier.create(client.addSetting(setting))
@@ -824,10 +824,10 @@ public class ConfigurationAsyncClientTest extends TestBase {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final String label = sdkContext.randomResourceName(labelPrefix, 16);
         final String label2 = sdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value(label).label(label);
-        final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value(label + "updated");
-        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value(label2).label(label2);
-        final ConfigurationSetting setting2Update = new ConfigurationSetting(setting2).value(label2 + "updated");
+        final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
+        final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value("updatedValue");
+        final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
+        final ConfigurationSetting setting2Update = new ConfigurationSetting(setting2).value("updatedValue");
         final Set<ConfigurationSetting> toSelect = new HashSet<>(Arrays.asList(setting, settingUpdate, setting2, setting2Update));
 
         StepVerifier.create(client.addSetting(setting))
