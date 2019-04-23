@@ -1519,7 +1519,7 @@ public abstract class RestProxyTests {
 
     @Host("{url}")
     interface Service22 {
-        @GET("{container}/{blob}")
+        @GET("/")
         byte[] getBytes(@HostParam("url") String url);
     }
 

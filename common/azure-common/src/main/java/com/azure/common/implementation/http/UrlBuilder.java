@@ -173,8 +173,11 @@ public final class UrlBuilder {
 
                 case PATH:
                     final String tokenPath = emptyToNull(tokenText);
-                    if (path == null || path.equals("/") || !tokenPath.equals("/")) {
+                    if (path == null || path.equals("/")) {
                         path = tokenPath;
+                    } else if (tokenPath != null && !tokenPath.equals("/")) {
+                        // Prepend as host paths are visited after method paths
+                        path = String.join("/", tokenPath, path);
                     }
                     break;
 
