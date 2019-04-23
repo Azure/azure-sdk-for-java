@@ -4,7 +4,6 @@
 package com.microsoft.azure.eventhubs.proxy;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
@@ -70,14 +69,12 @@ public class ProxySendTest extends SasTokenTestBase {
         ProxySelector.setDefault(defaultProxySelector);
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test
     public void sendBatchRetainsOrderWithinBatch() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
 
         sendTest.sendBatchRetainsOrderWithinBatch();
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test
     public void sendResultsInSysPropertiesWithPartitionKey() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
 

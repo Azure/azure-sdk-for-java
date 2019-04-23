@@ -13,11 +13,14 @@ import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.SocketAddress;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -66,7 +69,6 @@ public class ProxySendLargeMessageTest extends ApiTestBase {
         ProxySelector.setDefault(defaultProxySelector);
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test()
     public void sendMsgLargerThan64k() throws EventHubException, InterruptedException, ExecutionException, IOException {
         sendLargeMessageTest.sendMsgLargerThan64k();
@@ -77,7 +79,6 @@ public class ProxySendLargeMessageTest extends ApiTestBase {
         sendLargeMessageTest.sendMsgLargerThan1024K();
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test()
     public void sendMsgLargerThan128k() throws EventHubException, InterruptedException, ExecutionException, IOException {
         sendLargeMessageTest.sendMsgLargerThan128k();

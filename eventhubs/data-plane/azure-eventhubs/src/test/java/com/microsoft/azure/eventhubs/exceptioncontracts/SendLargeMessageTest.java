@@ -3,13 +3,19 @@
 
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.PartitionSender;
+import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -50,7 +56,6 @@ public class SendLargeMessageTest extends ApiTestBase {
         }
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test()
     public void sendMsgLargerThan64k() throws EventHubException, InterruptedException, ExecutionException, IOException {
         this.sendLargeMessageTest(100 * 1024);
@@ -68,7 +73,6 @@ public class SendLargeMessageTest extends ApiTestBase {
         sender.sendSync(largeMsg);
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test()
     public void sendMsgLargerThan128k() throws EventHubException, InterruptedException, ExecutionException, IOException {
         this.sendLargeMessageTest(129 * 1024);

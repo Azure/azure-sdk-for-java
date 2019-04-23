@@ -53,7 +53,6 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
         }
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test()
     public void VerifyTaskQueueEmptyOnMsgFactoryWithPumpGracefulClose() throws Exception {
 
