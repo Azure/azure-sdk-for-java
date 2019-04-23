@@ -36,7 +36,7 @@ public class VnetInfoInner extends ProxyOnlyResource {
      * Point-To-Site VPN connection.
      */
     @JsonProperty(value = "properties.certBlob")
-    private byte[] certBlob;
+    private String certBlob;
 
     /**
      * The routes that this Virtual Network connection uses.
@@ -99,7 +99,7 @@ public class VnetInfoInner extends ProxyOnlyResource {
      *
      * @return the certBlob value
      */
-    public byte[] certBlob() {
+    public String certBlob() {
         return this.certBlob;
     }
 
@@ -110,7 +110,7 @@ public class VnetInfoInner extends ProxyOnlyResource {
      * @param certBlob the certBlob value to set
      * @return the VnetInfoInner object itself.
      */
-    public VnetInfoInner withCertBlob(byte[] certBlob) {
+    public VnetInfoInner withCertBlob(String certBlob) {
         this.certBlob = certBlob;
         return this;
     }

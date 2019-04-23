@@ -75,7 +75,7 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
 
 
     @Override
-    public byte[] certBlob() {
+    public String certBlob() {
         return this.inner().certBlob();
     }
 
@@ -144,7 +144,7 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
     }
 
     @Override
-    public SiteVnetInfoImpl withCertBlob(byte[] certBlob) {
+    public SiteVnetInfoImpl withCertBlob(String certBlob) {
         this.inner().withCertBlob(certBlob);
         return this;
     }

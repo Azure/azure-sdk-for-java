@@ -26,7 +26,7 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
     /**
      * @return the certBlob value.
      */
-    byte[] certBlob();
+    String certBlob();
 
     /**
      * @return the certThumbprint value.
@@ -118,7 +118,7 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
  Point-To-Site VPN connection
              * @return the next definition stage
              */
-            WithCreate withCertBlob(byte[] certBlob);
+            WithCreate withCertBlob(String certBlob);
         }
 
         /**
@@ -197,7 +197,7 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
  Point-To-Site VPN connection
              * @return the next update stage
              */
-            Update withCertBlob(byte[] certBlob);
+            Update withCertBlob(String certBlob);
         }
 
         /**
