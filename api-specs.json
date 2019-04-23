@@ -70,6 +70,10 @@
     "source": "specification/eventgrid/data-plane/readme.md",
     "args": "--multiapi"
   },
+  "hanaonazure/resource-manager": {
+    "source": "specification/hanaonazure/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "hdinsight/resource-manager": {
     "source": "specification/hdinsight/resource-manager/readme.md",
     "args": "--multiapi --fluent"
