@@ -15,19 +15,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Represents HTTPS job input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.JobInputHttp")
 public class JobInputHttp extends JobInputClip {
     /**
      * Base URI for HTTPS job input. It will be concatenated with provided file
-     * names.   If no base uri is given, then the provided file list is assumed
-     * to be fully qualified uris.
+     * names. If no base uri is given, then the provided file list is assumed
+     * to be fully qualified uris. Maximum length of 4000 characters.
      */
     @JsonProperty(value = "baseUri")
     private String baseUri;
 
     /**
-     * Get base URI for HTTPS job input. It will be concatenated with provided file names.   If no base uri is given, then the provided file list is assumed to be fully qualified uris.
+     * Get base URI for HTTPS job input. It will be concatenated with provided file names. If no base uri is given, then the provided file list is assumed to be fully qualified uris. Maximum length of 4000 characters.
      *
      * @return the baseUri value
      */
@@ -36,7 +36,7 @@ public class JobInputHttp extends JobInputClip {
     }
 
     /**
-     * Set base URI for HTTPS job input. It will be concatenated with provided file names.   If no base uri is given, then the provided file list is assumed to be fully qualified uris.
+     * Set base URI for HTTPS job input. It will be concatenated with provided file names. If no base uri is given, then the provided file list is assumed to be fully qualified uris. Maximum length of 4000 characters.
      *
      * @param baseUri the baseUri value to set
      * @return the JobInputHttp object itself.

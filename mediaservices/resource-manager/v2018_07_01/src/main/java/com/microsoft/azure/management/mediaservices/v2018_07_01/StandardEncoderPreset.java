@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Describes all the settings to be used when encoding the input video with the
  * Standard Encoder.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.StandardEncoderPreset")
 public class StandardEncoderPreset extends Preset {
     /**
@@ -30,13 +30,13 @@ public class StandardEncoderPreset extends Preset {
     /**
      * The list of codecs to be used when encoding the input video.
      */
-    @JsonProperty(value = "codecs")
+    @JsonProperty(value = "codecs", required = true)
     private List<Codec> codecs;
 
     /**
      * The list of outputs to be produced by the encoder.
      */
-    @JsonProperty(value = "formats")
+    @JsonProperty(value = "formats", required = true)
     private List<Format> formats;
 
     /**
