@@ -162,15 +162,4 @@ public class MockHttpResponse extends HttpResponse {
                 ? Mono.empty()
                 : Mono.just(new String(bodyBytes, charset));
     }
-
-    /**
-     * Adds the header {@code name} and {@code value} to the existing set of HTTP headers.
-     * @param name
-     * @param value
-     * @return
-     */
-    public MockHttpResponse addHeader(String name, String value) {
-        headers.set(name, value);
-        return this;
-    }
 }
