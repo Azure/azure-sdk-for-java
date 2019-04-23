@@ -3,7 +3,13 @@
 
 package com.microsoft.azure.eventhubs.eventdata;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.impl.MessageSender;
 import com.microsoft.azure.eventhubs.impl.MessagingFactory;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
@@ -17,7 +23,6 @@ import org.apache.qpid.proton.message.Message;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -72,7 +77,6 @@ public class InteropEventBodyTest extends ApiTestBase {
             msgFactory.closeSync();
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test
     public void interopWithProtonAmqpMessageBodyAsAmqpValue() throws EventHubException, InterruptedException, ExecutionException {
         Message originalMessage = Proton.message();
@@ -90,7 +94,6 @@ public class InteropEventBodyTest extends ApiTestBase {
         Assert.assertEquals(reSentAndReceivedEvent.getBytes(), null);
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test
     public void interopWithProtonAmqpMessageBodyAsAmqpSequence() throws EventHubException, InterruptedException, ExecutionException {
         Message originalMessage = Proton.message();

@@ -28,7 +28,6 @@ public class SasTokenReceiveTest extends SasTokenTestBase {
         ReceiveTest.cleanup();
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test()
     public void testReceiverStartOfStreamFilters() throws EventHubException {
         receiveTest.testReceiverStartOfStreamFilters();

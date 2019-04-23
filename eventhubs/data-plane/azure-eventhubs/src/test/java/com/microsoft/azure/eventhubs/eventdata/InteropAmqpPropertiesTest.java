@@ -3,8 +3,18 @@
 
 package com.microsoft.azure.eventhubs.eventdata;
 
-import com.microsoft.azure.eventhubs.*;
-import com.microsoft.azure.eventhubs.impl.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.PartitionSender;
+import com.microsoft.azure.eventhubs.impl.AmqpConstants;
+import com.microsoft.azure.eventhubs.impl.MessageReceiver;
+import com.microsoft.azure.eventhubs.impl.MessageSender;
+import com.microsoft.azure.eventhubs.impl.MessagingFactory;
+import com.microsoft.azure.eventhubs.impl.ReceiverSettingsProvider;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.apache.qpid.proton.Proton;
@@ -17,7 +27,6 @@ import org.apache.qpid.proton.message.Message;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -156,19 +165,16 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
             msgFactory.closeSync();
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test
     public void interopWithDirectProtonAmqpMessage() {
         validateAmqpPropertiesInEventData.accept(receivedEvent);
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test
     public void interopWithDirectProtonEventDataReSend() {
         validateAmqpPropertiesInEventData.accept(reSentAndReceivedEvent);
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test
     public void resentAmqpMessageShouldRetainAllOriginalProps() {
         Assert.assertTrue(reSendAndReceivedMessage.getMessageId().equals(originalMessage.getMessageId()));

@@ -71,7 +71,6 @@ public class EventDataBatchAPITest extends ApiTestBase {
         ehClient.sendSync(batchEvents);
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test
     public void sendBatchPartitionKeyValidateTest()
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
@@ -142,7 +141,6 @@ public class EventDataBatchAPITest extends ApiTestBase {
         }
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test
     public void sendEventsFullBatchWithAppPropsTest()
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {

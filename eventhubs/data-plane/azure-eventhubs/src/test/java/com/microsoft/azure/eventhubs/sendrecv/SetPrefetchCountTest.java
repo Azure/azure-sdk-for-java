@@ -40,7 +40,6 @@ public class SetPrefetchCountTest extends ApiTestBase {
         }
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test()
     public void testSetPrefetchCountToLargeValue() throws EventHubException {
         ReceiverOptions options = new ReceiverOptions();
@@ -61,7 +60,6 @@ public class SetPrefetchCountTest extends ApiTestBase {
         Assert.assertTrue(eventsReceived >= EVENT_COUNT);
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test()
     public void testSetPrefetchCountToSmallValue() throws EventHubException {
         ReceiverOptions options = new ReceiverOptions();

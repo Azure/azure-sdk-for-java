@@ -37,14 +37,12 @@ public class WebSocketsSendTest extends SasTokenTestBase {
         SendTest.cleanupClient();
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test
     public void sendBatchRetainsOrderWithinBatch() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
 
         sendTest.sendBatchRetainsOrderWithinBatch();
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test
     public void sendResultsInSysPropertiesWithPartitionKey() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
 

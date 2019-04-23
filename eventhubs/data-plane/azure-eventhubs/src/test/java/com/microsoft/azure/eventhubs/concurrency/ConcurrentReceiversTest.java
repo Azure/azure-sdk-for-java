@@ -3,14 +3,19 @@
 
 package com.microsoft.azure.eventhubs.concurrency;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -18,8 +23,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
 public class ConcurrentReceiversTest extends ApiTestBase {
@@ -49,7 +54,6 @@ public class ConcurrentReceiversTest extends ApiTestBase {
         }
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test()
     public void testParallelCreationOfReceivers() throws EventHubException, IOException, InterruptedException, ExecutionException, TimeoutException {
         ehClient = EventHubClient.createSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
