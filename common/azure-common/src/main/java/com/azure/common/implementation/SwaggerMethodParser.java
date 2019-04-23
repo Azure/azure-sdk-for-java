@@ -6,6 +6,7 @@ package com.azure.common.implementation;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.FormParam;
 import com.azure.common.annotations.GET;
 import com.azure.common.annotations.HEAD;
 import com.azure.common.annotations.HeaderParam;
@@ -26,6 +27,7 @@ import com.azure.common.http.HttpMethod;
 import com.azure.common.http.rest.Page;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.exception.MissingRequiredAnnotationException;
+import com.azure.common.implementation.http.ContentType;
 import com.azure.common.implementation.serializer.HttpResponseDecodeData;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.util.ImplUtils;
@@ -38,9 +40,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The type to parse details of a specific Swagger REST API call from a provided Swagger interface
@@ -55,6 +59,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final List<Substitution> hostSubstitutions = new ArrayList<>();
     private final List<Substitution> pathSubstitutions = new ArrayList<>();
     private final List<Substitution> querySubstitutions = new ArrayList<>();
+    private final List<Substitution> formSubstitutions = new ArrayList<>();
     private final List<Substitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders();
     private Integer bodyContentMethodParameterIndex;
@@ -64,8 +69,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private Type returnType;
     private Type returnValueWireType;
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
-    private Map<Integer, UnexpectedException> exceptionMapping;
-    private UnexpectedException defaultException;
+    private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
+    private UnexpectedExceptionInformation defaultException;
 
     /**
      * Create a SwaggerMethodParser object using the provided fully qualified method name.
@@ -166,6 +171,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     bodyContentMethodParameterIndex = parameterIndex;
                     bodyContentType = bodyParamAnnotation.value();
                     bodyJavaType = swaggerMethod.getGenericParameterTypes()[parameterIndex];
+                } else if (annotationType.equals(FormParam.class)) {
+                    final FormParam formParamAnnotation = (FormParam) annotation;
+                    formSubstitutions.add(new Substitution(formParamAnnotation.value(), parameterIndex, !formParamAnnotation.encoded()));
+                    bodyContentType = ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
+                    bodyJavaType = String.class;
                 }
             }
         }
@@ -241,7 +251,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * method arguments.
      *
      * @param swaggerMethodArguments the arguments that will be used to create the query parameters'
-     *                               values
+     *     values
      * @return an Iterable with the encoded query parameters
      */
     public Iterable<EncodedParameter> encodedQueryParameters(Object[] swaggerMethodArguments) {
@@ -261,6 +271,38 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
                         result.add(new EncodedParameter(querySubstitution.urlParameterName(), parameterValue));
                     }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Get the encoded form parameters that have been added to this value based on the provided
+     * method arguments.
+     *
+     * @param swaggerMethodArguments the arguments that will be used to create the form parameters'
+     *     values
+     * @return an Iterable with the encoded form parameters
+     */
+    public Iterable<EncodedParameter> encodedFormParameters(Object[] swaggerMethodArguments) {
+        if (formSubstitutions == null) {
+            return Collections.emptyList();
+        }
+        final List<EncodedParameter> result = new ArrayList<>();
+        final PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
+
+        for (Substitution formSubstitution : formSubstitutions) {
+            final int parameterIndex = formSubstitution.methodParameterIndex();
+            if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
+                final Object methodArgument = swaggerMethodArguments[formSubstitution.methodParameterIndex()];
+                String parameterValue = serialize(methodArgument);
+                if (parameterValue != null) {
+                    if (formSubstitution.shouldEncode() && escaper != null) {
+                        parameterValue = escaper.escape(parameterValue);
+                    }
+
+                    result.add(new EncodedParameter(formSubstitution.urlParameterName(), parameterValue));
                 }
             }
         }
@@ -354,16 +396,16 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link UnexpectedException} that will be used to generate a RestException if the HTTP response status
+     * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP response status
      * code is not one of the expected status codes.
      *
-     * If an UnexpectedException is not found for the status code the default UnexpectedException will be returned.
+     * If an UnexpectedExceptionInformation is not found for the status code the default UnexpectedExceptionInformation will be returned.
      *
      * @param code Exception HTTP status code return from a REST API.
-     * @return the UnexpectedException to generate an exception to throw or return.
+     * @return the UnexpectedExceptionInformation to generate an exception to throw or return.
      */
     @Override
-    public UnexpectedException getUnexpectedException(int code) {
+    public UnexpectedExceptionInformation getUnexpectedException(int code) {
         if (exceptionMapping == null) {
             exceptionMapping = processUnexpectedResponseExceptionTypes();
         }
@@ -385,6 +427,14 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 && 0 <= bodyContentMethodParameterIndex
                 && bodyContentMethodParameterIndex < swaggerMethodArguments.length) {
             result = swaggerMethodArguments[bodyContentMethodParameterIndex];
+        }
+
+        if (formSubstitutions != null
+                && !formSubstitutions.isEmpty()
+                && swaggerMethodArguments != null) {
+            result = formSubstitutions.stream()
+                .map(s -> serializeFormData(s.urlParameterName(), swaggerMethodArguments[s.methodParameterIndex()]))
+                .collect(Collectors.joining("&"));
         }
 
         return result;
@@ -469,13 +519,27 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.relativePath = relativePath;
     }
 
-    String serialize(Object value) {
+    private String serialize(Object value) {
         String result = null;
         if (value != null) {
             if (value instanceof String) {
                 result = (String) value;
             } else {
                 result = serializer.serializeRaw(value);
+            }
+        }
+        return result;
+    }
+
+    private String serializeFormData(String key, Object value) {
+        String result = null;
+        if (value != null) {
+            if (value instanceof List<?>) {
+                result = ((List<?>) value).stream()
+                    .map(el -> String.format("%s=%s", key, serialize(el)))
+                    .collect(Collectors.joining("&"));
+            } else {
+                result = String.format("%s=%s", key, serializer.serializeRaw(value));
             }
         }
         return result;
@@ -504,11 +568,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return result;
     }
 
-    private Map<Integer, UnexpectedException> processUnexpectedResponseExceptionTypes() {
-        HashMap<Integer, UnexpectedException> exceptionHashMap = new HashMap<>();
+    private Map<Integer, UnexpectedExceptionInformation> processUnexpectedResponseExceptionTypes() {
+        HashMap<Integer, UnexpectedExceptionInformation> exceptionHashMap = new HashMap<>();
 
         for (UnexpectedResponseExceptionType exceptionAnnotation : unexpectedResponseExceptionTypes) {
-            UnexpectedException exception = new UnexpectedException(exceptionAnnotation.value());
+            UnexpectedExceptionInformation exception = new UnexpectedExceptionInformation(exceptionAnnotation.value());
             if (exceptionAnnotation.code().length == 0) {
                 defaultException = exception;
             } else {
@@ -519,7 +583,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         if (defaultException == null) {
-            defaultException = new UnexpectedException(ServiceRequestException.class);
+            defaultException = new UnexpectedExceptionInformation(ServiceRequestException.class);
         }
 
         return exceptionHashMap;
