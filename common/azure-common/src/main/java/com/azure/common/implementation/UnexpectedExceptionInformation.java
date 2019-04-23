@@ -11,16 +11,16 @@ import java.lang.reflect.Method;
  * Contains the information needed to generate a exception type to be thrown or returned when a REST API returns
  * an error status code.
  */
-public class UnexpectedException {
+public class UnexpectedExceptionInformation {
     private static final String EXCEPTION_BODY_METHOD = "value";
     private Class<? extends ServiceRequestException> exceptionType;
     private Class<?> exceptionBodyType;
 
     /**
-     * Creates an UnexpectedException object with the given exception type and expected response body.
+     * Creates an UnexpectedExceptionInformation object with the given exception type and expected response body.
      * @param exceptionType Exception type to be thrown.
      */
-    public UnexpectedException(Class<? extends ServiceRequestException> exceptionType) {
+    public UnexpectedExceptionInformation(Class<? extends ServiceRequestException> exceptionType) {
         this.exceptionType = exceptionType;
 
         try {

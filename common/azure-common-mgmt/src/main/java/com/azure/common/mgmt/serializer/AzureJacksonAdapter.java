@@ -3,7 +3,6 @@
 
 package com.azure.common.mgmt.serializer;
 
-import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
 
 /**
