@@ -36,7 +36,7 @@ public class StreamingLocatorContentKey {
     private String label;
 
     /**
-     * Value of  of Content Key.
+     * Value of Content Key.
      */
     @JsonProperty(value = "value")
     private String value;
@@ -103,7 +103,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Get value of  of Content Key.
+     * Get value of Content Key.
      *
      * @return the value value
      */
@@ -112,7 +112,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Set value of  of Content Key.
+     * Set value of Content Key.
      *
      * @param value the value value to set
      * @return the StreamingLocatorContentKey object itself.

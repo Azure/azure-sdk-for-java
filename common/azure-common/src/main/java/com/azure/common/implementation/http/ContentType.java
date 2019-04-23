@@ -18,6 +18,11 @@ public final class ContentType {
     public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 
     /**
+     * The default form data Content-Type header.
+     */
+    public static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
+
+    /**
      * Private ctr.
      */
     private ContentType() {
