@@ -9,7 +9,7 @@
 package com.microsoft.azure.management.billing.v2018_11_01_preview.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPermissions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPermissionsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -20,14 +20,14 @@ public class BillingPermissionsListResultInner {
      * The list OF billingPermissions a caller has on a billing account.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<BillingPermissions> value;
+    private List<BillingPermissionsProperties> value;
 
     /**
      * Get the list OF billingPermissions a caller has on a billing account.
      *
      * @return the value value
      */
-    public List<BillingPermissions> value() {
+    public List<BillingPermissionsProperties> value() {
         return this.value;
     }
 

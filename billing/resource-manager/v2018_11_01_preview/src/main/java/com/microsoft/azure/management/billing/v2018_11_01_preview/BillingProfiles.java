@@ -17,6 +17,15 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface BillingProfiles extends HasInner<BillingProfilesInner> {
     /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BillingProfileListResult> listByBillingAccountNameAsync(String billingAccountName);
+
+    /**
      * Get the billing profile by id.
      *
      * @param billingAccountName billing Account Id.

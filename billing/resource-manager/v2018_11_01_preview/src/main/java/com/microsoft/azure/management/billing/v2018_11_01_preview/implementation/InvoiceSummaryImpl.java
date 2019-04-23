@@ -9,41 +9,24 @@
 package com.microsoft.azure.management.billing.v2018_11_01_preview.implementation;
 
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSummary;
-import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
-import rx.Observable;
+import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Amount;
 import java.util.List;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.DownloadProperties;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentProperties;
 
-class InvoiceSummaryImpl extends IndexableRefreshableWrapperImpl<InvoiceSummary, InvoiceSummaryInner> implements InvoiceSummary {
+class InvoiceSummaryImpl extends WrapperImpl<InvoiceSummaryInner> implements InvoiceSummary {
     private final BillingManager manager;
-    private String billingAccountName;
-    private String billingProfileName;
-    private String invoiceName;
-
-    InvoiceSummaryImpl(InvoiceSummaryInner inner,  BillingManager manager) {
-        super(null, inner);
+    InvoiceSummaryImpl(InvoiceSummaryInner inner, BillingManager manager) {
+        super(inner);
         this.manager = manager;
-        // set resource ancestor and positional variables
-        this.billingAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
-        this.billingProfileName = IdParsingUtils.getValueFromIdByName(inner.id(), "billingProfiles");
-        this.invoiceName = IdParsingUtils.getValueFromIdByName(inner.id(), "invoices");
     }
 
     @Override
     public BillingManager manager() {
         return this.manager;
     }
-
-    @Override
-    protected Observable<InvoiceSummaryInner> getInnerAsync() {
-        InvoicesInner client = this.manager().inner().invoices();
-        return client.getAsync(this.billingAccountName, this.billingProfileName, this.invoiceName);
-    }
-
-
 
     @Override
     public Amount amountDue() {

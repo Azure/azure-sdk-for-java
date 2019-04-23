@@ -56,6 +56,10 @@ public class BillingProfilesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface BillingProfilesService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles listByBillingAccountName" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles")
+        Observable<Response<ResponseBody>> listByBillingAccountName(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles get" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}")
         Observable<Response<ResponseBody>> get(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -68,6 +72,156 @@ public class BillingProfilesInner {
         @PUT("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}")
         Observable<Response<ResponseBody>> beginUpdate(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Body BillingProfileInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingProfileListResultInner object if successful.
+     */
+    public BillingProfileListResultInner listByBillingAccountName(String billingAccountName) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingProfileListResultInner> listByBillingAccountNameAsync(String billingAccountName, final ServiceCallback<BillingProfileListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByBillingAccountNameWithServiceResponseAsync(billingAccountName), serviceCallback);
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingProfileListResultInner object
+     */
+    public Observable<BillingProfileListResultInner> listByBillingAccountNameAsync(String billingAccountName) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName).map(new Func1<ServiceResponse<BillingProfileListResultInner>, BillingProfileListResultInner>() {
+            @Override
+            public BillingProfileListResultInner call(ServiceResponse<BillingProfileListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingProfileListResultInner object
+     */
+    public Observable<ServiceResponse<BillingProfileListResultInner>> listByBillingAccountNameWithServiceResponseAsync(String billingAccountName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String expand = null;
+        return service.listByBillingAccountName(billingAccountName, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingProfileListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BillingProfileListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BillingProfileListResultInner> clientResponse = listByBillingAccountNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param expand May be used to expand the invoiceSections.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingProfileListResultInner object if successful.
+     */
+    public BillingProfileListResultInner listByBillingAccountName(String billingAccountName, String expand) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName, expand).toBlocking().single().body();
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param expand May be used to expand the invoiceSections.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingProfileListResultInner> listByBillingAccountNameAsync(String billingAccountName, String expand, final ServiceCallback<BillingProfileListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByBillingAccountNameWithServiceResponseAsync(billingAccountName, expand), serviceCallback);
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param expand May be used to expand the invoiceSections.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingProfileListResultInner object
+     */
+    public Observable<BillingProfileListResultInner> listByBillingAccountNameAsync(String billingAccountName, String expand) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName, expand).map(new Func1<ServiceResponse<BillingProfileListResultInner>, BillingProfileListResultInner>() {
+            @Override
+            public BillingProfileListResultInner call(ServiceResponse<BillingProfileListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param expand May be used to expand the invoiceSections.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingProfileListResultInner object
+     */
+    public Observable<ServiceResponse<BillingProfileListResultInner>> listByBillingAccountNameWithServiceResponseAsync(String billingAccountName, String expand) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByBillingAccountName(billingAccountName, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingProfileListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BillingProfileListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BillingProfileListResultInner> clientResponse = listByBillingAccountNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<BillingProfileListResultInner> listByBillingAccountNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BillingProfileListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BillingProfileListResultInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
     }
 
     /**

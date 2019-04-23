@@ -17,7 +17,30 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Invoices extends HasInner<InvoicesInner> {
     /**
-     * Get the invoice by id.
+     * List of invoices for a billing account.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param periodStartDate Invoice period start date.
+     * @param periodEndDate Invoice period end date.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<InvoiceListResult> listByBillingAccountNameAsync(String billingAccountName, String periodStartDate, String periodEndDate);
+
+    /**
+     * List of invoices for a billing profile.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
+     * @param periodStartDate Invoice period start date.
+     * @param periodEndDate Invoice period end date.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<InvoiceListResult> listByBillingProfileAsync(String billingAccountName, String billingProfileName, String periodStartDate, String periodEndDate);
+
+    /**
+     * Get the invoice by name.
      *
      * @param billingAccountName billing Account Id.
      * @param billingProfileName Billing Profile Id.

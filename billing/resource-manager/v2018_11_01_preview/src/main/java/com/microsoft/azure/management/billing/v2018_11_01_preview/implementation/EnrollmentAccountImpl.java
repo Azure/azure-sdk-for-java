@@ -35,7 +35,7 @@ class EnrollmentAccountImpl extends IndexableRefreshableWrapperImpl<EnrollmentAc
     @Override
     protected Observable<EnrollmentAccountInner> getInnerAsync() {
         EnrollmentAccountsInner client = this.manager().inner().enrollmentAccounts();
-        return client.getByEnrollmentAccountAccountIdAsync(this.billingAccountName, this.enrollmentAccountName);
+        return client.getByEnrollmentAccountIdAsync(this.billingAccountName, this.enrollmentAccountName);
     }
 
 

@@ -10,14 +10,19 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionTransferHeaders;
+import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionsTransferHeaders;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ErrorResponseException;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.TransferBillingSubscriptionRequestProperties;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -26,6 +31,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -56,6 +62,18 @@ public class BillingSubscriptionsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface BillingSubscriptionsService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptions listByBillingAccountName" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions")
+        Observable<Response<ResponseBody>> listByBillingAccountName(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptions listByBillingProfileName" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingSubscriptions")
+        Observable<Response<ResponseBody>> listByBillingProfileName(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptions listByInvoiceSectionName" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/billingSubscriptions")
+        Observable<Response<ResponseBody>> listByInvoiceSectionName(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptions get" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/billingSubscriptions/{billingSubscriptionName}")
         Observable<Response<ResponseBody>> get(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Path("billingSubscriptionName") String billingSubscriptionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -68,6 +86,288 @@ public class BillingSubscriptionsInner {
         @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/billingSubscriptions/{billingSubscriptionName}/transfer")
         Observable<Response<ResponseBody>> beginTransfer(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Path("billingSubscriptionName") String billingSubscriptionName, @Header("accept-language") String acceptLanguage, @Body TransferBillingSubscriptionRequestProperties parameters, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptions listByBillingAccountNameNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByBillingAccountNameNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+    }
+
+    /**
+     * Lists billing subscriptions by billing account name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BillingSubscriptionSummaryInner&gt; object if successful.
+     */
+    public PagedList<BillingSubscriptionSummaryInner> listByBillingAccountName(final String billingAccountName) {
+        ServiceResponse<Page<BillingSubscriptionSummaryInner>> response = listByBillingAccountNameSinglePageAsync(billingAccountName).toBlocking().single();
+        return new PagedList<BillingSubscriptionSummaryInner>(response.body()) {
+            @Override
+            public Page<BillingSubscriptionSummaryInner> nextPage(String nextPageLink) {
+                return listByBillingAccountNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists billing subscriptions by billing account name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BillingSubscriptionSummaryInner>> listByBillingAccountNameAsync(final String billingAccountName, final ListOperationCallback<BillingSubscriptionSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByBillingAccountNameSinglePageAsync(billingAccountName),
+            new Func1<String, Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> call(String nextPageLink) {
+                    return listByBillingAccountNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists billing subscriptions by billing account name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BillingSubscriptionSummaryInner&gt; object
+     */
+    public Observable<Page<BillingSubscriptionSummaryInner>> listByBillingAccountNameAsync(final String billingAccountName) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName)
+            .map(new Func1<ServiceResponse<Page<BillingSubscriptionSummaryInner>>, Page<BillingSubscriptionSummaryInner>>() {
+                @Override
+                public Page<BillingSubscriptionSummaryInner> call(ServiceResponse<Page<BillingSubscriptionSummaryInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists billing subscriptions by billing account name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BillingSubscriptionSummaryInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> listByBillingAccountNameWithServiceResponseAsync(final String billingAccountName) {
+        return listByBillingAccountNameSinglePageAsync(billingAccountName)
+            .concatMap(new Func1<ServiceResponse<Page<BillingSubscriptionSummaryInner>>, Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> call(ServiceResponse<Page<BillingSubscriptionSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByBillingAccountNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists billing subscriptions by billing account name.
+     *
+    ServiceResponse<PageImpl<BillingSubscriptionSummaryInner>> * @param billingAccountName billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BillingSubscriptionSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> listByBillingAccountNameSinglePageAsync(final String billingAccountName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByBillingAccountName(billingAccountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BillingSubscriptionSummaryInner>> result = listByBillingAccountNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BillingSubscriptionSummaryInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BillingSubscriptionSummaryInner>> listByBillingAccountNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BillingSubscriptionSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BillingSubscriptionSummaryInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists billing subscriptions by billing profile name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingSubscriptionsListResultInner object if successful.
+     */
+    public BillingSubscriptionsListResultInner listByBillingProfileName(String billingAccountName, String billingProfileName) {
+        return listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists billing subscriptions by billing profile name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingSubscriptionsListResultInner> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName, final ServiceCallback<BillingSubscriptionsListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName), serviceCallback);
+    }
+
+    /**
+     * Lists billing subscriptions by billing profile name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingSubscriptionsListResultInner object
+     */
+    public Observable<BillingSubscriptionsListResultInner> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName) {
+        return listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName).map(new Func1<ServiceResponse<BillingSubscriptionsListResultInner>, BillingSubscriptionsListResultInner>() {
+            @Override
+            public BillingSubscriptionsListResultInner call(ServiceResponse<BillingSubscriptionsListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists billing subscriptions by billing profile name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingSubscriptionsListResultInner object
+     */
+    public Observable<ServiceResponse<BillingSubscriptionsListResultInner>> listByBillingProfileNameWithServiceResponseAsync(String billingAccountName, String billingProfileName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (billingProfileName == null) {
+            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByBillingProfileName(billingAccountName, billingProfileName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingSubscriptionsListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BillingSubscriptionsListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BillingSubscriptionsListResultInner> clientResponse = listByBillingProfileNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<BillingSubscriptionsListResultInner> listByBillingProfileNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BillingSubscriptionsListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BillingSubscriptionsListResultInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists billing subscription by invoice section name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingSubscriptionsListResultInner object if successful.
+     */
+    public BillingSubscriptionsListResultInner listByInvoiceSectionName(String billingAccountName, String invoiceSectionName) {
+        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists billing subscription by invoice section name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingSubscriptionsListResultInner> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, final ServiceCallback<BillingSubscriptionsListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName), serviceCallback);
+    }
+
+    /**
+     * Lists billing subscription by invoice section name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingSubscriptionsListResultInner object
+     */
+    public Observable<BillingSubscriptionsListResultInner> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName) {
+        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName).map(new Func1<ServiceResponse<BillingSubscriptionsListResultInner>, BillingSubscriptionsListResultInner>() {
+            @Override
+            public BillingSubscriptionsListResultInner call(ServiceResponse<BillingSubscriptionsListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists billing subscription by invoice section name.
+     *
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingSubscriptionsListResultInner object
+     */
+    public Observable<ServiceResponse<BillingSubscriptionsListResultInner>> listByInvoiceSectionNameWithServiceResponseAsync(String billingAccountName, String invoiceSectionName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
+        }
+        if (invoiceSectionName == null) {
+            throw new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByInvoiceSectionName(billingAccountName, invoiceSectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingSubscriptionsListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BillingSubscriptionsListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BillingSubscriptionsListResultInner> clientResponse = listByInvoiceSectionNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<BillingSubscriptionsListResultInner> listByInvoiceSectionNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BillingSubscriptionsListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BillingSubscriptionsListResultInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
     }
 
     /**
@@ -161,7 +461,7 @@ public class BillingSubscriptionsInner {
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -176,7 +476,7 @@ public class BillingSubscriptionsInner {
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -190,7 +490,7 @@ public class BillingSubscriptionsInner {
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -199,16 +499,16 @@ public class BillingSubscriptionsInner {
      * @return the observable for the request
      */
     public Observable<TransferBillingSubscriptionResultInner> transferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName) {
-        return transferWithServiceResponseAsync(billingAccountName, invoiceSectionName, billingSubscriptionName).map(new Func1<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>, TransferBillingSubscriptionResultInner>() {
+        return transferWithServiceResponseAsync(billingAccountName, invoiceSectionName, billingSubscriptionName).map(new Func1<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>, TransferBillingSubscriptionResultInner>() {
             @Override
-            public TransferBillingSubscriptionResultInner call(ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders> response) {
+            public TransferBillingSubscriptionResultInner call(ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -216,7 +516,7 @@ public class BillingSubscriptionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>> transferWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName) {
+    public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>> transferWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -230,10 +530,10 @@ public class BillingSubscriptionsInner {
         TransferBillingSubscriptionRequestProperties parameters = new TransferBillingSubscriptionRequestProperties();
         parameters.withDestinationInvoiceSectionId(null);
         Observable<Response<ResponseBody>> observable = service.transfer(billingAccountName, invoiceSectionName, billingSubscriptionName, this.client.acceptLanguage(), parameters, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<TransferBillingSubscriptionResultInner>() { }.getType(), BillingSubscriptionTransferHeaders.class);
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<TransferBillingSubscriptionResultInner>() { }.getType(), BillingSubscriptionsTransferHeaders.class);
     }
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -249,7 +549,7 @@ public class BillingSubscriptionsInner {
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -264,7 +564,7 @@ public class BillingSubscriptionsInner {
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -274,16 +574,16 @@ public class BillingSubscriptionsInner {
      * @return the observable for the request
      */
     public Observable<TransferBillingSubscriptionResultInner> transferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName, String destinationInvoiceSectionId) {
-        return transferWithServiceResponseAsync(billingAccountName, invoiceSectionName, billingSubscriptionName, destinationInvoiceSectionId).map(new Func1<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>, TransferBillingSubscriptionResultInner>() {
+        return transferWithServiceResponseAsync(billingAccountName, invoiceSectionName, billingSubscriptionName, destinationInvoiceSectionId).map(new Func1<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>, TransferBillingSubscriptionResultInner>() {
             @Override
-            public TransferBillingSubscriptionResultInner call(ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders> response) {
+            public TransferBillingSubscriptionResultInner call(ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -292,7 +592,7 @@ public class BillingSubscriptionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>> transferWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName, String destinationInvoiceSectionId) {
+    public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>> transferWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName, String destinationInvoiceSectionId) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -305,11 +605,11 @@ public class BillingSubscriptionsInner {
         TransferBillingSubscriptionRequestProperties parameters = new TransferBillingSubscriptionRequestProperties();
         parameters.withDestinationInvoiceSectionId(destinationInvoiceSectionId);
         Observable<Response<ResponseBody>> observable = service.transfer(billingAccountName, invoiceSectionName, billingSubscriptionName, this.client.acceptLanguage(), parameters, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<TransferBillingSubscriptionResultInner>() { }.getType(), BillingSubscriptionTransferHeaders.class);
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<TransferBillingSubscriptionResultInner>() { }.getType(), BillingSubscriptionsTransferHeaders.class);
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -324,7 +624,7 @@ public class BillingSubscriptionsInner {
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -338,7 +638,7 @@ public class BillingSubscriptionsInner {
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -347,16 +647,16 @@ public class BillingSubscriptionsInner {
      * @return the observable to the TransferBillingSubscriptionResultInner object
      */
     public Observable<TransferBillingSubscriptionResultInner> beginTransferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName) {
-        return beginTransferWithServiceResponseAsync(billingAccountName, invoiceSectionName, billingSubscriptionName).map(new Func1<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>, TransferBillingSubscriptionResultInner>() {
+        return beginTransferWithServiceResponseAsync(billingAccountName, invoiceSectionName, billingSubscriptionName).map(new Func1<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>, TransferBillingSubscriptionResultInner>() {
             @Override
-            public TransferBillingSubscriptionResultInner call(ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders> response) {
+            public TransferBillingSubscriptionResultInner call(ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -364,7 +664,7 @@ public class BillingSubscriptionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TransferBillingSubscriptionResultInner object
      */
-    public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>> beginTransferWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName) {
+    public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>> beginTransferWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -378,11 +678,11 @@ public class BillingSubscriptionsInner {
         TransferBillingSubscriptionRequestProperties parameters = new TransferBillingSubscriptionRequestProperties();
         parameters.withDestinationInvoiceSectionId(null);
         return service.beginTransfer(billingAccountName, invoiceSectionName, billingSubscriptionName, this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders> clientResponse = beginTransferDelegate(response);
+                        ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders> clientResponse = beginTransferDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -392,7 +692,7 @@ public class BillingSubscriptionsInner {
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -408,7 +708,7 @@ public class BillingSubscriptionsInner {
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -423,7 +723,7 @@ public class BillingSubscriptionsInner {
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -433,16 +733,16 @@ public class BillingSubscriptionsInner {
      * @return the observable to the TransferBillingSubscriptionResultInner object
      */
     public Observable<TransferBillingSubscriptionResultInner> beginTransferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName, String destinationInvoiceSectionId) {
-        return beginTransferWithServiceResponseAsync(billingAccountName, invoiceSectionName, billingSubscriptionName, destinationInvoiceSectionId).map(new Func1<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>, TransferBillingSubscriptionResultInner>() {
+        return beginTransferWithServiceResponseAsync(billingAccountName, invoiceSectionName, billingSubscriptionName, destinationInvoiceSectionId).map(new Func1<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>, TransferBillingSubscriptionResultInner>() {
             @Override
-            public TransferBillingSubscriptionResultInner call(ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders> response) {
+            public TransferBillingSubscriptionResultInner call(ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Transfers the GTM subscription from one invoice section to another within a billing account.
+     * Transfers the subscription from one invoice section to another within a billing account.
      *
      * @param billingAccountName billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
@@ -451,7 +751,7 @@ public class BillingSubscriptionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TransferBillingSubscriptionResultInner object
      */
-    public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>> beginTransferWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName, String destinationInvoiceSectionId) {
+    public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>> beginTransferWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName, String destinationInvoiceSectionId) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -464,11 +764,11 @@ public class BillingSubscriptionsInner {
         TransferBillingSubscriptionRequestProperties parameters = new TransferBillingSubscriptionRequestProperties();
         parameters.withDestinationInvoiceSectionId(destinationInvoiceSectionId);
         return service.beginTransfer(billingAccountName, invoiceSectionName, billingSubscriptionName, this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders> clientResponse = beginTransferDelegate(response);
+                        ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders> clientResponse = beginTransferDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -477,12 +777,123 @@ public class BillingSubscriptionsInner {
             });
     }
 
-    private ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionTransferHeaders> beginTransferDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponseWithHeaders<TransferBillingSubscriptionResultInner, BillingSubscriptionsTransferHeaders> beginTransferDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<TransferBillingSubscriptionResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TransferBillingSubscriptionResultInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
-                .buildWithHeaders(response, BillingSubscriptionTransferHeaders.class);
+                .buildWithHeaders(response, BillingSubscriptionsTransferHeaders.class);
+    }
+
+    /**
+     * Lists billing subscriptions by billing account name.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BillingSubscriptionSummaryInner&gt; object if successful.
+     */
+    public PagedList<BillingSubscriptionSummaryInner> listByBillingAccountNameNext(final String nextPageLink) {
+        ServiceResponse<Page<BillingSubscriptionSummaryInner>> response = listByBillingAccountNameNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<BillingSubscriptionSummaryInner>(response.body()) {
+            @Override
+            public Page<BillingSubscriptionSummaryInner> nextPage(String nextPageLink) {
+                return listByBillingAccountNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists billing subscriptions by billing account name.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BillingSubscriptionSummaryInner>> listByBillingAccountNameNextAsync(final String nextPageLink, final ServiceFuture<List<BillingSubscriptionSummaryInner>> serviceFuture, final ListOperationCallback<BillingSubscriptionSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByBillingAccountNameNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> call(String nextPageLink) {
+                    return listByBillingAccountNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists billing subscriptions by billing account name.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BillingSubscriptionSummaryInner&gt; object
+     */
+    public Observable<Page<BillingSubscriptionSummaryInner>> listByBillingAccountNameNextAsync(final String nextPageLink) {
+        return listByBillingAccountNameNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BillingSubscriptionSummaryInner>>, Page<BillingSubscriptionSummaryInner>>() {
+                @Override
+                public Page<BillingSubscriptionSummaryInner> call(ServiceResponse<Page<BillingSubscriptionSummaryInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists billing subscriptions by billing account name.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BillingSubscriptionSummaryInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> listByBillingAccountNameNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByBillingAccountNameNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<BillingSubscriptionSummaryInner>>, Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> call(ServiceResponse<Page<BillingSubscriptionSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByBillingAccountNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists billing subscriptions by billing account name.
+     *
+    ServiceResponse<PageImpl<BillingSubscriptionSummaryInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BillingSubscriptionSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> listByBillingAccountNameNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByBillingAccountNameNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BillingSubscriptionSummaryInner>> result = listByBillingAccountNameNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BillingSubscriptionSummaryInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BillingSubscriptionSummaryInner>> listByBillingAccountNameNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BillingSubscriptionSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BillingSubscriptionSummaryInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
     }
 
 }

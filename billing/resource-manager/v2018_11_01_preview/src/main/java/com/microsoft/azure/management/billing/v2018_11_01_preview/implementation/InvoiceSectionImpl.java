@@ -60,7 +60,7 @@ class InvoiceSectionImpl extends CreatableUpdatableImpl<InvoiceSection, InvoiceS
     @Override
     protected Observable<InvoiceSectionInner> getInnerAsync() {
         InvoiceSectionsInner client = this.manager().inner().invoiceSections();
-        return null; // NOP getInnerAsync implementation as get is not supported
+        return client.getAsync(this.billingAccountName, this.invoiceSectionName);
     }
 
     @Override

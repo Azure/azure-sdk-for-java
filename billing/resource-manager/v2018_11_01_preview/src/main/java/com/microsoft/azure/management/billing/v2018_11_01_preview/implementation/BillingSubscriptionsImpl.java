@@ -13,8 +13,10 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptions;
 import rx.Observable;
 import rx.functions.Func1;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionsListResult;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionSummary;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.TransferBillingSubscriptionResult;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionBillingAccountBillingSubscriptionSummary;
 
 class BillingSubscriptionsImpl extends WrapperImpl<BillingSubscriptionsInner> implements BillingSubscriptions {
     private final BillingManager manager;
@@ -28,8 +30,44 @@ class BillingSubscriptionsImpl extends WrapperImpl<BillingSubscriptionsInner> im
         return this.manager;
     }
 
-    private InvoiceSectionBillingAccountBillingSubscriptionSummaryImpl wrapModel(BillingSubscriptionSummaryInner inner) {
-        return  new InvoiceSectionBillingAccountBillingSubscriptionSummaryImpl(inner, manager());
+    private BillingSubscriptionSummaryImpl wrapModel(BillingSubscriptionSummaryInner inner) {
+        return  new BillingSubscriptionSummaryImpl(inner, manager());
+    }
+
+    @Override
+    public Observable<BillingSubscriptionsListResult> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName) {
+        BillingSubscriptionsInner client = this.inner();
+        return client.listByBillingProfileNameAsync(billingAccountName, billingProfileName)
+        .map(new Func1<BillingSubscriptionsListResultInner, BillingSubscriptionsListResult>() {
+            @Override
+            public BillingSubscriptionsListResult call(BillingSubscriptionsListResultInner inner) {
+                return new BillingSubscriptionsListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<BillingSubscriptionsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName) {
+        BillingSubscriptionsInner client = this.inner();
+        return client.listByInvoiceSectionNameAsync(billingAccountName, invoiceSectionName)
+        .map(new Func1<BillingSubscriptionsListResultInner, BillingSubscriptionsListResult>() {
+            @Override
+            public BillingSubscriptionsListResult call(BillingSubscriptionsListResultInner inner) {
+                return new BillingSubscriptionsListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<BillingSubscriptionSummary> getAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName) {
+        BillingSubscriptionsInner client = this.inner();
+        return client.getAsync(billingAccountName, invoiceSectionName, billingSubscriptionName)
+        .map(new Func1<BillingSubscriptionSummaryInner, BillingSubscriptionSummary>() {
+            @Override
+            public BillingSubscriptionSummary call(BillingSubscriptionSummaryInner inner) {
+                return new BillingSubscriptionSummaryImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -45,15 +83,21 @@ class BillingSubscriptionsImpl extends WrapperImpl<BillingSubscriptionsInner> im
     }
 
     @Override
-    public Observable<InvoiceSectionBillingAccountBillingSubscriptionSummary> getAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName) {
+    public Observable<BillingSubscriptionSummary> listByBillingAccountNameAsync(final String billingAccountName) {
         BillingSubscriptionsInner client = this.inner();
-        return client.getAsync(billingAccountName, invoiceSectionName, billingSubscriptionName)
-        .map(new Func1<BillingSubscriptionSummaryInner, InvoiceSectionBillingAccountBillingSubscriptionSummary>() {
+        return client.listByBillingAccountNameAsync(billingAccountName)
+        .flatMapIterable(new Func1<Page<BillingSubscriptionSummaryInner>, Iterable<BillingSubscriptionSummaryInner>>() {
             @Override
-            public InvoiceSectionBillingAccountBillingSubscriptionSummary call(BillingSubscriptionSummaryInner inner) {
+            public Iterable<BillingSubscriptionSummaryInner> call(Page<BillingSubscriptionSummaryInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<BillingSubscriptionSummaryInner, BillingSubscriptionSummary>() {
+            @Override
+            public BillingSubscriptionSummary call(BillingSubscriptionSummaryInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
 }

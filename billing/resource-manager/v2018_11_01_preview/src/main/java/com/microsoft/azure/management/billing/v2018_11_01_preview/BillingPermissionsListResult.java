@@ -21,6 +21,6 @@ public interface BillingPermissionsListResult extends HasInner<BillingPermission
     /**
      * @return the value value.
      */
-    List<BillingPermissions> value();
+    List<BillingPermissionsProperties> value();
 
 }

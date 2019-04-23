@@ -11,9 +11,9 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections;
-import rx.Completable;
-import rx.functions.Func1;
 import rx.Observable;
+import rx.functions.Func1;
+import rx.Completable;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionListResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSection;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionProperties;
@@ -35,6 +35,18 @@ class InvoiceSectionsImpl extends WrapperImpl<InvoiceSectionsInner> implements I
     }
 
     @Override
+    public Observable<InvoiceSectionListResult> listByBillingAccountNameAsync(String billingAccountName) {
+        InvoiceSectionsInner client = this.inner();
+        return client.listByBillingAccountNameAsync(billingAccountName)
+        .map(new Func1<InvoiceSectionListResultInner, InvoiceSectionListResult>() {
+            @Override
+            public InvoiceSectionListResult call(InvoiceSectionListResultInner inner) {
+                return new InvoiceSectionListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<InvoiceSectionListResult> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName) {
         InvoiceSectionsInner client = this.inner();
         return client.listByBillingProfileNameAsync(billingAccountName, billingProfileName)
@@ -47,21 +59,21 @@ class InvoiceSectionsImpl extends WrapperImpl<InvoiceSectionsInner> implements I
     }
 
     @Override
+    public Completable elevateToBillingProfileAsync(String billingAccountName, String invoiceSectionName) {
+        InvoiceSectionsInner client = this.inner();
+        return client.elevateToBillingProfileAsync(billingAccountName, invoiceSectionName).toCompletable();
+    }
+
+    @Override
     public Observable<InvoiceSection> getAsync(String billingAccountName, String invoiceSectionName) {
         InvoiceSectionsInner client = this.inner();
         return client.getAsync(billingAccountName, invoiceSectionName)
         .map(new Func1<InvoiceSectionInner, InvoiceSection>() {
             @Override
             public InvoiceSection call(InvoiceSectionInner inner) {
-                return new InvoiceSectionImpl(inner, manager());
+                return wrapModel(inner);
             }
-        });
-    }
-
-    @Override
-    public Completable elevateToBillingProfileAsync(String billingAccountName, String invoiceSectionName) {
-        InvoiceSectionsInner client = this.inner();
-        return client.elevateToBillingProfileAsync(billingAccountName, invoiceSectionName).toCompletable();
+       });
     }
 
     @Override
@@ -72,6 +84,18 @@ class InvoiceSectionsImpl extends WrapperImpl<InvoiceSectionsInner> implements I
             @Override
             public InvoiceSection call(InvoiceSectionInner inner) {
                 return new InvoiceSectionImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<InvoiceSectionListResult> listByCreateSubscriptionPermissionAsync(String billingAccountName) {
+        InvoiceSectionsInner client = this.inner();
+        return client.listByCreateSubscriptionPermissionAsync(billingAccountName)
+        .map(new Func1<InvoiceSectionListResultInner, InvoiceSectionListResult>() {
+            @Override
+            public InvoiceSectionListResult call(InvoiceSectionListResultInner inner) {
+                return new InvoiceSectionListResultImpl(inner, manager());
             }
         });
     }

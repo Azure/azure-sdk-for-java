@@ -8,35 +8,15 @@
 
 package com.microsoft.azure.management.billing.v2018_11_01_preview.implementation;
 
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.ErrorResponseException;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.UpdateAutoRenew;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.UpdateAutoRenewRequest;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
 
 /**
  * Initializes a new instance of the BillingManagementClientImpl class.
  */
 public class BillingManagementClientImpl extends AzureServiceClient {
-    /** The Retrofit service to perform REST calls. */
-    private BillingManagementClientService service;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -166,42 +146,29 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The AvailableBalanceByBillingProfilesInner object to access its operations.
+     * The AvailableBalancesInner object to access its operations.
      */
-    private AvailableBalanceByBillingProfilesInner availableBalanceByBillingProfiles;
+    private AvailableBalancesInner availableBalances;
 
     /**
-     * Gets the AvailableBalanceByBillingProfilesInner object to access its operations.
-     * @return the AvailableBalanceByBillingProfilesInner object.
+     * Gets the AvailableBalancesInner object to access its operations.
+     * @return the AvailableBalancesInner object.
      */
-    public AvailableBalanceByBillingProfilesInner availableBalanceByBillingProfiles() {
-        return this.availableBalanceByBillingProfiles;
+    public AvailableBalancesInner availableBalances() {
+        return this.availableBalances;
     }
 
     /**
-     * The PaymentMethodsByBillingProfilesInner object to access its operations.
+     * The PaymentMethodsInner object to access its operations.
      */
-    private PaymentMethodsByBillingProfilesInner paymentMethodsByBillingProfiles;
+    private PaymentMethodsInner paymentMethods;
 
     /**
-     * Gets the PaymentMethodsByBillingProfilesInner object to access its operations.
-     * @return the PaymentMethodsByBillingProfilesInner object.
+     * Gets the PaymentMethodsInner object to access its operations.
+     * @return the PaymentMethodsInner object.
      */
-    public PaymentMethodsByBillingProfilesInner paymentMethodsByBillingProfiles() {
-        return this.paymentMethodsByBillingProfiles;
-    }
-
-    /**
-     * The BillingProfilesByBillingAccountNamesInner object to access its operations.
-     */
-    private BillingProfilesByBillingAccountNamesInner billingProfilesByBillingAccountNames;
-
-    /**
-     * Gets the BillingProfilesByBillingAccountNamesInner object to access its operations.
-     * @return the BillingProfilesByBillingAccountNamesInner object.
-     */
-    public BillingProfilesByBillingAccountNamesInner billingProfilesByBillingAccountNames() {
-        return this.billingProfilesByBillingAccountNames;
+    public PaymentMethodsInner paymentMethods() {
+        return this.paymentMethods;
     }
 
     /**
@@ -218,19 +185,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The InvoiceSectionsByBillingAccountNamesInner object to access its operations.
-     */
-    private InvoiceSectionsByBillingAccountNamesInner invoiceSectionsByBillingAccountNames;
-
-    /**
-     * Gets the InvoiceSectionsByBillingAccountNamesInner object to access its operations.
-     * @return the InvoiceSectionsByBillingAccountNamesInner object.
-     */
-    public InvoiceSectionsByBillingAccountNamesInner invoiceSectionsByBillingAccountNames() {
-        return this.invoiceSectionsByBillingAccountNames;
-    }
-
-    /**
      * The InvoiceSectionsInner object to access its operations.
      */
     private InvoiceSectionsInner invoiceSections;
@@ -241,32 +195,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      */
     public InvoiceSectionsInner invoiceSections() {
         return this.invoiceSections;
-    }
-
-    /**
-     * The InvoiceSectionsWithCreateSubscriptionPermissionsInner object to access its operations.
-     */
-    private InvoiceSectionsWithCreateSubscriptionPermissionsInner invoiceSectionsWithCreateSubscriptionPermissions;
-
-    /**
-     * Gets the InvoiceSectionsWithCreateSubscriptionPermissionsInner object to access its operations.
-     * @return the InvoiceSectionsWithCreateSubscriptionPermissionsInner object.
-     */
-    public InvoiceSectionsWithCreateSubscriptionPermissionsInner invoiceSectionsWithCreateSubscriptionPermissions() {
-        return this.invoiceSectionsWithCreateSubscriptionPermissions;
-    }
-
-    /**
-     * The DepartmentsByBillingAccountNamesInner object to access its operations.
-     */
-    private DepartmentsByBillingAccountNamesInner departmentsByBillingAccountNames;
-
-    /**
-     * Gets the DepartmentsByBillingAccountNamesInner object to access its operations.
-     * @return the DepartmentsByBillingAccountNamesInner object.
-     */
-    public DepartmentsByBillingAccountNamesInner departmentsByBillingAccountNames() {
-        return this.departmentsByBillingAccountNames;
     }
 
     /**
@@ -283,19 +211,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The EnrollmentAccountsByBillingAccountNamesInner object to access its operations.
-     */
-    private EnrollmentAccountsByBillingAccountNamesInner enrollmentAccountsByBillingAccountNames;
-
-    /**
-     * Gets the EnrollmentAccountsByBillingAccountNamesInner object to access its operations.
-     * @return the EnrollmentAccountsByBillingAccountNamesInner object.
-     */
-    public EnrollmentAccountsByBillingAccountNamesInner enrollmentAccountsByBillingAccountNames() {
-        return this.enrollmentAccountsByBillingAccountNames;
-    }
-
-    /**
      * The EnrollmentAccountsInner object to access its operations.
      */
     private EnrollmentAccountsInner enrollmentAccounts;
@@ -306,45 +221,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      */
     public EnrollmentAccountsInner enrollmentAccounts() {
         return this.enrollmentAccounts;
-    }
-
-    /**
-     * The InvoicesByBillingAccountsInner object to access its operations.
-     */
-    private InvoicesByBillingAccountsInner invoicesByBillingAccounts;
-
-    /**
-     * Gets the InvoicesByBillingAccountsInner object to access its operations.
-     * @return the InvoicesByBillingAccountsInner object.
-     */
-    public InvoicesByBillingAccountsInner invoicesByBillingAccounts() {
-        return this.invoicesByBillingAccounts;
-    }
-
-    /**
-     * The InvoicePricesheetsInner object to access its operations.
-     */
-    private InvoicePricesheetsInner invoicePricesheets;
-
-    /**
-     * Gets the InvoicePricesheetsInner object to access its operations.
-     * @return the InvoicePricesheetsInner object.
-     */
-    public InvoicePricesheetsInner invoicePricesheets() {
-        return this.invoicePricesheets;
-    }
-
-    /**
-     * The InvoicesByBillingProfilesInner object to access its operations.
-     */
-    private InvoicesByBillingProfilesInner invoicesByBillingProfiles;
-
-    /**
-     * Gets the InvoicesByBillingProfilesInner object to access its operations.
-     * @return the InvoicesByBillingProfilesInner object.
-     */
-    public InvoicesByBillingProfilesInner invoicesByBillingProfiles() {
-        return this.invoicesByBillingProfiles;
     }
 
     /**
@@ -361,42 +237,16 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ProductsByBillingSubscriptionsInner object to access its operations.
+     * The PriceSheetsInner object to access its operations.
      */
-    private ProductsByBillingSubscriptionsInner productsByBillingSubscriptions;
+    private PriceSheetsInner priceSheets;
 
     /**
-     * Gets the ProductsByBillingSubscriptionsInner object to access its operations.
-     * @return the ProductsByBillingSubscriptionsInner object.
+     * Gets the PriceSheetsInner object to access its operations.
+     * @return the PriceSheetsInner object.
      */
-    public ProductsByBillingSubscriptionsInner productsByBillingSubscriptions() {
-        return this.productsByBillingSubscriptions;
-    }
-
-    /**
-     * The BillingSubscriptionsByBillingProfilesInner object to access its operations.
-     */
-    private BillingSubscriptionsByBillingProfilesInner billingSubscriptionsByBillingProfiles;
-
-    /**
-     * Gets the BillingSubscriptionsByBillingProfilesInner object to access its operations.
-     * @return the BillingSubscriptionsByBillingProfilesInner object.
-     */
-    public BillingSubscriptionsByBillingProfilesInner billingSubscriptionsByBillingProfiles() {
-        return this.billingSubscriptionsByBillingProfiles;
-    }
-
-    /**
-     * The BillingSubscriptionsByInvoiceSectionsInner object to access its operations.
-     */
-    private BillingSubscriptionsByInvoiceSectionsInner billingSubscriptionsByInvoiceSections;
-
-    /**
-     * Gets the BillingSubscriptionsByInvoiceSectionsInner object to access its operations.
-     * @return the BillingSubscriptionsByInvoiceSectionsInner object.
-     */
-    public BillingSubscriptionsByInvoiceSectionsInner billingSubscriptionsByInvoiceSections() {
-        return this.billingSubscriptionsByInvoiceSections;
+    public PriceSheetsInner priceSheets() {
+        return this.priceSheets;
     }
 
     /**
@@ -413,32 +263,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ProductsByBillingAccountsInner object to access its operations.
-     */
-    private ProductsByBillingAccountsInner productsByBillingAccounts;
-
-    /**
-     * Gets the ProductsByBillingAccountsInner object to access its operations.
-     * @return the ProductsByBillingAccountsInner object.
-     */
-    public ProductsByBillingAccountsInner productsByBillingAccounts() {
-        return this.productsByBillingAccounts;
-    }
-
-    /**
-     * The ProductsByInvoiceSectionsInner object to access its operations.
-     */
-    private ProductsByInvoiceSectionsInner productsByInvoiceSections;
-
-    /**
-     * Gets the ProductsByInvoiceSectionsInner object to access its operations.
-     * @return the ProductsByInvoiceSectionsInner object.
-     */
-    public ProductsByInvoiceSectionsInner productsByInvoiceSections() {
-        return this.productsByInvoiceSections;
-    }
-
-    /**
      * The ProductsInner object to access its operations.
      */
     private ProductsInner products;
@@ -452,55 +276,29 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The TransactionsByBillingAccountsInner object to access its operations.
+     * The TransactionsInner object to access its operations.
      */
-    private TransactionsByBillingAccountsInner transactionsByBillingAccounts;
+    private TransactionsInner transactions;
 
     /**
-     * Gets the TransactionsByBillingAccountsInner object to access its operations.
-     * @return the TransactionsByBillingAccountsInner object.
+     * Gets the TransactionsInner object to access its operations.
+     * @return the TransactionsInner object.
      */
-    public TransactionsByBillingAccountsInner transactionsByBillingAccounts() {
-        return this.transactionsByBillingAccounts;
+    public TransactionsInner transactions() {
+        return this.transactions;
     }
 
     /**
-     * The TransactionsByBillingProfilesInner object to access its operations.
+     * The PoliciesInner object to access its operations.
      */
-    private TransactionsByBillingProfilesInner transactionsByBillingProfiles;
+    private PoliciesInner policies;
 
     /**
-     * Gets the TransactionsByBillingProfilesInner object to access its operations.
-     * @return the TransactionsByBillingProfilesInner object.
+     * Gets the PoliciesInner object to access its operations.
+     * @return the PoliciesInner object.
      */
-    public TransactionsByBillingProfilesInner transactionsByBillingProfiles() {
-        return this.transactionsByBillingProfiles;
-    }
-
-    /**
-     * The TransactionsByInvoiceSectionsInner object to access its operations.
-     */
-    private TransactionsByInvoiceSectionsInner transactionsByInvoiceSections;
-
-    /**
-     * Gets the TransactionsByInvoiceSectionsInner object to access its operations.
-     * @return the TransactionsByInvoiceSectionsInner object.
-     */
-    public TransactionsByInvoiceSectionsInner transactionsByInvoiceSections() {
-        return this.transactionsByInvoiceSections;
-    }
-
-    /**
-     * The PolicysInner object to access its operations.
-     */
-    private PolicysInner policys;
-
-    /**
-     * Gets the PolicysInner object to access its operations.
-     * @return the PolicysInner object.
-     */
-    public PolicysInner policys() {
-        return this.policys;
+    public PoliciesInner policies() {
+        return this.policies;
     }
 
     /**
@@ -556,120 +354,42 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The BillingAccountBillingPermissionsInner object to access its operations.
+     * The BillingPermissionsInner object to access its operations.
      */
-    private BillingAccountBillingPermissionsInner billingAccountBillingPermissions;
+    private BillingPermissionsInner billingPermissions;
 
     /**
-     * Gets the BillingAccountBillingPermissionsInner object to access its operations.
-     * @return the BillingAccountBillingPermissionsInner object.
+     * Gets the BillingPermissionsInner object to access its operations.
+     * @return the BillingPermissionsInner object.
      */
-    public BillingAccountBillingPermissionsInner billingAccountBillingPermissions() {
-        return this.billingAccountBillingPermissions;
+    public BillingPermissionsInner billingPermissions() {
+        return this.billingPermissions;
     }
 
     /**
-     * The InvoiceSectionsBillingPermissionsInner object to access its operations.
+     * The BillingRoleDefinitionsInner object to access its operations.
      */
-    private InvoiceSectionsBillingPermissionsInner invoiceSectionsBillingPermissions;
+    private BillingRoleDefinitionsInner billingRoleDefinitions;
 
     /**
-     * Gets the InvoiceSectionsBillingPermissionsInner object to access its operations.
-     * @return the InvoiceSectionsBillingPermissionsInner object.
+     * Gets the BillingRoleDefinitionsInner object to access its operations.
+     * @return the BillingRoleDefinitionsInner object.
      */
-    public InvoiceSectionsBillingPermissionsInner invoiceSectionsBillingPermissions() {
-        return this.invoiceSectionsBillingPermissions;
+    public BillingRoleDefinitionsInner billingRoleDefinitions() {
+        return this.billingRoleDefinitions;
     }
 
     /**
-     * The BillingProfileBillingPermissionsInner object to access its operations.
+     * The BillingRoleAssignmentsInner object to access its operations.
      */
-    private BillingProfileBillingPermissionsInner billingProfileBillingPermissions;
+    private BillingRoleAssignmentsInner billingRoleAssignments;
 
     /**
-     * Gets the BillingProfileBillingPermissionsInner object to access its operations.
-     * @return the BillingProfileBillingPermissionsInner object.
+     * Gets the BillingRoleAssignmentsInner object to access its operations.
+     * @return the BillingRoleAssignmentsInner object.
      */
-    public BillingProfileBillingPermissionsInner billingProfileBillingPermissions() {
-        return this.billingProfileBillingPermissions;
-    }
-
-    /**
-     * The BillingAccountBillingRoleDefinitionsInner object to access its operations.
-     */
-    private BillingAccountBillingRoleDefinitionsInner billingAccountBillingRoleDefinitions;
-
-    /**
-     * Gets the BillingAccountBillingRoleDefinitionsInner object to access its operations.
-     * @return the BillingAccountBillingRoleDefinitionsInner object.
-     */
-    public BillingAccountBillingRoleDefinitionsInner billingAccountBillingRoleDefinitions() {
-        return this.billingAccountBillingRoleDefinitions;
-    }
-
-    /**
-     * The InvoiceSectionBillingRoleDefinitionsInner object to access its operations.
-     */
-    private InvoiceSectionBillingRoleDefinitionsInner invoiceSectionBillingRoleDefinitions;
-
-    /**
-     * Gets the InvoiceSectionBillingRoleDefinitionsInner object to access its operations.
-     * @return the InvoiceSectionBillingRoleDefinitionsInner object.
-     */
-    public InvoiceSectionBillingRoleDefinitionsInner invoiceSectionBillingRoleDefinitions() {
-        return this.invoiceSectionBillingRoleDefinitions;
-    }
-
-    /**
-     * The BillingProfileBillingRoleDefinitionsInner object to access its operations.
-     */
-    private BillingProfileBillingRoleDefinitionsInner billingProfileBillingRoleDefinitions;
-
-    /**
-     * Gets the BillingProfileBillingRoleDefinitionsInner object to access its operations.
-     * @return the BillingProfileBillingRoleDefinitionsInner object.
-     */
-    public BillingProfileBillingRoleDefinitionsInner billingProfileBillingRoleDefinitions() {
-        return this.billingProfileBillingRoleDefinitions;
-    }
-
-    /**
-     * The BillingAccountBillingRoleAssignmentsInner object to access its operations.
-     */
-    private BillingAccountBillingRoleAssignmentsInner billingAccountBillingRoleAssignments;
-
-    /**
-     * Gets the BillingAccountBillingRoleAssignmentsInner object to access its operations.
-     * @return the BillingAccountBillingRoleAssignmentsInner object.
-     */
-    public BillingAccountBillingRoleAssignmentsInner billingAccountBillingRoleAssignments() {
-        return this.billingAccountBillingRoleAssignments;
-    }
-
-    /**
-     * The InvoiceSectionBillingRoleAssignmentsInner object to access its operations.
-     */
-    private InvoiceSectionBillingRoleAssignmentsInner invoiceSectionBillingRoleAssignments;
-
-    /**
-     * Gets the InvoiceSectionBillingRoleAssignmentsInner object to access its operations.
-     * @return the InvoiceSectionBillingRoleAssignmentsInner object.
-     */
-    public InvoiceSectionBillingRoleAssignmentsInner invoiceSectionBillingRoleAssignments() {
-        return this.invoiceSectionBillingRoleAssignments;
-    }
-
-    /**
-     * The BillingProfileBillingRoleAssignmentsInner object to access its operations.
-     */
-    private BillingProfileBillingRoleAssignmentsInner billingProfileBillingRoleAssignments;
-
-    /**
-     * Gets the BillingProfileBillingRoleAssignmentsInner object to access its operations.
-     * @return the BillingProfileBillingRoleAssignmentsInner object.
-     */
-    public BillingProfileBillingRoleAssignmentsInner billingProfileBillingRoleAssignments() {
-        return this.billingProfileBillingRoleAssignments;
+    public BillingRoleAssignmentsInner billingRoleAssignments() {
+        return this.billingRoleAssignments;
     }
 
     /**
@@ -721,48 +441,27 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.billingAccounts = new BillingAccountsInner(restClient().retrofit(), this);
-        this.availableBalanceByBillingProfiles = new AvailableBalanceByBillingProfilesInner(restClient().retrofit(), this);
-        this.paymentMethodsByBillingProfiles = new PaymentMethodsByBillingProfilesInner(restClient().retrofit(), this);
-        this.billingProfilesByBillingAccountNames = new BillingProfilesByBillingAccountNamesInner(restClient().retrofit(), this);
+        this.availableBalances = new AvailableBalancesInner(restClient().retrofit(), this);
+        this.paymentMethods = new PaymentMethodsInner(restClient().retrofit(), this);
         this.billingProfiles = new BillingProfilesInner(restClient().retrofit(), this);
-        this.invoiceSectionsByBillingAccountNames = new InvoiceSectionsByBillingAccountNamesInner(restClient().retrofit(), this);
         this.invoiceSections = new InvoiceSectionsInner(restClient().retrofit(), this);
-        this.invoiceSectionsWithCreateSubscriptionPermissions = new InvoiceSectionsWithCreateSubscriptionPermissionsInner(restClient().retrofit(), this);
-        this.departmentsByBillingAccountNames = new DepartmentsByBillingAccountNamesInner(restClient().retrofit(), this);
         this.departments = new DepartmentsInner(restClient().retrofit(), this);
-        this.enrollmentAccountsByBillingAccountNames = new EnrollmentAccountsByBillingAccountNamesInner(restClient().retrofit(), this);
         this.enrollmentAccounts = new EnrollmentAccountsInner(restClient().retrofit(), this);
-        this.invoicesByBillingAccounts = new InvoicesByBillingAccountsInner(restClient().retrofit(), this);
-        this.invoicePricesheets = new InvoicePricesheetsInner(restClient().retrofit(), this);
-        this.invoicesByBillingProfiles = new InvoicesByBillingProfilesInner(restClient().retrofit(), this);
         this.invoices = new InvoicesInner(restClient().retrofit(), this);
-        this.productsByBillingSubscriptions = new ProductsByBillingSubscriptionsInner(restClient().retrofit(), this);
-        this.billingSubscriptionsByBillingProfiles = new BillingSubscriptionsByBillingProfilesInner(restClient().retrofit(), this);
-        this.billingSubscriptionsByInvoiceSections = new BillingSubscriptionsByInvoiceSectionsInner(restClient().retrofit(), this);
+        this.priceSheets = new PriceSheetsInner(restClient().retrofit(), this);
         this.billingSubscriptions = new BillingSubscriptionsInner(restClient().retrofit(), this);
-        this.productsByBillingAccounts = new ProductsByBillingAccountsInner(restClient().retrofit(), this);
-        this.productsByInvoiceSections = new ProductsByInvoiceSectionsInner(restClient().retrofit(), this);
         this.products = new ProductsInner(restClient().retrofit(), this);
-        this.transactionsByBillingAccounts = new TransactionsByBillingAccountsInner(restClient().retrofit(), this);
-        this.transactionsByBillingProfiles = new TransactionsByBillingProfilesInner(restClient().retrofit(), this);
-        this.transactionsByInvoiceSections = new TransactionsByInvoiceSectionsInner(restClient().retrofit(), this);
-        this.policys = new PolicysInner(restClient().retrofit(), this);
+        this.transactions = new TransactionsInner(restClient().retrofit(), this);
+        this.policies = new PoliciesInner(restClient().retrofit(), this);
         this.billingPropertys = new BillingPropertysInner(restClient().retrofit(), this);
         this.transfers = new TransfersInner(restClient().retrofit(), this);
         this.recipientTransfers = new RecipientTransfersInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
-        this.billingAccountBillingPermissions = new BillingAccountBillingPermissionsInner(restClient().retrofit(), this);
-        this.invoiceSectionsBillingPermissions = new InvoiceSectionsBillingPermissionsInner(restClient().retrofit(), this);
-        this.billingProfileBillingPermissions = new BillingProfileBillingPermissionsInner(restClient().retrofit(), this);
-        this.billingAccountBillingRoleDefinitions = new BillingAccountBillingRoleDefinitionsInner(restClient().retrofit(), this);
-        this.invoiceSectionBillingRoleDefinitions = new InvoiceSectionBillingRoleDefinitionsInner(restClient().retrofit(), this);
-        this.billingProfileBillingRoleDefinitions = new BillingProfileBillingRoleDefinitionsInner(restClient().retrofit(), this);
-        this.billingAccountBillingRoleAssignments = new BillingAccountBillingRoleAssignmentsInner(restClient().retrofit(), this);
-        this.invoiceSectionBillingRoleAssignments = new InvoiceSectionBillingRoleAssignmentsInner(restClient().retrofit(), this);
-        this.billingProfileBillingRoleAssignments = new BillingProfileBillingRoleAssignmentsInner(restClient().retrofit(), this);
+        this.billingPermissions = new BillingPermissionsInner(restClient().retrofit(), this);
+        this.billingRoleDefinitions = new BillingRoleDefinitionsInner(restClient().retrofit(), this);
+        this.billingRoleAssignments = new BillingRoleAssignmentsInner(restClient().retrofit(), this);
         this.agreements = new AgreementsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
-        initializeService();
     }
 
     /**
@@ -774,374 +473,4 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "BillingManagementClient", "2018-11-01-preview");
     }
-
-    private void initializeService() {
-        service = restClient().retrofit().create(BillingManagementClientService.class);
-    }
-
-    /**
-     * The interface defining all the services for BillingManagementClient to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface BillingManagementClientService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingManagementClient updateAutoRenewForBillingAccount" })
-        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/updateAutoRenew")
-        Observable<Response<ResponseBody>> updateAutoRenewForBillingAccount(@Path("billingAccountName") String billingAccountName, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UpdateAutoRenewRequest body, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingManagementClient updateAutoRenewForInvoiceSection" })
-        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/products/{productName}/updateAutoRenew")
-        Observable<Response<ResponseBody>> updateAutoRenewForInvoiceSection(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UpdateAutoRenewRequest body, @Header("User-Agent") String userAgent);
-
-    }
-
-    /**
-     * Cancel product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param productName Invoice Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the UpdateAutoRenewOperationSummaryInner object if successful.
-     */
-    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForBillingAccount(String billingAccountName, String productName) {
-        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName).toBlocking().single().body();
-    }
-
-    /**
-     * Cancel product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param productName Invoice Id.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountName, String productName, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName), serviceCallback);
-    }
-
-    /**
-     * Cancel product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param productName Invoice Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UpdateAutoRenewOperationSummaryInner object
-     */
-    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountName, String productName) {
-        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
-            @Override
-            public UpdateAutoRenewOperationSummaryInner call(ServiceResponse<UpdateAutoRenewOperationSummaryInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Cancel product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param productName Invoice Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UpdateAutoRenewOperationSummaryInner object
-     */
-    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForBillingAccountWithServiceResponseAsync(String billingAccountName, String productName) {
-        if (billingAccountName == null) {
-            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
-        }
-        if (productName == null) {
-            throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final UpdateAutoRenew autoRenew = null;
-        UpdateAutoRenewRequest body = new UpdateAutoRenewRequest();
-        body.withAutoRenew(null);
-        return service.updateAutoRenewForBillingAccount(billingAccountName, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>>>() {
-                @Override
-                public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<UpdateAutoRenewOperationSummaryInner> clientResponse = updateAutoRenewForBillingAccountDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Cancel product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param productName Invoice Id.
-     * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the UpdateAutoRenewOperationSummaryInner object if successful.
-     */
-    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForBillingAccount(String billingAccountName, String productName, UpdateAutoRenew autoRenew) {
-        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName, autoRenew).toBlocking().single().body();
-    }
-
-    /**
-     * Cancel product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param productName Invoice Id.
-     * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountName, String productName, UpdateAutoRenew autoRenew, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName, autoRenew), serviceCallback);
-    }
-
-    /**
-     * Cancel product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param productName Invoice Id.
-     * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UpdateAutoRenewOperationSummaryInner object
-     */
-    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountName, String productName, UpdateAutoRenew autoRenew) {
-        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName, autoRenew).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
-            @Override
-            public UpdateAutoRenewOperationSummaryInner call(ServiceResponse<UpdateAutoRenewOperationSummaryInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Cancel product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param productName Invoice Id.
-     * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UpdateAutoRenewOperationSummaryInner object
-     */
-    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForBillingAccountWithServiceResponseAsync(String billingAccountName, String productName, UpdateAutoRenew autoRenew) {
-        if (billingAccountName == null) {
-            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
-        }
-        if (productName == null) {
-            throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        UpdateAutoRenewRequest body = new UpdateAutoRenewRequest();
-        body.withAutoRenew(autoRenew);
-        return service.updateAutoRenewForBillingAccount(billingAccountName, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>>>() {
-                @Override
-                public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<UpdateAutoRenewOperationSummaryInner> clientResponse = updateAutoRenewForBillingAccountDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<UpdateAutoRenewOperationSummaryInner, ErrorResponseException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<UpdateAutoRenewOperationSummaryInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Cancel auto renew for product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoice Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the UpdateAutoRenewOperationSummaryInner object if successful.
-     */
-    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForInvoiceSection(String billingAccountName, String invoiceSectionName, String productName) {
-        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName).toBlocking().single().body();
-    }
-
-    /**
-     * Cancel auto renew for product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoice Id.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountName, String invoiceSectionName, String productName, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName), serviceCallback);
-    }
-
-    /**
-     * Cancel auto renew for product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoice Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UpdateAutoRenewOperationSummaryInner object
-     */
-    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountName, String invoiceSectionName, String productName) {
-        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
-            @Override
-            public UpdateAutoRenewOperationSummaryInner call(ServiceResponse<UpdateAutoRenewOperationSummaryInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Cancel auto renew for product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoice Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UpdateAutoRenewOperationSummaryInner object
-     */
-    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForInvoiceSectionWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String productName) {
-        if (billingAccountName == null) {
-            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
-        }
-        if (invoiceSectionName == null) {
-            throw new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null.");
-        }
-        if (productName == null) {
-            throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final UpdateAutoRenew autoRenew = null;
-        UpdateAutoRenewRequest body = new UpdateAutoRenewRequest();
-        body.withAutoRenew(null);
-        return service.updateAutoRenewForInvoiceSection(billingAccountName, invoiceSectionName, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>>>() {
-                @Override
-                public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<UpdateAutoRenewOperationSummaryInner> clientResponse = updateAutoRenewForInvoiceSectionDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Cancel auto renew for product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoice Id.
-     * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the UpdateAutoRenewOperationSummaryInner object if successful.
-     */
-    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForInvoiceSection(String billingAccountName, String invoiceSectionName, String productName, UpdateAutoRenew autoRenew) {
-        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName, autoRenew).toBlocking().single().body();
-    }
-
-    /**
-     * Cancel auto renew for product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoice Id.
-     * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountName, String invoiceSectionName, String productName, UpdateAutoRenew autoRenew, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName, autoRenew), serviceCallback);
-    }
-
-    /**
-     * Cancel auto renew for product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoice Id.
-     * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UpdateAutoRenewOperationSummaryInner object
-     */
-    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountName, String invoiceSectionName, String productName, UpdateAutoRenew autoRenew) {
-        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName, autoRenew).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
-            @Override
-            public UpdateAutoRenewOperationSummaryInner call(ServiceResponse<UpdateAutoRenewOperationSummaryInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Cancel auto renew for product by product id.
-     *
-     * @param billingAccountName billing Account Id.
-     * @param invoiceSectionName InvoiceSection Id.
-     * @param productName Invoice Id.
-     * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UpdateAutoRenewOperationSummaryInner object
-     */
-    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForInvoiceSectionWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String productName, UpdateAutoRenew autoRenew) {
-        if (billingAccountName == null) {
-            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
-        }
-        if (invoiceSectionName == null) {
-            throw new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null.");
-        }
-        if (productName == null) {
-            throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        UpdateAutoRenewRequest body = new UpdateAutoRenewRequest();
-        body.withAutoRenew(autoRenew);
-        return service.updateAutoRenewForInvoiceSection(billingAccountName, invoiceSectionName, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>>>() {
-                @Override
-                public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<UpdateAutoRenewOperationSummaryInner> clientResponse = updateAutoRenewForInvoiceSectionDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<UpdateAutoRenewOperationSummaryInner, ErrorResponseException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<UpdateAutoRenewOperationSummaryInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
 }

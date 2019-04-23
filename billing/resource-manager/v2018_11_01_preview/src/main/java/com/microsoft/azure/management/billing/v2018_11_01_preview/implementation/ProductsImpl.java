@@ -13,8 +13,10 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Products;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountProductSummary;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionBillingAccountProductSummary;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsListResult;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductSummary;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.UpdateAutoRenewOperationSummary;
 
 class ProductsImpl extends WrapperImpl<ProductsInner> implements Products {
     private final BillingManager manager;
@@ -28,32 +30,86 @@ class ProductsImpl extends WrapperImpl<ProductsInner> implements Products {
         return this.manager;
     }
 
-    private InvoiceSectionBillingAccountProductSummaryImpl wrapModel(ProductSummaryInner inner) {
-        return  new InvoiceSectionBillingAccountProductSummaryImpl(inner, manager());
+    private ProductSummaryImpl wrapModel(ProductSummaryInner inner) {
+        return  new ProductSummaryImpl(inner, manager());
     }
 
     @Override
-    public Observable<BillingAccountProductSummary> transferAsync(String billingAccountName, String invoiceSectionName, String productName) {
+    public Observable<ProductsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName) {
         ProductsInner client = this.inner();
-        return client.transferAsync(billingAccountName, invoiceSectionName, productName)
-        .map(new Func1<ProductSummaryInner, BillingAccountProductSummary>() {
+        return client.listByInvoiceSectionNameAsync(billingAccountName, invoiceSectionName)
+        .map(new Func1<ProductsListResultInner, ProductsListResult>() {
             @Override
-            public BillingAccountProductSummary call(ProductSummaryInner inner) {
-                return new BillingAccountProductSummaryImpl(inner, manager());
+            public ProductsListResult call(ProductsListResultInner inner) {
+                return new ProductsListResultImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<InvoiceSectionBillingAccountProductSummary> getAsync(String billingAccountName, String invoiceSectionName, String productName) {
+    public Observable<ProductSummary> getAsync(String billingAccountName, String invoiceSectionName, String productName) {
         ProductsInner client = this.inner();
         return client.getAsync(billingAccountName, invoiceSectionName, productName)
-        .map(new Func1<ProductSummaryInner, InvoiceSectionBillingAccountProductSummary>() {
+        .map(new Func1<ProductSummaryInner, ProductSummary>() {
             @Override
-            public InvoiceSectionBillingAccountProductSummary call(ProductSummaryInner inner) {
+            public ProductSummary call(ProductSummaryInner inner) {
+                return new ProductSummaryImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ProductSummary> transferAsync(String billingAccountName, String invoiceSectionName, String productName) {
+        ProductsInner client = this.inner();
+        return client.transferAsync(billingAccountName, invoiceSectionName, productName)
+        .map(new Func1<ProductSummaryInner, ProductSummary>() {
+            @Override
+            public ProductSummary call(ProductSummaryInner inner) {
+                return new ProductSummaryImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<UpdateAutoRenewOperationSummary> updateAutoRenewByBillingAccountNameAsync(String billingAccountName, String productName) {
+        ProductsInner client = this.inner();
+        return client.updateAutoRenewByBillingAccountNameAsync(billingAccountName, productName)
+        .map(new Func1<UpdateAutoRenewOperationSummaryInner, UpdateAutoRenewOperationSummary>() {
+            @Override
+            public UpdateAutoRenewOperationSummary call(UpdateAutoRenewOperationSummaryInner inner) {
+                return new UpdateAutoRenewOperationSummaryImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<UpdateAutoRenewOperationSummary> updateAutoRenewByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, String productName) {
+        ProductsInner client = this.inner();
+        return client.updateAutoRenewByInvoiceSectionNameAsync(billingAccountName, invoiceSectionName, productName)
+        .map(new Func1<UpdateAutoRenewOperationSummaryInner, UpdateAutoRenewOperationSummary>() {
+            @Override
+            public UpdateAutoRenewOperationSummary call(UpdateAutoRenewOperationSummaryInner inner) {
+                return new UpdateAutoRenewOperationSummaryImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ProductSummary> listByBillingAccountNameAsync(final String billingAccountName) {
+        ProductsInner client = this.inner();
+        return client.listByBillingAccountNameAsync(billingAccountName)
+        .flatMapIterable(new Func1<Page<ProductSummaryInner>, Iterable<ProductSummaryInner>>() {
+            @Override
+            public Iterable<ProductSummaryInner> call(Page<ProductSummaryInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<ProductSummaryInner, ProductSummary>() {
+            @Override
+            public ProductSummary call(ProductSummaryInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
 }

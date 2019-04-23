@@ -11,7 +11,7 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingRoleDefinition;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPermissions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPermissionsProperties;
 
 class BillingRoleDefinitionImpl extends WrapperImpl<BillingRoleDefinitionInner> implements BillingRoleDefinition {
     private final BillingManager manager;
@@ -51,7 +51,7 @@ class BillingRoleDefinitionImpl extends WrapperImpl<BillingRoleDefinitionInner> 
     }
 
     @Override
-    public List<BillingPermissions> value() {
+    public List<BillingPermissionsProperties> value() {
         return this.inner().value();
     }
 
