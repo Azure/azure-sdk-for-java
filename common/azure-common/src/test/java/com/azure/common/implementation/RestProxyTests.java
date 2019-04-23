@@ -4,11 +4,10 @@
 package com.azure.common.implementation;
 
 import com.azure.common.MyRestException;
-import com.azure.common.ServiceClient;
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.annotations.BodyParam;
 import com.azure.common.annotations.DELETE;
 import com.azure.common.annotations.ExpectedResponses;
+import com.azure.common.annotations.FormParam;
 import com.azure.common.annotations.GET;
 import com.azure.common.annotations.HEAD;
 import com.azure.common.annotations.HeaderParam;
@@ -21,6 +20,8 @@ import com.azure.common.annotations.PUT;
 import com.azure.common.annotations.PathParam;
 import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
+import com.azure.common.entities.HttpBinFormDataJSON;
+import com.azure.common.entities.HttpBinFormDataJSON.PizzaSize;
 import com.azure.common.entities.HttpBinHeaders;
 import com.azure.common.entities.HttpBinJSON;
 import com.azure.common.exception.ServiceRequestException;
@@ -50,8 +51,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -1592,6 +1595,28 @@ public abstract class RestProxyTests {
     public void testSingleBodyResponseMissingDecodingPolicyCausesException() {
         Service25 service = RestProxy.create(Service25.class, new HttpPipeline());
         service.getBodyResponseAsync().block();
+    }
+
+    @Host("http://httpbin.org/")
+    interface Service26 {
+        @POST("post")
+        HttpBinFormDataJSON postForm(@FormParam("custname") String name, @FormParam("custtel") String telephone, @FormParam("custemail") String email, @FormParam("size") PizzaSize size, @FormParam("toppings") List<String> toppings);
+    }
+
+    @Test
+    public void postUrlFormEncoded() {
+        Service26 service = RestProxy.create(Service26.class, new HttpPipeline());
+        HttpBinFormDataJSON response = service.postForm("Foo", "123", "foo@bar.com", PizzaSize.LARGE, Arrays.asList("Bacon", "Onion"));
+        assertNotNull(response);
+        assertNotNull(response.form);
+        assertEquals("Foo", response.form.customerName);
+        assertEquals("123", response.form.customerTelephone);
+        assertEquals("foo@bar.com", response.form.customerEmail);
+        assertEquals(PizzaSize.LARGE, response.form.pizzaSize);
+
+        assertEquals(2, response.form.toppings.size());
+        assertEquals("Bacon", response.form.toppings.get(0));
+        assertEquals("Onion", response.form.toppings.get(1));
     }
 
     // Helpers
