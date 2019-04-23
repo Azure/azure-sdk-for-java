@@ -15,7 +15,7 @@ public class RestProxyWithHttpProxyNettyTests extends RestProxyTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        InetSocketAddress address = new InetSocketAddress("127.0.0.1", 8888);
+        InetSocketAddress address = new InetSocketAddress("localhost", 8888);
         return HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, address));
     }
 }
