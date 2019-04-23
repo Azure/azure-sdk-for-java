@@ -36,13 +36,13 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDatabase;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabase;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDatabaseCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabaseCreateUpdateParameters;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.Container;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.ContainerCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainer;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoCollection;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.Table;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraTable;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraTableCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraKeyspace;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinGraph;
 
 class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, DatabaseAccountImpl, DatabaseAccountInner, DatabaseAccountsInner, DocumentDBManager>  implements DatabaseAccounts {
     protected DatabaseAccountsImpl(DocumentDBManager manager) {
@@ -222,7 +222,7 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public ContainerImpl defineContainer(String name) {
+    public SqlContainerImpl defineContainer(String name) {
         return wrapContainerModel(name);
     }
 
@@ -241,12 +241,17 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return wrapKeyspaceModel(name);
     }
 
+    @Override
+    public GremlinGraphImpl defineGraph(String name) {
+        return wrapGraphModel(name);
+    }
+
     private SqlDatabaseImpl wrapDatabasisModel(String name) {
         return new SqlDatabaseImpl(name, this.manager());
     }
 
-    private ContainerImpl wrapContainerModel(String name) {
-        return new ContainerImpl(name, this.manager());
+    private SqlContainerImpl wrapContainerModel(String name) {
+        return new SqlContainerImpl(name, this.manager());
     }
 
     private MongoCollectionImpl wrapCollectionModel(String name) {
@@ -259,6 +264,10 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
 
     private CassandraKeyspaceImpl wrapKeyspaceModel(String name) {
         return new CassandraKeyspaceImpl(name, this.manager());
+    }
+
+    private GremlinGraphImpl wrapGraphModel(String name) {
+        return new GremlinGraphImpl(name, this.manager());
     }
 
     private DatabaseAccountMetricImpl wrapDatabaseAccountMetricModel(MetricInner inner) {
@@ -277,8 +286,8 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return  new SqlDatabaseImpl(inner, manager());
     }
 
-    private ContainerImpl wrapContainerModel(ContainerInner inner) {
-        return  new ContainerImpl(inner, manager());
+    private SqlContainerImpl wrapSqlContainerModel(SqlContainerInner inner) {
+        return  new SqlContainerImpl(inner, manager());
     }
 
     private MongoCollectionImpl wrapMongoCollectionModel(MongoCollectionInner inner) {
@@ -293,7 +302,11 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return  new CassandraKeyspaceImpl(inner, manager());
     }
 
-    private Observable<ContainerInner> getContainerInnerUsingDatabaseAccountsInnerAsync(String id) {
+    private GremlinGraphImpl wrapGremlinGraphModel(GremlinGraphInner inner) {
+        return  new GremlinGraphImpl(inner, manager());
+    }
+
+    private Observable<SqlContainerInner> getSqlContainerInnerUsingDatabaseAccountsInnerAsync(String id) {
         String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
         String accountName = IdParsingUtils.getValueFromIdByName(id, "databaseAccounts");
         String databaseRid = IdParsingUtils.getValueFromIdByName(id, "databases");
@@ -309,6 +322,15 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         String collectionRid = IdParsingUtils.getValueFromIdByName(id, "collections");
         DatabaseAccountsInner client = this.inner();
         return client.getMongoCollectionAsync(resourceGroupName, accountName, databaseRid, collectionRid);
+    }
+
+    private Observable<GremlinGraphInner> getGremlinGraphInnerUsingDatabaseAccountsInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String accountName = IdParsingUtils.getValueFromIdByName(id, "databaseAccounts");
+        String databaseRid = IdParsingUtils.getValueFromIdByName(id, "databases");
+        String graphRid = IdParsingUtils.getValueFromIdByName(id, "graphs");
+        DatabaseAccountsInner client = this.inner();
+        return client.getGremlinGraphAsync(resourceGroupName, accountName, databaseRid, graphRid);
     }
 
     @Override
@@ -516,31 +538,31 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<Container> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+    public Observable<SqlContainer> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
         DatabaseAccountsInner client = this.inner();
         return client.getSqlContainerAsync(resourceGroupName, accountName, databaseRid, containerRid)
-        .map(new Func1<ContainerInner, Container>() {
+        .map(new Func1<SqlContainerInner, SqlContainer>() {
             @Override
-            public Container call(ContainerInner inner) {
-                return wrapContainerModel(inner);
+            public SqlContainer call(SqlContainerInner inner) {
+                return wrapSqlContainerModel(inner);
             }
        });
     }
 
     @Override
-    public Observable<Container> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
+    public Observable<SqlContainer> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
         DatabaseAccountsInner client = this.inner();
         return client.listSqlContainersAsync(resourceGroupName, accountName, databaseRid)
-        .flatMap(new Func1<List<ContainerInner>, Observable<ContainerInner>>() {
+        .flatMap(new Func1<List<SqlContainerInner>, Observable<SqlContainerInner>>() {
             @Override
-            public Observable<ContainerInner> call(List<ContainerInner> innerList) {
+            public Observable<SqlContainerInner> call(List<SqlContainerInner> innerList) {
                 return Observable.from(innerList);
             }
         })
-        .map(new Func1<ContainerInner, Container>() {
+        .map(new Func1<SqlContainerInner, SqlContainer>() {
             @Override
-            public Container call(ContainerInner inner) {
-                return wrapContainerModel(inner);
+            public SqlContainer call(SqlContainerInner inner) {
+                return wrapSqlContainerModel(inner);
             }
         });
     }
@@ -549,54 +571,6 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     public Completable deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
         DatabaseAccountsInner client = this.inner();
         return client.deleteSqlContainerAsync(resourceGroupName, accountName, databaseRid, containerRid).toCompletable();
-    }
-
-    @Override
-    public Observable<Container> listGremlinContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
-        DatabaseAccountsInner client = this.inner();
-        return client.listGremlinContainersAsync(resourceGroupName, accountName, databaseRid)
-        .flatMap(new Func1<List<ContainerInner>, Observable<ContainerInner>>() {
-            @Override
-            public Observable<ContainerInner> call(List<ContainerInner> innerList) {
-                return Observable.from(innerList);
-            }
-        })
-        .map(new Func1<ContainerInner, Container>() {
-            @Override
-            public Container call(ContainerInner inner) {
-                return new ContainerImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<Container> getGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
-        DatabaseAccountsInner client = this.inner();
-        return client.getGremlinContainerAsync(resourceGroupName, accountName, databaseRid, containerRid)
-        .map(new Func1<ContainerInner, Container>() {
-            @Override
-            public Container call(ContainerInner inner) {
-                return new ContainerImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<Container> createUpdateGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
-        DatabaseAccountsInner client = this.inner();
-        return client.createUpdateGremlinContainerAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters)
-        .map(new Func1<ContainerInner, Container>() {
-            @Override
-            public Container call(ContainerInner inner) {
-                return new ContainerImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Completable deleteGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
-        DatabaseAccountsInner client = this.inner();
-        return client.deleteGremlinContainerAsync(resourceGroupName, accountName, databaseRid, containerRid).toCompletable();
     }
 
     @Override
@@ -753,6 +727,42 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     public Completable deleteCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid) {
         DatabaseAccountsInner client = this.inner();
         return client.deleteCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceRid).toCompletable();
+    }
+
+    @Override
+    public Observable<GremlinGraph> getGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getGremlinGraphAsync(resourceGroupName, accountName, databaseRid, graphRid)
+        .map(new Func1<GremlinGraphInner, GremlinGraph>() {
+            @Override
+            public GremlinGraph call(GremlinGraphInner inner) {
+                return wrapGremlinGraphModel(inner);
+            }
+       });
+    }
+
+    @Override
+    public Observable<GremlinGraph> listGremlinGraphsAsync(String resourceGroupName, String accountName, String databaseRid) {
+        DatabaseAccountsInner client = this.inner();
+        return client.listGremlinGraphsAsync(resourceGroupName, accountName, databaseRid)
+        .flatMap(new Func1<List<GremlinGraphInner>, Observable<GremlinGraphInner>>() {
+            @Override
+            public Observable<GremlinGraphInner> call(List<GremlinGraphInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<GremlinGraphInner, GremlinGraph>() {
+            @Override
+            public GremlinGraph call(GremlinGraphInner inner) {
+                return wrapGremlinGraphModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid) {
+        DatabaseAccountsInner client = this.inner();
+        return client.deleteGremlinGraphAsync(resourceGroupName, accountName, databaseRid, graphRid).toCompletable();
     }
 
 }

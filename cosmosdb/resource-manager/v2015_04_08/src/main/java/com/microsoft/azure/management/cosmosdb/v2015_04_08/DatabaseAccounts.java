@@ -22,8 +22,9 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetric;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountUsage;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetricDefinition;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.Container;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainer;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoCollection;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinGraph;
 
 /**
  * Type representing DatabaseAccounts.
@@ -41,7 +42,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @param name resource name.
      * @return the first stage of the new Container definition.
      */
-    Container.DefinitionStages.Blank defineContainer(String name);
+    SqlContainer.DefinitionStages.Blank defineContainer(String name);
 
     /**
      * Begins definition for a new Collection resource.
@@ -63,6 +64,13 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @return the first stage of the new Keyspace definition.
      */
     CassandraKeyspace.DefinitionStages.Blank defineKeyspace(String name);
+
+    /**
+     * Begins definition for a new Graph resource.
+     * @param name resource name.
+     * @return the first stage of the new Graph definition.
+     */
+    GremlinGraph.DefinitionStages.Blank defineGraph(String name);
 
     /**
      * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
@@ -318,7 +326,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Container> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid);
+    Observable<SqlContainer> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid);
 
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
@@ -329,7 +337,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Container> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid);
+    Observable<SqlContainer> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
@@ -342,54 +350,6 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @return the observable for the request
      */
     Completable deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid);
-
-    /**
-     * Lists the Gremlin container under an existing Azure Cosmos DB database account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Container> listGremlinContainersAsync(String resourceGroupName, String accountName, String databaseRid);
-
-    /**
-     * Gets the Gremlin container under an existing Azure Cosmos DB database account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Container> getGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid);
-
-    /**
-     * Create or update an Azure Cosmos DB Gremlin container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
-     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Container> createUpdateGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters);
-
-    /**
-     * Deletes an existing Azure Cosmos DB Gremlin container.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid);
 
     /**
      * Gets the Mongo collection under an existing Azure Cosmos DB database account.
@@ -537,5 +497,40 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @return the observable for the request
      */
     Completable deleteCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceRid);
+
+    /**
+     * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param graphRid Cosmos DB graph rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<GremlinGraph> getGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid);
+
+    /**
+     * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<GremlinGraph> listGremlinGraphsAsync(String resourceGroupName, String accountName, String databaseRid);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Gremlin graph.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param graphRid Cosmos DB graph rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid);
 
 }

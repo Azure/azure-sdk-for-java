@@ -16,7 +16,6 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraKeyspaceCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraTableCreateUpdateParameters;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.ContainerCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountPatchParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountRegenerateKeyParameters;
@@ -24,10 +23,12 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.ErrorResponseExceptio
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.FailoverPolicies;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.FailoverPolicy;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabaseCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinGraphCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.KeyKind;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoCollectionCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDatabaseCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.RegionForOnlineOffline;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.TableCreateUpdateParameters;
 import com.microsoft.azure.Page;
@@ -214,11 +215,11 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateSqlContainer" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}/containers/{containerRid}")
-        Observable<Response<ResponseBody>> createUpdateSqlContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Body ContainerCreateUpdateParameters createUpdateSqlContainerParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createUpdateSqlContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Body SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateSqlContainer" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}/containers/{containerRid}")
-        Observable<Response<ResponseBody>> beginCreateUpdateSqlContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Body ContainerCreateUpdateParameters createUpdateSqlContainerParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateUpdateSqlContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Body SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteSqlContainer" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseRid}/containers/{containerRid}", method = "DELETE", hasBody = true)
@@ -372,29 +373,29 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteGremlinDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listGremlinContainers" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers")
-        Observable<Response<ResponseBody>> listGremlinContainers(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listGremlinGraphs" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/graphs")
+        Observable<Response<ResponseBody>> listGremlinGraphs(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getGremlinContainer" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}")
-        Observable<Response<ResponseBody>> getGremlinContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getGremlinGraph" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/graphs/{graphRid}")
+        Observable<Response<ResponseBody>> getGremlinGraph(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("graphRid") String graphRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateGremlinContainer" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}")
-        Observable<Response<ResponseBody>> createUpdateGremlinContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Body ContainerCreateUpdateParameters createUpdateGremlinContainerParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateGremlinGraph" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/graphs/{graphRid}")
+        Observable<Response<ResponseBody>> createUpdateGremlinGraph(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("graphRid") String graphRid, @Query("api-version") String apiVersion, @Body GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateGremlinContainer" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}")
-        Observable<Response<ResponseBody>> beginCreateUpdateGremlinContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Body ContainerCreateUpdateParameters createUpdateGremlinContainerParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateGremlinGraph" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/graphs/{graphRid}")
+        Observable<Response<ResponseBody>> beginCreateUpdateGremlinGraph(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("graphRid") String graphRid, @Query("api-version") String apiVersion, @Body GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteGremlinContainer" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteGremlinContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteGremlinGraph" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/graphs/{graphRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteGremlinGraph(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("graphRid") String graphRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteGremlinContainer" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> beginDeleteGremlinContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("containerRid") String containerRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteGremlinGraph" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/graphs/{graphRid}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteGremlinGraph(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseRid") String databaseRid, @Path("graphRid") String graphRid, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -3176,9 +3177,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;ContainerInner&gt; object if successful.
+     * @return the List&lt;SqlContainerInner&gt; object if successful.
      */
-    public List<ContainerInner> listSqlContainers(String resourceGroupName, String accountName, String databaseRid) {
+    public List<SqlContainerInner> listSqlContainers(String resourceGroupName, String accountName, String databaseRid) {
         return listSqlContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
     }
 
@@ -3192,7 +3193,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ContainerInner>> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<List<ContainerInner>> serviceCallback) {
+    public ServiceFuture<List<SqlContainerInner>> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<List<SqlContainerInner>> serviceCallback) {
         return ServiceFuture.fromResponse(listSqlContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
     }
 
@@ -3203,12 +3204,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ContainerInner&gt; object
+     * @return the observable to the List&lt;SqlContainerInner&gt; object
      */
-    public Observable<List<ContainerInner>> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
-        return listSqlContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<List<ContainerInner>>, List<ContainerInner>>() {
+    public Observable<List<SqlContainerInner>> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return listSqlContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<List<SqlContainerInner>>, List<SqlContainerInner>>() {
             @Override
-            public List<ContainerInner> call(ServiceResponse<List<ContainerInner>> response) {
+            public List<SqlContainerInner> call(ServiceResponse<List<SqlContainerInner>> response) {
                 return response.body();
             }
         });
@@ -3221,9 +3222,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ContainerInner&gt; object
+     * @return the observable to the List&lt;SqlContainerInner&gt; object
      */
-    public Observable<ServiceResponse<List<ContainerInner>>> listSqlContainersWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+    public Observable<ServiceResponse<List<SqlContainerInner>>> listSqlContainersWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -3240,16 +3241,16 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listSqlContainers(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ContainerInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SqlContainerInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<ContainerInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<SqlContainerInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ContainerInner>> result = listSqlContainersDelegate(response);
-                        List<ContainerInner> items = null;
+                        ServiceResponse<PageImpl<SqlContainerInner>> result = listSqlContainersDelegate(response);
+                        List<SqlContainerInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
                         }
-                        ServiceResponse<List<ContainerInner>> clientResponse = new ServiceResponse<List<ContainerInner>>(items, result.response());
+                        ServiceResponse<List<SqlContainerInner>> clientResponse = new ServiceResponse<List<SqlContainerInner>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3258,9 +3259,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<PageImpl<ContainerInner>> listSqlContainersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ContainerInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ContainerInner>>() { }.getType())
+    private ServiceResponse<PageImpl<SqlContainerInner>> listSqlContainersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlContainerInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SqlContainerInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -3275,9 +3276,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ContainerInner object if successful.
+     * @return the SqlContainerInner object if successful.
      */
-    public ContainerInner getSqlContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+    public SqlContainerInner getSqlContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
         return getSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).toBlocking().single().body();
     }
 
@@ -3292,7 +3293,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ContainerInner> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, final ServiceCallback<ContainerInner> serviceCallback) {
+    public ServiceFuture<SqlContainerInner> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, final ServiceCallback<SqlContainerInner> serviceCallback) {
         return ServiceFuture.fromResponse(getSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid), serviceCallback);
     }
 
@@ -3304,12 +3305,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @param databaseRid Cosmos DB database rid.
      * @param containerRid Cosmos DB container rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ContainerInner object
+     * @return the observable to the SqlContainerInner object
      */
-    public Observable<ContainerInner> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
-        return getSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+    public Observable<SqlContainerInner> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+        return getSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).map(new Func1<ServiceResponse<SqlContainerInner>, SqlContainerInner>() {
             @Override
-            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+            public SqlContainerInner call(ServiceResponse<SqlContainerInner> response) {
                 return response.body();
             }
         });
@@ -3323,9 +3324,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @param databaseRid Cosmos DB database rid.
      * @param containerRid Cosmos DB container rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ContainerInner object
+     * @return the observable to the SqlContainerInner object
      */
-    public Observable<ServiceResponse<ContainerInner>> getSqlContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+    public Observable<ServiceResponse<SqlContainerInner>> getSqlContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -3345,11 +3346,11 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.getSqlContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ContainerInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SqlContainerInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ContainerInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SqlContainerInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ContainerInner> clientResponse = getSqlContainerDelegate(response);
+                        ServiceResponse<SqlContainerInner> clientResponse = getSqlContainerDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3358,9 +3359,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<ContainerInner> getSqlContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ContainerInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ContainerInner>() { }.getType())
+    private ServiceResponse<SqlContainerInner> getSqlContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlContainerInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SqlContainerInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -3376,9 +3377,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ContainerInner object if successful.
+     * @return the SqlContainerInner object if successful.
      */
-    public ContainerInner createUpdateSqlContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+    public SqlContainerInner createUpdateSqlContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
         return createUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters).toBlocking().last().body();
     }
 
@@ -3394,7 +3395,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ContainerInner> createUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters, final ServiceCallback<ContainerInner> serviceCallback) {
+    public ServiceFuture<SqlContainerInner> createUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, final ServiceCallback<SqlContainerInner> serviceCallback) {
         return ServiceFuture.fromResponse(createUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters), serviceCallback);
     }
 
@@ -3409,10 +3410,10 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ContainerInner> createUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return createUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+    public Observable<SqlContainerInner> createUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return createUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters).map(new Func1<ServiceResponse<SqlContainerInner>, SqlContainerInner>() {
             @Override
-            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+            public SqlContainerInner call(ServiceResponse<SqlContainerInner> response) {
                 return response.body();
             }
         });
@@ -3429,7 +3430,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<ContainerInner>> createUpdateSqlContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+    public Observable<ServiceResponse<SqlContainerInner>> createUpdateSqlContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -3453,7 +3454,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         }
         Validator.validate(createUpdateSqlContainerParameters);
         Observable<Response<ResponseBody>> observable = service.createUpdateSqlContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), createUpdateSqlContainerParameters, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ContainerInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<SqlContainerInner>() { }.getType());
     }
 
     /**
@@ -3467,9 +3468,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ContainerInner object if successful.
+     * @return the SqlContainerInner object if successful.
      */
-    public ContainerInner beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+    public SqlContainerInner beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
         return beginCreateUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters).toBlocking().single().body();
     }
 
@@ -3485,7 +3486,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ContainerInner> beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters, final ServiceCallback<ContainerInner> serviceCallback) {
+    public ServiceFuture<SqlContainerInner> beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, final ServiceCallback<SqlContainerInner> serviceCallback) {
         return ServiceFuture.fromResponse(beginCreateUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters), serviceCallback);
     }
 
@@ -3498,12 +3499,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @param containerRid Cosmos DB container rid.
      * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ContainerInner object
+     * @return the observable to the SqlContainerInner object
      */
-    public Observable<ContainerInner> beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return beginCreateUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+    public Observable<SqlContainerInner> beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return beginCreateUpdateSqlContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateSqlContainerParameters).map(new Func1<ServiceResponse<SqlContainerInner>, SqlContainerInner>() {
             @Override
-            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+            public SqlContainerInner call(ServiceResponse<SqlContainerInner> response) {
                 return response.body();
             }
         });
@@ -3518,9 +3519,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @param containerRid Cosmos DB container rid.
      * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ContainerInner object
+     * @return the observable to the SqlContainerInner object
      */
-    public Observable<ServiceResponse<ContainerInner>> beginCreateUpdateSqlContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+    public Observable<ServiceResponse<SqlContainerInner>> beginCreateUpdateSqlContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -3544,11 +3545,11 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         }
         Validator.validate(createUpdateSqlContainerParameters);
         return service.beginCreateUpdateSqlContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), createUpdateSqlContainerParameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ContainerInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SqlContainerInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ContainerInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SqlContainerInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ContainerInner> clientResponse = beginCreateUpdateSqlContainerDelegate(response);
+                        ServiceResponse<SqlContainerInner> clientResponse = beginCreateUpdateSqlContainerDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3557,9 +3558,9 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<ContainerInner> beginCreateUpdateSqlContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ContainerInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ContainerInner>() { }.getType())
+    private ServiceResponse<SqlContainerInner> beginCreateUpdateSqlContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlContainerInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SqlContainerInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -7060,7 +7061,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Lists the Gremlin container under an existing Azure Cosmos DB database account.
+     * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -7068,14 +7069,14 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;ContainerInner&gt; object if successful.
+     * @return the List&lt;GremlinGraphInner&gt; object if successful.
      */
-    public List<ContainerInner> listGremlinContainers(String resourceGroupName, String accountName, String databaseRid) {
-        return listGremlinContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
+    public List<GremlinGraphInner> listGremlinGraphs(String resourceGroupName, String accountName, String databaseRid) {
+        return listGremlinGraphsWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).toBlocking().single().body();
     }
 
     /**
-     * Lists the Gremlin container under an existing Azure Cosmos DB database account.
+     * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -7084,38 +7085,38 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ContainerInner>> listGremlinContainersAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<List<ContainerInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listGremlinContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
+    public ServiceFuture<List<GremlinGraphInner>> listGremlinGraphsAsync(String resourceGroupName, String accountName, String databaseRid, final ServiceCallback<List<GremlinGraphInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listGremlinGraphsWithServiceResponseAsync(resourceGroupName, accountName, databaseRid), serviceCallback);
     }
 
     /**
-     * Lists the Gremlin container under an existing Azure Cosmos DB database account.
+     * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ContainerInner&gt; object
+     * @return the observable to the List&lt;GremlinGraphInner&gt; object
      */
-    public Observable<List<ContainerInner>> listGremlinContainersAsync(String resourceGroupName, String accountName, String databaseRid) {
-        return listGremlinContainersWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<List<ContainerInner>>, List<ContainerInner>>() {
+    public Observable<List<GremlinGraphInner>> listGremlinGraphsAsync(String resourceGroupName, String accountName, String databaseRid) {
+        return listGremlinGraphsWithServiceResponseAsync(resourceGroupName, accountName, databaseRid).map(new Func1<ServiceResponse<List<GremlinGraphInner>>, List<GremlinGraphInner>>() {
             @Override
-            public List<ContainerInner> call(ServiceResponse<List<ContainerInner>> response) {
+            public List<GremlinGraphInner> call(ServiceResponse<List<GremlinGraphInner>> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Lists the Gremlin container under an existing Azure Cosmos DB database account.
+     * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ContainerInner&gt; object
+     * @return the observable to the List&lt;GremlinGraphInner&gt; object
      */
-    public Observable<ServiceResponse<List<ContainerInner>>> listGremlinContainersWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
+    public Observable<ServiceResponse<List<GremlinGraphInner>>> listGremlinGraphsWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -7131,17 +7132,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listGremlinContainers(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ContainerInner>>>>() {
+        return service.listGremlinGraphs(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<GremlinGraphInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<ContainerInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<GremlinGraphInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ContainerInner>> result = listGremlinContainersDelegate(response);
-                        List<ContainerInner> items = null;
+                        ServiceResponse<PageImpl<GremlinGraphInner>> result = listGremlinGraphsDelegate(response);
+                        List<GremlinGraphInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
                         }
-                        ServiceResponse<List<ContainerInner>> clientResponse = new ServiceResponse<List<ContainerInner>>(items, result.response());
+                        ServiceResponse<List<GremlinGraphInner>> clientResponse = new ServiceResponse<List<GremlinGraphInner>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -7150,74 +7151,74 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<PageImpl<ContainerInner>> listGremlinContainersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ContainerInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ContainerInner>>() { }.getType())
+    private ServiceResponse<PageImpl<GremlinGraphInner>> listGremlinGraphsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<GremlinGraphInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<GremlinGraphInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets the Gremlin container under an existing Azure Cosmos DB database account.
+     * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ContainerInner object if successful.
+     * @return the GremlinGraphInner object if successful.
      */
-    public ContainerInner getGremlinContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
-        return getGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).toBlocking().single().body();
+    public GremlinGraphInner getGremlinGraph(String resourceGroupName, String accountName, String databaseRid, String graphRid) {
+        return getGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid).toBlocking().single().body();
     }
 
     /**
-     * Gets the Gremlin container under an existing Azure Cosmos DB database account.
+     * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ContainerInner> getGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, final ServiceCallback<ContainerInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid), serviceCallback);
+    public ServiceFuture<GremlinGraphInner> getGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid, final ServiceCallback<GremlinGraphInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid), serviceCallback);
     }
 
     /**
-     * Gets the Gremlin container under an existing Azure Cosmos DB database account.
+     * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ContainerInner object
+     * @return the observable to the GremlinGraphInner object
      */
-    public Observable<ContainerInner> getGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
-        return getGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+    public Observable<GremlinGraphInner> getGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid) {
+        return getGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid).map(new Func1<ServiceResponse<GremlinGraphInner>, GremlinGraphInner>() {
             @Override
-            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+            public GremlinGraphInner call(ServiceResponse<GremlinGraphInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Gets the Gremlin container under an existing Azure Cosmos DB database account.
+     * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ContainerInner object
+     * @return the observable to the GremlinGraphInner object
      */
-    public Observable<ServiceResponse<ContainerInner>> getGremlinContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+    public Observable<ServiceResponse<GremlinGraphInner>> getGremlinGraphWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -7230,18 +7231,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (databaseRid == null) {
             throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
         }
-        if (containerRid == null) {
-            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        if (graphRid == null) {
+            throw new IllegalArgumentException("Parameter graphRid is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getGremlinContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ContainerInner>>>() {
+        return service.getGremlinGraph(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, graphRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GremlinGraphInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ContainerInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<GremlinGraphInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ContainerInner> clientResponse = getGremlinContainerDelegate(response);
+                        ServiceResponse<GremlinGraphInner> clientResponse = getGremlinGraphDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -7250,78 +7251,78 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<ContainerInner> getGremlinContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ContainerInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ContainerInner>() { }.getType())
+    private ServiceResponse<GremlinGraphInner> getGremlinGraphDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<GremlinGraphInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<GremlinGraphInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Create or update an Azure Cosmos DB Gremlin container.
+     * Create or update an Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
-     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @param graphRid Cosmos DB graph rid.
+     * @param createUpdateGremlinGraphParameters The parameters to provide for the current Gremlin graph.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ContainerInner object if successful.
+     * @return the GremlinGraphInner object if successful.
      */
-    public ContainerInner createUpdateGremlinContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
-        return createUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters).toBlocking().last().body();
+    public GremlinGraphInner createUpdateGremlinGraph(String resourceGroupName, String accountName, String databaseRid, String graphRid, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters) {
+        return createUpdateGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid, createUpdateGremlinGraphParameters).toBlocking().last().body();
     }
 
     /**
-     * Create or update an Azure Cosmos DB Gremlin container.
+     * Create or update an Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
-     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @param graphRid Cosmos DB graph rid.
+     * @param createUpdateGremlinGraphParameters The parameters to provide for the current Gremlin graph.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ContainerInner> createUpdateGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters, final ServiceCallback<ContainerInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters), serviceCallback);
+    public ServiceFuture<GremlinGraphInner> createUpdateGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters, final ServiceCallback<GremlinGraphInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid, createUpdateGremlinGraphParameters), serviceCallback);
     }
 
     /**
-     * Create or update an Azure Cosmos DB Gremlin container.
+     * Create or update an Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
-     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @param graphRid Cosmos DB graph rid.
+     * @param createUpdateGremlinGraphParameters The parameters to provide for the current Gremlin graph.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ContainerInner> createUpdateGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
-        return createUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+    public Observable<GremlinGraphInner> createUpdateGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters) {
+        return createUpdateGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid, createUpdateGremlinGraphParameters).map(new Func1<ServiceResponse<GremlinGraphInner>, GremlinGraphInner>() {
             @Override
-            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+            public GremlinGraphInner call(ServiceResponse<GremlinGraphInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Create or update an Azure Cosmos DB Gremlin container.
+     * Create or update an Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
-     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @param graphRid Cosmos DB graph rid.
+     * @param createUpdateGremlinGraphParameters The parameters to provide for the current Gremlin graph.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<ContainerInner>> createUpdateGremlinContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
+    public Observable<ServiceResponse<GremlinGraphInner>> createUpdateGremlinGraphWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -7334,85 +7335,85 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (databaseRid == null) {
             throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
         }
-        if (containerRid == null) {
-            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        if (graphRid == null) {
+            throw new IllegalArgumentException("Parameter graphRid is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (createUpdateGremlinContainerParameters == null) {
-            throw new IllegalArgumentException("Parameter createUpdateGremlinContainerParameters is required and cannot be null.");
+        if (createUpdateGremlinGraphParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateGremlinGraphParameters is required and cannot be null.");
         }
-        Validator.validate(createUpdateGremlinContainerParameters);
-        Observable<Response<ResponseBody>> observable = service.createUpdateGremlinContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), createUpdateGremlinContainerParameters, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ContainerInner>() { }.getType());
+        Validator.validate(createUpdateGremlinGraphParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateGremlinGraph(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, graphRid, this.client.apiVersion(), createUpdateGremlinGraphParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<GremlinGraphInner>() { }.getType());
     }
 
     /**
-     * Create or update an Azure Cosmos DB Gremlin container.
+     * Create or update an Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
-     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @param graphRid Cosmos DB graph rid.
+     * @param createUpdateGremlinGraphParameters The parameters to provide for the current Gremlin graph.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ContainerInner object if successful.
+     * @return the GremlinGraphInner object if successful.
      */
-    public ContainerInner beginCreateUpdateGremlinContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
-        return beginCreateUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters).toBlocking().single().body();
+    public GremlinGraphInner beginCreateUpdateGremlinGraph(String resourceGroupName, String accountName, String databaseRid, String graphRid, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters) {
+        return beginCreateUpdateGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid, createUpdateGremlinGraphParameters).toBlocking().single().body();
     }
 
     /**
-     * Create or update an Azure Cosmos DB Gremlin container.
+     * Create or update an Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
-     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @param graphRid Cosmos DB graph rid.
+     * @param createUpdateGremlinGraphParameters The parameters to provide for the current Gremlin graph.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ContainerInner> beginCreateUpdateGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters, final ServiceCallback<ContainerInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters), serviceCallback);
+    public ServiceFuture<GremlinGraphInner> beginCreateUpdateGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters, final ServiceCallback<GremlinGraphInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid, createUpdateGremlinGraphParameters), serviceCallback);
     }
 
     /**
-     * Create or update an Azure Cosmos DB Gremlin container.
+     * Create or update an Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
-     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @param graphRid Cosmos DB graph rid.
+     * @param createUpdateGremlinGraphParameters The parameters to provide for the current Gremlin graph.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ContainerInner object
+     * @return the observable to the GremlinGraphInner object
      */
-    public Observable<ContainerInner> beginCreateUpdateGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
-        return beginCreateUpdateGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters).map(new Func1<ServiceResponse<ContainerInner>, ContainerInner>() {
+    public Observable<GremlinGraphInner> beginCreateUpdateGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters) {
+        return beginCreateUpdateGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid, createUpdateGremlinGraphParameters).map(new Func1<ServiceResponse<GremlinGraphInner>, GremlinGraphInner>() {
             @Override
-            public ContainerInner call(ServiceResponse<ContainerInner> response) {
+            public GremlinGraphInner call(ServiceResponse<GremlinGraphInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Create or update an Azure Cosmos DB Gremlin container.
+     * Create or update an Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
-     * @param createUpdateGremlinContainerParameters The parameters to provide for the current Gremlin container.
+     * @param graphRid Cosmos DB graph rid.
+     * @param createUpdateGremlinGraphParameters The parameters to provide for the current Gremlin graph.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ContainerInner object
+     * @return the observable to the GremlinGraphInner object
      */
-    public Observable<ServiceResponse<ContainerInner>> beginCreateUpdateGremlinContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, ContainerCreateUpdateParameters createUpdateGremlinContainerParameters) {
+    public Observable<ServiceResponse<GremlinGraphInner>> beginCreateUpdateGremlinGraphWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -7425,22 +7426,22 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (databaseRid == null) {
             throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
         }
-        if (containerRid == null) {
-            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        if (graphRid == null) {
+            throw new IllegalArgumentException("Parameter graphRid is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (createUpdateGremlinContainerParameters == null) {
-            throw new IllegalArgumentException("Parameter createUpdateGremlinContainerParameters is required and cannot be null.");
+        if (createUpdateGremlinGraphParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateGremlinGraphParameters is required and cannot be null.");
         }
-        Validator.validate(createUpdateGremlinContainerParameters);
-        return service.beginCreateUpdateGremlinContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), createUpdateGremlinContainerParameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ContainerInner>>>() {
+        Validator.validate(createUpdateGremlinGraphParameters);
+        return service.beginCreateUpdateGremlinGraph(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, graphRid, this.client.apiVersion(), createUpdateGremlinGraphParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GremlinGraphInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ContainerInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<GremlinGraphInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ContainerInner> clientResponse = beginCreateUpdateGremlinContainerDelegate(response);
+                        ServiceResponse<GremlinGraphInner> clientResponse = beginCreateUpdateGremlinGraphDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -7449,56 +7450,56 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<ContainerInner> beginCreateUpdateGremlinContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ContainerInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ContainerInner>() { }.getType())
+    private ServiceResponse<GremlinGraphInner> beginCreateUpdateGremlinGraphDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<GremlinGraphInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<GremlinGraphInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Gremlin container.
+     * Deletes an existing Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteGremlinContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
-        deleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).toBlocking().last().body();
+    public void deleteGremlinGraph(String resourceGroupName, String accountName, String databaseRid, String graphRid) {
+        deleteGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid).toBlocking().last().body();
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Gremlin container.
+     * Deletes an existing Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid), serviceCallback);
+    public ServiceFuture<Void> deleteGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid), serviceCallback);
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Gremlin container.
+     * Deletes an existing Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> deleteGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
-        return deleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid) {
+        return deleteGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -7507,16 +7508,16 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Gremlin container.
+     * Deletes an existing Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteGremlinContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+    public Observable<ServiceResponse<Void>> deleteGremlinGraphWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -7529,58 +7530,58 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (databaseRid == null) {
             throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
         }
-        if (containerRid == null) {
-            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        if (graphRid == null) {
+            throw new IllegalArgumentException("Parameter graphRid is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.deleteGremlinContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.deleteGremlinGraph(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, graphRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Gremlin container.
+     * Deletes an existing Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void beginDeleteGremlinContainer(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
-        beginDeleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).toBlocking().single().body();
+    public void beginDeleteGremlinGraph(String resourceGroupName, String accountName, String databaseRid, String graphRid) {
+        beginDeleteGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid).toBlocking().single().body();
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Gremlin container.
+     * Deletes an existing Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> beginDeleteGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(beginDeleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid), serviceCallback);
+    public ServiceFuture<Void> beginDeleteGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid), serviceCallback);
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Gremlin container.
+     * Deletes an existing Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> beginDeleteGremlinContainerAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
-        return beginDeleteGremlinContainerWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, containerRid).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> beginDeleteGremlinGraphAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid) {
+        return beginDeleteGremlinGraphWithServiceResponseAsync(resourceGroupName, accountName, databaseRid, graphRid).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -7589,16 +7590,16 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Gremlin container.
+     * Deletes an existing Azure Cosmos DB Gremlin graph.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
-     * @param containerRid Cosmos DB container rid.
+     * @param graphRid Cosmos DB graph rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteGremlinContainerWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String containerRid) {
+    public Observable<ServiceResponse<Void>> beginDeleteGremlinGraphWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseRid, String graphRid) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -7611,18 +7612,18 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (databaseRid == null) {
             throw new IllegalArgumentException("Parameter databaseRid is required and cannot be null.");
         }
-        if (containerRid == null) {
-            throw new IllegalArgumentException("Parameter containerRid is required and cannot be null.");
+        if (graphRid == null) {
+            throw new IllegalArgumentException("Parameter graphRid is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.beginDeleteGremlinContainer(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, containerRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginDeleteGremlinGraph(this.client.subscriptionId(), resourceGroupName, accountName, databaseRid, graphRid, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = beginDeleteGremlinContainerDelegate(response);
+                        ServiceResponse<Void> clientResponse = beginDeleteGremlinGraphDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -7631,7 +7632,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<Void> beginDeleteGremlinContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> beginDeleteGremlinGraphDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())

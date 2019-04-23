@@ -11,18 +11,18 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Cosmos DB SQL container resource object.
+ * Cosmos DB Gremlin graph resource object.
  */
-public class SqlContainerResource {
+public class GremlinGraphResource {
     /**
-     * Name of the Cosmos DB SQL container.
+     * Name of the Cosmos DB Gremlin graph.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
      * The configuration of the indexing policy. By default, the indexing is
-     * automatic for all document paths within the container.
+     * automatic for all document paths within the graph.
      */
     @JsonProperty(value = "indexingPolicy")
     private IndexingPolicy indexingPolicy;
@@ -49,13 +49,13 @@ public class SqlContainerResource {
     private UniqueKeyPolicy uniqueKeyPolicy;
 
     /**
-     * The conflict resolution policy for the container.
+     * The conflict resolution policy for the graph.
      */
     @JsonProperty(value = "conflictResolutionPolicy")
     private ConflictResolutionPolicy conflictResolutionPolicy;
 
     /**
-     * Get name of the Cosmos DB SQL container.
+     * Get name of the Cosmos DB Gremlin graph.
      *
      * @return the id value
      */
@@ -64,18 +64,18 @@ public class SqlContainerResource {
     }
 
     /**
-     * Set name of the Cosmos DB SQL container.
+     * Set name of the Cosmos DB Gremlin graph.
      *
      * @param id the id value to set
-     * @return the SqlContainerResource object itself.
+     * @return the GremlinGraphResource object itself.
      */
-    public SqlContainerResource withId(String id) {
+    public GremlinGraphResource withId(String id) {
         this.id = id;
         return this;
     }
 
     /**
-     * Get the configuration of the indexing policy. By default, the indexing is automatic for all document paths within the container.
+     * Get the configuration of the indexing policy. By default, the indexing is automatic for all document paths within the graph.
      *
      * @return the indexingPolicy value
      */
@@ -84,12 +84,12 @@ public class SqlContainerResource {
     }
 
     /**
-     * Set the configuration of the indexing policy. By default, the indexing is automatic for all document paths within the container.
+     * Set the configuration of the indexing policy. By default, the indexing is automatic for all document paths within the graph.
      *
      * @param indexingPolicy the indexingPolicy value to set
-     * @return the SqlContainerResource object itself.
+     * @return the GremlinGraphResource object itself.
      */
-    public SqlContainerResource withIndexingPolicy(IndexingPolicy indexingPolicy) {
+    public GremlinGraphResource withIndexingPolicy(IndexingPolicy indexingPolicy) {
         this.indexingPolicy = indexingPolicy;
         return this;
     }
@@ -107,9 +107,9 @@ public class SqlContainerResource {
      * Set the configuration of the partition key to be used for partitioning data into multiple partitions.
      *
      * @param partitionKey the partitionKey value to set
-     * @return the SqlContainerResource object itself.
+     * @return the GremlinGraphResource object itself.
      */
-    public SqlContainerResource withPartitionKey(ContainerPartitionKey partitionKey) {
+    public GremlinGraphResource withPartitionKey(ContainerPartitionKey partitionKey) {
         this.partitionKey = partitionKey;
         return this;
     }
@@ -127,9 +127,9 @@ public class SqlContainerResource {
      * Set default time to live.
      *
      * @param defaultTtl the defaultTtl value to set
-     * @return the SqlContainerResource object itself.
+     * @return the GremlinGraphResource object itself.
      */
-    public SqlContainerResource withDefaultTtl(Integer defaultTtl) {
+    public GremlinGraphResource withDefaultTtl(Integer defaultTtl) {
         this.defaultTtl = defaultTtl;
         return this;
     }
@@ -147,15 +147,15 @@ public class SqlContainerResource {
      * Set the unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos DB service.
      *
      * @param uniqueKeyPolicy the uniqueKeyPolicy value to set
-     * @return the SqlContainerResource object itself.
+     * @return the GremlinGraphResource object itself.
      */
-    public SqlContainerResource withUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
+    public GremlinGraphResource withUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
         this.uniqueKeyPolicy = uniqueKeyPolicy;
         return this;
     }
 
     /**
-     * Get the conflict resolution policy for the container.
+     * Get the conflict resolution policy for the graph.
      *
      * @return the conflictResolutionPolicy value
      */
@@ -164,12 +164,12 @@ public class SqlContainerResource {
     }
 
     /**
-     * Set the conflict resolution policy for the container.
+     * Set the conflict resolution policy for the graph.
      *
      * @param conflictResolutionPolicy the conflictResolutionPolicy value to set
-     * @return the SqlContainerResource object itself.
+     * @return the GremlinGraphResource object itself.
      */
-    public SqlContainerResource withConflictResolutionPolicy(ConflictResolutionPolicy conflictResolutionPolicy) {
+    public GremlinGraphResource withConflictResolutionPolicy(ConflictResolutionPolicy conflictResolutionPolicy) {
         this.conflictResolutionPolicy = conflictResolutionPolicy;
         return this;
     }
