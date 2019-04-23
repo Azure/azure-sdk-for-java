@@ -18,20 +18,20 @@ import static org.junit.Assert.fail;
 
 public class ValidatorTests {
     @Test
-    public void validateInt() throws Exception {
+    public void validateInt() {
         IntWrapper body = new IntWrapper();
-        body.value = 2;
-        body.nullable = null;
+        body.value(2);
+        body.nullable(null);
         Validator.validate(body); // pass
     }
 
     @Test
-    public void validateInteger() throws Exception {
+    public void validateInteger() {
         IntegerWrapper body = new IntegerWrapper();
-        body.value = 3;
+        body.value(3);
         Validator.validate(body); // pass
         try {
-            body.value = null;
+            body.value(null);
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
@@ -40,12 +40,12 @@ public class ValidatorTests {
     }
 
     @Test
-    public void validateString() throws Exception {
+    public void validateString() {
         StringWrapper body = new StringWrapper();
-        body.value = "";
+        body.value("");
         Validator.validate(body); // pass
         try {
-            body.value = null;
+            body.value(null);
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
@@ -54,12 +54,12 @@ public class ValidatorTests {
     }
 
     @Test
-    public void validateLocalDate() throws Exception {
+    public void validateLocalDate() {
         LocalDateWrapper body = new LocalDateWrapper();
-        body.value = LocalDate.of(1, 2, 3);
+        body.value(LocalDate.of(1, 2, 3));
         Validator.validate(body); // pass
         try {
-            body.value = null;
+            body.value(null);
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
@@ -68,19 +68,19 @@ public class ValidatorTests {
     }
 
     @Test
-    public void validateList() throws Exception {
+    public void validateList() {
         ListWrapper body = new ListWrapper();
         try {
-            body.list = null;
+            body.list(null);
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
             Assert.assertTrue(ex.getMessage().contains("list is required"));
         }
-        body.list = new ArrayList<StringWrapper>();
+        body.list(new ArrayList<>());
         Validator.validate(body); // pass
         StringWrapper wrapper = new StringWrapper();
-        wrapper.value = "valid";
+        wrapper.value("valid");
         body.list.add(wrapper);
         Validator.validate(body); // pass
         body.list.add(null);
@@ -95,19 +95,19 @@ public class ValidatorTests {
     }
 
     @Test
-    public void validateMap() throws Exception {
+    public void validateMap() {
         MapWrapper body = new MapWrapper();
         try {
-            body.map = null;
+            body.map(null);
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
             Assert.assertTrue(ex.getMessage().contains("map is required"));
         }
-        body.map = new HashMap<LocalDate, StringWrapper>();
+        body.map(new HashMap<>());
         Validator.validate(body); // pass
         StringWrapper wrapper = new StringWrapper();
-        wrapper.value = "valid";
+        wrapper.value("valid");
         body.map.put(LocalDate.of(1, 2, 3), wrapper);
         Validator.validate(body); // pass
         body.map.put(LocalDate.of(1, 2, 3), null);
@@ -122,52 +122,102 @@ public class ValidatorTests {
     }
 
     @Test
-    public void validateObject() throws Exception {
+    public void validateObject() {
         Product product = new Product();
         Validator.validate(product);
     }
 
     @Test
-    public void validateRecursive() throws Exception {
+    public void validateRecursive() {
         TextNode textNode = new TextNode("\"\"");
         Validator.validate(textNode);
     }
 
     public final class IntWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 2 LINES
-        public int value;
-        public Object nullable;
+        private int value;
+        private Object nullable;
+
+        public int value() {
+            return value;
+        }
+
+        public void value(int value) {
+            this.value = value;
+        }
+
+        public Object nullable() {
+            return nullable;
+        }
+
+        public void nullable(Object nullable) {
+            this.nullable = nullable;
+        }
     }
 
     public final class IntegerWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public Integer value;
+        private Integer value;
+
+        public Integer value() {
+            return value;
+        }
+
+        public void value(Integer value) {
+            this.value = value;
+        }
     }
 
     public final class StringWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public String value;
+        private String value;
+
+        public String value() {
+            return value;
+        }
+
+        public void value(String value) {
+            this.value = value;
+        }
     }
 
     public final class LocalDateWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public LocalDate value;
+        private LocalDate value;
+
+        public LocalDate value() {
+            return value;
+        }
+
+        public void value(LocalDate value) {
+            this.value = value;
+        }
     }
 
     public final class ListWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public List<StringWrapper> list;
+        private List<StringWrapper> list;
+
+        public List<StringWrapper> list() {
+            return list;
+        }
+
+        public void list(List<StringWrapper> list) {
+            this.list = list;
+        }
     }
 
     public final class MapWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public Map<LocalDate, StringWrapper> map;
+        private Map<LocalDate, StringWrapper> map;
+
+        public Map<LocalDate, StringWrapper> map() {
+            return map;
+        }
+
+        public void map(Map<LocalDate, StringWrapper> map) {
+            this.map = map;
+        }
     }
 
     public enum Color {
@@ -178,13 +228,35 @@ public class ValidatorTests {
 
     public final class EnumWrapper {
         @JsonProperty(required = true)
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
-        public Color color;
+        private Color color;
+
+        public Color color() {
+            return color;
+        }
+
+        public void color(Color color) {
+            this.color = color;
+        }
     }
 
     public final class Product {
-        // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 2 LINES
-        public String id;
-        public String tag;
+        private String id;
+        private String tag;
+
+        public String id() {
+            return id;
+        }
+
+        public void id(String id) {
+            this.id = id;
+        }
+
+        public String tag() {
+            return tag;
+        }
+
+        public void tag(String tag) {
+            this.tag = tag;
+        }
     }
 }

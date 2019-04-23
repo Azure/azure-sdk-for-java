@@ -173,7 +173,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Test
-    public void ServiceErrorWithResponseContentType() {
+    public void serviceErrorWithResponseContentType() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
                 new HttpPipeline(new SimpleMockHttpClient() {
@@ -197,7 +197,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Test
-    public void ServiceErrorWithResponseContentTypeBadJSON() {
+    public void serviceErrorWithResponseContentTypeBadJSON() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
                 new HttpPipeline(new SimpleMockHttpClient() {
@@ -221,7 +221,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Test
-    public void ServiceErrorWithResponseContentTypeCharset() {
+    public void serviceErrorWithResponseContentTypeCharset() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
                 new HttpPipeline(new SimpleMockHttpClient() {
@@ -245,7 +245,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Test
-    public void ServiceErrorWithResponseContentTypeCharsetBadJSON() {
+    public void serviceErrorWithResponseContentTypeCharsetBadJSON() {
         ServiceErrorWithCharsetService service = RestProxy.create(
                 ServiceErrorWithCharsetService.class,
                 new HttpPipeline(new SimpleMockHttpClient() {
@@ -269,10 +269,27 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     private static class HeaderCollectionTypePublicFields {
-        public String name;
+        @JsonProperty()
+        private String name;
 
         @HeaderCollection("header-collection-prefix-")
-        public Map<String, String> headerCollection;
+        private Map<String, String> headerCollection;
+
+        public String name() {
+            return name;
+        }
+
+        public void name(String name) {
+            this.name = name;
+        }
+
+        public Map<String, String> headerCollection() {
+            return headerCollection;
+        }
+
+        public void headerCollection(Map<String, String> headerCollection) {
+            this.headerCollection = headerCollection;
+        }
     }
 
     private static class HeaderCollectionTypeProtectedFields {
@@ -311,7 +328,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         ResponseBase<HeaderCollectionTypePackagePrivateFields, Void> packagePrivateFields();
     }
 
-    private static final HttpClient headerCollectionHttpClient = new MockHttpClient() {
+    private static final HttpClient HEADER_COLLECTION_HTTP_CLIENT = new MockHttpClient() {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             final HttpHeaders headers = new HttpHeaders();
@@ -325,7 +342,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     };
 
     private ServiceHeaderCollections createHeaderCollectionsService() {
-        return createService(ServiceHeaderCollections.class, headerCollectionHttpClient);
+        return createService(ServiceHeaderCollections.class, HEADER_COLLECTION_HTTP_CLIENT);
     }
 
     private static void assertHeaderCollectionsRawHeaders(Response<Void> response) {
@@ -358,8 +375,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         final HeaderCollectionTypePublicFields responseHeaders = response.deserializedHeaders();
         assertNotNull(responseHeaders);
-        assertEquals("Phillip", responseHeaders.name);
-        assertHeaderCollections(responseHeaders.headerCollection);
+        assertEquals("Phillip", responseHeaders.name());
+        assertHeaderCollections(responseHeaders.headerCollection());
     }
 
     @Test
@@ -405,7 +422,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 
-    private static abstract class SimpleMockHttpClient implements HttpClient {
+    private abstract static class SimpleMockHttpClient implements HttpClient {
 
         @Override
         public abstract Mono<HttpResponse> send(HttpRequest request);

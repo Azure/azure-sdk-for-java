@@ -27,7 +27,7 @@ import java.util.function.Supplier;
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient implements HttpClient {
-    private static final HttpHeaders responseHeaders = new HttpHeaders()
+    private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders()
             .set("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
             .set("Via", "1.1 vegur")
             .set("Connection", "keep-alive")
@@ -50,16 +50,16 @@ public class MockHttpClient implements HttpClient {
                         response = new MockHttpResponse(request, 200, new byte[0]);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
-                        json.url = request.url().toString()
+                        json.url(request.url().toString()
                                 // This is just to mimic the behavior we've seen with httpbin.org.
-                                .replace("%20", " ");
-                        json.headers = toMap(request.headers());
+                                .replace("%20", " "));
+                        json.headers(toMap(request.headers()));
                         response = new MockHttpResponse(request, 200, json);
                     }
                 } else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
-                    HttpHeaders newHeaders = new HttpHeaders(responseHeaders)
+                    HttpHeaders newHeaders = new HttpHeaders(RESPONSE_HEADERS)
                             .set("Content-Type", "application/octet-stream")
                             .set("Content-Length", Integer.toString(byteCount));
                     response = new MockHttpResponse(request, 200, newHeaders, byteCount == 0 ? null : new byte[byteCount]);
@@ -71,7 +71,7 @@ public class MockHttpClient implements HttpClient {
                         bytes[i] = (byte) i;
                     }
                     final Base64Url base64EncodedBytes = bytes.length == 0 ? null : Base64Url.encode(bytes);
-                    response = new MockHttpResponse(request, 200, responseHeaders, base64EncodedBytes);
+                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, base64EncodedBytes);
                 } else if (requestPathLower.equals("/base64urllistofbytes")) {
                     final List<String> base64EncodedBytesList = new ArrayList<>();
                     for (int i = 0; i < 3; ++i) {
@@ -83,7 +83,7 @@ public class MockHttpClient implements HttpClient {
                         final Base64Url base64UrlEncodedBytes = Base64Url.encode(bytes);
                         base64EncodedBytesList.add(base64UrlEncodedBytes.toString());
                     }
-                    response = new MockHttpResponse(request, 200, responseHeaders, base64EncodedBytesList);
+                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, base64EncodedBytesList);
                 } else if (requestPathLower.equals("/base64urllistoflistofbytes")) {
                     final List<List<String>> result = new ArrayList<>();
                     for (int i = 0; i < 2; ++i) {
@@ -100,7 +100,7 @@ public class MockHttpClient implements HttpClient {
                         }
                         result.add(innerList);
                     }
-                    response = new MockHttpResponse(request, 200, responseHeaders, result);
+                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
                 } else if (requestPathLower.equals("/base64urlmapofbytes")) {
                     final Map<String, String> result = new HashMap<>();
                     for (int i = 0; i < 2; ++i) {
@@ -115,40 +115,40 @@ public class MockHttpClient implements HttpClient {
                         final Base64Url base64UrlEncodedBytes = Base64Url.encode(bytes);
                         result.put(key, base64UrlEncodedBytes.toString());
                     }
-                    response = new MockHttpResponse(request, 200, responseHeaders, result);
+                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
                 } else if (requestPathLower.equals("/datetimerfc1123")) {
                     final DateTimeRfc1123 now = new DateTimeRfc1123(OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC));
                     final String result = now.toString();
-                    response = new MockHttpResponse(request, 200, responseHeaders, result);
+                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
                 } else if (requestPathLower.equals("/unixtime")) {
-                    response = new MockHttpResponse(request, 200, responseHeaders, 0);
+                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, 0);
                 } else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url().toString();
-                    json.data = createHttpBinResponseDataForRequest(request);
+                    json.url(request.url().toString());
+                    json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url().toString();
-                    json.headers = toMap(request.headers());
+                    json.url(request.url().toString());
+                    json.headers(toMap(request.headers()));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url().toString();
-                    json.data = createHttpBinResponseDataForRequest(request);
+                    json.url(request.url().toString());
+                    json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url().toString();
-                    json.data = createHttpBinResponseDataForRequest(request);
-                    json.headers = toMap(request.headers());
+                    json.url(request.url().toString());
+                    json.data(createHttpBinResponseDataForRequest(request));
+                    json.headers(toMap(request.headers()));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url().toString();
-                    json.data = createHttpBinResponseDataForRequest(request);
-                    json.headers = toMap(request.headers());
-                    response = new MockHttpResponse(request, 200, responseHeaders, json);
+                    json.url(request.url().toString());
+                    json.data(createHttpBinResponseDataForRequest(request));
+                    json.headers(toMap(request.headers()));
+                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
                 } else if (requestPathLower.startsWith("/status/")) {
                     final String statusCodeString = requestPathLower.substring("/status/".length());
                     final int statusCode = Integer.valueOf(statusCodeString);

@@ -49,7 +49,7 @@ public class HostPolicyTests {
         return new HttpRequest(HttpMethod.GET, new URL(url));
     }
 
-    private static abstract class MockHttpClient implements HttpClient {
+    private abstract static class MockHttpClient implements HttpClient {
 
         @Override
         public abstract Mono<HttpResponse> send(HttpRequest request);

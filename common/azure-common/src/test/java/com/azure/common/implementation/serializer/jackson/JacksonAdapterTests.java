@@ -32,8 +32,8 @@ public class JacksonAdapterTests {
     @Test
     public void mapWithEmptyKeyAndNullValue() throws IOException {
         final MapHolder mapHolder = new MapHolder();
-        mapHolder.map = new HashMap<>();
-        mapHolder.map.put("", null);
+        mapHolder.map(new HashMap<>());
+        mapHolder.map().put("", null);
 
         final JacksonAdapter serializer = new JacksonAdapter();
         assertEquals("{\"map\":{\"\":null}}", serializer.serialize(mapHolder, SerializerEncoding.JSON));
@@ -58,6 +58,14 @@ public class JacksonAdapterTests {
 
     private static class MapHolder {
         @JsonInclude(content = JsonInclude.Include.ALWAYS)
-        public Map<String, String> map = new HashMap<>();
+        private Map<String, String> map = new HashMap<>();
+
+        public Map<String, String> map() {
+            return map;
+        }
+
+        public void map(Map<String, String> map) {
+            this.map = map;
+        }
     }
 }
