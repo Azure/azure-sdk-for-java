@@ -45,7 +45,7 @@ public class ReceiverIdentifierTest extends ApiTestBase {
     }
 
     @Test()
-    public void testReceiverIdentierShowsUpInQuotaErrors() throws EventHubException {
+    public void testReceiverIdentifierShowsUpInQuotaErrors() throws EventHubException {
 
         final String receiverIdentifierPrefix = UUID.randomUUID().toString();
         for (int receiverCount = 0; receiverCount < 5; receiverCount++) {

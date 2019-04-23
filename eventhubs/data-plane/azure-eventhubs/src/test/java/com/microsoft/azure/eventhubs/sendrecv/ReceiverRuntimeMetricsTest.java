@@ -18,16 +18,14 @@ import java.util.LinkedList;
 
 public class ReceiverRuntimeMetricsTest extends ApiTestBase {
 
-    static final String cgName = TestContext.getConsumerGroupName();
-    static final String partitionId = "0";
-    static final Instant beforeTestStart = Instant.now();
-    static final int sentEvents = 25;
+    private static final String CONSUMER_GROUP_NAME = TestContext.getConsumerGroupName();
+    private static final String PARTITION_ID = "0";
+    private static final int SENT_EVENTS = 25;
 
-    static EventHubClient ehClient;
-
-    static PartitionReceiver receiverWithOptions = null;
-    static PartitionReceiver receiverWithoutOptions = null;
-    static PartitionReceiver receiverWithOptionsDisabled = null;
+    private static EventHubClient ehClient;
+    private static PartitionReceiver receiverWithOptions = null;
+    private static PartitionReceiver receiverWithoutOptions = null;
+    private static PartitionReceiver receiverWithOptionsDisabled = null;
 
     @BeforeClass
     public static void initializeEventHub() throws Exception {
@@ -41,11 +39,11 @@ public class ReceiverRuntimeMetricsTest extends ApiTestBase {
         ReceiverOptions optionsWithMetricsDisabled = new ReceiverOptions();
         optionsWithMetricsDisabled.setReceiverRuntimeMetricEnabled(false);
 
-        receiverWithOptions = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.now()), options);
-        receiverWithoutOptions = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-        receiverWithOptionsDisabled = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH), optionsWithMetricsDisabled);
+        receiverWithOptions = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()), options);
+        receiverWithoutOptions = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH));
+        receiverWithOptionsDisabled = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH), optionsWithMetricsDisabled);
 
-        TestBase.pushEventsToPartition(ehClient, partitionId, sentEvents).get();
+        TestBase.pushEventsToPartition(ehClient, PARTITION_ID, SENT_EVENTS).get();
     }
 
     @AfterClass()
@@ -68,7 +66,7 @@ public class ReceiverRuntimeMetricsTest extends ApiTestBase {
     public void testRuntimeMetricsReturnedWhenEnabled() throws EventHubException {
 
         LinkedList<EventData> receivedEventsWithOptions = new LinkedList<>();
-        while (receivedEventsWithOptions.size() < sentEvents)
+        while (receivedEventsWithOptions.size() < SENT_EVENTS)
             for (EventData eData : receiverWithOptions.receiveSync(1)) {
                 receivedEventsWithOptions.add(eData);
                 Assert.assertEquals((Long) eData.getSystemProperties().getSequenceNumber(),
