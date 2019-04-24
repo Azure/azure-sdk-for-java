@@ -227,13 +227,34 @@ public class ConfigurationSetting {
 
         ConfigurationSetting other = (ConfigurationSetting) o;
 
-        return Objects.equals(this.key, other.key)
-            && Objects.equals(this.label, other.label)
-            && Objects.equals(this.value, other.value)
-            && Objects.equals(this.etag, other.etag)
-            && Objects.equals(this.lastModified, other.lastModified)
-            && Objects.equals(this.locked, other.locked)
-            && Objects.equals(this.contentType, other.contentType)
-            && Objects.equals(this.tags, other.tags);
+        if (!Objects.equals(this.key, other.key)
+            || !Objects.equals(this.label, other.label)
+            || !Objects.equals(this.value, other.value)
+            || !Objects.equals(this.etag, other.etag)
+            || !Objects.equals(this.lastModified, other.lastModified)
+            || !Objects.equals(this.locked, other.locked)
+            || !Objects.equals(this.contentType, other.contentType)
+            || ImplUtils.isNullOrEmpty(this.tags) != ImplUtils.isNullOrEmpty(other.tags)) {
+            return false;
+        }
+
+        if (!ImplUtils.isNullOrEmpty(this.tags)) {
+            return Objects.equals(this.tags.size(), other.tags.size())
+                && Objects.equals(this.tags, other.tags);
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.key,
+                this.label,
+                this.value,
+                this.etag,
+                this.lastModified,
+                this.locked,
+                this.contentType,
+                this.tags);
     }
 }

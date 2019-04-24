@@ -3,7 +3,12 @@
 
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.impl.IteratorUtil;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
@@ -18,11 +23,9 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class ReceiveParallelManualTest extends ApiTestBase {
-    static final String cgName = TestContext.getConsumerGroupName();
-    static final String partitionId = "0";
+    private static final String CONSUMER_GROUP_NAME = TestContext.getConsumerGroupName();
 
-    static EventHubClient[] ehClient;
-
+    private static EventHubClient[] ehClient;
 
     @BeforeClass
     public static void initializeEventHub() throws Exception {
@@ -42,10 +45,11 @@ public class ReceiveParallelManualTest extends ApiTestBase {
 
     @AfterClass()
     public static void cleanup() throws EventHubException {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++) {
             if (ehClient[i] != null) {
                 ehClient[i].closeSync();
             }
+        }
     }
 
     // Run this test manually and introduce network failures to test
@@ -85,7 +89,7 @@ public class ReceiveParallelManualTest extends ApiTestBase {
             PartitionReceiver offsetReceiver1 = null;
             try {
                 offsetReceiver1 =
-                        ehClient[partitionIdInt].createReceiverSync(cgName, sPartitionId, EventPosition.fromStartOfStream());
+                        ehClient[partitionIdInt].createReceiverSync(CONSUMER_GROUP_NAME, sPartitionId, EventPosition.fromStartOfStream());
             } catch (EventHubException e) {
                 e.printStackTrace();
             }
@@ -94,10 +98,11 @@ public class ReceiveParallelManualTest extends ApiTestBase {
             long totalEvents = 0L;
             while (true) {
                 try {
-                    if ((receivedEvents = offsetReceiver1.receiveSync(10)) != null && !IteratorUtil.sizeEquals(receivedEvents, 0)) {
+                    receivedEvents = offsetReceiver1.receiveSync(10);
+                    if (receivedEvents != null && !IteratorUtil.sizeEquals(receivedEvents, 0)) {
 
-                        long batchSize = (1 + IteratorUtil.getLast(receivedEvents.iterator()).getSystemProperties().getSequenceNumber()) -
-                                (IteratorUtil.getFirst(receivedEvents).getSystemProperties().getSequenceNumber());
+                        long batchSize = (1 + IteratorUtil.getLast(receivedEvents.iterator()).getSystemProperties().getSequenceNumber())
+                            - (IteratorUtil.getFirst(receivedEvents).getSystemProperties().getSequenceNumber());
                         totalEvents += batchSize;
                         System.out.println(String.format("[partitionId: %s] received %s events; total sofar: %s, begin: %s, end: %s",
                                 sPartitionId,

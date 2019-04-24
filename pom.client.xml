@@ -141,6 +141,7 @@
     <wiremock-standalone.version>2.15.0</wiremock-standalone.version>
     <jetty-http.version>9.4.8.v20171121</jetty-http.version>
     <jetty-server.version>9.4.8.v20171121</jetty-server.version>
+    <junit.version>4.12</junit.version>
 
     <!-- Maven Tool Versions -->
     <maven-build-tools.version>1.0.1-SNAPSHOT</maven-build-tools.version>
@@ -273,6 +274,12 @@
         <groupId>io.netty</groupId>
         <artifactId>netty-buffer</artifactId>
         <version>${netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
       </dependency>
 
       <!-- Test dependencies -->
@@ -427,7 +434,7 @@
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
-          <includeTestSourceDirectory>false</includeTestSourceDirectory>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
 
           <!-- TODO soon - enable these failure modes -->
@@ -851,7 +858,7 @@
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
-          <includeTestSourceDirectory>false</includeTestSourceDirectory>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
 
           <!-- TODO soon - enable these failure modes -->

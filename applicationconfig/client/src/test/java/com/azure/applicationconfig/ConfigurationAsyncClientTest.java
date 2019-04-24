@@ -26,11 +26,9 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -477,7 +475,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
         String key2 = getKey();
 
         ConfigurationClientTestBase.listWithMultipleKeys(key, key2, (setting, setting2) -> {
-            Set<ConfigurationSetting> selected = new HashSet<>();
+            List<ConfigurationSetting> selected = new ArrayList<>();
 
             StepVerifier.create(client.addSetting(setting))
                 .assertNext(response -> ConfigurationClientTestBase.assertConfigurationEquals(setting, response))
@@ -507,7 +505,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
         String label2 = getLabel();
 
         ConfigurationClientTestBase.listWithMultipleLabels(key, label, label2, (setting, setting2) -> {
-            Set<ConfigurationSetting> selected = new HashSet<>();
+            List<ConfigurationSetting> selected = new ArrayList<>();
 
             StepVerifier.create(client.addSetting(setting))
                 .assertNext(response -> ConfigurationClientTestBase.assertConfigurationEquals(setting, response))
@@ -681,7 +679,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
         String key2 = getKey();
 
         ConfigurationClientTestBase.listRevisionsWithMultipleKeys(key, key2, (testInput) -> {
-            Set<ConfigurationSetting> selected = new HashSet<>();
+            List<ConfigurationSetting> selected = new ArrayList<>();
 
             StepVerifier.create(client.addSetting(testInput.get(0)))
                 .assertNext(response -> ConfigurationClientTestBase.assertConfigurationEquals(testInput.get(0), response))
@@ -720,7 +718,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
         String label2 = getLabel();
 
         ConfigurationClientTestBase.listRevisionsWithMultipleLabels(key, label, label2, (testInput) -> {
-            Set<ConfigurationSetting> selected = new HashSet<>();
+            List<ConfigurationSetting> selected = new ArrayList<>();
 
             StepVerifier.create(client.addSetting(testInput.get(0)))
                 .assertNext(response -> ConfigurationClientTestBase.assertConfigurationEquals(testInput.get(0), response))

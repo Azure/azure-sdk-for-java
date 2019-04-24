@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.models.ConfigurationSetting;
@@ -5,6 +7,7 @@ import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.util.ImplUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -139,7 +142,7 @@ class ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added and that we can fetch those ConfigurationSettings from the
      * service when filtering by their keys.
      */
-    static void listWithMultipleKeys(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, Set<ConfigurationSetting>> testRunner) {
+    static void listWithMultipleKeys(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, List<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
@@ -155,7 +158,7 @@ class ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
      * from the service when filtering by their labels.
      */
-    static void listWithMultipleLabels(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, Set<ConfigurationSetting>> testRunner) {
+    static void listWithMultipleLabels(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, List<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
@@ -170,7 +173,7 @@ class ConfigurationClientTestBase {
     /**
      * Verifies that we can get all the revisions for all settings with the specified keys.
      */
-    static void listRevisionsWithMultipleKeys(String key, String key2, Function<List<ConfigurationSetting>, Set<ConfigurationSetting>> testRunner) {
+    static void listRevisionsWithMultipleKeys(String key, String key2, Function<List<ConfigurationSetting>, List<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
         final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value("updatedValue");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
@@ -188,7 +191,7 @@ class ConfigurationClientTestBase {
     /**
      * Verifies that we can get all revisions for all settings with the specified labels.
      */
-    static void listRevisionsWithMultipleLabels(String key, String label, String label2, Function<List<ConfigurationSetting>, Set<ConfigurationSetting>> testRunner) {
+    static void listRevisionsWithMultipleLabels(String key, String label, String label2, Function<List<ConfigurationSetting>, List<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
         final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value("updatedValue");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
@@ -254,26 +257,23 @@ class ConfigurationClientTestBase {
 
         if (!Objects.equals(expected.key(), actual.key())
             || !Objects.equals(expected.value(), actual.value())
-            || !Objects.equals(expected.contentType(), actual.contentType())) {
-            return false;
-        }
-
-        if (ConfigurationSetting.NO_LABEL.equals(expected.label()) && actual.label() != null) {
-            return false;
-        } else if (!Objects.equals(expected.label(), actual.label())) {
+            || !Objects.equals(expected.contentType(), actual.contentType())
+            || ImplUtils.isNullOrEmpty(expected.tags()) != ImplUtils.isNullOrEmpty(actual.tags())) {
             return false;
         }
 
         if (!ImplUtils.isNullOrEmpty(expected.tags())) {
-            if (ImplUtils.isNullOrEmpty(actual.tags())) {
+            if (!Objects.equals(expected.tags().size(), actual.tags().size())
+                || !Objects.equals(expected.tags(), actual.tags())) {
                 return false;
             }
-
-            return Objects.equals(expected.tags().size(), actual.tags().size())
-                && expected.tags().equals(actual.tags());
         }
 
-        return true;
+        if (ConfigurationSetting.NO_LABEL.equals(expected.label()) && actual.label() != null) {
+            return false;
+        } else {
+            return Objects.equals(expected.label(), actual.label());
+        }
     }
 
     static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {

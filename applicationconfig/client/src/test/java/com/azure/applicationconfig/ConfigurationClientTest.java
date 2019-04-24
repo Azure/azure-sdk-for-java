@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
@@ -19,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -94,7 +95,7 @@ public class ConfigurationClientTest extends TestBase {
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException ex) {
-
+                    // Do nothing
                 }
 
                 client.deleteSetting(configurationSetting);
@@ -402,7 +403,7 @@ public class ConfigurationClientTest extends TestBase {
             ConfigurationClientTestBase.assertConfigurationEquals(setting, client.addSetting(setting));
             ConfigurationClientTestBase.assertConfigurationEquals(setting2, client.addSetting(setting2));
 
-            return new HashSet<>(client.listSettings(new SettingSelector().keys(key, key2)));
+            return client.listSettings(new SettingSelector().keys(key, key2));
         });
     }
 
@@ -420,7 +421,7 @@ public class ConfigurationClientTest extends TestBase {
             ConfigurationClientTestBase.assertConfigurationEquals(setting, client.addSetting(setting));
             ConfigurationClientTestBase.assertConfigurationEquals(setting2, client.addSetting(setting2));
 
-            return new HashSet<>(client.listSettings(new SettingSelector().keys(key).labels(label, label2)));
+            return client.listSettings(new SettingSelector().keys(key).labels(label, label2));
         });
     }
 
@@ -479,7 +480,7 @@ public class ConfigurationClientTest extends TestBase {
             Thread.sleep(2000);
             ConfigurationClientTestBase.assertConfigurationEquals(updated2, client.setSetting(updated2));
         } catch (InterruptedException e) {
-
+            // Do nothing
         }
 
         // Gets all versions of this value so we can get the one we want at that particular date.
@@ -550,7 +551,7 @@ public class ConfigurationClientTest extends TestBase {
             ConfigurationClientTestBase.assertConfigurationEquals(testInput.get(2), client.addSetting(testInput.get(2)));
             ConfigurationClientTestBase.assertConfigurationEquals(testInput.get(3), client.updateSetting(testInput.get(3)));
 
-            return new HashSet<>(client.listSettingRevisions(new SettingSelector().keys(key, key2)));
+            return client.listSettingRevisions(new SettingSelector().keys(key, key2));
         });
     }
 
@@ -569,7 +570,7 @@ public class ConfigurationClientTest extends TestBase {
             ConfigurationClientTestBase.assertConfigurationEquals(testInput.get(2), client.addSetting(testInput.get(2)));
             ConfigurationClientTestBase.assertConfigurationEquals(testInput.get(3), client.updateSetting(testInput.get(3)));
 
-            return new HashSet<>(client.listSettingRevisions(new SettingSelector().keys(key).labels(label, label2)));
+            return client.listSettingRevisions(new SettingSelector().keys(key).labels(label, label2));
         });
     }
 
@@ -591,7 +592,7 @@ public class ConfigurationClientTest extends TestBase {
             Thread.sleep(2000);
             ConfigurationClientTestBase.assertConfigurationEquals(updated2, client.setSetting(updated2));
         } catch (InterruptedException e) {
-
+            // Do nothing
         }
 
         // Gets all versions of this value.
@@ -658,7 +659,7 @@ public class ConfigurationClientTest extends TestBase {
     @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test
     public void deleteAllSettings() {
-        for(ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().keys("*"))) {
+        for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().keys("*"))) {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
             client.deleteSetting(configurationSetting);
         }

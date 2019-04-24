@@ -12,12 +12,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Annotation for the type that will be used to deserialize the return value of a REST API response.
  * Supported values are:
+ *
  * <ol>
  *     <li>{@link com.azure.common.implementation.Base64Url}</li>
  *     <li>{@link com.azure.common.implementation.DateTimeRfc1123}</li>
  *     <li>{@link com.azure.common.implementation.UnixTime}</li>
  *     <li>{@link com.azure.common.http.rest.Page}</li>
- *     <li>{@link java.util.List List&lt;T&gt;} where T can be one of the four values above.</li>
+ *     <li>{@link java.util.List List&lt;T&gt;} where {@code T} can be one of the four values above.</li>
  * </ol>
  */
 @Retention(RUNTIME)

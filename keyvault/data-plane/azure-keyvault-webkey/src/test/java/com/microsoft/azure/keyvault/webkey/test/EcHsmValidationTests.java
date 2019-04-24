@@ -3,12 +3,10 @@
 
 package com.microsoft.azure.keyvault.webkey.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
-import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 
 
 public class EcHsmValidationTests {

@@ -7,26 +7,25 @@ import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public final class TestContext {
 
-    public final static ScheduledExecutorService EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
+    public static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
 
-    final static String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "EVENT_HUB_CONNECTION_STRING";
+    private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
 
-    private static String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
+    private static String connectionString = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
 
     private TestContext() {
         // eq. of c# static class
     }
 
     public static ConnectionStringBuilder getConnectionString() {
-        return new ConnectionStringBuilder(CONNECTION_STRING);
+        return new ConnectionStringBuilder(connectionString);
     }
 
     public static void setConnectionString(final String connectionString) {
-        CONNECTION_STRING = connectionString;
+        TestContext.connectionString = connectionString;
     }
 
     public static String getConsumerGroupName() {
@@ -34,6 +33,6 @@ public final class TestContext {
     }
 
     public static boolean isTestConfigurationSet() {
-        return System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME) != null;
+        return connectionString != null;
     }
 }

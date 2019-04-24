@@ -12,9 +12,36 @@ import java.util.Map;
  * Maps to the JSON return values from http://httpbin.org.
  */
 public class HttpBinFormDataJSON {
-    public String url;
-    public Map<String,String> headers;
-    public Form form;
+    @JsonProperty
+    private String url;
+    @JsonProperty
+    private Map<String, String> headers;
+    @JsonProperty
+    private Form form;
+
+    public String url() {
+        return url;
+    }
+
+    public void url(String url) {
+        this.url = url;
+    }
+
+    public Map<String, String> headers() {
+        return headers;
+    }
+
+    public void headers(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+    public Form form() {
+        return form;
+    }
+
+    public void form(Form form) {
+        this.form = form;
+    }
 
     public enum PizzaSize {
         SMALL("small"), MEDIUM("medium"), LARGE("large");
@@ -23,23 +50,71 @@ public class HttpBinFormDataJSON {
         PizzaSize(String value) {
             this.value = value;
         }
+
+        public String value() {
+            return this.value;
+        }
+
+        public void value(String value) {
+            this.value = value;
+        }
     }
 
     public static class Form {
         @JsonProperty("custname")
-        public String customerName;
+        private String customerName;
 
         @JsonProperty("custtel")
-        public String customerTelephone;
+        private String customerTelephone;
 
         @JsonProperty("custemail")
-        public String customerEmail;
+        private String customerEmail;
 
         @JsonProperty("size")
-        public PizzaSize pizzaSize;
+        private PizzaSize pizzaSize;
 
         @JsonProperty("toppings")
-        public List<String> toppings;
+        private List<String> toppings;
+
+        public String customerName() {
+            return this.customerName;
+        }
+
+        public void customerName(String customerName) {
+            this.customerName = customerName;
+        }
+
+        public String customerTelephone() {
+            return this.customerTelephone;
+        }
+
+        public void customerTelephone(String customerTelephone) {
+            this.customerTelephone = customerTelephone;
+        }
+
+        public String customerEmail() {
+            return this.customerEmail;
+        }
+
+        public void customerEmail(String customerEmail) {
+            this.customerEmail = customerEmail;
+        }
+
+        public PizzaSize pizzaSize() {
+            return this.pizzaSize;
+        }
+
+        public void pizzaSize(PizzaSize pizzaSize) {
+            this.pizzaSize = pizzaSize;
+        }
+
+        public List<String> toppings() {
+            return this.toppings;
+        }
+
+        public void toppings(List<String> toppings) {
+            this.toppings = toppings;
+        }
     }
 }
 

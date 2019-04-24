@@ -25,6 +25,14 @@ import java.util.stream.Stream;
  * Sample demonstrates how to add a custom policy into the HTTP pipeline.
  */
 class PipelineSample {
+    /**
+     * Runs the sample algorithm and demonstrates how to add a custom policy to the HTTP pipeline.
+     *
+     * @param args Unused. Arguments to the program.
+     * @throws NoSuchAlgorithmException when credentials cannot be created because the service cannot resolve the
+     * HMAC-SHA256 algorithm.
+     * @throws InvalidKeyException when credentials cannot be created because the connection string is invalid.
+     */
     public static void main(String[] args)  throws NoSuchAlgorithmException, InvalidKeyException {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.

@@ -261,7 +261,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (options != null) {
             String fields = getSelectQuery(options.fields());
-            result = service.listKeyValues(serviceEndpoint, String.join(COMMA, options.keys()), String.join(COMMA, options.labels()), fields, options.acceptDateTime());
+            result = service.listKeyValues(serviceEndpoint, getQueryString(options.keys()), getQueryString(options.labels()), fields, options.acceptDateTime());
         } else {
             result = service.listKeyValues(serviceEndpoint, null, null, null, null);
         }
@@ -284,7 +284,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (selector != null) {
             String fields = getSelectQuery(selector.fields());
-            result = service.listKeyValueRevisions(serviceEndpoint, String.join(COMMA, selector.keys()), String.join(COMMA, selector.labels()), fields, selector.acceptDateTime(), null);
+            result = service.listKeyValueRevisions(serviceEndpoint, getQueryString(selector.keys()), getQueryString(selector.labels()), fields, selector.acceptDateTime(), null);
         } else {
             result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null);
         }
@@ -321,6 +321,14 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      */
     private static String getETagValue(String etag) {
         return etag == null ? "" : "\"" + etag + "\"";
+    }
+
+    private static String getQueryString(String[] values) {
+        if (ImplUtils.isNullOrEmpty(values)) {
+            return null;
+        }
+
+        return String.join(COMMA, values);
     }
 
     private static String getSelectQuery(SettingFields[] set) {
