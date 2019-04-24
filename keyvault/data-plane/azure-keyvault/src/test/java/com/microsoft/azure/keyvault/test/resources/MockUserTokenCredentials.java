@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package resources;
+package com.microsoft.azure.keyvault.test.resources;
 
 import java.io.IOException;
 import java.util.Date;
@@ -9,8 +9,6 @@ import java.util.Date;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.aad.adal4j.AuthenticationResult;
-
-
 
 public class MockUserTokenCredentials extends UserTokenCredentials {
 
@@ -22,7 +20,7 @@ public class MockUserTokenCredentials extends UserTokenCredentials {
     }
 
     public MockUserTokenCredentials() {
-        this("","","","", AzureEnvironment.AZURE);
+        this("", "", "", "", AzureEnvironment.AZURE);
     }
 
     @Override

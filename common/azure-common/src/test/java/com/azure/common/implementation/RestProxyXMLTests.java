@@ -202,21 +202,21 @@ public class RestProxyXMLTests {
                 serializer);
 
         Slideshow slideshow = myXMLService.getSlideshow();
-        assertEquals("Sample Slide Show", slideshow.title);
-        assertEquals("Date of publication", slideshow.date);
-        assertEquals("Yours Truly", slideshow.author);
-        assertEquals(2, slideshow.slides.length);
+        assertEquals("Sample Slide Show", slideshow.title());
+        assertEquals("Date of publication", slideshow.date());
+        assertEquals("Yours Truly", slideshow.author());
+        assertEquals(2, slideshow.slides().length);
 
-        assertEquals("all", slideshow.slides[0].type);
-        assertEquals("Wake up to WonderWidgets!", slideshow.slides[0].title);
-        assertNull(slideshow.slides[0].items);
+        assertEquals("all", slideshow.slides()[0].type());
+        assertEquals("Wake up to WonderWidgets!", slideshow.slides()[0].title());
+        assertNull(slideshow.slides()[0].items());
 
-        assertEquals("all", slideshow.slides[1].type);
-        assertEquals("Overview", slideshow.slides[1].title);
-        assertEquals(3, slideshow.slides[1].items.length);
-        assertEquals("Why WonderWidgets are great", slideshow.slides[1].items[0]);
-        assertEquals("", slideshow.slides[1].items[1]);
-        assertEquals("Who buys WonderWidgets", slideshow.slides[1].items[2]);
+        assertEquals("all", slideshow.slides()[1].type());
+        assertEquals("Overview", slideshow.slides()[1].title());
+        assertEquals(3, slideshow.slides()[1].items().length);
+        assertEquals("Why WonderWidgets are great", slideshow.slides()[1].items()[0]);
+        assertEquals("", slideshow.slides()[1].items()[1]);
+        assertEquals("Who buys WonderWidgets", slideshow.slides()[1].items()[2]);
 
         String xml = serializer.serialize(slideshow, SerializerEncoding.XML);
         Slideshow newSlideshow = serializer.deserialize(xml, Slideshow.class, SerializerEncoding.XML);

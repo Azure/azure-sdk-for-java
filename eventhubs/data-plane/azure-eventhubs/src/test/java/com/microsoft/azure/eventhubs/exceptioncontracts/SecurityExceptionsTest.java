@@ -3,7 +3,13 @@
 
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.AuthorizationFailedException;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.IllegalEntityException;
 import com.microsoft.azure.eventhubs.impl.SharedAccessSignatureTokenProvider;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
@@ -15,8 +21,8 @@ import java.time.Duration;
 import java.util.UUID;
 
 public class SecurityExceptionsTest extends ApiTestBase {
-    final static String PARTITION_ID = "0";
-    EventHubClient ehClient;
+    private static final String PARTITION_ID = "0";
+    private EventHubClient ehClient;
 
     @Test(expected = AuthorizationFailedException.class)
     public void testEventHubClientUnAuthorizedAccessKeyName() throws Throwable {

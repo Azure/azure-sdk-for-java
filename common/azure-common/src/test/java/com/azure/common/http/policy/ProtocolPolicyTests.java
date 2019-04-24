@@ -39,10 +39,10 @@ public class ProtocolPolicyTests {
             }
         },
         new ProtocolPolicy(protocol, true),
-        (context, next) -> {
-            assertEquals(expectedUrl, context.httpRequest().url().toString());
-            return next.process();
-        });
+            (context, next) -> {
+                assertEquals(expectedUrl, context.httpRequest().url().toString());
+                return next.process();
+            });
     }
 
     private static HttpPipeline createPipeline(String protocol, boolean overwrite, String expectedUrl) {
@@ -53,17 +53,17 @@ public class ProtocolPolicyTests {
             }
         },
         new ProtocolPolicy(protocol, overwrite),
-        (context, next) -> {
-            assertEquals(expectedUrl, context.httpRequest().url().toString());
-            return next.process();
-        });
+            (context, next) -> {
+                assertEquals(expectedUrl, context.httpRequest().url().toString());
+                return next.process();
+            });
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
         return new HttpRequest(HttpMethod.GET, new URL(url));
     }
 
-    private static abstract class MockHttpClient implements HttpClient {
+    private abstract static class MockHttpClient implements HttpClient {
 
         @Override
         public abstract Mono<HttpResponse> send(HttpRequest request);

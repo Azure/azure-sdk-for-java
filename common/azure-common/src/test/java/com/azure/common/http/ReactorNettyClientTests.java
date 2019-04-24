@@ -200,7 +200,7 @@ public class ReactorNettyClientTests {
                 return 1;
             })
             .subscribeOn(Schedulers.io())
-            .subscribe();
+                .subscribe();
             //
             latch.await();
             HttpClient client = HttpClient.createDefault();
@@ -265,7 +265,7 @@ public class ReactorNettyClientTests {
 
         StepVerifier.create(numBytesMono)
 //              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
-                .expectNext((long)(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
+                .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
                 .verifyComplete();
 //
 //        long numBytes = numBytesMono.block();

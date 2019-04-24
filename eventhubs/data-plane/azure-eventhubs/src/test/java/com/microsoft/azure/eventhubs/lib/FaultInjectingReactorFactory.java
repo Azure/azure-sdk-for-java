@@ -42,7 +42,7 @@ public class FaultInjectingReactorFactory extends MessagingFactory.ReactorFactor
         NetworkOutage
     }
 
-    public final static class NetworkOutageSimulator extends CustomIOHandler {
+    public static final class NetworkOutageSimulator extends CustomIOHandler {
 
         @Override
         public void onUnhandled(final Event event) {

@@ -26,8 +26,7 @@ public class RsaValidationTests {
 
     @Test
     public void rsaPublicKeyValidation() throws Exception {
-        for(String keyStr : keys.values())
-        {
+        for (String keyStr : keys.values()) {
             ObjectMapper mapper = new ObjectMapper();
             JsonWebKey key = mapper.readValue(keyStr, JsonWebKey.class);
             Assert.assertTrue(key.hasPrivateKey());
@@ -47,8 +46,7 @@ public class RsaValidationTests {
 
     @Test
     public void rsaPrivateKeyValidation() throws Exception {
-        for(String keyStr : keys.values())
-        {
+        for (String keyStr : keys.values()) {
             ObjectMapper mapper = new ObjectMapper();
             JsonWebKey key = mapper.readValue(keyStr, JsonWebKey.class);
 
@@ -79,7 +77,7 @@ public class RsaValidationTests {
         byte[] plaintext = new byte[10];
         new Random().nextBytes(plaintext);
         byte[] cipherText = encrypt(publicKey, plaintext);
-        if(privateKey != null) {
+        if (privateKey != null) {
             Assert.assertArrayEquals(decrypt(privateKey, cipherText), plaintext);
         }
     }
@@ -106,7 +104,7 @@ public class RsaValidationTests {
         PublicKey publicKey = keyPair2.getPublic();
         PrivateKey privateKey = keyPair2.getPrivate();
 
-        if(includePrivateKey) {
+        if (includePrivateKey) {
             Assert.assertNotNull(privateKey);
 
             // set the missing properties to compare the keys

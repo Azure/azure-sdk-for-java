@@ -7,14 +7,13 @@ import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.ComplexConfiguration;
+import com.azure.models.ComplexConfiguration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 /**
  * Sample demonstrates how to use Azure Application Configuration to switch between "beta" and "production"
@@ -33,8 +32,18 @@ public class ConfigurationSets {
     private static final String BETA = "beta";
     private static final String PRODUCTION = "production";
 
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    /**
+     * Entry point to the configuration set sample. Creates two sets of configuration values and fetches values from the
+     * "beta" configuration set.
+     *
+     * @param args Unused. Arguments to the program.
+     * @throws NoSuchAlgorithmException when credentials cannot be created because the service cannot resolve the
+     * HMAC-SHA256 algorithm.
+     * @throws InvalidKeyException when credentials cannot be created because the connection string is invalid.
+     * @throws IOException If the service is unable to deserialize the complex configuration object.
+     */
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
@@ -42,8 +51,8 @@ public class ConfigurationSets {
 
         // Instantiate a configuration client that will be used to call the configuration service.
         ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
-                .credentials(new ConfigurationClientCredentials(connectionString))
-                .build();
+            .credentials(new ConfigurationClientCredentials(connectionString))
+            .build();
 
         // Demonstrates two different complex objects being stored in Azure App Configuration; one used for beta and the
         // other used for production.
@@ -66,7 +75,7 @@ public class ConfigurationSets {
             System.out.println("Key: " + setting.key());
             if ("application/json".equals(setting.contentType())) {
                 try {
-                    ComplexConfiguration kv = mapper.readValue(setting.value(), ComplexConfiguration.class);
+                    ComplexConfiguration kv = MAPPER.readValue(setting.value(), ComplexConfiguration.class);
                     System.out.println("Value: " + kv.toString());
                 } catch (IOException e) {
                     System.err.println(String.format("Could not deserialize %s%n%s", setting.value(), e.toString()));
@@ -78,7 +87,7 @@ public class ConfigurationSets {
 
         // For the BETA and PRODUCTION sets, we fetch all of the settings we created in each set, and delete them.
         // Blocking so that the program does not exit before these tasks have completed.
-        Flux.fromArray(new String [] {BETA, PRODUCTION})
+        Flux.fromArray(new String[]{BETA, PRODUCTION})
             .flatMap(set -> client.listSettings(new SettingSelector().label(set)))
             .map(client::deleteSetting)
             .blockLast();
@@ -90,14 +99,14 @@ public class ConfigurationSets {
     private static Mono<Void> addConfigurations(ConfigurationAsyncClient client, String configurationSet,
                                                 String storageEndpoint, ComplexConfiguration complexConfiguration) throws JsonProcessingException {
         ConfigurationSetting endpointSetting = new ConfigurationSetting()
-                .key(CONNECTION_STRING_KEY)
-                .label(configurationSet)
-                .value(storageEndpoint);
+            .key(CONNECTION_STRING_KEY)
+            .label(configurationSet)
+            .value(storageEndpoint);
         ConfigurationSetting keyVaultSetting = new ConfigurationSetting()
-                .key(COMPLEX_SETTING_KEY)
-                .label(configurationSet)
-                .value(mapper.writeValueAsString(complexConfiguration))
-                .contentType("application/json");
+            .key(COMPLEX_SETTING_KEY)
+            .label(configurationSet)
+            .value(MAPPER.writeValueAsString(complexConfiguration))
+            .contentType("application/json");
 
         return Flux.merge(client.addSetting(keyVaultSetting), client.addSetting(endpointSetting)).then();
     }

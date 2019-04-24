@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.eventhubs.lib.Mock;
+package com.microsoft.azure.eventhubs.lib.mock;
 
 import com.microsoft.azure.eventhubs.impl.AmqpConstants;
 import org.apache.qpid.proton.Proton;
@@ -13,7 +13,8 @@ import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Handshaker;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Sends 1 Msg on the first onLinkFlow event
