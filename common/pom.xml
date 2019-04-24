@@ -64,6 +64,16 @@
           <failOnViolation>true</failOnViolation>
         </configuration>
       </plugin>
+
+      <!-- Ensure the common libraries we ship have correct Javadoc tags, links, etc. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+            <failOnError>true</failOnError>
+            <failOnWarnings>true</failOnWarnings>
+          </configuration>
+      </plugin>
     </plugins>
   </build>
 
