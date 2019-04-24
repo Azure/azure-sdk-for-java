@@ -8,7 +8,6 @@ package com.azure.common.exception;
  *
  * @see ServiceRequestException
  * @see ServiceResponseException
- * @see DecodeException
  */
 public class AzureException extends RuntimeException {
 

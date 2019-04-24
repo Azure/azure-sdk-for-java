@@ -8,7 +8,7 @@ import com.azure.common.http.HttpResponse;
 /**
  * The exception thrown for invalid resource modification with status code of 4XX, typically 412 Conflict.
  */
-public class ResourceModifiedException extends ClientRequestException {
+public class ResourceModifiedException extends HttpRequestException {
 
     /**
      * Initializes a new instance of the ResourceModifiedException class.

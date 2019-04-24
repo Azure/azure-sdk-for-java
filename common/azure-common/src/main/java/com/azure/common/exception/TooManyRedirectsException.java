@@ -6,7 +6,8 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * This exception is thrown when an HTTP request has reached the maximum number of redirect attempts.
+ * This exception is thrown when an HTTP request has reached the maximum number of redirect attempts
+ * with HTTP status code of 5XX.
  */
 public class TooManyRedirectsException extends HttpRequestException {
 

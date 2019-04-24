@@ -9,7 +9,8 @@ import com.azure.common.http.HttpResponse;
  *  The server did not send any data in the allotted amount of time.
  *  These errors may not be safe to retry.
  */
-public class ReadTimeoutException extends ServiceRequestException {
+public class ReadTimeoutException extends ServiceResponseException {
+
     /**
      * Initializes a new instance of the ReadTimeoutException class.
      *
