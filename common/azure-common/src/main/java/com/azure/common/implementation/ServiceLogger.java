@@ -1,6 +1,7 @@
 package com.azure.common.implementation;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -14,10 +15,10 @@ public final class ServiceLogger {
 
     /**
      * Constructs a ServiceLogger.
-     * @param logger Logger to handle logging.
+     * @param clazz Class creating the logger.
      */
-    public ServiceLogger(Logger logger) {
-        this.logger = logger;
+    public ServiceLogger(Class clazz) {
+        this.logger = LoggerFactory.getLogger(clazz);
     }
 
     /**

@@ -15,7 +15,6 @@ import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.RestProxy;
 import com.azure.common.implementation.ServiceLogger;
 import org.reactivestreams.Publisher;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -33,7 +32,7 @@ import java.util.stream.Collectors;
  * @see ConfigurationClientCredentials
  */
 public final class ConfigurationAsyncClient extends ServiceClient {
-    private final ServiceLogger logger = new ServiceLogger(LoggerFactory.getLogger(ConfigurationAsyncClient.class));
+    private final ServiceLogger logger = new ServiceLogger(ConfigurationAsyncClient.class);
 
     private static final String ETAG_ANY = "*";
 
@@ -270,13 +269,15 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * contains all of the current settings in the service.
      */
     public Flux<ConfigurationSetting> listSettings(SettingSelector options) {
-        logger.logInformational(String.format(Locale.US, "Listing ConfigurationSetting - Keys: %s, Labels: %s", options.key(), options.label()));
-
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (options != null) {
+            logger.logInformational(String.format(Locale.US, "Listing ConfigurationSettings with keys: %s, labels: %s", options.key(), options.label()));
+
             String fields = getSelectQuery(options.fields());
             result = logger.evaluateLoggable(() ->service.listKeyValues(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime()));
         } else {
+            logger.logInformational(String.format(Locale.US, "Listing all ConfigurationSettings"));
+
             result = logger.evaluateLoggable(() -> service.listKeyValues(serviceEndpoint, null, null, null, null));
         }
 
@@ -295,13 +296,15 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @return Revisions of the ConfigurationSetting
      */
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        logger.logInformational(String.format(Locale.US, "Listing ConfigurationSetting revisions - Keys: %s, Labels: %s", selector.key(), selector.label()));
-
         Mono<PagedResponse<ConfigurationSetting>> result;
         if (selector != null) {
+            logger.logInformational(String.format(Locale.US, "Listing ConfigurationSetting revisions with keys: %s, labels: %s", selector.key(), selector.label()));
+
             String fields = getSelectQuery(selector.fields());
             result = logger.evaluateLoggable(() -> service.listKeyValueRevisions(serviceEndpoint, selector.key(), selector.label(), fields, selector.acceptDateTime(), null));
         } else {
+            logger.logInformational(String.format(Locale.US, "Listing all ConfigurationSetting revisions"));
+
             result = logger.evaluateLoggable(() -> service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null));
         }
 
