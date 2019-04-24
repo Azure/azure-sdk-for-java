@@ -3,8 +3,25 @@
 
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import com.microsoft.azure.eventhubs.*;
-import com.microsoft.azure.eventhubs.impl.*;
+import com.microsoft.azure.eventhubs.AuthorizationFailedException;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
+import com.microsoft.azure.eventhubs.IllegalEntityException;
+import com.microsoft.azure.eventhubs.PartitionRuntimeInformation;
+import com.microsoft.azure.eventhubs.TimeoutException;
+import com.microsoft.azure.eventhubs.TransportType;
+import com.microsoft.azure.eventhubs.impl.AmqpException;
+import com.microsoft.azure.eventhubs.impl.AmqpResponseCode;
+import com.microsoft.azure.eventhubs.impl.ClientConstants;
+import com.microsoft.azure.eventhubs.impl.EventHubClientImpl;
+import com.microsoft.azure.eventhubs.impl.FaultTolerantObject;
+import com.microsoft.azure.eventhubs.impl.MessagingFactory;
+import com.microsoft.azure.eventhubs.impl.Operation;
+import com.microsoft.azure.eventhubs.impl.OperationResult;
+import com.microsoft.azure.eventhubs.impl.ReactorDispatcher;
+import com.microsoft.azure.eventhubs.impl.RequestResponseChannel;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import junit.framework.AssertionFailedError;
@@ -20,7 +37,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
