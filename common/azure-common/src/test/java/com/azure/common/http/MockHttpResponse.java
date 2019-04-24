@@ -16,7 +16,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class MockHttpResponse extends HttpResponse {
-    private final static SerializerAdapter serializer = new JacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     private final int statusCode;
 
@@ -50,7 +50,7 @@ public class MockHttpResponse extends HttpResponse {
     private static byte[] serialize(Object serializable) {
         byte[] result = null;
         try {
-            final String serializedString = serializer.serialize(serializable, SerializerEncoding.JSON);
+            final String serializedString = SERIALIZER.serialize(serializable, SerializerEncoding.JSON);
             result = serializedString == null ? null : serializedString.getBytes();
         } catch (IOException e) {
             e.printStackTrace();

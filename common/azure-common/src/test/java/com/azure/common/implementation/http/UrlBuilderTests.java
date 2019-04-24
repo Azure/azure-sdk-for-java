@@ -518,7 +518,7 @@ public class UrlBuilderTests {
 
     @Test
     public void parseWithNullString() {
-        final UrlBuilder builder = UrlBuilder.parse((String)null);
+        final UrlBuilder builder = UrlBuilder.parse((String) null);
         assertEquals("", builder.toString());
     }
 
@@ -680,7 +680,7 @@ public class UrlBuilderTests {
 
     @Test
     public void parseURLWithNull() {
-        final UrlBuilder builder = UrlBuilder.parse((URL)null);
+        final UrlBuilder builder = UrlBuilder.parse((URL) null);
         assertEquals("", builder.toString());
     }
 

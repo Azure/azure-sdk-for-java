@@ -122,7 +122,7 @@ public class HttpPipelineTests {
         assertEquals(200, response.statusCode());
     }
 
-    private static abstract class MockHttpClient implements HttpClient {
+    private abstract static class MockHttpClient implements HttpClient {
 
         @Override
         public abstract Mono<HttpResponse> send(HttpRequest request);

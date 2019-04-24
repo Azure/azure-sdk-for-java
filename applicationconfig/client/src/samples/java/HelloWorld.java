@@ -12,6 +12,14 @@ import java.security.NoSuchAlgorithmException;
  * Sample demonstrates how to add, get, and delete a configuration setting.
  */
 public class HelloWorld {
+    /**
+     * Runs the sample algorithm and demonstrates how to add, get, and delete a configuration setting.
+     *
+     * @param args Unused. Arguments to the program.
+     * @throws NoSuchAlgorithmException when credentials cannot be created because the service cannot resolve the
+     * HMAC-SHA256 algorithm.
+     * @throws InvalidKeyException when credentials cannot be created because the connection string is invalid.
+     */
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
@@ -31,14 +39,15 @@ public class HelloWorld {
         // We subscribe and wait for the service call to complete then print out the contents of our newly added setting.
         // If an error occurs, we print out that error. On completion of the subscription, we delete the setting.
         // .block() exists there so the program does not end before the deletion has completed.
-        client.setSetting(key, "world").subscribe(result -> {
-            ConfigurationSetting setting = result.value();
-            System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
-        }, error -> {
-            System.err.println("There was an error adding the setting: " + error.toString());
-        }, () -> {
-            System.out.println("Completed. Deleting setting...");
-            client.deleteSetting(key).block();
-        });
+        client.setSetting(key, "world").subscribe(
+            result -> {
+                ConfigurationSetting setting = result.value();
+                System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
+            },
+            error -> System.err.println("There was an error adding the setting: " + error.toString()),
+            () -> {
+                System.out.println("Completed. Deleting setting...");
+                client.deleteSetting(key).block();
+            });
     }
 }

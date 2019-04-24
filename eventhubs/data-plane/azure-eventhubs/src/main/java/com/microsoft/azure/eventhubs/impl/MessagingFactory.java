@@ -236,14 +236,16 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             this.open.complete(this);
 
             // if connection creation is in progress and then msgFactory.close call came thru
-            if (this.getIsClosingOrClosed())
+            if (this.getIsClosingOrClosed()) {
                 this.connection.close();
+            }
         } else {
             this.open.completeExceptionally(exception);
         }
 
-        if (this.openTimer != null)
+        if (this.openTimer != null) {
             this.openTimer.cancel(false);
+        }
     }
 
     @Override

@@ -3,7 +3,14 @@
 
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import junit.framework.AssertionFailedError;
@@ -19,17 +26,17 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class SendTest extends ApiTestBase {
-    static final String cgName = TestContext.getConsumerGroupName();
-    static final String partitionId = "0";
-    static final String ORDER_PROPERTY = "order";
-    static EventHubClient ehClient;
+    private static final String CONSUMER_GROUP_NAME = TestContext.getConsumerGroupName();
+    private static final String PARTITION_ID = "0";
+    private static final String ORDER_PROPERTY = "order";
+    private static EventHubClient ehClient;
 
-    PartitionSender sender = null;
-    List<PartitionReceiver> receivers = new LinkedList<>();
+    private PartitionSender sender = null;
+    private List<PartitionReceiver> receivers = new LinkedList<>();
 
     @BeforeClass
     public static void initialize() throws Exception {
@@ -42,8 +49,9 @@ public class SendTest extends ApiTestBase {
 
     @AfterClass
     public static void cleanupClient() throws EventHubException {
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
     }
 
     @Test
@@ -57,7 +65,7 @@ public class SendTest extends ApiTestBase {
         }
 
         final CompletableFuture<Void> validator = new CompletableFuture<>();
-        final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.now()));
+        final PartitionReceiver receiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()));
         this.receivers.add(receiver);
         receiver.setReceiveTimeout(Duration.ofSeconds(1));
         receiver.setReceiveHandler(new OrderValidator(validator, batchSize));
@@ -68,7 +76,7 @@ public class SendTest extends ApiTestBase {
             clockSkewEvents = receiver.receiveSync(100);
         } while (clockSkewEvents != null && clockSkewEvents.iterator().hasNext());
 
-        sender = ehClient.createPartitionSenderSync(partitionId);
+        sender = ehClient.createPartitionSenderSync(PARTITION_ID);
         sender.sendSync(batchEvents);
 
         validator.get(25, TimeUnit.SECONDS);
@@ -81,7 +89,7 @@ public class SendTest extends ApiTestBase {
         CompletableFuture<Void> validateSignal = new CompletableFuture<>();
         PartitionKeyValidator validator = new PartitionKeyValidator(validateSignal, partitionKey, 1);
         for (int receiversCount = 0; receiversCount < partitionCount; receiversCount++) {
-            final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, Integer.toString(receiversCount), EventPosition.fromEnqueuedTime(Instant.now()));
+            final PartitionReceiver receiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, Integer.toString(receiversCount), EventPosition.fromEnqueuedTime(Instant.now()));
             receivers.add(receiver);
 
             // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
@@ -106,7 +114,7 @@ public class SendTest extends ApiTestBase {
         CompletableFuture<Void> validateSignal = new CompletableFuture<>();
         PartitionKeyValidator validator = new PartitionKeyValidator(validateSignal, partitionKey, batchSize);
         for (int receiversCount = 0; receiversCount < partitionCount; receiversCount++) {
-            final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, Integer.toString(receiversCount), EventPosition.fromEnqueuedTime(Instant.now()));
+            final PartitionReceiver receiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, Integer.toString(receiversCount), EventPosition.fromEnqueuedTime(Instant.now()));
             receivers.add(receiver);
 
             // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
@@ -120,8 +128,9 @@ public class SendTest extends ApiTestBase {
         }
 
         List<EventData> events = new LinkedList<>();
-        for (int index = 0; index < batchSize; index++)
+        for (int index = 0; index < batchSize; index++) {
             events.add(EventData.create("TestMessage".getBytes()));
+        }
 
         ehClient.sendSync(events, partitionKey);
         validateSignal.get(partitionCount * 5, TimeUnit.SECONDS);
@@ -135,8 +144,9 @@ public class SendTest extends ApiTestBase {
         }
 
         if (receivers != null && !receivers.isEmpty()) {
-            for (PartitionReceiver receiver : receivers)
+            for (PartitionReceiver receiver : receivers) {
                 receiver.closeSync();
+            }
 
             receivers.clear();
         }
@@ -163,15 +173,17 @@ public class SendTest extends ApiTestBase {
         public void onReceive(Iterable<EventData> events) {
             if (events != null && events.iterator().hasNext()) {
                 for (EventData event : events) {
-                    if (!partitionKey.equals(event.getSystemProperties().getPartitionKey()))
+                    if (!partitionKey.equals(event.getSystemProperties().getPartitionKey())) {
                         this.validateSignal.completeExceptionally(
-                                new AssertionFailedError(String.format("received partitionKey: %s, expected partitionKey: %s", event.getSystemProperties().getPartitionKey(), partitionKey)));
+                            new AssertionFailedError(String.format("received partitionKey: %s, expected partitionKey: %s", event.getSystemProperties().getPartitionKey(), partitionKey)));
+                    }
 
                     this.currentEventCount++;
                 }
 
-                if (this.currentEventCount == this.eventCount)
+                if (this.currentEventCount == this.eventCount) {
                     this.validateSignal.complete(null);
+                }
             }
         }
 
@@ -199,17 +211,20 @@ public class SendTest extends ApiTestBase {
 
         @Override
         public void onReceive(Iterable<EventData> events) {
-            if (events != null)
+            if (events != null) {
                 for (EventData event : events) {
                     final int currentEventOrder = (int) event.getProperties().get(ORDER_PROPERTY);
-                    if (currentEventOrder != currentCount)
+                    if (currentEventOrder != currentCount) {
                         this.validateSignal.completeExceptionally(new AssertionError(String.format("expected %s, got %s", currentCount, currentEventOrder)));
+                    }
 
                     currentCount++;
                 }
+            }
 
-            if (currentCount >= netEventCount)
+            if (currentCount >= netEventCount) {
                 this.validateSignal.complete(null);
+            }
         }
 
         @Override

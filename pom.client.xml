@@ -93,7 +93,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
-
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
@@ -112,8 +111,12 @@
     <proton-j-version>0.31.0</proton-j-version>
     <qpid-proton-j-extensions-version>1.1.0</qpid-proton-j-extensions-version>
     <log4j-api.version>2.11.1</log4j-api.version>
+    <groovy-eclipse-compiler.version>2.9.3-01</groovy-eclipse-compiler.version>
+    <groovy-eclipse-batch.version>2.5.5-01</groovy-eclipse-batch.version>
+    <netty-all.version>4.1.34.Final</netty-all.version>
+    <netty-socketio.version>1.7.13</netty-socketio.version>
+    <client-runtime.version.v2>2.0.2</client-runtime.version.v2>
     <slf4j-api.version>1.7.5</slf4j-api.version>
-
     <azure-common.version>1.0.0-SNAPSHOT</azure-common.version>
     <azure-common-auth.version>1.0.0-SNAPSHOT</azure-common-auth.version>
     <azure-common-mgmt.version>1.0.0-SNAPSHOT</azure-common-mgmt.version>
@@ -131,10 +134,14 @@
     <azure-mgmt-storage.version>1.3.0</azure-mgmt-storage.version>
     <azure-storage.version>8.0.0</azure-storage.version>
     <azure-client-authentication.version>1.6.3</azure-client-authentication.version>
+    <spock-core.version>1.1-groovy-2.4</spock-core.version>
+    <cglib-nodep.version>3.2.7</cglib-nodep.version>
+    <slf4j-test.version>1.2.0</slf4j-test.version>
     <reactor-test.version>3.2.3.RELEASE</reactor-test.version>
     <wiremock-standalone.version>2.15.0</wiremock-standalone.version>
     <jetty-http.version>9.4.8.v20171121</jetty-http.version>
     <jetty-server.version>9.4.8.v20171121</jetty-server.version>
+    <junit.version>4.12</junit.version>
 
     <!-- Maven Tool Versions -->
     <maven-build-tools.version>1.0.1-SNAPSHOT</maven-build-tools.version>
@@ -244,7 +251,13 @@
         <artifactId>log4j-api</artifactId>
         <version>${log4j-api.version}</version>
       </dependency>
-
+      
+      <dependency>
+        <groupId>com.microsoft.rest.v2</groupId>
+        <artifactId>client-runtime</artifactId>
+        <version>${client-runtime.version.v2}</version>
+      </dependency>
+      
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
@@ -261,6 +274,12 @@
         <groupId>io.netty</groupId>
         <artifactId>netty-buffer</artifactId>
         <version>${netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
       </dependency>
 
       <!-- Test dependencies -->
@@ -333,6 +352,20 @@
       </dependency>
 
       <dependency>
+        <groupId>org.spockframework</groupId>
+        <artifactId>spock-core</artifactId>
+        <scope>test</scope>
+        <version>${spock-core.version}</version>
+      </dependency>
+
+     <dependency>
+        <groupId>cglib</groupId>
+        <artifactId>cglib-nodep</artifactId>
+        <version>${cglib-nodep.version}</version>
+        <scope>test</scope>
+      </dependency>
+      
+      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4j.version}</version>
@@ -343,6 +376,13 @@
         <groupId>io.projectreactor</groupId>
         <artifactId>reactor-test</artifactId>
         <version>${reactor-test.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>uk.org.lidalia</groupId>
+        <artifactId>slf4j-test</artifactId>
+        <version>${slf4j-test.version}</version>
         <scope>test</scope>
       </dependency>
 
@@ -394,7 +434,7 @@
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
-          <includeTestSourceDirectory>false</includeTestSourceDirectory>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
 
           <!-- TODO soon - enable these failure modes -->
@@ -460,9 +500,7 @@
           <transformationSets>
             <transformationSet>
               <dir>${project.build.directory}/spotbugs</dir>
-              <includes>
-                <include>spotbugsXml.xml</include>
-              </includes>
+              <includes><include>spotbugsXml.xml</include></includes>
               <outputDir>${project.build.directory}/spotbugs</outputDir>
               <stylesheet>fancy-hist.xsl</stylesheet>
               <fileMappers>
@@ -564,9 +602,7 @@
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
             <failOnError>false</failOnError>
-            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;
-              site for more Java documentation, including quick starts, tutorials, and code samples.
-            </footer>
+            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
             <linksource>false</linksource>
             <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
             <groups>
@@ -594,6 +630,10 @@
                 <title>Azure Common - Authentication</title>
                 <packages>com.azure.common.auth*</packages>
               </group>
+              <group>
+                <title>Azure Storage</title>
+                <packages>com.microsoft.azure.storage*</packages>
+               </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -818,7 +858,7 @@
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
-          <includeTestSourceDirectory>false</includeTestSourceDirectory>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
 
           <!-- TODO soon - enable these failure modes -->
@@ -1021,5 +1061,6 @@
     <module>./common</module>
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
+    <module>./storage/data-plane</module>
   </modules>
 </project>

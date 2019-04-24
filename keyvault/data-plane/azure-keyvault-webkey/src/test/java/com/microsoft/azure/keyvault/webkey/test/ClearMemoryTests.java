@@ -13,8 +13,7 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 public class ClearMemoryTests {
 
     @Test
-    public void clearMemory()
-    {
+    public void clearMemory() {
         JsonWebKey key = new JsonWebKey()
                 .withD(getRandomByte())
                 .withDp(getRandomByte())
@@ -44,8 +43,7 @@ public class ClearMemoryTests {
     }
 
     @Test
-    public void clearNullMemory()
-    {
+    public void clearNullMemory() {
         JsonWebKey key = new JsonWebKey();
         key.clearMemory();
     }
