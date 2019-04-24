@@ -20,7 +20,7 @@ import java.util.Map;
  * Sends 1 Msg on the first onLinkFlow event
  */
 public class Sender1MsgOnLinkFlowHandler extends ServerTraceHandler {
-    private final Object firstFlow;
+    private final Object firstFlow;MockServer
     private boolean isFirstFlow;
 
     public Sender1MsgOnLinkFlowHandler() {

@@ -14,11 +14,11 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 /**
- * mock Server (Singleton) designed to test AMQP related features in the javaClient
+ * Mock Server (Singleton) designed to test AMQP related features in the Java client.
  */
 public class MockServer implements Closeable {
-    private final static String HOST_NAME = "127.0.0.1";
-    private final static int PORT = 5671;
+    private static final String HOST_NAME = "127.0.0.1";
+    private static final int PORT = 5671;
 
     private Reactor reactor;
     private Acceptor acceptor;
