@@ -123,7 +123,6 @@ public class SecurityExceptionsTest extends ApiTestBase {
         ehClient.createPartitionSenderSync(PARTITION_ID);
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test(expected = AuthorizationFailedException.class)
     public void testUnAuthorizedAccessReceiverCreation() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
