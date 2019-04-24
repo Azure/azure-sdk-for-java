@@ -128,7 +128,7 @@
                 </dependencies>
             </plugin>
 
-            <!-- Opt out of build failures for the Track 1 Azure Storage client library. -->
+            <!-- Opt-out of javadoc build failures for Track 1 Azure Storage client library. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
