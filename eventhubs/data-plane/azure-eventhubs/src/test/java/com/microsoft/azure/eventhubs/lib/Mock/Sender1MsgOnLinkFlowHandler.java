@@ -13,7 +13,8 @@ import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Handshaker;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Sends 1 Msg on the first onLinkFlow event
