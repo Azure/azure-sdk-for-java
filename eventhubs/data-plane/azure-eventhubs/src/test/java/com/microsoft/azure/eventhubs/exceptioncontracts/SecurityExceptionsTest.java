@@ -136,7 +136,6 @@ public class SecurityExceptionsTest extends ApiTestBase {
         ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromStartOfStream());
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test(expected = IllegalEntityException.class)
     public void testSendToNonExistentEventHub() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
@@ -150,7 +149,6 @@ public class SecurityExceptionsTest extends ApiTestBase {
         ehClient.sendSync(EventData.create("test string".getBytes()));
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test(expected = IllegalEntityException.class)
     public void testReceiveFromNonExistentEventHub() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
