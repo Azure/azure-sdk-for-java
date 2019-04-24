@@ -96,5 +96,9 @@ public class PrefabEventProcessor implements IEventProcessor {
         this.factory.putError(context.getPartitionId() + " onError: " + error.toString() + " " + error.getMessage());
     }
 
-    public enum CheckpointChoices {CKP_NONE, CKP_EXPLICIT, CKP_NOARGS}
+    public enum CheckpointChoices {
+        CKP_NONE,
+        CKP_EXPLICIT,
+        CKP_NOARGS
+    }
 }
