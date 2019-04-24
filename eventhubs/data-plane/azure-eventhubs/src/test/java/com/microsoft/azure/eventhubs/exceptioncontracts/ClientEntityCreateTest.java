@@ -102,7 +102,6 @@ public class ClientEntityCreateTest extends ApiTestBase {
         }
     }
 
-    @Ignore("TODO: Investigate failure. Test hangs.")
     @Test()
     public void createReceiverFailsOnTransientErrorAndThenSucceedsOnRetry() throws Exception {
         final TestObject testObject = new TestObject();

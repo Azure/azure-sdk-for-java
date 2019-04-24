@@ -409,12 +409,11 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                     : exception;
 
             if (TRACE_LOGGER.isWarnEnabled()) {
-                TRACE_LOGGER.warn(
-                        String.format(Locale.US, "clientId[%s], receiverPath[%s], linkName[%s], onError: %s",
+                TRACE_LOGGER.warn("clientId[{}], receiverPath[{}], linkName[{}], onError: {}",
                                 this.getClientId(),
                                 this.receivePath,
-                                this.receiveLink.getName(),
-                                completionException));
+                                this.receiveLink != null ? this.receiveLink.getName() : "n/a",
+                                completionException);
             }
 
             this.onOpenComplete(completionException);
