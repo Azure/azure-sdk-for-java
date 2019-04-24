@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link SecretAsyncClient client},
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link SecretAsyncClient secret async client},
  * calling {@link SecretAsyncClientBuilder#build() build} constructs an instance of the client.
  *
- * <p> The Minimal configuration options required by {@link SecretAsyncClientBuilder secretClientBuilder} to build {@link SecretAsyncClient}
+ * <p> The minimal configuration options required by {@link SecretAsyncClientBuilder secretClientBuilder} to build {@link SecretAsyncClient}
  * are {@link String vaultEndpoint} and {@link AsyncServiceClientCredentials credentials}. </p>
  * <pre>
  * SecretAsyncClient.builder()
@@ -35,7 +35,7 @@ import java.util.Objects;
  *   .build();
  * </pre>
  *
- * <p>The {@link HttpLogDetailLevel log detail Level}, multiple custom {@link HttpLoggingPolicy policies} and custom
+ * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link SecretAsyncClientBuilder}.</p>
  * <pre>
  * SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
@@ -56,6 +56,8 @@ import java.util.Objects;
  *   .vaultEndpoint("https://myvault.vault.azure.net/")
  *   .build()
  * </pre>
+ *
+ * @see SecretAsyncClient
  */
 public final class SecretAsyncClientBuilder {
     private final List<HttpPipelinePolicy> policies;

@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link SecretClient client},
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link SecretClient secret client},
  * calling {@link SecretClientBuilder#build() build} constructs an instance of the client.
  *
- * <p> The Minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build {@link SecretClient}
+ * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build {@link SecretClient}
  * are {@link String vaultEndpoint} and {@link ServiceClientCredentials credentials}. </p>
  * <pre>
  * SecretClient.builder()
@@ -33,7 +33,7 @@ import java.util.Objects;
  *   .build();
  * </pre>
  *
- * <p>The {@link HttpLogDetailLevel log detail Level}, multiple custom {@link HttpLoggingPolicy policies} and custom
+ * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link SecretClientBuilder}.</p>
  * <pre>
  * SecretClient.builder()
@@ -54,7 +54,9 @@ import java.util.Objects;
  *   .vaultEndpoint("https://myvault.vault.azure.net/")
  *   .build()
  * </pre>
- */
+ *
+ * @see SecretClient
+ * */
 public final class SecretClientBuilder {
     private final List<HttpPipelinePolicy> policies;
     private ServiceClientCredentials credentials;

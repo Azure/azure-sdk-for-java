@@ -35,6 +35,8 @@ import java.util.function.Function;
  *   .credentials(keyVaultCredentials)
  *  .build()
  * </pre>
+ *
+ * @see SecretAsyncClientBuilder
  */
 public final class SecretAsyncClient extends ServiceClient {
     static final String API_VERSION = "7.0";
@@ -139,6 +141,22 @@ public final class SecretAsyncClient extends ServiceClient {
             : service.getSecret(vaultEndpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
     }
 
+    /**
+     * Get the secret which represents {@link SecretAttributes secretAttributes} from the key vault. Returns the latest version of the secret,
+     * if {@code secretAttributes.version} is not set. The get operation is applicable to any secret stored in Azure Key Vault.
+     * This operation requires the {@code secrets/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * @param secretAttributes the {@link SecretAttributes} attributes of the secret being requested.
+     * @return A {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
+     * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code secretAttributes.name} and {@code secretAttributes.version} doesn't exist in the key vault.
+     */
+    public Mono<Response<Secret>> getSecret(SecretAttributes secretAttributes) {
+        Objects.requireNonNull(secretAttributes, "The Secret attributes parameter cannot be null.");
+        return secretAttributes.version() == null ? service.getSecret(vaultEndpoint, secretAttributes.name(), "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            : service.getSecret(vaultEndpoint, secretAttributes.name(), secretAttributes.version(), API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE);
+    }
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
      * This operation requires the {@code secrets/get} permission.
@@ -316,8 +334,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * <p>It is possible to get full Secrets with values from this information. Convert the {@link Flux} containing {@link SecretAttributes secretAttributes} to
      * {@link Flux} containing {@link Secret secrets} using {@link SecretAsyncClient#getSecret(String secretName)} within {@link Flux#flatMap(Function)}.</p>
      * <pre>
-     * Flux-&lt;SecretAttributes-&gt; secretAttributes = secretAsyncClient.listSecrets();
-     * Flux-&lt;Secret-&gt; secrets = secretAttributes.flatMap(secretAttr -&gt;
+     * Flux&lt;SecretAttributes&gt; secretAttributes = secretAsyncClient.listSecrets();
+     * Flux&lt;Secret&gt; secrets = secretAttributes.flatMap(secretAttr -&gt;
      *   Flux.just(secretAsyncClient.getSecret(secretAttr.name())))
      *     .flatMap(secretMonoResponse -&gt;
      *       secretMonoResponse.flatMap(secretResponse -&gt;
@@ -333,7 +351,7 @@ public final class SecretAsyncClient extends ServiceClient {
     }
 
     /**
-     * Lists {@link DeletedSecret secrets} of the key vault. The get deleted secrets operation returns the secrets that
+     * Lists {@link DeletedSecret deleted secrets} of the key vault. The get deleted secrets operation returns the secrets that
      * have been deleted for a vault enabled for soft-delete. This operation requires the {@code secrets/list} permission.
      *
      * @return A {@link Flux} containing all of the {@link DeletedSecret deleted secrets} in the vault.
@@ -351,8 +369,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * containing {@link SecretAttributes secretAttributes} to {@link Flux} containing {@link Secret secrets} using
      * {@link SecretAsyncClient#getSecret(String secretName, String secretVersion)} within {@link Flux#flatMap(Function)}.</p>
      * <pre>
-     * Flux-&lt;SecretAttributes-&gt; secretAttributes = secretAsyncClient.listSecretVersions("secretName");
-     * Flux-&lt;Secret-&gt; secrets = secretAttributes.flatMap(secretAttr -&gt;
+     * Flux&lt;SecretAttributes&gt; secretAttributes = secretAsyncClient.listSecretVersions("secretName");
+     * Flux&lt;Secret&gt; secrets = secretAttributes.flatMap(secretAttr -&gt;
      *   Flux.just(secretAsyncClient.getSecret(secretAttr.name(), secretAttr.version())))
      *     .flatMap(secretMonoResponse -&gt;
      *       secretMonoResponse.flatMap(secretResponse -&gt;
@@ -381,11 +399,7 @@ public final class SecretAsyncClient extends ServiceClient {
     }
 
     private Publisher<SecretAttributes> extractAndFetchSecrets(PagedResponse<SecretAttributes> page) {
-        String nextPageLink = page.nextLink();
-        if (nextPageLink == null) {
-            return Flux.fromIterable(page.items());
-        }
-        return Flux.fromIterable(page.items()).concatWith(listSecretsNext(nextPageLink));
+        return extractAndFetch(page, this::listSecretsNext);
     }
 
     /**
@@ -400,10 +414,14 @@ public final class SecretAsyncClient extends ServiceClient {
     }
 
     private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(PagedResponse<DeletedSecret> page) {
+        return extractAndFetch(page, this::listDeletedSecretsNext);
+    }
+
+    private <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Function<String, Publisher<T>> content) {
         String nextPageLink = page.nextLink();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
-        return Flux.fromIterable(page.items()).concatWith(listDeletedSecretsNext(nextPageLink));
+        return Flux.fromIterable(page.items()).concatWith(content.apply(nextPageLink));
     }
 }

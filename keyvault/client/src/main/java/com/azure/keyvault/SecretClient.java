@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * The secretClient provides synchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
+ * The SecretClient provides synchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
  * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Secret secrets}. The client
  * also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key Vault.
  *
@@ -34,6 +34,8 @@ import java.util.Objects;
  *                                .credentials(keyVaultCredentials)
  *                                .build()
  * </pre>
+ *
+ * @see SecretClientBuilder
  */
 public final class SecretClient extends ServiceClient {
     static final String API_VERSION = "7.0";
@@ -145,11 +147,6 @@ public final class SecretClient extends ServiceClient {
      * This operation requires the {@code secrets/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <pre>
-     * //Pass the secretAttributes of the secret to fetch.
-     * Secret secret = secretClient.getSecret(secretAttributes).value();
-     * System.out.println(String.format("Secret is returned with name %s and value %s",secret.name(), secret.value()));
-     * </pre>
      *
      * @param secretAttributes the {@link SecretAttributes} attributes of the secret being requested.
      * @return A {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
@@ -216,6 +213,7 @@ public final class SecretClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      * <pre>
      * DeletedSecret deletedSecret = secretClient.deleteSecret("secretName").value();
+     * System.out.println(String.format("Deleted Secret's Recovery Id %s", deletedSecret.recoveryId()));
      * </pre>
      *
      * @param name The name of the secret to be deleted.
@@ -234,6 +232,7 @@ public final class SecretClient extends ServiceClient {
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
      * DeletedSecret deletedSecret = secretClient.getDeletedSecret("secretName").value();
+     * System.out.println(String.format("Deleted Secret with recovery Id %s", deletedSecret.recoveryId()));
      * </pre>
      *
      * @param name The name of the deleted secret.
@@ -270,6 +269,7 @@ public final class SecretClient extends ServiceClient {
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
      * Secret recoveredSecret =  secretClient.recoverDeletedSecret("deletedSecretName").value();
+     * System.out.println(String.format("Recovered Secret with name %s", recoveredSecret.name()));
      * </pre>
      *
      * @param name The name of the deleted secret to be recovered.
@@ -287,6 +287,7 @@ public final class SecretClient extends ServiceClient {
      * <p><strong>Code Samples</strong></p>
      * <pre>
      * byte[] secretBackup = secretClient.backupSecret("secretName").value();
+     * System.out.println(String.format("Secret's Backup Byte array's length %s",secretBackup.length));
      * </pre>
      *
      * @param name The name of the secret.
@@ -307,6 +308,7 @@ public final class SecretClient extends ServiceClient {
      * <pre>
      * //Pass the secret backup byte array of the secret to be restored.
      * Secret restoredSecret = secretClient.restoreSecret(secretBackupByteArray).value();
+     * System.out.println(String.format("Restored Secret with name %s and value %s", restoredSecret.name(), restoredSecret.value()));
      * </pre>
      *
      * @param backup The backup blob associated with the secret.
@@ -326,7 +328,7 @@ public final class SecretClient extends ServiceClient {
      * <p>It is possible to get full Secrets with values from this information. Loop over the {@link SecretAttributes secretAttributes} and
      * call {@link SecretClient#getSecret(SecretAttributes)} . This will return the {@link Secret} secrets with values included of its latest version.</p>
      * <pre>
-     * List-&lt;Secret-&gt; secrets = new ArrayList();
+     * List&lt;Secret&gt; secrets = new ArrayList();
      * secretClient.listSecrets().stream().map(secretClient::getSecret).forEach(secretResponse -&gt;
      *   secrets.add(secretResponse.value()));
      * </pre>
@@ -339,7 +341,7 @@ public final class SecretClient extends ServiceClient {
     }
 
     /**
-     * Lists {@link DeletedSecret secrets} of the key vault. The get deleted secrets operation returns the secrets that
+     * Lists {@link DeletedSecret deleted secrets} of the key vault. The get deleted secrets operation returns the secrets that
      * have been deleted for a vault enabled for soft-delete. This operation requires the {@code secrets/list} permission.
      *
      * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
@@ -357,7 +359,7 @@ public final class SecretClient extends ServiceClient {
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretAttributes secretAttributes} and
      * call {@link SecretClient#getSecret(SecretAttributes)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
      * <pre>
-     * List-&lt;Secret-&gt; secretVersions = new ArrayList();
+     * List&lt;Secret&gt; secretVersions = new ArrayList();
      * secretClient.listSecretVersions("secretName").stream().map(secretClient::getSecret).forEach(secretResponse -&gt;
      *   secretVersions.add(secretResponse.value()));
      * </pre>
