@@ -17,9 +17,9 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 final class RealEventHubUtilities {
-    private static final int QUERY_ENTITY_FOR_PARTITIONS = -1;
-    private static final String SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH = "doesnotexist";
-    private static final String SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING =
+    static final int QUERY_ENTITY_FOR_PARTITIONS = -1;
+    static final String SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH = "doesnotexist";
+    static final String SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING =
             "Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath="
                 + RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH;
 
