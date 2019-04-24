@@ -536,9 +536,10 @@
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
               <doclint>all</doclint>
 
-              <!-- Do not fail on warnings or errors by default. -->
-              <failOnError>false</failOnError>
-              <failOnWarnings>false</failOnWarnings>
+              <!-- Fail the build for javadoc errors/warnings by default. Track 1 client libraries can opt out of this.
+               By default, we want to ensure the Javadocs we ship are in good shape. -->
+              <failOnError>true</failOnError>
+              <failOnWarnings>true</failOnWarnings>
             </configuration>
           </execution>
         </executions>
