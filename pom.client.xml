@@ -534,6 +534,7 @@
             </goals>
             <configuration>
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
+              <doclint>all</doclint>
             </configuration>
           </execution>
         </executions>
