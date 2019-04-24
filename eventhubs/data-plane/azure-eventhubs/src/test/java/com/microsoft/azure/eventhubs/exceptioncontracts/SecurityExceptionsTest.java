@@ -167,6 +167,8 @@ public class SecurityExceptionsTest extends ApiTestBase {
 
     @After
     public void cleanup() throws EventHubException {
-        ehClient.closeSync();
+        if (ehClient != null) {
+            ehClient.closeSync();
+        }
     }
 }
