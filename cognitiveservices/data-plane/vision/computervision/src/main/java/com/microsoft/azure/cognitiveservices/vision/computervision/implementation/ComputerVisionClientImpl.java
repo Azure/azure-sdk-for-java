@@ -1830,7 +1830,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.​.
      *
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image.
@@ -1843,7 +1843,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.​.
      *
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image.
@@ -1856,7 +1856,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.​.
      *
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image.
@@ -1873,7 +1873,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.​.
      *
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image.
@@ -1915,9 +1915,9 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
      *
-     * @param operationId Id of read operation returned in the response of the "Batch Read File" interface.
+     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1928,9 +1928,9 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
      *
-     * @param operationId Id of read operation returned in the response of the "Batch Read File" interface.
+     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1940,9 +1940,9 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
      *
-     * @param operationId Id of read operation returned in the response of the "Batch Read File" interface.
+     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ReadOperationResult object
      */
@@ -1956,9 +1956,9 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
      *
-     * @param operationId Id of read operation returned in the response of the "Batch Read File" interface.
+     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ReadOperationResult object
      */
@@ -3331,7 +3331,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
@@ -3344,7 +3344,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
@@ -3357,7 +3357,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
@@ -3374,7 +3374,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
     }
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Get Read Result operation" to access OCR results.​.
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​.
      *
      * @param image An image stream.
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'

@@ -23,7 +23,7 @@ public class ReadOperationResult {
     private TextOperationStatusCodes status;
 
     /**
-     * A array of text recognition result of the read operation.
+     * An array of text recognition result of the read operation.
      */
     @JsonProperty(value = "recognitionResults")
     private List<TextRecognitionResult> recognitionResults;
@@ -49,7 +49,7 @@ public class ReadOperationResult {
     }
 
     /**
-     * Get a array of text recognition result of the read operation.
+     * Get an array of text recognition result of the read operation.
      *
      * @return the recognitionResults value
      */
@@ -58,7 +58,7 @@ public class ReadOperationResult {
     }
 
     /**
-     * Set a array of text recognition result of the read operation.
+     * Set an array of text recognition result of the read operation.
      *
      * @param recognitionResults the recognitionResults value to set
      * @return the ReadOperationResult object itself.
