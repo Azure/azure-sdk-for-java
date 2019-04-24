@@ -21,8 +21,8 @@ import java.time.Duration;
 import java.util.UUID;
 
 public class SecurityExceptionsTest extends ApiTestBase {
-    final static String PARTITION_ID = "0";
-    EventHubClient ehClient;
+    private static final String PARTITION_ID = "0";
+    private EventHubClient ehClient;
 
     @Test(expected = AuthorizationFailedException.class)
     public void testEventHubClientUnAuthorizedAccessKeyName() throws Throwable {
