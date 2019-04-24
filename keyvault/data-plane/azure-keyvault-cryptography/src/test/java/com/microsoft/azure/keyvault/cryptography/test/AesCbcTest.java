@@ -138,7 +138,7 @@ public class AesCbcTest {
     }
 
     @Test
-    public void testAes128CbcOneBlock_ExcessKeyMaterial() {
+    public void testAes128CbcOneBlockExcessKeyMaterial() {
         // Note that AES128CBC as implemented in this library uses PKCS7 padding mode where the test
         // vectors from RFC3602 do not use padding.
         byte[] cek   = { 0x06, (byte) 0xa9, 0x21, 0x40, 0x36, (byte) 0xb8, (byte) 0xa1, 0x5b, 0x51, 0x2e, 0x03, (byte) 0xd5, 0x34, 0x12, 0x00, 0x06, (byte) 0xc2, (byte) 0x86, 0x69, 0x6d, (byte) 0x88, 0x7c, (byte) 0x9a, (byte) 0xa0, 0x61, 0x1b, (byte) 0xbb, 0x3e, 0x20, 0x25, (byte) 0xa4, 0x5a };
@@ -185,7 +185,7 @@ public class AesCbcTest {
     }
 
     @Test
-    public void testAes128CbcTwoBlock_ExcessKeyMaterial() {
+    public void testAes128CbcTwoBlockExcessKeyMaterial() {
         // Note that AES128CBC as implemented in this library uses PKCS7 padding mode where the test
         // vectors do not use padding.
         byte[] cek   = { (byte) 0xc2, (byte) 0x86, 0x69, 0x6d, (byte) 0x88, 0x7c, (byte) 0x9a, (byte) 0xa0, 0x61, 0x1b, (byte) 0xbb, 0x3e, 0x20, 0x25, (byte) 0xa4, 0x5a, (byte) 0xc2, (byte) 0x86, 0x69, 0x6d, (byte) 0x88, 0x7c, (byte) 0x9a, (byte) 0xa0, 0x61, 0x1b, (byte) 0xbb, 0x3e, 0x20, 0x25, (byte) 0xa4, 0x5a };
