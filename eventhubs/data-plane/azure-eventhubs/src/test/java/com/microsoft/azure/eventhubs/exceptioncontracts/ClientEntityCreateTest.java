@@ -3,7 +3,12 @@
 
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.IllegalEntityException;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import com.microsoft.azure.eventhubs.impl.MessageReceiver;
 import com.microsoft.azure.eventhubs.impl.MessageSender;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
@@ -119,7 +124,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
                     tokenAudienceField.set(messageReceiver, tokenAudience.replace(nonExistentEventHubName, connStr.getEventHubName()));
 
                     testObject.isRetried = true;
-                } catch(Exception ignore){
+                } catch (Exception ignore) {
                     System.out.println("this testcase depends on receivepath & tokenAudience in MessageReceiver class for faultinjection...");
                 }
             }
@@ -165,7 +170,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
                     tokenAudienceField.set(messageSender, tokenAudience.replace(nonExistentEventHubName, connStr.getEventHubName()));
 
                     testObject.isRetried = true;
-                } catch(Exception ignore){
+                } catch (Exception ignore) {
                     System.out.println("this testcase depends on sendPath & tokenAudience in MessageReceiver class for faultinjection...");
                 }
             }
@@ -212,6 +217,6 @@ public class ClientEntityCreateTest extends ApiTestBase {
     }
 
     private class TestObject {
-        public boolean isRetried;
+        boolean isRetried;
     }
 }

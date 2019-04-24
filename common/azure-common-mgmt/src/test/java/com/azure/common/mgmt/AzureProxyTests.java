@@ -19,7 +19,7 @@ import com.azure.common.implementation.exception.InvalidReturnTypeException;
 import com.azure.common.implementation.serializer.SerializerAdapter;
 import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.common.mgmt.http.MockAzureHttpClient;
-import com.azure.common.mgmt.http.MockAzureHttpResponse;
+import com.azure.common.test.http.MockHttpResponse;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -184,7 +184,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .get("1", "mine", "a");
         assertNotNull(resource);
-        assertEquals("a", resource.name);
+        assertEquals("a", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(0, httpClient.createRequests());
@@ -200,7 +200,7 @@ public class AzureProxyTests {
                 .getAsync("1", "mine", "b")
                 .block();
         assertNotNull(resource);
-        assertEquals("b", resource.name);
+        assertEquals("b", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(0, httpClient.createRequests());
@@ -215,7 +215,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .create("1", "mine", "c");
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -227,10 +227,11 @@ public class AzureProxyTests {
     public void createWithLocation() {
         final MockAzureHttpClient httpClient = new MockAzureHttpClient();
 
-        final MockResource resource = createMockService(MockResourceService.class, httpClient)
+        final MockResourceService mockService = createMockService(MockResourceService.class, httpClient);
+        final MockResource resource = mockService
                 .createWithLocation("1", "mine", "c");
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -245,7 +246,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createWithLocationAndPolls("1", "mine", "c", 2);
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -260,7 +261,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createWithAzureAsyncOperation("1", "mine", "c");
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -275,7 +276,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createWithAzureAsyncOperationAndPolls("1", "mine", "c", 2);
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -290,7 +291,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createWithProvisioningState("1", "mine", "c");
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -305,7 +306,7 @@ public class AzureProxyTests {
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createWithProvisioningStateAndPolls("1", "mine", "c", 3);
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(3, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -321,7 +322,7 @@ public class AzureProxyTests {
                 .createAsync("1", "mine", "c")
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -337,7 +338,7 @@ public class AzureProxyTests {
                 .createAsyncWithLocation("1", "mine", "c")
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -353,7 +354,7 @@ public class AzureProxyTests {
                 .createAsyncWithLocationAndPolls("1", "mine", "c", 3)
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -369,7 +370,7 @@ public class AzureProxyTests {
                 .createAsyncWithAzureAsyncOperation("1", "mine", "c")
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -385,7 +386,7 @@ public class AzureProxyTests {
                 .createAsyncWithAzureAsyncOperationAndPolls("1", "mine", "c", 3)
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -405,7 +406,7 @@ public class AzureProxyTests {
                 .createAsyncWithAzureAsyncOperationAndPolls("1", "mine", "c", pollsUntilResource)
                 .subscribe();
 
-        Thread.sleep((long)(delayInMilliseconds * 0.75));
+        Thread.sleep((long) (delayInMilliseconds * 0.75));
 
         for (int i = 0; i < pollsUntilResource; ++i) {
             assertEquals(0, httpClient.getRequests());
@@ -430,7 +431,7 @@ public class AzureProxyTests {
                 .createAsyncWithProvisioningState("1", "mine", "c")
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -446,7 +447,7 @@ public class AzureProxyTests {
                 .createAsyncWithProvisioningStateAndPolls("1", "mine", "c", 5)
                 .block();
         assertNotNull(resource);
-        assertEquals("c", resource.name);
+        assertEquals("c", resource.name());
 
         assertEquals(5, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -462,8 +463,7 @@ public class AzureProxyTests {
         try {
             service.beginCreateAsyncWithBadReturnType("1", "mine", "c", 2);
             fail("Expected exception.");
-        }
-        catch (InvalidReturnTypeException e) {
+        } catch (InvalidReturnTypeException e) {
             assertContains(e.getMessage(), "AzureProxyTests$MockResourceService.beginCreateAsyncWithBadReturnType()");
             assertContains(e.getMessage(), "reactor.core.publisher.Flux<com.azure.common.mgmt.MockResource>");
         }
@@ -482,11 +482,11 @@ public class AzureProxyTests {
                 .beginCreateAsyncWithLocationAndPollsAndUnexpectedStatusCode("1", "mine", "c")
                 .subscribe(
                         new Consumer<OperationStatus<MockResource>>() {
-                           @Override
-                           public void accept(OperationStatus<MockResource> mockResourceOperationStatus) {
+                            @Override
+                            public void accept(OperationStatus<MockResource> mockResourceOperationStatus) {
                                 fail();
-                           }
-                       },
+                            }
+                        },
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) {
@@ -515,8 +515,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -524,7 +523,7 @@ public class AzureProxyTests {
 
         assertEquals(2, inProgressCount.get());
         assertNotNull(resource.get());
-        assertEquals("c", resource.get().name);
+        assertEquals("c", resource.get().name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -559,8 +558,7 @@ public class AzureProxyTests {
                                 e.printStackTrace();
                             }
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -570,7 +568,7 @@ public class AzureProxyTests {
         PollStrategy.PollStrategyData pollData = null;
         try {
             operationDescription = mapper.readValue(data.toString(), OperationDescription.class);
-            pollData = (PollStrategy.PollStrategyData)operationDescription.pollStrategyData();
+            pollData = (PollStrategy.PollStrategyData) operationDescription.pollStrategyData();
         } catch (IOException e) {
             fail("Error deserializing OperationDescription object");
             e.printStackTrace();
@@ -593,8 +591,7 @@ public class AzureProxyTests {
                                 e.printStackTrace();
                             }
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -616,8 +613,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -625,7 +621,7 @@ public class AzureProxyTests {
 
         assertEquals(3, inProgressCount.get());
         assertNotNull(resource.get());
-        assertEquals("c", resource.get().name);
+        assertEquals("c", resource.get().name());
 
         assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -647,8 +643,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -656,7 +651,7 @@ public class AzureProxyTests {
 
         assertEquals(3, inProgressCount.get());
         assertNotNull(resource.get());
-        assertEquals("c", resource.get().name);
+        assertEquals("c", resource.get().name());
 
         assertEquals(4, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -678,8 +673,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             resource.set(operationStatus.result());
                         }
                     }
@@ -687,7 +681,7 @@ public class AzureProxyTests {
 
         assertEquals(0, inProgressCount.get());
         assertNotNull(resource.get());
-        assertEquals("c", resource.get().name);
+        assertEquals("c", resource.get().name());
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
@@ -790,8 +784,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<Void> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             completed.set(true);
                         }
                     }
@@ -821,8 +814,7 @@ public class AzureProxyTests {
                     public void accept(OperationStatus<Void> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
-                        }
-                        else {
+                        } else {
                             completed.set(true);
                         }
                     }
@@ -843,7 +835,7 @@ public class AzureProxyTests {
         final MockAzureHttpClient httpClient = new MockAzureHttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.<HttpResponse>just(new MockAzureHttpResponse(request, 403, MockAzureHttpClient.responseHeaders()));
+                return Mono.<HttpResponse>just(new MockHttpResponse(request, 403, MockAzureHttpClient.responseHeaders(), new byte[0]));
             }
         };
 
@@ -851,8 +843,7 @@ public class AzureProxyTests {
         try {
             service.deleteAsyncWithForbiddenResponse().block();
             fail("Expected RestException to be thrown.");
-        }
-        catch (ServiceRequestException e) {
+        } catch (ServiceRequestException e) {
             assertEquals(403, e.response().statusCode());
             assertEquals("Status code 403, (empty body)", e.getMessage());
         }
@@ -861,12 +852,12 @@ public class AzureProxyTests {
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {
         HttpPipeline pipeline = new HttpPipeline(httpClient);
 
-        return AzureProxy.create(serviceClass, null, pipeline, serializer);
+        return AzureProxy.create(serviceClass, null, pipeline, SERIALIZER);
     }
 
     private static void assertContains(String value, String expectedSubstring) {
         assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 
-    private static final SerializerAdapter serializer = new JacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 }

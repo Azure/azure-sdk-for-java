@@ -117,7 +117,7 @@ public class RestProxyStressTests {
         service = RestProxy.create(IOService.class,
                 new HttpPipeline(polices.toArray(new HttpPipelinePolicy[polices.size()])));
 
-        TEMP_FOLDER_PATH = Paths.get(tempFolderPath);
+        RestProxyStressTests.tempFolderPath = Paths.get(tempFolderPath);
         create100MFiles(false);
     }
 
@@ -193,7 +193,7 @@ public class RestProxyStressTests {
         Mono<VoidResponse> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
     }
 
-    private static Path TEMP_FOLDER_PATH;
+    private static Path tempFolderPath;
     private static final int NUM_FILES = 100;
     private static final int FILE_SIZE = 1024 * 1024 * 100;
     private static final int CHUNK_SIZE = 8192;
@@ -230,19 +230,19 @@ public class RestProxyStressTests {
         });
 
         if (recreate) {
-            deleteRecursive(TEMP_FOLDER_PATH);
+            deleteRecursive(tempFolderPath);
         }
 
-        if (Files.exists(TEMP_FOLDER_PATH)) {
-            LoggerFactory.getLogger(RestProxyStressTests.class).info("Temp files directory already exists: " + TEMP_FOLDER_PATH.toAbsolutePath());
+        if (Files.exists(tempFolderPath)) {
+            LoggerFactory.getLogger(RestProxyStressTests.class).info("Temp files directory already exists: " + tempFolderPath.toAbsolutePath());
         } else {
-            LoggerFactory.getLogger(RestProxyStressTests.class).info("Generating temp files in directory: " + TEMP_FOLDER_PATH.toAbsolutePath());
-            Files.createDirectory(TEMP_FOLDER_PATH);
+            LoggerFactory.getLogger(RestProxyStressTests.class).info("Generating temp files in directory: " + tempFolderPath.toAbsolutePath());
+            Files.createDirectory(tempFolderPath);
             Flowable.range(0, NUM_FILES).flatMapCompletable(new Function<Integer, Completable>() {
                 @Override
                 public Completable apply(Integer integer) throws Exception {
                     final int i = integer;
-                    final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + i + ".dat");
+                    final Path filePath = tempFolderPath.resolve("100m-" + i + ".dat");
 
                     Files.deleteIfExists(filePath);
                     Files.createFile(filePath);
@@ -257,7 +257,7 @@ public class RestProxyStressTests {
                         @Override
                         public CompletableSource call() throws Exception {
                             file.close();
-                            Files.write(TEMP_FOLDER_PATH.resolve("100m-" + i + "-md5.dat"), messageDigest.digest());
+                            Files.write(tempFolderPath.resolve("100m-" + i + "-md5.dat"), messageDigest.digest());
                             LoggerFactory.getLogger(getClass()).info("Finished writing file " + i);
                             return Completable.complete();
                         }
@@ -278,14 +278,14 @@ public class RestProxyStressTests {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
         Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
-        .map(integer -> {
-            final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
-            try {
-                return Files.readAllBytes(filePath);
-            } catch (IOException ioe) {
-                throw Exceptions.propagate(ioe);
-            }
-        });
+            .map(integer -> {
+                final Path filePath = tempFolderPath.resolve("100m-" + integer + "-md5.dat");
+                try {
+                    return Files.readAllBytes(filePath);
+                } catch (IOException ioe) {
+                    throw Exceptions.propagate(ioe);
+                }
+            });
         //
         Instant uploadStart = Instant.now();
         //
@@ -293,7 +293,7 @@ public class RestProxyStressTests {
                 .zipWith(md5s, (id, md5) -> {
                     AsynchronousFileChannel fileStream = null;
                     try {
-                        fileStream = AsynchronousFileChannel.open(TEMP_FOLDER_PATH.resolve("100m-" + id + ".dat"));
+                        fileStream = AsynchronousFileChannel.open(tempFolderPath.resolve("100m-" + id + ".dat"));
                     } catch (IOException ioe) {
                         Exceptions.propagate(ioe);
                     }
@@ -317,7 +317,7 @@ public class RestProxyStressTests {
 
         Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
                 .map(integer -> {
-                    final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
+                    final Path filePath = tempFolderPath.resolve("100m-" + integer + "-md5.dat");
                     try {
                         return Files.readAllBytes(filePath);
                     } catch (IOException ioe) {
@@ -331,7 +331,7 @@ public class RestProxyStressTests {
                 .zipWith(md5s, (id, md5) -> {
                     FileChannel fileStream = null;
                     try {
-                        fileStream = FileChannel.open(TEMP_FOLDER_PATH.resolve("100m-" + id + ".dat"), StandardOpenOption.READ);
+                        fileStream = FileChannel.open(tempFolderPath.resolve("100m-" + id + ".dat"), StandardOpenOption.READ);
                     } catch (IOException ioe) {
                         Exceptions.propagate(ioe);
                     }
@@ -371,7 +371,7 @@ public class RestProxyStressTests {
 
         Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
                 .map(integer -> {
-                    final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
+                    final Path filePath = tempFolderPath.resolve("100m-" + integer + "-md5.dat");
                     try {
                         return Files.readAllBytes(filePath);
                     } catch (IOException ioe) {
@@ -414,7 +414,7 @@ public class RestProxyStressTests {
 
         Flux<byte[]> md5s = Flux.range(0, NUM_FILES)
                 .map(integer -> {
-                    final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
+                    final Path filePath = tempFolderPath.resolve("100m-" + integer + "-md5.dat");
                     try {
                         return Files.readAllBytes(filePath);
                     } catch (IOException ioe) {

@@ -12,7 +12,7 @@ public interface ProxyServer {
         return new SimpleProxy(hostName, port);
     }
 
-    void start(final Consumer<Throwable> onError) throws IOException;
+    void start(Consumer<Throwable> onError) throws IOException;
 
     void stop() throws IOException;
 }
