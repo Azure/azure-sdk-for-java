@@ -276,7 +276,7 @@ public class SecretAttributes {
     /**
      * Get the version value.
      *
-     * @return the keyId value
+     * @return the version value
      */
     public String version() {
         return this.version;
