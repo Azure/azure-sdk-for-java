@@ -52,16 +52,16 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 
 public class ECKeyTest {
 
-    private static Provider _provider = null;
+    private static Provider provider = null;
     
-    static byte[] CEK;
-    static KeyFactory FACTORY;
-    static MessageDigest DIGEST_256;
-    static MessageDigest DIGEST_384;
-    static MessageDigest DIGEST_512;
-    static KeyPairGenerator EC_KEY_GENERATOR;
-    static Map<JsonWebKeyCurveName, MessageDigest> CURVE_TO_DIGEST;
-    static List<JsonWebKeyCurveName> CURVE_LIST;
+    static byte[] cek;
+    static KeyFactory factory;
+    static MessageDigest digest256;
+    static MessageDigest digest384;
+    static MessageDigest digest512;
+    static KeyPairGenerator ecKeyGenerator;
+    static Map<JsonWebKeyCurveName, MessageDigest> curveToDigest;
+    static List<JsonWebKeyCurveName> curveList;
     
 //    To create keys and signatures used in this class with openssl:
 //        
@@ -78,38 +78,38 @@ public class ECKeyTest {
     
 
     protected static void setProvider(Provider provider) {
-        _provider = provider;
+        ECKeyTest.provider = provider;
     }
        
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         setProvider(Security.getProvider("SunEC"));
-        EC_KEY_GENERATOR = KeyPairGenerator.getInstance("EC", _provider);
+        ecKeyGenerator = KeyPairGenerator.getInstance("EC", provider);
 
         Path byte_location = Paths.get(getPath("byte_array.bin"));
-        CEK = Files.readAllBytes(byte_location);
+        cek = Files.readAllBytes(byte_location);
 
-        FACTORY = KeyFactory.getInstance("EC", _provider);
+        factory = KeyFactory.getInstance("EC", provider);
 
-        DIGEST_256 = MessageDigest.getInstance("SHA-256");
-        DIGEST_384 = MessageDigest.getInstance("SHA-384");
-        DIGEST_512 = MessageDigest.getInstance("SHA-512");
+        digest256 = MessageDigest.getInstance("SHA-256");
+        digest384 = MessageDigest.getInstance("SHA-384");
+        digest512 = MessageDigest.getInstance("SHA-512");
 
-        CURVE_TO_DIGEST = ImmutableMap.<JsonWebKeyCurveName, MessageDigest>builder()
-            .put(JsonWebKeyCurveName.P_256, DIGEST_256)
-            .put(JsonWebKeyCurveName.P_384, DIGEST_384)
-            .put(JsonWebKeyCurveName.P_521, DIGEST_512)
-            .put(JsonWebKeyCurveName.P_256K, DIGEST_256)
+        curveToDigest = ImmutableMap.<JsonWebKeyCurveName, MessageDigest>builder()
+            .put(JsonWebKeyCurveName.P_256, digest256)
+            .put(JsonWebKeyCurveName.P_384, digest384)
+            .put(JsonWebKeyCurveName.P_521, digest512)
+            .put(JsonWebKeyCurveName.P_256K, digest256)
             .build();
         //JsonWebKeyCurveName.SECP256K1)
-        CURVE_LIST = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.P_256K);
+        curveList = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.P_256K);
     }
     
     @Test
     public void testCurves() throws Exception {
-        for (JsonWebKeyCurveName crv : CURVE_LIST) {
+        for (JsonWebKeyCurveName crv : curveList) {
             EcKey key = new EcKey("keyId", crv);
-            doSignVerify(key, CURVE_TO_DIGEST.get(crv));
+            doSignVerify(key, curveToDigest.get(crv));
         }
     }
     
@@ -121,29 +121,29 @@ public class ECKeyTest {
     @Test
     public void testDefaultKey() throws Exception {
         EcKey key = new EcKey("keyId");
-        doSignVerify(key, DIGEST_256);
+        doSignVerify(key, digest256);
     }
     
     @Test
     public void testWithKeyPair() throws Exception {
-        for (JsonWebKeyCurveName crv : CURVE_LIST) {
+        for (JsonWebKeyCurveName crv : curveList) {
             ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.CURVE_TO_SPEC_NAME.get(crv));
-            EC_KEY_GENERATOR.initialize(gps);
-            KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
+            ecKeyGenerator.initialize(gps);
+            KeyPair keyPair = ecKeyGenerator.generateKeyPair();
 
             final String name = "keyid";
             EcKey key = new EcKey(name, keyPair);
             assertEquals(name, key.getKid());
             assertEquals(crv, key.getCurve());
-            doSignVerify(key, CURVE_TO_DIGEST.get(crv));
+            doSignVerify(key, curveToDigest.get(crv));
         }
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void testWithNotCurveKeyPair() throws Exception {
         ECGenParameterSpec gps = new ECGenParameterSpec("secp192k1");
-        EC_KEY_GENERATOR.initialize(gps);
-        KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
+        ecKeyGenerator.initialize(gps);
+        KeyPair keyPair = ecKeyGenerator.generateKeyPair();
 
         final String name = "keyid";
         EcKey key = new EcKey(name, keyPair);
@@ -152,8 +152,8 @@ public class ECKeyTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testFromJsonWebKeyPublicOnly() throws Exception {
         ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.P256);
-        EC_KEY_GENERATOR.initialize(gps);
-        KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
+        ecKeyGenerator.initialize(gps);
+        KeyPair keyPair = ecKeyGenerator.generateKeyPair();
 
         ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
         ECPoint point = apub.getW();
@@ -169,14 +169,14 @@ public class ECKeyTest {
 
         EcKey newKey = EcKey.fromJsonWebKey(jwk, false);
         assertEquals("kid", newKey.getKid());
-        doSignVerify(newKey, DIGEST_256);
+        doSignVerify(newKey, digest256);
     }
     
     @Test
     public void testFromJsonWebKey() throws Exception {
         ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.P384);
-        EC_KEY_GENERATOR.initialize(gps);
-        KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
+        ecKeyGenerator.initialize(gps);
+        KeyPair keyPair = ecKeyGenerator.generateKeyPair();
         
         ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
         ECPoint point = apub.getW();
@@ -194,7 +194,7 @@ public class ECKeyTest {
         
         EcKey newKey = EcKey.fromJsonWebKey(jwk, true);
         assertEquals("kid", newKey.getKid());
-        doSignVerify(newKey, DIGEST_384);
+        doSignVerify(newKey, digest384);
     }
     
     private static PrivateKey generatePrivateKey(KeyFactory factory, String filename) throws InvalidKeySpecException, FileNotFoundException, IOException {
@@ -212,8 +212,8 @@ public class ECKeyTest {
     }
     
     private KeyPair getKeyFromFile(String privateKeyPath, String publicKeyPath) throws InvalidKeySpecException, FileNotFoundException, IOException {
-        PrivateKey priv = generatePrivateKey(FACTORY, privateKeyPath);
-        PublicKey pub = generatePublicKey(FACTORY, publicKeyPath);
+        PrivateKey priv = generatePrivateKey(factory, privateKeyPath);
+        PublicKey pub = generatePublicKey(factory, publicKeyPath);
         ECPublicKey apub = (ECPublicKey) pub;
         ECPrivateKey apriv = (ECPrivateKey) priv;
         
@@ -254,29 +254,29 @@ public class ECKeyTest {
     
     @Test
     public void testFromP384File() throws Exception {
-        testFromFile("p384", DIGEST_384, Es384.ALGORITHM_NAME);
+        testFromFile("p384", digest384, Es384.ALGORITHM_NAME);
     }
     
     @Test
     public void testFromP521File() throws Exception {
-        testFromFile("p521", DIGEST_512, Es512.ALGORITHM_NAME);
+        testFromFile("p521", digest512, Es512.ALGORITHM_NAME);
     }
     
     @Test
     public void testFromP256File() throws Exception {
-        testFromFile("p256", DIGEST_256, Es256.ALGORITHM_NAME);
+        testFromFile("p256", digest256, Es256.ALGORITHM_NAME);
     }
     
     @Test
     public void testFromSEC256File() throws Exception {
-        testFromFile("secp256", DIGEST_256, Es256k.ALGORITHM_NAME);
+        testFromFile("secp256", digest256, Es256k.ALGORITHM_NAME);
     }
     
     @Test
     public void testToJsonWebKey() throws Exception {
         ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.P521);
-        EC_KEY_GENERATOR.initialize(gps);
-        KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
+        ecKeyGenerator.initialize(gps);
+        KeyPair keyPair = ecKeyGenerator.generateKeyPair();
 
         ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
         ECPoint point = apub.getW();
@@ -303,7 +303,7 @@ public class ECKeyTest {
     //Externally signing a byte_array with openssl
     //Verifying with SDK
     private void doVerify(EcKey key, MessageDigest digest, byte[] preGenSignature) throws IOException, NoSuchAlgorithmException, InterruptedException, ExecutionException {        
-        byte[] hash = digest.digest(CEK);
+        byte[] hash = digest.digest(cek);
         
         //Use sign and verify to test each other.
         boolean result = key.verifyAsync(hash, preGenSignature, key.getDefaultSignatureAlgorithm()).get();
@@ -321,7 +321,7 @@ public class ECKeyTest {
     
     private void doSignVerify(EcKey key, MessageDigest digest) throws IOException, NoSuchAlgorithmException, InterruptedException, ExecutionException {
 
-        byte[] hash = digest.digest(CEK);
+        byte[] hash = digest.digest(cek);
 
         //Use sign and verify to test each other.
         Pair<byte[], String> signature = key.signAsync(hash, key.getDefaultSignatureAlgorithm()).get();
