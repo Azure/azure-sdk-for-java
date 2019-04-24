@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.eventhubs.lib.Mock;
+package com.microsoft.azure.eventhubs.lib.mock;
 
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import org.apache.qpid.proton.Proton;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 /**
- * Mock Server (Singleton) designed to test AMQP related features in the javaClient
+ * mock Server (Singleton) designed to test AMQP related features in the javaClient
  */
 public class MockServer implements Closeable {
     private final static String HOST_NAME = "127.0.0.1";
