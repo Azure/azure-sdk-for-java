@@ -64,17 +64,21 @@ public class InteropEventBodyTest extends ApiTestBase {
 
     @AfterClass
     public static void cleanup() throws EventHubException {
-        if (partitionMsgSender != null)
+        if (partitionMsgSender != null) {
             partitionMsgSender.closeSync();
+        }
 
-        if (receiver != null)
+        if (receiver != null) {
             receiver.closeSync();
+        }
 
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
 
-        if (msgFactory != null)
+        if (msgFactory != null) {
             msgFactory.closeSync();
+        }
     }
 
     @Test
