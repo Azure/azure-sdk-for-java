@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package models;
+package com.azure.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,10 +27,19 @@ public class ComplexConfiguration {
         return this;
     }
 
+    /**
+     * Gets the name of the ComplexConfiguration.
+     * @return The name of the complex object.
+     */
     public String name() {
         return name;
     }
 
+    /**
+     * Sets the name of the ComplexConfiguration.
+     * @param name The name to set.
+     * @return The updated object.
+     */
     public ComplexConfiguration name(String name) {
         this.name = name;
         return this;
