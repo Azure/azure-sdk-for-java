@@ -16,7 +16,7 @@ import java.util.logging.Level;
 /**
  * Mock Server (Singleton) designed to test AMQP related features in the Java client.
  */
-public class MockServer implements Closeable {
+public final class MockServer implements Closeable {
     private static final String HOST_NAME = "127.0.0.1";
     private static final int PORT = 5671;
 
