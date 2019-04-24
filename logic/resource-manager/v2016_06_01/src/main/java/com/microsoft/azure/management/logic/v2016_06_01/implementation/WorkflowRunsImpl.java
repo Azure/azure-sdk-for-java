@@ -11,10 +11,10 @@ package com.microsoft.azure.management.logic.v2016_06_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRuns;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
-import rx.Completable;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowWorkflowRun;
 
 class WorkflowRunsImpl extends WrapperImpl<WorkflowRunsInner> implements WorkflowRuns {
@@ -67,6 +67,12 @@ class WorkflowRunsImpl extends WrapperImpl<WorkflowRunsInner> implements Workflo
                 return wrapModel(inner);
             }
        });
+    }
+
+    @Override
+    public Completable deleteAsync(String resourceGroupName, String workflowName, String runName) {
+        WorkflowRunsInner client = this.inner();
+        return client.deleteAsync(resourceGroupName, workflowName, runName).toCompletable();
     }
 
 }
