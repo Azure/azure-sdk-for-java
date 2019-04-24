@@ -42,8 +42,9 @@ public class ReceivePumpEventHubTest extends ApiTestBase {
 
     @AfterClass
     public static void cleanup() throws EventHubException {
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
     }
 
     @Before
@@ -111,8 +112,9 @@ public class ReceivePumpEventHubTest extends ApiTestBase {
 
     @After
     public void cleanupTest() throws EventHubException {
-        if (receiver != null)
+        if (receiver != null) {
             receiver.closeSync();
+        }
     }
 
     public static final class InvokeOnReceiveEventValidator implements PartitionReceiveHandler {

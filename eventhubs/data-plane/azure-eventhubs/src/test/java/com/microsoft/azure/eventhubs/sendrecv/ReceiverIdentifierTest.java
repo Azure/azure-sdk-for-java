@@ -43,11 +43,13 @@ public class ReceiverIdentifierTest extends ApiTestBase {
     @AfterClass()
     public static void cleanup() throws EventHubException {
 
-        for (PartitionReceiver receiver : RECEIVERS)
+        for (PartitionReceiver receiver : RECEIVERS) {
             receiver.closeSync();
+        }
 
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
     }
 
     @Test()

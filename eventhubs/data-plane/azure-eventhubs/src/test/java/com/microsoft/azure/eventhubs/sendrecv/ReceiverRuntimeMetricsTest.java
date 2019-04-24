@@ -55,33 +55,39 @@ public class ReceiverRuntimeMetricsTest extends ApiTestBase {
     @AfterClass()
     public static void cleanup() throws EventHubException {
 
-        if (receiverWithOptions != null)
+        if (receiverWithOptions != null) {
             receiverWithOptions.closeSync();
+        }
 
-        if (receiverWithoutOptions != null)
+        if (receiverWithoutOptions != null) {
             receiverWithoutOptions.closeSync();
+        }
 
-        if (receiverWithOptionsDisabled != null)
+        if (receiverWithOptionsDisabled != null) {
             receiverWithOptionsDisabled.closeSync();
+        }
 
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
     }
 
     @Test()
     public void testRuntimeMetricsReturnedWhenEnabled() throws EventHubException {
 
         LinkedList<EventData> receivedEventsWithOptions = new LinkedList<>();
-        while (receivedEventsWithOptions.size() < SENT_EVENTS)
+        while (receivedEventsWithOptions.size() < SENT_EVENTS) {
             for (EventData eData : receiverWithOptions.receiveSync(1)) {
                 receivedEventsWithOptions.add(eData);
                 Assert.assertEquals((Long) eData.getSystemProperties().getSequenceNumber(),
-                        receiverWithOptions.getEventPosition().getSequenceNumber());
+                    receiverWithOptions.getEventPosition().getSequenceNumber());
             }
+        }
 
         HashSet<String> offsets = new HashSet<>();
-        for (EventData eData : receivedEventsWithOptions)
+        for (EventData eData : receivedEventsWithOptions) {
             offsets.add(eData.getSystemProperties().getOffset());
+        }
 
         Assert.assertTrue(receiverWithOptions.getRuntimeInformation() != null);
         Assert.assertTrue(offsets.contains(receiverWithOptions.getRuntimeInformation().getLastEnqueuedOffset()));
