@@ -74,10 +74,8 @@ public class PrefabEventProcessor implements IEventProcessor {
         if (this.doMarker) {
             TestBase.logInfo("(" + context.getOwner() + ") P" + context.getPartitionId() + " total " + this.eventCount + "(" + (this.eventCount - baseline) + ")");
         }
-        switch (doCheckpoint) {
-            case CKP_NONE:
-                break;
 
+        switch (doCheckpoint) {
             case CKP_EXPLICIT:
                 context.checkpoint(lastEvent).get();
                 TestBase.logInfo("P" + context.getPartitionId() + " checkpointed at " + lastEvent.getSystemProperties().getOffset());
@@ -86,6 +84,9 @@ public class PrefabEventProcessor implements IEventProcessor {
             case CKP_NOARGS:
                 context.checkpoint().get();
                 TestBase.logInfo("P" + context.getPartitionId() + " checkpointed without arguments");
+                break;
+            case CKP_NONE:
+            default:
                 break;
         }
     }
