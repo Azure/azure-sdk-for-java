@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 
 public class SmokeTest extends TestBase {
     @Test
-    public void SendRecv1MsgTest() throws Exception {
+    public void sendRecv1MsgTest() throws Exception {
         PerTestSettings settings = new PerTestSettings("SendRecv1Msg");
         settings = testSetup(settings);
 
@@ -24,7 +24,7 @@ public class SmokeTest extends TestBase {
     }
 
     @Test
-    public void ReceiverRuntimeMetricsTest() throws Exception {
+    public void eceiverRuntimeMetricsTest() throws Exception {
         PerTestSettings settings = new PerTestSettings("ReceiverRuntimeMetrics");
         settings.inOptions.setReceiverRuntimeMetricEnabled(true);
         settings = testSetup(settings);
