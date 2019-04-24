@@ -55,7 +55,7 @@ public class EventHubClientTest extends ApiTestBase {
             for (CompletableFuture<EventHubClient> createFuture : createFutures) {
                 // There's a possibility that an exception was thrown while creating EventHubClients, so we can't assume
                 // that they were all initialised yet.
-                if (createFuture == null ) {
+                if (createFuture == null) {
                     continue;
                 }
 
