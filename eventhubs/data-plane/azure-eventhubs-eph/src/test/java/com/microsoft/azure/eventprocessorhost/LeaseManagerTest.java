@@ -194,7 +194,7 @@ public class LeaseManagerTest extends TestBase {
         boolret = this.leaseManagers[0].acquireLease(mgr1Lease).get();
         assertTrue("first manager failed acquiring lease for 0", boolret);
         if (useAzureStorage) {
-            TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr1Lease).getToken());
+            TestBase.logInfo("Lease token is " + ((AzureBlobLease) mgr1Lease).getToken());
         }
 
         int x = 0;
@@ -208,7 +208,7 @@ public class LeaseManagerTest extends TestBase {
         boolret = this.leaseManagers[1].acquireLease(mgr2Lease).get();
         assertTrue("second manager failed acquiring expired lease for 0", boolret);
         if (useAzureStorage) {
-            TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr2Lease).getToken());
+            TestBase.logInfo("Lease token is " + ((AzureBlobLease) mgr2Lease).getToken());
         }
 
         TestBase.logInfo("First manager trying to renew lease 0");
@@ -223,7 +223,7 @@ public class LeaseManagerTest extends TestBase {
         boolret = this.leaseManagers[0].acquireLease(mgr1Lease).get();
         assertTrue("first manager failed stealing lease 0", boolret);
         if (useAzureStorage) {
-            TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr1Lease).getToken());
+            TestBase.logInfo("Lease token is " + ((AzureBlobLease) mgr1Lease).getToken());
         }
 
         TestBase.logInfo("Second mananger getting lease 0");
@@ -234,7 +234,7 @@ public class LeaseManagerTest extends TestBase {
         boolret = this.leaseManagers[1].acquireLease(mgr2Lease).get();
         assertTrue("second manager failed stealing lease 0", boolret);
         if (useAzureStorage) {
-            TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr2Lease).getToken());
+            TestBase.logInfo("Lease token is " + ((AzureBlobLease) mgr2Lease).getToken());
         }
 
         TestBase.logInfo("Second mananger releasing lease 0");
