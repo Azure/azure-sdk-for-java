@@ -13,17 +13,17 @@ import org.junit.Test;
 import java.time.Duration;
 import java.util.function.Consumer;
 
-public class ConnStrBuilderTest extends ApiTestBase {
+public class ConnStrBuilderTest {
     static final String correctConnectionString = "Endpoint=sb://endpoint1;EntityPath=eventhub1;SharedAccessKeyName=somevalue;SharedAccessKey=something;OperationTimeout=PT5S;TransportType=AMQP";
     static final Consumer<ConnectionStringBuilder> validateConnStrBuilder = new Consumer<ConnectionStringBuilder>() {
         @Override
         public void accept(ConnectionStringBuilder connStrBuilder) {
-            Assert.assertTrue(connStrBuilder.getEventHubName().equals("eventhub1"));
-            Assert.assertTrue(connStrBuilder.getEndpoint().getHost().equals("endpoint1"));
-            Assert.assertTrue(connStrBuilder.getSasKey().equals("something"));
-            Assert.assertTrue(connStrBuilder.getSasKeyName().equals("somevalue"));
-            Assert.assertTrue(connStrBuilder.getTransportType() == TransportType.AMQP);
-            Assert.assertTrue(connStrBuilder.getOperationTimeout().equals(Duration.ofSeconds(5)));
+            Assert.assertEquals("eventhub1", connStrBuilder.getEventHubName());
+            Assert.assertEquals("endpoint1", connStrBuilder.getEndpoint().getHost());
+            Assert.assertEquals("something", connStrBuilder.getSasKey());
+            Assert.assertEquals("somevalue", connStrBuilder.getSasKeyName());
+            Assert.assertSame(connStrBuilder.getTransportType(), TransportType.AMQP);
+            Assert.assertEquals(connStrBuilder.getOperationTimeout(), Duration.ofSeconds(5));
         }
     };
 
@@ -75,7 +75,7 @@ public class ConnStrBuilderTest extends ApiTestBase {
         connStrBuilder.setTransportType(TransportType.AMQP_WEB_SOCKETS);
 
         ConnectionStringBuilder testConnStrBuilder1 = new ConnectionStringBuilder(connStrBuilder.toString());
-        Assert.assertTrue(testConnStrBuilder1.getOperationTimeout().getSeconds() == 8);
-        Assert.assertTrue(testConnStrBuilder1.getTransportType() == TransportType.AMQP_WEB_SOCKETS);
+        Assert.assertEquals(8, testConnStrBuilder1.getOperationTimeout().getSeconds());
+        Assert.assertSame(testConnStrBuilder1.getTransportType(), TransportType.AMQP_WEB_SOCKETS);
     }
 }

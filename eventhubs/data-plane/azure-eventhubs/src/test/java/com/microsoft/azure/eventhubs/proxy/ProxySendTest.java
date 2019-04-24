@@ -4,7 +4,6 @@
 package com.microsoft.azure.eventhubs.proxy;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
