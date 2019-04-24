@@ -4,7 +4,6 @@
 package com.microsoft.azure.eventhubs.lib;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.impl.SharedAccessSignatureTokenProvider;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
