@@ -89,7 +89,7 @@
         </configuration>
       </plugin>
 
-      <!-- Opt-out of javadoc build failures for Track 1 Azure Key Vault client library. -->
+      <!-- Opt-out of javadoc build failures for Track 1 Key Vault client library. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
