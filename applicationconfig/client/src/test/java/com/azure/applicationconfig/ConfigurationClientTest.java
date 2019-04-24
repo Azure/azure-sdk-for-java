@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
@@ -586,7 +588,7 @@ public class ConfigurationClientTest extends TestBase {
     @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test
     public void deleteAllSettings() {
-        for(ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().key("*"))) {
+        for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().key("*"))) {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
             client.deleteSetting(configurationSetting);
         }

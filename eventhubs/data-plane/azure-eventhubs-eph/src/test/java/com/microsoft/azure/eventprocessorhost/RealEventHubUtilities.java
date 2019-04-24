@@ -135,7 +135,7 @@ final class RealEventHubUtilities {
             EventHubClient idClient = EventHubClient.createSync(this.hubConnectionString.toString(), TestUtilities.EXECUTOR_SERVICE);
             try {
                 EventHubRuntimeInformation info = idClient.getRuntimeInformation().get();
-                String ids[] = info.getPartitionIds();
+                String[] ids = info.getPartitionIds();
                 for (String id : ids) {
                     this.cachedPartitionIds.add(id);
                 }
