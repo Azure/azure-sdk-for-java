@@ -18,11 +18,9 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class ReceiveParallelManualTest extends ApiTestBase {
-    static final String cgName = TestContext.getConsumerGroupName();
-    static final String partitionId = "0";
+    private static final String CONSUMER_GROUP_NAME = TestContext.getConsumerGroupName();
 
-    static EventHubClient[] ehClient;
-
+    private static EventHubClient[] ehClient;
 
     @BeforeClass
     public static void initializeEventHub() throws Exception {
@@ -85,7 +83,7 @@ public class ReceiveParallelManualTest extends ApiTestBase {
             PartitionReceiver offsetReceiver1 = null;
             try {
                 offsetReceiver1 =
-                        ehClient[partitionIdInt].createReceiverSync(cgName, sPartitionId, EventPosition.fromStartOfStream());
+                        ehClient[partitionIdInt].createReceiverSync(CONSUMER_GROUP_NAME, sPartitionId, EventPosition.fromStartOfStream());
             } catch (EventHubException e) {
                 e.printStackTrace();
             }

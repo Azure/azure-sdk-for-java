@@ -22,15 +22,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ProxyReceiveTest extends SasTokenTestBase {
+    private static final int PROXY_PORT = 8899;
 
-    private static final int proxyPort = 8899;
     private static ProxyServer proxyServer;
     private static ReceiveTest receiveTest;
     private static ProxySelector defaultProxySelector;
 
     @BeforeClass
     public static void initialize() throws Exception {
-        proxyServer = ProxyServer.create("localhost", proxyPort);
+        proxyServer = ProxyServer.create("localhost", PROXY_PORT);
         proxyServer.start(t -> {});
 
         defaultProxySelector = ProxySelector.getDefault();
@@ -38,7 +38,7 @@ public class ProxyReceiveTest extends SasTokenTestBase {
             @Override
             public List<Proxy> select(URI uri) {
                 LinkedList<Proxy> proxies = new LinkedList<>();
-                proxies.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", proxyPort)));
+                proxies.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", PROXY_PORT)));
                 return proxies;
             }
 

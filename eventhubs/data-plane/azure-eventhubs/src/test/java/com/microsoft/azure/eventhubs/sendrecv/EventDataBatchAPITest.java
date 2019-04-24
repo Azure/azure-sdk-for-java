@@ -34,9 +34,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class EventDataBatchAPITest extends ApiTestBase {
+    private static final String CONSUMER_GROUP_NAME = TestContext.getConsumerGroupName();
+    private static final String PARTITION_ID = "0";
 
-    private static final String cgName = TestContext.getConsumerGroupName();
-    private static final String partitionId = "0";
     private static EventHubClient ehClient;
     private static PartitionSender sender = null;
 
@@ -44,7 +44,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
     public static void initializeEventHub() throws Exception {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        sender = ehClient.createPartitionSenderSync(partitionId);
+        sender = ehClient.createPartitionSenderSync(PARTITION_ID);
     }
 
     @AfterClass
@@ -63,7 +63,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
 
         while (batchEvents.tryAdd(EventData.create("a".getBytes()))) ;
 
-        sender = ehClient.createPartitionSenderSync(partitionId);
+        sender = ehClient.createPartitionSenderSync(PARTITION_ID);
         sender.sendSync(batchEvents);
     }
 
@@ -153,7 +153,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
     public void sendEventsFullBatchWithAppPropsTest()
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<Void> validator = new CompletableFuture<>();
-        final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEndOfStream());
+        final PartitionReceiver receiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEndOfStream());
         receiver.setReceiveTimeout(Duration.ofSeconds(5));
 
         try {
