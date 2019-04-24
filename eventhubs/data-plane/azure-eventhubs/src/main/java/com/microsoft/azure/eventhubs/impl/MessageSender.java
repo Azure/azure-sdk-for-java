@@ -414,9 +414,10 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
                         this.cancelOpen(schedulerException);
                     }
-                } else if (completionException instanceof EventHubException
-                        && !((EventHubException) completionException).getIsTransient()) {
+                } else if (completionException instanceof EventHubException) {
                     this.cancelOpen(completionException);
+                } else if (TRACE_LOGGER.isErrorEnabled()) {
+                    TRACE_LOGGER.error("Could not open link nor interpret completionException.", completionException);
                 }
             } else {
                 this.cancelOpenTimer();
