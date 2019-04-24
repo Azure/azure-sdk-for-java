@@ -78,8 +78,6 @@ public final class ReceiverOptions {
      * For example, when receiver quota limit is hit, while a user is trying to create New receiver,
      * EventHubs service will throw {@link QuotaExceededException} and will include this identifier.
      * So, its very critical to choose a value, which can uniquely identify the whereabouts of {@link PartitionReceiver}.
-     * <p>
-     * </p>
      *
      * @param value string to identify {@link PartitionReceiver}
      */
