@@ -7,38 +7,38 @@
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Wed, 24 Apr 2019 04:37:58 GMT",
+      "date" : "Wed, 24 Apr 2019 18:48:51 GMT",
       "server" : "nginx/1.13.9",
       "content-length" : "0",
       "connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "405",
-      "x-ms-request-id" : "c8d082c0-ac0b-4a85-a9f2-01154718f41c",
-      "x-ms-client-request-id" : "7ca2157c-f038-4d9c-8d7d-63f47c08f5a1",
-      "x-ms-correlation-request-id" : "c8d082c0-ac0b-4a85-a9f2-01154718f41c",
+      "x-ms-request-id" : "ee98a6b9-8b12-46a0-9abc-21f516ae31fd",
+      "x-ms-client-request-id" : "b3d3b720-dc30-4806-873c-36fce8fe3a10",
+      "x-ms-correlation-request-id" : "ee98a6b9-8b12-46a0-9abc-21f516ae31fd",
       "strict-transport-security" : "max-age=15724800; includeSubDomains;"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?key=key17781%2a&label=",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?key=key96750%2a",
     "Headers" : {
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 1.8.0_202; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Wed, 24 Apr 2019 04:37:58 GMT",
+      "date" : "Wed, 24 Apr 2019 18:48:51 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
       "content-type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8",
       "connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "f18bce48-3b1b-4126-988e-38e17241d98c",
+      "x-ms-request-id" : "0294b797-e5f0-426b-8119-879f866f7c5c",
       "Body" : "{\"items\":[]}",
-      "x-ms-client-request-id" : "b16082e2-a0e6-42e5-a475-b69a6326e457",
-      "x-ms-correlation-request-id" : "f18bce48-3b1b-4126-988e-38e17241d98c",
+      "x-ms-client-request-id" : "b69f0b9b-734b-425c-9698-7bffb8104a1b",
+      "x-ms-correlation-request-id" : "0294b797-e5f0-426b-8119-879f866f7c5c",
       "strict-transport-security" : "max-age=15724800; includeSubDomains;"
     }
   } ],
-  "variables" : [ "key17781", "7846e44a" ]
+  "variables" : [ "key96750", "fb62af8e" ]
 }

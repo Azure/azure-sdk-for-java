@@ -7,7 +7,6 @@ import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.util.ImplUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
