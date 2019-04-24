@@ -40,7 +40,7 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw256;
 public class AesKwTest {
 
     // Always null for the default provider
-    private Provider _provider = null;
+    private Provider provider = null;
     
     private static boolean hasUnlimitedCrypto() {
         try {
@@ -67,11 +67,11 @@ public class AesKwTest {
     }
 
     protected void setProvider(Provider provider) {
-        _provider = provider;
+        this.provider = provider;
     }
 
     @Test
-    public void KeyVault_AesKw128() {
+    public void aesKw128() {
         // Arrange
         byte[] KEK = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
         byte[] CEK = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
@@ -82,7 +82,7 @@ public class AesKwTest {
         ICryptoTransform encryptor = null;
 
         try {
-            encryptor = kw.CreateEncryptor(KEK, _provider);
+            encryptor = kw.CreateEncryptor(KEK, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -101,7 +101,7 @@ public class AesKwTest {
         ICryptoTransform decryptor = null;
 
         try {
-            decryptor = kw.CreateDecryptor(KEK, _provider);
+            decryptor = kw.CreateDecryptor(KEK, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -119,7 +119,7 @@ public class AesKwTest {
     }
 
     @Test
-    public void KeyVault_AesKw192() {
+    public void aesKw192() {
         // Arrange
         byte[] KEK = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17 };
         byte[] CEK = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
@@ -136,7 +136,7 @@ public class AesKwTest {
         ICryptoTransform encryptor = null;
 
         try {
-            encryptor = kw.CreateEncryptor(KEK, _provider);
+            encryptor = kw.CreateEncryptor(KEK, provider);
             
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
@@ -161,7 +161,7 @@ public class AesKwTest {
         ICryptoTransform decryptor = null;
 
         try {
-            decryptor = kw.CreateDecryptor(KEK, _provider);
+            decryptor = kw.CreateDecryptor(KEK, provider);
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
             if (unlimited) fail("InvalidKeyException");
@@ -184,7 +184,7 @@ public class AesKwTest {
     }
 
     @Test
-    public void KeyVault_AesKw256() {
+    public void aesKw256() {
         // Arrange
         byte[] KEK = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F };
         byte[] CEK = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
@@ -201,7 +201,7 @@ public class AesKwTest {
         ICryptoTransform encryptor = null;
 
         try {
-            encryptor = kw.CreateEncryptor(KEK, _provider);
+            encryptor = kw.CreateEncryptor(KEK, provider);
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
             if (unlimited) fail("InvalidKeyException");
@@ -225,7 +225,7 @@ public class AesKwTest {
         ICryptoTransform decryptor = null;
 
         try {
-            decryptor = kw.CreateDecryptor(KEK, _provider);
+            decryptor = kw.CreateDecryptor(KEK, provider);
             
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
@@ -249,7 +249,7 @@ public class AesKwTest {
     }
 
     @Test
-    public void KeyVault_AesKw128_ExcessKeyMaterial() {
+    public void aesKw128_ExcessKeyMaterial() {
         // Arrange
         byte[] KEK = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F };
         byte[] CEK = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
@@ -260,7 +260,7 @@ public class AesKwTest {
         ICryptoTransform encryptor = null;
 
         try {
-            encryptor = kw.CreateEncryptor(KEK, _provider);
+            encryptor = kw.CreateEncryptor(KEK, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -279,7 +279,7 @@ public class AesKwTest {
         ICryptoTransform decryptor = null;
 
         try {
-            decryptor = kw.CreateDecryptor(KEK, _provider);
+            decryptor = kw.CreateDecryptor(KEK, provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -297,7 +297,7 @@ public class AesKwTest {
     }
 
     @Test
-    public void KeyVault_AesKw192_ExcessKeyMaterial() {
+    public void aesKw192_ExcessKeyMaterial() {
         // Arrange
         byte[] KEK = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F };
         byte[] CEK = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
@@ -314,7 +314,7 @@ public class AesKwTest {
         ICryptoTransform encryptor = null;
 
         try {
-            encryptor = kw.CreateEncryptor(KEK, _provider);
+            encryptor = kw.CreateEncryptor(KEK, provider);
             
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
@@ -339,7 +339,7 @@ public class AesKwTest {
         ICryptoTransform decryptor = null;
 
         try {
-            decryptor = kw.CreateDecryptor(KEK, _provider);
+            decryptor = kw.CreateDecryptor(KEK, provider);
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
             if (unlimited) fail("InvalidKeyException");
@@ -362,7 +362,7 @@ public class AesKwTest {
     }
 
     @Test
-    public void KeyVault_AesKw256_ExcessKeyMaterial() {
+    public void aesKw256_ExcessKeyMaterial() {
         // Arrange
         byte[] KEK = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F };
         byte[] CEK = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
@@ -379,7 +379,7 @@ public class AesKwTest {
         ICryptoTransform encryptor = null;
 
         try {
-            encryptor = kw.CreateEncryptor(KEK, _provider);
+            encryptor = kw.CreateEncryptor(KEK, provider);
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
             if (unlimited) fail("InvalidKeyException");
@@ -403,7 +403,7 @@ public class AesKwTest {
         ICryptoTransform decryptor = null;
 
         try {
-            decryptor = kw.CreateDecryptor(KEK, _provider);
+            decryptor = kw.CreateDecryptor(KEK, provider);
             
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
