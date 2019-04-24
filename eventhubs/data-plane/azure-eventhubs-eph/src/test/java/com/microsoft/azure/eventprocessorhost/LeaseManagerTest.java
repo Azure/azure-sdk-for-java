@@ -287,8 +287,8 @@ public class LeaseManagerTest extends TestBase {
         }
 
         // Host name needs to be unique per host so use index. Event hub should be the same for all hosts in a test, so use the supplied suffix.
-        EventProcessorHost host = new EventProcessorHost("dummyHost" + String.valueOf(index), RealEventHubUtilities.syntacticallyCorrectDummyEventHubPath + suffix,
-                EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, RealEventHubUtilities.syntacticallyCorrectDummyConnectionString + suffix, checkpointMgr, leaseMgr);
+        EventProcessorHost host = new EventProcessorHost("dummyHost" + String.valueOf(index), RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH + suffix,
+                EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING + suffix, checkpointMgr, leaseMgr);
 
         try {
             if (!useAzureStorage) {

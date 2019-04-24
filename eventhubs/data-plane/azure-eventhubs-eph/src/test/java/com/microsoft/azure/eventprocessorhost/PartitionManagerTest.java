@@ -328,7 +328,7 @@ public class PartitionManagerTest extends TestBase {
                 threadpool = Executors.newScheduledThreadPool(threads);
             }
             this.hosts[i] = new EventProcessorHost("dummyHost" + String.valueOf(i), "NOTREAL", EventHubClient.DEFAULT_CONSUMER_GROUP_NAME,
-                    RealEventHubUtilities.syntacticallyCorrectDummyConnectionString, cm, lm, threadpool, null);
+                    RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING, cm, lm, threadpool, null);
 
             lm.initialize(this.hosts[i].getHostContext());
             lm.setLatency(latency);
