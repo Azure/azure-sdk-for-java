@@ -18,10 +18,19 @@ public class ComplexConfiguration {
     @JsonProperty("numberOfInstances")
     private int numberOfInstances;
 
+    /**
+     * Gets the endpoint URI.
+     * @return The endpoint URI.
+     */
     public String endpointUri() {
         return endpointUri;
     }
 
+    /**
+     * Sets the endpoint URI.
+     * @param endpointUri The endpoint URI for this ComplexConfiguration.
+     * @return The updated object.
+     */
     public ComplexConfiguration endpointUri(String endpointUri) {
         this.endpointUri = endpointUri;
         return this;
@@ -37,7 +46,7 @@ public class ComplexConfiguration {
 
     /**
      * Sets the name of the ComplexConfiguration.
-     * @param name The name to set.
+     * @param name The name to set for this ComplexConfiguration.
      * @return The updated object.
      */
     public ComplexConfiguration name(String name) {
@@ -45,15 +54,27 @@ public class ComplexConfiguration {
         return this;
     }
 
+    /**
+     * Gets the number of instances.
+     * @return The number of instances.
+     */
     public int numberOfInstances() {
         return numberOfInstances;
     }
 
+    /**
+     * Sets the number of instances.
+     * @param numberOfInstances The number of instances for this ComplexConfiguration.
+     * @return The updated object.
+     */
     public ComplexConfiguration numberOfInstances(int numberOfInstances) {
         this.numberOfInstances = numberOfInstances;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "Name: " + name() + ", Endpoint: " + endpointUri() + ", # of instances: " + numberOfInstances();
