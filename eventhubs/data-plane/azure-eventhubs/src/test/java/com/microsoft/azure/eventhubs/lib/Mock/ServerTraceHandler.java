@@ -4,11 +4,14 @@
 package com.microsoft.azure.eventhubs.lib.Mock;
 
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Sasl;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslDomain.Mode;
+import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Handshaker;
 
-import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
