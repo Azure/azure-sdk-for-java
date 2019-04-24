@@ -10,7 +10,11 @@ import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
 import com.microsoft.azure.eventhubs.lib.SasTokenTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import com.microsoft.azure.eventhubs.sendrecv.ReceiveTest;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
