@@ -6,7 +6,6 @@ package com.microsoft.azure.eventhubs.connstrbuilder;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.IllegalConnectionStringFormatException;
 import com.microsoft.azure.eventhubs.TransportType;
-import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 

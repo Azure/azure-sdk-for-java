@@ -12,14 +12,17 @@ import com.microsoft.azure.eventhubs.impl.MessagingFactory;
 import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.SocketAddress;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 
