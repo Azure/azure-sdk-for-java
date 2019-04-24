@@ -64,7 +64,6 @@ public class SecurityExceptionsTest extends ApiTestBase {
         ehClient.sendSync(EventData.create(("Test Message".getBytes())));
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test(expected = IllegalArgumentException.class)
     public void testEventHubClientNullKeyNameAndAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
