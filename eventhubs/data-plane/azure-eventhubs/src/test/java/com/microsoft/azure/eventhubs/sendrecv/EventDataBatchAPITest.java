@@ -49,11 +49,13 @@ public class EventDataBatchAPITest extends ApiTestBase {
 
     @AfterClass
     public static void cleanupClient() throws EventHubException {
-        if (sender != null)
+        if (sender != null) {
             sender.closeSync();
+        }
 
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
     }
 
     @Test
@@ -116,12 +118,14 @@ public class EventDataBatchAPITest extends ApiTestBase {
                     while (eterator.hasNext()) {
                         final EventData currentData = eterator.next();
                         final String currentPartitionKey = currentData.getSystemProperties().getPartitionKey();
-                        if (!currentPartitionKey.equalsIgnoreCase(partitionKey))
+                        if (!currentPartitionKey.equalsIgnoreCase(partitionKey)) {
                             testResult.completeExceptionally(new AssertionFailedError());
+                        }
 
                         final int countSoFar = netCount.incrementAndGet();
-                        if (countSoFar >= sentCount)
+                        if (countSoFar >= sentCount) {
                             testResult.complete(null);
+                        }
                     }
                 }
             }
@@ -145,7 +149,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
             ehClient.sendSync(batchEvents);
             testResult.get();
         } finally {
-            if (receivers.size() > 0)
+            if (receivers.size() > 0) {
                 receivers.forEach(new Consumer<PartitionReceiver>() {
                     @Override
                     public void accept(PartitionReceiver partitionReceiver) {
@@ -155,6 +159,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
                         }
                     }
                 });
+            }
         }
     }
 
@@ -171,13 +176,15 @@ public class EventDataBatchAPITest extends ApiTestBase {
             int count = 0;
             while (true) {
                 final EventData eventData = EventData.create(new String(new char[50000]).replace("\0", "a").getBytes());
-                for (int i = 0; i < new Random().nextInt(20); i++)
+                for (int i = 0; i < new Random().nextInt(20); i++) {
                     eventData.getProperties().put("somekey" + i, "somevalue");
+                }
 
-                if (batchEvents.tryAdd(eventData))
+                if (batchEvents.tryAdd(eventData)) {
                     count++;
-                else
+                } else {
                     break;
+                }
             }
 
             Assert.assertEquals(count, batchEvents.getSize());
@@ -203,13 +210,15 @@ public class EventDataBatchAPITest extends ApiTestBase {
         int count = 0;
         while (true) {
             final EventData eventData = EventData.create(new String("a").getBytes());
-            for (int i = 0; i < new Random().nextInt(20); i++)
+            for (int i = 0; i < new Random().nextInt(20); i++) {
                 eventData.getProperties().put("somekey" + i, "somevalue");
+            }
 
-            if (batchEvents.tryAdd(eventData))
+            if (batchEvents.tryAdd(eventData)) {
                 count++;
-            else
+            } else {
                 break;
+            }
         }
 
         Assert.assertEquals(count, batchEvents.getSize());
@@ -226,13 +235,15 @@ public class EventDataBatchAPITest extends ApiTestBase {
         int count = 0;
         while (true) {
             final EventData eventData = EventData.create(new String("a").getBytes());
-            for (int i = 0; i < new Random().nextInt(20); i++)
+            for (int i = 0; i < new Random().nextInt(20); i++) {
                 eventData.getProperties().put("somekey" + i, "somevalue");
+            }
 
-            if (batchEvents.tryAdd(eventData))
+            if (batchEvents.tryAdd(eventData)) {
                 count++;
-            else
+            } else {
                 break;
+            }
         }
 
         Assert.assertEquals(count, batchEvents.getSize());
@@ -261,13 +272,15 @@ public class EventDataBatchAPITest extends ApiTestBase {
 
         @Override
         public void onReceive(Iterable<EventData> events) {
-            if (events != null)
+            if (events != null) {
                 for (EventData event : events) {
                     currentCount++;
                 }
+            }
 
-            if (currentCount >= netEventCount)
+            if (currentCount >= netEventCount) {
                 this.validateSignal.complete(null);
+            }
 
             try {
                 Thread.sleep(100); // wait for events to accumulate in the receive pump
