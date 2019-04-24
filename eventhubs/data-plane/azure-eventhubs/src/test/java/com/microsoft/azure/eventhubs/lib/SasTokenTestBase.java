@@ -34,9 +34,9 @@ public class SasTokenTestBase extends ApiTestBase {
     }
 
     @AfterClass
-    public static void undoReplace() throws EventHubException {
-
-        if (originalConnectionString != null)
+    public static void undoReplace() {
+        if (originalConnectionString != null) {
             TestContext.setConnectionString(originalConnectionString.toString());
+        }
     }
 }
