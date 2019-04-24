@@ -171,7 +171,9 @@ public class ClientEntityCreateTest extends ApiTestBase {
 
                     testObject.isRetried = true;
                 } catch (Exception ignore) {
-                    System.out.println("this testcase depends on sendPath & tokenAudience in MessageReceiver class for faultinjection...");
+                    if (logger.isInfoEnabled()) {
+                        logger.info("this testcase depends on sendPath & tokenAudience in MessageReceiver class for FaultInjection...");
+                    }
                 }
             }
         };
