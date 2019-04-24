@@ -535,6 +535,10 @@
             <configuration>
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
               <doclint>all</doclint>
+
+              <!-- Do not fail on warnings or errors by default. -->
+              <failOnError>false</failOnError>
+              <failOnWarnings>false</failOnWarnings>
             </configuration>
           </execution>
         </executions>
