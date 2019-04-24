@@ -244,14 +244,6 @@ public class RequestResponseTest extends ApiTestBase {
             Assert.assertNotNull(partInfo.getLastEnqueuedOffset());
             Assert.assertFalse(partInfo.getLastEnqueuedOffset().isEmpty());
             Assert.assertNotNull(partInfo.getLastEnqueuedTimeUtc());  // last enqueued time could be almost anything, can't really check value
-	    	/*
-	    	System.out.println("Event hub name: " + partInfo.getEventHubPath());
-	    	System.out.println("Partition id: " + partInfo.getPartitionId());
-	    	System.out.println("Begin seq: " + partInfo.getBeginSequenceNumber());
-	    	System.out.println("Last seq: " + partInfo.getLastEnqueuedSequenceNumber());
-	    	System.out.println("Last offset: " + partInfo.getLastEnqueuedOffset());
-	    	System.out.println("Last time: " + partInfo.getLastEnqueuedTimeUtc().toString());
-	    	*/
         }
 
         ehc.closeSync();
@@ -271,7 +263,7 @@ public class RequestResponseTest extends ApiTestBase {
         // set operation timeout to 5ms - so that the actual operation doesn't event start
         final Field factoryField = EventHubClientImpl.class.getDeclaredField("underlyingFactory");
         factoryField.setAccessible(true);
-        final MessagingFactory factory = (MessagingFactory)factoryField.get(eventHubClient);
+        final MessagingFactory factory = (MessagingFactory) factoryField.get(eventHubClient);
 
         final Field timeoutField = MessagingFactory.class.getDeclaredField("operationTimeout");
         timeoutField.setAccessible(true);
@@ -344,13 +336,8 @@ public class RequestResponseTest extends ApiTestBase {
             ehc.getRuntimeInformation().get();
             Assert.fail("Expected exception, got success");
         } catch (ExecutionException e) {
-            if (e.getCause() == null) {
-                Assert.fail("Got ExecutionException but no inner exception");
-            } else if (e.getCause() instanceof AuthorizationFailedException) {
-                // Success
-            } else {
-                Assert.fail("Got unexpected inner exception " + e.getCause().toString());
-            }
+            Assert.assertNotNull(e.getCause());
+            Assert.assertTrue(e.getCause() instanceof AuthorizationFailedException);
         } catch (Exception e) {
             Assert.fail("Unexpected exception " + e.toString());
         }
@@ -359,13 +346,8 @@ public class RequestResponseTest extends ApiTestBase {
             ehc.getPartitionRuntimeInformation("0").get();
             Assert.fail("Expected exception, got success");
         } catch (ExecutionException e) {
-            if (e.getCause() == null) {
-                Assert.fail("Got ExecutionException but no inner exception");
-            } else if (e.getCause() instanceof AuthorizationFailedException) {
-                // Success
-            } else {
-                Assert.fail("Got unexpected inner exception " + e.getCause().toString());
-            }
+            Assert.assertNotNull(e.getCause());
+            Assert.assertTrue(e.getCause() instanceof AuthorizationFailedException);
         } catch (Exception e) {
             Assert.fail("Unexpected exception " + e.toString());
         }
