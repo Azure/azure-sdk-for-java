@@ -77,7 +77,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private volatile CompletableFuture<?> closeTimer;
     private int prefetchCount;
     private Exception lastKnownLinkError;
-    private String linkCreationTime;
 
     private MessageReceiver(final MessagingFactory factory,
                             final String name,
@@ -493,8 +492,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                             this.getClientId(), this.receivePath, this.operationTimeout));
         }
 
-        this.linkCreationTime = Instant.now().toString();
-
         this.scheduleLinkOpenTimeout(TimeoutTracker.create(this.operationTimeout));
 
         final Consumer<Session> onSessionOpen = new Consumer<Session>() {
@@ -798,14 +795,16 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
 
         @Override
         public void onEvent() {
+            // If there are prefetched messages, then we check to see if there are any pendingReceives before pulling it
+            // from the top of the pendingReceives queue.
+            while (!prefetchedMessages.isEmpty() && !pendingReceives.isEmpty()) {
+                ReceiveWorkItem pendingReceive = pendingReceives.poll();
+                CompletableFuture<Collection<Message>> work = pendingReceive.getWork();
 
-            ReceiveWorkItem pendingReceive = pendingReceives.poll();
-            while (!prefetchedMessages.isEmpty() && pendingReceive != null) {
-                if (pendingReceive.getWork() != null && !pendingReceive.getWork().isDone()) {
+                if (work != null && !work.isDone()) {
                     Collection<Message> receivedMessages = receiveCore(pendingReceive.maxMessageCount);
-                    pendingReceive.getWork().complete(receivedMessages);
+                    work.complete(receivedMessages);
                 }
-                pendingReceive = pendingReceives.poll();
             }
         }
     }

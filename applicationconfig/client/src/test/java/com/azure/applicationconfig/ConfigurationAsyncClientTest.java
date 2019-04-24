@@ -12,6 +12,7 @@ import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,8 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -105,31 +104,24 @@ public class ConfigurationAsyncClientTest extends TestBase {
         logger.info("Finished cleaning up values.");
     }
 
+    String getKey() {
+        return sdkContext.randomResourceName(keyPrefix, ConfigurationClientTestBase.RESOURCE_LENGTH);
+    }
+
+    String getLabel() {
+        return sdkContext.randomResourceName(labelPrefix, ConfigurationClientTestBase.RESOURCE_LENGTH);
+    }
+
     /**
      * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label identifier.
      */
     @Test
     public void addSetting() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName(labelPrefix, 16);
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("MyTag", "TagValue");
-        tags.put("AnotherTag", "AnotherTagValue");
-
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting()
-                .key(key)
-                .value("myNewValue")
-                .tags(tags)
-                .contentType("text");
-
-        final Consumer<ConfigurationSetting> testRunner = (expected) -> {
+        ConfigurationClientTestBase.addSetting(getKey(), getLabel(), (expected) -> {
             StepVerifier.create(client.addSetting(expected))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete();
-        };
-
-        testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.label(label));
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete();
+        });
     }
 
     /**
@@ -146,24 +138,15 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     @Test
     public void addSettingEmptyValue() {
-        ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix);
-        ConfigurationSetting setting2 = new ConfigurationSetting().key(keyPrefix + "-1").value("");
+        ConfigurationClientTestBase.addSettingEmptyValue(getKey(), (setting) -> {
+            StepVerifier.create(client.addSetting(setting.key(), setting.value()))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
 
-        StepVerifier.create(client.addSetting(setting.key(), setting.value()))
-            .assertNext(response -> assertConfigurationEquals(setting, response))
-            .verifyComplete();
-
-        StepVerifier.create(client.getSetting(setting.key()))
-            .assertNext(response -> assertConfigurationEquals(setting, response))
-            .verifyComplete();
-
-        StepVerifier.create(client.addSetting(setting2.key(), setting2.value()))
-            .assertNext(response -> assertConfigurationEquals(setting2, response))
-            .verifyComplete();
-
-        StepVerifier.create(client.getSetting(setting2.key()))
-            .assertNext(response -> assertConfigurationEquals(setting2, response))
-            .verifyComplete();
+            StepVerifier.create(client.getSetting(setting.key()))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+        });
     }
 
     /**
@@ -180,17 +163,10 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     @Test
     public void addExistingSetting() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-
-        final Consumer<ConfigurationSetting> testRunner = (expected) -> {
+        ConfigurationClientTestBase.addExistingSetting(getKey(), getLabel(), (expected) -> {
             StepVerifier.create(client.addSetting(expected).then(client.addSetting(expected)))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
-        };
-
-        testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.label(label));
+        });
     }
 
     /**
@@ -199,19 +175,11 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     @Test
     public void setSetting() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting setConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdatedValue");
-
-        final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (expected, update) -> {
+        ConfigurationClientTestBase.setSetting(getKey(), getLabel(), (expected, update) -> {
             StepVerifier.create(client.setSetting(expected))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
-        };
-
-        testRunner.accept(setConfiguration, updateConfiguration);
-        testRunner.accept(setConfiguration.label(label), updateConfiguration.label(label));
+        });
     }
 
     /**
@@ -221,12 +189,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     @Test
     public void setSettingIfEtag() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
-
-        final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
+        ConfigurationClientTestBase.setSettingIfEtag(getKey(), getLabel(), (initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setSetting(initial.etag("badEtag")))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
@@ -243,10 +206,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
             StepVerifier.create(client.getSetting(update))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
-        };
-
-        testRunner.accept(newConfiguration, updateConfiguration);
-        testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
+        });
     }
 
     /**
@@ -264,24 +224,15 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     @Test
     public void setSettingEmptyValue() {
-        ConfigurationSetting setting = new ConfigurationSetting().key(keyPrefix);
-        ConfigurationSetting setting2 = new ConfigurationSetting().key(keyPrefix + "-1").value("");
+        ConfigurationClientTestBase.setSettingEmptyValue(getKey(), (setting) -> {
+            StepVerifier.create(client.setSetting(setting.key(), setting.value()))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
 
-        StepVerifier.create(client.setSetting(setting.key(), setting.value()))
-            .assertNext(response -> assertConfigurationEquals(setting, response))
-            .verifyComplete();
-
-        StepVerifier.create(client.getSetting(setting.key()))
-            .assertNext(response -> assertConfigurationEquals(setting, response))
-            .verifyComplete();
-
-        StepVerifier.create(client.setSetting(setting2.key(), setting2.value()))
-            .assertNext(response -> assertConfigurationEquals(setting2, response))
-            .verifyComplete();
-
-        StepVerifier.create(client.getSetting(setting2.key()))
-            .assertNext(response -> assertConfigurationEquals(setting2, response))
-            .verifyComplete();
+            StepVerifier.create(client.getSetting(setting.key()))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+        });
     }
 
     /**
@@ -299,17 +250,10 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     @Test
     public void updateNoExistingSetting() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting expectedFail = new ConfigurationSetting().key(key).value("myFailingUpdate");
-
-        final Consumer<ConfigurationSetting> testRunner = (expected) -> {
+        ConfigurationClientTestBase.updateNoExistingSetting(getKey(), getLabel(), (expected) -> {
             StepVerifier.create(client.updateSetting(expected))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
-        };
-
-        testRunner.accept(expectedFail);
-        testRunner.accept(expectedFail.label(label));
+        });
     }
 
     /**
@@ -318,31 +262,11 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     @Test
     public void updateSetting() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName(labelPrefix, 16);
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("first tag", "first value");
-        tags.put("second tag", "second value");
-        final ConfigurationSetting original = new ConfigurationSetting()
-                .key(key)
-                .value("myNewValue")
-                .tags(tags)
-                .contentType("json");
-
-        final Map<String, String> updatedTags = new HashMap<>(tags);
-        final ConfigurationSetting updated = new ConfigurationSetting(original)
-                .value("myUpdatedValue")
-                .tags(updatedTags)
-                .contentType("text");
-
-        final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
+        ConfigurationClientTestBase.updateSetting(getKey(), getLabel(), (initial, update) -> {
             StepVerifier.create(client.addSetting(initial))
                     .assertNext(response -> assertConfigurationEquals(initial, response))
                     .verifyComplete();
-        };
-
-        testRunner.accept(original, updated);
-        testRunner.accept(original.label(label), updated.label(label));
+        });
     }
 
     /**
@@ -351,16 +275,24 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     @Test
     public void updateSettingOverload() {
-        ConfigurationSetting original = new ConfigurationSetting().key(keyPrefix).value("A Value");
-        ConfigurationSetting updated = new ConfigurationSetting().key(keyPrefix).value("A New Value");
+        ConfigurationClientTestBase.updateSettingOverload(getKey(), (original, updated) -> {
+            StepVerifier.create(client.addSetting(original.key(), original.value()))
+                .assertNext(response -> assertConfigurationEquals(original, response))
+                .verifyComplete();
 
-        StepVerifier.create(client.addSetting(original.key(), original.value()))
-            .assertNext(response -> assertConfigurationEquals(original, response))
-            .verifyComplete();
+            StepVerifier.create(client.updateSetting(updated.key(), updated.value()))
+                .assertNext(response -> assertConfigurationEquals(updated, response))
+                .verifyComplete();
+        });
+    }
 
-        StepVerifier.create(client.updateSetting(updated.key(), updated.value()))
-            .assertNext(response -> assertConfigurationEquals(updated, response))
-            .verifyComplete();
+    /**
+     * Verifies that an exception is thrown when null key is passed.
+     */
+    @Test
+    public void updateSettingNullKey() {
+        assertRunnableThrowsException(() -> client.updateSetting(null, "A Value"), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.updateSetting(null), NullPointerException.class);
     }
 
     /**
@@ -377,15 +309,6 @@ public class ConfigurationAsyncClientTest extends TestBase {
 
         updateSettingIfEtagHelper(newConfiguration, updateConfiguration, finalConfiguration);
         updateSettingIfEtagHelper(newConfiguration.label(label), updateConfiguration.label(label), finalConfiguration.label(label));
-    }
-
-    /**
-     * Verifies that an exception is thrown when null key is passed.
-     */
-    @Test
-    public void updateSettingNullKey() {
-        assertRunnableThrowsException(() -> client.updateSetting(null, "A Value"), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.updateSetting(null), NullPointerException.class);
     }
 
     private void updateSettingIfEtagHelper(ConfigurationSetting initial, ConfigurationSetting update, ConfigurationSetting last) {
@@ -417,17 +340,11 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     @Test
     public void getSetting() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-
-        final Consumer<ConfigurationSetting> testRunner = (expected) -> {
+        ConfigurationClientTestBase.getSetting(getKey(), (expected) -> {
             StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected)))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete();
-        };
-
-        testRunner.accept(newConfiguration);
-        testRunner.accept(newConfiguration.label("myLabel"));
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete();
+        });
     }
 
     /**
@@ -458,11 +375,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     @Test
     public void deleteSetting() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting deletableConfiguration = new ConfigurationSetting().key(key).value("myValue");
-
-        final Consumer<ConfigurationSetting> testRunner = (expected) -> {
+        ConfigurationClientTestBase.deleteSetting(getKey(), getLabel(), (expected) -> {
             StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected)))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
                     .verifyComplete();
@@ -473,10 +386,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
 
             StepVerifier.create(client.getSetting(expected))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
-        };
-
-        testRunner.accept(deletableConfiguration);
-        testRunner.accept(deletableConfiguration.label(label));
+        });
     }
 
     /**
@@ -510,12 +420,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     @Test
     public void deleteSettingWithETag() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName(labelPrefix, 16);
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting(newConfiguration).value("myUpdateValue");
-
-        final BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner = (initial, update) -> {
+        ConfigurationClientTestBase.deleteSettingWithETag(getKey(), getLabel(), (initial, update) -> {
             final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial).block().value();
             final ConfigurationSetting updatedConfig = client.updateSetting(update).block().value();
 
@@ -532,10 +437,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
 
             StepVerifier.create(client.getSetting(initial))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
-        };
-
-        testRunner.accept(newConfiguration, updateConfiguration);
-        testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
+        });
     }
 
     /**

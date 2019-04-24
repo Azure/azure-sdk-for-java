@@ -19,7 +19,7 @@ public class AsyncCredentialsPolicy implements HttpPipelinePolicy {
     private final AsyncServiceClientCredentials credentials;
 
     /**
-     * Creates an {@link AsyncCredentialsPolicy} that authenticates HTTP requests using the given {@param credentials}.
+     * Creates an {@link AsyncCredentialsPolicy} that authenticates HTTP requests using the given {@code credentials}.
      *
      * @param credentials The credentials to use for authentication.
      */
