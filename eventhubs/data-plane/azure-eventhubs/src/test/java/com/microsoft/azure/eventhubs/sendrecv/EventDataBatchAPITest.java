@@ -57,38 +57,47 @@ public class EventDataBatchAPITest extends ApiTestBase {
     }
 
     @Test
-    public void sendSmallEventsFullBatchTest()
-            throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+    public void sendSmallEventsFullBatchTest() throws EventHubException {
         final EventDataBatch batchEvents = sender.createBatch();
 
-        while (batchEvents.tryAdd(EventData.create("a".getBytes()))) ;
+        boolean canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+        while (canAdd) {
+            canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+        }
 
         sender = ehClient.createPartitionSenderSync(PARTITION_ID);
         sender.sendSync(batchEvents);
     }
 
     @Test
-    public void sendSmallEventsFullBatchPartitionKeyTest()
-            throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+    public void sendSmallEventsFullBatchPartitionKeyTest() throws EventHubException {
         final BatchOptions options = new BatchOptions()
                 .with(o -> o.partitionKey = UUID.randomUUID().toString());
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
-        while (batchEvents.tryAdd(EventData.create("a".getBytes()))) ;
+        boolean canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+        while (canAdd) {
+            canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+        }
 
         ehClient.sendSync(batchEvents);
     }
 
     @Test
     public void sendBatchPartitionKeyValidateTest()
-            throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+            throws EventHubException, InterruptedException, ExecutionException {
         final String partitionKey = UUID.randomUUID().toString();
 
         final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = partitionKey);
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
         int count = 0;
-        while (batchEvents.tryAdd(EventData.create("a".getBytes())) && count++ < 10) ;
+        boolean canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+
+        while (canAdd && count < 10) {
+            canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+            count++;
+        }
 
         final int sentCount = count;
         final CompletableFuture<Void> testResult = new CompletableFuture<>();
@@ -185,8 +194,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
     }
 
     @Test
-    public void sendEventsFullBatchWithPartitionKeyTest()
-            throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+    public void sendEventsFullBatchWithPartitionKeyTest() throws EventHubException {
 
         final String partitionKey = UUID.randomUUID().toString();
         final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = partitionKey);
@@ -209,8 +217,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void sendBatchWithPartitionKeyOnPartitionSenderTest()
-            throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+    public void sendBatchWithPartitionKeyOnPartitionSenderTest() throws EventHubException {
 
 
         final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = UUID.randomUUID().toString());
