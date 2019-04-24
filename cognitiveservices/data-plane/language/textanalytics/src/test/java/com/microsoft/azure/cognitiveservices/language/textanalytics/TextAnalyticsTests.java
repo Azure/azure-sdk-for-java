@@ -11,7 +11,7 @@ import com.microsoft.azure.cognitiveservices.language.textanalytics.models.Langu
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.LanguageInput;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.Ignore;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class TextAnalyticsTests {
         .withEndpoint(System.getenv("ENDPOINT"));
     }
 
-    @Test
+    @Ignore("Cannot run live")
     public void canDetectLanguage() {
         List<LanguageInput> inputs = new ArrayList<>();
         inputs.add(new LanguageInput().withId("1").withText("This is a document written in English."));
