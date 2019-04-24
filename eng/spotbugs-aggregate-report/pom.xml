@@ -97,6 +97,11 @@
           <artifactId>azure-common-mgmt</artifactId>
           <version>${azure-common-mgmt.version}</version>
         </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-common-test</artifactId>
+          <version>${azure-common-test.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
