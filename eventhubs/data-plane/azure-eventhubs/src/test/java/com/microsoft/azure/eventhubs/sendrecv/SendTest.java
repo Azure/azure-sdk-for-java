@@ -49,8 +49,9 @@ public class SendTest extends ApiTestBase {
 
     @AfterClass
     public static void cleanupClient() throws EventHubException {
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
     }
 
     @Test
@@ -127,8 +128,9 @@ public class SendTest extends ApiTestBase {
         }
 
         List<EventData> events = new LinkedList<>();
-        for (int index = 0; index < batchSize; index++)
+        for (int index = 0; index < batchSize; index++) {
             events.add(EventData.create("TestMessage".getBytes()));
+        }
 
         ehClient.sendSync(events, partitionKey);
         validateSignal.get(partitionCount * 5, TimeUnit.SECONDS);
@@ -142,8 +144,9 @@ public class SendTest extends ApiTestBase {
         }
 
         if (receivers != null && !receivers.isEmpty()) {
-            for (PartitionReceiver receiver : receivers)
+            for (PartitionReceiver receiver : receivers) {
                 receiver.closeSync();
+            }
 
             receivers.clear();
         }
@@ -170,15 +173,17 @@ public class SendTest extends ApiTestBase {
         public void onReceive(Iterable<EventData> events) {
             if (events != null && events.iterator().hasNext()) {
                 for (EventData event : events) {
-                    if (!partitionKey.equals(event.getSystemProperties().getPartitionKey()))
+                    if (!partitionKey.equals(event.getSystemProperties().getPartitionKey())) {
                         this.validateSignal.completeExceptionally(
-                                new AssertionFailedError(String.format("received partitionKey: %s, expected partitionKey: %s", event.getSystemProperties().getPartitionKey(), partitionKey)));
+                            new AssertionFailedError(String.format("received partitionKey: %s, expected partitionKey: %s", event.getSystemProperties().getPartitionKey(), partitionKey)));
+                    }
 
                     this.currentEventCount++;
                 }
 
-                if (this.currentEventCount == this.eventCount)
+                if (this.currentEventCount == this.eventCount) {
                     this.validateSignal.complete(null);
+                }
             }
         }
 
@@ -206,17 +211,20 @@ public class SendTest extends ApiTestBase {
 
         @Override
         public void onReceive(Iterable<EventData> events) {
-            if (events != null)
+            if (events != null) {
                 for (EventData event : events) {
                     final int currentEventOrder = (int) event.getProperties().get(ORDER_PROPERTY);
-                    if (currentEventOrder != currentCount)
+                    if (currentEventOrder != currentCount) {
                         this.validateSignal.completeExceptionally(new AssertionError(String.format("expected %s, got %s", currentCount, currentEventOrder)));
+                    }
 
                     currentCount++;
                 }
+            }
 
-            if (currentCount >= netEventCount)
+            if (currentCount >= netEventCount) {
                 this.validateSignal.complete(null);
+            }
         }
 
         @Override
