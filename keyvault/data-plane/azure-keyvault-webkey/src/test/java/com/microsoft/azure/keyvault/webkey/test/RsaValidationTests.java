@@ -46,7 +46,7 @@ public class RsaValidationTests {
 
     @Test
     public void rsaPrivateKeyValidation() throws Exception {
-        for(String keyStr : keys.values()) {
+        for (String keyStr : keys.values()) {
             ObjectMapper mapper = new ObjectMapper();
             JsonWebKey key = mapper.readValue(keyStr, JsonWebKey.class);
 
