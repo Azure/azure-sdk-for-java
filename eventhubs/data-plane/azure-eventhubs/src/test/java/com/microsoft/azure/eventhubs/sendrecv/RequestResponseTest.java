@@ -51,16 +51,15 @@ public class RequestResponseTest extends ApiTestBase {
 
     @BeforeClass
     public static void initializeEventHub() throws Exception {
-
         connectionString = TestContext.getConnectionString();
         factory = MessagingFactory.createFromConnectionString(connectionString.toString(), TestContext.EXECUTOR_SERVICE).get();
     }
 
     @AfterClass()
     public static void cleanup() throws EventHubException {
-
-        if (factory != null)
+        if (factory != null) {
             factory.closeSync();
+        }
     }
 
     @Test()
@@ -153,10 +152,11 @@ public class RequestResponseTest extends ApiTestBase {
 
                                             if (statusCode == AmqpResponseCode.ACCEPTED.getValue() || statusCode == AmqpResponseCode.OK.getValue()) {
 
-                                                if (response.getBody() == null)
+                                                if (response.getBody() == null) {
                                                     resultMap = null;
-                                                else
+                                                } else {
                                                     resultMap = (Map<String, Object>) ((AmqpValue) response.getBody()).getValue();
+                                                }
                                             } else {
 
                                                 final Symbol condition = (Symbol) response.getApplicationProperties().getValue().get(ClientConstants.MANAGEMENT_RESPONSE_ERROR_CONDITION);
@@ -164,10 +164,11 @@ public class RequestResponseTest extends ApiTestBase {
                                                 this.onError(new AmqpException(error));
                                             }
 
-                                            if (connectionString.getEventHubName().equalsIgnoreCase((String) resultMap.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY)))
+                                            if (connectionString.getEventHubName().equalsIgnoreCase((String) resultMap.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY))) {
                                                 task.complete(null);
-                                            else
+                                            } else {
                                                 task.completeExceptionally(new AssertionFailedError("response doesn't have correct eventhub name"));
+                                            }
                                         }
 
                                         @Override
@@ -187,8 +188,9 @@ public class RequestResponseTest extends ApiTestBase {
             i++;
             if (i % parallelization == 0) {
                 CompletableFuture.allOf(tasks).get();
-                if (i >= (parallelization * 5))
+                if (i >= (parallelization * 5)) {
                     break;
+                }
             }
         }
 
@@ -222,11 +224,7 @@ public class RequestResponseTest extends ApiTestBase {
         Assert.assertNotNull(ehInfo.getCreatedAt()); // creation time could be almost anything, can't really check value
         Assert.assertTrue(ehInfo.getPartitionCount() >= 1); // max legal partition count is variable but 2 is hard minimum
         Assert.assertEquals(ehInfo.getPartitionIds().length, ehInfo.getPartitionCount());
-    	/*
-    	System.out.println("Event hub name: " + ehInfo.getPath());
-    	System.out.println("Created at: " + ehInfo.getCreatedAt().toString());
-    	System.out.println("Partition count: " + ehInfo.getPartitionCount());
-    	*/
+
         for (int i = 0; i < ehInfo.getPartitionCount(); i++) {
             String id = ehInfo.getPartitionIds()[i];
             Assert.assertNotNull(id);
@@ -246,14 +244,6 @@ public class RequestResponseTest extends ApiTestBase {
             Assert.assertNotNull(partInfo.getLastEnqueuedOffset());
             Assert.assertFalse(partInfo.getLastEnqueuedOffset().isEmpty());
             Assert.assertNotNull(partInfo.getLastEnqueuedTimeUtc());  // last enqueued time could be almost anything, can't really check value
-	    	/*
-	    	System.out.println("Event hub name: " + partInfo.getEventHubPath());
-	    	System.out.println("Partition id: " + partInfo.getPartitionId());
-	    	System.out.println("Begin seq: " + partInfo.getBeginSequenceNumber());
-	    	System.out.println("Last seq: " + partInfo.getLastEnqueuedSequenceNumber());
-	    	System.out.println("Last offset: " + partInfo.getLastEnqueuedOffset());
-	    	System.out.println("Last time: " + partInfo.getLastEnqueuedTimeUtc().toString());
-	    	*/
         }
 
         ehc.closeSync();
@@ -273,7 +263,7 @@ public class RequestResponseTest extends ApiTestBase {
         // set operation timeout to 5ms - so that the actual operation doesn't event start
         final Field factoryField = EventHubClientImpl.class.getDeclaredField("underlyingFactory");
         factoryField.setAccessible(true);
-        final MessagingFactory factory = (MessagingFactory)factoryField.get(eventHubClient);
+        final MessagingFactory factory = (MessagingFactory) factoryField.get(eventHubClient);
 
         final Field timeoutField = MessagingFactory.class.getDeclaredField("operationTimeout");
         timeoutField.setAccessible(true);
@@ -346,13 +336,8 @@ public class RequestResponseTest extends ApiTestBase {
             ehc.getRuntimeInformation().get();
             Assert.fail("Expected exception, got success");
         } catch (ExecutionException e) {
-            if (e.getCause() == null) {
-                Assert.fail("Got ExecutionException but no inner exception");
-            } else if (e.getCause() instanceof AuthorizationFailedException) {
-                // Success
-            } else {
-                Assert.fail("Got unexpected inner exception " + e.getCause().toString());
-            }
+            Assert.assertNotNull(e.getCause());
+            Assert.assertTrue(e.getCause() instanceof AuthorizationFailedException);
         } catch (Exception e) {
             Assert.fail("Unexpected exception " + e.toString());
         }
@@ -361,13 +346,8 @@ public class RequestResponseTest extends ApiTestBase {
             ehc.getPartitionRuntimeInformation("0").get();
             Assert.fail("Expected exception, got success");
         } catch (ExecutionException e) {
-            if (e.getCause() == null) {
-                Assert.fail("Got ExecutionException but no inner exception");
-            } else if (e.getCause() instanceof AuthorizationFailedException) {
-                // Success
-            } else {
-                Assert.fail("Got unexpected inner exception " + e.getCause().toString());
-            }
+            Assert.assertNotNull(e.getCause());
+            Assert.assertTrue(e.getCause() instanceof AuthorizationFailedException);
         } catch (Exception e) {
             Assert.fail("Unexpected exception " + e.toString());
         }

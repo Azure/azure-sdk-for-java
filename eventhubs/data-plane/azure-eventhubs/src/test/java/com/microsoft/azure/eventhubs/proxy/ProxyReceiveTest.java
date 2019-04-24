@@ -35,7 +35,8 @@ public class ProxyReceiveTest extends SasTokenTestBase {
     @BeforeClass
     public static void initialize() throws Exception {
         proxyServer = ProxyServer.create("localhost", PROXY_PORT);
-        proxyServer.start(t -> {});
+        proxyServer.start(t -> {
+        });
 
         defaultProxySelector = ProxySelector.getDefault();
         ProxySelector.setDefault(new ProxySelector() {

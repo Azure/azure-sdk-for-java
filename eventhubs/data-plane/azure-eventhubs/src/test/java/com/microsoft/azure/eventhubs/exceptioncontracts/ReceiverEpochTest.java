@@ -40,8 +40,9 @@ public class ReceiverEpochTest extends ApiTestBase {
 
     @AfterClass
     public static void cleanup() throws EventHubException {
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
     }
 
     @Test(expected = ReceiverDisconnectedException.class)
@@ -55,8 +56,10 @@ public class ReceiverEpochTest extends ApiTestBase {
 
         receiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()), Long.MAX_VALUE);
 
-        for (int retryCount = 0; retryCount < sendEventCount; retryCount++) // retry to flush all msgs in cache
+        for (int retryCount = 0; retryCount < sendEventCount; retryCount++) {
+            // retry to flush all msgs in cache
             receiverLowEpoch.receiveSync(10);
+        }
     }
 
     @Test(expected = ReceiverDisconnectedException.class)
@@ -64,8 +67,9 @@ public class ReceiverEpochTest extends ApiTestBase {
         Instant testStartTime = Instant.now();
         long epoch = Math.abs(new Random().nextLong());
 
-        if (epoch < 11L)
+        if (epoch < 11L) {
             epoch += 11L;
+        }
 
         receiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime), epoch);
         receiver.setReceiveTimeout(Duration.ofSeconds(10));
@@ -87,8 +91,10 @@ public class ReceiverEpochTest extends ApiTestBase {
 
         receiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()), Long.MAX_VALUE);
 
-        for (int retryCount = 0; retryCount < sendEventCount; retryCount++) // retry to flush all msgs in cache
+        for (int retryCount = 0; retryCount < sendEventCount; retryCount++) {
+            // retry to flush all msgs in cache
             receiverLowEpoch.receiveSync(10);
+        }
     }
 
     @After

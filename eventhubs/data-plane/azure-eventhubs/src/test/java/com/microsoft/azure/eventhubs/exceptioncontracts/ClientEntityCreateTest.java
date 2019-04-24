@@ -124,7 +124,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
                     tokenAudienceField.set(messageReceiver, tokenAudience.replace(nonExistentEventHubName, connStr.getEventHubName()));
 
                     testObject.isRetried = true;
-                } catch(Exception ignore) {
+                } catch (Exception ignore) {
                     System.out.println("this testcase depends on receivepath & tokenAudience in MessageReceiver class for faultinjection...");
                 }
             }
@@ -170,7 +170,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
                     tokenAudienceField.set(messageSender, tokenAudience.replace(nonExistentEventHubName, connStr.getEventHubName()));
 
                     testObject.isRetried = true;
-                } catch(Exception ignore) {
+                } catch (Exception ignore) {
                     System.out.println("this testcase depends on sendPath & tokenAudience in MessageReceiver class for faultinjection...");
                 }
             }

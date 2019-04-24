@@ -72,8 +72,9 @@ public class ReceiveTest extends ApiTestBase {
                     String.format("START_OF_STREAM offset: %s, EPOCH offset: %s", eventDataUsingOffset.getSystemProperties().getOffset(), eventDataUsingDateTime.getSystemProperties().getOffset()),
                     eventDataUsingOffset.getSystemProperties().getOffset().equalsIgnoreCase(eventDataUsingDateTime.getSystemProperties().getOffset()));
 
-            if (!dateTimeIterator.hasNext())
+            if (!dateTimeIterator.hasNext()) {
                 break;
+            }
         }
     }
 

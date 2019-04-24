@@ -49,46 +49,57 @@ public class EventDataBatchAPITest extends ApiTestBase {
 
     @AfterClass
     public static void cleanupClient() throws EventHubException {
-        if (sender != null)
+        if (sender != null) {
             sender.closeSync();
+        }
 
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
     }
 
     @Test
-    public void sendSmallEventsFullBatchTest()
-            throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+    public void sendSmallEventsFullBatchTest() throws EventHubException {
         final EventDataBatch batchEvents = sender.createBatch();
 
-        while (batchEvents.tryAdd(EventData.create("a".getBytes()))) ;
+        boolean canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+        while (canAdd) {
+            canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+        }
 
         sender = ehClient.createPartitionSenderSync(PARTITION_ID);
         sender.sendSync(batchEvents);
     }
 
     @Test
-    public void sendSmallEventsFullBatchPartitionKeyTest()
-            throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+    public void sendSmallEventsFullBatchPartitionKeyTest() throws EventHubException {
         final BatchOptions options = new BatchOptions()
                 .with(o -> o.partitionKey = UUID.randomUUID().toString());
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
-        while (batchEvents.tryAdd(EventData.create("a".getBytes()))) ;
+        boolean canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+        while (canAdd) {
+            canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+        }
 
         ehClient.sendSync(batchEvents);
     }
 
     @Test
     public void sendBatchPartitionKeyValidateTest()
-            throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+            throws EventHubException, InterruptedException, ExecutionException {
         final String partitionKey = UUID.randomUUID().toString();
 
         final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = partitionKey);
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
         int count = 0;
-        while (batchEvents.tryAdd(EventData.create("a".getBytes())) && count++ < 10) ;
+        boolean canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+
+        while (canAdd && count < 10) {
+            canAdd = batchEvents.tryAdd(EventData.create("a".getBytes()));
+            count++;
+        }
 
         final int sentCount = count;
         final CompletableFuture<Void> testResult = new CompletableFuture<>();
@@ -107,12 +118,14 @@ public class EventDataBatchAPITest extends ApiTestBase {
                     while (eterator.hasNext()) {
                         final EventData currentData = eterator.next();
                         final String currentPartitionKey = currentData.getSystemProperties().getPartitionKey();
-                        if (!currentPartitionKey.equalsIgnoreCase(partitionKey))
+                        if (!currentPartitionKey.equalsIgnoreCase(partitionKey)) {
                             testResult.completeExceptionally(new AssertionFailedError());
+                        }
 
                         final int countSoFar = netCount.incrementAndGet();
-                        if (countSoFar >= sentCount)
+                        if (countSoFar >= sentCount) {
                             testResult.complete(null);
+                        }
                     }
                 }
             }
@@ -136,7 +149,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
             ehClient.sendSync(batchEvents);
             testResult.get();
         } finally {
-            if (receivers.size() > 0)
+            if (receivers.size() > 0) {
                 receivers.forEach(new Consumer<PartitionReceiver>() {
                     @Override
                     public void accept(PartitionReceiver partitionReceiver) {
@@ -146,6 +159,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
                         }
                     }
                 });
+            }
         }
     }
 
@@ -162,13 +176,15 @@ public class EventDataBatchAPITest extends ApiTestBase {
             int count = 0;
             while (true) {
                 final EventData eventData = EventData.create(new String(new char[50000]).replace("\0", "a").getBytes());
-                for (int i = 0; i < new Random().nextInt(20); i++)
+                for (int i = 0; i < new Random().nextInt(20); i++) {
                     eventData.getProperties().put("somekey" + i, "somevalue");
+                }
 
-                if (batchEvents.tryAdd(eventData))
+                if (batchEvents.tryAdd(eventData)) {
                     count++;
-                else
+                } else {
                     break;
+                }
             }
 
             Assert.assertEquals(count, batchEvents.getSize());
@@ -185,8 +201,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
     }
 
     @Test
-    public void sendEventsFullBatchWithPartitionKeyTest()
-            throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+    public void sendEventsFullBatchWithPartitionKeyTest() throws EventHubException {
 
         final String partitionKey = UUID.randomUUID().toString();
         final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = partitionKey);
@@ -195,13 +210,15 @@ public class EventDataBatchAPITest extends ApiTestBase {
         int count = 0;
         while (true) {
             final EventData eventData = EventData.create(new String("a").getBytes());
-            for (int i = 0; i < new Random().nextInt(20); i++)
+            for (int i = 0; i < new Random().nextInt(20); i++) {
                 eventData.getProperties().put("somekey" + i, "somevalue");
+            }
 
-            if (batchEvents.tryAdd(eventData))
+            if (batchEvents.tryAdd(eventData)) {
                 count++;
-            else
+            } else {
                 break;
+            }
         }
 
         Assert.assertEquals(count, batchEvents.getSize());
@@ -209,8 +226,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void sendBatchWithPartitionKeyOnPartitionSenderTest()
-            throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+    public void sendBatchWithPartitionKeyOnPartitionSenderTest() throws EventHubException {
 
 
         final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = UUID.randomUUID().toString());
@@ -219,13 +235,15 @@ public class EventDataBatchAPITest extends ApiTestBase {
         int count = 0;
         while (true) {
             final EventData eventData = EventData.create(new String("a").getBytes());
-            for (int i = 0; i < new Random().nextInt(20); i++)
+            for (int i = 0; i < new Random().nextInt(20); i++) {
                 eventData.getProperties().put("somekey" + i, "somevalue");
+            }
 
-            if (batchEvents.tryAdd(eventData))
+            if (batchEvents.tryAdd(eventData)) {
                 count++;
-            else
+            } else {
                 break;
+            }
         }
 
         Assert.assertEquals(count, batchEvents.getSize());
@@ -254,13 +272,15 @@ public class EventDataBatchAPITest extends ApiTestBase {
 
         @Override
         public void onReceive(Iterable<EventData> events) {
-            if (events != null)
+            if (events != null) {
                 for (EventData event : events) {
                     currentCount++;
                 }
+            }
 
-            if (currentCount >= netEventCount)
+            if (currentCount >= netEventCount) {
                 this.validateSignal.complete(null);
+            }
 
             try {
                 Thread.sleep(100); // wait for events to accumulate in the receive pump
