@@ -30,7 +30,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     }
 
     @SuppressWarnings("unchecked")
-    protected T withNameValue(String name, T value, Class<T> clazz) {
+    T withNameValue(String name, T value, Class<T> clazz) {
         if (valuesByName == null) {
             valuesByName = new ConcurrentHashMap<String, T>();
         }
@@ -40,6 +40,13 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         return (T) this;
     }
 
+    /**
+     * Creates an instance of the specific expandable string enum from a String.
+     * @param name the value to create the instance from
+     * @param clazz the class of the expandable string enum
+     * @param <T> the class of the expandable string enum
+     * @return the expandable string enum instance
+     */
     @SuppressWarnings("unchecked")
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
         if (name == null) {
@@ -61,6 +68,12 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         }
     }
 
+    /**
+     * Gets a collection of all known values to an expandable string enum type.
+     * @param clazz the class of the expandable string enum
+     * @param <T> the class of the expandable string enum
+     * @return a collection of all known values
+     */
     @SuppressWarnings("unchecked")
     protected static <T extends ExpandableStringEnum<T>> Collection<T> values(Class<T> clazz) {
         // Make a copy of all values

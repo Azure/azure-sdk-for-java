@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.models;
 
+import com.azure.common.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * ConfigurationSetting is a resource identified by unique combination of {@link ConfigurationSetting#key() key} and
@@ -57,18 +59,17 @@ public class ConfigurationSetting {
      * @param other The configuration setting to copy values from.
      */
     public ConfigurationSetting(ConfigurationSetting other) {
-        this.key(other.key)
-            .label(other.label)
-            .etag(other.etag)
-            .value(other.value)
-            .contentType(other.contentType);
-
-        if (other.tags() != null) {
-            other.tags(new HashMap<>(other.tags()));
-        }
-
+        this.key = other.key();
+        this.label = other.label();
+        this.etag = other.etag();
+        this.value = other.value();
+        this.contentType = other.contentType();
         this.locked = other.isLocked();
         this.lastModified = other.lastModified();
+
+        if (other.tags() != null) {
+            this.tags = new HashMap<>(other.tags());
+        }
     }
 
     /**
@@ -212,5 +213,27 @@ public class ConfigurationSetting {
     public ConfigurationSetting tags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof ConfigurationSetting)) {
+            return false;
+        }
+
+        ConfigurationSetting other = (ConfigurationSetting) o;
+
+        return Objects.equals(this.key, other.key)
+            && Objects.equals(this.label, other.label)
+            && Objects.equals(this.value, other.value)
+            && Objects.equals(this.etag, other.etag)
+            && Objects.equals(this.lastModified, other.lastModified)
+            && Objects.equals(this.locked, other.locked)
+            && Objects.equals(this.contentType, other.contentType)
+            && Objects.equals(this.tags, other.tags);
     }
 }

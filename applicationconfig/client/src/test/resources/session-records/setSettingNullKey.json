@@ -1,25 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?key=key94233%2a&label=",
+    "Uri" : "https://alzimmer-appconfig.azconfig.io/kv?key=key28145%2a&label=",
     "Headers" : {
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-SNAPSHOT 1.8.0_202; Windows 10 10.0",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Tue, 23 Apr 2019 18:32:35 GMT",
+      "date" : "Wed, 24 Apr 2019 04:37:55 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
       "content-type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8",
       "connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "4c524925-0813-424f-a960-c9baedd65186",
+      "x-ms-request-id" : "05606d4c-b713-45ef-bd78-ca1469b69d3a",
       "Body" : "{\"items\":[]}",
-      "x-ms-client-request-id" : "09275d83-e230-4df7-a7e2-15c60a441dc9",
-      "x-ms-correlation-request-id" : "4c524925-0813-424f-a960-c9baedd65186",
+      "x-ms-client-request-id" : "3e6b97c9-e123-483f-b8bf-4b82420a7f1d",
+      "x-ms-correlation-request-id" : "05606d4c-b713-45ef-bd78-ca1469b69d3a",
       "strict-transport-security" : "max-age=15724800; includeSubDomains;"
     }
   } ],
-  "variables" : [ "key94233", "e7e2a728" ]
+  "variables" : [ "key28145", "6f848129" ]
 }
