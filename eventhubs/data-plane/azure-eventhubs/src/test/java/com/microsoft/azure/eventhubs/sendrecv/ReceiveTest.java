@@ -3,12 +3,22 @@
 
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.impl.AmqpConstants;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -17,13 +27,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 public class ReceiveTest extends ApiTestBase {
-    static final String cgName = TestContext.getConsumerGroupName();
-    static final String partitionId = "0";
+    private static final String CONSUMER_GROUP_NAME = TestContext.getConsumerGroupName();
+    private static final String PARTITION_ID = "0";
 
-    static EventHubClient ehClient;
+    private static EventHubClient ehClient;
 
-    PartitionReceiver offsetReceiver = null;
-    PartitionReceiver datetimeReceiver = null;
+    private PartitionReceiver offsetReceiver = null;
+    private PartitionReceiver datetimeReceiver = null;
 
     @BeforeClass
     public static void initialize() throws Exception {
@@ -33,7 +43,7 @@ public class ReceiveTest extends ApiTestBase {
 
     public static void initializeEventHub(ConnectionStringBuilder connectionString) throws Exception {
         ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        TestBase.pushEventsToPartition(ehClient, partitionId, 25).get();
+        TestBase.pushEventsToPartition(ehClient, PARTITION_ID, 25).get();
     }
 
     @AfterClass()
@@ -45,12 +55,12 @@ public class ReceiveTest extends ApiTestBase {
 
     @Test()
     public void testReceiverStartOfStreamFilters() throws EventHubException {
-        offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromStartOfStream());
+        offsetReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream());
         Iterable<EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receiveSync(100);
 
         Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingOffsetReceiver.iterator().hasNext());
 
-        datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
+        datetimeReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH));
         Iterable<EventData> startingEventsUsingDateTimeReceiver = datetimeReceiver.receiveSync(100);
 
         Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingDateTimeReceiver.iterator().hasNext());
@@ -62,31 +72,32 @@ public class ReceiveTest extends ApiTestBase {
                     String.format("START_OF_STREAM offset: %s, EPOCH offset: %s", eventDataUsingOffset.getSystemProperties().getOffset(), eventDataUsingDateTime.getSystemProperties().getOffset()),
                     eventDataUsingOffset.getSystemProperties().getOffset().equalsIgnoreCase(eventDataUsingDateTime.getSystemProperties().getOffset()));
 
-            if (!dateTimeIterator.hasNext())
+            if (!dateTimeIterator.hasNext()) {
                 break;
+            }
         }
     }
 
     @Test()
     public void testReceiverLatestFilter() throws EventHubException, ExecutionException, InterruptedException {
-        offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEndOfStream());
+        offsetReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEndOfStream());
         Iterable<EventData> events = offsetReceiver.receiveSync(100);
         Assert.assertTrue(events == null);
 
-        TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
+        TestBase.pushEventsToPartition(ehClient, PARTITION_ID, 10).get();
         events = offsetReceiver.receiveSync(100);
         Assert.assertTrue(events != null && events.iterator().hasNext());
     }
 
     @Test()
     public void testReceiverOffsetInclusiveFilter() throws EventHubException {
-        datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
+        datetimeReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH));
         final Iterable<EventData> events = datetimeReceiver.receiveSync(100);
 
         Assert.assertTrue(events != null && events.iterator().hasNext());
         final EventData event = events.iterator().next();
 
-        offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromOffset(event.getSystemProperties().getOffset(), true));
+        offsetReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromOffset(event.getSystemProperties().getOffset(), true));
         final EventData eventReturnedByOffsetReceiver = offsetReceiver.receiveSync(10).iterator().next();
 
         Assert.assertTrue(eventReturnedByOffsetReceiver.getSystemProperties().getOffset().equals(event.getSystemProperties().getOffset()));
@@ -95,13 +106,13 @@ public class ReceiveTest extends ApiTestBase {
 
     @Test()
     public void testReceiverOffsetNonInclusiveFilter() throws EventHubException {
-        datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
+        datetimeReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH));
         Iterable<EventData> events = datetimeReceiver.receiveSync(100);
 
         Assert.assertTrue(events != null && events.iterator().hasNext());
 
         EventData event = events.iterator().next();
-        offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromOffset(event.getSystemProperties().getOffset(), false));
+        offsetReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromOffset(event.getSystemProperties().getOffset(), false));
         EventData eventReturnedByOffsetReceiver = offsetReceiver.receiveSync(10).iterator().next();
 
         Assert.assertTrue(eventReturnedByOffsetReceiver.getSystemProperties().getSequenceNumber() == event.getSystemProperties().getSequenceNumber() + 1);
@@ -109,13 +120,13 @@ public class ReceiveTest extends ApiTestBase {
 
     @Test()
     public void testReceiverSequenceNumberInclusiveFilter() throws EventHubException {
-        datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
+        datetimeReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH));
         Iterable<EventData> events = datetimeReceiver.receiveSync(100);
 
         Assert.assertTrue(events != null && events.iterator().hasNext());
         EventData event = events.iterator().next();
 
-        offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromSequenceNumber(event.getSystemProperties().getSequenceNumber(), true));
+        offsetReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromSequenceNumber(event.getSystemProperties().getSequenceNumber(), true));
         EventData eventReturnedByOffsetReceiver = offsetReceiver.receiveSync(10).iterator().next();
 
         Assert.assertTrue(eventReturnedByOffsetReceiver.getSystemProperties().getOffset().equals(event.getSystemProperties().getOffset()));
@@ -124,13 +135,13 @@ public class ReceiveTest extends ApiTestBase {
 
     @Test()
     public void testReceiverSequenceNumberNonInclusiveFilter() throws EventHubException {
-        datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
+        datetimeReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH));
         Iterable<EventData> events = datetimeReceiver.receiveSync(100);
 
         Assert.assertTrue(events != null && events.iterator().hasNext());
 
         EventData event = events.iterator().next();
-        offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromSequenceNumber(event.getSystemProperties().getSequenceNumber(), false));
+        offsetReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromSequenceNumber(event.getSystemProperties().getSequenceNumber(), false));
         EventData eventReturnedByOffsetReceiver = offsetReceiver.receiveSync(10).iterator().next();
 
         Assert.assertTrue(eventReturnedByOffsetReceiver.getSystemProperties().getSequenceNumber() == event.getSystemProperties().getSequenceNumber() + 1);
@@ -138,7 +149,7 @@ public class ReceiveTest extends ApiTestBase {
 
     @Test()
     public void testReceivedBodyAndProperties() throws EventHubException {
-        datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEndOfStream());
+        datetimeReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEndOfStream());
         datetimeReceiver.setReceiveTimeout(Duration.ofSeconds(5));
 
         Iterable<EventData> drainedEvents = datetimeReceiver.receiveSync(100);
@@ -169,7 +180,7 @@ public class ReceiveTest extends ApiTestBase {
         final EventData sentEvent = EventData.create(payload.getBytes());
         sentEvent.getProperties().put(property1, propertyValue1);
         sentEvent.getProperties().put(property2, propertyValue2);
-        final PartitionSender sender = ehClient.createPartitionSenderSync(partitionId);
+        final PartitionSender sender = ehClient.createPartitionSenderSync(PARTITION_ID);
         try {
             sender.sendSync(sentEvent);
             final EventData receivedEvent = datetimeReceiver.receiveSync(10).iterator().next();

@@ -24,12 +24,12 @@ public class ProxyAuthenticationPolicyTests {
         final String password = "testpass";
         //
         final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient(),
-                new ProxyAuthenticationPolicy(username, password),
-                (context, next) -> {
-                    assertEquals("Basic dGVzdHVzZXI6dGVzdHBhc3M=", context.httpRequest().headers().value("Proxy-Authentication"));
-                    auditorVisited.set(true);
-                    return next.process();
-                });
+            new ProxyAuthenticationPolicy(username, password),
+            (context, next) -> {
+                assertEquals("Basic dGVzdHVzZXI6dGVzdHBhc3M=", context.httpRequest().headers().value("Proxy-Authentication"));
+                auditorVisited.set(true);
+                return next.process();
+            });
 
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost")))
                 .block();

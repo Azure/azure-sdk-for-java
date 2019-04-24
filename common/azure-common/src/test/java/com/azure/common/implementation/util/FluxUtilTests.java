@@ -35,7 +35,7 @@ public class FluxUtilTests {
         stream.write("hello there".getBytes(StandardCharsets.UTF_8));
         stream.close();
 
-        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath() , StandardOpenOption.READ)) {
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FluxUtil.byteBufStreamFromFile(channel, 1, 3)
                     .map(bb -> {
                         byte[] bt = toBytes(bb);
@@ -71,13 +71,13 @@ public class FluxUtilTests {
                         return bt;
                     })
                     .collect(() -> new ByteArrayOutputStream(),
-                            (bos, b) -> {
-                                try {
-                                    bos.write(b);
-                                } catch (IOException ioe) {
-                                    throw Exceptions.propagate(ioe);
-                                }
-                            })
+                        (bos, b) -> {
+                            try {
+                                bos.write(b);
+                            } catch (IOException ioe) {
+                                throw Exceptions.propagate(ioe);
+                            }
+                        })
                     .block().toByteArray();
             assertEquals(0, bytes.length);
         }
@@ -101,13 +101,13 @@ public class FluxUtilTests {
                     .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
                     .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
                     .collect(() -> new ByteArrayOutputStream(),
-                            (bos, b) -> {
-                                try {
-                                    bos.write(b);
-                                } catch (IOException ioe) {
-                                    throw Exceptions.propagate(ioe);
-                                }
-                            })
+                        (bos, b) -> {
+                            try {
+                                bos.write(b);
+                            } catch (IOException ioe) {
+                                throw Exceptions.propagate(ioe);
+                            }
+                        })
                     .block()
                     .toByteArray();
             assertEquals("hello there", new String(bytes, StandardCharsets.UTF_8));
@@ -128,7 +128,7 @@ public class FluxUtilTests {
                 digest.update(array);
             }
         }
-        System.out.println("long input file size="+ file.length()/(1024*1024) + "MB");
+        System.out.println("long input file size=" + file.length() / (1024 * 1024) + "MB");
         byte[] expected = digest.digest();
         digest.reset();
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
@@ -145,9 +145,9 @@ public class FluxUtilTests {
         assertTrue(file.delete());
     }
 
-      @Test
-      @Ignore("Need to sync with smaldini to find equivalent for rx.test.awaitDone")
-      public void testBackpressureLongInput() throws IOException, NoSuchAlgorithmException {
+    @Test
+    @Ignore("Need to sync with smaldini to find equivalent for rx.test.awaitDone")
+    public void testBackpressureLongInput() throws IOException, NoSuchAlgorithmException {
 //        File file = new File("target/test4");
 //        byte[] array = "1234567690".getBytes(StandardCharsets.UTF_8);
 //        MessageDigest digest = MessageDigest.getInstance("MD5");
@@ -181,14 +181,14 @@ public class FluxUtilTests {
 //
 //        assertArrayEquals(expected, digest.digest());
 //        assertTrue(file.delete());
-      }
-    
+    }
+
     @Test
     public void testSplitForMultipleSplitSizesFromOneTo16() throws NoSuchAlgorithmException {
         ByteBuf bb = null;
         try {
             bb = Unpooled.directBuffer(1000);
-            byte [] oneByte = new byte[1];
+            byte[] oneByte = new byte[1];
             for (int i = 0; i < 1000; i++) {
                 oneByte[0] = (byte) i;
                 bb.writeBytes(oneByte);
@@ -216,7 +216,7 @@ public class FluxUtilTests {
             }
         }
     }
-    
+
     @Test
     public void testSplitOnEmptyContent() {
         ByteBuf bb = null;

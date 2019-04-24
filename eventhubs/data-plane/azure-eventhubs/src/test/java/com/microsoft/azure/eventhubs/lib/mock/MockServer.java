@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.eventhubs.lib.Mock;
+package com.microsoft.azure.eventhubs.lib.mock;
 
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import org.apache.qpid.proton.Proton;
@@ -14,16 +14,16 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 /**
- * Mock Server (Singleton) designed to test AMQP related features in the javaClient
+ * Mock Server (Singleton) designed to test AMQP related features in the Java client.
  */
-public class MockServer implements Closeable {
-    public final static String HostName = "127.0.0.1";
-    public final static int Port = 5671;
+public final class MockServer implements Closeable {
+    private static final String HOST_NAME = "127.0.0.1";
+    private static final int PORT = 5671;
 
     private Reactor reactor;
     private Acceptor acceptor;
 
-    private MockServer(BaseHandler handler) throws IOException, InterruptedException {
+    private MockServer(BaseHandler handler) throws IOException {
         this.reactor = Proton.reactor();
 
         new Thread(new Runnable() {
@@ -37,17 +37,17 @@ public class MockServer implements Closeable {
             }
         }).start();
 
-        this.acceptor = this.reactor.acceptor(MockServer.HostName, MockServer.Port,
+        this.acceptor = this.reactor.acceptor(MockServer.HOST_NAME, MockServer.PORT,
                 handler == null ? new ServerTraceHandler() : handler);
     }
 
-    public static MockServer Create(BaseHandler handler) throws IOException, InterruptedException {
+    public static MockServer create(BaseHandler handler) throws IOException {
         MockServer server = new MockServer(handler);
         return server;
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (this.acceptor != null) {
             this.acceptor.close();
         }

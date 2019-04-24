@@ -4,7 +4,6 @@
 package com.microsoft.azure.eventhubs.lib;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.impl.SharedAccessSignatureTokenProvider;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -34,9 +33,9 @@ public class SasTokenTestBase extends ApiTestBase {
     }
 
     @AfterClass
-    public static void undoReplace() throws EventHubException {
-
-        if (originalConnectionString != null)
+    public static void undoReplace() {
+        if (originalConnectionString != null) {
             TestContext.setConnectionString(originalConnectionString.toString());
+        }
     }
 }
