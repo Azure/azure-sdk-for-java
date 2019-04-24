@@ -10,10 +10,12 @@ import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.EventPosition;
 import com.microsoft.azure.eventhubs.IllegalEntityException;
+import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.impl.SharedAccessSignatureTokenProvider;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -50,7 +52,6 @@ public class SecurityExceptionsTest extends ApiTestBase {
         ehClient.sendSync(EventData.create("Test Message".getBytes()));
     }
 
-    @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test(expected = EventHubException.class)
     public void testEventHubClientInvalidAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
@@ -59,20 +60,20 @@ public class SecurityExceptionsTest extends ApiTestBase {
                 .setEventHubName(correctConnectionString.getEventHubName())
                 .setSharedAccessSignature("--------------invalidtoken-------------");
 
-        ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient = EventHubClient.createSync(connectionString.toString(), RetryPolicy.getNoRetry(), TestContext.EXECUTOR_SERVICE);
         ehClient.sendSync(EventData.create(("Test Message".getBytes())));
     }
 
     @Ignore("TODO: Investigate failure. Testcase hangs.")
     @Test(expected = IllegalArgumentException.class)
-    public void testEventHubClientNullAccessToken() throws Throwable {
+    public void testEventHubClientNullKeyNameAndAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
                 .setEndpoint(correctConnectionString.getEndpoint())
                 .setEventHubName(correctConnectionString.getEventHubName())
                 .setSharedAccessSignature(null);
 
-        ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient = EventHubClient.createSync(connectionString.toString(), RetryPolicy.getNoRetry(), TestContext.EXECUTOR_SERVICE);
         ehClient.sendSync(EventData.create(("Test Message".getBytes())));
     }
 
