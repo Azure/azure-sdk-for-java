@@ -27,6 +27,10 @@ import java.util.Map;
 public class CookiePolicy implements HttpPipelinePolicy {
     private final CookieHandler cookies = new CookieManager();
 
+    /**
+     * {@inheritDoc}
+     * @throws IOException If an I/O error occurs when putting a cookie.
+     */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         try {

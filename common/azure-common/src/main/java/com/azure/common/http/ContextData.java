@@ -52,6 +52,7 @@ public class ContextData {
      * @param key the key
      * @param value the value
      * @return the new {@link ContextData} object containing the specified pair added to the set of pairs
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public ContextData addData(Object key, Object value) {
         if (key == null) {
@@ -66,6 +67,7 @@ public class ContextData {
      *
      * @param key the key to search for
      * @return the value of the key if it exists
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Optional<Object> getData(Object key) {
         if (key == null) {

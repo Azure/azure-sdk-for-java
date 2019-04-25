@@ -160,8 +160,22 @@ public class JavadocThrowsChecks extends AbstractCheck {
         if (literalNewToken != null) {
             throwType = literalNewToken.findFirstToken(TokenTypes.IDENT).getText();
         } else {
-            // Traverse back up the tree to find the type
-            throwType = findInstantiatedThrow(throwExpression.findFirstToken(TokenTypes.IDENT).getText());
+            // Determine what is being thrown.
+            String searchingFor;
+            DetailAST thrownIdent = throwExpression.findFirstToken(TokenTypes.IDENT);
+            if (thrownIdent != null) {
+                searchingFor = thrownIdent.getText();
+            } else {
+                // More complex throw clause
+                searchingFor = "";
+            }
+
+            log(throwToken, searchingFor);
+            throwType = findInstantiatedThrow(searchingFor);
+        }
+
+        if ("RuntimeException".equals(throwType)) {
+            return;
         }
 
         if (!methodJavadocThrows.contains(throwType)) {
