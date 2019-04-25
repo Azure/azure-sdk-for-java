@@ -156,14 +156,21 @@ public class DatabaseInner extends Resource {
     /**
      * The edition of the database. The DatabaseEditions enumeration contains
      * all the valid editions. If createMode is NonReadableSecondary or
-     * OnlineSecondary, this value is ignored. To see possible values, query
-     * the capabilities API
-     * (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities)
-     * referred to by operationId: "Capabilities_ListByLocation." or use the
-     * Azure CLI command `az sql db list-editions -l westus --query [].name`.
-     * Possible values include: 'Web', 'Business', 'Basic', 'Standard',
+     * OnlineSecondary, this value is ignored.
+     *
+     * To determine the editions that are available to your subscription in an
+     * Azure location, use the `Capabilities_ListByLocation` REST API or one of
+     * the following commands:
+     *
+     * ```azurecli
+     * az sql db list-editions -l &lt;location&gt; -o table
+     * ````
+     *
+     * ```powershell
+     * Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     * ````. Possible values include: 'Web', 'Business', 'Basic', 'Standard',
      * 'Premium', 'PremiumRS', 'Free', 'Stretch', 'DataWarehouse', 'System',
-     * 'System2'.
+     * 'System2', 'GeneralPurpose', 'BusinessCritical', 'Hyperscale'.
      */
     @JsonProperty(value = "properties.edition")
     private DatabaseEdition edition;
@@ -494,7 +501,14 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the edition of the database. The DatabaseEditions enumeration contains all the valid editions. If createMode is NonReadableSecondary or OnlineSecondary, this value is ignored. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions -l westus --query [].name`. Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'PremiumRS', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2'.
+     * Get the edition of the database. The DatabaseEditions enumeration contains all the valid editions. If createMode is NonReadableSecondary or OnlineSecondary, this value is ignored.
+     To determine the editions that are available to your subscription in an Azure location, use the `Capabilities_ListByLocation` REST API or one of the following commands:
+     ```azurecli
+     az sql db list-editions -l &lt;location&gt; -o table
+     ````
+     ```powershell
+     Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     ````. Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'PremiumRS', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2', 'GeneralPurpose', 'BusinessCritical', 'Hyperscale'.
      *
      * @return the edition value
      */
@@ -503,7 +517,14 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the edition of the database. The DatabaseEditions enumeration contains all the valid editions. If createMode is NonReadableSecondary or OnlineSecondary, this value is ignored. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions -l westus --query [].name`. Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'PremiumRS', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2'.
+     * Set the edition of the database. The DatabaseEditions enumeration contains all the valid editions. If createMode is NonReadableSecondary or OnlineSecondary, this value is ignored.
+     To determine the editions that are available to your subscription in an Azure location, use the `Capabilities_ListByLocation` REST API or one of the following commands:
+     ```azurecli
+     az sql db list-editions -l &lt;location&gt; -o table
+     ````
+     ```powershell
+     Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     ````. Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'PremiumRS', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2', 'GeneralPurpose', 'BusinessCritical', 'Hyperscale'.
      *
      * @param edition the edition value to set
      * @return the DatabaseInner object itself.

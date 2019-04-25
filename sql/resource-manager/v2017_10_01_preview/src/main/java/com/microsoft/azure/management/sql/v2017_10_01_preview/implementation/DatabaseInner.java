@@ -27,7 +27,20 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class DatabaseInner extends Resource {
     /**
-     * The name and tier of the SKU.
+     * The database SKU.
+     *
+     * To determine the SKUs (including the SKU name, tier/edition, family, and
+     * capacity) that are available to your subscription in an Azure location,
+     * use the `Capabilities_ListByLocation` REST API or one of the following
+     * interfaces:
+     *
+     * ```azurecli
+     * az sql db list-editions -l &lt;location&gt; -o table
+     * ````
+     *
+     * ```powershell
+     * Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     * ````.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -125,7 +138,8 @@ public class DatabaseInner extends Resource {
      * 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline',
      * 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying',
      * 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused',
-     * 'Resuming', 'Scaling'.
+     * 'Resuming', 'Scaling', 'OfflineChangingDwPerformanceTiers',
+     * 'OnlineChangingDwPerformanceTiers'.
      */
     @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseStatus status;
@@ -257,7 +271,14 @@ public class DatabaseInner extends Resource {
     private Sku currentSku;
 
     /**
-     * Get the name and tier of the SKU.
+     * Get the database SKU.
+     To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure location, use the `Capabilities_ListByLocation` REST API or one of the following interfaces:
+     ```azurecli
+     az sql db list-editions -l &lt;location&gt; -o table
+     ````
+     ```powershell
+     Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     ````.
      *
      * @return the sku value
      */
@@ -266,7 +287,14 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the name and tier of the SKU.
+     * Set the database SKU.
+     To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure location, use the `Capabilities_ListByLocation` REST API or one of the following interfaces:
+     ```azurecli
+     az sql db list-editions -l &lt;location&gt; -o table
+     ````
+     ```powershell
+     Get-AzSqlServerServiceObjective -Location &lt;location&gt;
+     ````.
      *
      * @param sku the sku value to set
      * @return the DatabaseInner object itself.
@@ -431,7 +459,7 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the status of the database. Possible values include: 'Online', 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline', 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying', 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused', 'Resuming', 'Scaling'.
+     * Get the status of the database. Possible values include: 'Online', 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline', 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying', 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused', 'Resuming', 'Scaling', 'OfflineChangingDwPerformanceTiers', 'OnlineChangingDwPerformanceTiers'.
      *
      * @return the status value
      */
