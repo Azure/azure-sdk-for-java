@@ -414,14 +414,20 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
                         this.cancelOpen(schedulerException);
                     }
-                } else if (completionException instanceof EventHubException
-                        && !((EventHubException) completionException).getIsTransient()) {
-                    this.cancelOpen(completionException);
-                } else {
-                    // We don't want this exception to fall into the abyss and are out of retries, so log a message.
-                    if (TRACE_LOGGER.isErrorEnabled()) {
-                        TRACE_LOGGER.error("Could not open link and exception is not of type EventHubException.", completionException);
+                } else if (completionException instanceof EventHubException) {
+                    // If the error is not a transient exception, we want to cancel this open. Otherwise, we don't want
+                    // log the transient exceptions and let it fall through.
+                    if (!((EventHubException) completionException).getIsTransient()) {
+                        this.cancelOpen(completionException);
                     }
+                } else {
+                    // We don't want this exception to fall into the abyss and we are out of retries, so log a message,
+                    // and cancel this operation.
+                    if (TRACE_LOGGER.isErrorEnabled()) {
+                        TRACE_LOGGER.error("Could not open link.", completionException);
+                    }
+
+                    this.cancelOpen(completionException);
                 }
             } else {
                 this.cancelOpenTimer();
