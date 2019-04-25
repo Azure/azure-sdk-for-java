@@ -18,6 +18,11 @@ import com.azure.common.http.HttpResponse;
 public class HttpRequestException extends ServiceRequestException {
 
     /**
+     * Information about the associated HTTP response.
+     */
+    private HttpResponse response;
+
+    /**
      * Initializes a new instance of the HttpRequestException class.
      *
      * @param message the exception message or the response content if a message is not available
@@ -35,7 +40,8 @@ public class HttpRequestException extends ServiceRequestException {
      * @param value the deserialized response value
      */
     public HttpRequestException(String message, HttpResponse response, Object value) {
-        super(message, response, value);
+        super(message, value);
+        this.response = response;
     }
 
     /**
@@ -46,6 +52,16 @@ public class HttpRequestException extends ServiceRequestException {
      * @param cause the Throwable which caused the creation of this HttpRequestException
      */
     public HttpRequestException(String message, HttpResponse response, Throwable cause) {
-        super(message, response, cause);
+        super(message, cause);
+        this.response = response;
     }
+
+
+    /**
+     * @return information about the associated HTTP response
+     */
+    public HttpResponse response() {
+        return response;
+    }
+
 }

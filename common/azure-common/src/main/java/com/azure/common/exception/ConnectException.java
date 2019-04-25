@@ -17,21 +17,19 @@ public class ConnectException extends ServiceRequestException {
      * Initializes a new instance of the ConnectException class.
      *
      * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
      */
-    public ConnectException(String message, HttpResponse response) {
-        super(message, response);
+    public ConnectException(String message) {
+        super(message);
     }
 
     /**
      * Initializes a new instance of the ConnectException class.
      *
      * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
      * @param value the deserialized response value
      */
-    public ConnectException(String message, HttpResponse response, Object value) {
-        super(message, response, value);
+    public ConnectException(String message, Object value) {
+        super(message, value);
     }
 
     /**
@@ -42,6 +40,6 @@ public class ConnectException extends ServiceRequestException {
      * @param cause the Throwable which caused the creation of this ConnectionException
      */
     public ConnectException(String message, HttpResponse response, Throwable cause) {
-        super(message, response, cause);
+        super(message, cause);
     }
 }

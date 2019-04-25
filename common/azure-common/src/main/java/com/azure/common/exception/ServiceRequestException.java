@@ -14,11 +14,6 @@ import com.azure.common.http.HttpResponse;
 public class ServiceRequestException extends AzureException {
 
     /**
-     * Information about the associated HTTP response.
-     */
-    private HttpResponse response;
-
-    /**
      * The HTTP response value.
      */
     private Object value;
@@ -27,23 +22,19 @@ public class ServiceRequestException extends AzureException {
      * Initializes a new instance of the ServiceRequestException class.
      *
      * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
      */
-    public ServiceRequestException(String message, HttpResponse response) {
+    public ServiceRequestException(String message) {
         super(message);
-        this.response = response;
     }
 
     /**
      * Initializes a new instance of the ServiceRequestException class.
      *
      * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
      * @param value the deserialized response value
      */
-    public ServiceRequestException(String message, HttpResponse response, Object value) {
+    public ServiceRequestException(String message, Object value) {
         super(message);
-        this.response = response;
         this.value = value;
     }
 
@@ -51,19 +42,10 @@ public class ServiceRequestException extends AzureException {
      * Initializes a new instance of the ServiceRequestException class.
      *
      * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
      * @param cause the Throwable which caused the creation of this ServiceRequestException
      */
-    public ServiceRequestException(String message, HttpResponse response, Throwable cause) {
+    public ServiceRequestException(String message, Throwable cause) {
         super(message, cause);
-        this.response = response;
-    }
-
-    /**
-     * @return information about the associated HTTP response
-     */
-    public HttpResponse response() {
-        return response;
     }
 
     /**
