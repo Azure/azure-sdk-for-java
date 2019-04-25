@@ -34,6 +34,6 @@ final class TestUtilities {
     }
 
     static Boolean isRunningOnAzure() {
-        return (System.getenv("EVENT_HUB_CONNECTION_STRING") != null);
+        return (System.getenv("AZURE_EVENTHUBS_CONNECTION_STRING") != null);
     }
 }
