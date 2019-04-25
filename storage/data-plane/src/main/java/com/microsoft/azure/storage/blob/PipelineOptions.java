@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.HttpClient;
@@ -25,11 +26,11 @@ public final class PipelineOptions {
 
     private HttpPipelineLogger logger;
 
-    private RequestRetryOptions requestRetryOptions = RequestRetryOptions.DEFAULT;
+    private RequestRetryOptions requestRetryOptions = new RequestRetryOptions();
 
-    private LoggingOptions loggingOptions = LoggingOptions.DEFAULT;
+    private LoggingOptions loggingOptions = new LoggingOptions();
 
-    private TelemetryOptions telemetryOptions = TelemetryOptions.DEFAULT;
+    private TelemetryOptions telemetryOptions = new TelemetryOptions();
 
     /**
      * Returns a {@code PipelineOptions} object with default values for each of the options fields. An
