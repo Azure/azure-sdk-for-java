@@ -414,7 +414,8 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
                         this.cancelOpen(schedulerException);
                     }
-                } else if (completionException instanceof EventHubException) {
+                } else if (completionException instanceof EventHubException
+                        && !((EventHubException) completionException).getIsTransient()) {
                     this.cancelOpen(completionException);
                 } else {
                     // We don't want this exception to fall into the abyss and are out of retries, so log a message and
@@ -423,7 +424,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                         TRACE_LOGGER.error("Could not open link and exception is not of type EventHubException.", completionException);
                     }
 
-                    this.cancelOpen(completionException);
+                    // this.cancelOpen(completionException);
                 }
             } else {
                 this.cancelOpenTimer();
