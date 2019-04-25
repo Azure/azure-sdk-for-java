@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNull;
 public class Base64UrlTests {
     @Test
     public void constructorWithNullBytes() {
-        final Base64Url base64Url = new Base64Url((byte[])null);
+        final Base64Url base64Url = new Base64Url((byte[]) null);
         assertNull(base64Url.encodedBytes());
         assertNull(base64Url.decodedBytes());
         assertEmptyString(base64Url.toString());
@@ -36,7 +36,7 @@ public class Base64UrlTests {
 
     @Test
     public void constructorWithNullString() {
-        final Base64Url base64Url = new Base64Url((String)null);
+        final Base64Url base64Url = new Base64Url((String) null);
         assertNull(base64Url.encodedBytes());
         assertNull(base64Url.decodedBytes());
         assertEmptyString(base64Url.toString());

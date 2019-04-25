@@ -3,7 +3,13 @@
 
 package com.microsoft.azure.eventhubs.eventdata;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.impl.MessageSender;
 import com.microsoft.azure.eventhubs.impl.MessagingFactory;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
@@ -27,15 +33,15 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class InteropEventBodyTest extends ApiTestBase {
+    private static final String PARTITION_ID = "0";
 
-    static final String partitionId = "0";
-    static EventHubClient ehClient;
-    static MessagingFactory msgFactory;
-    static PartitionReceiver receiver;
-    static MessageSender partitionMsgSender;
-    static PartitionSender partitionSender;
-    static EventData receivedEvent;
-    static EventData reSentAndReceivedEvent;
+    private static EventHubClient ehClient;
+    private static MessagingFactory msgFactory;
+    private static PartitionReceiver receiver;
+    private static MessageSender partitionMsgSender;
+    private static PartitionSender partitionSender;
+    private static EventData receivedEvent;
+    private static EventData reSentAndReceivedEvent;
 
     @BeforeClass
     public static void initialize() throws EventHubException, IOException, InterruptedException, ExecutionException {
@@ -44,9 +50,9 @@ public class InteropEventBodyTest extends ApiTestBase {
 
         ehClient = EventHubClient.createSync(connectionString, TestContext.EXECUTOR_SERVICE);
         msgFactory = MessagingFactory.createFromConnectionString(connectionString, TestContext.EXECUTOR_SERVICE).get();
-        receiver = ehClient.createReceiverSync(TestContext.getConsumerGroupName(), partitionId, EventPosition.fromEnqueuedTime(Instant.now()));
-        partitionSender = ehClient.createPartitionSenderSync(partitionId);
-        partitionMsgSender = MessageSender.create(msgFactory, "link1", connStrBuilder.getEventHubName() + "/partitions/" + partitionId).get();
+        receiver = ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()));
+        partitionSender = ehClient.createPartitionSenderSync(PARTITION_ID);
+        partitionMsgSender = MessageSender.create(msgFactory, "link1", connStrBuilder.getEventHubName() + "/partitions/" + PARTITION_ID).get();
 
         // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
         receiver.setReceiveTimeout(Duration.ofSeconds(5));
@@ -58,17 +64,21 @@ public class InteropEventBodyTest extends ApiTestBase {
 
     @AfterClass
     public static void cleanup() throws EventHubException {
-        if (partitionMsgSender != null)
+        if (partitionMsgSender != null) {
             partitionMsgSender.closeSync();
+        }
 
-        if (receiver != null)
+        if (receiver != null) {
             receiver.closeSync();
+        }
 
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
 
-        if (msgFactory != null)
+        if (msgFactory != null) {
             msgFactory.closeSync();
+        }
     }
 
     @Test

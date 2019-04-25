@@ -28,7 +28,7 @@ public class RsaKeyTest {
 
     // A Content Encryption Key, or Message. This value is kept consistent with the .NET
     // unit test cases to enable cross platform testing.
-    static final byte[] CEK                    = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte)0x88, (byte)0x99, (byte)0xAA, (byte)0xBB, (byte)0xCC, (byte)0xDD, (byte)0xEE, (byte)0xFF };
+    static final byte[] CEK                    = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
     static final String CrossPlatformHash      = "qPrtarvzXBKksm5A9v6xnXNtkARcg7n5ox9jjTI+aBE=";
     static final String CrossPlatformSignature = "RaNc+8WcWxplS8I7ynJLSoLJKz+dgBvrZhIGH3VFlTTyzu7b9d+lpaV9IKhzCNBsgSysKhgL7EZwVCOTBZ4m6xvKSXqVFXYaBPyBTD7VoKPMYMW6ai5x6xV5XAMaZPfMkff3Deg/RXcc8xQ28FhYuUa8yly01GySY4Hk55anEvb2wBxSy1UGun/0LE1lYH3C3XEgSry4cEkJHDJl1hp+wB4J/noXOqn5ECGU+/4ehBJOyW1gtUH0/gRe8yXnDH0AXepHRyH8iBHLWlKX1r+1/OrMulqOoi82RZzJlTyEz9X+bsQhllqGF6n3hdLS6toH9o7wUtwYNqSx82JuQT6iMg==";
 
@@ -142,8 +142,8 @@ public class RsaKeyTest {
         byte[] crossPlatformSignature = Base64.decodeBase64(CrossPlatformSignature);
 
         // Check the hash
-        assertNotNull( hash );
-        assertEquals(  32, hash.length );
+        assertNotNull(hash);
+        assertEquals(32, hash.length);
         assertArrayEquals(hash, crossPlatformHash);
 
         Pair<byte[], String> signature = key.signAsync(hash, "RS256").get();
@@ -180,7 +180,7 @@ public class RsaKeyTest {
 
         jwk = mapper.readValue(jwkString, JsonWebKey.class);
 
-        return new RsaKey("foo", jwk.toRSA(true, _provider) );
+        return new RsaKey("foo", jwk.toRSA(true, _provider));
     }
 
 }

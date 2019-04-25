@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.GeneratedStorageClient;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpPipelineOptions;
 import com.microsoft.rest.v2.http.UrlBuilder;

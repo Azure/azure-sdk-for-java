@@ -222,21 +222,21 @@ public class ECKeyTest {
     }
     
     private void testFromFile(String keyType, MessageDigest digest, String algorithm) throws Exception {
-        String privateKeyPath = getPath(keyType+"keynew.pem");
-        String publicKeyPath = getPath(keyType+"keypubnew.pem");
+        String privateKeyPath = getPath(keyType + "keynew.pem");
+        String publicKeyPath = getPath(keyType + "keypubnew.pem");
         
         EcKey newKey = new EcKey("akey", getKeyFromFile(privateKeyPath, publicKeyPath));
         
-        Path signatureLocation = Paths.get(getPath(keyType+"sig.der"));
+        Path signatureLocation = Paths.get(getPath(keyType + "sig.der"));
         byte[] signature = SignatureEncoding.fromAsn1Der(Files.readAllBytes(signatureLocation), algorithm);
 
         doVerify(newKey, digest, signature);
     }
 
-    private static String getPath(String filename){
+    private static String getPath(String filename) {
 
         String path =  ECKeyTest.class.getClassLoader().getResource(filename).getPath();
-        if(path.contains(":")){
+        if (path.contains(":")) {
             path = path.substring(1);
         }
         return path;
@@ -268,7 +268,7 @@ public class ECKeyTest {
     }
     
     @Test
-    public void testFromSEC256File() throws Exception{
+    public void testFromSEC256File() throws Exception {
         testFromFile("secp256", DIGEST_256, Es256k.ALGORITHM_NAME);
     }
     
@@ -312,10 +312,10 @@ public class ECKeyTest {
         //Check that key denies invalid digest.
         BigInteger bigInt = new BigInteger(hash);
         BigInteger shiftInt = bigInt.shiftRight(4);
-        byte [] shifted = shiftInt.toByteArray();
+        byte[] shifted = shiftInt.toByteArray();
         boolean incorrectResult = key.verifyAsync(shifted, preGenSignature, key.getDefaultSignatureAlgorithm()).get();
         assertFalse(incorrectResult);
-   
+
         key.close();
     }
     
@@ -331,7 +331,7 @@ public class ECKeyTest {
         //Check that key denies invalid digest.
         BigInteger bigInt = new BigInteger(hash);
         BigInteger shiftInt = bigInt.shiftRight(4);
-        byte [] shifted = shiftInt.toByteArray();
+        byte[] shifted = shiftInt.toByteArray();
         boolean incorrectResult = key.verifyAsync(shifted, signature.getLeft(), key.getDefaultSignatureAlgorithm()).get();
         assertFalse(incorrectResult);
    

@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * The data structure encapsulating the Event being sent-to and received-from EventHubs.
@@ -109,7 +110,7 @@ public interface EventData extends Serializable, Comparable<EventData> {
      *
      * @return returns the Object which could represent either Data or AmqpValue or AmqpSequence.
      * <p>{@link Binary} if the Body is Data section
-     * <p>{@link List} if the Body is AmqpSequence
+     * <p>{@link java.util.List} if the Body is AmqpSequence
      * <p>package org.apache.qpid.proton.amqp contains various AMQP types that could be returned.
      */
     Object getObject();
