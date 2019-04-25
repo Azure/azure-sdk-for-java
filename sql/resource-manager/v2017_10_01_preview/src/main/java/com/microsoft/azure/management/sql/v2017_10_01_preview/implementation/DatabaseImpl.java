@@ -102,6 +102,11 @@ class DatabaseImpl extends CreatableUpdatableImpl<Database, DatabaseInner, Datab
     }
 
     @Override
+    public Integer autoPauseDelay() {
+        return this.inner().autoPauseDelay();
+    }
+
+    @Override
     public CatalogCollationType catalogCollation() {
         return this.inner().catalogCollation();
     }
@@ -197,6 +202,11 @@ class DatabaseImpl extends CreatableUpdatableImpl<Database, DatabaseInner, Datab
     }
 
     @Override
+    public Double minCapacity() {
+        return this.inner().minCapacity();
+    }
+
+    @Override
     public String name() {
         return this.inner().name();
     }
@@ -285,6 +295,16 @@ class DatabaseImpl extends CreatableUpdatableImpl<Database, DatabaseInner, Datab
     }
 
     @Override
+    public DatabaseImpl withAutoPauseDelay(Integer autoPauseDelay) {
+        if (isInCreateMode()) {
+            this.inner().withAutoPauseDelay(autoPauseDelay);
+        } else {
+            this.updateParameter.withAutoPauseDelay(autoPauseDelay);
+        }
+        return this;
+    }
+
+    @Override
     public DatabaseImpl withCatalogCollation(CatalogCollationType catalogCollation) {
         if (isInCreateMode()) {
             this.inner().withCatalogCollation(catalogCollation);
@@ -350,6 +370,16 @@ class DatabaseImpl extends CreatableUpdatableImpl<Database, DatabaseInner, Datab
             this.inner().withMaxSizeBytes(maxSizeBytes);
         } else {
             this.updateParameter.withMaxSizeBytes(maxSizeBytes);
+        }
+        return this;
+    }
+
+    @Override
+    public DatabaseImpl withMinCapacity(Double minCapacity) {
+        if (isInCreateMode()) {
+            this.inner().withMinCapacity(minCapacity);
+        } else {
+            this.updateParameter.withMinCapacity(minCapacity);
         }
         return this;
     }

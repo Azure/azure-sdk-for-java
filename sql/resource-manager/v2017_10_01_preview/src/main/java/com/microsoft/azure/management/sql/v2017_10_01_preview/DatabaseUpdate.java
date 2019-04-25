@@ -238,6 +238,20 @@ public class DatabaseUpdate {
     private Sku currentSku;
 
     /**
+     * Time in minutes after which database is automatically paused. A value of
+     * -1 means that automatic pause is disabled.
+     */
+    @JsonProperty(value = "properties.autoPauseDelay")
+    private Integer autoPauseDelay;
+
+    /**
+     * Minimal capacity that database will always have allocated, if not
+     * paused.
+     */
+    @JsonProperty(value = "properties.minCapacity")
+    private Double minCapacity;
+
+    /**
      * Resource tags.
      */
     @JsonProperty(value = "tags")
@@ -687,6 +701,46 @@ public class DatabaseUpdate {
      */
     public Sku currentSku() {
         return this.currentSku;
+    }
+
+    /**
+     * Get time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled.
+     *
+     * @return the autoPauseDelay value
+     */
+    public Integer autoPauseDelay() {
+        return this.autoPauseDelay;
+    }
+
+    /**
+     * Set time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled.
+     *
+     * @param autoPauseDelay the autoPauseDelay value to set
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withAutoPauseDelay(Integer autoPauseDelay) {
+        this.autoPauseDelay = autoPauseDelay;
+        return this;
+    }
+
+    /**
+     * Get minimal capacity that database will always have allocated, if not paused.
+     *
+     * @return the minCapacity value
+     */
+    public Double minCapacity() {
+        return this.minCapacity;
+    }
+
+    /**
+     * Set minimal capacity that database will always have allocated, if not paused.
+     *
+     * @param minCapacity the minCapacity value to set
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withMinCapacity(Double minCapacity) {
+        this.minCapacity = minCapacity;
+        return this;
     }
 
     /**
