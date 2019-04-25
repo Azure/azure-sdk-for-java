@@ -183,6 +183,16 @@ public class ConfigurationSetting {
     }
 
     /**
+     * Sets the last modified time for this configuration setting. This value is not used in service requests.
+     * @param lastModified The time the last modified is being set.
+     * @return The updated ConfigurationSetting object.
+     */
+    public ConfigurationSetting lastModified(OffsetDateTime lastModified) {
+        this.lastModified = lastModified;
+        return this;
+    }
+
+    /**
      * Gets whether or not the configuration setting is locked. If the setting is locked, then no modifications can be
      * made to this setting.
      *
@@ -193,6 +203,16 @@ public class ConfigurationSetting {
      */
     public boolean isLocked() {
         return locked;
+    }
+
+    /**
+     * Sets the locked status for this configuration setting. This value is not used in service requests.
+     * @param locked The lock status the configuration setting is being set.
+     * @return The updated ConfigurationSetting object.
+     */
+    public ConfigurationSetting isLocked(boolean locked) {
+        this.locked = locked;
+        return this;
     }
 
     /**
