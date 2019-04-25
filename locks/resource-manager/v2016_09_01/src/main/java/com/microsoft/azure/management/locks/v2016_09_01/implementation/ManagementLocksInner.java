@@ -125,7 +125,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.v2016_09_01.ManagementLocks listByScope" })
         @GET("{scope}/providers/Microsoft.Authorization/locks")
-        Observable<Response<ResponseBody>> listByScope(@Path("scope") String scope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByScope(@Path("scope") String scope, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.v2016_09_01.ManagementLocks listByResourceGroupNext" })
         @GET
@@ -2106,7 +2106,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
     /**
      * Gets all the management locks for a scope.
      *
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param scope The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions, '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}' for resources.
+     * @param scope The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions, '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}' for resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ManagementLockObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -2117,7 +2117,118 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByScope(scope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String filter = null;
+        return service.listByScope(scope, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ManagementLockObjectInner>> result = listByScopeDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ManagementLockObjectInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Gets all the management locks for a scope.
+     *
+     * @param scope The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions, '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}' for resources.
+     * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ManagementLockObjectInner&gt; object if successful.
+     */
+    public PagedList<ManagementLockObjectInner> listByScope(final String scope, final String filter) {
+        ServiceResponse<Page<ManagementLockObjectInner>> response = listByScopeSinglePageAsync(scope, filter).toBlocking().single();
+        return new PagedList<ManagementLockObjectInner>(response.body()) {
+            @Override
+            public Page<ManagementLockObjectInner> nextPage(String nextPageLink) {
+                return listByScopeNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets all the management locks for a scope.
+     *
+     * @param scope The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions, '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}' for resources.
+     * @param filter The filter to apply on the operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ManagementLockObjectInner>> listByScopeAsync(final String scope, final String filter, final ListOperationCallback<ManagementLockObjectInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByScopeSinglePageAsync(scope, filter),
+            new Func1<String, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(String nextPageLink) {
+                    return listByScopeNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all the management locks for a scope.
+     *
+     * @param scope The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions, '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}' for resources.
+     * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
+     */
+    public Observable<Page<ManagementLockObjectInner>> listByScopeAsync(final String scope, final String filter) {
+        return listByScopeWithServiceResponseAsync(scope, filter)
+            .map(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Page<ManagementLockObjectInner>>() {
+                @Override
+                public Page<ManagementLockObjectInner> call(ServiceResponse<Page<ManagementLockObjectInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets all the management locks for a scope.
+     *
+     * @param scope The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions, '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}' for resources.
+     * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listByScopeWithServiceResponseAsync(final String scope, final String filter) {
+        return listByScopeSinglePageAsync(scope, filter)
+            .concatMap(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(ServiceResponse<Page<ManagementLockObjectInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByScopeNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all the management locks for a scope.
+     *
+    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param scope The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions, '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}' for resources.
+    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ManagementLockObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listByScopeSinglePageAsync(final String scope, final String filter) {
+        if (scope == null) {
+            throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByScope(scope, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(Response<ResponseBody> response) {
