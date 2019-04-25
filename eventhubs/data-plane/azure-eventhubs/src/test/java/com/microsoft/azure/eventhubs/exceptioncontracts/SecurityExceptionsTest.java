@@ -73,7 +73,7 @@ public class SecurityExceptionsTest extends ApiTestBase {
         }
     }
 
-    @Test()
+    @Test(expected = IllegalArgumentException.class)
     public void testEventHubClientNullKeyNameAndAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
@@ -82,13 +82,8 @@ public class SecurityExceptionsTest extends ApiTestBase {
                 .setSharedAccessSignature(null)
                 .setOperationTimeout(Duration.ofSeconds(10));
 
-        ehClient = EventHubClient.createSync(connectionString.toString(), new IncrementalRetryPolicy(2), TestContext.EXECUTOR_SERVICE);
-
-        try {
-            ehClient.sendSync(EventData.create(("Test Message".getBytes())));
-        } catch (TimeoutException e) {
-            Assert.assertEquals(IllegalArgumentException.class, e.getCause().getClass());
-        }
+        ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient.sendSync(EventData.create(("Test Message".getBytes())));
     }
 
     @Test(expected = AuthorizationFailedException.class)
@@ -181,24 +176,6 @@ public class SecurityExceptionsTest extends ApiTestBase {
     public void cleanup() throws EventHubException {
         if (ehClient != null) {
             ehClient.closeSync();
-        }
-    }
-
-    private class IncrementalRetryPolicy extends RetryPolicy {
-        private AtomicInteger numberOfAttempts;
-
-        IncrementalRetryPolicy(int numberOfAttempts) {
-            super(String.format("%s: %s", IncrementalRetryPolicy.class.getSimpleName(), numberOfAttempts));
-
-            this.numberOfAttempts = new AtomicInteger(numberOfAttempts);
-        }
-        @Override
-        protected Duration onGetNextRetryInterval(String clientId, Exception lastException, Duration remainingTime, int baseWaitTime) {
-            int attemptsLeft = numberOfAttempts.getAndDecrement();
-
-            return attemptsLeft > 0
-                ? Duration.ofSeconds(5)
-                : null;
         }
     }
 }
