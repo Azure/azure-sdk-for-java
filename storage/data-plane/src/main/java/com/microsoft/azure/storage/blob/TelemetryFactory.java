@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.HttpPipeline;
@@ -30,7 +31,7 @@ public final class TelemetryFactory implements RequestPolicyFactory {
      *         {@link TelemetryOptions}
      */
     public TelemetryFactory(TelemetryOptions telemetryOptions) {
-        telemetryOptions = telemetryOptions == null ? TelemetryOptions.DEFAULT : telemetryOptions;
+        telemetryOptions = telemetryOptions == null ? new TelemetryOptions() : telemetryOptions;
         String userAgentPrefix = telemetryOptions.userAgentPrefix() == null ?
                 Constants.EMPTY_STRING : telemetryOptions.userAgentPrefix();
         this.userAgent = userAgentPrefix + ' ' +
