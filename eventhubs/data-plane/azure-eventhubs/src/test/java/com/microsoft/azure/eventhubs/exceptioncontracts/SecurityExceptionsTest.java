@@ -52,16 +52,22 @@ public class SecurityExceptionsTest extends ApiTestBase {
         ehClient.sendSync(EventData.create("Test Message".getBytes()));
     }
 
-    @Test(expected = EventHubException.class)
+    @Test()
     public void testEventHubClientInvalidAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
                 .setEndpoint(correctConnectionString.getEndpoint())
                 .setEventHubName(correctConnectionString.getEventHubName())
-                .setSharedAccessSignature("--------------invalidtoken-------------");
+                .setSharedAccessSignature("--------------invalidtoken-------------")
+                .setOperationTimeout(Duration.ofSeconds(15));
 
         ehClient = EventHubClient.createSync(connectionString.toString(), RetryPolicy.getNoRetry(), TestContext.EXECUTOR_SERVICE);
-        ehClient.sendSync(EventData.create(("Test Message".getBytes())));
+
+        try {
+            ehClient.sendSync(EventData.create(("Test Message".getBytes())));
+        } catch (TimeoutException e) {
+            Assert.assertEquals(EventHubException.class, e.getCause().getClass());
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
