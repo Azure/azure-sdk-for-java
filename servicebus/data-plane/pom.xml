@@ -4,8 +4,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-	<groupId>com.microsoft.azure</groupId>
-	<artifactId>azure-servicebus-parent</artifactId>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-servicebus-parent</artifactId>
   <packaging>pom</packaging>
   <version>2.0.0</version><!-- Need not change for every release-->
 
@@ -31,7 +31,7 @@
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
-	<modules>
-		<module>azure-servicebus</module>
-	</modules>
+  <modules>
+    <module>azure-servicebus</module>
+  </modules>
 </project>
