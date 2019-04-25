@@ -1,4 +1,4 @@
-﻿XXXX.XX.XX Version XX.X.X
+2018.03.22 Version 11.0.0
 * Upgraded to version 2.1.0 of the autorest-clientruntime which includes several important fixes to mitigate a commonly-seen "Connection reset by peer" error and other similar bugs.
 * HTTPGetterInfo was made an internal type as it is an internal implementation detail.
 * Added SourceModifiedAccessConditions parameter to StageBlockFromURL

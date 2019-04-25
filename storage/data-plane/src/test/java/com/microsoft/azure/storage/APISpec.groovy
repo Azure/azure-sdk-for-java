@@ -1,17 +1,5 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.storage
 
@@ -25,6 +13,7 @@ import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import io.reactivex.Flowable
 import io.reactivex.Single
+import org.junit.Assume
 import org.spockframework.lang.ISpecificationContext
 import spock.lang.Shared
 import spock.lang.Specification
@@ -35,6 +24,8 @@ import java.time.OffsetDateTime
 import java.util.concurrent.Executors
 
 class APISpec extends Specification {
+    static final String RECORD_MODE = "RECORD"
+
     @Shared
     Integer iterationNo = 0 // Used to generate stable container names for recording tests with multiple iterations.
 
@@ -180,9 +171,18 @@ class APISpec extends Specification {
 
     }
 
+    static getEnvironmentVariable(String variable){
+        String envVariable = System.getenv().get(variable)
+        if(envVariable == null){
+            envVariable =  ""
+        }
+        return envVariable
+    }
+
     static getGenericCreds(String accountType) {
-        String accountName = System.getenv().get(accountType + "ACCOUNT_NAME")
-        String accountKey = System.getenv().get(accountType + "ACCOUNT_KEY")
+        String accountName = getEnvironmentVariable(accountType + "ACCOUNT_NAME")
+        String accountKey = getEnvironmentVariable(accountType + "ACCOUNT_KEY")
+
         if (accountName == null || accountKey == null) {
             System.out.println("Account name or key for the " + accountType + " account was null. Test's requiring " +
                     "these credentials will fail.")
@@ -269,7 +269,7 @@ class APISpec extends Specification {
         /*
         We'll let primary creds throw and crash if there are no credentials specified because everything else will fail.
          */
-        primaryCreds = getGenericCreds("")
+        primaryCreds = getGenericCreds("PRIMARY_STORAGE_")
         primaryServiceURL = getGenericServiceURL(primaryCreds)
 
         /*
@@ -279,7 +279,7 @@ class APISpec extends Specification {
         something in the future.
          */
         try {
-            alternateCreds = getGenericCreds("SECONDARY_")
+            alternateCreds = getGenericCreds("SECONDARY_STORAGE_")
             alternateServiceURL = getGenericServiceURL(alternateCreds)
         }
         catch (Exception e) {
@@ -290,17 +290,19 @@ class APISpec extends Specification {
         catch (Exception e) {
         }
         try {
-            premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_"))
+            premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_STORAGE_"))
         }
         catch (Exception e) {
         }
     }
 
     def cleanupSpec() {
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         cleanupContainers()
     }
 
     def setup() {
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         cu = primaryServiceURL.createContainerURL(generateContainerName())
         cu.create(null, null, null).blockingGet()
     }
@@ -583,12 +585,24 @@ class APISpec extends Specification {
     }
 
     def getOAuthServiceURL() {
-        def authority = "https://[AUTHORITY]/[TENANT ID]/oauth2/token"
-        def credential = new ClientCredential("[APP ID]", "[APP SECRET]")
+        String tenantId = getEnvironmentVariable("MICROSOFT_AD_TENANT_ID");
+        String servicePrincipalId = getEnvironmentVariable("ARM_CLIENTID");
+        String servicePrincipalKey = getEnvironmentVariable("ARM_CLIENTKEY");
+
+        def authority = String.format("https://login.microsoftonline.com/%s/oauth2/token",tenantId);
+        def credential = new ClientCredential(servicePrincipalId, servicePrincipalKey)
         def token = new AuthenticationContext(authority, false, Executors.newFixedThreadPool(1)).acquireToken("https://storage.azure.com", credential, null).get().accessToken
 
         return new ServiceURL(
-                new URL("https://[ACCOUNT NAME].blob.core.windows.net/"),
+                new URL(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName)),
                 StorageURL.createPipeline(new TokenCredentials(token)))
+    }
+
+    def getTestMode(){
+        String testMode =  System.getenv("AZURE_TEST_MODE")
+        if(testMode == null){
+            testMode =  "PLAYBACK"
+        }
+        return testMode
     }
 }

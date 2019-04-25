@@ -1,17 +1,5 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.storage;
 
@@ -28,6 +16,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.BiConsumer;
+import org.junit.Assume;
 import org.junit.Test;
 
 import java.io.File;
@@ -47,6 +36,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Samples {
+
+    public static final String PLAYBACK_MODE = "PlAYBACK";
+
+    //Samples only run in Live/Record mode.
+    void checkMode() {
+        String testMode = System.getenv("AZURE_TEST_MODE");
+        if(testMode == null){
+            testMode = PLAYBACK_MODE;
+        }
+        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
+    }
+
     public static Single<Boolean> createContainerIfNotExists(ContainerURL containerURL) {
         return containerURL.create(null, null, null).map((r) -> true).onErrorResumeNext((e) -> {
             if (e instanceof RestException) {
@@ -99,11 +100,12 @@ public class Samples {
     }
 
     private String getAccountName() {
-        return System.getenv("ACCOUNT_NAME");
+        checkMode();
+        return System.getenv("PRIMARY_STORAGE_ACCOUNT_NAME");
     }
 
     private String getAccountKey() {
-        return System.getenv("ACCOUNT_KEY");
+        return System.getenv("PRIMARY_STORAGE_ACCOUNT_KEY");
     }
 
     /**
