@@ -24,15 +24,15 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     private final DocumentDBManager manager;
     private String resourceGroupName;
     private String accountName;
-    private String databaseRid;
-    private String containerRid;
+    private String databaseName;
+    private String containerName;
     private SqlContainerCreateUpdateParameters createOrUpdateParameter;
 
     SqlContainerImpl(String name, DocumentDBManager manager) {
         super(name, new SqlContainerInner());
         this.manager = manager;
         // Set resource name
-        this.containerRid = name;
+        this.containerName = name;
         //
         this.createOrUpdateParameter = new SqlContainerCreateUpdateParameters();
     }
@@ -41,12 +41,12 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.containerRid = inner.name();
+        this.containerName = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "databaseAccounts");
-        this.databaseRid = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
-        this.containerRid = IdParsingUtils.getValueFromIdByName(inner.id(), "containers");
+        this.databaseName = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
+        this.containerName = IdParsingUtils.getValueFromIdByName(inner.id(), "containers");
         //
         this.createOrUpdateParameter = new SqlContainerCreateUpdateParameters();
     }
@@ -59,7 +59,7 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     @Override
     public Observable<SqlContainer> createResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.containerRid, this.createOrUpdateParameter)
+        return client.createUpdateSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseName, this.containerName, this.createOrUpdateParameter)
             .map(new Func1<SqlContainerInner, SqlContainerInner>() {
                @Override
                public SqlContainerInner call(SqlContainerInner resource) {
@@ -73,7 +73,7 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     @Override
     public Observable<SqlContainer> updateResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.containerRid, this.createOrUpdateParameter)
+        return client.createUpdateSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseName, this.containerName, this.createOrUpdateParameter)
             .map(new Func1<SqlContainerInner, SqlContainerInner>() {
                @Override
                public SqlContainerInner call(SqlContainerInner resource) {
@@ -87,7 +87,7 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     @Override
     protected Observable<SqlContainerInner> getInnerAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.getSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.containerRid);
+        return client.getSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseName, this.containerName);
     }
 
     @Override
@@ -170,10 +170,10 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     }
 
     @Override
-    public SqlContainerImpl withExistingDatabasis(String resourceGroupName, String accountName, String databaseRid) {
+    public SqlContainerImpl withExistingDatabasis(String resourceGroupName, String accountName, String databaseName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
-        this.databaseRid = databaseRid;
+        this.databaseName = databaseName;
         return this;
     }
 

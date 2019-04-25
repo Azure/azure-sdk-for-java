@@ -114,13 +114,13 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
          */
         interface WithDatabasis {
            /**
-            * Specifies resourceGroupName, accountName, databaseRid.
+            * Specifies resourceGroupName, accountName, databaseName.
             * @param resourceGroupName Name of an Azure resource group
             * @param accountName Cosmos DB database account name
-            * @param databaseRid Cosmos DB database rid
+            * @param databaseName Cosmos DB database name
             * @return the next definition stage
             */
-            WithOptions withExistingDatabasis(String resourceGroupName, String accountName, String databaseRid);
+            WithOptions withExistingDatabasis(String resourceGroupName, String accountName, String databaseName);
         }
 
         /**

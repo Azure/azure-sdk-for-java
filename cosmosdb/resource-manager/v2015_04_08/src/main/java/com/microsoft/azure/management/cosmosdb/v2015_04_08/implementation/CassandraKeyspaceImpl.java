@@ -20,14 +20,14 @@ class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, Ca
     private final DocumentDBManager manager;
     private String resourceGroupName;
     private String accountName;
-    private String keyspaceRid;
+    private String keyspaceName;
     private CassandraKeyspaceCreateUpdateParameters createOrUpdateParameter;
 
     CassandraKeyspaceImpl(String name, DocumentDBManager manager) {
         super(name, new CassandraKeyspaceInner());
         this.manager = manager;
         // Set resource name
-        this.keyspaceRid = name;
+        this.keyspaceName = name;
         //
         this.createOrUpdateParameter = new CassandraKeyspaceCreateUpdateParameters();
     }
@@ -36,11 +36,11 @@ class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, Ca
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.keyspaceRid = inner.name();
+        this.keyspaceName = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "databaseAccounts");
-        this.keyspaceRid = IdParsingUtils.getValueFromIdByName(inner.id(), "keyspaces");
+        this.keyspaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "keyspaces");
         //
         this.createOrUpdateParameter = new CassandraKeyspaceCreateUpdateParameters();
     }
@@ -53,7 +53,7 @@ class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, Ca
     @Override
     public Observable<CassandraKeyspace> createResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateCassandraKeyspaceAsync(this.resourceGroupName, this.accountName, this.keyspaceRid, this.createOrUpdateParameter)
+        return client.createUpdateCassandraKeyspaceAsync(this.resourceGroupName, this.accountName, this.keyspaceName, this.createOrUpdateParameter)
             .map(new Func1<CassandraKeyspaceInner, CassandraKeyspaceInner>() {
                @Override
                public CassandraKeyspaceInner call(CassandraKeyspaceInner resource) {
@@ -67,7 +67,7 @@ class CassandraKeyspaceImpl extends CreatableUpdatableImpl<CassandraKeyspace, Ca
     @Override
     public Observable<CassandraKeyspace> updateResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateCassandraKeyspaceAsync(this.resourceGroupName, this.accountName, this.keyspaceRid, this.createOrUpdateParameter)
+        return client.createUpdateCassandraKeyspaceAsync(this.resourceGroupName, this.accountName, this.keyspaceName, this.createOrUpdateParameter)
             .map(new Func1<CassandraKeyspaceInner, CassandraKeyspaceInner>() {
                @Override
                public CassandraKeyspaceInner call(CassandraKeyspaceInner resource) {

@@ -9,7 +9,7 @@
 package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.GremlinGraphInner;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.MongodbCollectionInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
@@ -18,50 +18,21 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
 import java.util.Map;
+import java.util.List;
 
 /**
- * Type representing GremlinGraph.
+ * Type representing MongodbCollection.
  */
-public interface GremlinGraph extends HasInner<GremlinGraphInner>, Indexable, Refreshable<GremlinGraph>, Updatable<GremlinGraph.Update>, HasManager<DocumentDBManager> {
-    /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the conflictResolutionPolicy value.
-     */
-    ConflictResolutionPolicy conflictResolutionPolicy();
-
-    /**
-     * @return the defaultTtl value.
-     */
-    Integer defaultTtl();
-
-    /**
-     * @return the gremlinGraphId value.
-     */
-    String gremlinGraphId();
-
+public interface MongodbCollection extends HasInner<MongodbCollectionInner>, Indexable, Refreshable<MongodbCollection>, Updatable<MongodbCollection.Update>, HasManager<DocumentDBManager> {
     /**
      * @return the id value.
      */
     String id();
 
     /**
-     * @return the indexingPolicy value.
+     * @return the indexes value.
      */
-    IndexingPolicy indexingPolicy();
+    List<MongoIndex> indexes();
 
     /**
      * @return the location value.
@@ -69,14 +40,19 @@ public interface GremlinGraph extends HasInner<GremlinGraphInner>, Indexable, Re
     String location();
 
     /**
+     * @return the mongodbCollectionId value.
+     */
+    String mongodbCollectionId();
+
+    /**
      * @return the name value.
      */
     String name();
 
     /**
-     * @return the partitionKey value.
+     * @return the shardKey value.
      */
-    ContainerPartitionKey partitionKey();
+    Map<String, String> shardKey();
 
     /**
      * @return the tags value.
@@ -89,28 +65,23 @@ public interface GremlinGraph extends HasInner<GremlinGraphInner>, Indexable, Re
     String type();
 
     /**
-     * @return the uniqueKeyPolicy value.
-     */
-    UniqueKeyPolicy uniqueKeyPolicy();
-
-    /**
-     * The entirety of the GremlinGraph definition.
+     * The entirety of the MongodbCollection definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithDatabasis, DefinitionStages.WithOptions, DefinitionStages.WithResource, DefinitionStages.WithCreate {
     }
 
     /**
-     * Grouping of GremlinGraph definition stages.
+     * Grouping of MongodbCollection definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a GremlinGraph definition.
+         * The first stage of a MongodbCollection definition.
          */
         interface Blank extends WithDatabasis {
         }
 
         /**
-         * The stage of the gremlingraph definition allowing to specify Databasis.
+         * The stage of the mongodbcollection definition allowing to specify Databasis.
          */
         interface WithDatabasis {
            /**
@@ -124,7 +95,7 @@ public interface GremlinGraph extends HasInner<GremlinGraphInner>, Indexable, Re
         }
 
         /**
-         * The stage of the gremlingraph definition allowing to specify Options.
+         * The stage of the mongodbcollection definition allowing to specify Options.
          */
         interface WithOptions {
            /**
@@ -136,15 +107,15 @@ public interface GremlinGraph extends HasInner<GremlinGraphInner>, Indexable, Re
         }
 
         /**
-         * The stage of the gremlingraph definition allowing to specify Resource.
+         * The stage of the mongodbcollection definition allowing to specify Resource.
          */
         interface WithResource {
            /**
             * Specifies resource.
-            * @param resource The standard JSON format of a Gremlin graph
+            * @param resource The standard JSON format of a Mongodb collection
             * @return the next definition stage
             */
-            WithCreate withResource(GremlinGraphResource resource);
+            WithCreate withResource(MongodbCollectionResource resource);
         }
 
         /**
@@ -152,17 +123,17 @@ public interface GremlinGraph extends HasInner<GremlinGraphInner>, Indexable, Re
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<GremlinGraph> {
+        interface WithCreate extends Creatable<MongodbCollection> {
         }
     }
     /**
-     * The template for a GremlinGraph update operation, containing all the settings that can be modified.
+     * The template for a MongodbCollection update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<GremlinGraph> {
+    interface Update extends Appliable<MongodbCollection> {
     }
 
     /**
-     * Grouping of GremlinGraph update stages.
+     * Grouping of MongodbCollection update stages.
      */
     interface UpdateStages {
     }

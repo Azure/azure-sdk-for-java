@@ -24,15 +24,15 @@ class GremlinGraphImpl extends CreatableUpdatableImpl<GremlinGraph, GremlinGraph
     private final DocumentDBManager manager;
     private String resourceGroupName;
     private String accountName;
-    private String databaseRid;
-    private String graphRid;
+    private String databaseName;
+    private String graphName;
     private GremlinGraphCreateUpdateParameters createOrUpdateParameter;
 
     GremlinGraphImpl(String name, DocumentDBManager manager) {
         super(name, new GremlinGraphInner());
         this.manager = manager;
         // Set resource name
-        this.graphRid = name;
+        this.graphName = name;
         //
         this.createOrUpdateParameter = new GremlinGraphCreateUpdateParameters();
     }
@@ -41,12 +41,12 @@ class GremlinGraphImpl extends CreatableUpdatableImpl<GremlinGraph, GremlinGraph
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.graphRid = inner.name();
+        this.graphName = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "databaseAccounts");
-        this.databaseRid = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
-        this.graphRid = IdParsingUtils.getValueFromIdByName(inner.id(), "graphs");
+        this.databaseName = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
+        this.graphName = IdParsingUtils.getValueFromIdByName(inner.id(), "graphs");
         //
         this.createOrUpdateParameter = new GremlinGraphCreateUpdateParameters();
     }
@@ -59,7 +59,7 @@ class GremlinGraphImpl extends CreatableUpdatableImpl<GremlinGraph, GremlinGraph
     @Override
     public Observable<GremlinGraph> createResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateGremlinGraphAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.graphRid, this.createOrUpdateParameter)
+        return client.createUpdateGremlinGraphAsync(this.resourceGroupName, this.accountName, this.databaseName, this.graphName, this.createOrUpdateParameter)
             .map(new Func1<GremlinGraphInner, GremlinGraphInner>() {
                @Override
                public GremlinGraphInner call(GremlinGraphInner resource) {
@@ -73,7 +73,7 @@ class GremlinGraphImpl extends CreatableUpdatableImpl<GremlinGraph, GremlinGraph
     @Override
     public Observable<GremlinGraph> updateResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateGremlinGraphAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.graphRid, this.createOrUpdateParameter)
+        return client.createUpdateGremlinGraphAsync(this.resourceGroupName, this.accountName, this.databaseName, this.graphName, this.createOrUpdateParameter)
             .map(new Func1<GremlinGraphInner, GremlinGraphInner>() {
                @Override
                public GremlinGraphInner call(GremlinGraphInner resource) {
@@ -87,7 +87,7 @@ class GremlinGraphImpl extends CreatableUpdatableImpl<GremlinGraph, GremlinGraph
     @Override
     protected Observable<GremlinGraphInner> getInnerAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.getGremlinGraphAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.graphRid);
+        return client.getGremlinGraphAsync(this.resourceGroupName, this.accountName, this.databaseName, this.graphName);
     }
 
     @Override
@@ -170,10 +170,10 @@ class GremlinGraphImpl extends CreatableUpdatableImpl<GremlinGraph, GremlinGraph
     }
 
     @Override
-    public GremlinGraphImpl withExistingDatabasis(String resourceGroupName, String accountName, String databaseRid) {
+    public GremlinGraphImpl withExistingDatabasis(String resourceGroupName, String accountName, String databaseName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
-        this.databaseRid = databaseRid;
+        this.databaseName = databaseName;
         return this;
     }
 
