@@ -7,6 +7,7 @@ import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.rest.Response;
 import com.azure.common.test.TestBase;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -29,6 +30,7 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -102,6 +104,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
+    public abstract void addSettingEmptyKey();
+
+    @Test
     public abstract void addSettingEmptyValue();
 
     void addSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
@@ -112,6 +117,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(setting);
         testRunner.accept(setting2);
     }
+
+    @Test
+    public abstract void addSettingNullKey();
 
     @Test
     public abstract void addExistingSetting();
@@ -152,6 +160,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
+    public abstract void setSettingEmptyKey();
+
+    @Test
     public abstract void setSettingEmptyValue();
 
     void setSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
@@ -163,6 +174,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(setting);
         testRunner.accept(setting2);
     }
+
+    @Test public abstract void setSettingNullKey();
 
     @Test
     public abstract void updateNoExistingSetting();
@@ -213,6 +226,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
+    public abstract void updateSettingNullKey();
+
+    @Test
+    public abstract void updateSettingIfEtag();
+
+    @Test
     public abstract void getSetting();
 
     void getSettingRunner(Consumer<ConfigurationSetting> testRunner) {
@@ -223,6 +242,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(newConfiguration);
         testRunner.accept(newConfiguration.label("myLabel"));
     }
+
+    @Test
+    public abstract void getSettingNotFound();
 
     @Test
     public abstract void deleteSetting();
@@ -238,6 +260,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
+    public abstract void deleteSettingNotFound();
+
+    @Test
     public abstract void deleteSettingWithETag();
 
     void deleteSettingWithETagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
@@ -251,11 +276,16 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(newConfiguration.label(label), updateConfiguration.label(label));
     }
 
-    /**
-     * Verifies that ConfigurationSettings can be added and that we can fetch those ConfigurationSettings from the
-     * service when filtering by their keys.
-     */
-    static void listWithMultipleKeys(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, List<ConfigurationSetting>> testRunner) {
+    @Test
+    public abstract void deleteSettingNullKey();
+
+    @Test
+    public abstract void listWithKeyAndLabel();
+
+    @Test
+    public abstract void listWithMultipleKeys();
+
+    void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, List<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
@@ -267,11 +297,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         assertTrue(expectedSelection.isEmpty());
     }
 
-    /**
-     * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
-     * from the service when filtering by their labels.
-     */
-    static void listWithMultipleLabels(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, List<ConfigurationSetting>> testRunner) {
+    @Test
+    public abstract void listWithMultipleLabels();
+
+    void listWithMultipleLabelsRunner(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, List<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
@@ -283,10 +312,39 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         assertTrue(expectedSelection.isEmpty());
     }
 
-    /**
-     * Verifies that we can get all the revisions for all settings with the specified keys.
-     */
-    static void listRevisionsWithMultipleKeys(String key, String key2, Function<List<ConfigurationSetting>, List<ConfigurationSetting>> testRunner) {
+    @Test
+    public abstract void listSettingsSelectFields();
+
+    static void validateSelectionWithFields(ConfigurationSetting setting, String keyPrefix, Map<String, String> tags) {
+        // These are the fields we chose in our filter.
+        assertNotNull(setting.etag());
+        assertNotNull(setting.key());
+        assertTrue(setting.key().contains(keyPrefix));
+        assertNotNull(setting.tags());
+        assertEquals(tags.size(), setting.tags().size());
+
+        assertNull(setting.lastModified());
+        assertNull(setting.contentType());
+        assertNull(setting.label());
+    }
+
+    @Test
+    public abstract void listSettingsAcceptDateTime();
+
+    @Test
+    public abstract void listRevisions();
+
+    static void validateListRevisions(ConfigurationSetting expected, ConfigurationSetting actual) {
+        assertEquals(expected.key(), actual.key());
+        assertNotNull(actual.etag());
+        assertNull(actual.value());
+        assertNull(actual.lastModified());
+    }
+
+    @Test
+    public abstract void listRevisionsWithMultipleKeys();
+
+    void listRevisionsWithMultipleKeysRunner(String key, String key2, Function<List<ConfigurationSetting>, List<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
         final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value("updatedValue");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
@@ -301,10 +359,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         assertTrue(expectedSelection.isEmpty());
     }
 
-    /**
-     * Verifies that we can get all revisions for all settings with the specified labels.
-     */
-    static void listRevisionsWithMultipleLabels(String key, String label, String label2, Function<List<ConfigurationSetting>, List<ConfigurationSetting>> testRunner) {
+    @Test
+    public abstract void listRevisionsWithMultipleLabels();
+
+    void listRevisionsWithMultipleLabelsRunner(String key, String label, String label2, Function<List<ConfigurationSetting>, List<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
         final ConfigurationSetting settingUpdate = new ConfigurationSetting(setting).value("updatedValue");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
@@ -318,6 +376,23 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
         assertTrue(expectedSelection.isEmpty());
     }
+
+    @Test
+    public abstract void listRevisionsAcceptDateTime();
+
+    @Test
+    public abstract void listRevisionsWithPagination();
+
+    @Test
+    public abstract void listSettingsWithPagination();
+
+    @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
+    @Test
+    public abstract void getSettingWhenValueNotUpdated();
+
+    @Ignore("This test exists to clean up resources missed due to 429s.")
+    @Test
+    public abstract void deleteAllSettings();
 
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.

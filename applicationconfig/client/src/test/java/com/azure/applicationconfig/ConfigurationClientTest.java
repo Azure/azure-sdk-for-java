@@ -9,8 +9,6 @@ import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +18,6 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class ConfigurationClientTest extends ConfigurationClientTestBase {
     private final Logger logger = LoggerFactory.getLogger(ConfigurationClientTest.class);
@@ -82,7 +78,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that we cannot add a configuration setting when the key is an empty string.
      */
-    @Test
     public void addSettingEmptyKey() {
         assertRestException(() -> client.addSetting("", "A value"), HttpResponseStatus.METHOD_NOT_ALLOWED.code());
     }
@@ -100,7 +95,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @Test
     public void addSettingNullKey() {
         assertRunnableThrowsException(() -> client.addSetting(null, "A Value"), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.addSetting(null), NullPointerException.class);
@@ -145,7 +139,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that we cannot set a configuration setting when the key is an empty string.
      */
-    @Test
     public void setSettingEmptyKey() {
         assertRestException(() -> client.setSetting("", "A value"), HttpResponseStatus.METHOD_NOT_ALLOWED.code());
     }
@@ -164,7 +157,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @Test
     public void setSettingNullKey() {
         assertRunnableThrowsException(() -> client.setSetting(null, "A Value"), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.setSetting(null), NullPointerException.class);
@@ -203,7 +195,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that when an etag is passed to update it will only update if the current representation of the setting has the etag.
      * If the update etag doesn't match anything the update won't happen, this will result in a 412.
      */
-    @Test
     public void updateSettingIfEtag() {
         final String key = getKey();
         final String label = getLabel();
@@ -232,7 +223,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @Test
     public void updateSettingNullKey() {
         assertRunnableThrowsException(() -> client.updateSetting(null, "A Value"), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.updateSetting(null), NullPointerException.class);
@@ -251,7 +241,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that attempting to retrieve a non-existent configuration doesn't work, this will result in a 404.
      */
-    @Test
     public void getSettingNotFound() {
         final String key = getKey();
         final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().key(key).value("myNeverRetreivedValue");
@@ -281,7 +270,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that attempting to delete a non-existent configuration will return a 204.
      */
-    @Test
     public void deleteSettingNotFound() {
         final String key = getKey();
         final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().key(key).value("myNeverDeletedValue");
@@ -314,7 +302,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
-    @Test
     public void deleteSettingNullKey() {
         assertRunnableThrowsException(() -> client.deleteSetting((String) null), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.deleteSetting((ConfigurationSetting) null), NullPointerException.class);
@@ -324,7 +311,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that a ConfigurationSetting can be added with a label, and that we can fetch that ConfigurationSetting
      * from the service when filtering by either its label or just its key.
      */
-    @Test
     public void listWithKeyAndLabel() {
         final String value = "myValue";
         final String key = getKey();
@@ -340,12 +326,11 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added and that we can fetch those ConfigurationSettings from the
      * service when filtering by their keys.
      */
-    @Test
     public void listWithMultipleKeys() {
         String key = getKey();
         String key2 = getKey();
 
-        listWithMultipleKeys(key, key2, (setting, setting2) -> {
+        listWithMultipleKeysRunner(key, key2, (setting, setting2) -> {
             assertConfigurationEquals(setting, client.addSetting(setting));
             assertConfigurationEquals(setting2, client.addSetting(setting2));
 
@@ -357,13 +342,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
      * from the service when filtering by their labels.
      */
-    @Test
     public void listWithMultipleLabels() {
         String key = getKey();
         String label = getLabel();
         String label2 = getLabel();
 
-        listWithMultipleLabels(key, label, label2, (setting, setting2) -> {
+        listWithMultipleLabelsRunner(key, label, label2, (setting, setting2) -> {
             assertConfigurationEquals(setting, client.addSetting(setting));
             assertConfigurationEquals(setting2, client.addSetting(setting2));
 
@@ -374,7 +358,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can select filter results by key, label, and select fields using SettingSelector.
      */
-    @Test
     public void listSettingsSelectFields() {
         final String label = "my-first-mylabel";
         final String label2 = "my-second-mylabel";
@@ -395,23 +378,13 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         for (ConfigurationSetting setting : client.listSettings(secondLabelOptions)) {
-            // These are the fields we chose in our filter.
-            assertNotNull(setting.etag());
-            assertNotNull(setting.key());
-            assertTrue(setting.key().contains(keyPrefix));
-            assertNotNull(setting.tags());
-            assertEquals(tags.size(), setting.tags().size());
-
-            assertNull(setting.lastModified());
-            assertNull(setting.contentType());
-            assertNull(setting.label());
+            validateSelectionWithFields(setting, keyPrefix, tags);
         }
     }
 
     /**
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
-    @Test
     public void listSettingsAcceptDateTime() {
         final String keyName = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
@@ -425,8 +398,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(updated, client.setSetting(updated));
             Thread.sleep(2000);
             assertConfigurationEquals(updated2, client.setSetting(updated2));
-        } catch (InterruptedException e) {
-            // Do nothing
+        } catch (InterruptedException ex) {
+            // Do nothing.
         }
 
         // Gets all versions of this value so we can get the one we want at that particular date.
@@ -444,7 +417,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get all of the revisions for this ConfigurationSetting. Then verifies that we can select
      * specific fields.
      */
-    @Test
     public void listRevisions() {
         final String keyName = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
@@ -464,34 +436,19 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         // Verifies that we can select specific fields.
         revisions = client.listSettingRevisions(new SettingSelector().keys(keyName).fields(SettingFields.KEY, SettingFields.ETAG));
-        ConfigurationSetting revision = revisions.get(0);
-        assertEquals(updated2.key(), revision.key());
-        assertNotNull(revision.etag());
-        assertNull(revision.value());
-        assertNull(revision.lastModified());
-
-        revision = revisions.get(1);
-        assertEquals(updated.key(), revision.key());
-        assertNotNull(revision.etag());
-        assertNull(revision.value());
-        assertNull(revision.lastModified());
-
-        revision = revisions.get(2);
-        assertEquals(original.key(), revision.key());
-        assertNotNull(revision.etag());
-        assertNull(revision.value());
-        assertNull(revision.lastModified());
+        validateListRevisions(updated2, revisions.get(0));
+        validateListRevisions(updated, revisions.get(1));
+        validateListRevisions(original, revisions.get(2));
     }
 
     /**
      * Verifies that we can get all the revisions for all settings with the specified keys.
      */
-    @Test
     public void listRevisionsWithMultipleKeys() {
         String key = getKey();
         String key2 = getKey();
 
-        listRevisionsWithMultipleKeys(key, key2, (testInput) -> {
+        listRevisionsWithMultipleKeysRunner(key, key2, (testInput) -> {
             assertConfigurationEquals(testInput.get(0), client.addSetting(testInput.get(0)));
             assertConfigurationEquals(testInput.get(1), client.updateSetting(testInput.get(1)));
             assertConfigurationEquals(testInput.get(2), client.addSetting(testInput.get(2)));
@@ -504,13 +461,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get all revisions for all settings with the specified labels.
      */
-    @Test
     public void listRevisionsWithMultipleLabels() {
         String key = getKey();
         String label = getLabel();
         String label2 = getLabel();
 
-        listRevisionsWithMultipleLabels(key, label, label2, (testInput) -> {
+        listRevisionsWithMultipleLabelsRunner(key, label, label2, (testInput) -> {
             assertConfigurationEquals(testInput.get(0), client.addSetting(testInput.get(0)));
             assertConfigurationEquals(testInput.get(1), client.updateSetting(testInput.get(1)));
             assertConfigurationEquals(testInput.get(2), client.addSetting(testInput.get(2)));
@@ -523,7 +479,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
-    @Test
     public void listRevisionsAcceptDateTime() {
         final String keyName = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
@@ -537,8 +492,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(updated, client.setSetting(updated));
             Thread.sleep(2000);
             assertConfigurationEquals(updated2, client.setSetting(updated2));
-        } catch (InterruptedException e) {
-            // Do nothing
+        } catch (InterruptedException ex) {
+            // Do nothing.
         }
 
         // Gets all versions of this value.
@@ -559,7 +514,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @Test
     public void listRevisionsWithPagination() {
         final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
@@ -574,7 +528,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @Test
     public void listSettingsWithPagination() {
         final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
@@ -589,8 +542,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies the conditional "GET" scenario where the setting has yet to be updated, resulting in a 304. This GET
      * scenario will return a setting when the etag provided does not match the one of the current setting.
      */
-    @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
-    @Test
     public void getSettingWhenValueNotUpdated() {
         final String key = getKey();
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
@@ -602,8 +553,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertConfigurationEquals(newExpected, client.setSetting(newExpected));
     }
 
-    @Ignore("This test exists to clean up resources missed due to 429s.")
-    @Test
     public void deleteAllSettings() {
         for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().keys("*"))) {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());

@@ -9,8 +9,6 @@ import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -22,13 +20,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+
+//import java.util.stream.IntStream;
 
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     private final Logger logger = LoggerFactory.getLogger(ConfigurationAsyncClientTest.class);
@@ -81,7 +77,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that we cannot add a configuration setting when the key is an empty string.
      */
-    @Test
     public void addSettingEmptyKey() {
         StepVerifier.create(client.addSetting("", "A value"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.METHOD_NOT_ALLOWED.code()));
@@ -105,7 +100,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @Test
     public void addSettingNullKey() {
         assertRunnableThrowsException(() -> client.addSetting(null, "A Value"), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.addSetting(null), NullPointerException.class);
@@ -160,7 +154,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that we cannot set a configuration setting when the key is an empty string.
      */
-    @Test
     public void setSettingEmptyKey() {
         StepVerifier.create(client.setSetting("", "A value"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.METHOD_NOT_ALLOWED.code()));
@@ -185,7 +178,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @Test
     public void setSettingNullKey() {
         assertRunnableThrowsException(() -> client.setSetting(null, "A Value"), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.setSetting(null), NullPointerException.class);
@@ -231,7 +223,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @Test
     public void updateSettingNullKey() {
         assertRunnableThrowsException(() -> client.updateSetting(null, "A Value"), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.updateSetting(null), NullPointerException.class);
@@ -241,7 +232,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Tests that when an etag is passed to update it will only update if the current representation of the setting has the etag.
      * If the update etag doesn't match anything the update won't happen, this will result in a 412.
      */
-    @Test
     public void updateSettingIfEtag() {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final String label = sdkContext.randomResourceName(labelPrefix, 16);
@@ -290,7 +280,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that attempting to retrieve a non-existent configuration doesn't work, this will result in a 404.
      */
-    @Test
     public void getSettingNotFound() {
         final String key = getKey();
         final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().key(key).value("myNeverRetreivedValue");
@@ -331,7 +320,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that attempting to delete a non-existent configuration will return a 204.
      */
-    @Test
     public void deleteSettingNotFound() {
         final String key = getKey();
         final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().key(key).value("myNeverDeletedValue");
@@ -381,7 +369,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
-    @Test
     public void deleteSettingNullKey() {
         assertRunnableThrowsException(() -> client.deleteSetting((String) null), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.deleteSetting((ConfigurationSetting) null), NullPointerException.class);
@@ -391,7 +378,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that a ConfigurationSetting can be added with a label, and that we can fetch that ConfigurationSetting
      * from the service when filtering by either its label or just its key.
      */
-    @Test
     public void listWithKeyAndLabel() {
         final String value = "myValue";
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
@@ -415,12 +401,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added and that we can fetch those ConfigurationSettings from the
      * service when filtering by their keys.
      */
-    @Test
     public void listWithMultipleKeys() {
         String key = getKey();
         String key2 = getKey();
 
-        listWithMultipleKeys(key, key2, (setting, setting2) -> {
+        listWithMultipleKeysRunner(key, key2, (setting, setting2) -> {
             List<ConfigurationSetting> selected = new ArrayList<>();
 
             StepVerifier.create(client.addSetting(setting))
@@ -444,13 +429,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
      * from the service when filtering by their labels.
      */
-    @Test
     public void listWithMultipleLabels() {
         String key = getKey();
         String label = getLabel();
         String label2 = getLabel();
 
-        listWithMultipleLabels(key, label, label2, (setting, setting2) -> {
+        listWithMultipleLabelsRunner(key, label, label2, (setting, setting2) -> {
             List<ConfigurationSetting> selected = new ArrayList<>();
 
             StepVerifier.create(client.addSetting(setting))
@@ -473,7 +457,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can select filter results by key, label, and select fields using SettingSelector.
      */
-    @Test
     public void listSettingsSelectFields() {
         final String label = "my-first-mylabel";
         final String label2 = "my-second-mylabel";
@@ -486,13 +469,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .labels("*-second*")
                 .keys(keyPrefix + "-fetch-*")
                 .fields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
-        final List<ConfigurationSetting> settings = IntStream.range(0, numberToCreate)
-                .mapToObj(value -> {
-                    String key = value % 2 == 0 ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
-                    String lbl = value / 4 == 0 ? label : label2;
-                    return new ConfigurationSetting().key(key).value("myValue2").label(lbl).tags(tags);
-                })
-                .collect(Collectors.toList());
+
+        final List<ConfigurationSetting> settings = new ArrayList<>(numberToCreate);
+        for (int value = 0; value < numberToCreate; value++) {
+            String key = value % 2 == 0 ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
+            String lbl = value / 4 == 0 ? label : label2;
+            settings.add(new ConfigurationSetting().key(key).value("myValue2").label(lbl).tags(tags));
+        }
 
         final List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
@@ -503,37 +486,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         Flux.merge(results).blockLast();
 
         StepVerifier.create(client.listSettings(secondLabelOptions))
-                .assertNext(setting -> {
-                    // These are the fields we chose in our filter.
-                    assertNotNull(setting.etag());
-                    assertNotNull(setting.key());
-                    assertTrue(setting.key().contains(keyPrefix));
-                    assertNotNull(setting.tags());
-                    assertEquals(tags.size(), setting.tags().size());
-
-                    assertNull(setting.lastModified());
-                    assertNull(setting.contentType());
-                    assertNull(setting.label());
-                })
-                .assertNext(setting -> {
-                    // These are the fields we chose in our filter.
-                    assertNotNull(setting.etag());
-                    assertNotNull(setting.key());
-                    assertTrue(setting.key().contains(keyPrefix));
-                    assertNotNull(setting.tags());
-                    assertEquals(tags.size(), setting.tags().size());
-
-                    assertNull(setting.lastModified());
-                    assertNull(setting.contentType());
-                    assertNull(setting.label());
-                })
+                .assertNext(setting -> validateSelectionWithFields(setting, keyPrefix, tags))
+                .assertNext(setting -> validateSelectionWithFields(setting, keyPrefix, tags))
                 .verifyComplete();
     }
 
     /**
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
-    @Test
     public void listSettingsAcceptDateTime() {
         final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
@@ -568,7 +528,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get all of the revisions for this ConfigurationSetting. Then verifies that we can select
      * specific fields.
      */
-    @Test
     public void listRevisions() {
         final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
@@ -595,36 +554,20 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Verifies that we can select specific fields.
         StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(keyName).fields(SettingFields.KEY, SettingFields.ETAG)))
-                .assertNext(response -> {
-                    assertEquals(updated2.key(), response.key());
-                    assertNotNull(response.etag());
-                    assertNull(response.value());
-                    assertNull(response.lastModified());
-                })
-                .assertNext(response -> {
-                    assertEquals(updated.key(), response.key());
-                    assertNotNull(response.etag());
-                    assertNull(response.value());
-                    assertNull(response.lastModified());
-                })
-                .assertNext(response -> {
-                    assertEquals(original.key(), response.key());
-                    assertNotNull(response.etag());
-                    assertNull(response.value());
-                    assertNull(response.lastModified());
-                })
+                .assertNext(response -> validateListRevisions(updated2, response))
+                .assertNext(response -> validateListRevisions(updated, response))
+                .assertNext(response -> validateListRevisions(original, response))
                 .verifyComplete();
     }
 
     /**
      * Verifies that we can get all the revisions for all settings with the specified keys.
      */
-    @Test
     public void listRevisionsWithMultipleKeys() {
         String key = getKey();
         String key2 = getKey();
 
-        listRevisionsWithMultipleKeys(key, key2, (testInput) -> {
+        listRevisionsWithMultipleKeysRunner(key, key2, (testInput) -> {
             List<ConfigurationSetting> selected = new ArrayList<>();
 
             StepVerifier.create(client.addSetting(testInput.get(0)))
@@ -657,13 +600,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get all revisions for all settings with the specified labels.
      */
-    @Test
     public void listRevisionsWithMultipleLabels() {
         String key = getKey();
         String label = getLabel();
         String label2 = getLabel();
 
-        listRevisionsWithMultipleLabels(key, label, label2, (testInput) -> {
+        listRevisionsWithMultipleLabelsRunner(key, label, label2, (testInput) -> {
             List<ConfigurationSetting> selected = new ArrayList<>();
 
             StepVerifier.create(client.addSetting(testInput.get(0)))
@@ -696,7 +638,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
-    @Test
     public void listRevisionsAcceptDateTime() {
         final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
@@ -735,15 +676,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      *
      * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
-    @Test
     public void listRevisionsWithPagination() {
         final int numberExpected = 50;
-        List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
-                .mapToObj(value -> new ConfigurationSetting()
-                        .key(keyPrefix)
-                        .value("myValue" + value)
-                        .label(labelPrefix))
-                .collect(Collectors.toList());
+        List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
+        for (int value = 0; value < numberExpected; value++) {
+            settings.add(new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix));
+        }
 
         for (ConfigurationSetting setting : settings) {
             client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)).block();
@@ -761,15 +699,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      *
      * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
-    @Test
     public void listSettingsWithPagination() {
         final int numberExpected = 50;
-        List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
-                .mapToObj(value -> new ConfigurationSetting()
-                        .key(keyPrefix + "-" + value)
-                        .value("myValue")
-                        .label(labelPrefix))
-                .collect(Collectors.toList());
+        List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
+        for (int value = 0; value < numberExpected; value++) {
+            settings.add(new ConfigurationSetting().key(keyPrefix + "-" + value).value("myValue").label(labelPrefix));
+        }
 
         List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
@@ -788,8 +723,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies the conditional "GET" scenario where the setting has yet to be updated, resulting in a 304. This GET
      * scenario will return a setting when the etag provided does not match the one of the current setting.
      */
-    @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
-    @Test
     public void getSettingWhenValueNotUpdated() {
         final String key = sdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
@@ -804,8 +737,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
     }
 
-    @Ignore("This test exists to clean up resources missed due to 429s.")
-    @Test
     public void deleteAllSettings() {
         client.listSettings(new SettingSelector().keys("*"))
                 .flatMap(configurationSetting -> {
