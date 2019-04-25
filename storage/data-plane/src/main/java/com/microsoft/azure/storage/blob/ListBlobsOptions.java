@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 /**
@@ -8,33 +9,27 @@ package com.microsoft.azure.storage.blob;
  */
 public final class ListBlobsOptions {
 
-    /**
-     * An object representing the default options: no details, prefix, or delimiter. Uses the server default for
-     * maxResults.
-     */
-    public static final ListBlobsOptions DEFAULT = new ListBlobsOptions();
-
-    private BlobListingDetails details;
+    private BlobListDetails details;
 
     private String prefix;
 
     private Integer maxResults;
 
     public ListBlobsOptions() {
-        this.details = BlobListingDetails.NONE;
+        this.details = new BlobListDetails();
     }
 
     /**
-     * {@link BlobListingDetails}
+     * {@link BlobListDetails}
      */
-    public BlobListingDetails details() {
+    public BlobListDetails details() {
         return details;
     }
 
     /**
-     * {@link BlobListingDetails}
+     * {@link BlobListDetails}
      */
-    public ListBlobsOptions withDetails(BlobListingDetails details) {
+    public ListBlobsOptions withDetails(BlobListDetails details) {
         this.details = details;
         return this;
     }

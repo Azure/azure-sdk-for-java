@@ -11,8 +11,7 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * Additional parameters for a set of operations, such as:
- * Blob_startCopyFromURL, Blob_copyFromURL.
+ * Additional parameters for a set of operations.
  */
 @JacksonXmlRootElement(localName = "source-modified-access-conditions")
 public final class SourceModifiedAccessConditions {

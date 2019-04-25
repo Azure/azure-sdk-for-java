@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.*;
@@ -35,7 +36,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
      *         {@link RequestRetryOptions}
      */
     public RequestRetryFactory(RequestRetryOptions requestRetryOptions) {
-        this.requestRetryOptions = requestRetryOptions == null ? RequestRetryOptions.DEFAULT : requestRetryOptions;
+        this.requestRetryOptions = requestRetryOptions == null ? new RequestRetryOptions() : requestRetryOptions;
     }
 
     @Override

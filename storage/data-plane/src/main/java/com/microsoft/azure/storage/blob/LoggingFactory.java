@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.HttpPipeline;
@@ -32,8 +33,8 @@ import java.util.logging.Logger;
  */
 public final class LoggingFactory implements RequestPolicyFactory {
 
-    private static final Logger forceLogger = Logger.getLogger("Azure Storage Java SDK");
-    private static final org.slf4j.Logger slf4jLogger = LoggerFactory.getLogger("Azure Storage Java SDK");
+    private static final Logger forceLogger = Logger.getLogger(LoggingFactory.class.getName());
+    private static final org.slf4j.Logger slf4jLogger = LoggerFactory.getLogger(LoggingFactory.class.getName());
     private static final Map<HttpPipelineLogLevel, Level> javaLogLevelMap = new HashMap<>();
     private static boolean defaultLoggerLoaded;
 
@@ -90,7 +91,7 @@ public final class LoggingFactory implements RequestPolicyFactory {
      *         The configurations for this namer. Null will indicate use of the default options.
      */
     public LoggingFactory(LoggingOptions loggingOptions) {
-        this.loggingOptions = loggingOptions == null ? LoggingOptions.DEFAULT : loggingOptions;
+        this.loggingOptions = loggingOptions == null ? new LoggingOptions() : loggingOptions;
     }
 
     @Override
@@ -147,8 +148,8 @@ public final class LoggingFactory implements RequestPolicyFactory {
             }
 
             if (this.shouldLog(HttpPipelineLogLevel.INFO)) {
-                String logMessage = String.format("'%s'==> OUTGOING REQUEST (Try number='%d')%n", request.url(),
-                        this.tryCount);
+                String logMessage = String.format("'%s'==> OUTGOING REQUEST (Try number='%d')%n",
+                        sanitizeURL(request.url()), this.tryCount);
                 this.log(HttpPipelineLogLevel.INFO, logMessage);
             }
 
@@ -284,7 +285,8 @@ public final class LoggingFactory implements RequestPolicyFactory {
                         urlParts.sasQueryParameters().contentDisposition(),
                         urlParts.sasQueryParameters().contentEncoding(),
                         urlParts.sasQueryParameters().contentLanguage(),
-                        urlParts.sasQueryParameters().contentType()
+                        urlParts.sasQueryParameters().contentType(),
+                        urlParts.sasQueryParameters().userDelegationKey()
                 ));
                 resultURL = urlParts.toURL();
 

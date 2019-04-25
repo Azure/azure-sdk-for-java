@@ -112,10 +112,8 @@
     <qpid-proton-j-extensions-version>1.1.0</qpid-proton-j-extensions-version>
     <log4j-api.version>2.11.1</log4j-api.version>
     <groovy-eclipse-compiler.version>2.9.3-01</groovy-eclipse-compiler.version>
-    <groovy-eclipse-batch.version>2.5.5-01</groovy-eclipse-batch.version>
-    <netty-all.version>4.1.34.Final</netty-all.version>
-    <netty-socketio.version>1.7.13</netty-socketio.version>
-    <client-runtime.version.v2>2.0.2</client-runtime.version.v2>
+    <groovy-eclipse-batch.version>2.4.16-03</groovy-eclipse-batch.version>
+    <client-runtime.version.v2>2.1.0</client-runtime.version.v2>
     <slf4j-api.version>1.7.5</slf4j-api.version>
     <httpcore.version>4.4.5</httpcore.version>
     <joda-time.version>2.8.2</joda-time.version>
@@ -128,7 +126,7 @@
 
     <!-- Test Dependency Versions -->
     <azure-common-test.version>1.0.0-SNAPSHOT</azure-common-test.version>
-    <adal4j.version>1.6.1</adal4j.version>
+    <adal4j.version>1.6.3</adal4j.version>
     <bcprov-jdk15on.version>1.59</bcprov-jdk15on.version>
     <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
     <azure-mgmt-resources.version>1.3.0</azure-mgmt-resources.version>
