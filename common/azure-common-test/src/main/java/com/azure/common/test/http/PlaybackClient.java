@@ -14,13 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
+
+import static com.azure.common.test.utils.DataTransformer.applyReplacementRule;
+import static com.azure.common.test.utils.DataTransformer.removeHost;
 
 /**
  * HTTP client that plays back {@link NetworkCallRecord NetworkCallRecords}.
@@ -78,7 +80,7 @@ public final class PlaybackClient implements HttpClient {
     }
 
     private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) {
-        final String incomingUrl = applyReplacementRule(request.url().toString());
+        final String incomingUrl = applyReplacementRule(request.url().toString(), textReplacementRules);
         final String incomingMethod = request.httpMethod().toString();
 
         final String matchingUrl = removeHost(incomingUrl);
@@ -130,17 +132,4 @@ public final class PlaybackClient implements HttpClient {
         return Mono.just(response);
     }
 
-    private String applyReplacementRule(String text) {
-        for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
-            if (rule.getValue() != null) {
-                text = text.replaceAll(rule.getKey(), rule.getValue());
-            }
-        }
-        return text;
-    }
-
-    private static String removeHost(String url) {
-        URI uri = URI.create(url);
-        return String.format("%s?%s", uri.getPath(), uri.getQuery());
-    }
 }

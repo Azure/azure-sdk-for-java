@@ -12,9 +12,9 @@ import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import io.reactivex.Single;
 
 /**
- * This is a factory which creates policies in an {@link HttpPipeline} for setting the request property on the response
+ * This is a namer which creates policies in an {@link HttpPipeline} for setting the request property on the response
  * object. This is necessary because of a bug in autorest which fails to set this property. In most cases, it is
- * sufficient to allow the default pipeline to add this factory automatically and assume that it works. The factory and
+ * sufficient to allow the default pipeline to add this namer automatically and assume that it works. The namer and
  * policy must only be used directly when creating a custom pipeline.
  */
 final class SetResponseFieldFactory implements RequestPolicyFactory {

@@ -55,7 +55,7 @@ public final class ProgressReporter {
 
     /**
      * This type is used to keep track of the total amount of data transferred for a single request. This is the type
-     * we will use when the customer uses the factory to add progress reporting to their Flowable. We need this
+     * we will use when the customer uses the namer to add progress reporting to their Flowable. We need this
      * additional type because we can't keep local state directly as lambdas require captured local variables to be
      * effectively final.
      */

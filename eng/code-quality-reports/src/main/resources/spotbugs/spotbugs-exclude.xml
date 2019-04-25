@@ -331,4 +331,22 @@
     <Class name="com.azure.common.mgmt.AzureProxy"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
+
+  <!-- There exists a lock before caliing wait(). -->
+  <Match>
+    <Class name="com.azure.common.test.interceptor.ResourceManagerThrottlingInterceptor"/>
+    <Bug pattern="MWN_MISMATCHED_WAIT"/>
+  </Match>
+
+  <!-- There exists a lock before calling notifyAll(). -->
+  <Match>
+    <Class name="com.azure.common.test.interceptor.ResourceManagerThrottlingInterceptor"/>
+    <Bug pattern="MWN_MISMATCHED_NOTIFY"/>
+  </Match>
+
+  <!-- This class designed to make thread sleep in the lock. -->
+  <Match>
+    <Class name="com.azure.common.test.interceptor.ResourceManagerThrottlingInterceptor"/>
+    <Bug pattern="SWL_SLEEP_WITH_LOCK_HELD"/>
+  </Match>
 </FindBugsFilter>

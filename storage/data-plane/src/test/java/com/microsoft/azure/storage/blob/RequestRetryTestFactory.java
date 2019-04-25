@@ -74,7 +74,7 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
     private RequestRetryOptions options;
 
     /*
-    It is atypical and not recommended to have mutable state on the factory itself. However, the tests will need to
+    It is atypical and not recommended to have mutable state on the namer itself. However, the tests will need to
     be able to validate the number of tries, and the tests will not have access to the policies, so we break our own
     rule here.
      */
@@ -96,7 +96,7 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
         return new RetryTestPolicy(this);
     }
 
-    // The retry factory only really cares about the status code.
+    // The retry namer only really cares about the status code.
     private static final class RetryTestResponse extends HttpResponse {
 
         int statusCode;

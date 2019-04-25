@@ -117,6 +117,9 @@
     <netty-socketio.version>1.7.13</netty-socketio.version>
     <client-runtime.version.v2>2.0.2</client-runtime.version.v2>
     <slf4j-api.version>1.7.5</slf4j-api.version>
+    <httpcore.version>4.4.5</httpcore.version>
+    <joda-time.version>2.8.2</joda-time.version>
+
     <azure-common.version>1.0.0-SNAPSHOT</azure-common.version>
     <azure-common-auth.version>1.0.0-SNAPSHOT</azure-common-auth.version>
     <azure-common-mgmt.version>1.0.0-SNAPSHOT</azure-common-mgmt.version>
@@ -225,6 +228,12 @@
         <version>${jackson.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io.version}</version>
+      </dependency>
+
       <!-- Proton J and Extension Dependencies -->
       <dependency>
         <groupId>org.apache.qpid</groupId>
@@ -251,13 +260,20 @@
         <artifactId>log4j-api</artifactId>
         <version>${log4j-api.version}</version>
       </dependency>
-      
+
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>${httpcore.version}</version>
+      </dependency>
+
+
       <dependency>
         <groupId>com.microsoft.rest.v2</groupId>
         <artifactId>client-runtime</artifactId>
         <version>${client-runtime.version.v2}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
@@ -280,6 +296,13 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>${joda-time.version}</version>
+        <scope>compile</scope>
       </dependency>
 
       <!-- Test dependencies -->
@@ -345,13 +368,6 @@
       </dependency>
 
       <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>${commons-io.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
         <groupId>org.spockframework</groupId>
         <artifactId>spock-core</artifactId>
         <scope>test</scope>
@@ -364,7 +380,7 @@
         <version>${cglib-nodep.version}</version>
         <scope>test</scope>
       </dependency>
-      
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>

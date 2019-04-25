@@ -25,9 +25,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This is a factory which creates policies in an {@link HttpPipeline} for logging requests and responses. In most
+ * This is a namer which creates policies in an {@link HttpPipeline} for logging requests and responses. In most
  * cases, it is sufficient to configure an object of the {@link LoggingOptions} type and set those as a field on a
- * {@link PipelineOptions} structure to configure a default pipeline. The factory and policy must only be used directly
+ * {@link PipelineOptions} structure to configure a default pipeline. The namer and policy must only be used directly
  * when creating a custom pipeline.
  */
 public final class LoggingFactory implements RequestPolicyFactory {
@@ -83,11 +83,11 @@ public final class LoggingFactory implements RequestPolicyFactory {
     private final LoggingOptions loggingOptions;
 
     /**
-     * Creates a factory which can create LoggingPolicy objects to insert in the pipeline. This will allow for logging
+     * Creates a namer which can create LoggingPolicy objects to insert in the pipeline. This will allow for logging
      * requests and responses.
      *
      * @param loggingOptions
-     *         The configurations for this factory. Null will indicate use of the default options.
+     *         The configurations for this namer. Null will indicate use of the default options.
      */
     public LoggingFactory(LoggingOptions loggingOptions) {
         this.loggingOptions = loggingOptions == null ? LoggingOptions.DEFAULT : loggingOptions;

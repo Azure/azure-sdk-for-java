@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Random;
 import javax.crypto.Cipher;
 
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.common.test.utils.SdkContext;
 import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.Assert;

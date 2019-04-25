@@ -3,6 +3,11 @@
 
 package com.microsoft.azure.keyvault.extensions.test;
 
+import com.azure.common.test.InterceptorManager;
+import com.azure.common.test.TestBase;
+import com.azure.common.test.TestMode;
+import com.azure.common.test.interceptor.ResourceManagerThrottlingInterceptor;
+import com.azure.common.test.utils.SdkContext;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
@@ -14,11 +19,6 @@ import com.microsoft.azure.keyvault.models.DeletedCertificateBundle;
 import com.microsoft.azure.keyvault.models.DeletedKeyBundle;
 import com.microsoft.azure.keyvault.models.DeletedSecretBundle;
 import com.microsoft.azure.management.resources.core.AzureTestCredentials;
-import com.microsoft.azure.management.resources.core.InterceptorManager;
-import com.microsoft.azure.management.resources.core.TestBase;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
@@ -38,9 +38,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class KeyVaultClientIntegrationTestBase {
+public class KeyVaultClientIntegrationTestBase extends TestBase {
 
-    private static TestBase.TestMode testMode = null;
+    private static TestMode testMode = null;
     private PrintStream out;
 
     protected enum RunCondition {
@@ -183,7 +183,7 @@ public class KeyVaultClientIntegrationTestBase {
     }
 
     public static String generateRandomResourceName(String prefix, int maxLen) {
-        return SdkContext.randomResourceName(prefix, maxLen);
+        return SdkContext.getRandomResourceName(prefix, maxLen);
     }
 
 
@@ -204,19 +204,26 @@ public class KeyVaultClientIntegrationTestBase {
         String azureTestMode = System.getenv("AZURE_TEST_MODE");
         if (azureTestMode != null) {
             if (azureTestMode.equalsIgnoreCase("Record")) {
-                testMode = TestBase.TestMode.RECORD;
+                testMode = TestMode.RECORD;
             } else if (azureTestMode.equalsIgnoreCase("Playback")) {
-                testMode = TestBase.TestMode.PLAYBACK;
+                testMode = TestMode.PLAYBACK;
             } else {
                 throw new IOException("Unknown AZURE_TEST_MODE: " + azureTestMode);
             }
         } else {
             // System.out.print("Environment variable 'AZURE_TEST_MODE' has not been set
             // yet. Using 'Playback' mode.");
-            testMode = TestBase.TestMode.PLAYBACK;
+            testMode = TestMode.PLAYBACK;
         }
     }
 
+    @Rule
+    public TestName testName = new TestName();
+
+    @Override
+    protected String testName() {
+        return testName.getMethodName();
+    }
     private static void initPlaybackUri() throws IOException {
         if (isPlaybackMode()) {
             Properties mavenProps = new Properties();
@@ -241,7 +248,7 @@ public class KeyVaultClientIntegrationTestBase {
                 e.printStackTrace();
                 throw new RuntimeException("Can't init test mode.");
             }
-        return testMode == TestBase.TestMode.PLAYBACK;
+        return testMode == TestMode.PLAYBACK;
     }
 
     public static boolean isRecordMode() {
@@ -253,9 +260,6 @@ public class KeyVaultClientIntegrationTestBase {
         String name = Thread.currentThread().getName();
         System.out.println(String.format("\n***\n*** [%s:%s] - %s\n***\n", name, id, what));
     }
-
-    @Rule
-    public TestName testName = new TestName();
 
     protected InterceptorManager interceptorManager = null;
 

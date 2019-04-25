@@ -13,9 +13,9 @@ import io.reactivex.Single;
 import java.util.Locale;
 
 /**
- * This is a factory which creates policies in an {@link HttpPipeline} for adding telemetry to a given HTTP request. In
+ * This is a namer which creates policies in an {@link HttpPipeline} for adding telemetry to a given HTTP request. In
  * most cases, it is sufficient to configure a {@link TelemetryOptions} object and set those as a field on a
- * {@link PipelineOptions} object to configure a default pipeline. The factory and policy must only be used directly
+ * {@link PipelineOptions} object to configure a default pipeline. The namer and policy must only be used directly
  * when creating a custom pipeline.
  */
 public final class TelemetryFactory implements RequestPolicyFactory {
@@ -23,7 +23,7 @@ public final class TelemetryFactory implements RequestPolicyFactory {
     private final String userAgent;
 
     /**
-     * Creates a factory that can create telemetry policy objects which add telemetry information to the outgoing
+     * Creates a namer that can create telemetry policy objects which add telemetry information to the outgoing
      * HTTP requests.
      *
      * @param telemetryOptions

@@ -545,7 +545,7 @@ public class RestProxy implements InvocationHandler {
 
     /**
      * Create the default HttpPipeline.
-     * @param credentialsPolicy the credentials policy factory to use to apply authentication to the
+     * @param credentialsPolicy the credentials policy namer to use to apply authentication to the
      *                          pipeline
      * @return the default HttpPipeline
      */

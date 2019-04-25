@@ -53,6 +53,14 @@ public class RecordedData {
     }
 
     /**
+     * Getter method for networkCallRecords.
+     * @return networkCallRecords {@link NetworkCallRecord}
+     */
+    public LinkedList<NetworkCallRecord> getNetworkCallRecords() {
+        return networkCallRecords;
+    }
+
+    /**
      * Adds a network call to the end of the list.
      *
      * @param record The record to add.

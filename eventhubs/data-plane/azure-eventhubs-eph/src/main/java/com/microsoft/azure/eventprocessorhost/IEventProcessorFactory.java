@@ -5,12 +5,12 @@ package com.microsoft.azure.eventprocessorhost;
 
 
 /**
- * Interface that must be implemented by an event processor factory class.
+ * Interface that must be implemented by an event processor namer class.
  * <p>
  * User-provided factories are needed if creating an event processor object requires more work than
  * just a new with a parameterless constructor.
  *
- * @param <T> The type of event processor objects produced by this factory, which must implement IEventProcessor
+ * @param <T> The type of event processor objects produced by this namer, which must implement IEventProcessor
  */
 public interface IEventProcessorFactory<T extends IEventProcessor> {
     /**

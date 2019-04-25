@@ -3,6 +3,9 @@
 
 package com.microsoft.azure.batch;
 
+import com.azure.common.test.InterceptorManager;
+import com.azure.common.test.TestMode;
+import com.azure.common.test.interceptor.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.batch.auth.BatchApplicationTokenCredentials;
 import com.microsoft.azure.batch.auth.BatchCredentials;
@@ -19,9 +22,6 @@ import com.microsoft.azure.batch.protocol.models.CloudTask;
 import com.microsoft.azure.batch.protocol.models.LinuxUserConfiguration;
 import com.microsoft.azure.batch.protocol.models.TaskState;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
-import com.microsoft.azure.management.resources.core.InterceptorManager;
-import com.microsoft.azure.management.resources.core.TestBase;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageCredentials;
@@ -78,7 +78,7 @@ public class BatchIntegrationTestBase {
     }
 
 
-    private static TestBase.TestMode testMode = null;
+    private static TestMode testMode = null;
     private PrintStream out;
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     protected static String playbackUri = null;
@@ -89,14 +89,14 @@ public class BatchIntegrationTestBase {
         String azureTestMode = System.getenv("AZURE_TEST_MODE");
         if (azureTestMode != null) {
             if (azureTestMode.equalsIgnoreCase("Record")) {
-                testMode = TestBase.TestMode.RECORD;
+                testMode = TestMode.RECORD;
             } else if (azureTestMode.equalsIgnoreCase("Playback")) {
-                testMode = TestBase.TestMode.PLAYBACK;
+                testMode = TestMode.PLAYBACK;
             } else {
                 throw new IOException("Unknown AZURE_TEST_MODE: " + azureTestMode);
             }
         } else {
-            testMode = TestBase.TestMode.PLAYBACK;
+            testMode = TestMode.PLAYBACK;
         }
     }
 
@@ -120,7 +120,7 @@ public class BatchIntegrationTestBase {
                 throw new RuntimeException("Can't init test mode.");
             }
         }
-        return testMode == TestBase.TestMode.PLAYBACK;
+        return testMode == TestMode.PLAYBACK;
     }
 
     static boolean isRecordMode() {
