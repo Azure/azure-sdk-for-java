@@ -24,7 +24,7 @@ public class SmokeTest extends TestBase {
     }
 
     @Test
-    public void eceiverRuntimeMetricsTest() throws Exception {
+    public void receiverRuntimeMetricsTest() throws Exception {
         PerTestSettings settings = new PerTestSettings("ReceiverRuntimeMetrics");
         settings.inOptions.setReceiverRuntimeMetricEnabled(true);
         settings = testSetup(settings);
