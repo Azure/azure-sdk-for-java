@@ -1,5 +1,17 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microsoft.azure.storage.blob;
 
 import java.security.InvalidKeyException;
@@ -205,7 +217,7 @@ public final class AccountSASSignatureValues {
 
         return new SASQueryParameters(this.version, this.services, resourceTypes,
                 this.protocol, this.startTime, this.expiryTime, this.ipRange, null,
-                null, this.permissions, signature, null, null, null, null, null);
+                null, this.permissions, signature, null, null, null, null, null, null);
     }
 
     private String stringToSign(final SharedKeyCredentials sharedKeyCredentials) {
@@ -216,7 +228,7 @@ public final class AccountSASSignatureValues {
                 resourceTypes,
                 this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
                 Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
-                this.ipRange == null ? IPRange.DEFAULT.toString() : this.ipRange.toString(),
+                this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(),
                 this.version,
                 Constants.EMPTY_STRING // Account SAS requires an additional newline character

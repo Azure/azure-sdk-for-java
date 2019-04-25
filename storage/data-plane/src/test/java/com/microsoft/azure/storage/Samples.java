@@ -1,5 +1,17 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.microsoft.azure.storage;
 
@@ -16,7 +28,6 @@ import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.BiConsumer;
-import org.junit.Assume;
 import org.junit.Test;
 
 import java.io.File;
@@ -36,18 +47,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Samples {
-
-    public static final String PLAYBACK_MODE = "PlAYBACK";
-
-    //Samples only run in Live/Record mode.
-    void checkMode() {
-        String testMode = System.getenv("AZURE_TEST_MODE");
-        if(testMode == null){
-            testMode = PLAYBACK_MODE;
-        }
-        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
-    }
-
     public static Single<Boolean> createContainerIfNotExists(ContainerURL containerURL) {
         return containerURL.create(null, null, null).map((r) -> true).onErrorResumeNext((e) -> {
             if (e instanceof RestException) {
@@ -100,12 +99,11 @@ public class Samples {
     }
 
     private String getAccountName() {
-        checkMode();
-        return System.getenv("PRIMARY_STORAGE_ACCOUNT_NAME");
+        return System.getenv("ACCOUNT_NAME");
     }
 
     private String getAccountKey() {
-        return System.getenv("PRIMARY_STORAGE_ACCOUNT_KEY");
+        return System.getenv("ACCOUNT_KEY");
     }
 
     /**
@@ -307,7 +305,7 @@ public class Samples {
             The presence of the marker indicates that there are more blobs to list, so we make another call to
             listContainersSegment and pass the result through this helper function.
              */
-            return serviceURL.listContainersSegment(nextMarker, ListContainersOptions.DEFAULT, null)
+            return serviceURL.listContainersSegment(nextMarker, new ListContainersOptions(), null)
                     .flatMap(containersListBlobHierarchySegmentResponse ->
                             listContainersHelper(serviceURL, response));
         }
@@ -549,7 +547,7 @@ public class Samples {
         // Calling encode will generate the query string.
         String encodedParams = params.encode();
 
-        String urlToSendToSomeone = String.format(Locale.ROOT, "https://%s.blob.core.windows.net?%s",
+        String urlToSendToSomeone = String.format(Locale.ROOT, "https://%s.blob.core.windows.net%s",
                 accountName, encodedParams);
         // At this point, you can send the urlToSendSomeone to someone via email or any other mechanism you choose.
 
@@ -580,6 +578,7 @@ public class Samples {
         // This is the name of the container and blob that we're creating a SAS to.
         String containerName = "mycontainer"; // Container names require lowercase.
         String blobName = "HelloWorld.txt"; // Blob names can be mixed case.
+        String snapshotId = "2018-01-01T00:00:00.0000000Z"; // SAS can be restricted to a specific snapshot
 
         /*
         Set the desired SAS signature values and sign them with the shared key credentials to get the SAS query
@@ -589,11 +588,12 @@ public class Samples {
                 .withProtocol(SASProtocol.HTTPS_ONLY) // Users MUST use HTTPS (not HTTP).
                 .withExpiryTime(OffsetDateTime.now().plusDays(2)) // 2 days before expiration.
                 .withContainerName(containerName)
-                .withBlobName(blobName);
+                .withBlobName(blobName)
+                .withSnapshotId(snapshotId);
 
         /*
         To produce a container SAS (as opposed to a blob SAS), assign to Permissions using ContainerSASPermissions, and
-        make sure the blobName field is null (the default).
+        make sure the blobName and snapshotId fields are null (the default).
          */
         BlobSASPermission permission = new BlobSASPermission()
                 .withRead(true)
@@ -605,9 +605,11 @@ public class Samples {
 
         // Calling encode will generate the query string.
         String encodedParams = params.encode();
+        // Colons are not safe characters in a URL; they must be properly encoded.
+        snapshotId = snapshotId.replace(":", "%3A");
 
-        String urlToSendToSomeone = String.format(Locale.ROOT, "https://%s.blob.core.windows.net/%s/%s?%s",
-                accountName, containerName, blobName, encodedParams);
+        String urlToSendToSomeone = String.format(Locale.ROOT, "https://%s.blob.core.windows.net/%s/%s?%s&%s",
+                accountName, containerName, blobName, snapshotId, encodedParams);
         // At this point, you can send the urlToSendSomeone to someone via email or any other mechanism you choose.
 
         // ***************************************************************************************************
@@ -1415,7 +1417,7 @@ public class Samples {
                 .flatMap(response -> Single.using(
                         () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
                         channel -> TransferManager.uploadFileToBlockBlob(channel, blobURL,
-                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null),
+                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null),
                         AsynchronousFileChannel::close)
                 )
                 .flatMap(response -> Single.using(
@@ -1508,7 +1510,8 @@ public class Samples {
                         // Upload some data to a blob
                         Single.using(() -> AsynchronousFileChannel.open(file.toPath()),
                                 fileChannel -> TransferManager.uploadFileToBlockBlob(fileChannel, blobURL,
-                                        BlockBlobURL.MAX_STAGE_BLOCK_BYTES, TransferManagerUploadToBlockBlobOptions.DEFAULT),
+                                        BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null,
+                                        new TransferManagerUploadToBlockBlobOptions()),
                                 AsynchronousFileChannel::close))
                 .flatMap(response ->
                         blobURL.download(null, null, false, null))
@@ -1542,7 +1545,8 @@ public class Samples {
         URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainercreateifnotexist");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainercreateifnotexist" +
+                System.currentTimeMillis());
 
         createContainerIfNotExists(containerURL)
                 .flatMap(r -> {
@@ -1799,6 +1803,7 @@ public class Samples {
         // This is the name of the container and blob that we're creating a SAS to.
         String containerName = "mycontainer"; // Container names require lowercase.
         String blobName = "HelloWorld.txt"; // Blob names can be mixed case.
+        String snapshotId = "2018-01-01T00:00:00.0000000Z"; // SAS can be restricted to a specific snapshot
 
         /*
         Set the desired SAS signature values and sign them with the shared key credentials to get the SAS query
@@ -1808,11 +1813,12 @@ public class Samples {
                 .withProtocol(SASProtocol.HTTPS_ONLY) // Users MUST use HTTPS (not HTTP).
                 .withExpiryTime(OffsetDateTime.now().plusDays(2)) // 2 days before expiration.
                 .withContainerName(containerName)
-                .withBlobName(blobName);
+                .withBlobName(blobName)
+                .withSnapshotId(snapshotId);
 
         /*
         To produce a container SAS (as opposed to a blob SAS), assign to Permissions using ContainerSASPermissions, and
-        make sure the blobName field is null (the default).
+        make sure the blobName and snapshotId fields are null (the default).
          */
         BlobSASPermission blobPermission = new BlobSASPermission()
                 .withRead(true)
@@ -1824,9 +1830,11 @@ public class Samples {
 
         // Calling encode will generate the query string.
         encodedParams = serviceParams.encode();
+        // Colons are not safe characters in a URL; they must be properly encoded.
+        snapshotId = snapshotId.replace(":", "%3A");
 
-        urlToSendToSomeone = String.format(Locale.ROOT, "https://%s.blob.core.windows.net/%s/%s?%s",
-                getAccountName(), containerName, blobName, encodedParams);
+        urlToSendToSomeone = String.format(Locale.ROOT, "https://%s.blob.core.windows.net/%s/%s?%s&%s",
+                getAccountName(), containerName, blobName, snapshotId, encodedParams);
         // At this point, you can send the urlToSendSomeone to someone via email or any other mechanism you choose.
 
         // ***************************************************************************************************
@@ -1901,11 +1909,9 @@ public class Samples {
 
         // <block_from_url>
         String blockID = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
-        blockBlobURL.stageBlockFromURL(blockID, blobURL.toURL(), null, null,
-                null, null)
+        blockBlobURL.stageBlockFromURL(blockID, blobURL.toURL(), null, null, null, null, null)
                 .flatMap(response ->
-                        blockBlobURL.commitBlockList(Arrays.asList(blockID), null, null,
-                                null, null))
+                        blockBlobURL.commitBlockList(Arrays.asList(blockID), null, null, null, null))
                 .subscribe();
         // </block_from_url>
 
@@ -1926,6 +1932,10 @@ public class Samples {
                 }).subscribe();
         // </append_blob>
 
+        // <append_from_url>
+        appendBlobURL.appendBlockFromUrl(blobURL.toURL(), new BlobRange().withOffset(50), null, null, null, null)
+                .subscribe();
+        // </append_from_url>
 
         // <snapshot>
         // Create the container.
@@ -2169,6 +2179,12 @@ public class Samples {
          */
         // </incremental_copy>
 
+        // <page_from_url>
+        pageBlobURL.uploadPagesFromURL(new PageRange().withStart(0).withEnd(511), blobURL.toURL(), 2048L, null, null,
+                null, null)
+                .subscribe();
+        // </page_from_url>
+
         // <blob_lease>
         blobURL.acquireLease(null, 20, null, null)
                 .flatMap(response ->
@@ -2210,7 +2226,7 @@ public class Samples {
                 .flatMap(response -> Single.using(
                         () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
                         channel -> TransferManager.uploadFileToBlockBlob(channel, blobURL,
-                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null),
+                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null, null),
                         AsynchronousFileChannel::close)
                 )
                 .flatMap(response -> Single.using(
@@ -2251,7 +2267,7 @@ public class Samples {
         // </service_stats>
 
         // <service_list>
-        serviceURL.listContainersSegment(null, ListContainersOptions.DEFAULT, null)
+        serviceURL.listContainersSegment(null, new ListContainersOptions(), null)
                 .flatMap(listContainersSegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listContainersHelper(serviceURL, listContainersSegmentResponse))

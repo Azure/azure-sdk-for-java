@@ -3,32 +3,49 @@
  Licensed under the MIT License. See License.txt in the project root for
  license information.
 -->
+<!--
+ Copyright (c) Microsoft Corporation. All rights reserved.
+ Licensed under the MIT License. See License.txt in the project root for
+ license information.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-client-sdk-parent</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../../pom.client.xml</relativePath>
-    </parent>
 
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>10.5.0</version>
+    <version>11.0.0</version>
 
     <name>Azure Storage Blob</name>
     <description>The Azure Storage Java Blob library.</description>
-    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <url>https://github.com/Azure/azure-storage-java</url>
 
-    <distributionManagement>
-        <site>
-            <id>azure-java-build-docs</id>
-            <url>${site.url}/site/${project.artifactId}</url>
-        </site>
-    </distributionManagement>
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>http://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-    <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
+    <scm>
+        <url>scm:git:https://github.com/Azure/azure-storage-java</url>
+        <connection>scm:git:git@github.com:Azure/azure-storage-java.git</connection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <legal>
+            <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>microsoft</id>
+            <name>Microsoft</name>
+        </developer>
+    </developers>
 
     <pluginRepositories>
         <pluginRepository>
@@ -45,58 +62,58 @@
     </pluginRepositories>
 
     <dependencies>
-
         <dependency>
             <groupId>com.microsoft.rest.v2</groupId>
             <artifactId>client-runtime</artifactId>
+            <version>2.1.0</version>
         </dependency>
-
         <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>adal4j</artifactId>
+            <version>1.6.3</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- Adding latest Netty as a temporary override of netty lib in v2 runtime.
-        The old version prevents tests from running in Java 11. Issue is raised to have netty updated in v2 runtime
-         Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/3107 -->
-        <dependency>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-all</artifactId>
-          <version>${netty-all.version}</version>
-        </dependency>
-
-        <dependency>
-          <groupId>com.corundumstudio.socketio</groupId>
-          <artifactId>netty-socketio</artifactId>
-          <version>${netty-socketio.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
             <scope>test</scope>
+            <version>1.1-groovy-2.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.4.13</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
+            <version>3.2.7</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>2.6</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>uk.org.lidalia</groupId>
             <artifactId>slf4j-test</artifactId>
+            <version>1.2.0</version>
             <scope>test</scope>
         </dependency>
-
-
-
     </dependencies>
 
     <build>
@@ -107,6 +124,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <compilerId>groovy-eclipse-compiler</compilerId>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
@@ -118,14 +136,64 @@
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-eclipse-compiler</artifactId>
-                        <version>${groovy-eclipse-compiler.version}</version>
+                        <version>2.9.3-01</version>
                     </dependency>
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-eclipse-batch</artifactId>
-                        <version>${groovy-eclipse-batch.version}</version>
+                        <version>2.4.15-01</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20.1</version>
+                <configuration>
+                    <useFile>false</useFile>
+                    <includes>
+                        <include>**/Test*.*</include>
+                        <include>**/*Test.*</include>
+                        <include>**/*Tests.*</include>
+                        <include>**/*Samples*.*</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.1</version>
+                <configuration>
+                    <!-- force links to Java 8 documentation (should happen automatically
+						but doesn't) -->
+                    <javaApiLinks>
+                        <property>
+                            <name>api_1.8</name>
+                            <value>https://docs.oracle.com/javase/8/docs/api/</value>
+                        </property>
+                    </javaApiLinks>
+                    <!-- add license notice -->
+                    <bottom>
+                        <![CDATA[This documentation was released into the public domain.]]>
+                    </bottom>
+                    <tags>
+                        <tag>
+                            <name>apiNote</name>
+                            <placement>m</placement>
+                            <head>API Note:</head>
+                        </tag>
+                    </tags>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
             </plugin>
         </plugins>
     </build>

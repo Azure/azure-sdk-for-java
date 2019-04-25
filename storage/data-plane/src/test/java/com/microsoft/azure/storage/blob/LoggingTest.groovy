@@ -1,5 +1,17 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. 
-// Licensed under the MIT License.
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.microsoft.azure.storage.blob
 
@@ -12,7 +24,6 @@ import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Single
-import org.junit.Assume
 import org.slf4j.LoggerFactory
 import spock.lang.Unroll
 import uk.org.lidalia.slf4jtest.TestLogger
@@ -33,16 +44,12 @@ class LoggingTest extends APISpec {
         }
     }
 
-
-    def setupSpec() {
-    }
-
     /*
     Clean out the logs directory so we can validate that it grows, which is how we test default logging. We only
     need to do this once per test past rather than per test, and we don't have to be entirely successful. This should
     just keep it from growing too large.
      */
-    def cleanupSpec() {
+    def setupSpec() {
         File logsDir = new File(System.getProperty("java.io.tmpdir") + "AzureStorageJavaSDKLogs")
         for (File file : logsDir.listFiles()) {
             file.delete()
@@ -82,7 +89,7 @@ class LoggingTest extends APISpec {
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
         def logDirectorySize = calculateLogsDirectorySize()
-        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        def slf4jLogger = TestLoggerFactory.getTestLogger(LoggingFactory.class.getName())
         slf4jLogger.clearAll()
 
         when:
@@ -138,7 +145,7 @@ class LoggingTest extends APISpec {
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
         int logDirectorySize = calculateLogsDirectorySize()
-        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        def slf4jLogger = TestLoggerFactory.getTestLogger(LoggingFactory.class.getName())
         slf4jLogger.clearAll()
 
         when:
@@ -175,7 +182,7 @@ class LoggingTest extends APISpec {
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
         def logDirectorySize = calculateLogsDirectorySize()
-        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        def slf4jLogger = TestLoggerFactory.getTestLogger(LoggingFactory.class.getName())
         slf4jLogger.clearAll()
 
         when:
@@ -214,7 +221,7 @@ class LoggingTest extends APISpec {
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
         def logDirectorySize = calculateLogsDirectorySize()
-        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        def slf4jLogger = TestLoggerFactory.getTestLogger(LoggingFactory.class.getName())
         slf4jLogger.clearAll()
 
         when:
@@ -258,7 +265,7 @@ class LoggingTest extends APISpec {
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
         def logDirectorySize = calculateLogsDirectorySize()
-        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        def slf4jLogger = TestLoggerFactory.getTestLogger(LoggingFactory.class.getName())
         slf4jLogger.clearAll()
 
         when:
@@ -398,7 +405,7 @@ class LoggingTest extends APISpec {
         then:
         1 * logger.log(HttpPipelineLogLevel.INFO, _, _) >>
                 { HttpPipelineLogLevel level, String message, Object[] params ->
-                    if (!message.contains("OUTGOING REQUEST")) {
+                    if (!message.contains("OUTGOING REQUEST") || message.contains("urlSignature")) {
                         throw new IllegalArgumentException(message)
                     }
                 }

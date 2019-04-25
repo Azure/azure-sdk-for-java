@@ -7,7 +7,7 @@
 // regenerated.
 
 /**
- * This package contains the blob.implementation classes for StorageClient.
+ * This package contains the implementation classes for StorageClient.
  * Storage Client.
  */
 package com.microsoft.azure.storage.blob.implementation;

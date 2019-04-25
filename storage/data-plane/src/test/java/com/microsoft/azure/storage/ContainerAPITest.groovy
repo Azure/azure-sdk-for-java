@@ -1,5 +1,17 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. 
-// Licensed under the MIT License.
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.microsoft.azure.storage
 
@@ -13,14 +25,12 @@ import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Flowable
 import io.reactivex.Single
-import org.junit.Assume
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneId
 
 class ContainerAPITest extends APISpec {
-
 
     def "Create all null"() {
         setup:
@@ -702,7 +712,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options copy"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withCopy(true))
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListDetails().withCopy(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -726,7 +736,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options metadata"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withMetadata(true))
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListDetails().withMetadata(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -747,7 +757,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options snapshots"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withSnapshots(true))
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListDetails().withSnapshots(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -766,7 +776,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options uncommitted"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails()
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListDetails()
                 .withUncommittedBlobs(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
@@ -792,7 +802,7 @@ class ContainerAPITest extends APISpec {
         bu.delete(null, null, null).blockingGet()
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, new ListBlobsOptions().withDetails(new BlobListingDetails()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, new ListBlobsOptions().withDetails(new BlobListDetails()
                 .withDeletedBlobs(true)), null).blockingGet().body().segment().blobItems()
 
         then:
@@ -821,7 +831,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options maxResults"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withCopy(true)
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListDetails().withCopy(true)
                 .withSnapshots(true).withUncommittedBlobs(true)).withMaxResults(2)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
@@ -920,7 +930,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options copy"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withCopy(true))
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListDetails().withCopy(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -945,7 +955,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options metadata"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withMetadata(true))
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListDetails().withMetadata(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -967,7 +977,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options uncommitted"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails()
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListDetails()
                 .withUncommittedBlobs(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
@@ -995,7 +1005,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "",
-                new ListBlobsOptions().withDetails(new BlobListingDetails().withDeletedBlobs(true)), null).blockingGet()
+                new ListBlobsOptions().withDetails(new BlobListDetails().withDeletedBlobs(true)), null).blockingGet()
                 .body().segment().blobItems()
 
         then:
@@ -1025,7 +1035,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options maxResults"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withCopy(true)
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListDetails().withCopy(true)
                 .withUncommittedBlobs(true)).withMaxResults(1)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
@@ -1044,7 +1054,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "List blobs hier options fail"() {
         when:
-        def options = new ListBlobsOptions().withDetails(new BlobListingDetails().withSnapshots(snapshots))
+        def options = new ListBlobsOptions().withDetails(new BlobListDetails().withSnapshots(snapshots))
                 .withMaxResults(maxResults)
         cu.listBlobsHierarchySegment(null, null, options, null)
 

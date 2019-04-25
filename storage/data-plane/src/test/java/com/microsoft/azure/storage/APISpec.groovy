@@ -1,8 +1,22 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.microsoft.azure.storage
 
+import com.microsoft.aad.adal4j.AuthenticationContext
+import com.microsoft.aad.adal4j.ClientCredential
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.Context
@@ -11,17 +25,16 @@ import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import io.reactivex.Flowable
 import io.reactivex.Single
-import org.junit.Assume
 import org.spockframework.lang.ISpecificationContext
 import spock.lang.Shared
 import spock.lang.Specification
 
+import java.lang.reflect.Method
 import java.nio.ByteBuffer
 import java.time.OffsetDateTime
+import java.util.concurrent.Executors
 
 class APISpec extends Specification {
-    static final String RECORD_MODE = "RECORD"
-
     @Shared
     Integer iterationNo = 0 // Used to generate stable container names for recording tests with multiple iterations.
 
@@ -73,20 +86,26 @@ class APISpec extends Specification {
     /*
     Credentials for various kinds of accounts.
      */
-    static SharedKeyCredentials primaryCreds = getGenericCreds("PRIMARY_STORAGE_")
+    @Shared
+    static SharedKeyCredentials primaryCreds
 
-    static ServiceURL primaryServiceURL = getGenericServiceURL(primaryCreds)
-
-    static SharedKeyCredentials alternateCreds = getGenericCreds("SECONDARY_STORAGE_")
+    @Shared
+    static SharedKeyCredentials alternateCreds
 
     /*
     URLs to various kinds of accounts.
      */
-    static ServiceURL alternateServiceURL = getGenericServiceURL(alternateCreds)
+    @Shared
+    static ServiceURL primaryServiceURL
 
-    static ServiceURL blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
+    @Shared
+    static ServiceURL alternateServiceURL
 
-    static ServiceURL premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_STORAGE_"))
+    @Shared
+    static ServiceURL blobStorageServiceURL
+
+    @Shared
+    static ServiceURL premiumServiceURL
 
     /*
     Constants for testing that the context parameter is properly passed to the pipeline.
@@ -134,7 +153,7 @@ class APISpec extends Specification {
         String suffix = ""
         suffix += System.currentTimeMillis() // For uniqueness between runs.
         suffix += entityNo // For easy identification of which call created this resource.
-        return prefix + getTestName(specificationContext) + suffix
+        return prefix + getTestName(specificationContext).take(63 - suffix.length() - prefix.length()) + suffix
     }
 
     static int updateIterationNo(ISpecificationContext specificationContext, int iterationNo) {
@@ -161,17 +180,9 @@ class APISpec extends Specification {
 
     }
 
-    static getEnvironmentVariable(String variable){
-        String envVariable = System.getenv().get(variable)
-        if(envVariable == null){
-            envVariable =  ""
-        }
-        return envVariable
-    }
-
     static getGenericCreds(String accountType) {
-        String accountName = getEnvironmentVariable(accountType + "ACCOUNT_NAME")
-        String accountKey = getEnvironmentVariable(accountType + "ACCOUNT_KEY")
+        String accountName = System.getenv().get(accountType + "ACCOUNT_NAME")
+        String accountKey = System.getenv().get(accountType + "ACCOUNT_KEY")
         if (accountName == null || accountKey == null) {
             System.out.println("Account name or key for the " + accountType + " account was null. Test's requiring " +
                     "these credentials will fail.")
@@ -196,7 +207,7 @@ class APISpec extends Specification {
         po.withLogger(new HttpPipelineLogger() {
             @Override
             HttpPipelineLogLevel minimumLogLevel() {
-                HttpPipelineLogLevel.ERROR
+                return HttpPipelineLogLevel.ERROR
             }
 
             @Override
@@ -215,7 +226,7 @@ class APISpec extends Specification {
         HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, new PipelineOptions())
 
         ServiceURL serviceURL = new ServiceURL(
-                new URL("http://" + System.getenv().get("PRIMARY_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net"), pipeline)
+                new URL("http://" + primaryCreds.accountName + ".blob.core.windows.net"), pipeline)
         // There should not be more than 5000 containers from these tests
         for (ContainerItem c : serviceURL.listContainersSegment(null,
                 new ListContainersOptions().withPrefix(containerPrefix), null).blockingGet()
@@ -255,19 +266,10 @@ class APISpec extends Specification {
     }
 
     def setupSpec() {
-    }
-
-    def cleanupSpec() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
-        cleanupContainers()
-    }
-
-    def setup() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         /*
         We'll let primary creds throw and crash if there are no credentials specified because everything else will fail.
          */
-        primaryCreds = getGenericCreds("PRIMARY_STORAGE_")
+        primaryCreds = getGenericCreds("")
         primaryServiceURL = getGenericServiceURL(primaryCreds)
 
         /*
@@ -277,7 +279,7 @@ class APISpec extends Specification {
         something in the future.
          */
         try {
-            alternateCreds = getGenericCreds("SECONDARY_STORAGE_")
+            alternateCreds = getGenericCreds("SECONDARY_")
             alternateServiceURL = getGenericServiceURL(alternateCreds)
         }
         catch (Exception e) {
@@ -288,11 +290,17 @@ class APISpec extends Specification {
         catch (Exception e) {
         }
         try {
-            premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_STORAGE_"))
+            premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_"))
         }
         catch (Exception e) {
         }
+    }
 
+    def cleanupSpec() {
+        cleanupContainers()
+    }
+
+    def setup() {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
         cu.create(null, null, null).blockingGet()
     }
@@ -398,6 +406,8 @@ class APISpec extends Specification {
      */
     def validateBasicHeaders(Object headers) {
         return headers.class.getMethod("eTag").invoke(headers) != null &&
+                // Quotes should be scrubbed from etag header values
+                !((String)(headers.class.getMethod("eTag").invoke(headers))).contains("\"") &&
                 headers.class.getMethod("lastModified").invoke(headers) != null &&
                 headers.class.getMethod("requestId").invoke(headers) != null &&
                 headers.class.getMethod("version").invoke(headers) != null &&
@@ -483,7 +493,16 @@ class APISpec extends Specification {
 
             @Override
             Object deserializedHeaders() {
-                return responseHeadersType.getConstructor().newInstance()
+                def headers = responseHeadersType.getConstructor().newInstance()
+
+                // If the headers have an etag method, we need to set it to prevent postProcessResponse from breaking.
+                try {
+                    headers.getClass().getMethod("withETag", String.class).invoke(headers, "etag");
+                }
+                catch (NoSuchMethodException e) {
+                    // No op
+                }
+                return headers
             }
 
             @Override
@@ -563,11 +582,13 @@ class APISpec extends Specification {
         }
     }
 
-    def getTestMode(){
-        String testMode =  System.getenv("AZURE_TEST_MODE")
-        if(testMode == null){
-            testMode =  "PLAYBACK"
-        }
-        return testMode
+    def getOAuthServiceURL() {
+        def authority = "https://[AUTHORITY]/[TENANT ID]/oauth2/token"
+        def credential = new ClientCredential("[APP ID]", "[APP SECRET]")
+        def token = new AuthenticationContext(authority, false, Executors.newFixedThreadPool(1)).acquireToken("https://storage.azure.com", credential, null).get().accessToken
+
+        return new ServiceURL(
+                new URL("https://[ACCOUNT NAME].blob.core.windows.net/"),
+                StorageURL.createPipeline(new TokenCredentials(token)))
     }
 }

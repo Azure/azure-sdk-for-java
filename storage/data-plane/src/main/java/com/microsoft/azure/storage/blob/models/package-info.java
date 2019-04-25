@@ -7,7 +7,7 @@
 // regenerated.
 
 /**
- * This package contains the blob.models classes for StorageClient.
+ * This package contains the models classes for StorageClient.
  * Storage Client.
  */
 package com.microsoft.azure.storage.blob.models;

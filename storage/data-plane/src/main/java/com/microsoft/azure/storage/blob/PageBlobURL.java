@@ -26,7 +26,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
-import static com.microsoft.azure.storage.blob.Utility.addErrorWrappingToSingle;
+import static com.microsoft.azure.storage.blob.Utility.postProcessResponse;
 
 /**
  * Represents a URL to a page blob. It may be obtained by direct construction or via the create method on a
@@ -159,7 +159,7 @@ public final class PageBlobURL extends BlobURL {
      */
     public Single<PageBlobCreateResponse> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         if (size % PageBlobURL.PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -171,10 +171,10 @@ public final class PageBlobURL extends BlobURL {
             // subscription.
             throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");
         }
-        metadata = metadata == null ? Metadata.NONE : metadata;
+        metadata = metadata == null ? new Metadata() : metadata;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().createWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedPageBlobs().createWithRestResponseAsync(
                 context, 0, size, null, metadata, sequenceNumber, null, headers,
                 accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions()));
     }
@@ -237,7 +237,7 @@ public final class PageBlobURL extends BlobURL {
      */
     public Single<PageBlobUploadPagesResponse> uploadPages(PageRange pageRange, Flowable<ByteBuffer> body,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
-        pageBlobAccessConditions = pageBlobAccessConditions == null ? PageBlobAccessConditions.NONE :
+        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() :
                 pageBlobAccessConditions;
 
         if (pageRange == null) {
@@ -248,11 +248,105 @@ public final class PageBlobURL extends BlobURL {
         String pageRangeStr = pageRangeToString(pageRange);
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().uploadPagesWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedPageBlobs().uploadPagesWithRestResponseAsync(
                 context, body, pageRange.end() - pageRange.start() + 1, null, null, pageRangeStr, null,
                 pageBlobAccessConditions.leaseAccessConditions(),
                 pageBlobAccessConditions.sequenceNumberAccessConditions(),
                 pageBlobAccessConditions.modifiedAccessConditions()));
+    }
+
+    /**
+     * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
+     * of 512.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     * <p>
+     *
+     * @param range
+     *          A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset
+     *          must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
+     *          are 0-511, 512-1023, etc.
+     * @param sourceURL
+     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *          authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
+     *          either be public or must be authenticated via a shared access signature. If the source blob is public, no
+     *          authentication is required to perform the operation.
+     * @param sourceOffset
+     *          The source offset to copy from.  Pass null or 0 to copy from the beginning of source page blob.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobURL.uploadPagesFromURL")]
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<PageBlobUploadPagesFromURLResponse> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
+        return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
+                null, null);
+    }
+
+    /**
+     * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
+     * of 512.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     * <p>
+     *
+     * @param range
+     *          The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries, the start offset
+     *          must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
+     *          are 0-511, 512-1023, etc.
+     * @param sourceURL
+     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *          authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
+     *          either be public or must be authenticated via a shared access signature. If the source blob is public, no
+     *          authentication is required to perform the operation.
+     * @param sourceOffset
+     *          The source offset to copy from.  Pass null or 0 to copy from the beginning of source blob.
+     * @param sourceContentMD5
+     *          An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
+     *          of the received data and fail the request if it does not match the provided MD5.
+     * @param destAccessConditions
+     *          {@link PageBlobAccessConditions}
+     * @param sourceAccessConditions
+     *          {@link SourceModifiedAccessConditions}
+     * @param context
+     *          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *          {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *          arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *          its parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobURL.uploadPagesFromURL")]
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<PageBlobUploadPagesFromURLResponse> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
+            byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
+            SourceModifiedAccessConditions sourceAccessConditions, Context context) {
+
+        if(range == null) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new IllegalArgumentException("range cannot be null.");
+        }
+
+        String rangeString = pageRangeToString(range);
+
+        sourceOffset = sourceOffset ==  null ? 0 : sourceOffset;
+
+        String sourceRangeString = pageRangeToString(new PageRange().withStart(sourceOffset).withEnd(sourceOffset + (range.end() - range.start())));
+
+        destAccessConditions = destAccessConditions == null ? new PageBlobAccessConditions() : destAccessConditions;
+
+        context = context == null ? Context.NONE : context;
+
+        return postProcessResponse(this.storageClient.generatedPageBlobs().uploadPagesFromURLWithRestResponseAsync(
+                context, sourceURL, sourceRangeString, 0, rangeString, sourceContentMD5, null,
+                null, destAccessConditions.leaseAccessConditions(), destAccessConditions.sequenceNumberAccessConditions(),
+                destAccessConditions.modifiedAccessConditions(), sourceAccessConditions));
     }
 
     /**
@@ -301,7 +395,7 @@ public final class PageBlobURL extends BlobURL {
      */
     public Single<PageBlobClearPagesResponse> clearPages(PageRange pageRange,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
-        pageBlobAccessConditions = pageBlobAccessConditions == null ? PageBlobAccessConditions.NONE :
+        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() :
                 pageBlobAccessConditions;
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -311,7 +405,7 @@ public final class PageBlobURL extends BlobURL {
         String pageRangeStr = pageRangeToString(pageRange);
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().clearPagesWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedPageBlobs().clearPagesWithRestResponseAsync(
                 context, 0, null, pageRangeStr, null, pageBlobAccessConditions.leaseAccessConditions(),
                 pageBlobAccessConditions.sequenceNumberAccessConditions(),
                 pageBlobAccessConditions.modifiedAccessConditions()));
@@ -357,12 +451,12 @@ public final class PageBlobURL extends BlobURL {
      */
     public Single<PageBlobGetPageRangesResponse> getPageRanges(BlobRange blobRange,
             BlobAccessConditions accessConditions, Context context) {
-        blobRange = blobRange == null ? BlobRange.DEFAULT : blobRange;
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        blobRange = blobRange == null ? new BlobRange() : blobRange;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().getPageRangesWithRestResponseAsync(
-                context, null, null, blobRange.toString(), null, accessConditions.leaseAccessConditions(),
+        return postProcessResponse(this.storageClient.generatedPageBlobs().getPageRangesWithRestResponseAsync(
+                context, null, null, blobRange.toHeaderValue(), null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
 
@@ -414,17 +508,17 @@ public final class PageBlobURL extends BlobURL {
      */
     public Single<PageBlobGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
             BlobAccessConditions accessConditions, Context context) {
-        blobRange = blobRange == null ? BlobRange.DEFAULT : blobRange;
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        blobRange = blobRange == null ? new BlobRange() : blobRange;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
         if (prevSnapshot == null) {
             throw new IllegalArgumentException("prevSnapshot cannot be null");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().getPageRangesDiffWithRestResponseAsync(
-                context, null, null, prevSnapshot, blobRange.toString(), null, accessConditions.leaseAccessConditions(),
-                accessConditions.modifiedAccessConditions()));
+        return postProcessResponse(this.storageClient.generatedPageBlobs().getPageRangesDiffWithRestResponseAsync(
+                context, null, null, prevSnapshot, blobRange.toHeaderValue(), null,
+                accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions()));
     }
 
     /**
@@ -473,10 +567,10 @@ public final class PageBlobURL extends BlobURL {
             // subscription.
             throw new IllegalArgumentException("size must be a multiple of PageBlobURL.PAGE_BYTES.");
         }
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().resizeWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedPageBlobs().resizeWithRestResponseAsync(
                 context, size, null, null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
@@ -533,11 +627,11 @@ public final class PageBlobURL extends BlobURL {
             // subscription.
             throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");
         }
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         sequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;
         context = context == null ? Context.NONE : context;
 
-        return addErrorWrappingToSingle(
+        return postProcessResponse(
                 this.storageClient.generatedPageBlobs().updateSequenceNumberWithRestResponseAsync(context,
                         action, null, sequenceNumber, null, accessConditions.leaseAccessConditions(),
                         accessConditions.modifiedAccessConditions()));
@@ -599,7 +693,7 @@ public final class PageBlobURL extends BlobURL {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
             throw new Error(e);
         }
-        return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().copyIncrementalWithRestResponseAsync(
+        return postProcessResponse(this.storageClient.generatedPageBlobs().copyIncrementalWithRestResponseAsync(
                 context, source, null, null, modifiedAccessConditions));
     }
 }

@@ -1,5 +1,17 @@
-// Copyright (c) Microsoft Corporation. All rights reserved. 
-// Licensed under the MIT License.
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.microsoft.azure.storage
 
@@ -9,7 +21,6 @@ import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
-import org.junit.Assume
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -48,6 +59,22 @@ class BlockBlobAPITest extends APISpec {
         bu.stageBlock(getBlockID(), defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
     }
 
+    @Unroll
+    def "Stage block illegal arguments"() {
+        when:
+        bu.stageBlock(blockID, data, dataSize, null, null).blockingGet()
+
+        then:
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
+
+        where:
+        blockID      | data            | dataSize            | exceptionType
+        null         | defaultFlowable | defaultDataSize     | IllegalArgumentException
+        getBlockID() | null            | defaultDataSize     | IllegalArgumentException
+        getBlockID() | defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
+        getBlockID() | defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
+    }
 
     def "Stage block empty body"() {
         when:
@@ -122,7 +149,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         def response = bu2.stageBlockFromURL(blockID, bu.toURL(), null, null,
-                null, null).blockingGet()
+                null, null, null).blockingGet()
         def listResponse = bu2.getBlockList(BlockListType.ALL, null, null).blockingGet()
         bu2.commitBlockList(Arrays.asList(blockID), null, null, null, null).blockingGet()
 
@@ -153,7 +180,7 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Stage block from URL IA"() {
         when:
-        bu.stageBlockFromURL(blockID, sourceURL, null, null, null, null)
+        bu.stageBlockFromURL(blockID, sourceURL, null, null, null, null, null)
                 .blockingGet()
 
         then:
@@ -172,7 +199,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         destURL.stageBlockFromURL(getBlockID(), bu.toURL(), new BlobRange().withOffset(2).withCount(3), null, null,
-                null).blockingGet()
+                null, null).blockingGet()
 
         then:
         destURL.getBlockList(BlockListType.ALL, null, null).blockingGet().body().uncommittedBlocks().get(0)
@@ -186,7 +213,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         destURL.stageBlockFromURL(getBlockID(), bu.toURL(), null,
-                MessageDigest.getInstance("MD5").digest(defaultData.array()), null, null).blockingGet()
+                MessageDigest.getInstance("MD5").digest(defaultData.array()), null, null, null).blockingGet()
 
         then:
         notThrown(StorageException)
@@ -199,7 +226,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         destURL.stageBlockFromURL(getBlockID(), bu.toURL(), null, "garbage".getBytes(),
-                null, null).blockingGet()
+                null, null, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -211,7 +238,7 @@ class BlockBlobAPITest extends APISpec {
         def lease = new LeaseAccessConditions().withLeaseId(setupBlobLeaseCondition(bu, receivedLeaseID))
 
         when:
-        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, lease, null).blockingGet()
+        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, lease, null, null).blockingGet()
 
         then:
         notThrown(StorageException)
@@ -223,7 +250,7 @@ class BlockBlobAPITest extends APISpec {
         def lease = new LeaseAccessConditions().withLeaseId("garbage")
 
         when:
-        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, lease, null).blockingGet()
+        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, lease, null, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -235,7 +262,7 @@ class BlockBlobAPITest extends APISpec {
         bu = cu.createBlockBlobURL(generateBlobName())
 
         when:
-        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, null, null)
+        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, null, null, null)
                 .blockingGet()
 
         then:
@@ -250,10 +277,68 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         // No service call is made. Just satisfy the parameters.
-        bu.stageBlockFromURL("id", bu.toURL(), null, null, null, defaultContext).blockingGet()
+        bu.stageBlockFromURL("id", bu.toURL(), null, null, null, null, defaultContext).blockingGet()
 
         then:
         notThrown(RuntimeException)
+    }
+
+    @Unroll
+    def "Stage block from URL source AC"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+        def blockID = getBlockID()
+
+        def sourceURL = cu.createBlockBlobURL(generateBlobName())
+        sourceURL.upload(defaultFlowable, defaultDataSize).blockingGet()
+
+        sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch)
+        def smac = new SourceModifiedAccessConditions()
+                .withSourceIfModifiedSince(sourceIfModifiedSince)
+                .withSourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
+                .withSourceIfMatch(sourceIfMatch)
+                .withSourceIfNoneMatch(sourceIfNoneMatch)
+
+        expect:
+        bu.stageBlockFromURL(blockID, sourceURL.toURL(), null, null, null, smac, null).blockingGet().statusCode() == 201
+
+        where:
+        sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
+        null                  | null                    | null          | null
+        oldDate               | null                    | null          | null
+        null                  | newDate                 | null          | null
+        null                  | null                    | receivedEtag  | null
+        null                  | null                    | null          | garbageEtag
+    }
+
+    @Unroll
+    def "Stage block from URL source AC fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+        def blockID = getBlockID()
+
+        def sourceURL = cu.createBlockBlobURL(generateBlobName())
+        sourceURL.upload(defaultFlowable, defaultDataSize).blockingGet()
+
+        sourceIfNoneMatch = setupBlobMatchCondition(sourceURL, sourceIfNoneMatch)
+        def smac = new SourceModifiedAccessConditions()
+                .withSourceIfModifiedSince(sourceIfModifiedSince)
+                .withSourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
+                .withSourceIfMatch(sourceIfMatch)
+                .withSourceIfNoneMatch(sourceIfNoneMatch)
+
+        when:
+        bu.stageBlockFromURL(blockID, sourceURL.toURL(), null, null, null, smac, null).blockingGet().statusCode() == 201
+
+        then:
+        thrown(StorageException)
+
+        where:
+        sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
+        newDate               | null                    | null          | null
+        null                  | oldDate                 | null          | null
+        null                  | null                    | garbageEtag   | null
+        null                  | null                    | null          | receivedEtag
     }
 
     def "Commit block list"() {
@@ -559,6 +644,22 @@ class BlockBlobAPITest extends APISpec {
     def "Upload min"() {
         expect:
         bu.upload(defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
+    }
+
+    @Unroll
+    def "Upload illegal argument"() {
+        when:
+        bu.upload(data, dataSize, null, null, null, null).blockingGet()
+
+        then:
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
+
+        where:
+        data            | dataSize            | exceptionType
+        null            | defaultDataSize     | IllegalArgumentException
+        defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
+        defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Upload empty body"() {
