@@ -12,18 +12,15 @@ import com.microsoft.azure.eventhubs.EventPosition;
 import com.microsoft.azure.eventhubs.IllegalEntityException;
 import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.TimeoutException;
-import com.microsoft.azure.eventhubs.impl.RetryExponential;
 import com.microsoft.azure.eventhubs.impl.SharedAccessSignatureTokenProvider;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.Duration;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class SecurityExceptionsTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";

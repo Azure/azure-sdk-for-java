@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.logging.Level;
 
 public class RetryPolicyTest extends TestBase {
     public RetryPolicyTest() {
