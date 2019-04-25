@@ -11,6 +11,8 @@ import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.EventPosition;
 import com.microsoft.azure.eventhubs.IllegalEntityException;
 import com.microsoft.azure.eventhubs.RetryPolicy;
+import com.microsoft.azure.eventhubs.TimeoutException;
+import com.microsoft.azure.eventhubs.impl.RetryExponential;
 import com.microsoft.azure.eventhubs.impl.SharedAccessSignatureTokenProvider;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
@@ -21,6 +23,7 @@ import org.junit.Test;
 
 import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SecurityExceptionsTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
@@ -70,16 +73,22 @@ public class SecurityExceptionsTest extends ApiTestBase {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test()
     public void testEventHubClientNullKeyNameAndAccessToken() throws Throwable {
         final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
         final ConnectionStringBuilder connectionString = new ConnectionStringBuilder()
                 .setEndpoint(correctConnectionString.getEndpoint())
                 .setEventHubName(correctConnectionString.getEventHubName())
-                .setSharedAccessSignature(null);
+                .setSharedAccessSignature(null)
+                .setOperationTimeout(Duration.ofSeconds(10));
 
-        ehClient = EventHubClient.createSync(connectionString.toString(), RetryPolicy.getNoRetry(), TestContext.EXECUTOR_SERVICE);
-        ehClient.sendSync(EventData.create(("Test Message".getBytes())));
+        ehClient = EventHubClient.createSync(connectionString.toString(), new IncrementalRetryPolicy(2), TestContext.EXECUTOR_SERVICE);
+
+        try {
+            ehClient.sendSync(EventData.create(("Test Message".getBytes())));
+        } catch (TimeoutException e) {
+            Assert.assertEquals(IllegalArgumentException.class, e.getCause().getClass());
+        }
     }
 
     @Test(expected = AuthorizationFailedException.class)
@@ -172,6 +181,24 @@ public class SecurityExceptionsTest extends ApiTestBase {
     public void cleanup() throws EventHubException {
         if (ehClient != null) {
             ehClient.closeSync();
+        }
+    }
+
+    private class IncrementalRetryPolicy extends RetryPolicy {
+        private AtomicInteger numberOfAttempts;
+
+        IncrementalRetryPolicy(int numberOfAttempts) {
+            super(String.format("%s: %s", IncrementalRetryPolicy.class.getSimpleName(), numberOfAttempts));
+
+            this.numberOfAttempts = new AtomicInteger(numberOfAttempts);
+        }
+        @Override
+        protected Duration onGetNextRetryInterval(String clientId, Exception lastException, Duration remainingTime, int baseWaitTime) {
+            int attemptsLeft = numberOfAttempts.getAndDecrement();
+
+            return attemptsLeft > 0
+                ? Duration.ofSeconds(5)
+                : null;
         }
     }
 }
