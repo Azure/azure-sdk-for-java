@@ -217,8 +217,6 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * is an empty string.
      */
     public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
-        logger.logInformational("Getting ConfigurationSetting - " + setting);
-
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
