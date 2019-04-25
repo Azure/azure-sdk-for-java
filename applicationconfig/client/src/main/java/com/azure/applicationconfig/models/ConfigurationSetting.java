@@ -213,4 +213,14 @@ public class ConfigurationSetting {
         this.tags = tags;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return String.format("ConfigurationSetting(key=%s, label=%s, value=%s, etag=%s)",
+            this.key,
+            this.label,
+            this.value,
+            this.etag);
+    }
+
 }

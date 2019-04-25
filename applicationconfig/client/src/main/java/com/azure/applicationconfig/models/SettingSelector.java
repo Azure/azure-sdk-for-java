@@ -8,6 +8,8 @@ import com.azure.applicationconfig.ConfigurationAsyncClient;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * A set of options for selecting configuration settings from Application Configuration service.
@@ -174,5 +176,22 @@ public class SettingSelector {
     public SettingSelector fields(SettingFields... fields) {
         this.fields = fields;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        String fields;
+        if (this.fields == null) {
+            fields = "ALL_FIELDS";
+        } else {
+            fields = Arrays.stream(this.fields).map(item -> item.toString().toLowerCase(Locale.US))
+                .collect(Collectors.joining(","));
+        }
+
+        return String.format("SettingSelector(key=%s, label=%s, acceptDateTime=%s, fields=%s)",
+            this.key,
+            this.label,
+            this.acceptDatetime,
+            fields);
     }
 }
