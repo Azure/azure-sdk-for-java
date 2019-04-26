@@ -55,15 +55,11 @@
     </dependency>
 
     <!-- Other Microsoft Azure Dependencies -->
-<!--    <dependency>-->
-<!--      <groupId>com.microsoft.azure</groupId>-->
-<!--      <artifactId>azure-mgmt-resources</artifactId>-->
-<!--    </dependency>-->
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-common-test</artifactId>
-      <scope>test</scope>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-resources</artifactId>
     </dependency>
+
     <!-- Other Microsoft Dependencies -->
     <dependency>
       <groupId>com.microsoft.rest</groupId>

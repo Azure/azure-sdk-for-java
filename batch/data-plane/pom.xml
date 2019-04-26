@@ -68,23 +68,19 @@
       <scope>test</scope>
     </dependency>
 
-<!--    <dependency>-->
-<!--      <groupId>com.microsoft.azure</groupId>-->
-<!--      <artifactId>azure-mgmt-resources</artifactId>-->
-<!--      <type>test-jar</type>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-
-<!--    <dependency>-->
-<!--      <groupId>com.microsoft.azure</groupId>-->
-<!--      <artifactId>azure-mgmt-resources</artifactId>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-common-test</artifactId>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-resources</artifactId>
+      <type>test-jar</type>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-resources</artifactId>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>

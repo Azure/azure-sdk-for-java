@@ -34,7 +34,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import com.azure.common.test.utils.SdkContext;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.apache.commons.codec.binary.Base64;
 import org.joda.time.DateTime;
 import org.junit.Assert;

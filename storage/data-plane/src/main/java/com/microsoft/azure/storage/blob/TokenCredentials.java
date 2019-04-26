@@ -19,7 +19,7 @@ public final class TokenCredentials implements ICredentials {
 
     /*
     This is an atomic reference because it must be thread safe as all parts of the pipeline must be. It however cannot
-    be final as most namer fields are because in order to actually be useful, the token has to be renewed every few
+    be final as most factory fields are because in order to actually be useful, the token has to be renewed every few
     hours, which requires updating the value here.
      */
     private AtomicReference<String> token;
@@ -35,7 +35,7 @@ public final class TokenCredentials implements ICredentials {
     }
 
     /**
-     * Retrieve the value of the token used by this namer.
+     * Retrieve the value of the token used by this factory.
      *
      * @return A {@code String} with the token's value.
      */

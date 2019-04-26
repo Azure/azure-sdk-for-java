@@ -384,7 +384,7 @@ public final class EventProcessorHost {
     /**
      * Register class for event processor and start processing.
      * <p>
-     * This overload uses the default event processor namer, which simply creates new instances of
+     * This overload uses the default event processor factory, which simply creates new instances of
      * the registered event processor class, and uses all the default options.
      * <p>
      * The returned CompletableFuture completes when host initialization is finished. Initialization failures are
@@ -410,7 +410,7 @@ public final class EventProcessorHost {
     /**
      * Register class for event processor and start processing.
      * <p>
-     * This overload uses the default event processor namer, which simply creates new instances of
+     * This overload uses the default event processor factory, which simply creates new instances of
      * the registered event processor class, but takes user-specified options.
      * <p>
      * The returned CompletableFuture completes when host initialization is finished. Initialization failures are
@@ -429,7 +429,7 @@ public final class EventProcessorHost {
     }
 
     /**
-     * Register a user-supplied event processor namer and start processing.
+     * Register a user-supplied event processor factory and start processing.
      * <p>
      * If creating a new event processor requires more work than just new'ing an objects, the user must
      * create an object that implements IEventProcessorFactory and pass it to this method, instead of calling
@@ -441,7 +441,7 @@ public final class EventProcessorHost {
      * reported by completing the future with an exception, so it is important to call get() on the future and handle
      * any exceptions thrown.
      *
-     * @param factory User-supplied event processor namer object.
+     * @param factory User-supplied event processor factory object.
      * @return Future that completes when initialization is finished.
      */
     public CompletableFuture<Void> registerEventProcessorFactory(IEventProcessorFactory<?> factory) {
@@ -449,7 +449,7 @@ public final class EventProcessorHost {
     }
 
     /**
-     * Register user-supplied event processor namer and start processing.
+     * Register user-supplied event processor factory and start processing.
      * <p>
      * This overload takes user-specified options.
      * <p>
@@ -457,7 +457,7 @@ public final class EventProcessorHost {
      * reported by completing the future with an exception, so it is important to call get() on the future and handle
      * any exceptions thrown.
      *
-     * @param factory          User-supplied event processor namer object.
+     * @param factory          User-supplied event processor factory object.
      * @param processorOptions Options for the processor host and event processor(s).
      * @return Future that completes when initialization is finished.
      */

@@ -14,9 +14,9 @@ import io.reactivex.Single;
 import java.util.UUID;
 
 /**
- * This is a namer which creates policies in an {@link HttpPipeline} for setting a unique request ID in the
+ * This is a factory which creates policies in an {@link HttpPipeline} for setting a unique request ID in the
  * x-ms-client-request-id header as is required for all requests to the service. In most cases, it is sufficient to
- * allow the default pipeline to add this namer automatically and assume that it works. The namer and policy must
+ * allow the default pipeline to add this factory automatically and assume that it works. The factory and policy must
  * only be used directly when creating a custom pipeline.
  */
 public final class RequestIDFactory implements RequestPolicyFactory {

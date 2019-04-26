@@ -185,7 +185,7 @@ public final class AzureProxy extends RestProxy {
      * Create the default HttpPipeline.
      * @param swaggerInterface The interface that the pipeline will use to generate a user-agent
      *                         string.
-     * @param credentialsPolicy The credentials policy namer to use to apply authentication to the
+     * @param credentialsPolicy The credentials policy factory to use to apply authentication to the
      *                          pipeline.
      * @return the default HttpPipeline.
      */

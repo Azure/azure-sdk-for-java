@@ -18,11 +18,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * This is a namer which creates policies in an {@link HttpPipeline} for retrying a given HTTP request. The request
+ * This is a factory which creates policies in an {@link HttpPipeline} for retrying a given HTTP request. The request
  * that is retried will be identical each time it is reissued. In most cases, it is sufficient to configure a {@link
  * RequestRetryOptions} object and set those as a field on a {@link PipelineOptions} object to configure a default
  * pipeline. Retries will try against a secondary if one is specified and the type of operation/error indicates that the
- * secondary can handle the request. Exponential and fixed backoff are supported. The namer and policy must only be
+ * secondary can handle the request. Exponential and fixed backoff are supported. The factory and policy must only be
  * used directly when creating a custom pipeline.
  */
 public final class RequestRetryFactory implements RequestPolicyFactory {
@@ -30,7 +30,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
     private final RequestRetryOptions requestRetryOptions;
 
     /**
-     * Creates a namer capable of generating RequestRetry policies for the {@link HttpPipeline}.
+     * Creates a factory capable of generating RequestRetry policies for the {@link HttpPipeline}.
      *
      * @param requestRetryOptions
      *         {@link RequestRetryOptions}

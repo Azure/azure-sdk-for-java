@@ -295,7 +295,7 @@ class TransferManagerTest extends APISpec {
             }
         }
 
-        // Mock a namer that always returns our mock policy.
+        // Mock a factory that always returns our mock policy.
         def mockFactory = Mock(RequestPolicyFactory) {
             create(*_) >> mockPolicy
         }
@@ -1043,7 +1043,7 @@ class TransferManagerTest extends APISpec {
             }
         }
 
-        // Mock a namer that always returns our mock policy.
+        // Mock a factory that always returns our mock policy.
         def mockFactory = Mock(RequestPolicyFactory) {
             create(*_) >> mockPolicy
         }

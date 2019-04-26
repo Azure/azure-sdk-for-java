@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-import com.azure.common.test.utils.SdkContext;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 import org.junit.Test;
 

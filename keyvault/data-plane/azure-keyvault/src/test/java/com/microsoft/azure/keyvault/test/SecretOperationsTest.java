@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import com.azure.common.test.utils.SdkContext;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;

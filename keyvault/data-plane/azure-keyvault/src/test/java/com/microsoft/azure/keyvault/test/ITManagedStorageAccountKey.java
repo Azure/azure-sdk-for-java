@@ -23,12 +23,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import com.azure.common.test.InterceptorManager;
-import com.azure.common.test.TestBase;
-import com.azure.common.test.TestMode;
-import com.azure.common.test.interceptor.ResourceManagerThrottlingInterceptor;
-import com.azure.common.test.utils.SdkContext;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -59,6 +53,11 @@ import com.microsoft.azure.management.graphrbac.RoleDefinition;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
+import com.microsoft.azure.management.resources.core.InterceptorManager;
+import com.microsoft.azure.management.resources.core.TestBase;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
@@ -80,7 +79,7 @@ import com.microsoft.azure.keyvault.test.resources.MockUserTokenCredentials;
 
 public class ITManagedStorageAccountKey {
 
-    private static TestMode testMode = null;
+    private static TestBase.TestMode testMode = null;
 
     private KeyVaultManager keyVaultManager;
     private StorageManager storageManager;
@@ -198,8 +197,8 @@ public class ITManagedStorageAccountKey {
 
         if (isRecordMode()) {
             msakUUID = UUID.randomUUID().toString();
-            storageAccountName = SdkContext.getRandomResourceName("sa", 15);
-            vaultName = SdkContext.getRandomResourceName("vault", 15);
+            storageAccountName = SdkContext.randomResourceName("sa", 15);
+            vaultName = SdkContext.randomResourceName("vault", 15);
             JsonObject obj = new JsonObject();
             obj.addProperty("roleDefUUID", msakUUID);
             obj.addProperty("storageAccountName", storageAccountName);
@@ -272,8 +271,8 @@ public class ITManagedStorageAccountKey {
         // Write names to file to save it
         if (isRecordMode()) {
             sasUUID = UUID.randomUUID().toString();
-            storageAccountName = SdkContext.getRandomResourceName("sa", 15);
-            vaultName = SdkContext.getRandomResourceName("vault", 15);
+            storageAccountName = SdkContext.randomResourceName("sa", 15);
+            vaultName = SdkContext.randomResourceName("vault", 15);
             JsonObject obj = new JsonObject();
             obj.addProperty("roleDefUUID", sasUUID);
             obj.addProperty("storageAccountName", storageAccountName);
@@ -458,14 +457,14 @@ public class ITManagedStorageAccountKey {
         String azureTestMode = System.getenv("AZURE_TEST_MODE");
         if (azureTestMode != null) {
             if (azureTestMode.equalsIgnoreCase("Record")) {
-                testMode = TestMode.RECORD;
+                testMode = TestBase.TestMode.RECORD;
             } else if (azureTestMode.equalsIgnoreCase("Playback")) {
-                testMode = TestMode.PLAYBACK;
+                testMode = TestBase.TestMode.PLAYBACK;
             } else {
                 throw new IOException("Unknown AZURE_TEST_MODE: " + azureTestMode);
             }
         } else {
-            testMode = TestMode.PLAYBACK;
+            testMode = TestBase.TestMode.PLAYBACK;
         }
     }
 
@@ -479,7 +478,7 @@ public class ITManagedStorageAccountKey {
             }
         }
 
-        return testMode == TestMode.PLAYBACK;
+        return testMode == TestBase.TestMode.PLAYBACK;
     }
 
     public static boolean isRecordMode() {
