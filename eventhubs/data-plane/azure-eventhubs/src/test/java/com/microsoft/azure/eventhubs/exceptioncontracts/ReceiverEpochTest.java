@@ -82,7 +82,7 @@ public class ReceiverEpochTest extends ApiTestBase {
         try {
             TestBase.pushEventsToPartition(ehClient, PARTITION_ID, 5).get();
             Assert.assertTrue(receiver.receiveSync(10).iterator().hasNext());
-        }finally {
+        } finally {
             epochReceiver.closeSync();
         }
     }

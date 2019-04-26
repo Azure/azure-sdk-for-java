@@ -44,7 +44,7 @@ public class SendLargeMessageTest extends ApiTestBase {
 
     @AfterClass()
     public static void cleanup() throws EventHubException {
-        if (receiver!= null) {
+        if (receiver != null) {
             receiver.closeSync();
         }
 

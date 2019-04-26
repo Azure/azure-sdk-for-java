@@ -13,9 +13,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
 public class WebSocketsSendLargeMessageTest extends ApiTestBase {
     private static SendLargeMessageTest sendLargeMessageTest;
 

@@ -12,7 +12,6 @@ import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
