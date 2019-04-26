@@ -36,10 +36,6 @@ public class TestBase {
     @Rule
     public final TestName name = new TestName();
 
-    @AfterClass
-    public static void allTestFinish() {
-    }
-
     static void logError(String message) {
         if (TRACE_LOGGER.isErrorEnabled()) {
             TRACE_LOGGER.error(message);
@@ -49,6 +45,12 @@ public class TestBase {
     static void logInfo(String message) {
         if (TRACE_LOGGER.isInfoEnabled()) {
             TRACE_LOGGER.info(message);
+        }
+    }
+
+    static void logDebug(String message) {
+        if (TRACE_LOGGER.isDebugEnabled()) {
+            TRACE_LOGGER.debug(message);
         }
     }
 
