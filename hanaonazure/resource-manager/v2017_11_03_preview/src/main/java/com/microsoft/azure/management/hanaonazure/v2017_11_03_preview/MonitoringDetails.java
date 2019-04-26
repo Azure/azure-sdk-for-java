@@ -15,10 +15,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class MonitoringDetails {
     /**
-     * ARM ID of an Azure Vnet with access to the HANA instance.
+     * ARM ID of an Azure Subnet with access to the HANA instance.
      */
-    @JsonProperty(value = "hanaVnet")
-    private String hanaVnet;
+    @JsonProperty(value = "hanaSubnet")
+    private String hanaSubnet;
 
     /**
      * Hostname of the HANA Instance blade.
@@ -27,24 +27,16 @@ public class MonitoringDetails {
     private String hanaHostname;
 
     /**
-     * A number between 00 and 99, stored as a string to maintain leading zero.
+     * Name of the database itself.
      */
-    @JsonProperty(value = "hanaInstanceNum")
-    private String hanaInstanceNum;
+    @JsonProperty(value = "hanaDbName")
+    private String hanaDbName;
 
     /**
-     * Either single or multiple depending on the use of MDC(Multiple Database
-     * Containers). Possible values include: 'single', 'multiple'.
+     * The port number of the tenant DB. Used to connect to the DB.
      */
-    @JsonProperty(value = "dbContainer")
-    private HanaDatabaseContainersEnum dbContainer;
-
-    /**
-     * Name of the database itself.  It only needs to be specified if using
-     * MDC.
-     */
-    @JsonProperty(value = "hanaDatabase")
-    private String hanaDatabase;
+    @JsonProperty(value = "hanaDbSqlPort")
+    private Integer hanaDbSqlPort;
 
     /**
      * Username for the HANA database to login to for monitoring.
@@ -59,22 +51,22 @@ public class MonitoringDetails {
     private String hanaDbPassword;
 
     /**
-     * Get aRM ID of an Azure Vnet with access to the HANA instance.
+     * Get aRM ID of an Azure Subnet with access to the HANA instance.
      *
-     * @return the hanaVnet value
+     * @return the hanaSubnet value
      */
-    public String hanaVnet() {
-        return this.hanaVnet;
+    public String hanaSubnet() {
+        return this.hanaSubnet;
     }
 
     /**
-     * Set aRM ID of an Azure Vnet with access to the HANA instance.
+     * Set aRM ID of an Azure Subnet with access to the HANA instance.
      *
-     * @param hanaVnet the hanaVnet value to set
+     * @param hanaSubnet the hanaSubnet value to set
      * @return the MonitoringDetails object itself.
      */
-    public MonitoringDetails withHanaVnet(String hanaVnet) {
-        this.hanaVnet = hanaVnet;
+    public MonitoringDetails withHanaSubnet(String hanaSubnet) {
+        this.hanaSubnet = hanaSubnet;
         return this;
     }
 
@@ -99,62 +91,42 @@ public class MonitoringDetails {
     }
 
     /**
-     * Get a number between 00 and 99, stored as a string to maintain leading zero.
+     * Get name of the database itself.
      *
-     * @return the hanaInstanceNum value
+     * @return the hanaDbName value
      */
-    public String hanaInstanceNum() {
-        return this.hanaInstanceNum;
+    public String hanaDbName() {
+        return this.hanaDbName;
     }
 
     /**
-     * Set a number between 00 and 99, stored as a string to maintain leading zero.
+     * Set name of the database itself.
      *
-     * @param hanaInstanceNum the hanaInstanceNum value to set
+     * @param hanaDbName the hanaDbName value to set
      * @return the MonitoringDetails object itself.
      */
-    public MonitoringDetails withHanaInstanceNum(String hanaInstanceNum) {
-        this.hanaInstanceNum = hanaInstanceNum;
+    public MonitoringDetails withHanaDbName(String hanaDbName) {
+        this.hanaDbName = hanaDbName;
         return this;
     }
 
     /**
-     * Get either single or multiple depending on the use of MDC(Multiple Database Containers). Possible values include: 'single', 'multiple'.
+     * Get the port number of the tenant DB. Used to connect to the DB.
      *
-     * @return the dbContainer value
+     * @return the hanaDbSqlPort value
      */
-    public HanaDatabaseContainersEnum dbContainer() {
-        return this.dbContainer;
+    public Integer hanaDbSqlPort() {
+        return this.hanaDbSqlPort;
     }
 
     /**
-     * Set either single or multiple depending on the use of MDC(Multiple Database Containers). Possible values include: 'single', 'multiple'.
+     * Set the port number of the tenant DB. Used to connect to the DB.
      *
-     * @param dbContainer the dbContainer value to set
+     * @param hanaDbSqlPort the hanaDbSqlPort value to set
      * @return the MonitoringDetails object itself.
      */
-    public MonitoringDetails withDbContainer(HanaDatabaseContainersEnum dbContainer) {
-        this.dbContainer = dbContainer;
-        return this;
-    }
-
-    /**
-     * Get name of the database itself.  It only needs to be specified if using MDC.
-     *
-     * @return the hanaDatabase value
-     */
-    public String hanaDatabase() {
-        return this.hanaDatabase;
-    }
-
-    /**
-     * Set name of the database itself.  It only needs to be specified if using MDC.
-     *
-     * @param hanaDatabase the hanaDatabase value to set
-     * @return the MonitoringDetails object itself.
-     */
-    public MonitoringDetails withHanaDatabase(String hanaDatabase) {
-        this.hanaDatabase = hanaDatabase;
+    public MonitoringDetails withHanaDbSqlPort(Integer hanaDbSqlPort) {
+        this.hanaDbSqlPort = hanaDbSqlPort;
         return this;
     }
 
