@@ -27,12 +27,12 @@ public class PrefabEventProcessor implements IEventProcessor {
     }
 
     @Override
-    public void onOpen(PartitionContext context) throws Exception {
+    public void onOpen(PartitionContext context) {
         TestBase.logInfo(context.getOwner() + " opening " + context.getPartitionId());
     }
 
     @Override
-    public void onClose(PartitionContext context, CloseReason reason) throws Exception {
+    public void onClose(PartitionContext context, CloseReason reason) {
         TestBase.logInfo(context.getOwner() + " closing " + context.getPartitionId());
     }
 
@@ -78,12 +78,12 @@ public class PrefabEventProcessor implements IEventProcessor {
         switch (doCheckpoint) {
             case CKP_EXPLICIT:
                 context.checkpoint(lastEvent).get();
-                TestBase.logInfo("P" + context.getPartitionId() + " checkpointed at " + lastEvent.getSystemProperties().getOffset());
+                TestBase.logDebug("P" + context.getPartitionId() + " checkpointed at " + lastEvent.getSystemProperties().getOffset());
                 break;
 
             case CKP_NOARGS:
                 context.checkpoint().get();
-                TestBase.logInfo("P" + context.getPartitionId() + " checkpointed without arguments");
+                TestBase.logDebug("P" + context.getPartitionId() + " checkpointed without arguments");
                 break;
             case CKP_NONE:
             default:
