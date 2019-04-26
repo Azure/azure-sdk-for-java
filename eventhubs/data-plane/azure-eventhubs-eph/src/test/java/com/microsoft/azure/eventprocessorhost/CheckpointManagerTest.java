@@ -22,7 +22,7 @@ public class CheckpointManagerTest extends TestBase {
     private EventProcessorHost[] hosts;
 
     @Test
-    public void singleManangerInMemoryCheckpointSmokeTest() throws Exception {
+    public void singleManagerInMemoryCheckpointSmokeTest() throws Exception {
         singleManagerCheckpointSmokeTest(false, 8);
     }
 
