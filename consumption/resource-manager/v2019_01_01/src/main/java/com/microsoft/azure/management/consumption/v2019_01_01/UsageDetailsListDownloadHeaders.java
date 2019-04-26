@@ -35,12 +35,6 @@ public class UsageDetailsListDownloadHeaders {
     private String azureAsyncOperation;
 
     /**
-     * The operation entity Id GUID.
-     */
-    @JsonProperty(value = "OData-EntityId")
-    private String oDataEntityId;
-
-    /**
      * Get gET this URL to retrieve the status of the asynchronous operation.
      *
      * @return the location value
@@ -97,26 +91,6 @@ public class UsageDetailsListDownloadHeaders {
      */
     public UsageDetailsListDownloadHeaders withAzureAsyncOperation(String azureAsyncOperation) {
         this.azureAsyncOperation = azureAsyncOperation;
-        return this;
-    }
-
-    /**
-     * Get the operation entity Id GUID.
-     *
-     * @return the oDataEntityId value
-     */
-    public String oDataEntityId() {
-        return this.oDataEntityId;
-    }
-
-    /**
-     * Set the operation entity Id GUID.
-     *
-     * @param oDataEntityId the oDataEntityId value to set
-     * @return the UsageDetailsListDownloadHeaders object itself.
-     */
-    public UsageDetailsListDownloadHeaders withODataEntityId(String oDataEntityId) {
-        this.oDataEntityId = oDataEntityId;
         return this;
     }
 
