@@ -1,17 +1,17 @@
-# Microsoft Azure Storage SDK v10 for Java
+# Microsoft Azure Storage SDK v11 for Java
 
 This project provides a client library in Java that makes it easy to consume Microsoft Azure Storage services. For documentation please see the [Storage API doc page](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/client?view=azure-java-preview) and the [quick start document](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-java-v10).
-Please note that this version of the library is a compete overhaul of the current Azure Storage Java Client Library, and is based on the new Storage SDK architecture, also referred to as V10.
+Please note that this version of the library is a compete overhaul of the current Azure Storage Java Client Library, and is based on the new Storage SDK architecture, also referred to as V11.
 
 | SDK Name      | Version       | Description | Maven/API Reference Links |
 | ------------- | ------------- | ----------- | ----- |
-| [Blob Storage SDK v10 for Java](https://github.com/Azure/azure-storage-java/)  | v10.2.0  | The next generation async Storage SDK | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage-blob) - [Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/client?view=azure-java-stable) |
+| [Blob Storage SDK v11 for Java](https://github.com/Azure/azure-storage-java/)  | v11.0.0  | The next generation async Storage SDK | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage-blob) - [Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/client?view=azure-java-stable) |
 | [Queue Storage SDK v10 for Java](https://github.com/azure/azure-storage-java/tree/New-Storage-SDK-V10-Preview) | V10.0.0-Preview | The next generation async Storage SDK | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage-queue) - [Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/queue?view=azure-java-preview)
 | [Storage SDK v8 for Java](https://github.com/azure/azure-storage-java/tree/legacy-master)  | v8  | Legacy Storage SDK (sync only) | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage) - [Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage_stable?view=azure-java-legacy)|
 | [Storage SDK for Android](https://github.com/Azure/azure-storage-android) | v2 | Storage SDK for Android | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure.android/azure-storage-android) - [Reference](http://azure.github.io/azure-storage-android/)
 | [Azure Management Libraries for Java](https://github.com/Azure/azure-libraries-for-java) | v1 | Management libraries including Storage Resource Provider APIs | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-resources) - [Reference](http://azure.github.io/azure-storage-android/)|
 
-## Migrating to V10
+## Migrating to V11
 
 Migrating to the newest version of the SDK will require a substantial rewrite of any component that interfaces with Azure Storage. Despite this, we feel the benefits offered by this new design are worth it, and we are happy to help with the transition! Please refer to the wiki for information on the core ideas behind the new design and best practices on how to use it effectively.
 
@@ -20,7 +20,7 @@ Migrating to the newest version of the SDK will require a substantial rewrite of
       * Create/Read/Update/Delete containers
       * Create/Read/Update/Delete blobs
       * Advanced Blob Operations wrapped in the TransferManager class
-  * Features new to V10
+  * Features new to V11
       * Asynchronous I/O for all operations using the [ReactiveX](https://github.com/ReactiveX/RxJava) framework
       * HttpPipeline which enables a high degree of per-request configurability and guaranteed thread safety
           * Please see the wiki for more information
@@ -37,7 +37,7 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-storage-blob</artifactId>
-	<version>10.5.0</version>
+	<version>11.0.0</version>
 </dependency>
 ```
 
@@ -181,7 +181,7 @@ When sending pull requests, please send non-breaking PRs to the dev branch and b
 
 # Learn More
 
-* [Quick Start with the Azure Storage SDK v10 for Java](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-java-v10)
+* [Quick Start with the Azure Storage SDK v11 for Java](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-java-v10)
 * [Java API Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/client?view=azure-java-preview)
 * [Azure Storage Service](http://azure.microsoft.com/en-us/documentation/services/storage/)
 * [Azure Storage Team Blog](http://blogs.msdn.com/b/windowsazurestorage/)

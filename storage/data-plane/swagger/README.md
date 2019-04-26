@@ -5,7 +5,7 @@ title: StorageClient
 description: Storage Client
 java: true
 enable-xml: true
-namespace: com.microsoft.azure.storage
+namespace: com.microsoft.azure.storage.blob
 license-header: MICROSOFT_MIT_NO_VERSION
 output-folder: ../
 input-file:
