@@ -23,7 +23,7 @@ jobs:
         displayName: 'Run Live tests'
         inputs:
           mavenPomFile: $(pomFilePath)
-          options: '--batch-mode -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3'
+          options: '--batch-mode -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 -Dorg.slf4j.simpleLogger.defaultLogLevel=warn'
           mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.8'

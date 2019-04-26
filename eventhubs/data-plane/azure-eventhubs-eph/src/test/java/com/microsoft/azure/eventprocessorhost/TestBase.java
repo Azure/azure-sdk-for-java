@@ -6,17 +6,13 @@ package com.microsoft.azure.eventprocessorhost;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
-
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
