@@ -131,7 +131,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
                     networkOutageSimulator);
             try {
                 openFuture.get();
-                Assert.assertFalse(true);
+                Assert.fail();
             } catch (ExecutionException error) {
                 Assert.assertEquals(EventHubException.class, error.getCause().getClass());
             }

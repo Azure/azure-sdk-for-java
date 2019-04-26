@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.ListBlobsIncludeItem;
@@ -12,12 +13,7 @@ import java.util.ArrayList;
  * changing the details for a different listing operation requires construction of a new object. Null may be passed if
  * none of the options are desirable.
  */
-public final class BlobListingDetails {
-
-    /**
-     * An object representing no listing details.
-     */
-    public static final BlobListingDetails NONE = new BlobListingDetails();
+public final class BlobListDetails {
 
     private boolean copy;
 
@@ -29,7 +25,7 @@ public final class BlobListingDetails {
 
     private boolean deletedBlobs;
 
-    public BlobListingDetails() {
+    public BlobListDetails() {
     }
 
     /**
@@ -44,7 +40,7 @@ public final class BlobListingDetails {
      * Whether blob metadata related to any current or previous Copy Blob operation should be included in the
      * response.
      */
-    public BlobListingDetails withCopy(boolean copy) {
+    public BlobListDetails withCopy(boolean copy) {
         this.copy = copy;
         return this;
     }
@@ -59,7 +55,7 @@ public final class BlobListingDetails {
     /**
      * Whether blob metadata should be returned.
      */
-    public BlobListingDetails withMetadata(boolean metadata) {
+    public BlobListDetails withMetadata(boolean metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -74,7 +70,7 @@ public final class BlobListingDetails {
     /**
      * Whether snapshots should be returned. Snapshots are listed from oldest to newest.
      */
-    public BlobListingDetails withSnapshots(boolean snapshots) {
+    public BlobListDetails withSnapshots(boolean snapshots) {
         this.snapshots = snapshots;
         return this;
     }
@@ -91,7 +87,7 @@ public final class BlobListingDetails {
      * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List,
      * should be included in the response.
      */
-    public BlobListingDetails withUncommittedBlobs(boolean uncommittedBlobs) {
+    public BlobListDetails withUncommittedBlobs(boolean uncommittedBlobs) {
         this.uncommittedBlobs = uncommittedBlobs;
         return this;
     }
@@ -106,7 +102,7 @@ public final class BlobListingDetails {
     /**
      * Whether blobs which have been soft deleted should be returned.
      */
-    public BlobListingDetails withDeletedBlobs(boolean deletedBlobs) {
+    public BlobListDetails withDeletedBlobs(boolean deletedBlobs) {
         this.deletedBlobs = deletedBlobs;
         return this;
     }
