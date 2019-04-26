@@ -6,6 +6,7 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
+import com.azure.applicationconfig.policy.ConfigurationRetryPolicy;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipeline;
@@ -16,7 +17,6 @@ import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.RequestIdPolicy;
-import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
 
 import java.net.MalformedURLException;
@@ -48,10 +48,10 @@ public final class ConfigurationAsyncClientBuilder {
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
     private HttpPipeline pipeline;
-    private RetryPolicy retryPolicy;
+    private ConfigurationRetryPolicy retryPolicy;
 
     ConfigurationAsyncClientBuilder() {
-        retryPolicy = new RetryPolicy();
+        retryPolicy = new ConfigurationRetryPolicy();
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
 
