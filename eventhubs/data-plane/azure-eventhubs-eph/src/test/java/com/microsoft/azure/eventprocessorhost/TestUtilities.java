@@ -11,29 +11,23 @@ import java.util.concurrent.ScheduledExecutorService;
 final class TestUtilities {
     static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
 
-    static void skipIfAppveyor() {
-        String appveyor = System.getenv("APPVEYOR"); // Set to "true" by Appveyor
-        if (appveyor != null) {
-            TestBase.logInfo("SKIPPING - APPVEYOR DETECTED");
-        }
-        Assume.assumeTrue(appveyor == null);
-    }
+    private static final String EVENT_HUB_CONNECTION_STRING = "AZURE_EVENTHUBS_CONNECTION_STRING";
+    private static final String EVENT_HUB_STORAGE_CONNECTION_STRING = "AZURE_EVENTHUBS_STORAGE_CONNECTION_STRING";
 
     static String getStorageConnectionString() {
-        TestUtilities.skipIfAppveyor();
+        final String connectionString = System.getenv(EVENT_HUB_STORAGE_CONNECTION_STRING);
 
-        String retval = System.getenv("EPHTESTSTORAGE");
-
-        // if EPHTESTSTORAGE is not set - we cannot run integration tests
-        if (retval == null) {
+        // Cannot run integration tests without the storage connection string.
+        if (connectionString == null) {
             TestBase.logInfo("SKIPPING - NO STORAGE CONNECTION STRING");
         }
-        Assume.assumeTrue(retval != null);
 
-        return ((retval != null) ? retval : "");
+        Assume.assumeTrue(connectionString != null);
+
+        return connectionString;
     }
 
-    static Boolean isRunningOnAzure() {
-        return (System.getenv("AZURE_EVENTHUBS_CONNECTION_STRING") != null);
+    static boolean isRunningOnAzure() {
+        return (System.getenv(EVENT_HUB_CONNECTION_STRING) != null);
     }
 }
