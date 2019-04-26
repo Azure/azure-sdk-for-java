@@ -11,6 +11,7 @@ import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
 import com.azure.common.test.TestBase;
+import com.azure.common.test.utils.SdkContext;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -79,8 +80,8 @@ public class ConfigurationClientTest extends TestBase {
                 .build();
         }
 
-        keyPrefix = sdkContext.randomResourceName("key", 8);
-        labelPrefix = sdkContext.randomResourceName("label", 8);
+        keyPrefix = SdkContext.randomTestResourceName(testResourceNamer, "key", 8);
+        labelPrefix = SdkContext.randomTestResourceName(testResourceNamer, "label", 8);
     }
 
     @Override
@@ -108,11 +109,11 @@ public class ConfigurationClientTest extends TestBase {
     }
 
     String getKey() {
-        return sdkContext.randomResourceName(keyPrefix, ConfigurationClientTestBase.RESOURCE_LENGTH);
+        return SdkContext.randomTestResourceName(testResourceNamer, keyPrefix, ConfigurationClientTestBase.RESOURCE_LENGTH);
     }
 
     String getLabel() {
-        return sdkContext.randomResourceName(labelPrefix, ConfigurationClientTestBase.RESOURCE_LENGTH);
+        return SdkContext.randomTestResourceName(testResourceNamer, labelPrefix, ConfigurationClientTestBase.RESOURCE_LENGTH);
     }
 
     /**
@@ -257,8 +258,8 @@ public class ConfigurationClientTest extends TestBase {
      */
     @Test
     public void updateSettingIfEtag() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName(labelPrefix, 16);
+        final String key = SdkContext.randomTestResourceName(testResourceNamer, keyPrefix, 16);
+        final String label = SdkContext.randomTestResourceName(testResourceNamer, labelPrefix, 16);
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
         final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
         final ConfigurationSetting finalConfiguration = new ConfigurationSetting().key(key).value("myFinalValue");
@@ -306,7 +307,7 @@ public class ConfigurationClientTest extends TestBase {
      */
     @Test
     public void getSettingNotFound() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String key = SdkContext.randomTestResourceName(testResourceNamer, keyPrefix, 16);
         final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().key(key).value("myNeverRetreivedValue");
         final ConfigurationSetting nonExistentLabel = new ConfigurationSetting().key(key).label("myNonExistentLabel");
 
@@ -337,7 +338,7 @@ public class ConfigurationClientTest extends TestBase {
      */
     @Test
     public void deleteSettingNotFound() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String key = SdkContext.randomTestResourceName(testResourceNamer, keyPrefix, 16);
         final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().key(key).value("myNeverDeletedValue");
         final ConfigurationSetting notFoundDelete = new ConfigurationSetting().key(key).label("myNonExistentLabel");
 
@@ -382,8 +383,8 @@ public class ConfigurationClientTest extends TestBase {
     @Test
     public void listWithKeyAndLabel() {
         final String value = "myValue";
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
-        final String label = sdkContext.randomResourceName("lbl", 8);
+        final String key = SdkContext.randomTestResourceName(testResourceNamer, keyPrefix, 16);
+        final String label = SdkContext.randomTestResourceName(testResourceNamer, "lbl", 8);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value(value).label(label);
 
         assertConfigurationEquals(expected, client.setSetting(expected));
@@ -433,7 +434,7 @@ public class ConfigurationClientTest extends TestBase {
      */
     @Test
     public void listSettingsAcceptDateTime() {
-        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = SdkContext.randomTestResourceName(testResourceNamer, keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
@@ -466,7 +467,7 @@ public class ConfigurationClientTest extends TestBase {
      */
     @Test
     public void listRevisions() {
-        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = SdkContext.randomTestResourceName(testResourceNamer, keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
@@ -508,7 +509,7 @@ public class ConfigurationClientTest extends TestBase {
      */
     @Test
     public void listRevisionsAcceptDateTime() {
-        final String keyName = sdkContext.randomResourceName(keyPrefix, 16);
+        final String keyName = SdkContext.randomTestResourceName(testResourceNamer, keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
         final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
@@ -575,7 +576,7 @@ public class ConfigurationClientTest extends TestBase {
     @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
     @Test
     public void getSettingWhenValueNotUpdated() {
-        final String key = sdkContext.randomResourceName(keyPrefix, 16);
+        final String key = SdkContext.randomTestResourceName(testResourceNamer, keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().key(key).value("myNewValue");
         final Response<ConfigurationSetting> block = client.addSetting(expected);

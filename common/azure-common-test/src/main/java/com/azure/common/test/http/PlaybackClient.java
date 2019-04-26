@@ -10,6 +10,7 @@ import com.azure.common.http.ProxyOptions;
 import com.azure.common.test.InterceptorManager;
 import com.azure.common.test.models.NetworkCallRecord;
 import com.azure.common.test.models.RecordedData;
+import com.azure.common.test.utils.SdkContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -26,7 +27,7 @@ import java.util.function.Supplier;
  * HTTP client that plays back {@link NetworkCallRecord NetworkCallRecords}.
  */
 public final class PlaybackClient implements HttpClient {
-    private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
+    private final Logger logger = LoggerFactory.getLogger(PlaybackClient.class);
     private final AtomicInteger count = new AtomicInteger(0);
     private final Map<String, String> textReplacementRules;
     private final RecordedData recordedData;
@@ -78,13 +79,13 @@ public final class PlaybackClient implements HttpClient {
     }
 
     private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) {
-        final String incomingUrl = applyReplacementRule(request.url().toString());
+        final String incomingUrl = SdkContext.applyReplacementRule(request.url().toString(), textReplacementRules);
         final String incomingMethod = request.httpMethod().toString();
 
-        final String matchingUrl = removeHost(incomingUrl);
+        final String matchingUrl = SdkContext.removeHost(incomingUrl);
 
         NetworkCallRecord networkCallRecord = recordedData.findFirstAndRemoveNetworkCall(record ->
-            record.method().equalsIgnoreCase(incomingMethod) && removeHost(record.uri()).equalsIgnoreCase(matchingUrl));
+            record.method().equalsIgnoreCase(incomingMethod) && SdkContext.removeHost(record.uri()).equalsIgnoreCase(matchingUrl));
 
         count.incrementAndGet();
 
@@ -128,19 +129,5 @@ public final class PlaybackClient implements HttpClient {
 
         HttpResponse response = new MockHttpResponse(request, recordStatusCode, headers, bytes);
         return Mono.just(response);
-    }
-
-    private String applyReplacementRule(String text) {
-        for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
-            if (rule.getValue() != null) {
-                text = text.replaceAll(rule.getKey(), rule.getValue());
-            }
-        }
-        return text;
-    }
-
-    private static String removeHost(String url) {
-        URI uri = URI.create(url);
-        return String.format("%s?%s", uri.getPath(), uri.getQuery());
     }
 }

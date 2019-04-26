@@ -13,11 +13,11 @@ import java.util.Objects;
  * {@link RecordedData}. If the test mode is {@link TestMode#RECORD}, then the names are randomly generated and
  * persisted to {@link RecordedData}.
  */
-class TestResourceNamer extends ResourceNamer {
+public class TestResourceNamer extends ResourceNamer {
     private final TestMode testMode;
     private final RecordedData recordedData;
 
-    TestResourceNamer(String name, TestMode testMode, RecordedData recordedData) {
+    public TestResourceNamer(String name, TestMode testMode, RecordedData recordedData) {
         super(name);
         Objects.requireNonNull(recordedData);
         this.recordedData = recordedData;
