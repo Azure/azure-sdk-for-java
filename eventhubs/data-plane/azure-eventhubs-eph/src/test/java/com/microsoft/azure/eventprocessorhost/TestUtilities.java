@@ -27,7 +27,11 @@ final class TestUtilities {
         return connectionString;
     }
 
+    static String getEventHubConnectionString() {
+        return System.getenv(EVENT_HUB_CONNECTION_STRING);
+    }
+
     static boolean isRunningOnAzure() {
-        return (System.getenv(EVENT_HUB_CONNECTION_STRING) != null);
+        return getEventHubConnectionString() != null;
     }
 }

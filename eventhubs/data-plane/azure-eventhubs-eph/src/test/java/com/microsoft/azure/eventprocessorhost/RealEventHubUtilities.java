@@ -82,15 +82,14 @@ final class RealEventHubUtilities {
 
     private void ehCacheCheck(boolean skipIfFakeEH) {
         if (this.hubName == null) {
-            if (skipIfFakeEH) {
-                TestUtilities.skipIfAppveyor();
-            }
-            String rawConnectionString = System.getenv("EVENT_HUB_CONNECTION_STRING");
-            if (rawConnectionString == null) {
+            String rawConnectionString = TestUtilities.getEventHubConnectionString();
+
+            if (!TestUtilities.isRunningOnAzure()) {
                 if (skipIfFakeEH) {
                     TestBase.logInfo("SKIPPING - REQUIRES REAL EVENT HUB");
                     Assume.assumeTrue(rawConnectionString != null);
                 }
+
                 TestBase.logInfo("Using dummy event hub connection string");
                 rawConnectionString = RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING;
             }
