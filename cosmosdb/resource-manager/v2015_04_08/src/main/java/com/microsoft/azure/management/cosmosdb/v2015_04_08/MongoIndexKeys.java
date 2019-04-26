@@ -12,17 +12,17 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Cosmos DB Mongo collection resource object.
+ * Cosmos DB MongoDB collection resource object.
  */
 public class MongoIndexKeys {
     /**
-     * List of keys for each Mongo collection in the Azure Cosmos DB service.
+     * List of keys for each MongoDB collection in the Azure Cosmos DB service.
      */
     @JsonProperty(value = "keys")
     private List<String> keys;
 
     /**
-     * Get list of keys for each Mongo collection in the Azure Cosmos DB service.
+     * Get list of keys for each MongoDB collection in the Azure Cosmos DB service.
      *
      * @return the keys value
      */
@@ -31,7 +31,7 @@ public class MongoIndexKeys {
     }
 
     /**
-     * Set list of keys for each Mongo collection in the Azure Cosmos DB service.
+     * Set list of keys for each MongoDB collection in the Azure Cosmos DB service.
      *
      * @param keys the keys value to set
      * @return the MongoIndexKeys object itself.

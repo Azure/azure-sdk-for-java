@@ -9,7 +9,7 @@
 package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.SqlContainerInner;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.MongoDBCollectionInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
@@ -18,45 +18,21 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.DocumentDBManager;
 import java.util.Map;
+import java.util.List;
 
 /**
- * Type representing SqlContainer.
+ * Type representing MongoDBCollection.
  */
-public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Refreshable<SqlContainer>, Updatable<SqlContainer.Update>, HasManager<DocumentDBManager> {
-    /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the conflictResolutionPolicy value.
-     */
-    ConflictResolutionPolicy conflictResolutionPolicy();
-
-    /**
-     * @return the defaultTtl value.
-     */
-    Integer defaultTtl();
-
+public interface MongoDBCollection extends HasInner<MongoDBCollectionInner>, Indexable, Refreshable<MongoDBCollection>, Updatable<MongoDBCollection.Update>, HasManager<DocumentDBManager> {
     /**
      * @return the id value.
      */
     String id();
 
     /**
-     * @return the indexingPolicy value.
+     * @return the indexes value.
      */
-    IndexingPolicy indexingPolicy();
+    List<MongoIndex> indexes();
 
     /**
      * @return the location value.
@@ -64,19 +40,19 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
     String location();
 
     /**
+     * @return the mongoDBCollectionId value.
+     */
+    String mongoDBCollectionId();
+
+    /**
      * @return the name value.
      */
     String name();
 
     /**
-     * @return the partitionKey value.
+     * @return the shardKey value.
      */
-    ContainerPartitionKey partitionKey();
-
-    /**
-     * @return the sqlContainerId value.
-     */
-    String sqlContainerId();
+    Map<String, String> shardKey();
 
     /**
      * @return the tags value.
@@ -89,28 +65,23 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
     String type();
 
     /**
-     * @return the uniqueKeyPolicy value.
-     */
-    UniqueKeyPolicy uniqueKeyPolicy();
-
-    /**
-     * The entirety of the SqlContainer definition.
+     * The entirety of the MongoDBCollection definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithDatabasis, DefinitionStages.WithOptions, DefinitionStages.WithResource, DefinitionStages.WithCreate {
     }
 
     /**
-     * Grouping of SqlContainer definition stages.
+     * Grouping of MongoDBCollection definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a SqlContainer definition.
+         * The first stage of a MongoDBCollection definition.
          */
         interface Blank extends WithDatabasis {
         }
 
         /**
-         * The stage of the sqlcontainer definition allowing to specify Databasis.
+         * The stage of the mongodbcollection definition allowing to specify Databasis.
          */
         interface WithDatabasis {
            /**
@@ -124,7 +95,7 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
         }
 
         /**
-         * The stage of the sqlcontainer definition allowing to specify Options.
+         * The stage of the mongodbcollection definition allowing to specify Options.
          */
         interface WithOptions {
            /**
@@ -136,15 +107,15 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
         }
 
         /**
-         * The stage of the sqlcontainer definition allowing to specify Resource.
+         * The stage of the mongodbcollection definition allowing to specify Resource.
          */
         interface WithResource {
            /**
             * Specifies resource.
-            * @param resource The standard JSON format of a container
+            * @param resource The standard JSON format of a MongoDB collection
             * @return the next definition stage
             */
-            WithCreate withResource(SqlContainerResource resource);
+            WithCreate withResource(MongoDBCollectionResource resource);
         }
 
         /**
@@ -152,17 +123,17 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<SqlContainer> {
+        interface WithCreate extends Creatable<MongoDBCollection> {
         }
     }
     /**
-     * The template for a SqlContainer update operation, containing all the settings that can be modified.
+     * The template for a MongoDBCollection update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SqlContainer> {
+    interface Update extends Appliable<MongoDBCollection> {
     }
 
     /**
-     * Grouping of SqlContainer update stages.
+     * Grouping of MongoDBCollection update stages.
      */
     interface UpdateStages {
     }

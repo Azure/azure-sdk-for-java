@@ -20,14 +20,14 @@ class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> imp
     private final DocumentDBManager manager;
     private String resourceGroupName;
     private String accountName;
-    private String tableRid;
+    private String tableName;
     private TableCreateUpdateParameters createOrUpdateParameter;
 
     TableImpl(String name, DocumentDBManager manager) {
         super(name, new TableInner());
         this.manager = manager;
         // Set resource name
-        this.tableRid = name;
+        this.tableName = name;
         //
         this.createOrUpdateParameter = new TableCreateUpdateParameters();
     }
@@ -36,11 +36,11 @@ class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> imp
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.tableRid = inner.name();
+        this.tableName = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "databaseAccounts");
-        this.tableRid = IdParsingUtils.getValueFromIdByName(inner.id(), "tables");
+        this.tableName = IdParsingUtils.getValueFromIdByName(inner.id(), "tables");
         //
         this.createOrUpdateParameter = new TableCreateUpdateParameters();
     }
@@ -53,7 +53,7 @@ class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> imp
     @Override
     public Observable<Table> createResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateTableAsync(this.resourceGroupName, this.accountName, this.tableRid, this.createOrUpdateParameter)
+        return client.createUpdateTableAsync(this.resourceGroupName, this.accountName, this.tableName, this.createOrUpdateParameter)
             .map(new Func1<TableInner, TableInner>() {
                @Override
                public TableInner call(TableInner resource) {
@@ -67,7 +67,7 @@ class TableImpl extends CreatableUpdatableImpl<Table, TableInner, TableImpl> imp
     @Override
     public Observable<Table> updateResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateTableAsync(this.resourceGroupName, this.accountName, this.tableRid, this.createOrUpdateParameter)
+        return client.createUpdateTableAsync(this.resourceGroupName, this.accountName, this.tableName, this.createOrUpdateParameter)
             .map(new Func1<TableInner, TableInner>() {
                @Override
                public TableInner call(TableInner resource) {

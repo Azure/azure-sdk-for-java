@@ -9,7 +9,7 @@
 package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.SqlContainerInner;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.GremlinGraphInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
@@ -20,9 +20,9 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation.Docume
 import java.util.Map;
 
 /**
- * Type representing SqlContainer.
+ * Type representing GremlinGraph.
  */
-public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Refreshable<SqlContainer>, Updatable<SqlContainer.Update>, HasManager<DocumentDBManager> {
+public interface GremlinGraph extends HasInner<GremlinGraphInner>, Indexable, Refreshable<GremlinGraph>, Updatable<GremlinGraph.Update>, HasManager<DocumentDBManager> {
     /**
      * @return the _etag value.
      */
@@ -47,6 +47,11 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
      * @return the defaultTtl value.
      */
     Integer defaultTtl();
+
+    /**
+     * @return the gremlinGraphId value.
+     */
+    String gremlinGraphId();
 
     /**
      * @return the id value.
@@ -74,11 +79,6 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
     ContainerPartitionKey partitionKey();
 
     /**
-     * @return the sqlContainerId value.
-     */
-    String sqlContainerId();
-
-    /**
      * @return the tags value.
      */
     Map<String, String> tags();
@@ -94,23 +94,23 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
     UniqueKeyPolicy uniqueKeyPolicy();
 
     /**
-     * The entirety of the SqlContainer definition.
+     * The entirety of the GremlinGraph definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithDatabasis, DefinitionStages.WithOptions, DefinitionStages.WithResource, DefinitionStages.WithCreate {
     }
 
     /**
-     * Grouping of SqlContainer definition stages.
+     * Grouping of GremlinGraph definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a SqlContainer definition.
+         * The first stage of a GremlinGraph definition.
          */
         interface Blank extends WithDatabasis {
         }
 
         /**
-         * The stage of the sqlcontainer definition allowing to specify Databasis.
+         * The stage of the gremlingraph definition allowing to specify Databasis.
          */
         interface WithDatabasis {
            /**
@@ -124,7 +124,7 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
         }
 
         /**
-         * The stage of the sqlcontainer definition allowing to specify Options.
+         * The stage of the gremlingraph definition allowing to specify Options.
          */
         interface WithOptions {
            /**
@@ -136,15 +136,15 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
         }
 
         /**
-         * The stage of the sqlcontainer definition allowing to specify Resource.
+         * The stage of the gremlingraph definition allowing to specify Resource.
          */
         interface WithResource {
            /**
             * Specifies resource.
-            * @param resource The standard JSON format of a container
+            * @param resource The standard JSON format of a Gremlin graph
             * @return the next definition stage
             */
-            WithCreate withResource(SqlContainerResource resource);
+            WithCreate withResource(GremlinGraphResource resource);
         }
 
         /**
@@ -152,17 +152,17 @@ public interface SqlContainer extends HasInner<SqlContainerInner>, Indexable, Re
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<SqlContainer> {
+        interface WithCreate extends Creatable<GremlinGraph> {
         }
     }
     /**
-     * The template for a SqlContainer update operation, containing all the settings that can be modified.
+     * The template for a GremlinGraph update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SqlContainer> {
+    interface Update extends Appliable<GremlinGraph> {
     }
 
     /**
-     * Grouping of SqlContainer update stages.
+     * Grouping of GremlinGraph update stages.
      */
     interface UpdateStages {
     }

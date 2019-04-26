@@ -20,14 +20,14 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     private final DocumentDBManager manager;
     private String resourceGroupName;
     private String accountName;
-    private String databaseRid;
+    private String databaseName;
     private SqlDatabaseCreateUpdateParameters createOrUpdateParameter;
 
     SqlDatabaseImpl(String name, DocumentDBManager manager) {
         super(name, new SqlDatabaseInner());
         this.manager = manager;
         // Set resource name
-        this.databaseRid = name;
+        this.databaseName = name;
         //
         this.createOrUpdateParameter = new SqlDatabaseCreateUpdateParameters();
     }
@@ -36,11 +36,11 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.databaseRid = inner.name();
+        this.databaseName = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "databaseAccounts");
-        this.databaseRid = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
+        this.databaseName = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
         //
         this.createOrUpdateParameter = new SqlDatabaseCreateUpdateParameters();
     }
@@ -53,7 +53,7 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     @Override
     public Observable<SqlDatabase> createResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateSqlDatabaseAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.createOrUpdateParameter)
+        return client.createUpdateSqlDatabaseAsync(this.resourceGroupName, this.accountName, this.databaseName, this.createOrUpdateParameter)
             .map(new Func1<SqlDatabaseInner, SqlDatabaseInner>() {
                @Override
                public SqlDatabaseInner call(SqlDatabaseInner resource) {
@@ -67,7 +67,7 @@ class SqlDatabaseImpl extends CreatableUpdatableImpl<SqlDatabase, SqlDatabaseInn
     @Override
     public Observable<SqlDatabase> updateResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateSqlDatabaseAsync(this.resourceGroupName, this.accountName, this.databaseRid, this.createOrUpdateParameter)
+        return client.createUpdateSqlDatabaseAsync(this.resourceGroupName, this.accountName, this.databaseName, this.createOrUpdateParameter)
             .map(new Func1<SqlDatabaseInner, SqlDatabaseInner>() {
                @Override
                public SqlDatabaseInner call(SqlDatabaseInner resource) {

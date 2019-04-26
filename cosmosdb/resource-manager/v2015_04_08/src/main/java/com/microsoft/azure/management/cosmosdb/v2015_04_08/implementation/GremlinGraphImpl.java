@@ -8,47 +8,47 @@
 
 package com.microsoft.azure.management.cosmosdb.v2015_04_08.implementation;
 
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainer;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinGraph;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinGraphCreateUpdateParameters;
 import java.util.Map;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.ConflictResolutionPolicy;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.IndexingPolicy;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.ContainerPartitionKey;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.UniqueKeyPolicy;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerResource;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinGraphResource;
 import rx.functions.Func1;
 
-class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainerInner, SqlContainerImpl> implements SqlContainer, SqlContainer.Definition, SqlContainer.Update {
+class GremlinGraphImpl extends CreatableUpdatableImpl<GremlinGraph, GremlinGraphInner, GremlinGraphImpl> implements GremlinGraph, GremlinGraph.Definition, GremlinGraph.Update {
     private final DocumentDBManager manager;
     private String resourceGroupName;
     private String accountName;
     private String databaseName;
-    private String containerName;
-    private SqlContainerCreateUpdateParameters createOrUpdateParameter;
+    private String graphName;
+    private GremlinGraphCreateUpdateParameters createOrUpdateParameter;
 
-    SqlContainerImpl(String name, DocumentDBManager manager) {
-        super(name, new SqlContainerInner());
+    GremlinGraphImpl(String name, DocumentDBManager manager) {
+        super(name, new GremlinGraphInner());
         this.manager = manager;
         // Set resource name
-        this.containerName = name;
+        this.graphName = name;
         //
-        this.createOrUpdateParameter = new SqlContainerCreateUpdateParameters();
+        this.createOrUpdateParameter = new GremlinGraphCreateUpdateParameters();
     }
 
-    SqlContainerImpl(SqlContainerInner inner, DocumentDBManager manager) {
+    GremlinGraphImpl(GremlinGraphInner inner, DocumentDBManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.containerName = inner.name();
+        this.graphName = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "databaseAccounts");
         this.databaseName = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
-        this.containerName = IdParsingUtils.getValueFromIdByName(inner.id(), "containers");
+        this.graphName = IdParsingUtils.getValueFromIdByName(inner.id(), "graphs");
         //
-        this.createOrUpdateParameter = new SqlContainerCreateUpdateParameters();
+        this.createOrUpdateParameter = new GremlinGraphCreateUpdateParameters();
     }
 
     @Override
@@ -57,12 +57,12 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     }
 
     @Override
-    public Observable<SqlContainer> createResourceAsync() {
+    public Observable<GremlinGraph> createResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseName, this.containerName, this.createOrUpdateParameter)
-            .map(new Func1<SqlContainerInner, SqlContainerInner>() {
+        return client.createUpdateGremlinGraphAsync(this.resourceGroupName, this.accountName, this.databaseName, this.graphName, this.createOrUpdateParameter)
+            .map(new Func1<GremlinGraphInner, GremlinGraphInner>() {
                @Override
-               public SqlContainerInner call(SqlContainerInner resource) {
+               public GremlinGraphInner call(GremlinGraphInner resource) {
                    resetCreateUpdateParameters();
                    return resource;
                }
@@ -71,12 +71,12 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     }
 
     @Override
-    public Observable<SqlContainer> updateResourceAsync() {
+    public Observable<GremlinGraph> updateResourceAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.createUpdateSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseName, this.containerName, this.createOrUpdateParameter)
-            .map(new Func1<SqlContainerInner, SqlContainerInner>() {
+        return client.createUpdateGremlinGraphAsync(this.resourceGroupName, this.accountName, this.databaseName, this.graphName, this.createOrUpdateParameter)
+            .map(new Func1<GremlinGraphInner, GremlinGraphInner>() {
                @Override
-               public SqlContainerInner call(SqlContainerInner resource) {
+               public GremlinGraphInner call(GremlinGraphInner resource) {
                    resetCreateUpdateParameters();
                    return resource;
                }
@@ -85,9 +85,9 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     }
 
     @Override
-    protected Observable<SqlContainerInner> getInnerAsync() {
+    protected Observable<GremlinGraphInner> getInnerAsync() {
         DatabaseAccountsInner client = this.manager().inner().databaseAccounts();
-        return client.getSqlContainerAsync(this.resourceGroupName, this.accountName, this.databaseName, this.containerName);
+        return client.getGremlinGraphAsync(this.resourceGroupName, this.accountName, this.databaseName, this.graphName);
     }
 
     @Override
@@ -96,7 +96,7 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     }
 
     private void resetCreateUpdateParameters() {
-        this.createOrUpdateParameter = new SqlContainerCreateUpdateParameters();
+        this.createOrUpdateParameter = new GremlinGraphCreateUpdateParameters();
     }
 
     @Override
@@ -125,6 +125,11 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     }
 
     @Override
+    public String gremlinGraphId() {
+        return this.inner().gremlinGraphId();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -150,11 +155,6 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     }
 
     @Override
-    public String sqlContainerId() {
-        return this.inner().sqlContainerId();
-    }
-
-    @Override
     public Map<String, String> tags() {
         return this.inner().getTags();
     }
@@ -170,7 +170,7 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     }
 
     @Override
-    public SqlContainerImpl withExistingDatabasis(String resourceGroupName, String accountName, String databaseName) {
+    public GremlinGraphImpl withExistingDatabasis(String resourceGroupName, String accountName, String databaseName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
         this.databaseName = databaseName;
@@ -178,13 +178,13 @@ class SqlContainerImpl extends CreatableUpdatableImpl<SqlContainer, SqlContainer
     }
 
     @Override
-    public SqlContainerImpl withOptions(Map<String, String> options) {
+    public GremlinGraphImpl withOptions(Map<String, String> options) {
         this.createOrUpdateParameter.withOptions(options);
         return this;
     }
 
     @Override
-    public SqlContainerImpl withResource(SqlContainerResource resource) {
+    public GremlinGraphImpl withResource(GremlinGraphResource resource) {
         this.createOrUpdateParameter.withResource(resource);
         return this;
     }

@@ -13,15 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Parameters to create and update Cosmos DB container.
+ * Parameters to create and update Cosmos DB Mongodb collection.
  */
 @JsonFlatten
-public class SqlContainerCreateUpdateParameters {
+public class MongodbCollectionCreateUpdateParameters {
     /**
-     * The standard JSON format of a container.
+     * The standard JSON format of a Mongodb collection.
      */
     @JsonProperty(value = "properties.resource", required = true)
-    private SqlContainerResource resource;
+    private MongodbCollectionResource resource;
 
     /**
      * A key-value pair of options to be applied for the request. This
@@ -31,21 +31,21 @@ public class SqlContainerCreateUpdateParameters {
     private Map<String, String> options;
 
     /**
-     * Get the standard JSON format of a container.
+     * Get the standard JSON format of a Mongodb collection.
      *
      * @return the resource value
      */
-    public SqlContainerResource resource() {
+    public MongodbCollectionResource resource() {
         return this.resource;
     }
 
     /**
-     * Set the standard JSON format of a container.
+     * Set the standard JSON format of a Mongodb collection.
      *
      * @param resource the resource value to set
-     * @return the SqlContainerCreateUpdateParameters object itself.
+     * @return the MongodbCollectionCreateUpdateParameters object itself.
      */
-    public SqlContainerCreateUpdateParameters withResource(SqlContainerResource resource) {
+    public MongodbCollectionCreateUpdateParameters withResource(MongodbCollectionResource resource) {
         this.resource = resource;
         return this;
     }
@@ -63,9 +63,9 @@ public class SqlContainerCreateUpdateParameters {
      * Set a key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
      *
      * @param options the options value to set
-     * @return the SqlContainerCreateUpdateParameters object itself.
+     * @return the MongodbCollectionCreateUpdateParameters object itself.
      */
-    public SqlContainerCreateUpdateParameters withOptions(Map<String, String> options) {
+    public MongodbCollectionCreateUpdateParameters withOptions(Map<String, String> options) {
         this.options = options;
         return this;
     }
