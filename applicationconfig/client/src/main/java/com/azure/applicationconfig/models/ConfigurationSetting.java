@@ -6,7 +6,6 @@ import com.azure.common.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
