@@ -17,6 +17,7 @@ import com.microsoft.azure.management.sql.v2015_05_01_preview.ResourceIdentity;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.Sku;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedServerCreateMode;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceLicenseType;
+import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceProxyOverride;
 import rx.functions.Func1;
 
 class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, ManagedInstanceInner, ManagedInstanceImpl, SqlManager> implements ManagedInstance, ManagedInstance.Definition, ManagedInstance.Update {
@@ -120,7 +121,7 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
-    public String proxyOverride() {
+    public ManagedInstanceProxyOverride proxyOverride() {
         return this.inner().proxyOverride();
     }
 
@@ -246,7 +247,7 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
-    public ManagedInstanceImpl withProxyOverride(String proxyOverride) {
+    public ManagedInstanceImpl withProxyOverride(ManagedInstanceProxyOverride proxyOverride) {
         if (isInCreateMode()) {
             this.inner().withProxyOverride(proxyOverride);
         } else {
