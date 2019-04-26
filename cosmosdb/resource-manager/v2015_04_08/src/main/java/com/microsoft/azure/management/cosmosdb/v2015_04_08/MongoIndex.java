@@ -11,23 +11,23 @@ package com.microsoft.azure.management.cosmosdb.v2015_04_08;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Cosmos DB Mongodb collection index key.
+ * Cosmos DB MongoDB collection index key.
  */
 public class MongoIndex {
     /**
-     * Cosmos DB Mongodb collection index keys.
+     * Cosmos DB MongoDB collection index keys.
      */
     @JsonProperty(value = "key")
     private MongoIndexKeys key;
 
     /**
-     * Cosmos DB Mongodb collection index key options.
+     * Cosmos DB MongoDB collection index key options.
      */
     @JsonProperty(value = "options")
     private MongoIndexOptions options;
 
     /**
-     * Get cosmos DB Mongodb collection index keys.
+     * Get cosmos DB MongoDB collection index keys.
      *
      * @return the key value
      */
@@ -36,7 +36,7 @@ public class MongoIndex {
     }
 
     /**
-     * Set cosmos DB Mongodb collection index keys.
+     * Set cosmos DB MongoDB collection index keys.
      *
      * @param key the key value to set
      * @return the MongoIndex object itself.
@@ -47,7 +47,7 @@ public class MongoIndex {
     }
 
     /**
-     * Get cosmos DB Mongodb collection index key options.
+     * Get cosmos DB MongoDB collection index key options.
      *
      * @return the options value
      */
@@ -56,7 +56,7 @@ public class MongoIndex {
     }
 
     /**
-     * Set cosmos DB Mongodb collection index key options.
+     * Set cosmos DB MongoDB collection index key options.
      *
      * @param options the options value to set
      * @return the MongoIndex object itself.

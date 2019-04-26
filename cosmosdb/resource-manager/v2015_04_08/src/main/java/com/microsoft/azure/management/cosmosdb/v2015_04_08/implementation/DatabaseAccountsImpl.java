@@ -32,12 +32,12 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetric
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountUsage;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetricDefinition;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabase;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongodbDatabase;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBDatabase;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabase;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongodbDatabaseCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBDatabaseCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabaseCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainer;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongodbCollection;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBCollection;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.Table;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraTable;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraTableCreateUpdateParameters;
@@ -227,7 +227,7 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public MongodbCollectionImpl defineCollection(String name) {
+    public MongoDBCollectionImpl defineCollection(String name) {
         return wrapCollectionModel(name);
     }
 
@@ -254,8 +254,8 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return new SqlContainerImpl(name, this.manager());
     }
 
-    private MongodbCollectionImpl wrapCollectionModel(String name) {
-        return new MongodbCollectionImpl(name, this.manager());
+    private MongoDBCollectionImpl wrapCollectionModel(String name) {
+        return new MongoDBCollectionImpl(name, this.manager());
     }
 
     private TableImpl wrapTableModel(String name) {
@@ -290,8 +290,8 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return  new SqlContainerImpl(inner, manager());
     }
 
-    private MongodbCollectionImpl wrapMongodbCollectionModel(MongodbCollectionInner inner) {
-        return  new MongodbCollectionImpl(inner, manager());
+    private MongoDBCollectionImpl wrapMongoDBCollectionModel(MongoDBCollectionInner inner) {
+        return  new MongoDBCollectionImpl(inner, manager());
     }
 
     private TableImpl wrapTableModel(TableInner inner) {
@@ -315,13 +315,13 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return client.getSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName);
     }
 
-    private Observable<MongodbCollectionInner> getMongodbCollectionInnerUsingDatabaseAccountsInnerAsync(String id) {
+    private Observable<MongoDBCollectionInner> getMongoDBCollectionInnerUsingDatabaseAccountsInnerAsync(String id) {
         String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
         String accountName = IdParsingUtils.getValueFromIdByName(id, "databaseAccounts");
         String databaseName = IdParsingUtils.getValueFromIdByName(id, "databases");
         String collectionName = IdParsingUtils.getValueFromIdByName(id, "collections");
         DatabaseAccountsInner client = this.inner();
-        return client.getMongodbCollectionAsync(resourceGroupName, accountName, databaseName, collectionName);
+        return client.getMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName);
     }
 
     private Observable<GremlinGraphInner> getGremlinGraphInnerUsingDatabaseAccountsInnerAsync(String id) {
@@ -442,51 +442,51 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<MongodbDatabase> listMongodbDatabasesAsync(String resourceGroupName, String accountName) {
+    public Observable<MongoDBDatabase> listMongoDBDatabasesAsync(String resourceGroupName, String accountName) {
         DatabaseAccountsInner client = this.inner();
-        return client.listMongodbDatabasesAsync(resourceGroupName, accountName)
-        .flatMap(new Func1<List<MongodbDatabaseInner>, Observable<MongodbDatabaseInner>>() {
+        return client.listMongoDBDatabasesAsync(resourceGroupName, accountName)
+        .flatMap(new Func1<List<MongoDBDatabaseInner>, Observable<MongoDBDatabaseInner>>() {
             @Override
-            public Observable<MongodbDatabaseInner> call(List<MongodbDatabaseInner> innerList) {
+            public Observable<MongoDBDatabaseInner> call(List<MongoDBDatabaseInner> innerList) {
                 return Observable.from(innerList);
             }
         })
-        .map(new Func1<MongodbDatabaseInner, MongodbDatabase>() {
+        .map(new Func1<MongoDBDatabaseInner, MongoDBDatabase>() {
             @Override
-            public MongodbDatabase call(MongodbDatabaseInner inner) {
-                return new MongodbDatabaseImpl(inner, manager());
+            public MongoDBDatabase call(MongoDBDatabaseInner inner) {
+                return new MongoDBDatabaseImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<MongodbDatabase> getMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Observable<MongoDBDatabase> getMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
         DatabaseAccountsInner client = this.inner();
-        return client.getMongodbDatabaseAsync(resourceGroupName, accountName, databaseName)
-        .map(new Func1<MongodbDatabaseInner, MongodbDatabase>() {
+        return client.getMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName)
+        .map(new Func1<MongoDBDatabaseInner, MongoDBDatabase>() {
             @Override
-            public MongodbDatabase call(MongodbDatabaseInner inner) {
-                return new MongodbDatabaseImpl(inner, manager());
+            public MongoDBDatabase call(MongoDBDatabaseInner inner) {
+                return new MongoDBDatabaseImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<MongodbDatabase> createUpdateMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters) {
+    public Observable<MongoDBDatabase> createUpdateMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
         DatabaseAccountsInner client = this.inner();
-        return client.createUpdateMongodbDatabaseAsync(resourceGroupName, accountName, databaseName, createUpdateMongodbDatabaseParameters)
-        .map(new Func1<MongodbDatabaseInner, MongodbDatabase>() {
+        return client.createUpdateMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters)
+        .map(new Func1<MongoDBDatabaseInner, MongoDBDatabase>() {
             @Override
-            public MongodbDatabase call(MongodbDatabaseInner inner) {
-                return new MongodbDatabaseImpl(inner, manager());
+            public MongoDBDatabase call(MongoDBDatabaseInner inner) {
+                return new MongoDBDatabaseImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Completable deleteMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Completable deleteMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
         DatabaseAccountsInner client = this.inner();
-        return client.deleteMongodbDatabaseAsync(resourceGroupName, accountName, databaseName).toCompletable();
+        return client.deleteMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName).toCompletable();
     }
 
     @Override
@@ -574,39 +574,39 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public Observable<MongodbCollection> getMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+    public Observable<MongoDBCollection> getMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
         DatabaseAccountsInner client = this.inner();
-        return client.getMongodbCollectionAsync(resourceGroupName, accountName, databaseName, collectionName)
-        .map(new Func1<MongodbCollectionInner, MongodbCollection>() {
+        return client.getMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName)
+        .map(new Func1<MongoDBCollectionInner, MongoDBCollection>() {
             @Override
-            public MongodbCollection call(MongodbCollectionInner inner) {
-                return wrapMongodbCollectionModel(inner);
+            public MongoDBCollection call(MongoDBCollectionInner inner) {
+                return wrapMongoDBCollectionModel(inner);
             }
        });
     }
 
     @Override
-    public Observable<MongodbCollection> listMongodbCollectionsAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Observable<MongoDBCollection> listMongoDBCollectionsAsync(String resourceGroupName, String accountName, String databaseName) {
         DatabaseAccountsInner client = this.inner();
-        return client.listMongodbCollectionsAsync(resourceGroupName, accountName, databaseName)
-        .flatMap(new Func1<List<MongodbCollectionInner>, Observable<MongodbCollectionInner>>() {
+        return client.listMongoDBCollectionsAsync(resourceGroupName, accountName, databaseName)
+        .flatMap(new Func1<List<MongoDBCollectionInner>, Observable<MongoDBCollectionInner>>() {
             @Override
-            public Observable<MongodbCollectionInner> call(List<MongodbCollectionInner> innerList) {
+            public Observable<MongoDBCollectionInner> call(List<MongoDBCollectionInner> innerList) {
                 return Observable.from(innerList);
             }
         })
-        .map(new Func1<MongodbCollectionInner, MongodbCollection>() {
+        .map(new Func1<MongoDBCollectionInner, MongoDBCollection>() {
             @Override
-            public MongodbCollection call(MongodbCollectionInner inner) {
-                return wrapMongodbCollectionModel(inner);
+            public MongoDBCollection call(MongoDBCollectionInner inner) {
+                return wrapMongoDBCollectionModel(inner);
             }
         });
     }
 
     @Override
-    public Completable deleteMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+    public Completable deleteMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
         DatabaseAccountsInner client = this.inner();
-        return client.deleteMongodbCollectionAsync(resourceGroupName, accountName, databaseName, collectionName).toCompletable();
+        return client.deleteMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName).toCompletable();
     }
 
     @Override

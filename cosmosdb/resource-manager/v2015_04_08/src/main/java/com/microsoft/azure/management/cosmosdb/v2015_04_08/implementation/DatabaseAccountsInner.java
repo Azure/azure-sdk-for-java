@@ -25,8 +25,8 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.FailoverPolicy;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabaseCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinGraphCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.KeyKind;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongodbCollectionCreateUpdateParameters;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongodbDatabaseCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBCollectionCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBDatabaseCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.RegionForOnlineOffline;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseCreateUpdateParameters;
@@ -229,53 +229,53 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeleteSqlContainer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listMongodbDatabases" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listMongoDBDatabases" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases")
-        Observable<Response<ResponseBody>> listMongodbDatabases(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listMongoDBDatabases(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getMongodbDatabase" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getMongoDBDatabase" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}")
-        Observable<Response<ResponseBody>> getMongodbDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getMongoDBDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateMongodbDatabase" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateMongoDBDatabase" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}")
-        Observable<Response<ResponseBody>> createUpdateMongodbDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createUpdateMongoDBDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateMongodbDatabase" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateMongoDBDatabase" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}")
-        Observable<Response<ResponseBody>> beginCreateUpdateMongodbDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateUpdateMongoDBDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteMongodbDatabase" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteMongoDBDatabase" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteMongodbDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteMongoDBDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteMongodbDatabase" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteMongoDBDatabase" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> beginDeleteMongodbDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginDeleteMongoDBDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listMongodbCollections" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listMongoDBCollections" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections")
-        Observable<Response<ResponseBody>> listMongodbCollections(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listMongoDBCollections(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getMongodbCollection" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getMongoDBCollection" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections/{collectionName}")
-        Observable<Response<ResponseBody>> getMongodbCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getMongoDBCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateMongodbCollection" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateMongoDBCollection" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections/{collectionName}")
-        Observable<Response<ResponseBody>> createUpdateMongodbCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Body MongodbCollectionCreateUpdateParameters createUpdateMongodbCollectionParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createUpdateMongoDBCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Body MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateMongodbCollection" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateMongoDBCollection" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections/{collectionName}")
-        Observable<Response<ResponseBody>> beginCreateUpdateMongodbCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Body MongodbCollectionCreateUpdateParameters createUpdateMongodbCollectionParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateUpdateMongoDBCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Body MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteMongodbCollection" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteMongoDBCollection" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections/{collectionName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteMongodbCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteMongoDBCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteMongodbCollection" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteMongoDBCollection" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections/{collectionName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> beginDeleteMongodbCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginDeleteMongoDBCollection(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listTables" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/table/tables")
@@ -3749,21 +3749,21 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Lists the Mongodb databases under an existing Azure Cosmos DB database account.
+     * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;MongodbDatabaseInner&gt; object if successful.
+     * @return the List&lt;MongoDBDatabaseInner&gt; object if successful.
      */
-    public List<MongodbDatabaseInner> listMongodbDatabases(String resourceGroupName, String accountName) {
-        return listMongodbDatabasesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    public List<MongoDBDatabaseInner> listMongoDBDatabases(String resourceGroupName, String accountName) {
+        return listMongoDBDatabasesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
-     * Lists the Mongodb databases under an existing Azure Cosmos DB database account.
+     * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -3771,36 +3771,36 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<MongodbDatabaseInner>> listMongodbDatabasesAsync(String resourceGroupName, String accountName, final ServiceCallback<List<MongodbDatabaseInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listMongodbDatabasesWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    public ServiceFuture<List<MongoDBDatabaseInner>> listMongoDBDatabasesAsync(String resourceGroupName, String accountName, final ServiceCallback<List<MongoDBDatabaseInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listMongoDBDatabasesWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
-     * Lists the Mongodb databases under an existing Azure Cosmos DB database account.
+     * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;MongodbDatabaseInner&gt; object
+     * @return the observable to the List&lt;MongoDBDatabaseInner&gt; object
      */
-    public Observable<List<MongodbDatabaseInner>> listMongodbDatabasesAsync(String resourceGroupName, String accountName) {
-        return listMongodbDatabasesWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<List<MongodbDatabaseInner>>, List<MongodbDatabaseInner>>() {
+    public Observable<List<MongoDBDatabaseInner>> listMongoDBDatabasesAsync(String resourceGroupName, String accountName) {
+        return listMongoDBDatabasesWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<List<MongoDBDatabaseInner>>, List<MongoDBDatabaseInner>>() {
             @Override
-            public List<MongodbDatabaseInner> call(ServiceResponse<List<MongodbDatabaseInner>> response) {
+            public List<MongoDBDatabaseInner> call(ServiceResponse<List<MongoDBDatabaseInner>> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Lists the Mongodb databases under an existing Azure Cosmos DB database account.
+     * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;MongodbDatabaseInner&gt; object
+     * @return the observable to the List&lt;MongoDBDatabaseInner&gt; object
      */
-    public Observable<ServiceResponse<List<MongodbDatabaseInner>>> listMongodbDatabasesWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponse<List<MongoDBDatabaseInner>>> listMongoDBDatabasesWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -3813,17 +3813,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listMongodbDatabases(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<MongodbDatabaseInner>>>>() {
+        return service.listMongoDBDatabases(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<MongoDBDatabaseInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<MongodbDatabaseInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<MongoDBDatabaseInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<MongodbDatabaseInner>> result = listMongodbDatabasesDelegate(response);
-                        List<MongodbDatabaseInner> items = null;
+                        ServiceResponse<PageImpl<MongoDBDatabaseInner>> result = listMongoDBDatabasesDelegate(response);
+                        List<MongoDBDatabaseInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
                         }
-                        ServiceResponse<List<MongodbDatabaseInner>> clientResponse = new ServiceResponse<List<MongodbDatabaseInner>>(items, result.response());
+                        ServiceResponse<List<MongoDBDatabaseInner>> clientResponse = new ServiceResponse<List<MongoDBDatabaseInner>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3832,15 +3832,15 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<PageImpl<MongodbDatabaseInner>> listMongodbDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<MongodbDatabaseInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<MongodbDatabaseInner>>() { }.getType())
+    private ServiceResponse<PageImpl<MongoDBDatabaseInner>> listMongoDBDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<MongoDBDatabaseInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<MongoDBDatabaseInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets the Mongodb databases under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -3848,14 +3848,14 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MongodbDatabaseInner object if successful.
+     * @return the MongoDBDatabaseInner object if successful.
      */
-    public MongodbDatabaseInner getMongodbDatabase(String resourceGroupName, String accountName, String databaseName) {
-        return getMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
+    public MongoDBDatabaseInner getMongoDBDatabase(String resourceGroupName, String accountName, String databaseName) {
+        return getMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
     }
 
     /**
-     * Gets the Mongodb databases under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -3864,38 +3864,38 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MongodbDatabaseInner> getMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<MongodbDatabaseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    public ServiceFuture<MongoDBDatabaseInner> getMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<MongoDBDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
     }
 
     /**
-     * Gets the Mongodb databases under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MongodbDatabaseInner object
+     * @return the observable to the MongoDBDatabaseInner object
      */
-    public Observable<MongodbDatabaseInner> getMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
-        return getMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<MongodbDatabaseInner>, MongodbDatabaseInner>() {
+    public Observable<MongoDBDatabaseInner> getMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
+        return getMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<MongoDBDatabaseInner>, MongoDBDatabaseInner>() {
             @Override
-            public MongodbDatabaseInner call(ServiceResponse<MongodbDatabaseInner> response) {
+            public MongoDBDatabaseInner call(ServiceResponse<MongoDBDatabaseInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Gets the Mongodb databases under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MongodbDatabaseInner object
+     * @return the observable to the MongoDBDatabaseInner object
      */
-    public Observable<ServiceResponse<MongodbDatabaseInner>> getMongodbDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Observable<ServiceResponse<MongoDBDatabaseInner>> getMongoDBDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -3911,12 +3911,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getMongodbDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongodbDatabaseInner>>>() {
+        return service.getMongoDBDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongoDBDatabaseInner>>>() {
                 @Override
-                public Observable<ServiceResponse<MongodbDatabaseInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<MongoDBDatabaseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<MongodbDatabaseInner> clientResponse = getMongodbDatabaseDelegate(response);
+                        ServiceResponse<MongoDBDatabaseInner> clientResponse = getMongoDBDatabaseDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3925,74 +3925,74 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<MongodbDatabaseInner> getMongodbDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MongodbDatabaseInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<MongodbDatabaseInner>() { }.getType())
+    private ServiceResponse<MongoDBDatabaseInner> getMongoDBDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MongoDBDatabaseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MongoDBDatabaseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Create or updates Azure Cosmos DB Mongodb database.
+     * Create or updates Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongodbDatabaseParameters The parameters to provide for the current Mongodb database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MongodbDatabaseInner object if successful.
+     * @return the MongoDBDatabaseInner object if successful.
      */
-    public MongodbDatabaseInner createUpdateMongodbDatabase(String resourceGroupName, String accountName, String databaseName, MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters) {
-        return createUpdateMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongodbDatabaseParameters).toBlocking().last().body();
+    public MongoDBDatabaseInner createUpdateMongoDBDatabase(String resourceGroupName, String accountName, String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
+        return createUpdateMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters).toBlocking().last().body();
     }
 
     /**
-     * Create or updates Azure Cosmos DB Mongodb database.
+     * Create or updates Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongodbDatabaseParameters The parameters to provide for the current Mongodb database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MongodbDatabaseInner> createUpdateMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters, final ServiceCallback<MongodbDatabaseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createUpdateMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongodbDatabaseParameters), serviceCallback);
+    public ServiceFuture<MongoDBDatabaseInner> createUpdateMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters, final ServiceCallback<MongoDBDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters), serviceCallback);
     }
 
     /**
-     * Create or updates Azure Cosmos DB Mongodb database.
+     * Create or updates Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongodbDatabaseParameters The parameters to provide for the current Mongodb database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<MongodbDatabaseInner> createUpdateMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters) {
-        return createUpdateMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongodbDatabaseParameters).map(new Func1<ServiceResponse<MongodbDatabaseInner>, MongodbDatabaseInner>() {
+    public Observable<MongoDBDatabaseInner> createUpdateMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
+        return createUpdateMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters).map(new Func1<ServiceResponse<MongoDBDatabaseInner>, MongoDBDatabaseInner>() {
             @Override
-            public MongodbDatabaseInner call(ServiceResponse<MongodbDatabaseInner> response) {
+            public MongoDBDatabaseInner call(ServiceResponse<MongoDBDatabaseInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Create or updates Azure Cosmos DB Mongodb database.
+     * Create or updates Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongodbDatabaseParameters The parameters to provide for the current Mongodb database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<MongodbDatabaseInner>> createUpdateMongodbDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters) {
+    public Observable<ServiceResponse<MongoDBDatabaseInner>> createUpdateMongoDBDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -4008,75 +4008,75 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (createUpdateMongodbDatabaseParameters == null) {
-            throw new IllegalArgumentException("Parameter createUpdateMongodbDatabaseParameters is required and cannot be null.");
+        if (createUpdateMongoDBDatabaseParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateMongoDBDatabaseParameters is required and cannot be null.");
         }
-        Validator.validate(createUpdateMongodbDatabaseParameters);
-        Observable<Response<ResponseBody>> observable = service.createUpdateMongodbDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), createUpdateMongodbDatabaseParameters, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<MongodbDatabaseInner>() { }.getType());
+        Validator.validate(createUpdateMongoDBDatabaseParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateMongoDBDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), createUpdateMongoDBDatabaseParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<MongoDBDatabaseInner>() { }.getType());
     }
 
     /**
-     * Create or updates Azure Cosmos DB Mongodb database.
+     * Create or updates Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongodbDatabaseParameters The parameters to provide for the current Mongodb database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MongodbDatabaseInner object if successful.
+     * @return the MongoDBDatabaseInner object if successful.
      */
-    public MongodbDatabaseInner beginCreateUpdateMongodbDatabase(String resourceGroupName, String accountName, String databaseName, MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters) {
-        return beginCreateUpdateMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongodbDatabaseParameters).toBlocking().single().body();
+    public MongoDBDatabaseInner beginCreateUpdateMongoDBDatabase(String resourceGroupName, String accountName, String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
+        return beginCreateUpdateMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters).toBlocking().single().body();
     }
 
     /**
-     * Create or updates Azure Cosmos DB Mongodb database.
+     * Create or updates Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongodbDatabaseParameters The parameters to provide for the current Mongodb database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MongodbDatabaseInner> beginCreateUpdateMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters, final ServiceCallback<MongodbDatabaseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateUpdateMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongodbDatabaseParameters), serviceCallback);
+    public ServiceFuture<MongoDBDatabaseInner> beginCreateUpdateMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters, final ServiceCallback<MongoDBDatabaseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters), serviceCallback);
     }
 
     /**
-     * Create or updates Azure Cosmos DB Mongodb database.
+     * Create or updates Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongodbDatabaseParameters The parameters to provide for the current Mongodb database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MongodbDatabaseInner object
+     * @return the observable to the MongoDBDatabaseInner object
      */
-    public Observable<MongodbDatabaseInner> beginCreateUpdateMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters) {
-        return beginCreateUpdateMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongodbDatabaseParameters).map(new Func1<ServiceResponse<MongodbDatabaseInner>, MongodbDatabaseInner>() {
+    public Observable<MongoDBDatabaseInner> beginCreateUpdateMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
+        return beginCreateUpdateMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters).map(new Func1<ServiceResponse<MongoDBDatabaseInner>, MongoDBDatabaseInner>() {
             @Override
-            public MongodbDatabaseInner call(ServiceResponse<MongodbDatabaseInner> response) {
+            public MongoDBDatabaseInner call(ServiceResponse<MongoDBDatabaseInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Create or updates Azure Cosmos DB Mongodb database.
+     * Create or updates Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongodbDatabaseParameters The parameters to provide for the current Mongodb database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MongodbDatabaseInner object
+     * @return the observable to the MongoDBDatabaseInner object
      */
-    public Observable<ServiceResponse<MongodbDatabaseInner>> beginCreateUpdateMongodbDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters) {
+    public Observable<ServiceResponse<MongoDBDatabaseInner>> beginCreateUpdateMongoDBDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -4092,16 +4092,16 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (createUpdateMongodbDatabaseParameters == null) {
-            throw new IllegalArgumentException("Parameter createUpdateMongodbDatabaseParameters is required and cannot be null.");
+        if (createUpdateMongoDBDatabaseParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateMongoDBDatabaseParameters is required and cannot be null.");
         }
-        Validator.validate(createUpdateMongodbDatabaseParameters);
-        return service.beginCreateUpdateMongodbDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), createUpdateMongodbDatabaseParameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongodbDatabaseInner>>>() {
+        Validator.validate(createUpdateMongoDBDatabaseParameters);
+        return service.beginCreateUpdateMongoDBDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), createUpdateMongoDBDatabaseParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongoDBDatabaseInner>>>() {
                 @Override
-                public Observable<ServiceResponse<MongodbDatabaseInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<MongoDBDatabaseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<MongodbDatabaseInner> clientResponse = beginCreateUpdateMongodbDatabaseDelegate(response);
+                        ServiceResponse<MongoDBDatabaseInner> clientResponse = beginCreateUpdateMongoDBDatabaseDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -4110,16 +4110,16 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<MongodbDatabaseInner> beginCreateUpdateMongodbDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MongodbDatabaseInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<MongodbDatabaseInner>() { }.getType())
+    private ServiceResponse<MongoDBDatabaseInner> beginCreateUpdateMongoDBDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MongoDBDatabaseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MongoDBDatabaseInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb database.
+     * Deletes an existing Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4128,12 +4128,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteMongodbDatabase(String resourceGroupName, String accountName, String databaseName) {
-        deleteMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().last().body();
+    public void deleteMongoDBDatabase(String resourceGroupName, String accountName, String databaseName) {
+        deleteMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().last().body();
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb database.
+     * Deletes an existing Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4142,12 +4142,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    public ServiceFuture<Void> deleteMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb database.
+     * Deletes an existing Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4155,8 +4155,8 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> deleteMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
-        return deleteMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
+        return deleteMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -4165,7 +4165,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb database.
+     * Deletes an existing Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4173,7 +4173,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteMongodbDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Observable<ServiceResponse<Void>> deleteMongoDBDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -4189,12 +4189,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.deleteMongodbDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.deleteMongoDBDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb database.
+     * Deletes an existing Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4203,12 +4203,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void beginDeleteMongodbDatabase(String resourceGroupName, String accountName, String databaseName) {
-        beginDeleteMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
+    public void beginDeleteMongoDBDatabase(String resourceGroupName, String accountName, String databaseName) {
+        beginDeleteMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb database.
+     * Deletes an existing Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4217,12 +4217,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> beginDeleteMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(beginDeleteMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb database.
+     * Deletes an existing Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4230,8 +4230,8 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> beginDeleteMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
-        return beginDeleteMongodbDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> beginDeleteMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
+        return beginDeleteMongoDBDatabaseWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -4240,7 +4240,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb database.
+     * Deletes an existing Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4248,7 +4248,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteMongodbDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Observable<ServiceResponse<Void>> beginDeleteMongoDBDatabaseWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -4264,12 +4264,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.beginDeleteMongodbDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginDeleteMongoDBDatabase(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = beginDeleteMongodbDatabaseDelegate(response);
+                        ServiceResponse<Void> clientResponse = beginDeleteMongoDBDatabaseDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -4278,7 +4278,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<Void> beginDeleteMongodbDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> beginDeleteMongoDBDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
@@ -4287,7 +4287,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Lists the Mongodb collection under an existing Azure Cosmos DB database account.
+     * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4295,14 +4295,14 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;MongodbCollectionInner&gt; object if successful.
+     * @return the List&lt;MongoDBCollectionInner&gt; object if successful.
      */
-    public List<MongodbCollectionInner> listMongodbCollections(String resourceGroupName, String accountName, String databaseName) {
-        return listMongodbCollectionsWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
+    public List<MongoDBCollectionInner> listMongoDBCollections(String resourceGroupName, String accountName, String databaseName) {
+        return listMongoDBCollectionsWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
     }
 
     /**
-     * Lists the Mongodb collection under an existing Azure Cosmos DB database account.
+     * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4311,38 +4311,38 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<MongodbCollectionInner>> listMongodbCollectionsAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<List<MongodbCollectionInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listMongodbCollectionsWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    public ServiceFuture<List<MongoDBCollectionInner>> listMongoDBCollectionsAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<List<MongoDBCollectionInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listMongoDBCollectionsWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
     }
 
     /**
-     * Lists the Mongodb collection under an existing Azure Cosmos DB database account.
+     * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;MongodbCollectionInner&gt; object
+     * @return the observable to the List&lt;MongoDBCollectionInner&gt; object
      */
-    public Observable<List<MongodbCollectionInner>> listMongodbCollectionsAsync(String resourceGroupName, String accountName, String databaseName) {
-        return listMongodbCollectionsWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<List<MongodbCollectionInner>>, List<MongodbCollectionInner>>() {
+    public Observable<List<MongoDBCollectionInner>> listMongoDBCollectionsAsync(String resourceGroupName, String accountName, String databaseName) {
+        return listMongoDBCollectionsWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<List<MongoDBCollectionInner>>, List<MongoDBCollectionInner>>() {
             @Override
-            public List<MongodbCollectionInner> call(ServiceResponse<List<MongodbCollectionInner>> response) {
+            public List<MongoDBCollectionInner> call(ServiceResponse<List<MongoDBCollectionInner>> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Lists the Mongodb collection under an existing Azure Cosmos DB database account.
+     * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;MongodbCollectionInner&gt; object
+     * @return the observable to the List&lt;MongoDBCollectionInner&gt; object
      */
-    public Observable<ServiceResponse<List<MongodbCollectionInner>>> listMongodbCollectionsWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Observable<ServiceResponse<List<MongoDBCollectionInner>>> listMongoDBCollectionsWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -4358,17 +4358,17 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listMongodbCollections(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<MongodbCollectionInner>>>>() {
+        return service.listMongoDBCollections(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<MongoDBCollectionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<MongodbCollectionInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<MongoDBCollectionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<MongodbCollectionInner>> result = listMongodbCollectionsDelegate(response);
-                        List<MongodbCollectionInner> items = null;
+                        ServiceResponse<PageImpl<MongoDBCollectionInner>> result = listMongoDBCollectionsDelegate(response);
+                        List<MongoDBCollectionInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
                         }
-                        ServiceResponse<List<MongodbCollectionInner>> clientResponse = new ServiceResponse<List<MongodbCollectionInner>>(items, result.response());
+                        ServiceResponse<List<MongoDBCollectionInner>> clientResponse = new ServiceResponse<List<MongoDBCollectionInner>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -4377,15 +4377,15 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<PageImpl<MongodbCollectionInner>> listMongodbCollectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<MongodbCollectionInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<MongodbCollectionInner>>() { }.getType())
+    private ServiceResponse<PageImpl<MongoDBCollectionInner>> listMongoDBCollectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<MongoDBCollectionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<MongoDBCollectionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets the Mongodb collection under an existing Azure Cosmos DB database account.
+     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4394,14 +4394,14 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MongodbCollectionInner object if successful.
+     * @return the MongoDBCollectionInner object if successful.
      */
-    public MongodbCollectionInner getMongodbCollection(String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        return getMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).toBlocking().single().body();
+    public MongoDBCollectionInner getMongoDBCollection(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return getMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).toBlocking().single().body();
     }
 
     /**
-     * Gets the Mongodb collection under an existing Azure Cosmos DB database account.
+     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4411,40 +4411,40 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MongodbCollectionInner> getMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, final ServiceCallback<MongodbCollectionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName), serviceCallback);
+    public ServiceFuture<MongoDBCollectionInner> getMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, final ServiceCallback<MongoDBCollectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName), serviceCallback);
     }
 
     /**
-     * Gets the Mongodb collection under an existing Azure Cosmos DB database account.
+     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MongodbCollectionInner object
+     * @return the observable to the MongoDBCollectionInner object
      */
-    public Observable<MongodbCollectionInner> getMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        return getMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).map(new Func1<ServiceResponse<MongodbCollectionInner>, MongodbCollectionInner>() {
+    public Observable<MongoDBCollectionInner> getMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return getMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).map(new Func1<ServiceResponse<MongoDBCollectionInner>, MongoDBCollectionInner>() {
             @Override
-            public MongodbCollectionInner call(ServiceResponse<MongodbCollectionInner> response) {
+            public MongoDBCollectionInner call(ServiceResponse<MongoDBCollectionInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Gets the Mongodb collection under an existing Azure Cosmos DB database account.
+     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MongodbCollectionInner object
+     * @return the observable to the MongoDBCollectionInner object
      */
-    public Observable<ServiceResponse<MongodbCollectionInner>> getMongodbCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+    public Observable<ServiceResponse<MongoDBCollectionInner>> getMongoDBCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -4463,12 +4463,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getMongodbCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongodbCollectionInner>>>() {
+        return service.getMongoDBCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongoDBCollectionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<MongodbCollectionInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<MongoDBCollectionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<MongodbCollectionInner> clientResponse = getMongodbCollectionDelegate(response);
+                        ServiceResponse<MongoDBCollectionInner> clientResponse = getMongoDBCollectionDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -4477,78 +4477,78 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<MongodbCollectionInner> getMongodbCollectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MongodbCollectionInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<MongodbCollectionInner>() { }.getType())
+    private ServiceResponse<MongoDBCollectionInner> getMongoDBCollectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MongoDBCollectionInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MongoDBCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Create or update an Azure Cosmos DB Mongodb Collection.
+     * Create or update an Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongodbCollectionParameters The parameters to provide for the current Mongodb Collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MongodbCollectionInner object if successful.
+     * @return the MongoDBCollectionInner object if successful.
      */
-    public MongodbCollectionInner createUpdateMongodbCollection(String resourceGroupName, String accountName, String databaseName, String collectionName, MongodbCollectionCreateUpdateParameters createUpdateMongodbCollectionParameters) {
-        return createUpdateMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongodbCollectionParameters).toBlocking().last().body();
+    public MongoDBCollectionInner createUpdateMongoDBCollection(String resourceGroupName, String accountName, String databaseName, String collectionName, MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
+        return createUpdateMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters).toBlocking().last().body();
     }
 
     /**
-     * Create or update an Azure Cosmos DB Mongodb Collection.
+     * Create or update an Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongodbCollectionParameters The parameters to provide for the current Mongodb Collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MongodbCollectionInner> createUpdateMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongodbCollectionCreateUpdateParameters createUpdateMongodbCollectionParameters, final ServiceCallback<MongodbCollectionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createUpdateMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongodbCollectionParameters), serviceCallback);
+    public ServiceFuture<MongoDBCollectionInner> createUpdateMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters, final ServiceCallback<MongoDBCollectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters), serviceCallback);
     }
 
     /**
-     * Create or update an Azure Cosmos DB Mongodb Collection.
+     * Create or update an Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongodbCollectionParameters The parameters to provide for the current Mongodb Collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<MongodbCollectionInner> createUpdateMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongodbCollectionCreateUpdateParameters createUpdateMongodbCollectionParameters) {
-        return createUpdateMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongodbCollectionParameters).map(new Func1<ServiceResponse<MongodbCollectionInner>, MongodbCollectionInner>() {
+    public Observable<MongoDBCollectionInner> createUpdateMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
+        return createUpdateMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters).map(new Func1<ServiceResponse<MongoDBCollectionInner>, MongoDBCollectionInner>() {
             @Override
-            public MongodbCollectionInner call(ServiceResponse<MongodbCollectionInner> response) {
+            public MongoDBCollectionInner call(ServiceResponse<MongoDBCollectionInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Create or update an Azure Cosmos DB Mongodb Collection.
+     * Create or update an Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongodbCollectionParameters The parameters to provide for the current Mongodb Collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<MongodbCollectionInner>> createUpdateMongodbCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongodbCollectionCreateUpdateParameters createUpdateMongodbCollectionParameters) {
+    public Observable<ServiceResponse<MongoDBCollectionInner>> createUpdateMongoDBCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -4567,79 +4567,79 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (createUpdateMongodbCollectionParameters == null) {
-            throw new IllegalArgumentException("Parameter createUpdateMongodbCollectionParameters is required and cannot be null.");
+        if (createUpdateMongoDBCollectionParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateMongoDBCollectionParameters is required and cannot be null.");
         }
-        Validator.validate(createUpdateMongodbCollectionParameters);
-        Observable<Response<ResponseBody>> observable = service.createUpdateMongodbCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), createUpdateMongodbCollectionParameters, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<MongodbCollectionInner>() { }.getType());
+        Validator.validate(createUpdateMongoDBCollectionParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateMongoDBCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), createUpdateMongoDBCollectionParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<MongoDBCollectionInner>() { }.getType());
     }
 
     /**
-     * Create or update an Azure Cosmos DB Mongodb Collection.
+     * Create or update an Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongodbCollectionParameters The parameters to provide for the current Mongodb Collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MongodbCollectionInner object if successful.
+     * @return the MongoDBCollectionInner object if successful.
      */
-    public MongodbCollectionInner beginCreateUpdateMongodbCollection(String resourceGroupName, String accountName, String databaseName, String collectionName, MongodbCollectionCreateUpdateParameters createUpdateMongodbCollectionParameters) {
-        return beginCreateUpdateMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongodbCollectionParameters).toBlocking().single().body();
+    public MongoDBCollectionInner beginCreateUpdateMongoDBCollection(String resourceGroupName, String accountName, String databaseName, String collectionName, MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
+        return beginCreateUpdateMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters).toBlocking().single().body();
     }
 
     /**
-     * Create or update an Azure Cosmos DB Mongodb Collection.
+     * Create or update an Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongodbCollectionParameters The parameters to provide for the current Mongodb Collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MongodbCollectionInner> beginCreateUpdateMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongodbCollectionCreateUpdateParameters createUpdateMongodbCollectionParameters, final ServiceCallback<MongodbCollectionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateUpdateMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongodbCollectionParameters), serviceCallback);
+    public ServiceFuture<MongoDBCollectionInner> beginCreateUpdateMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters, final ServiceCallback<MongoDBCollectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters), serviceCallback);
     }
 
     /**
-     * Create or update an Azure Cosmos DB Mongodb Collection.
+     * Create or update an Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongodbCollectionParameters The parameters to provide for the current Mongodb Collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MongodbCollectionInner object
+     * @return the observable to the MongoDBCollectionInner object
      */
-    public Observable<MongodbCollectionInner> beginCreateUpdateMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongodbCollectionCreateUpdateParameters createUpdateMongodbCollectionParameters) {
-        return beginCreateUpdateMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongodbCollectionParameters).map(new Func1<ServiceResponse<MongodbCollectionInner>, MongodbCollectionInner>() {
+    public Observable<MongoDBCollectionInner> beginCreateUpdateMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
+        return beginCreateUpdateMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters).map(new Func1<ServiceResponse<MongoDBCollectionInner>, MongoDBCollectionInner>() {
             @Override
-            public MongodbCollectionInner call(ServiceResponse<MongodbCollectionInner> response) {
+            public MongoDBCollectionInner call(ServiceResponse<MongoDBCollectionInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Create or update an Azure Cosmos DB Mongodb Collection.
+     * Create or update an Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongodbCollectionParameters The parameters to provide for the current Mongodb Collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MongodbCollectionInner object
+     * @return the observable to the MongoDBCollectionInner object
      */
-    public Observable<ServiceResponse<MongodbCollectionInner>> beginCreateUpdateMongodbCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongodbCollectionCreateUpdateParameters createUpdateMongodbCollectionParameters) {
+    public Observable<ServiceResponse<MongoDBCollectionInner>> beginCreateUpdateMongoDBCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -4658,16 +4658,16 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (createUpdateMongodbCollectionParameters == null) {
-            throw new IllegalArgumentException("Parameter createUpdateMongodbCollectionParameters is required and cannot be null.");
+        if (createUpdateMongoDBCollectionParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateMongoDBCollectionParameters is required and cannot be null.");
         }
-        Validator.validate(createUpdateMongodbCollectionParameters);
-        return service.beginCreateUpdateMongodbCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), createUpdateMongodbCollectionParameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongodbCollectionInner>>>() {
+        Validator.validate(createUpdateMongoDBCollectionParameters);
+        return service.beginCreateUpdateMongoDBCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), createUpdateMongoDBCollectionParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MongoDBCollectionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<MongodbCollectionInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<MongoDBCollectionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<MongodbCollectionInner> clientResponse = beginCreateUpdateMongodbCollectionDelegate(response);
+                        ServiceResponse<MongoDBCollectionInner> clientResponse = beginCreateUpdateMongoDBCollectionDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -4676,16 +4676,16 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<MongodbCollectionInner> beginCreateUpdateMongodbCollectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MongodbCollectionInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<MongodbCollectionInner>() { }.getType())
+    private ServiceResponse<MongoDBCollectionInner> beginCreateUpdateMongoDBCollectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MongoDBCollectionInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MongoDBCollectionInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb Collection.
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4695,12 +4695,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteMongodbCollection(String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        deleteMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).toBlocking().last().body();
+    public void deleteMongoDBCollection(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        deleteMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).toBlocking().last().body();
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb Collection.
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4710,12 +4710,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName), serviceCallback);
+    public ServiceFuture<Void> deleteMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName), serviceCallback);
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb Collection.
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4724,8 +4724,8 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> deleteMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        return deleteMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return deleteMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -4734,7 +4734,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb Collection.
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4743,7 +4743,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteMongodbCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+    public Observable<ServiceResponse<Void>> deleteMongoDBCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -4762,12 +4762,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.deleteMongodbCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.deleteMongoDBCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb Collection.
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4777,12 +4777,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void beginDeleteMongodbCollection(String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        beginDeleteMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).toBlocking().single().body();
+    public void beginDeleteMongoDBCollection(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        beginDeleteMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).toBlocking().single().body();
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb Collection.
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4792,12 +4792,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> beginDeleteMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(beginDeleteMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName), serviceCallback);
+    public ServiceFuture<Void> beginDeleteMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName), serviceCallback);
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb Collection.
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4806,8 +4806,8 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> beginDeleteMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        return beginDeleteMongodbCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> beginDeleteMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return beginDeleteMongoDBCollectionWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -4816,7 +4816,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb Collection.
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -4825,7 +4825,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteMongodbCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+    public Observable<ServiceResponse<Void>> beginDeleteMongoDBCollectionWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -4844,12 +4844,12 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.beginDeleteMongodbCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginDeleteMongoDBCollection(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = beginDeleteMongodbCollectionDelegate(response);
+                        ServiceResponse<Void> clientResponse = beginDeleteMongoDBCollectionDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -4858,7 +4858,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
             });
     }
 
-    private ServiceResponse<Void> beginDeleteMongodbCollectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> beginDeleteMongoDBCollectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())

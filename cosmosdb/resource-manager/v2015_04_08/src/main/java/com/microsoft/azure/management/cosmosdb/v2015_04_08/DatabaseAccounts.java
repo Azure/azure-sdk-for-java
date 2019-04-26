@@ -23,7 +23,7 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetric
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountUsage;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetricDefinition;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainer;
-import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongodbCollection;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBCollection;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinGraph;
 
 /**
@@ -49,7 +49,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @param name resource name.
      * @return the first stage of the new Collection definition.
      */
-    MongodbCollection.DefinitionStages.Blank defineCollection(String name);
+    MongoDBCollection.DefinitionStages.Blank defineCollection(String name);
 
     /**
      * Begins definition for a new Table resource.
@@ -229,17 +229,17 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
     Completable deleteSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
-     * Lists the Mongodb databases under an existing Azure Cosmos DB database account.
+     * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<MongodbDatabase> listMongodbDatabasesAsync(String resourceGroupName, String accountName);
+    Observable<MongoDBDatabase> listMongoDBDatabasesAsync(String resourceGroupName, String accountName);
 
     /**
-     * Gets the Mongodb databases under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -247,22 +247,22 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<MongodbDatabase> getMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName);
+    Observable<MongoDBDatabase> getMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
-     * Create or updates Azure Cosmos DB Mongodb database.
+     * Create or updates Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongodbDatabaseParameters The parameters to provide for the current Mongodb database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<MongodbDatabase> createUpdateMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongodbDatabaseCreateUpdateParameters createUpdateMongodbDatabaseParameters);
+    Observable<MongoDBDatabase> createUpdateMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName, MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters);
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb database.
+     * Deletes an existing Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -270,7 +270,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteMongodbDatabaseAsync(String resourceGroupName, String accountName, String databaseName);
+    Completable deleteMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
@@ -352,7 +352,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
     Completable deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
-     * Gets the Mongodb collection under an existing Azure Cosmos DB database account.
+     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -361,10 +361,10 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<MongodbCollection> getMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName);
+    Observable<MongoDBCollection> getMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName);
 
     /**
-     * Lists the Mongodb collection under an existing Azure Cosmos DB database account.
+     * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -372,10 +372,10 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<MongodbCollection> listMongodbCollectionsAsync(String resourceGroupName, String accountName, String databaseName);
+    Observable<MongoDBCollection> listMongoDBCollectionsAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
-     * Deletes an existing Azure Cosmos DB Mongodb Collection.
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -384,7 +384,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteMongodbCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName);
+    Completable deleteMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName, String collectionName);
 
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
