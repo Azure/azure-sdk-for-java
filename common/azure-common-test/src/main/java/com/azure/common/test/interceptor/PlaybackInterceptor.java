@@ -22,17 +22,17 @@ import static com.azure.common.test.utils.DataTransformer.removeHost;
 /**
  * The network interceptor for the existing test session recorder.
  */
-public class PlayBackInterceptor implements Interceptor {
+public class PlaybackInterceptor implements Interceptor {
     private RecordedData recordedData;
     private Map<String, String> textReplacementRules;
 
     /**
-     * Constructor of PlayBackInterceptor
+     * Constructor of PlaybackInterceptor
      *
      * @param recordedData The recorded data to intercept.
      * @param textReplacementRules The text replacement rule of intercepting the recorded data.
      */
-    public PlayBackInterceptor(final RecordedData recordedData, final Map<String, String> textReplacementRules) {
+    public PlaybackInterceptor(final RecordedData recordedData, final Map<String, String> textReplacementRules) {
         this.recordedData = recordedData;
         this.textReplacementRules = textReplacementRules;
     }

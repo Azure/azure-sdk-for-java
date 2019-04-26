@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.common.test.namer;
+package com.azure.common.test.utils;
 
 import com.azure.common.test.InterceptorManager;
+import com.azure.common.test.utils.ResourceNamerFactory;
 
 /**
  * The TestResourceNamerFactory to generate TestResourceNamer.
@@ -28,6 +29,6 @@ public class TestResourceNamerFactory extends ResourceNamerFactory {
      */
     @Override
     public TestResourceNamer createResourceNamer(String name) {
-        return new TestResourceNamer(name, interceptorManager);
+        return new TestResourceNamer(name, interceptorManager.getTestMode(), interceptorManager.getRecordedData());
     }
 }

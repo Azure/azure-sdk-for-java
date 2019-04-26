@@ -5,9 +5,6 @@ package com.azure.common.test.utils;
 
 import com.azure.common.test.TestMode;
 import com.azure.common.test.models.RecordedData;
-import com.azure.common.test.namer.ResourceNamer;
-import com.azure.common.test.namer.ResourceNamerFactory;
-import com.azure.common.test.namer.TestResourceNamer;
 import com.azure.common.test.provider.DelayProvider;
 import rx.Scheduler;
 import rx.schedulers.Schedulers;

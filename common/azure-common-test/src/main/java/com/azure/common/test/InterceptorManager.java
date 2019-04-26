@@ -5,11 +5,11 @@ package com.azure.common.test;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.test.http.PlaybackClient;
-import com.azure.common.test.interceptor.PlayBackInterceptor;
+import com.azure.common.test.interceptor.PlaybackInterceptor;
 import com.azure.common.test.interceptor.RecordInterceptor;
 import com.azure.common.test.models.NetworkCallRecord;
 import com.azure.common.test.models.RecordedData;
-import com.azure.common.test.namer.ResourceNamerFactory;
+import com.azure.common.test.utils.ResourceNamerFactory;
 import com.azure.common.test.policy.RecordNetworkCallPolicy;
 import com.azure.common.test.provider.TestDelayProvider;
 import com.azure.common.test.utils.SdkContext;
@@ -142,9 +142,9 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Initialize interceptor of {@link PlayBackInterceptor} if the session-records exists,
+     * Initialize interceptor of {@link PlaybackInterceptor} if the session-records exists,
      *  and {@link RecordInterceptor} if no session-record found for the network call.
-     * @return {@link PlayBackInterceptor} If playbackInterceptor instance exists, return the same one; create a new instance if not exists.
+     * @return {@link PlaybackInterceptor} If playbackInterceptor instance exists, return the same one; create a new instance if not exists.
      *          {@link RecordInterceptor} A new RecordInterceptor instance.
      * @throws IOException Throw IOException when failed to read recorded data from file.
      */
@@ -276,7 +276,7 @@ public class InterceptorManager implements AutoCloseable {
 
     private Interceptor getPlaybackInterceptorInstance() throws IOException {
         if (playbackInterceptorInstance == null) {
-            playbackInterceptorInstance = new PlayBackInterceptor(readDataFromFile(), textReplacementRules);
+            playbackInterceptorInstance = new PlaybackInterceptor(readDataFromFile(), textReplacementRules);
         }
         return playbackInterceptorInstance;
     }
