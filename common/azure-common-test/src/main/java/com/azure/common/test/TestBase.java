@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.common.test;
 
-import com.azure.common.test.utils.SdkContext;
 import com.azure.common.test.utils.TestResourceNamer;
 import org.junit.After;
 import org.junit.Assert;

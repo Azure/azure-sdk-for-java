@@ -140,7 +140,6 @@
     <jetty-http.version>9.4.8.v20171121</jetty-http.version>
     <jetty-server.version>9.4.8.v20171121</jetty-server.version>
     <junit.version>4.12</junit.version>
-    <okhttp3.version></okhttp3.version>
 
     <!-- Maven Tool Versions -->
     <maven-build-tools.version>1.0.1-SNAPSHOT</maven-build-tools.version>
@@ -1055,10 +1054,10 @@
   </profiles>
 
   <modules>
-<!--    <module>./applicationconfig/client</module>-->
-<!--    <module>./batch/data-plane</module>-->
+    <module>./applicationconfig/client</module>
+    <module>./batch/data-plane</module>
     <module>./common</module>
-<!--    <module>./eventhubs/data-plane</module>-->
+    <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
 <!--    <module>./storage/data-plane</module>-->
   </modules>

@@ -7,7 +7,6 @@ import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.ProxyOptions;
-import com.azure.common.test.InterceptorManager;
 import com.azure.common.test.models.NetworkCallRecord;
 import com.azure.common.test.models.RecordedData;
 import com.azure.common.test.utils.SdkContext;
@@ -15,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;

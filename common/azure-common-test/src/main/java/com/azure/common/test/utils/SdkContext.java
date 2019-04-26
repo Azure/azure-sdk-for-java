@@ -5,8 +5,6 @@ package com.azure.common.test.utils;
 
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpResponse;
-import com.azure.common.test.TestMode;
-import com.azure.common.test.models.RecordedData;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -17,7 +15,6 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -55,39 +52,6 @@ public final class SdkContext {
         }
         return names;
     }
-
-    /**
-     * Puts current thread on sleep for passed milliseconds.
-     * @param milliseconds time to sleep for
-     */
-    public static void sleep(int milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-        }
-    }
-
-    /**
-     * Extract information from a resource ID string with the resource type
-     * as the identifier.
-     *
-     * @param id the resource ID
-     * @param identifier the identifier to match, e.g. "resourceGroups", "storageAccounts"
-     * @return the information extracted from the identifier
-     */
-    public static String extractFromResourceId(String id, String identifier) {
-        if (id == null || identifier == null) {
-            return id;
-        }
-        Pattern pattern = Pattern.compile(identifier + "/[-\\w._]+");
-        Matcher matcher = pattern.matcher(id);
-        if (matcher.find()) {
-            return matcher.group().split("/")[1];
-        } else {
-            return null;
-        }
-    }
-
 
     /**
      * Replace the text to the one defined in textReplacementRules.
