@@ -14,6 +14,7 @@ import com.microsoft.azure.management.consumption.v2019_01_01.UsageDetails;
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.consumption.v2019_01_01.UsageDetailsDownloadResponse;
 import com.microsoft.azure.management.consumption.v2019_01_01.UsageDetail;
 
 class UsageDetailsImpl extends WrapperImpl<UsageDetailsInner> implements UsageDetails {
@@ -26,6 +27,18 @@ class UsageDetailsImpl extends WrapperImpl<UsageDetailsInner> implements UsageDe
 
     public ConsumptionManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public Observable<UsageDetailsDownloadResponse> downloadAsync(String scope) {
+        UsageDetailsInner client = this.inner();
+        return client.downloadAsync(scope)
+        .map(new Func1<UsageDetailsDownloadResponseInner, UsageDetailsDownloadResponse>() {
+            @Override
+            public UsageDetailsDownloadResponse call(UsageDetailsDownloadResponseInner inner) {
+                return new UsageDetailsDownloadResponseImpl(inner, manager());
+            }
+        });
     }
 
     @Override

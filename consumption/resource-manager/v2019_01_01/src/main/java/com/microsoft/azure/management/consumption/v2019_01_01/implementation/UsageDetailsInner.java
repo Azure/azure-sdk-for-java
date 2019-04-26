@@ -14,10 +14,13 @@ import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.consumption.v2019_01_01.ErrorResponseException;
 import com.microsoft.azure.management.consumption.v2019_01_01.QueryOptions;
+import com.microsoft.azure.management.consumption.v2019_01_01.UsageDetailsDownloadHeaders;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
@@ -26,11 +29,16 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -61,6 +69,14 @@ public class UsageDetailsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.consumption.v2019_01_01.UsageDetails list" })
         @GET("{scope}/providers/Microsoft.Consumption/usageDetails")
         Observable<Response<ResponseBody>> list(@Path(value = "scope", encoded = true) String scope, @Query("$expand") String expand, @Query("$filter") String filter, @Query("$skiptoken") String skiptoken, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$apply") String apply, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.consumption.v2019_01_01.UsageDetails download" })
+        @POST("{scope}/providers/Microsoft.Consumption/usageDetails/download")
+        Observable<Response<ResponseBody>> download(@Path(value = "scope", encoded = true) String scope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.consumption.v2019_01_01.UsageDetails beginDownload" })
+        @POST("{scope}/providers/Microsoft.Consumption/usageDetails/download")
+        Observable<Response<ResponseBody>> beginDownload(@Path(value = "scope", encoded = true) String scope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.consumption.v2019_01_01.UsageDetails listNext" })
         @GET
@@ -319,6 +335,142 @@ public class UsageDetailsInner {
                 .register(200, new TypeToken<PageImpl<UsageDetailInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    /**
+     * Download usage details data.
+     *
+     * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For subscription, billing account, department, enrollment account and management group, you can also add billing period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g. to specify billing period at department scope use '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the UsageDetailsDownloadResponseInner object if successful.
+     */
+    public UsageDetailsDownloadResponseInner download(String scope) {
+        return downloadWithServiceResponseAsync(scope).toBlocking().last().body();
+    }
+
+    /**
+     * Download usage details data.
+     *
+     * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For subscription, billing account, department, enrollment account and management group, you can also add billing period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g. to specify billing period at department scope use '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<UsageDetailsDownloadResponseInner> downloadAsync(String scope, final ServiceCallback<UsageDetailsDownloadResponseInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(downloadWithServiceResponseAsync(scope), serviceCallback);
+    }
+
+    /**
+     * Download usage details data.
+     *
+     * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For subscription, billing account, department, enrollment account and management group, you can also add billing period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g. to specify billing period at department scope use '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<UsageDetailsDownloadResponseInner> downloadAsync(String scope) {
+        return downloadWithServiceResponseAsync(scope).map(new Func1<ServiceResponseWithHeaders<UsageDetailsDownloadResponseInner, UsageDetailsDownloadHeaders>, UsageDetailsDownloadResponseInner>() {
+            @Override
+            public UsageDetailsDownloadResponseInner call(ServiceResponseWithHeaders<UsageDetailsDownloadResponseInner, UsageDetailsDownloadHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Download usage details data.
+     *
+     * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For subscription, billing account, department, enrollment account and management group, you can also add billing period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g. to specify billing period at department scope use '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponseWithHeaders<UsageDetailsDownloadResponseInner, UsageDetailsDownloadHeaders>> downloadWithServiceResponseAsync(String scope) {
+        if (scope == null) {
+            throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.download(scope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<UsageDetailsDownloadResponseInner>() { }.getType(), UsageDetailsDownloadHeaders.class);
+    }
+
+    /**
+     * Download usage details data.
+     *
+     * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For subscription, billing account, department, enrollment account and management group, you can also add billing period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g. to specify billing period at department scope use '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the UsageDetailsDownloadResponseInner object if successful.
+     */
+    public UsageDetailsDownloadResponseInner beginDownload(String scope) {
+        return beginDownloadWithServiceResponseAsync(scope).toBlocking().single().body();
+    }
+
+    /**
+     * Download usage details data.
+     *
+     * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For subscription, billing account, department, enrollment account and management group, you can also add billing period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g. to specify billing period at department scope use '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<UsageDetailsDownloadResponseInner> beginDownloadAsync(String scope, final ServiceCallback<UsageDetailsDownloadResponseInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginDownloadWithServiceResponseAsync(scope), serviceCallback);
+    }
+
+    /**
+     * Download usage details data.
+     *
+     * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For subscription, billing account, department, enrollment account and management group, you can also add billing period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g. to specify billing period at department scope use '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the UsageDetailsDownloadResponseInner object
+     */
+    public Observable<UsageDetailsDownloadResponseInner> beginDownloadAsync(String scope) {
+        return beginDownloadWithServiceResponseAsync(scope).map(new Func1<ServiceResponseWithHeaders<UsageDetailsDownloadResponseInner, UsageDetailsDownloadHeaders>, UsageDetailsDownloadResponseInner>() {
+            @Override
+            public UsageDetailsDownloadResponseInner call(ServiceResponseWithHeaders<UsageDetailsDownloadResponseInner, UsageDetailsDownloadHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Download usage details data.
+     *
+     * @param scope The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For subscription, billing account, department, enrollment account and management group, you can also add billing period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g. to specify billing period at department scope use '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the UsageDetailsDownloadResponseInner object
+     */
+    public Observable<ServiceResponseWithHeaders<UsageDetailsDownloadResponseInner, UsageDetailsDownloadHeaders>> beginDownloadWithServiceResponseAsync(String scope) {
+        if (scope == null) {
+            throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDownload(scope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<UsageDetailsDownloadResponseInner, UsageDetailsDownloadHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<UsageDetailsDownloadResponseInner, UsageDetailsDownloadHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<UsageDetailsDownloadResponseInner, UsageDetailsDownloadHeaders> clientResponse = beginDownloadDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponseWithHeaders<UsageDetailsDownloadResponseInner, UsageDetailsDownloadHeaders> beginDownloadDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<UsageDetailsDownloadResponseInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<UsageDetailsDownloadResponseInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .buildWithHeaders(response, UsageDetailsDownloadHeaders.class);
     }
 
     /**

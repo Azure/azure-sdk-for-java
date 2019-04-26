@@ -17,7 +17,6 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.consumption.v2019_01_01.UsageDetails;
-import com.microsoft.azure.management.consumption.v2019_01_01.UsageDetailsLists;
 import com.microsoft.azure.management.consumption.v2019_01_01.Marketplaces;
 import com.microsoft.azure.management.consumption.v2019_01_01.Budgets;
 import com.microsoft.azure.management.consumption.v2019_01_01.Tags;
@@ -38,7 +37,6 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class ConsumptionManager extends ManagerCore<ConsumptionManager, ConsumptionManagementClientImpl> {
     private UsageDetails usageDetails;
-    private UsageDetailsLists usageDetailsLists;
     private Marketplaces marketplaces;
     private Budgets budgets;
     private Tags tags;
@@ -106,16 +104,6 @@ public final class ConsumptionManager extends ManagerCore<ConsumptionManager, Co
             this.usageDetails = new UsageDetailsImpl(this);
         }
         return this.usageDetails;
-    }
-
-    /**
-     * @return Entry point to manage UsageDetailsLists.
-     */
-    public UsageDetailsLists usageDetailsLists() {
-        if (this.usageDetailsLists == null) {
-            this.usageDetailsLists = new UsageDetailsListsImpl(this);
-        }
-        return this.usageDetailsLists;
     }
 
     /**
