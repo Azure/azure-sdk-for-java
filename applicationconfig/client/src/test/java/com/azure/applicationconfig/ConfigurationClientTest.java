@@ -12,9 +12,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -196,28 +194,23 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * If the update etag doesn't match anything the update won't happen, this will result in a 412.
      */
     public void updateSettingIfEtag() {
-        final String key = getKey();
-        final String label = getLabel();
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().key(key).value("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().key(key).value("myUpdateValue");
-        final ConfigurationSetting finalConfiguration = new ConfigurationSetting().key(key).value("myFinalValue");
+        updateSettingIfEtagRunner(settings -> {
+            final ConfigurationSetting initial = settings.get(0);
+            final ConfigurationSetting update = settings.get(1);
+            final ConfigurationSetting last = settings.get(2);
 
-        updateSettingIfEtagHelper(newConfiguration, updateConfiguration, finalConfiguration);
-        updateSettingIfEtagHelper(newConfiguration.label(label), updateConfiguration.label(label), finalConfiguration.label(label));
-    }
+            final String initialEtag = client.addSetting(initial).value().etag();
+            final String updateEtag = client.updateSetting(update).value().etag();
 
-    private void updateSettingIfEtagHelper(ConfigurationSetting initial, ConfigurationSetting update, ConfigurationSetting last) {
-        final String initialEtag = client.addSetting(initial).value().etag();
-        final String updateEtag = client.updateSetting(update).value().etag();
+            // The setting does not exist in the service yet, so we cannot update it.
+            assertRestException(() -> client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(initialEtag)), HttpResponseStatus.PRECONDITION_FAILED.code());
 
-        // The setting does not exist in the service yet, so we cannot update it.
-        assertRestException(() -> client.updateSetting(new ConfigurationSetting(last).etag(initialEtag)), HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertConfigurationEquals(update, client.getSetting(update));
+            assertConfigurationEquals(last, client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(updateEtag)));
+            assertConfigurationEquals(last, client.getSetting(last));
 
-        assertConfigurationEquals(update, client.getSetting(update));
-        assertConfigurationEquals(last, client.updateSetting(new ConfigurationSetting(last).etag(updateEtag)));
-        assertConfigurationEquals(last, client.getSetting(last));
-
-        assertRestException(() -> client.updateSetting(new ConfigurationSetting(initial).etag(updateEtag)), HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertRestException(() -> client.updateSetting(new ConfigurationSetting().key(initial.key()).label(initial.label()).value(initial.value()).etag(updateEtag)), HttpResponseStatus.PRECONDITION_FAILED.code());
+        });
     }
 
     /**
@@ -359,27 +352,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that we can select filter results by key, label, and select fields using SettingSelector.
      */
     public void listSettingsSelectFields() {
-        final String label = "my-first-mylabel";
-        final String label2 = "my-second-mylabel";
-        final int numberToCreate = 8;
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("tag1", "value1");
-        tags.put("tag2", "value2");
-
-        final SettingSelector secondLabelOptions = new SettingSelector()
-            .labels("*-second*")
-            .keys(keyPrefix + "-fetch-*")
-            .fields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
-
-        for (int value = 0; value < numberToCreate; value++) {
-            String key = value % 2 == 0 ? keyPrefix + "-" + value : keyPrefix + "-fetch-" + value;
-            String lbl = value / 4 == 0 ? label : label2;
-            client.setSetting(new ConfigurationSetting().key(key).value("myValue2").label(lbl).tags(tags));
-        }
-
-        for (ConfigurationSetting setting : client.listSettings(secondLabelOptions)) {
-            validateSelectionWithFields(setting, keyPrefix, tags);
-        }
+        listSettingsSelectFieldsRunner((settings, selector) -> {
+            settings.forEach(client::setSetting);
+            return client.listSettings(selector);
+        });
     }
 
     /**
@@ -388,8 +364,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void listSettingsAcceptDateTime() {
         final String keyName = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
+        final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
 
         // Create 3 revisions of the same key.
         try {
@@ -420,8 +396,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void listRevisions() {
         final String keyName = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
+        final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
 
         // Create 3 revisions of the same key.
         assertConfigurationEquals(original, client.setSetting(original));
@@ -482,8 +458,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void listRevisionsAcceptDateTime() {
         final String keyName = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().key(keyName).value("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting(original).value("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting(original).value("anotherValue2");
+        final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
 
         // Create 3 revisions of the same key.
         try {

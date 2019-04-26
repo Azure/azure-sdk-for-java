@@ -54,25 +54,6 @@ public class ConfigurationSetting {
     }
 
     /**
-     * Creates a configuration setting and sets the values from the passed in parameter to this setting.
-     *
-     * @param other The configuration setting to copy values from.
-     */
-    public ConfigurationSetting(ConfigurationSetting other) {
-        this.key = other.key();
-        this.label = other.label();
-        this.etag = other.etag();
-        this.value = other.value();
-        this.contentType = other.contentType();
-        this.locked = other.isLocked();
-        this.lastModified = other.lastModified();
-
-        if (other.tags() != null) {
-            this.tags = new HashMap<>(other.tags());
-        }
-    }
-
-    /**
      * Gets the key name for this configuration setting.
      *
      * @return The key for this configuration setting.
@@ -259,8 +240,7 @@ public class ConfigurationSetting {
         }
 
         if (!ImplUtils.isNullOrEmpty(this.tags)) {
-            return Objects.equals(this.tags.size(), other.tags.size())
-                && Objects.equals(this.tags, other.tags);
+            return Objects.equals(this.tags, other.tags);
         }
 
         return true;
