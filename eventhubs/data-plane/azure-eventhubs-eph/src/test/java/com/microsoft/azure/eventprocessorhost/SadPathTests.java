@@ -100,11 +100,12 @@ public class SadPathTests extends TestBase {
         settings = testSetup(settings);
 
         try {
-            Thread.sleep(15000);
+            // TODO: Are these necessary? Can we remove these Thread.sleep calls.
+            // Thread.sleep(15000);
             settings.outHost.unregisterEventProcessor().get();
 
             settings.outHost.registerEventProcessorFactory(settings.outProcessorFactory, settings.inOptions).get();
-            Thread.sleep(10000);
+            // Thread.sleep(10000);
             fail("No exception occurred");
         } catch (IllegalStateException e) {
             if ((e.getMessage() != null) && (e.getMessage().compareTo("Register cannot be called on an EventProcessorHost after unregister. Please create a new EventProcessorHost instance.") == 0)) {
