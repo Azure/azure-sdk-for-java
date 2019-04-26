@@ -21,7 +21,7 @@ public class LeaseManagerTest extends TestBase {
     private EventProcessorHost[] hosts;
 
     @Test
-    public void singleManangerInMemoryLeaseSmokeTest() throws Exception {
+    public void singleManagerInMemoryLeaseSmokeTest() throws Exception {
         singleManagerLeaseSmokeTest(false, 8);
     }
 
