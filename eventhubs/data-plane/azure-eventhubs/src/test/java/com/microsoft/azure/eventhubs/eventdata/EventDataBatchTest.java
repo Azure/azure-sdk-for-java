@@ -11,6 +11,8 @@ import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,8 +20,7 @@ import java.io.IOException;
 import java.util.concurrent.Executors;
 
 public class EventDataBatchTest extends ApiTestBase {
-
-    private static EventHubClient ehClient;
+    private EventHubClient ehClient;
 
     @Test(expected = PayloadSizeExceededException.class)
     public void payloadExceededException() throws EventHubException, IOException {
@@ -33,5 +34,12 @@ public class EventDataBatchTest extends ApiTestBase {
 
         Assert.assertTrue(batch.tryAdd(within));
         batch.tryAdd(tooBig);
+    }
+
+    @After
+    public void cleanup() throws EventHubException {
+        if (ehClient != null) {
+            ehClient.closeSync();
+        }
     }
 }
