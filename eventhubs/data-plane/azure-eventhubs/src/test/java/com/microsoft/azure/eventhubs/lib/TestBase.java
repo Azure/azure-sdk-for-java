@@ -7,18 +7,26 @@ import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.PartitionSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-import java.util.logging.Logger;
 
 /**
  * all tests derive from this base - provides common functionality
  * - provides a way to checkout EventHub for each test to exclusively run with
- * - ******* Before running all Tests - fill data here *********
  */
 public abstract class TestBase {
-    public static final Logger TEST_LOGGER = Logger.getLogger("servicebus.test.trace");
+    protected final Logger logger;
+
+    protected TestBase() {
+        this(LoggerFactory.getLogger(TestBase.class));
+    }
+
+    protected TestBase(Logger logger) {
+        this.logger = logger;
+    }
 
     public static CompletableFuture<Void> pushEventsToPartition(final EventHubClient ehClient, final String partitionId, final int noOfEvents)
             throws EventHubException {
