@@ -13,7 +13,7 @@ import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.rest.PagedResponse;
 import com.azure.common.http.rest.Response;
 import com.azure.common.implementation.RestProxy;
-import com.azure.common.implementation.ServiceLogger;
+import com.azure.common.implementation.logging.ServiceLogger;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -96,9 +96,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
         return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, null, getETagValue(ETAG_ANY))
-            .doOnRequest(ignoredValue -> logger.logInformational("Adding ConfigurationSetting - " + setting))
-            .doOnSuccess(response -> logger.logInformational("Added ConfigurationSetting - " + response.value()))
-            .doOnError(error -> logger.logWarning("Failed to add ConfigurationSetting - " + setting, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Adding ConfigurationSetting - %s", setting))
+            .doOnSuccess(response -> logger.asInformational().log("Added ConfigurationSetting - %s", response.value()))
+            .doOnError(error -> logger.asWarning().withStackTrace(error).log("Failed to add ConfigurationSetting - %s", setting));
     }
 
     /**
@@ -144,9 +144,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         // old value locally.
         // If no etag value was passed in, then the value is always added or updated.
         return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(setting.etag()), null)
-            .doOnRequest(ignoredValue -> logger.logInformational("Setting ConfigurationSetting - " + setting))
-            .doOnSuccess(response -> logger.logInformational("Set ConfigurationSetting - " + response.value()))
-            .doOnError(error -> logger.logWarning("Failed to set ConfigurationSetting - " + setting, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Setting ConfigurationSetting - %s", setting))
+            .doOnSuccess(response -> logger.asInformational().log("Set ConfigurationSetting - %s", response.value()))
+            .doOnError(error -> logger.asWarning().withStackTrace(error).log("Failed to set ConfigurationSetting - %s", setting));
     }
 
     /**
@@ -186,9 +186,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         String etag = setting.etag() == null ? ETAG_ANY : setting.etag();
 
         return service.setKey(serviceEndpoint, setting.key(), setting.label(), setting, getETagValue(etag), null)
-            .doOnRequest(ignoredValue -> logger.logInformational("Updating ConfigurationSetting - " + setting))
-            .doOnSuccess(response -> logger.logInformational("Updated ConfigurationSetting - " + response.value()))
-            .doOnError(error -> logger.logWarning("Failed to update ConfigurationSetting - " + setting, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Updating ConfigurationSetting - %s", setting))
+            .doOnSuccess(response -> logger.asInformational().log("Updated ConfigurationSetting - %s", response.value()))
+            .doOnError(error -> logger.asWarning().withStackTrace(error).log("Failed to update ConfigurationSetting - %s", setting));
     }
 
     /**
@@ -221,9 +221,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         validateSetting(setting);
 
         return service.getKeyValue(serviceEndpoint, setting.key(), setting.label(), null, null, null, null)
-            .doOnRequest(ignoredValue -> logger.logInformational("Retrieving ConfigurationSetting - " + setting))
-            .doOnSuccess(response -> logger.logInformational("Retrieved ConfigurationSetting - " + response.value()))
-            .doOnError(error -> logger.logWarning("Failed to get ConfigurationSetting - " + setting, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Retrieving ConfigurationSetting - %s", setting))
+            .doOnSuccess(response -> logger.asInformational().log("Retrieved ConfigurationSetting - %s", response.value()))
+            .doOnError(error -> logger.asWarning().withStackTrace(error).log("Failed to get ConfigurationSetting - %s", setting));
     }
 
     /**
@@ -260,9 +260,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         validateSetting(setting);
 
         return service.delete(serviceEndpoint, setting.key(), setting.label(), getETagValue(setting.etag()), null)
-            .doOnRequest(ignoredValue -> logger.logInformational("Deleting ConfigurationSetting - " + setting))
-            .doOnSuccess(response -> logger.logInformational("Deleted ConfigurationSetting - " + response.value()))
-            .doOnError(error -> logger.logWarning("Failed to delete ConfigurationSetting - " + setting, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Deleting ConfigurationSetting - %s", setting))
+            .doOnSuccess(response -> logger.asInformational().log("Deleted ConfigurationSetting - %s", response.value()))
+            .doOnError(error -> logger.asInformational().withStackTrace(error).log("Failed to delete ConfigurationSetting - %s", setting));
     }
 
     /**
@@ -278,14 +278,14 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         if (options != null) {
             String fields = getSelectQuery(options.fields());
             result = service.listKeyValues(serviceEndpoint, options.key(), options.label(), fields, options.acceptDateTime())
-                .doOnRequest(ignoredValue -> logger.logInformational("Listing ConfigurationSettings - " + options))
-                .doOnSuccess(response -> logger.logInformational("Listed ConfigurationSettings - " + options))
-                .doOnError(error -> logger.logWarning("Failed to list ConfigurationSetting - " + options, error));
+                .doOnRequest(ignoredValue -> logger.asInformational().log("Listing ConfigurationSettings - %s", options))
+                .doOnSuccess(response -> logger.asInformational().log("Listed ConfigurationSettings - %s", options))
+                .doOnError(error -> logger.asWarning().withStackTrace(error).log("Failed to list ConfigurationSetting - %s", options));
         } else {
             result = service.listKeyValues(serviceEndpoint, null, null, null, null)
-                .doOnRequest(ignoredValue -> logger.logInformational("Listing all ConfigurationSettings"))
-                .doOnSuccess(response -> logger.logInformational("Listed all ConfigurationSettings"))
-                .doOnError(error -> logger.logWarning("Failed to list all ConfigurationSetting", error));
+                .doOnRequest(ignoredValue -> logger.asInformational().log("Listing all ConfigurationSettings"))
+                .doOnSuccess(response -> logger.asInformational().log("Listed all ConfigurationSettings"))
+                .doOnError(error -> logger.asWarning().withStackTrace(error).log("Failed to list all ConfigurationSetting"));
         }
 
         return result.flatMapMany(this::extractAndFetchConfigurationSettings);
@@ -307,16 +307,14 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         if (selector != null) {
             String fields = getSelectQuery(selector.fields());
             result = service.listKeyValueRevisions(serviceEndpoint, selector.key(), selector.label(), fields, selector.acceptDateTime(), null)
-                .doOnRequest(ignoredValue -> logger.logInformational("Listing ConfigurationSetting revisions - " + selector))
-                .doOnSuccess(response -> logger.logInformational("Listed ConfigurationSetting revisions - " + selector))
-                .doOnError(error -> logger.logWarning("Failed to list ConfigurationSetting revisions - " + selector, error));
+                .doOnRequest(ignoredValue -> logger.asInformational().log("Listing ConfigurationSetting revisions - %s", selector))
+                .doOnSuccess(response -> logger.asInformational().log("Listed ConfigurationSetting revisions - %s", selector))
+                .doOnError(error -> logger.asWarning().withStackTrace(error).log("Failed to list ConfigurationSetting revisions - %s" + selector));
         } else {
-            logger.logInformational("Listing all ConfigurationSetting revisions");
-
             result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null)
-                .doOnRequest(ignoredValue -> logger.logInformational("Listing ConfigurationSetting revisions"))
-                .doOnSuccess(response -> logger.logInformational("Listed ConfigurationSetting revisions"))
-                .doOnError(error -> logger.logWarning("Failed to list all ConfigurationSetting revisions", error));
+                .doOnRequest(ignoredValue -> logger.asInformational().log("Listing ConfigurationSetting revisions"))
+                .doOnSuccess(response -> logger.asInformational().log("Listed ConfigurationSetting revisions"))
+                .doOnError(error -> logger.asWarning().withStackTrace(error).log("Failed to list all ConfigurationSetting revisions"));
         }
 
         return result.flatMapMany(this::extractAndFetchConfigurationSettings);
@@ -341,9 +339,9 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      */
     private Flux<ConfigurationSetting> listSettings(String nextPageLink) {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink)
-            .doOnRequest(ignoredValue -> logger.logInformational("Retrieving the next listing page - Page: " + nextPageLink))
-            .doOnSuccess(response -> logger.logInformational("Retrieved the next listing page - Page: " + nextPageLink))
-            .doOnError(error -> logger.logWarning("Failed to retrieve the next listing page - Page: " + nextPageLink, error));
+            .doOnRequest(ignoredValue -> logger.asInformational().log("Retrieving the next listing page - Page: %s", nextPageLink))
+            .doOnSuccess(response -> logger.asInformational().log("Retrieved the next listing page - Page: %s", nextPageLink))
+            .doOnError(error -> logger.asWarning().withStackTrace(error).log("Failed to retrieve the next listing page - Page: %s", nextPageLink));
 
         return result.flatMapMany(this::extractAndFetchConfigurationSettings);
     }
