@@ -35,8 +35,8 @@ public class MonitoringDetails {
     /**
      * The port number of the tenant DB. Used to connect to the DB.
      */
-    @JsonProperty(value = "hanaDbSQLPort")
-    private Integer hanaDbSQLPort;
+    @JsonProperty(value = "hanaDbSqlPort")
+    private Integer hanaDbSqlPort;
 
     /**
      * Username for the HANA database to login to for monitoring.
@@ -113,20 +113,20 @@ public class MonitoringDetails {
     /**
      * Get the port number of the tenant DB. Used to connect to the DB.
      *
-     * @return the hanaDbSQLPort value
+     * @return the hanaDbSqlPort value
      */
-    public Integer hanaDbSQLPort() {
-        return this.hanaDbSQLPort;
+    public Integer hanaDbSqlPort() {
+        return this.hanaDbSqlPort;
     }
 
     /**
      * Set the port number of the tenant DB. Used to connect to the DB.
      *
-     * @param hanaDbSQLPort the hanaDbSQLPort value to set
+     * @param hanaDbSqlPort the hanaDbSqlPort value to set
      * @return the MonitoringDetails object itself.
      */
-    public MonitoringDetails withHanaDbSQLPort(Integer hanaDbSQLPort) {
-        this.hanaDbSQLPort = hanaDbSQLPort;
+    public MonitoringDetails withHanaDbSqlPort(Integer hanaDbSqlPort) {
+        this.hanaDbSqlPort = hanaDbSqlPort;
         return this;
     }
 
