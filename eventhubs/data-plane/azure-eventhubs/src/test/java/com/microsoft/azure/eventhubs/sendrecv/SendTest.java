@@ -44,6 +44,7 @@ public class SendTest extends ApiTestBase {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         initializeEventHub(connectionString);
     }
+
     public static void initializeEventHub(final ConnectionStringBuilder connectionString) throws Exception {
         ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     }
@@ -178,11 +179,12 @@ public class SendTest extends ApiTestBase {
                         this.validateSignal.completeExceptionally(
                                 new AssertionFailedError(String.format(Locale.US, "received partitionKey: %s, expected partitionKey: %s", event.getSystemProperties().getPartitionKey(), partitionKey)));
 
-                    this.currentEventCount++;
-                }
+                        this.currentEventCount++;
+                    }
 
-                if (this.currentEventCount == this.eventCount) {
-                    this.validateSignal.complete(null);
+                    if (this.currentEventCount == this.eventCount) {
+                        this.validateSignal.complete(null);
+                    }
                 }
             }
         }

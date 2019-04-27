@@ -1028,10 +1028,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         }
     }
 
-    private static class DeliveryTagComparator implements Comparator<WeightedDeliveryTag>, Serializable {
-
-        private static final long serialVersionUID = -7057500582037295635L;
-
+    private static class DeliveryTagComparator implements Comparator<WeightedDeliveryTag> {
         @Override
         public int compare(WeightedDeliveryTag deliveryTag0, WeightedDeliveryTag deliveryTag1) {
             return deliveryTag1.getPriority() - deliveryTag0.getPriority();

@@ -4,6 +4,7 @@
 package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.AuthorizationFailedException;
+import com.microsoft.azure.eventhubs.CommunicationException;
 import com.microsoft.azure.eventhubs.ErrorContext;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.IllegalEntityException;
@@ -63,11 +64,11 @@ public final class ExceptionUtil {
         } else if (errorCondition.getCondition() == AmqpErrorCode.ResourceLimitExceeded) {
             return new QuotaExceededException(new AmqpException(errorCondition));
         } else if (errorCondition.getCondition() == ClientConstants.PROTON_IO_ERROR) {
-        	String message = ClientConstants.COMMUNICATION_EXCEPTION_GENERIC_MESSAGE;
-        	if (errorCondition.getDescription() != null) {
-        		message = errorCondition.getDescription();
-        	}
-        	return new CommunicationException(message, null);
+            String message = ClientConstants.COMMUNICATION_EXCEPTION_GENERIC_MESSAGE;
+            if (errorCondition.getDescription() != null) {
+                message = errorCondition.getDescription();
+            }
+            return new CommunicationException(message, null);
         }
 
         return new EventHubException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.getDescription());
@@ -103,11 +104,7 @@ public final class ExceptionUtil {
     }
 
     static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, ErrorContextProvider contextProvider) {
-        if (exception == null) {
-            throw new NullPointerException();
-        }
-
-        if (exception instanceof EventHubException) {
+        if (exception != null && exception instanceof EventHubException) {
             final ErrorContext errorContext = contextProvider.getContext();
             ((EventHubException) exception).setContext(errorContext);
         }
@@ -136,18 +133,22 @@ public final class ExceptionUtil {
 
         builder.append(exception.getMessage());
         final StackTraceElement[] stackTraceElements = exception.getStackTrace();
-        for (final StackTraceElement ste : stackTraceElements) {
-            builder.append(System.lineSeparator());
-            builder.append(ste.toString());
+        if (stackTraceElements != null) {
+            for (final StackTraceElement ste : stackTraceElements) {
+                builder.append(System.lineSeparator());
+                builder.append(ste.toString());
+            }
         }
 
         final Throwable innerException = exception.getCause();
         if (innerException != null) {
             builder.append("Cause: " + innerException.getMessage());
             final StackTraceElement[] innerStackTraceElements = innerException.getStackTrace();
-            for (final StackTraceElement ste : innerStackTraceElements) {
-                builder.append(System.lineSeparator());
-                builder.append(ste.toString());
+            if (innerStackTraceElements != null) {
+                for (final StackTraceElement ste : innerStackTraceElements) {
+                    builder.append(System.lineSeparator());
+                    builder.append(ste.toString());
+                }
             }
         }
 

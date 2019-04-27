@@ -275,7 +275,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
 
     @Test(expected = RejectedExecutionException.class)
     public void SupplyClosedExecutorServiceThenReceiverCloseOperation() throws Exception {
-        final ExecutorService testClosed = Executors.newWorkStealingPool();
+        final ScheduledExecutorService testClosed = Executors.newScheduledThreadPool(1);
 
         final PartitionReceiver temp = EventHubClient.createSync(
                 TestContext.getConnectionString().toString(),

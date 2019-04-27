@@ -14,7 +14,6 @@ import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.jutils.jproxy.ProxyServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

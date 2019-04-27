@@ -402,6 +402,12 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
         public boolean isExpiredSync() {
             boolean hasExpired = (System.currentTimeMillis() >= this.expirationTimeMillis);
+            // if (hasExpired) {
+                // CHANGE TO MATCH BEHAVIOR OF AzureStorageCheckpointLeaseManager
+                // An expired lease can be renewed by the previous owner. In order to implement that behavior for
+                // InMemory, the owner field has to remain unchanged.
+                //setOwner("");
+            // }
             TRACE_LOGGER.debug("isExpired(" + this.getPartitionId() + (hasExpired ? ") expired " : ") leased ") + (this.expirationTimeMillis - System.currentTimeMillis()));
             return hasExpired;
         }

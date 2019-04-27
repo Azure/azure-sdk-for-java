@@ -278,7 +278,6 @@ public final class EventProcessorHost {
             this.partitionManagerOptions = new PartitionManagerOptions();
         }
 
-
         if (executorService != null) {
             // User has supplied an ExecutorService, so use that.
             this.weOwnExecutor = false;
