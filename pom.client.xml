@@ -1059,6 +1059,6 @@
     <module>./common</module>
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
-<!--    <module>./storage/data-plane</module>-->
+    <module>./storage/data-plane</module>
   </modules>
 </project>

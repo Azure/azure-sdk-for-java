@@ -26,7 +26,6 @@ public abstract class TestBase {
 
     protected InterceptorManager interceptorManager;
     protected TestResourceNamer testResourceNamer;
-    //protected SdkContext sdkContext;
 
     /**
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
@@ -57,7 +56,6 @@ public abstract class TestBase {
             Assert.fail();
         }
         testResourceNamer = new TestResourceNamer(testName, testMode, interceptorManager.getRecordedData());
-        //sdkContext = new SdkContext(testMode, interceptorManager.getRecordedData());
 
         beforeTest();
     }

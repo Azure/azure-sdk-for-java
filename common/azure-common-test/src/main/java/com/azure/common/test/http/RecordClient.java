@@ -21,7 +21,6 @@ import java.util.Objects;
  */
 public final class RecordClient implements HttpPipelinePolicy {
     private final Logger logger = LoggerFactory.getLogger(RecordClient.class);
-    //private final AtomicInteger count = new AtomicInteger(0);
     private final Map<String, String> textReplacementRules;
     private final RecordedData recordedData;
 
@@ -38,6 +37,15 @@ public final class RecordClient implements HttpPipelinePolicy {
         this.recordedData = recordedData;
         this.textReplacementRules = textReplacementRules == null ? new HashMap<>() : textReplacementRules;
     }
+
+    /**
+     * Async API for processing {@link HttpPipelineCallContext}, build the networkCallRecords with the context and put it in recorded data,
+     *    and then move on to next client until finish.
+     *
+     * @param context request context
+     * @param next the next policy to invoke
+     * @return http response after async call
+     */
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             final NetworkCallRecord networkCallRecord = new NetworkCallRecord();
             networkCallRecord.headers(new HashMap<>());
