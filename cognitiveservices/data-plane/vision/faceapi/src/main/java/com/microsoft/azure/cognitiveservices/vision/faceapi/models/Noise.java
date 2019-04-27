@@ -31,7 +31,7 @@ public class Noise {
     private double value;
 
     /**
-     * Get the noiseLevel value.
+     * Get an enum value indicating level of noise. Possible values include: 'Low', 'Medium', 'High'.
      *
      * @return the noiseLevel value
      */
@@ -40,7 +40,7 @@ public class Noise {
     }
 
     /**
-     * Set the noiseLevel value.
+     * Set an enum value indicating level of noise. Possible values include: 'Low', 'Medium', 'High'.
      *
      * @param noiseLevel the noiseLevel value to set
      * @return the Noise object itself.
@@ -51,7 +51,7 @@ public class Noise {
     }
 
     /**
-     * Get the value value.
+     * Get a number indicating level of noise level ranging from 0 to 1. [0, 0.25) is under exposure. [0.25, 0.75) is good exposure. [0.75, 1] is over exposure. [0, 0.3) is low noise level. [0.3, 0.7) is medium noise level. [0.7, 1] is high noise level.
      *
      * @return the value value
      */
@@ -60,7 +60,7 @@ public class Noise {
     }
 
     /**
-     * Set the value value.
+     * Set a number indicating level of noise level ranging from 0 to 1. [0, 0.25) is under exposure. [0.25, 0.75) is good exposure. [0.75, 1] is over exposure. [0, 0.3) is low noise level. [0.3, 0.7) is medium noise level. [0.7, 1] is high noise level.
      *
      * @param value the value value to set
      * @return the Noise object itself.

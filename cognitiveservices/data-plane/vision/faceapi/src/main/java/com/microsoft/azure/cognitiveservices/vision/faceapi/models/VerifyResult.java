@@ -32,7 +32,7 @@ public class VerifyResult {
     private double confidence;
 
     /**
-     * Get the isIdentical value.
+     * Get true if the two faces belong to the same person or the face belongs to the person, otherwise false.
      *
      * @return the isIdentical value
      */
@@ -41,7 +41,7 @@ public class VerifyResult {
     }
 
     /**
-     * Set the isIdentical value.
+     * Set true if the two faces belong to the same person or the face belongs to the person, otherwise false.
      *
      * @param isIdentical the isIdentical value to set
      * @return the VerifyResult object itself.
@@ -52,7 +52,7 @@ public class VerifyResult {
     }
 
     /**
-     * Get the confidence value.
+     * Get a number indicates the similarity confidence of whether two faces belong to the same person, or whether the face belongs to the person. By default, isIdentical is set to True if similarity confidence is greater than or equal to 0.5. This is useful for advanced users to override "isIdentical" and fine-tune the result on their own data.
      *
      * @return the confidence value
      */
@@ -61,7 +61,7 @@ public class VerifyResult {
     }
 
     /**
-     * Set the confidence value.
+     * Set a number indicates the similarity confidence of whether two faces belong to the same person, or whether the face belongs to the person. By default, isIdentical is set to True if similarity confidence is greater than or equal to 0.5. This is useful for advanced users to override "isIdentical" and fine-tune the result on their own data.
      *
      * @param confidence the confidence value to set
      * @return the VerifyResult object itself.

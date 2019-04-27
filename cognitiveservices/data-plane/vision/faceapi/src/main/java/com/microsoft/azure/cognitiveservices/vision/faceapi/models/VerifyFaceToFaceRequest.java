@@ -12,7 +12,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request body for verify operation.
+ * Request body for face to face verification.
  */
 public class VerifyFaceToFaceRequest {
     /**
@@ -28,7 +28,7 @@ public class VerifyFaceToFaceRequest {
     private UUID faceId2;
 
     /**
-     * Get the faceId1 value.
+     * Get faceId of the first face, comes from Face - Detect.
      *
      * @return the faceId1 value
      */
@@ -37,7 +37,7 @@ public class VerifyFaceToFaceRequest {
     }
 
     /**
-     * Set the faceId1 value.
+     * Set faceId of the first face, comes from Face - Detect.
      *
      * @param faceId1 the faceId1 value to set
      * @return the VerifyFaceToFaceRequest object itself.
@@ -48,7 +48,7 @@ public class VerifyFaceToFaceRequest {
     }
 
     /**
-     * Get the faceId2 value.
+     * Get faceId of the second face, comes from Face - Detect.
      *
      * @return the faceId2 value
      */
@@ -57,7 +57,7 @@ public class VerifyFaceToFaceRequest {
     }
 
     /**
-     * Set the faceId2 value.
+     * Set faceId of the second face, comes from Face - Detect.
      *
      * @param faceId2 the faceId2 value to set
      * @return the VerifyFaceToFaceRequest object itself.

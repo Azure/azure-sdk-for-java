@@ -41,7 +41,7 @@ public class FaceRectangle {
     private int top;
 
     /**
-     * Get the width value.
+     * Get the width of the rectangle, in pixels.
      *
      * @return the width value
      */
@@ -50,7 +50,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Set the width value.
+     * Set the width of the rectangle, in pixels.
      *
      * @param width the width value to set
      * @return the FaceRectangle object itself.
@@ -61,7 +61,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Get the height value.
+     * Get the height of the rectangle, in pixels.
      *
      * @return the height value
      */
@@ -70,7 +70,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Set the height value.
+     * Set the height of the rectangle, in pixels.
      *
      * @param height the height value to set
      * @return the FaceRectangle object itself.
@@ -81,7 +81,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Get the left value.
+     * Get the distance from the left edge if the image to the left edge of the rectangle, in pixels.
      *
      * @return the left value
      */
@@ -90,7 +90,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Set the left value.
+     * Set the distance from the left edge if the image to the left edge of the rectangle, in pixels.
      *
      * @param left the left value to set
      * @return the FaceRectangle object itself.
@@ -101,7 +101,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Get the top value.
+     * Get the distance from the top edge if the image to the top edge of the rectangle, in pixels.
      *
      * @return the top value
      */
@@ -110,7 +110,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Set the top value.
+     * Set the distance from the top edge if the image to the top edge of the rectangle, in pixels.
      *
      * @param top the top value to set
      * @return the FaceRectangle object itself.

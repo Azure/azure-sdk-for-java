@@ -27,7 +27,7 @@ public class Makeup {
     private boolean lipMakeup;
 
     /**
-     * Get the eyeMakeup value.
+     * Get a boolean value describing whether eye makeup is present on a face.
      *
      * @return the eyeMakeup value
      */
@@ -36,7 +36,7 @@ public class Makeup {
     }
 
     /**
-     * Set the eyeMakeup value.
+     * Set a boolean value describing whether eye makeup is present on a face.
      *
      * @param eyeMakeup the eyeMakeup value to set
      * @return the Makeup object itself.
@@ -47,7 +47,7 @@ public class Makeup {
     }
 
     /**
-     * Get the lipMakeup value.
+     * Get a boolean value describing whether lip makeup is present on a face.
      *
      * @return the lipMakeup value
      */
@@ -56,7 +56,7 @@ public class Makeup {
     }
 
     /**
-     * Set the lipMakeup value.
+     * Set a boolean value describing whether lip makeup is present on a face.
      *
      * @param lipMakeup the lipMakeup value to set
      * @return the Makeup object itself.
