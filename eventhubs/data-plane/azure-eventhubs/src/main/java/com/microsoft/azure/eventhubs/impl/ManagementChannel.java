@@ -74,41 +74,17 @@ final class ManagementChannel {
         // if there isn't even 5 millis left - request will not make the round-trip
         // to the event hubs service. so don't schedule the request - let it timeout
         if (timeoutInMillis > ClientConstants.MGMT_CHANNEL_MIN_RETRY_IN_MILLIS) {
-            this.innerChannel.runOnOpenedObject(dispatcher,
-                    new OperationResult<RequestResponseChannel, Exception>() {
-                        @Override
-                        public void onComplete(final RequestResponseChannel result) {
-                            result.request(requestMessage,
-                                    new OperationResult<Message, Exception>() {
-                                        @Override
-                                        public void onComplete(final Message response) {
-                                            final int statusCode = (int) response.getApplicationProperties().getValue()
-                                                    .get(ClientConstants.PUT_TOKEN_STATUS_CODE);
-                                            final String statusDescription = (String) response.getApplicationProperties().getValue()
-                                                    .get(ClientConstants.PUT_TOKEN_STATUS_DESCRIPTION);
+            final MessageOperationResult messageOperation = new MessageOperationResult(response -> {
+                if (response.getBody() != null) {
+                    resultFuture.complete((Map<String, Object>) ((AmqpValue) response.getBody()).getValue());
+                }
+            }, resultFuture::completeExceptionally);
 
-                                            if (statusCode == AmqpResponseCode.ACCEPTED.getValue()
-                                                    || statusCode == AmqpResponseCode.OK.getValue()) {
-                                                if (response.getBody() != null) {
-                                                    resultFuture.complete((Map<String, Object>) ((AmqpValue) response.getBody()).getValue());
-                                                }
-                                            } else {
-                                                this.onError(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
-                                            }
-                                        }
+            final OperationResultBase<RequestResponseChannel, Exception> operation = new OperationResultBase<>(
+                result -> result.request(requestMessage, messageOperation),
+                resultFuture::completeExceptionally);
 
-                                        @Override
-                                        public void onError(final Exception error) {
-                                            resultFuture.completeExceptionally(error);
-                                        }
-                                    });
-                        }
-
-                        @Override
-                        public void onError(Exception error) {
-                            resultFuture.completeExceptionally(error);
-                        }
-                    });
+            this.innerChannel.runOnOpenedObject(dispatcher, operation);
         }
 
         return resultFuture;
