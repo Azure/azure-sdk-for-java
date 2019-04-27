@@ -15,8 +15,6 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 import static com.azure.common.test.utils.TestConstant.DEFAULT_BUFFER_LENGTH;
@@ -40,6 +38,8 @@ public final class SdkContext {
 
     /**
      * Generates the specified number of random test resource names with the same prefix.
+     *
+     * @param namer the test resource namer with test mode and recorded data
      * @param prefix the prefix to be used if possible
      * @param maxLen the maximum length for the random generated name
      * @param count the number of names to generate
@@ -85,7 +85,7 @@ public final class SdkContext {
      *
      * @param response the response to extract and rebuild
      * @param textReplacementRule rules of rebuilding the response data
-     * @return
+     * @return the response body map of name and content
      */
     public static Mono<Map<String, String>> extractResponseData(final HttpResponse response, final Map<String, String> textReplacementRule) {
         final Map<String, String> responseData = new HashMap<>();

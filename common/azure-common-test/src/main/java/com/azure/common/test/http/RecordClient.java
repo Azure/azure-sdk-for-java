@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.common.test.http;
 
 import com.azure.common.http.HttpPipelineCallContext;
@@ -47,42 +50,42 @@ public final class RecordClient implements HttpPipelinePolicy {
      * @return http response after async call
      */
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            final NetworkCallRecord networkCallRecord = new NetworkCallRecord();
-            networkCallRecord.headers(new HashMap<>());
+        final NetworkCallRecord networkCallRecord = new NetworkCallRecord();
+        networkCallRecord.headers(new HashMap<>());
 
-            if (context.httpRequest().headers().value("Content-Type") != null) {
-                networkCallRecord.headers().put("Content-Type", context.httpRequest().headers().value("Content-Type"));
-            }
-
-            if (context.httpRequest().headers().value("x-ms-version") != null) {
-                networkCallRecord.headers().put("x-ms-version", context.httpRequest().headers().value("x-ms-version"));
-            }
-
-            if (context.httpRequest().headers().value("User-Agent") != null) {
-                networkCallRecord.headers().put("User-Agent", context.httpRequest().headers().value("User-Agent"));
-            }
-
-            networkCallRecord.method(context.httpRequest().httpMethod().toString());
-            networkCallRecord.uri(SdkContext.applyReplacementRule(
-                context.httpRequest().url().toString().replaceAll("\\?$", ""), textReplacementRules));
-
-            return next.process().flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
-                return SdkContext.extractResponseData(bufferedResponse, textReplacementRules).map(responseData -> {
-                    networkCallRecord.response(responseData);
-                    String body = networkCallRecord.response().get("Body");
-
-                    // Remove pre-added header if this is a waiting or redirection
-                    if (body != null && body.contains("<Status>InProgress</Status>")
-                            || Integer.parseInt(networkCallRecord.response().get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
-                        logger.info("Waiting for a response or redirection.");
-                    } else {
-                        synchronized (recordedData.getNetworkCallRecords()) {
-                            recordedData.getNetworkCallRecords().add(networkCallRecord);
-                        }
-                    }
-                    return bufferedResponse;
-                });
-            });
+        if (context.httpRequest().headers().value("Content-Type") != null) {
+            networkCallRecord.headers().put("Content-Type", context.httpRequest().headers().value("Content-Type"));
         }
+
+        if (context.httpRequest().headers().value("x-ms-version") != null) {
+            networkCallRecord.headers().put("x-ms-version", context.httpRequest().headers().value("x-ms-version"));
+        }
+
+        if (context.httpRequest().headers().value("User-Agent") != null) {
+            networkCallRecord.headers().put("User-Agent", context.httpRequest().headers().value("User-Agent"));
+        }
+
+        networkCallRecord.method(context.httpRequest().httpMethod().toString());
+        networkCallRecord.uri(SdkContext.applyReplacementRule(
+            context.httpRequest().url().toString().replaceAll("\\?$", ""), textReplacementRules));
+
+        return next.process().flatMap(httpResponse -> {
+            final HttpResponse bufferedResponse = httpResponse.buffer();
+            return SdkContext.extractResponseData(bufferedResponse, textReplacementRules).map(responseData -> {
+                networkCallRecord.response(responseData);
+                String body = networkCallRecord.response().get("Body");
+
+                // Remove pre-added header if this is a waiting or redirection
+                if (body != null && body.contains("<Status>InProgress</Status>")
+                        || Integer.parseInt(networkCallRecord.response().get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
+                    logger.info("Waiting for a response or redirection.");
+                } else {
+                    synchronized (recordedData.getNetworkCallRecords()) {
+                        recordedData.getNetworkCallRecords().add(networkCallRecord);
+                    }
+                }
+                return bufferedResponse;
+            });
+        });
+    }
 }
