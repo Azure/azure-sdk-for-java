@@ -332,15 +332,16 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                         (bp.getLeaseState() == LeaseState.LEASED)));
             });
             future = CompletableFuture.completedFuture(infos);
-        } catch (Exception e) {
+        } catch (URISyntaxException | StorageException | NoSuchElementException e) {
             Throwable effective = e;
             if (e instanceof NoSuchElementException) {
                 // If there is a StorageException in the forEach, it arrives wrapped in a NoSuchElementException.
                 // Strip the misleading NoSuchElementException to provide a meaningful error for the user.
                 effective = e.getCause();
             }
-            TRACE_LOGGER.warn(this.hostContext.withHost("Failure while getting lease state details"), effective);
-            future = new CompletableFuture<List<BaseLease>>();
+
+            TRACE_LOGGER.warn(this.hostContext.withHost("Failure while getting lease state details"), e);
+            future = new CompletableFuture<>();
             future.completeExceptionally(LoggingUtils.wrapException(effective, EventProcessorHostActionStrings.GETTING_LEASE));
         }
 
