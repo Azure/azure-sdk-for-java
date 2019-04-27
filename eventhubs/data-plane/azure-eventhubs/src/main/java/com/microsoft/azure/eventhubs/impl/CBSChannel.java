@@ -42,37 +42,7 @@ final class CBSChannel {
         request.setApplicationProperties(applicationProperties);
         request.setBody(new AmqpValue(token));
 
-        this.innerChannel.runOnOpenedObject(dispatcher,
-                new OperationResult<RequestResponseChannel, Exception>() {
-                    @Override
-                    public void onComplete(final RequestResponseChannel result) {
-                        result.request(request,
-                                new OperationResult<Message, Exception>() {
-                                    @Override
-                                    public void onComplete(final Message response) {
-
-                                        final int statusCode = (int) response.getApplicationProperties().getValue().get(ClientConstants.PUT_TOKEN_STATUS_CODE);
-                                        final String statusDescription = (String) response.getApplicationProperties().getValue().get(ClientConstants.PUT_TOKEN_STATUS_DESCRIPTION);
-
-                                        if (statusCode == AmqpResponseCode.ACCEPTED.getValue() || statusCode == AmqpResponseCode.OK.getValue()) {
-                                            sendTokenCallback.onComplete(null);
-                                        } else {
-                                            this.onError(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(final Exception error) {
-                                        sendTokenCallback.onError(error);
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onError(Exception error) {
-                        sendTokenCallback.onError(error);
-                    }
-                });
+        this.innerChannel.runOnOpenedObject(dispatcher, new RequestResponseChannelOperation(request, sendTokenCallback));
     }
 
     public void close(
@@ -80,5 +50,44 @@ final class CBSChannel {
             final OperationResult<Void, Exception> closeCallback) {
 
         this.innerChannel.close(reactorDispatcher, closeCallback);
+    }
+
+    private static class RequestResponseChannelOperation implements OperationResult<RequestResponseChannel, Exception> {
+        private final Message request;
+        private final OperationResult<Void, Exception> sendTokenCallback;
+
+        RequestResponseChannelOperation(Message request, OperationResult<Void, Exception> callback) {
+            this.request = request;
+            this.sendTokenCallback = callback;
+        }
+
+        @Override
+        public void onComplete(final RequestResponseChannel result) {
+            result.request(request,
+                new OperationResult<Message, Exception>() {
+                    @Override
+                    public void onComplete(final Message response) {
+
+                        final int statusCode = (int) response.getApplicationProperties().getValue().get(ClientConstants.PUT_TOKEN_STATUS_CODE);
+                        final String statusDescription = (String) response.getApplicationProperties().getValue().get(ClientConstants.PUT_TOKEN_STATUS_DESCRIPTION);
+
+                        if (statusCode == AmqpResponseCode.ACCEPTED.getValue() || statusCode == AmqpResponseCode.OK.getValue()) {
+                            sendTokenCallback.onComplete(null);
+                        } else {
+                            this.onError(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
+                        }
+                    }
+
+                    @Override
+                    public void onError(final Exception error) {
+                        sendTokenCallback.onError(error);
+                    }
+                });
+        }
+
+        @Override
+        public void onError(Exception error) {
+            sendTokenCallback.onError(error);
+        }
     }
 }
