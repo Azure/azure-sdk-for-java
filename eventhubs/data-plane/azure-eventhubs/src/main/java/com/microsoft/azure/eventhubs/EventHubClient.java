@@ -9,6 +9,7 @@ import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**

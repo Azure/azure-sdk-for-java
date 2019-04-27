@@ -3,33 +3,38 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.OperationCancelledException;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-
-import com.microsoft.azure.eventhubs.OperationCancelledException;
-import com.microsoft.azure.eventhubs.TimeoutException;
 
 final class ManagementChannel {
 
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
+    final SessionProvider sessionProvider;
+    final AmqpConnection connectionEventDispatcher;
 
-    ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection) {
+    ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection, final String clientId) {
+        this.sessionProvider = sessionProvider;
+        this.connectionEventDispatcher = connection;
 
         final RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
-            new RequestResponseOpener(
-                sessionProvider,
-                "mgmt-session",
-                "mgmt",
-                ClientConstants.MANAGEMENT_ADDRESS,
-                connection),
-            closer);
+                new RequestResponseOpener(
+                        sessionProvider,
+                        clientId,
+                        "mgmt-session",
+                        "mgmt",
+                        ClientConstants.MANAGEMENT_ADDRESS,
+                        connection),
+                closer);
         closer.setInnerChannel(this.innerChannel);
     }
 
@@ -45,22 +50,22 @@ final class ManagementChannel {
         try {
             // schedule client-timeout on the request
             dispatcher.invoke((int) timeoutInMillis,
-                new DispatchHandler() {
-                    @Override
-                    public void onEvent() {
-                        final RequestResponseChannel channel = innerChannel.unsafeGetIfOpened();
-                        final String errorMessage;
-                        if (channel != null && channel.getState() == IOObject.IOObjectState.OPENED) {
-                            final String remoteContainerId = channel.getSendLink().getSession().getConnection().getRemoteContainer();
-                            errorMessage = String.format("Management request timed out (%sms), after not receiving response from service. TrackingId: %s",
-                                timeoutInMillis, StringUtil.isNullOrEmpty(remoteContainerId) ? "n/a" : remoteContainerId);
-                        } else {
-                            errorMessage = "Management request timed out on the client - enable info level tracing to diagnose.";
-                        }
+                    new DispatchHandler() {
+                        @Override
+                        public void onEvent() {
+                            final RequestResponseChannel channel = innerChannel.unsafeGetIfOpened();
+                            final String errorMessage;
+                            if (channel != null && channel.getState() == IOObject.IOObjectState.OPENED) {
+                                final String remoteContainerId = channel.getSendLink().getSession().getConnection().getRemoteContainer();
+                                errorMessage = String.format(Locale.US, "Management request timed out (%sms), after not receiving response from service. TrackingId: %s",
+                                        timeoutInMillis, StringUtil.isNullOrEmpty(remoteContainerId) ? "n/a" : remoteContainerId);
+                            } else {
+                                errorMessage = "Management request timed out on the client - enable info level tracing to diagnose.";
+                            }
 
-                        resultFuture.completeExceptionally(new TimeoutException(errorMessage));
-                    }
-                });
+                            resultFuture.completeExceptionally(new TimeoutException(errorMessage));
+                        }
+                    });
         } catch (final IOException ioException) {
             resultFuture.completeExceptionally(
                 new OperationCancelledException(
@@ -73,17 +78,41 @@ final class ManagementChannel {
         // if there isn't even 5 millis left - request will not make the round-trip
         // to the event hubs service. so don't schedule the request - let it timeout
         if (timeoutInMillis > ClientConstants.MGMT_CHANNEL_MIN_RETRY_IN_MILLIS) {
-            final MessageOperationResult messageOperation = new MessageOperationResult(response -> {
-                if (response.getBody() != null) {
-                    resultFuture.complete((Map<String, Object>) ((AmqpValue) response.getBody()).getValue());
-                }
-            }, resultFuture::completeExceptionally);
+            this.innerChannel.runOnOpenedObject(dispatcher,
+                    new OperationResult<RequestResponseChannel, Exception>() {
+                        @Override
+                        public void onComplete(final RequestResponseChannel result) {
+                            result.request(requestMessage,
+                                    new OperationResult<Message, Exception>() {
+                                        @Override
+                                        public void onComplete(final Message response) {
+                                            final int statusCode = (int) response.getApplicationProperties().getValue()
+                                                    .get(ClientConstants.PUT_TOKEN_STATUS_CODE);
+                                            final String statusDescription = (String) response.getApplicationProperties().getValue()
+                                                    .get(ClientConstants.PUT_TOKEN_STATUS_DESCRIPTION);
 
-            final OperationResultBase<RequestResponseChannel, Exception> operation = new OperationResultBase<>(
-                result -> result.request(requestMessage, messageOperation),
-                resultFuture::completeExceptionally);
+                                            if (statusCode == AmqpResponseCode.ACCEPTED.getValue()
+                                                    || statusCode == AmqpResponseCode.OK.getValue()) {
+                                                if (response.getBody() != null) {
+                                                    resultFuture.complete((Map<String, Object>) ((AmqpValue) response.getBody()).getValue());
+                                                }
+                                            } else {
+                                                this.onError(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
+                                            }
+                                        }
 
-            this.innerChannel.runOnOpenedObject(dispatcher, operation);
+                                        @Override
+                                        public void onError(final Exception error) {
+                                            resultFuture.completeExceptionally(error);
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            resultFuture.completeExceptionally(error);
+                        }
+                    });
         }
 
         return resultFuture;

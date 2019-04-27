@@ -23,6 +23,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -175,8 +176,7 @@ public class SendTest extends ApiTestBase {
                 for (EventData event : events) {
                     if (!partitionKey.equals(event.getSystemProperties().getPartitionKey())) {
                         this.validateSignal.completeExceptionally(
-                            new AssertionFailedError(String.format("received partitionKey: %s, expected partitionKey: %s", event.getSystemProperties().getPartitionKey(), partitionKey)));
-                    }
+                                new AssertionFailedError(String.format(Locale.US, "received partitionKey: %s, expected partitionKey: %s", event.getSystemProperties().getPartitionKey(), partitionKey)));
 
                     this.currentEventCount++;
                 }
@@ -215,9 +215,8 @@ public class SendTest extends ApiTestBase {
                 for (EventData event : events) {
                     final int currentEventOrder = (int) event.getProperties().get(ORDER_PROPERTY);
                     if (currentEventOrder != currentCount) {
-                        this.validateSignal.completeExceptionally(new AssertionError(String.format("expected %s, got %s", currentCount, currentEventOrder)));
+                        this.validateSignal.completeExceptionally(new AssertionError(String.format(Locale.US, "expected %s, got %s", currentCount, currentEventOrder)));
                     }
-
                     currentCount++;
                 }
             }

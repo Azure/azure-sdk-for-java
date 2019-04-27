@@ -16,7 +16,7 @@ import org.junit.Test;
 
 public class EventDataOrderTest {
 
-    private EventData constructMessage(long seqNumber) {
+  private EventData constructMessage(long seqNumber) {
         HashMap<Symbol, Object> properties = new HashMap<>();
         properties.put(AmqpConstants.SEQUENCE_NUMBER, seqNumber);
 
