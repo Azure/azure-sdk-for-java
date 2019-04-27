@@ -14,9 +14,9 @@ public final class TrackingUtil {
     public static String getLinkName(final Session session) {
         // LN_1479943074829_ea9cac_8b_G27
         final String linkNamePrefix = StringUtil.getRandomString("LN");
-        return session.getConnection() != null && !StringUtil.isNullOrEmpty(session.getConnection().getRemoteContainer()) ?
-                linkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(session.getConnection().getRemoteContainer()
-                        .substring(Math.max(session.getConnection().getRemoteContainer().length() - 7, 0))) :
-                linkNamePrefix;
+        return session.getConnection() != null && !StringUtil.isNullOrEmpty(session.getConnection().getRemoteContainer())
+                ? linkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(session.getConnection().getRemoteContainer()
+                        .substring(Math.max(session.getConnection().getRemoteContainer().length() - 7, 0)))
+                : linkNamePrefix;
     }
 }

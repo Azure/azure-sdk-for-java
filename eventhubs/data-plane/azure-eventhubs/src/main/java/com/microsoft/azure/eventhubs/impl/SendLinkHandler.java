@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 public class SendLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SendLinkHandler.class);
     private final AmqpSender msgSender;

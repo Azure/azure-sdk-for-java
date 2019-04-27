@@ -58,7 +58,7 @@ public class ReactorFaultTest extends ApiTestBase {
                         handler.add(new BaseHandler() {
                             @Override
                             public void handle(org.apache.qpid.proton.engine.Event e) {
-                                throw new NullPointerException();
+                                throw new NullPointerException("The test exception. We want this to restart.");
                             }
                         });
                     } catch (Exception e) {

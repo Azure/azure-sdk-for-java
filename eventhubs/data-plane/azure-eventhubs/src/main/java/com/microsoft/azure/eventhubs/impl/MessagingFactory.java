@@ -499,8 +499,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     private class RunReactor implements Runnable {
-        final private Reactor rctr;
-        final private ScheduledExecutorService executor;
+        private final Reactor rctr;
+        private final ScheduledExecutorService executor;
 
         volatile boolean hasStarted;
 

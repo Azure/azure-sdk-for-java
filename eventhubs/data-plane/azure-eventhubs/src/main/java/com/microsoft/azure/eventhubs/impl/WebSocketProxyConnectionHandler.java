@@ -6,7 +6,6 @@ package com.microsoft.azure.eventhubs.impl;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyHandlerImpl;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
-
 import org.apache.qpid.proton.amqp.transport.ConnectionError;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
@@ -17,16 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.Authenticator;
 import java.net.InetSocketAddress;
-import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketProxyConnectionHandler.class);

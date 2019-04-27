@@ -643,8 +643,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     }
 
     private boolean shouldSendFlow() {
-        return (this.nextCreditToFlow > 0 && this.nextCreditToFlow >= (this.prefetchCount / 2)) ||
-                (this.nextCreditToFlow >= 100);
+        return (this.nextCreditToFlow > 0 && this.nextCreditToFlow >= (this.prefetchCount / 2))
+                || (this.nextCreditToFlow >= 100);
     }
 
     private void scheduleLinkOpenTimeout(final TimeoutTracker timeout) {

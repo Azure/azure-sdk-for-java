@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.nio.BufferOverflowException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -225,15 +224,15 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         // if the timeoutTask completed with scheduling error - notify sender
         if (timeoutTimerTask.isCompletedExceptionally()) {
             timeoutTimerTask.handleAsync(
-                    (unUsed, exception) -> {
-                        if (exception != null && !(exception instanceof CancellationException)) {
-                            onSendFuture.completeExceptionally(
-                                new OperationCancelledException(String.format(Locale.US,
-                                    "Entity(%s): send failed while dispatching to Reactor, see cause for more details.",
-                                    this.sendPath), exception));
-                        }
-                        return null;
-                    }, this.executor);
+                (unUsed, exception) -> {
+                    if (exception != null && !(exception instanceof CancellationException)) {
+                        onSendFuture.completeExceptionally(
+                            new OperationCancelledException(String.format(Locale.US,
+                                "Entity(%s): send failed while dispatching to Reactor, see cause for more details.",
+                                this.sendPath), exception));
+                    }
+                    return null;
+                }, this.executor);
 
             return onSendFuture;
         }

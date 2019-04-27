@@ -149,7 +149,7 @@ public interface EventData extends Serializable, Comparable<EventData> {
     SystemProperties getSystemProperties();
     void setSystemProperties(SystemProperties props);
 
-    public class SystemProperties extends HashMap<String, Object> {
+    class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
 
         public SystemProperties(final HashMap<String, Object> map) {

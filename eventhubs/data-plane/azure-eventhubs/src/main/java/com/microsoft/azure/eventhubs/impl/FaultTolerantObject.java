@@ -56,16 +56,18 @@ public class FaultTolerantObject<T extends IOObject> {
                                 @Override
                                 public void onComplete(T result) {
                                     innerObject = result;
-                                    for (OperationResult<T, Exception> callback : openCallbacks)
+                                    for (OperationResult<T, Exception> callback : openCallbacks) {
                                         callback.onComplete(result);
+                                    }
 
                                     openCallbacks.clear();
                                 }
 
                                 @Override
                                 public void onError(Exception error) {
-                                    for (OperationResult<T, Exception> callback : openCallbacks)
+                                    for (OperationResult<T, Exception> callback : openCallbacks) {
                                         callback.onError(error);
+                                    }
 
                                     openCallbacks.clear();
                                 }

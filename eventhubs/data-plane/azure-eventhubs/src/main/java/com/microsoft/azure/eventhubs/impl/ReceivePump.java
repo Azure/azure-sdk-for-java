@@ -56,8 +56,8 @@ public class ReceivePump implements Runnable {
         } catch (final Exception exception) {
             if (TRACE_LOGGER.isErrorEnabled()) {
                 TRACE_LOGGER.error(
-                        String.format(Locale.US, "Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) " +
-                                        "encountered unrecoverable error and exited with exception %s.",
+                        String.format(Locale.US, "Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) "
+                                + "encountered unrecoverable error and exited with exception %s.",
                                 this.eventHubName, this.consumerGroupName, this.receiver.getPartitionId(), exception.toString()));
             }
 
@@ -112,8 +112,8 @@ public class ReceivePump implements Runnable {
         this.isPumpHealthy = false;
         if (TRACE_LOGGER.isErrorEnabled()) {
             TRACE_LOGGER.error(
-                    String.format(Locale.US, "Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) " +
-                                    "exiting after user-code exception %s",
+                    String.format(Locale.US, "Receive pump for eventHub (%s), consumerGroup (%s), partition (%s) "
+                                    + "exiting after user-code exception %s",
                             this.eventHubName, this.consumerGroupName, this.receiver.getPartitionId(), userCodeException.toString()));
         }
 
