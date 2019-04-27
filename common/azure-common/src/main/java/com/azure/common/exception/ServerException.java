@@ -20,7 +20,7 @@ public class ServerException extends HttpRequestException {
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public ServerException(String message, HttpResponse response) {
+    public ServerException(final String message, final HttpResponse response) {
         super(message, response);
     }
 
@@ -31,7 +31,7 @@ public class ServerException extends HttpRequestException {
      * @param response the HTTP response
      * @param value the deserialized response value
      */
-    public ServerException(String message, HttpResponse response, Object value) {
+    public ServerException(final String message, final HttpResponse response, final Object value) {
         super(message, response, value);
     }
 
@@ -42,7 +42,7 @@ public class ServerException extends HttpRequestException {
      * @param response the HTTP response
      * @param cause the Throwable which caused the creation of this ServerException
      */
-    public ServerException(String message, HttpResponse response, Throwable cause) {
+    public ServerException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, response, cause);
     }
 }

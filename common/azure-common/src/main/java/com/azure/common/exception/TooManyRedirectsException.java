@@ -7,7 +7,7 @@ import com.azure.common.http.HttpResponse;
 
 /**
  * This exception is thrown when an HTTP request has reached the maximum number of redirect attempts
- * with HTTP status code of 5XX.
+ * with HTTP status code of 3XX.
  */
 public class TooManyRedirectsException extends HttpRequestException {
 
@@ -17,7 +17,7 @@ public class TooManyRedirectsException extends HttpRequestException {
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public TooManyRedirectsException(String message, HttpResponse response) {
+    public TooManyRedirectsException(final String message, final HttpResponse response) {
         super(message, response);
     }
 
@@ -28,7 +28,7 @@ public class TooManyRedirectsException extends HttpRequestException {
      * @param response the HTTP response
      * @param value the deserialized response value
      */
-    public TooManyRedirectsException(String message, HttpResponse response, Object value) {
+    public TooManyRedirectsException(final String message, final HttpResponse response, final Object value) {
         super(message, response, value);
     }
 
@@ -39,7 +39,7 @@ public class TooManyRedirectsException extends HttpRequestException {
      * @param response the HTTP response
      * @param cause the Throwable which caused the creation of this TooManyRedirectsException
      */
-    public TooManyRedirectsException(String message, HttpResponse response, Throwable cause) {
+    public TooManyRedirectsException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, response, cause);
     }
 }

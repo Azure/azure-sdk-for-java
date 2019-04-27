@@ -3,8 +3,6 @@
 
 package com.azure.common.exception;
 
-import com.azure.common.http.HttpResponse;
-
 /**
  * A runtime exception indicating service response failure caused by one of the following scenarios:
  * Service is not able to handle a well-format request by some reasons.
@@ -15,62 +13,23 @@ import com.azure.common.http.HttpResponse;
 public class ServiceResponseException extends AzureException {
 
     /**
-     * Information about the associated HTTP response.
-     */
-    private HttpResponse response;
-
-    /**
-     * The HTTP response value.
-     */
-    private Object value;
-
-    /**
      * Initializes a new instance of the ServiceResponseException class.
      *
      * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
      */
-    public ServiceResponseException(String message, HttpResponse response) {
+    public ServiceResponseException(final String message) {
         super(message);
-        this.response = response;
     }
 
-    /**
-     * Initializes a new instance of the ServiceResponseException class.
-     *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
-     * @param value the deserialized response value
-     */
-    public ServiceResponseException(String message, HttpResponse response, Object value) {
-        super(message);
-        this.response = response;
-        this.value = value;
-    }
 
     /**
      * Initializes a new instance of the ServiceResponseException class.
      *
      * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
      * @param cause the Throwable which caused the creation of this ServiceRequestException
      */
-    public ServiceResponseException(String message, HttpResponse response, Throwable cause) {
+    public ServiceResponseException(final String message, final Throwable cause) {
         super(message, cause);
-        this.response = response;
     }
 
-    /**
-     * @return information about the associated HTTP response
-     */
-    public HttpResponse response() {
-        return response;
-    }
-
-    /**
-     * @return the HTTP response value
-     */
-    public Object value() {
-        return value;
-    }
 }

@@ -18,9 +18,14 @@ import com.azure.common.http.HttpResponse;
 public class HttpRequestException extends ServiceRequestException {
 
     /**
+     * The HTTP response value.
+     */
+    private Object value;
+
+    /**
      * Information about the associated HTTP response.
      */
-    private HttpResponse response;
+    private final HttpResponse response;
 
     /**
      * Initializes a new instance of the HttpRequestException class.
@@ -28,8 +33,9 @@ public class HttpRequestException extends ServiceRequestException {
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public HttpRequestException(String message, HttpResponse response) {
-        super(message, response);
+    public HttpRequestException(final String message, final HttpResponse response) {
+        super(message);
+        this.response = response;
     }
 
     /**
@@ -39,8 +45,9 @@ public class HttpRequestException extends ServiceRequestException {
      * @param response the HTTP response
      * @param value the deserialized response value
      */
-    public HttpRequestException(String message, HttpResponse response, Object value) {
-        super(message, value);
+    public HttpRequestException(final String message, final HttpResponse response, final Object value) {
+        super(message);
+        this.value = value;
         this.response = response;
     }
 
@@ -51,7 +58,7 @@ public class HttpRequestException extends ServiceRequestException {
      * @param response the HTTP response
      * @param cause the Throwable which caused the creation of this HttpRequestException
      */
-    public HttpRequestException(String message, HttpResponse response, Throwable cause) {
+    public HttpRequestException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, cause);
         this.response = response;
     }
@@ -64,4 +71,10 @@ public class HttpRequestException extends ServiceRequestException {
         return response;
     }
 
+    /**
+     * @return the HTTP response value
+     */
+    public Object value() {
+        return value;
+    }
 }
