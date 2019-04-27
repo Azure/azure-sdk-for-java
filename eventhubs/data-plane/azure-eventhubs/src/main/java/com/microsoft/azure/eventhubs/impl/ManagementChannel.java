@@ -18,12 +18,8 @@ import java.util.concurrent.CompletableFuture;
 final class ManagementChannel {
 
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
-    final SessionProvider sessionProvider;
-    final AmqpConnection connectionEventDispatcher;
 
     ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection, final String clientId) {
-        this.sessionProvider = sessionProvider;
-        this.connectionEventDispatcher = connection;
 
         final RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(

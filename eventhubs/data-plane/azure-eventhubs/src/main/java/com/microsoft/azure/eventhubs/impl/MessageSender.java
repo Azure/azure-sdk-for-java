@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.BufferOverflowException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -1027,7 +1028,10 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         }
     }
 
-    private static class DeliveryTagComparator implements Comparator<WeightedDeliveryTag> {
+    private static class DeliveryTagComparator implements Comparator<WeightedDeliveryTag>, Serializable {
+
+        private static final long serialVersionUID = -7057500582037295635L;
+
         @Override
         public int compare(WeightedDeliveryTag deliveryTag0, WeightedDeliveryTag deliveryTag1) {
             return deliveryTag1.getPriority() - deliveryTag0.getPriority();

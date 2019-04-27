@@ -64,11 +64,22 @@ public class SessionHandler extends BaseHandler {
                 }
             }
 
+            if (reactorHandler == null) {
+                this.onRemoteSessionOpenError.accept(
+                    null,
+                    new EventHubException(
+                        false,
+                        String.format("OnSessionLocalOpen entityName[%s], reactorHandler: NULL POINTER exception.", this.entityName))
+                );
+                e.getSession().close();
+                return;
+            }
+
             final ReactorDispatcher reactorDispatcher = reactorHandler.getReactorDispatcher();
             final Session session = e.getSession();
 
             try {
-                reactorDispatcher.invoke((int) this.openTimeout.toMillis(), new SessionTimeoutHandler(session, entityName, connectionId));
+                reactorDispatcher.invoke((int) this.openTimeout.toMillis(), new SessionTimeoutHandler(entityName, connectionId));
             } catch (IOException ioException) {
                 if (TRACE_LOGGER.isWarnEnabled()) {
                     TRACE_LOGGER.warn(String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], reactorDispatcherError[%s]",
@@ -151,12 +162,10 @@ public class SessionHandler extends BaseHandler {
 
     private class SessionTimeoutHandler extends DispatchHandler {
 
-        private final Session session;
         private final String entityName;
         private final String connectionId;
 
-        SessionTimeoutHandler(final Session session, final String entityName, final String connectionId) {
-            this.session = session;
+        SessionTimeoutHandler(final String entityName, final String connectionId) {
             this.entityName = entityName;
             this.connectionId = connectionId;
         }

@@ -104,7 +104,11 @@ public final class ExceptionUtil {
     }
 
     static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, ErrorContextProvider contextProvider) {
-        if (exception != null && exception instanceof EventHubException) {
+        if (exception == null) {
+            throw new NullPointerException();
+        }
+
+        if (exception instanceof EventHubException) {
             final ErrorContext errorContext = contextProvider.getContext();
             ((EventHubException) exception).setContext(errorContext);
         }
@@ -133,23 +137,17 @@ public final class ExceptionUtil {
 
         builder.append(exception.getMessage());
         final StackTraceElement[] stackTraceElements = exception.getStackTrace();
-        if (stackTraceElements != null) {
-            for (final StackTraceElement ste : stackTraceElements) {
-                builder.append(System.lineSeparator());
-                builder.append(ste.toString());
-            }
+        for (final StackTraceElement ste : stackTraceElements) {
+            builder.append(System.lineSeparator());
+            builder.append(ste.toString());
         }
 
         final Throwable innerException = exception.getCause();
-        if (innerException != null) {
-            builder.append("Cause: " + innerException.getMessage());
-            final StackTraceElement[] innerStackTraceElements = innerException.getStackTrace();
-            if (innerStackTraceElements != null) {
-                for (final StackTraceElement ste : innerStackTraceElements) {
-                    builder.append(System.lineSeparator());
-                    builder.append(ste.toString());
-                }
-            }
+        builder.append("Cause: " + innerException.getMessage());
+        final StackTraceElement[] innerStackTraceElements = innerException.getStackTrace();
+        for (final StackTraceElement ste : innerStackTraceElements) {
+            builder.append(System.lineSeparator());
+            builder.append(ste.toString());
         }
 
         return builder.toString();

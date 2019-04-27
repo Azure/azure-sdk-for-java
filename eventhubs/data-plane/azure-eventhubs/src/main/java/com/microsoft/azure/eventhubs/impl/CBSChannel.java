@@ -14,16 +14,11 @@ import java.util.Map;
 final class CBSChannel {
 
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
-    final SessionProvider sessionProvider;
-    final AmqpConnection connectionEventDispatcher;
 
     CBSChannel(
             final SessionProvider sessionProvider,
             final AmqpConnection connection,
             final String clientId) {
-
-        this.sessionProvider = sessionProvider;
-        this.connectionEventDispatcher = connection;
 
         RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
