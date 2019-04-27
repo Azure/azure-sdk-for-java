@@ -81,7 +81,7 @@ public class ReactorFaultTest extends ApiTestBase {
     }
 
     @Test()
-    public void VerifyTransportAbort() throws Exception {
+    public void verifyTransportAbort() throws Exception {
         final EventHubClient eventHubClient = EventHubClient.createSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
         try {
             final PartitionReceiver partitionReceiver = eventHubClient.createEpochReceiverSync(
