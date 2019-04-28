@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.UUID;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.primitives.StringUtil;
 import com.microsoft.azure.servicebus.primitives.Util;
+import org.junit.Assume;
 
-public class TestUtils {
+public class TestUtils extends ConfigValidateTestBase {
 	
 	private static final String NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME = "AZURE_SERVICEBUS_CONNECTION_STRING";
     public static final String FIRST_SUBSCRIPTION_NAME = "subscription1";

@@ -14,7 +14,7 @@ import org.junit.Assert;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
-public class ClientValidationTests
+public class ClientValidationTests extends ConfigValidateTestBase
 {
 
 	private static final String ENTITY_NAME_PREFIX = "ClientValidationTests";
@@ -59,7 +59,10 @@ public class ClientValidationTests
 
 	@AfterClass
 	public static void deleteEntities() throws ExecutionException, InterruptedException, IOException {
-		managementClient.deleteQueueAsync(queuePath).get();
+		if (managementClient == null) {
+		    return;
+        }
+	    managementClient.deleteQueueAsync(queuePath).get();
 		managementClient.deleteQueueAsync(sessionfulQueuePath).get();
 		managementClient.deleteTopicAsync(topicPath).get();
 		managementClient.close();

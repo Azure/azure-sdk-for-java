@@ -98,6 +98,9 @@ public abstract class SendReceiveTests extends Tests {
 	
 	@AfterClass
 	public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
+	    if (managementClient == null) {
+	        return;
+        }
 	    if(SendReceiveTests.entityNameCreatedForAllTests != null)
 	    {
 	        managementClient.deleteQueueAsync(SendReceiveTests.entityNameCreatedForAllTests).get();

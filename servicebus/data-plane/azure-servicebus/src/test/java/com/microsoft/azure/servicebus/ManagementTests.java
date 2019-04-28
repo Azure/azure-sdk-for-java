@@ -17,7 +17,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ManagementTests {
+public class ManagementTests extends ConfigValidateTestBase {
 
     private ManagementClientAsync managementClientAsync;
 
