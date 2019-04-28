@@ -143,11 +143,13 @@ public final class ExceptionUtil {
         }
 
         final Throwable innerException = exception.getCause();
-        builder.append("Cause: " + innerException.getMessage());
-        final StackTraceElement[] innerStackTraceElements = innerException.getStackTrace();
-        for (final StackTraceElement ste : innerStackTraceElements) {
-            builder.append(System.lineSeparator());
-            builder.append(ste.toString());
+        if (innerException != null) {
+            builder.append("Cause: ").append(innerException.getMessage());
+            final StackTraceElement[] innerStackTraceElements = innerException.getStackTrace();
+            for (final StackTraceElement ste : innerStackTraceElements) {
+                builder.append(System.lineSeparator());
+                builder.append(ste.toString());
+            }
         }
 
         return builder.toString();
