@@ -24,14 +24,14 @@ public class MetricAlertSingleResourceMultipleMetricCriteria extends MetricAlert
      * The list of metric criteria for this 'all of' operation.
      */
     @JsonProperty(value = "allOf")
-    private List<StaticMetricCriteria> allOf;
+    private List<MetricCriteria> allOf;
 
     /**
      * Get the list of metric criteria for this 'all of' operation.
      *
      * @return the allOf value
      */
-    public List<StaticMetricCriteria> allOf() {
+    public List<MetricCriteria> allOf() {
         return this.allOf;
     }
 
@@ -41,7 +41,7 @@ public class MetricAlertSingleResourceMultipleMetricCriteria extends MetricAlert
      * @param allOf the allOf value to set
      * @return the MetricAlertSingleResourceMultipleMetricCriteria object itself.
      */
-    public MetricAlertSingleResourceMultipleMetricCriteria withAllOf(List<StaticMetricCriteria> allOf) {
+    public MetricAlertSingleResourceMultipleMetricCriteria withAllOf(List<MetricCriteria> allOf) {
         this.allOf = allOf;
         return this;
     }

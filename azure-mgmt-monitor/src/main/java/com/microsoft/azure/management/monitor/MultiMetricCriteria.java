@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType")
 @JsonTypeName("MultiMetricCriteria")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "StaticThresholdCriterion", value = StaticMetricCriteria.class),
+    @JsonSubTypes.Type(name = "StaticThresholdCriterion", value = MetricCriteria.class),
     @JsonSubTypes.Type(name = "DynamicThresholdCriterion", value = DynamicMetricCriteria.class)
 })
 public class MultiMetricCriteria {
