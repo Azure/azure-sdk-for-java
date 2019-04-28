@@ -178,13 +178,13 @@ public class SendTest extends ApiTestBase {
                     if (!partitionKey.equals(event.getSystemProperties().getPartitionKey())) {
                         this.validateSignal.completeExceptionally(
                                 new AssertionFailedError(String.format(Locale.US, "received partitionKey: %s, expected partitionKey: %s", event.getSystemProperties().getPartitionKey(), partitionKey)));
-
-                        this.currentEventCount++;
                     }
 
-                    if (this.currentEventCount == this.eventCount) {
-                        this.validateSignal.complete(null);
-                    }
+                    this.currentEventCount++;
+                }
+
+                if (this.currentEventCount == this.eventCount) {
+                    this.validateSignal.complete(null);
                 }
             }
         }
