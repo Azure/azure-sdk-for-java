@@ -42,14 +42,12 @@ public class CachingKeyResolverTest {
     final static String newerKeyId3 = "https://test.vault.azure.net/keys/keyID3/version2";
     final static String unversionnedKeyId3 = "https://test.vault.azure.net/keys/keyID3";
 
-
     /*
      * Tests the capacity limit of CachingKeyResolver by adding more keys
      * than the cache limit and verifying that least recently used entity is evicted.
      */
     @Test
-    public void KeyVault_CapacityLimitOfCachingKeyResolver()
-    {
+    public void CapacityLimitOfCachingKeyResolver() {
         IKeyResolver mockedKeyResolver = mock(IKeyResolver.class);
         CachingKeyResolver resolver = new CachingKeyResolver(2, mockedKeyResolver);
 
@@ -76,8 +74,7 @@ public class CachingKeyResolverTest {
      * and validate that the failed entity is not added to the cache.
      */
     @Test
-    public void KeyVault_CachingKeyResolverThrows()
-    {
+    public void cachingKeyResolverThrows() {
         IKeyResolver mockedKeyResolver = mock(IKeyResolver.class);
         CachingKeyResolver resolver = new CachingKeyResolver(10, mockedKeyResolver);
 
@@ -105,7 +102,7 @@ public class CachingKeyResolverTest {
      * but does cache the result versionned key
      */
     @Test
-    public void KeyVault_CachingUnversionnedKey() throws Exception {
+    public void cachingUnversionnedKey() throws Exception {
         IKeyResolver mockedKeyResolver = mock(IKeyResolver.class);
         CachingKeyResolver resolver = new CachingKeyResolver(2, mockedKeyResolver);
 
