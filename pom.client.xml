@@ -249,13 +249,13 @@
         <artifactId>log4j-api</artifactId>
         <version>${log4j-api.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>com.microsoft.rest.v2</groupId>
         <artifactId>client-runtime</artifactId>
         <version>${client-runtime.version.v2}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
@@ -362,7 +362,7 @@
         <version>${cglib-nodep.version}</version>
         <scope>test</scope>
       </dependency>
-      
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
@@ -539,12 +539,6 @@
             </goals>
             <configuration>
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
-              <doclint>all</doclint>
-
-              <!-- Fail the build for javadoc errors/warnings by default. Track 1 client libraries can opt out of this.
-               By default, we want to ensure the Javadocs we ship are in good shape. -->
-              <failOnError>true</failOnError>
-              <failOnWarnings>true</failOnWarnings>
             </configuration>
           </execution>
         </executions>
@@ -605,7 +599,6 @@
             <source>8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
-            <failOnError>false</failOnError>
             <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
             <linksource>false</linksource>
             <excludePackageNames>com.microsoft.azure.template:*.impl.*:*.implementation.*</excludePackageNames>
@@ -646,6 +639,12 @@
               <link>http://reactivex.io/RxJava/javadoc/</link>
             </links>
             <isOffline>false</isOffline>
+
+            <!-- Fail the build for javadoc errors/warnings by default. Track 1 client libraries can opt out of this.
+              By default, we want to ensure the Javadocs we ship are in good shape. -->
+            <doclint>all</doclint>
+            <failOnError>true</failOnError>
+            <failOnWarnings>true</failOnWarnings>
           </configuration>
         </plugin>
 

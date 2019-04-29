@@ -97,16 +97,6 @@
           </resources>
         </configuration>
       </plugin>
-
-      <!-- Opt-out of javadoc build failures for Track 1 Key Vault client library. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <failOnError>false</failOnError>
-          <failOnWarnings>false</failOnWarnings>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>
