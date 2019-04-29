@@ -29,10 +29,10 @@ public class DatabaseInner extends Resource {
     /**
      * The database SKU.
      *
-     * To determine the SKUs (including the SKU name, tier/edition, family, and
-     * capacity) that are available to your subscription in an Azure location,
-     * use the `Capabilities_ListByLocation` REST API or one of the following
-     * interfaces:
+     * The list of SKUs may vary by region and support offer. To determine the
+     * SKUs (including the SKU name, tier/edition, family, and capacity) that
+     * are available to your subscription in an Azure region, use the
+     * `Capabilities_ListByLocation` REST API or one of the following commands:
      *
      * ```azurecli
      * az sql db list-editions -l &lt;location&gt; -o table
@@ -286,7 +286,7 @@ public class DatabaseInner extends Resource {
 
     /**
      * Get the database SKU.
-     To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure location, use the `Capabilities_ListByLocation` REST API or one of the following interfaces:
+     The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or one of the following commands:
      ```azurecli
      az sql db list-editions -l &lt;location&gt; -o table
      ````
@@ -302,7 +302,7 @@ public class DatabaseInner extends Resource {
 
     /**
      * Set the database SKU.
-     To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure location, use the `Capabilities_ListByLocation` REST API or one of the following interfaces:
+     The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or one of the following commands:
      ```azurecli
      az sql db list-editions -l &lt;location&gt; -o table
      ````
