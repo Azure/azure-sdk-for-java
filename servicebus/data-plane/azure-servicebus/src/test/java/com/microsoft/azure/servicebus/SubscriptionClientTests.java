@@ -15,7 +15,7 @@ import com.microsoft.azure.servicebus.rules.SqlFilter;
 import com.microsoft.azure.servicebus.rules.SqlRuleAction;
 import com.microsoft.azure.servicebus.rules.TrueFilter;
 
-public class SubscriptionClientTests extends ClientTests{	
+public class SubscriptionClientTests extends ClientTests{
     @Override
     public String getEntityNamePrefix() {
         return "SubscriptionClientTests";
@@ -37,8 +37,7 @@ public class SubscriptionClientTests extends ClientTests{
     }
 
     @Test
-    public void testGetAddRemoveRules() throws InterruptedException, ServiceBusException
-    {
+    public void testGetAddRemoveRules() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         SubscriptionClient subscriptionClient = (SubscriptionClient)this.receiveClient;
         subscriptionClient.removeRule(SubscriptionClient.DEFAULT_RULE_NAME);
@@ -49,13 +48,10 @@ public class SubscriptionClientTests extends ClientTests{
         // Simple rule
         RuleDescription trueFilterRule = new RuleDescription("customRule1", TrueFilter.DEFAULT);
         subscriptionClient.addRule(trueFilterRule);
-        try
-        {
+        try {
             subscriptionClient.addRule(trueFilterRule);
             Assert.fail("A rule with duplicate name is added.");
-        }
-        catch(MessagingEntityAlreadyExistsException e)
-        {
+        } catch (MessagingEntityAlreadyExistsException e) {
             // Expected
         }
         rules = subscriptionClient.getRules().toArray(new RuleDescription[0]);
@@ -109,8 +105,7 @@ public class SubscriptionClientTests extends ClientTests{
         Assert.assertEquals(correlationFilter.getLabel(), returnedFilter.getLabel());
         Assert.assertEquals(correlationFilter.getTo(), returnedFilter.getTo());
         Assert.assertEquals(correlationFilter.getReplyTo(), returnedFilter.getReplyTo());
-        for (Map.Entry<String, Object> entry : properties.entrySet())
-        {
+        for (Map.Entry<String, Object> entry : properties.entrySet()) {
             Assert.assertTrue(returnedFilter.getProperties().containsKey(entry.getKey()));
             Assert.assertEquals(entry.getValue(), returnedFilter.getProperties().get(entry.getKey()));
         }
@@ -119,8 +114,7 @@ public class SubscriptionClientTests extends ClientTests{
     }
 
     @Test
-    public void testGetRulesForMultipleRules() throws InterruptedException, ServiceBusException
-    {
+    public void testGetRulesForMultipleRules() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         SubscriptionClient subscriptionClient = (SubscriptionClient)this.receiveClient;
         RuleDescription trueFilterRule = new RuleDescription("getRules1", TrueFilter.DEFAULT);
@@ -148,8 +142,7 @@ public class SubscriptionClientTests extends ClientTests{
     }
 
     @Test
-    public void testSubscriptionNameSplitting() throws InterruptedException, ServiceBusException
-    {
+    public void testSubscriptionNameSplitting() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.RECEIVEANDDELETE);
         Assert.assertEquals("Wrong subscription name returned.", TestUtils.FIRST_SUBSCRIPTION_NAME, ((SubscriptionClient)this.receiveClient).getSubscriptionName());
     }

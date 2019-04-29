@@ -1,15 +1,12 @@
 package com.microsoft.azure.servicebus;
 
-public class MaxConcurrencyCounter
-{
+public class MaxConcurrencyCounter {
     private int concurrencyCount = 0;
     private int maxConcurrencyCount = 0;
 
-    public synchronized void incrementCount()
-    {
+    public synchronized void incrementCount() {
         this.concurrencyCount++;
-        if(this.concurrencyCount > this.maxConcurrencyCount)
-        {
+        if(this.concurrencyCount > this.maxConcurrencyCount) {
             this.maxConcurrencyCount = this.concurrencyCount;
         }
     }
@@ -19,8 +16,7 @@ public class MaxConcurrencyCounter
         this.concurrencyCount--;
     }
 
-    public synchronized int getMaxConcurrencyCount()
-    {
+    public synchronized int getMaxConcurrencyCount() {
         //System.out.println("Max concurrency count :" + this.maxConcurrencyCount);
         return this.maxConcurrencyCount;
     }

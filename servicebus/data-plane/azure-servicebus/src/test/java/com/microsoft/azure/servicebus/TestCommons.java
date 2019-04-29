@@ -25,29 +25,24 @@ public class TestCommons {
     public static final Duration SHORT_WAIT_TIME = Duration.ofSeconds(5);
     private static final Duration DRAIN_MESSAGES_WAIT_TIME = Duration.ofSeconds(2);
 
-    public static void testBasicSend(IMessageSender sender) throws InterruptedException, ServiceBusException
-    {
+    public static void testBasicSend(IMessageSender sender) throws InterruptedException, ServiceBusException {
         sender.send(new Message("AMQP message"));
     }
 
-    public static void testBasicSendBatch(IMessageSender sender) throws InterruptedException, ServiceBusException
-    {
+    public static void testBasicSendBatch(IMessageSender sender) throws InterruptedException, ServiceBusException {
         List<Message> messages = new ArrayList<Message>();
-        for(int i=0; i<10; i++)
-        {
+        for (int i=0; i<10; i++) {
             messages.add(new Message("AMQP message"));
         }
         sender.sendBatch(messages);
     }
 
-    public static void testBasicReceiveAndDeleteWithValueData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public static void testBasicReceiveAndDeleteWithValueData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
         String messageData = "testBasicReceiveAndDeleteWithValueData";
         String messageId = UUID.randomUUID().toString();
         Message message = new Message(MessageBody.fromValueData(messageData));
         message.setMessageId(messageId);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
 
@@ -62,28 +57,23 @@ public class TestCommons {
         Assert.assertNull("Message received again", receivedMessage);
     }
 
-    public static void testBasicReceiveAndDeleteWithBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public static void testBasicReceiveAndDeleteWithBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
         testBasicReceiveAndDeleteWithBinaryData(sender, sessionId, receiver, 64);
     }
 
-    public static void testBasicReceiveAndDeleteWithLargeBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public static void testBasicReceiveAndDeleteWithLargeBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
         testBasicReceiveAndDeleteWithBinaryData(sender, sessionId, receiver, 64 * 1024);
     }
 
-    private static void testBasicReceiveAndDeleteWithBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver, int messageSize) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    private static void testBasicReceiveAndDeleteWithBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver, int messageSize) throws InterruptedException, ServiceBusException, ExecutionException {
         String messageId = UUID.randomUUID().toString();
         byte[] binaryData = new byte[messageSize];
-        for(int i=0; i< binaryData.length; i++)
-        {
+        for (int i=0; i< binaryData.length; i++) {
             binaryData[i] = (byte)i;
         }
         Message message = new Message(Utils.fromBinay(binaryData));
         message.setMessageId(messageId);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
 
@@ -98,8 +88,7 @@ public class TestCommons {
         Assert.assertNull("Message received again", receivedMessage);
     }
 
-    public static void testBasicReceiveAndDeleteWithSequenceData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public static void testBasicReceiveAndDeleteWithSequenceData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
         String messageId = UUID.randomUUID().toString();
         List<Object> sequence = new ArrayList<Object>();
         sequence.add("azure");
@@ -107,8 +96,7 @@ public class TestCommons {
         sequence.add("messaging");
         Message message = new Message(Utils.fromSequence(sequence));
         message.setMessageId(messageId);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         sender.send(message);
@@ -122,31 +110,23 @@ public class TestCommons {
         Assert.assertNull("Message received again", receivedMessage);
     }
 
-    public static void testBasicReceiveBatchAndDelete(IMessageSender sender, String sessionId, IMessageReceiver receiver, boolean isEntityPartitioned) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public static void testBasicReceiveBatchAndDelete(IMessageSender sender, String sessionId, IMessageReceiver receiver, boolean isEntityPartitioned) throws InterruptedException, ServiceBusException, ExecutionException {
         int numMessages = 10;
 
-        if(isEntityPartitioned)
-        {
-            for(int i=0; i<numMessages; i++)
-            {
+        if (isEntityPartitioned) {
+            for (int i=0; i<numMessages; i++) {
                 Message message = new Message("AMQP message");
-                if(sessionId != null)
-                {
+                if (sessionId != null) {
                     message.setSessionId(sessionId);
                 }
                 sender.send(message);
             }
-        }
-        else
-        {
+        } else {
             // Keep this batch send part as this test sendBatch API call
             List<Message> messages = new ArrayList<Message>();
-            for(int i=0; i<numMessages; i++)
-            {
+            for (int i=0; i<numMessages; i++) {
                 Message message = new Message("AMQP message");
-                if(sessionId != null)
-                {
+                if(sessionId != null) {
                     message.setSessionId(sessionId);
                 }
                 messages.add(message);
@@ -157,8 +137,7 @@ public class TestCommons {
 
         int totalReceivedMessages = 0;
         Collection<IMessage> receivedMessages = receiver.receiveBatch(numMessages);
-        while(receivedMessages != null && receivedMessages.size() > 0)
-        {
+        while (receivedMessages != null && receivedMessages.size() > 0) {
             totalReceivedMessages += receivedMessages.size();
             receivedMessages = receiver.receiveBatch(numMessages);
         }
@@ -168,13 +147,11 @@ public class TestCommons {
         Assert.assertNull("Messages received again", receivedMessages);
     }
 
-    public static void testBasicReceiveAndComplete(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public static void testBasicReceiveAndComplete(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         sender.send(message);
@@ -187,13 +164,11 @@ public class TestCommons {
         Assert.assertNull("Message was not properly completed", receivedMessage);
     }
 
-    public static void testBasicReceiveAndCompleteMessageWithProperties(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public static void testBasicReceiveAndCompleteMessageWithProperties(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         HashMap<String, Object> messageProps = new HashMap<>();
@@ -213,13 +188,11 @@ public class TestCommons {
         Assert.assertNull("Message was not properly completed", receivedMessage);
     }
 
-    public static void testBasicReceiveAndAbandon(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public static void testBasicReceiveAndAbandon(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         sender.send(message);
@@ -235,13 +208,11 @@ public class TestCommons {
         receiver.complete(receivedMessage.getLockToken());
     }
 
-    public static void testBasicReceiveAndDeadLetter(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public static void testBasicReceiveAndDeadLetter(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         sender.send(message);
@@ -255,13 +226,11 @@ public class TestCommons {
         Assert.assertNull("Message was not properly deadlettered", receivedMessage);
     }
 
-    public static void testBasicReceiveAndRenewLock(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public static void testBasicReceiveAndRenewLock(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         sender.send(message);
@@ -277,30 +246,22 @@ public class TestCommons {
         receiver.complete(receivedMessage.getLockToken());
     }
 
-    public static void testBasicReceiveBatchAndComplete(IMessageSender sender, String sessionId, IMessageReceiver receiver, boolean isEntityPartitioned) throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public static void testBasicReceiveBatchAndComplete(IMessageSender sender, String sessionId, IMessageReceiver receiver, boolean isEntityPartitioned) throws InterruptedException, ServiceBusException, ExecutionException {
         int numMessages = 10;
-        if(isEntityPartitioned)
-        {
-            for(int i=0; i<numMessages; i++)
-            {
+        if (isEntityPartitioned) {
+            for (int i=0; i<numMessages; i++) {
                 Message message = new Message("AMQP message");
-                if(sessionId != null)
-                {
+                if (sessionId != null) {
                     message.setSessionId(sessionId);
                 }
                 sender.send(message);
             }
-        }
-        else
-        {
+        } else {
             // Keep this batch send part as this test sendBatch API call
             List<Message> messages = new ArrayList<Message>();
-            for(int i=0; i<numMessages; i++)
-            {
+            for (int i=0; i<numMessages; i++) {
                 Message message = new Message("AMQP message");
-                if(sessionId != null)
-                {
+                if (sessionId != null) {
                     message.setSessionId(sessionId);
                 }
                 messages.add(message);
@@ -310,11 +271,9 @@ public class TestCommons {
 
         int totalMessagesReceived = 0;
         Collection<IMessage> receivedMessages = receiver.receiveBatch(numMessages);
-        while(receivedMessages != null && receivedMessages.size() > 0)
-        {
+        while (receivedMessages != null && receivedMessages.size() > 0) {
             totalMessagesReceived += receivedMessages.size();
-            for(IMessage message : receivedMessages)
-            {
+            for (IMessage message : receivedMessages) {
                 //System.out.println(message.getLockToken());
                 receiver.complete(message.getLockToken());
             }
@@ -326,8 +285,7 @@ public class TestCommons {
         Assert.assertNull("Messages received again", receivedMessages);
     }
 
-    public static void testSendSceduledMessageAndReceive(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException
-    {
+    public static void testSendSceduledMessageAndReceive(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
         int secondsToWaitBeforeScheduling = 30;
         String msgId1 = UUID.randomUUID().toString();
         String msgId2 = UUID.randomUUID().toString();
@@ -335,20 +293,16 @@ public class TestCommons {
         message1.setMessageId(msgId1);
         Message message2 = new Message("AMQP Scheduled message2");
         message2.setMessageId(msgId2);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message1.setSessionId(sessionId);
             message2.setSessionId(sessionId);
         }
 
         sender.scheduleMessage(message1, Instant.now().plusSeconds(secondsToWaitBeforeScheduling));
         sender.scheduleMessage(message2, Instant.now().plusSeconds(secondsToWaitBeforeScheduling));
-        if(sessionId == null)
-        {
+        if (sessionId == null) {
             Thread.sleep(secondsToWaitBeforeScheduling * 1000 * 2);
-        }
-        else
-        {
+        } else {
             Thread.sleep(secondsToWaitBeforeScheduling * 1000);
             ((IMessageSession)receiver).renewSessionLock();
             Thread.sleep(secondsToWaitBeforeScheduling * 1000);
@@ -357,27 +311,25 @@ public class TestCommons {
         Collection<IMessage> allReceivedMessages = new LinkedList<IMessage>();
         Collection<IMessage> receivedMessages = receiver.receiveBatch(10);
 
-        while(receivedMessages != null && receivedMessages.size() > 0)
-        {
+        while (receivedMessages != null && receivedMessages.size() > 0) {
             allReceivedMessages.addAll(receivedMessages);
             receivedMessages = receiver.receiveBatch(10);
         }
 
         boolean firstMessageReceived = false;
         boolean secondMessageReceived = false;
-        for(IMessage message : allReceivedMessages)
-        {
-            if(message.getMessageId().equals(msgId1))
+        for (IMessage message : allReceivedMessages) {
+            if (message.getMessageId().equals(msgId1)) {
                 firstMessageReceived = true;
-            else if(message.getMessageId().equals(msgId2))
+            } else if (message.getMessageId().equals(msgId2)) {
                 secondMessageReceived = true;
+            }
         }
 
         Assert.assertTrue("Scheduled messages not received", firstMessageReceived && secondMessageReceived);
     }
 
-    public static void testSendSceduledMessageAndCancel(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException
-    {
+    public static void testSendSceduledMessageAndCancel(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
         int secondsToWaitBeforeScheduling = 30;
         String msgId1 = UUID.randomUUID().toString();
         String msgId2 = UUID.randomUUID().toString();
@@ -385,8 +337,7 @@ public class TestCommons {
         Message message2 = new Message("AMQP Scheduled message2");
         message1.setMessageId(msgId1);
         message2.setMessageId(msgId2);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message1.setSessionId(sessionId);
             message2.setSessionId(sessionId);
         }
@@ -394,12 +345,9 @@ public class TestCommons {
         sender.scheduleMessage(message1, Instant.now().plusSeconds(secondsToWaitBeforeScheduling));
         long sequnceNumberMsg2 = sender.scheduleMessage(message2, Instant.now().plusSeconds(secondsToWaitBeforeScheduling));
         sender.cancelScheduledMessage(sequnceNumberMsg2);
-        if(sessionId == null)
-        {
+        if (sessionId == null) {
             Thread.sleep(secondsToWaitBeforeScheduling * 1000 * 2);
-        }
-        else
-        {
+        } else {
             Thread.sleep(secondsToWaitBeforeScheduling * 1000);
             ((IMessageSession)receiver).renewSessionLock();
             Thread.sleep(secondsToWaitBeforeScheduling * 1000);
@@ -407,8 +355,7 @@ public class TestCommons {
 
         Collection<IMessage> allReceivedMessages = new LinkedList<IMessage>();
         Collection<IMessage> receivedMessages = receiver.receiveBatch(10);
-        while(receivedMessages != null && receivedMessages.size() > 0)
-        {
+        while (receivedMessages != null && receivedMessages.size() > 0) {
             allReceivedMessages.addAll(receivedMessages);
             receivedMessages = receiver.receiveBatch(10);
         }
@@ -417,17 +364,14 @@ public class TestCommons {
         Assert.assertFalse("Cancelled scheduled messages also received", allReceivedMessages.removeIf(msg -> msg.getMessageId().equals(msgId2)));
     }
 
-    public static void testPeekMessage(IMessageSender sender, String sessionId, IMessageBrowser browser) throws InterruptedException, ServiceBusException
-    {
+    public static void testPeekMessage(IMessageSender sender, String sessionId, IMessageBrowser browser) throws InterruptedException, ServiceBusException {
         Message message = new Message("AMQP Scheduled message");
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         sender.send(message);
         message = new Message("AMQP Scheduled message2");
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         sender.send(message);
@@ -442,31 +386,22 @@ public class TestCommons {
         Assert.assertEquals("Peek with sequence number failed.", firstMessageSequenceNumber, peekedMessage5.getSequenceNumber());
     }
 
-    public static void testPeekMessageBatch(IMessageSender sender, String sessionId, IMessageBrowser browser, boolean isEntityPartitioned) throws InterruptedException, ServiceBusException
-    {
+    public static void testPeekMessageBatch(IMessageSender sender, String sessionId, IMessageBrowser browser, boolean isEntityPartitioned) throws InterruptedException, ServiceBusException {
         String partitionKey = "pkey1";
         Message message = new Message("AMQP Scheduled message");
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
-        }
-        else
-        {
-            if(isEntityPartitioned)
-            {
+        } else {
+            if(isEntityPartitioned) {
                 message.setPartitionKey(partitionKey);
             }
         }
         sender.send(message);
         message = new Message("AMQP Scheduled message2");
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
-        }
-        else
-        {
-            if(isEntityPartitioned)
-            {
+        } else {
+            if(isEntityPartitioned) {
                 message.setPartitionKey(partitionKey);
             }
         }
@@ -475,8 +410,7 @@ public class TestCommons {
         Collection<IMessage> peekedMessages = browser.peekBatch(10);
         long firstMessageSequenceNumber = peekedMessages.iterator().next().getSequenceNumber();
         int peekedMessagesCount = peekedMessages.size();
-        if(peekedMessagesCount < 2)
-        {
+        if (peekedMessagesCount < 2) {
             // Not all messages peeked. May be topic pump hasn't finished pumping all messages
             peekedMessages = browser.peekBatch(10);
             peekedMessagesCount += peekedMessages.size();
@@ -489,11 +423,9 @@ public class TestCommons {
         Assert.assertEquals("PeekBatch with sequence number failed.", firstMessageSequenceNumber, peekedMessagesBatch2.iterator().next().getSequenceNumber());
     }
 
-    public static void testReceiveBySequenceNumberAndComplete(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException
-    {
+    public static void testReceiveBySequenceNumberAndComplete(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
         Message message = new Message("AMQP Scheduled message");
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         sender.send(message);
@@ -510,22 +442,17 @@ public class TestCommons {
         receiver.complete(receivedMessage.getLockToken());
 
         // Try to receive by sequence number again
-        try
-        {
+        try {
             receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
             Assert.fail("Message recieved by sequnce number was not properly completed.");
-        }
-        catch(MessageNotFoundException e)
-        {
+        } catch(MessageNotFoundException e) {
             // Expected
         }
     }
 
-    public static void testReceiveBySequenceNumberAndAbandon(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException
-    {
+    public static void testReceiveBySequenceNumberAndAbandon(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
         Message message = new Message("AMQP Scheduled message");
-        if(sessionId != null)
-        {
+        if(sessionId != null) {
             message.setSessionId(sessionId);
         }
         sender.send(message);
@@ -548,8 +475,7 @@ public class TestCommons {
         receiver.complete(receivedMessage.getLockToken());
     }
 
-    public static void testReceiveBySequenceNumberAndDefer(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException
-    {
+    public static void testReceiveBySequenceNumberAndDefer(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
         // Use longer strings with each defer to avoid an assert check in debug builds of service
         String phaseKey = "phase";
         String initialPhase = "undeferred";
@@ -560,8 +486,7 @@ public class TestCommons {
         HashMap customProperties = new HashMap();
         customProperties.put(phaseKey, initialPhase);
         sentMessage.setProperties(customProperties);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             sentMessage.setSessionId(sessionId);
         }
         sender.send(sentMessage);
@@ -587,11 +512,9 @@ public class TestCommons {
         receiver.complete(receivedMessage.getLockToken());
     }
 
-    public static void testReceiveBySequenceNumberAndDeadletter(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException
-    {
+    public static void testReceiveBySequenceNumberAndDeadletter(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
         Message message = new Message("AMQP Scheduled message");
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         sender.send(message);
@@ -609,19 +532,15 @@ public class TestCommons {
         receiver.deadLetter(receivedMessage.getLockToken(), deadLetterReason, null);
 
         // Try to receive by sequence number again
-        try
-        {
+        try {
             receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
             Assert.fail("Message received by sequence number was not properly deadlettered");
-        }
-        catch(MessageNotFoundException e)
-        {
+        } catch(MessageNotFoundException e) {
             // Expected
         }
     }
 
-    public static void testSendReceiveMessageWithVariousPropertyTypes(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException
-    {
+    public static void testSendReceiveMessageWithVariousPropertyTypes(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
         Map<String, Object> sentProperties = new HashMap<>();
         sentProperties.put("NullProperty", null);
         sentProperties.put("BooleanProperty", true);
@@ -649,8 +568,7 @@ public class TestCommons {
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(sessionId != null)
-        {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         message.getProperties().putAll(sentProperties);
@@ -660,25 +578,19 @@ public class TestCommons {
         Assert.assertNotNull("Message not received", receivedMessage);
         Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
         Map<String, Object> receivedProperties = receivedMessage.getProperties();
-        for(Map.Entry<String, Object> sentEntry : sentProperties.entrySet())
-        {
-            if(sentEntry.getValue() != null && sentEntry.getValue().getClass().isArray())
-            {
+        for (Map.Entry<String, Object> sentEntry : sentProperties.entrySet()) {
+            if (sentEntry.getValue() != null && sentEntry.getValue().getClass().isArray()) {
                 Assert.assertArrayEquals("Sent property didn't match with received property", (Object[])sentEntry.getValue(), (Object[])receivedProperties.get(sentEntry.getKey()));
-            }
-            else
-            {
+            } else {
                 Assert.assertEquals("Sent property didn't match with received property", sentEntry.getValue(), receivedProperties.get(sentEntry.getKey()));
             }
         }
     }
 
-    public static void testGetMessageSessions(IMessageSender sender, Object sessionsClient) throws InterruptedException, ServiceBusException
-    {
+    public static void testGetMessageSessions(IMessageSender sender, Object sessionsClient) throws InterruptedException, ServiceBusException {
         int numSessions = 110; // More than default page size
         String[] sessionIds = new String[numSessions];
-        for(int i=0; i<numSessions; i++)
-        {
+        for(int i=0; i<numSessions; i++) {
             sessionIds[i] = StringUtil.getRandomString();
             Message message = new Message("AMQP message");
             message.setSessionId(sessionIds[i]);
@@ -686,29 +598,25 @@ public class TestCommons {
         }
 
         Collection<? extends IMessageSession> sessions;
-        if(sessionsClient instanceof QueueClient)
-            sessions = Utils.completeFuture(((QueueClient)sessionsClient).getMessageSessionsAsync());
-        else
-            sessions = Utils.completeFuture(((SubscriptionClient)sessionsClient).getMessageSessionsAsync());
-
+        if (sessionsClient instanceof QueueClient) {
+            sessions = Utils.completeFuture(((QueueClient) sessionsClient).getMessageSessionsAsync());
+        } else {
+            sessions = Utils.completeFuture(((SubscriptionClient) sessionsClient).getMessageSessionsAsync());
+        }
         Assert.assertTrue("GetMessageSessions didnot return all sessions", numSessions <= sessions.size()); // There could be sessions left over from other tests
 
         IMessageSession anySession = (IMessageSession)sessions.toArray()[0];
-        try{
+        try {
             anySession.receive();
             Assert.fail("Browsable session should not support receive operation");
-        }
-        catch(UnsupportedOperationException e)
-        {
+        } catch(UnsupportedOperationException e) {
             // Expected
         }
 
-        try{
+        try {
             anySession.setState(null);
             Assert.fail("Browsable session should not support setstate operation");
-        }
-        catch(UnsupportedOperationException e)
-        {
+        } catch (UnsupportedOperationException e) {
             // Expected
         }
 
@@ -719,48 +627,36 @@ public class TestCommons {
         Assert.assertNotNull("Peek on a browsable session failed.", peekedMessage);
 
         // Close all sessions
-        for(IMessageSession session : sessions)
-        {
+        for (IMessageSession session : sessions) {
             session.closeAsync();
         }
     }
 
-    public static void drainAllMessagesFromReceiver(IMessageReceiver receiver) throws InterruptedException, ServiceBusException
-    {
+    public static void drainAllMessagesFromReceiver(IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
         drainAllMessagesFromReceiver(receiver, true);
     }
 
-    public static void drainAllMessagesFromReceiver(IMessageReceiver receiver, boolean cleanDeferredMessages) throws InterruptedException, ServiceBusException
-    {
+    public static void drainAllMessagesFromReceiver(IMessageReceiver receiver, boolean cleanDeferredMessages) throws InterruptedException, ServiceBusException {
         final int batchSize = 10;
         Collection<IMessage> messages = receiver.receiveBatch(batchSize, DRAIN_MESSAGES_WAIT_TIME);
-        while(messages !=null && messages.size() > 0)
-        {
-            if(receiver.getReceiveMode() == ReceiveMode.PEEKLOCK)
-            {
-                for(IMessage message: messages)
-                {
+        while (messages !=null && messages.size() > 0) {
+            if(receiver.getReceiveMode() == ReceiveMode.PEEKLOCK) {
+                for(IMessage message: messages) {
                     receiver.complete(message.getLockToken());
                 }
             }
             messages = receiver.receiveBatch(batchSize, DRAIN_MESSAGES_WAIT_TIME);
         }
 
-        if(cleanDeferredMessages)
-        {
+        if (cleanDeferredMessages) {
             IMessage peekedMessage;
-            while((peekedMessage = receiver.peek()) != null)
-            {
-                try
-                {
+            while ((peekedMessage = receiver.peek()) != null) {
+                try {
                     IMessage message = receiver.receiveDeferredMessage(peekedMessage.getSequenceNumber());
-                    if(receiver.getReceiveMode() == ReceiveMode.PEEKLOCK)
-                    {
+                    if (receiver.getReceiveMode() == ReceiveMode.PEEKLOCK) {
                         receiver.complete(message.getLockToken());
                     }
-                }
-                catch(MessageNotFoundException mnfe)
-                {
+                } catch (MessageNotFoundException mnfe) {
                     // Ignore. May be there were no deferred messages
                     break;
                 }
@@ -768,34 +664,27 @@ public class TestCommons {
         }
     }
 
-    public static void drainAllMessages(String receivePath) throws InterruptedException, ServiceBusException
-    {
+    public static void drainAllMessages(String receivePath) throws InterruptedException, ServiceBusException {
         IMessageReceiver receiver = ClientFactory.createMessageReceiverFromEntityPath(TestUtils.getNamespaceEndpointURI(), receivePath, TestUtils.getClientSettings(), ReceiveMode.RECEIVEANDDELETE);
         TestCommons.drainAllMessagesFromReceiver(receiver);
         receiver.close();
     }
 
-    public static void drainAllSessions(String receivePath, boolean isQueue) throws InterruptedException, ServiceBusException
-    {
+    public static void drainAllSessions(String receivePath, boolean isQueue) throws InterruptedException, ServiceBusException {
         int numParallelSessionDrains = 5;
         Collection<IMessageSession> browsableSessions;
-        if(isQueue)
-        {
+        if (isQueue) {
             QueueClient qc = new QueueClient(TestUtils.getNamespaceEndpointURI(), receivePath, TestUtils.getClientSettings(), ReceiveMode.RECEIVEANDDELETE);
             browsableSessions = qc.getMessageSessions();
-        }
-        else
-        {
+        } else {
             SubscriptionClient sc = new SubscriptionClient(TestUtils.getNamespaceEndpointURI(), receivePath, TestUtils.getClientSettings(), ReceiveMode.RECEIVEANDDELETE);
             browsableSessions = sc.getMessageSessions();
         }
 
-        if(browsableSessions != null && browsableSessions.size() > 0)
-        {
+        if (browsableSessions != null && browsableSessions.size() > 0) {
             CompletableFuture[] drainFutures = new CompletableFuture[numParallelSessionDrains];
             int drainFutureIndex = 0;
-            for(IMessageSession browsableSession : browsableSessions)
-            {
+            for (IMessageSession browsableSession : browsableSessions) {
                 CompletableFuture<Void> drainFuture = ClientFactory.acceptSessionFromEntityPathAsync
                         (TestUtils.getNamespaceEndpointURI(), receivePath, browsableSession.getSessionId(), TestUtils.getClientSettings(), ReceiveMode.RECEIVEANDDELETE).thenAcceptAsync((session) -> {
                             try {
@@ -808,15 +697,13 @@ public class TestCommons {
                         });
 
                 drainFutures[drainFutureIndex++] = drainFuture;
-                if(drainFutureIndex == numParallelSessionDrains)
-                {
+                if (drainFutureIndex == numParallelSessionDrains) {
                     Utils.completeFuture(CompletableFuture.allOf(drainFutures));
                     drainFutureIndex = 0;
                 }
             }
 
-            if(drainFutureIndex > 0)
-            {
+            if (drainFutureIndex > 0) {
                 Utils.completeFuture(CompletableFuture.allOf(Arrays.copyOf(drainFutures, drainFutureIndex)));
             }
         }

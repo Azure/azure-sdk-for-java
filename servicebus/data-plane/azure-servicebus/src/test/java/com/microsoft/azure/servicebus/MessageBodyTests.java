@@ -10,84 +10,62 @@ import org.junit.Test;
 public class MessageBodyTests {
 
     @Test
-    public void NullBinaryDataTest()
-    {
-        try
-        {
+    public void NullBinaryDataTest() {
+        try {
             MessageBody.fromBinaryData(null);
             Assert.fail("MessageBody created with null binary data.");
-        }
-        catch(IllegalArgumentException e)
-        {
+        } catch(IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void NullSequenceTest()
-    {
-        try
-        {
+    public void NullSequenceTest() {
+        try {
             MessageBody.fromSequenceData(null);
             Assert.fail("MessageBody created with null sequence data.");
-        }
-        catch(IllegalArgumentException e)
-        {
+        } catch(IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void NullValueDataTest()
-    {
-        try
-        {
+    public void NullValueDataTest() {
+        try {
             MessageBody.fromValueData(null);
             Assert.fail("MessageBody created with null value data.");
-        }
-        catch(IllegalArgumentException e)
-        {
+        } catch(IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void MultipleDataSectionsTest()
-    {
-        try
-        {
+    public void MultipleDataSectionsTest() {
+        try {
             ArrayList<byte[]> dataList = new ArrayList<>();
             dataList.add(new byte[0]);
             dataList.add(new byte[0]);
             MessageBody.fromBinaryData(dataList);
             Assert.fail("MessageBody created with null binary data.");
-        }
-        catch(IllegalArgumentException e)
-        {
+        } catch(IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void ZeroDataSectionsTest()
-    {
-        try
-        {
+    public void ZeroDataSectionsTest() {
+        try {
             ArrayList<byte[]> dataList = new ArrayList<>();
             MessageBody.fromBinaryData(dataList);
             Assert.fail("MessageBody created with null binary data.");
-        }
-        catch(IllegalArgumentException e)
-        {
+        } catch(IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void MultipleSequenceSectionsTest()
-    {
-        try
-        {
+    public void MultipleSequenceSectionsTest() {
+        try {
             ArrayList<List<Object>> sequenceList = new ArrayList<>();
             ArrayList<Object> sequence1 = new ArrayList<>();
             sequence1.add("hello");
@@ -97,31 +75,24 @@ public class MessageBodyTests {
             sequenceList.add(sequence2);
             MessageBody.fromSequenceData(sequenceList);
             Assert.fail("MessageBody created with null binary data.");
-        }
-        catch(IllegalArgumentException e)
-        {
+        } catch(IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void ZeroSequenceSectionsTest()
-    {
-        try
-        {
+    public void ZeroSequenceSectionsTest() {
+        try {
             ArrayList<List<Object>> sequenceList = new ArrayList<>();
             MessageBody.fromSequenceData(sequenceList);
             Assert.fail("MessageBody created with null binary data.");
-        }
-        catch(IllegalArgumentException e)
-        {
+        } catch(IllegalArgumentException e) {
             // passed
         }
     }
 
     @Test
-    public void ValueMessageBodyTest()
-    {
+    public void ValueMessageBodyTest() {
         String value = "ValueBody";
         MessageBody body = MessageBody.fromValueData(value);
         Assert.assertEquals("Message body type didn't match.", MessageBodyType.VALUE, body.getBodyType());
@@ -131,8 +102,7 @@ public class MessageBodyTests {
     }
 
     @Test
-    public void SequenceMessageBodyTest()
-    {
+    public void SequenceMessageBodyTest() {
         String str1 = "hello";
         String str2 = "howdy";
         ArrayList<List<Object>> sequenceList = new ArrayList<>();
@@ -153,8 +123,7 @@ public class MessageBodyTests {
     }
 
     @Test
-    public void BinaryMessageBodyTest()
-    {
+    public void BinaryMessageBodyTest() {
         byte[] binaryData = new byte[1024];
         Arrays.fill(binaryData, (byte)32);
         ArrayList<byte[]> binaryDataList = new ArrayList<>();

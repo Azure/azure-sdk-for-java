@@ -10,8 +10,7 @@ import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-public class QueueSendReceiveTests extends SendReceiveTests
-{
+public class QueueSendReceiveTests extends SendReceiveTests {
     @Override
     public String getEntityNamePrefix() {
        return "QueueSendReceiveTests";
@@ -42,8 +41,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(this.isEntityPartitioned())
-        {
+        if(this.isEntityPartitioned()) {
             message.setPartitionKey(messageId);
         }
         this.sender.send(message, transaction);
@@ -67,8 +65,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(this.isEntityPartitioned())
-        {
+        if(this.isEntityPartitioned()) {
             message.setPartitionKey(messageId);
         }
         this.sender.send(message, transaction);
@@ -197,8 +194,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
             Assert.assertTrue(caught);
 
             this.factory.endTransactionAsync(transaction, false);
-        }
-        finally {
+        } finally {
             managementClient.deleteQueueAsync(partitionedEntityName);
         }
     }
@@ -216,8 +212,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
 
         TransactionContext transaction = this.factory.startTransactionAsync().get();
         this.receiver.complete(receivedMessage.getLockToken(), transaction);
-        if(this.isEntityPartitioned())
-        {
+        if(this.isEntityPartitioned()) {
             message2.setPartitionKey(receivedMessage.getPartitionKey());
         }
         this.sender.send(message2, transaction);
@@ -308,8 +303,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
             // Cleanup
             receivedMessage1 = destination1Receiver.receive();
             destination1Receiver.complete(receivedMessage1.getLockToken());
-        }
-        finally {
+        } finally {
             intermediateSender.close();
             intermediateReceiver.close();
             destination1Sender.close();
@@ -361,8 +355,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
 
             message = destinationReceiver.receive(Duration.ofSeconds(5));
             Assert.assertNull(message);
-        }
-        finally {
+        } finally {
             destination1ViaSender.close();
             destinationReceiver.close();
 

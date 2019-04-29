@@ -24,8 +24,7 @@ public abstract class SendReceiveTests extends Tests {
     private final String sessionId = null;
 
     @BeforeClass
-    public static void init()
-    {
+    public static void init() {
         SendReceiveTests.entityNameCreatedForAllTests = null;
         SendReceiveTests.receiveEntityPathForAllTest = null;
         URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
@@ -34,41 +33,32 @@ public abstract class SendReceiveTests extends Tests {
     }
 
     @Before
-    public void setup() throws InterruptedException, ExecutionException, ServiceBusException
-    {
-        if(this.shouldCreateEntityForEveryTest() || SendReceiveTests.entityNameCreatedForAllTests == null)
-        {
+    public void setup() throws InterruptedException, ExecutionException, ServiceBusException {
+        if(this.shouldCreateEntityForEveryTest() || SendReceiveTests.entityNameCreatedForAllTests == null) {
              // Create entity
             this.entityName = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
-            if(this.isEntityQueue())
-            {
+            if(this.isEntityQueue()) {
                 this.receiveEntityPath = this.entityName;
                 QueueDescription queueDescription = new QueueDescription(this.entityName);
                 queueDescription.setEnablePartitioning(this.isEntityPartitioned());
                 managementClient.createQueueAsync(queueDescription).get();
-                if(!this.shouldCreateEntityForEveryTest())
-                {
+                if(!this.shouldCreateEntityForEveryTest()) {
                     SendReceiveTests.entityNameCreatedForAllTests = entityName;
                     SendReceiveTests.receiveEntityPathForAllTest = entityName;
                 }
-            }
-            else
-            {
+            } else {
                 TopicDescription topicDescription = new TopicDescription(this.entityName);
                 topicDescription.setEnablePartitioning(this.isEntityPartitioned());
                 managementClient.createTopicAsync(topicDescription).get();
                 SubscriptionDescription subDescription = new SubscriptionDescription(this.entityName, TestUtils.FIRST_SUBSCRIPTION_NAME);
                 managementClient.createSubscriptionAsync(subDescription).get();
                 this.receiveEntityPath = subDescription.getPath();
-                if(!this.shouldCreateEntityForEveryTest())
-                {
+                if(!this.shouldCreateEntityForEveryTest()) {
                     SendReceiveTests.entityNameCreatedForAllTests = entityName;
                     SendReceiveTests.receiveEntityPathForAllTest = subDescription.getPath();
                 }
             }
-        }
-        else
-        {
+        } else {
             this.entityName = SendReceiveTests.entityNameCreatedForAllTests;
             this.receiveEntityPath = SendReceiveTests.receiveEntityPathForAllTest;
         }
@@ -78,20 +68,18 @@ public abstract class SendReceiveTests extends Tests {
     }
 
     @After
-    public void tearDown() throws ServiceBusException, InterruptedException, ExecutionException
-    {
-        if(!this.shouldCreateEntityForEveryTest())
-        {
+    public void tearDown() throws ServiceBusException, InterruptedException, ExecutionException {
+        if (!this.shouldCreateEntityForEveryTest()) {
             this.drainAllMessages();
         }
 
         this.sender.close();
-        if(this.receiver != null)
+        if (this.receiver != null) {
             this.receiver.close();
+        }
         this.factory.close();
 
-        if(this.shouldCreateEntityForEveryTest())
-        {
+        if (this.shouldCreateEntityForEveryTest()) {
             managementClient.deleteQueueAsync(this.entityName).get();
         }
     }
@@ -101,157 +89,134 @@ public abstract class SendReceiveTests extends Tests {
         if (managementClient == null) {
             return;
         }
-        if(SendReceiveTests.entityNameCreatedForAllTests != null)
-        {
+        if(SendReceiveTests.entityNameCreatedForAllTests != null) {
             managementClient.deleteQueueAsync(SendReceiveTests.entityNameCreatedForAllTests).get();
             managementClient.close();
         }
     }
 
     @Test
-    public void testBasicReceiveAndDeleteWithValueData() throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public void testBasicReceiveAndDeleteWithValueData() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
         TestCommons.testBasicReceiveAndDeleteWithValueData(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testBasicReceiveAndDeleteWithBinaryData() throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public void testBasicReceiveAndDeleteWithBinaryData() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
         TestCommons.testBasicReceiveAndDeleteWithBinaryData(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testBasicReceiveAndDeleteWithLargeBinaryData() throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public void testBasicReceiveAndDeleteWithLargeBinaryData() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
         TestCommons.testBasicReceiveAndDeleteWithLargeBinaryData(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testBasicReceiveAndDeleteWithSequenceData() throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public void testBasicReceiveAndDeleteWithSequenceData() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
         TestCommons.testBasicReceiveAndDeleteWithSequenceData(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testBasicReceiveBatchAndDelete() throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public void testBasicReceiveBatchAndDelete() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
         TestCommons.testBasicReceiveBatchAndDelete(this.sender, this.sessionId, this.receiver, this.isEntityPartitioned());
     }
 
     @Test
-    public void testBasicReceiveAndComplete() throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public void testBasicReceiveAndComplete() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testBasicReceiveAndComplete(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testBasicReceiveAndCompleteMessageWithProperties() throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public void testBasicReceiveAndCompleteMessageWithProperties() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testBasicReceiveAndCompleteMessageWithProperties(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testBasicReceiveAndAbandon() throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public void testBasicReceiveAndAbandon() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testBasicReceiveAndAbandon(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testBasicReceiveAndDeadLetter() throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public void testBasicReceiveAndDeadLetter() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testBasicReceiveAndDeadLetter(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testBasicReceiveAndRenewLock() throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public void testBasicReceiveAndRenewLock() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testBasicReceiveAndRenewLock(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testBasicReceiveBatchAndComplete() throws InterruptedException, ServiceBusException, ExecutionException
-    {
+    public void testBasicReceiveBatchAndComplete() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testBasicReceiveBatchAndComplete(this.sender, this.sessionId, this.receiver, this.isEntityPartitioned());
     }
 
     @Test
-    public void testSendSceduledMessageAndReceive() throws InterruptedException, ServiceBusException
-    {
+    public void testSendSceduledMessageAndReceive() throws InterruptedException, ServiceBusException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
         TestCommons.testSendSceduledMessageAndReceive(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testSendSceduledMessageAndCancel() throws InterruptedException, ServiceBusException
-    {
+    public void testSendSceduledMessageAndCancel() throws InterruptedException, ServiceBusException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
         TestCommons.testSendSceduledMessageAndCancel(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testPeekMessage() throws InterruptedException, ServiceBusException
-    {
+    public void testPeekMessage() throws InterruptedException, ServiceBusException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testPeekMessage(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testPeekMessageBatch() throws InterruptedException, ServiceBusException
-    {
+    public void testPeekMessageBatch() throws InterruptedException, ServiceBusException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testPeekMessageBatch(this.sender, this.sessionId, this.receiver, this.isEntityPartitioned());
     }
 
     @Test
-    public void testReceiveBySequenceNumberAndComplete() throws InterruptedException, ServiceBusException
-    {
+    public void testReceiveBySequenceNumberAndComplete() throws InterruptedException, ServiceBusException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testReceiveBySequenceNumberAndComplete(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testReceiveBySequenceNumberAndAbandon() throws InterruptedException, ServiceBusException
-    {
+    public void testReceiveBySequenceNumberAndAbandon() throws InterruptedException, ServiceBusException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testReceiveBySequenceNumberAndAbandon(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testReceiveBySequenceNumberAndDefer() throws InterruptedException, ServiceBusException
-    {
+    public void testReceiveBySequenceNumberAndDefer() throws InterruptedException, ServiceBusException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testReceiveBySequenceNumberAndDefer(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testReceiveBySequenceNumberAndDeadletter() throws InterruptedException, ServiceBusException
-    {
+    public void testReceiveBySequenceNumberAndDeadletter() throws InterruptedException, ServiceBusException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testReceiveBySequenceNumberAndDeadletter(this.sender, this.sessionId, this.receiver);
     }
 
     @Test
-    public void testSendReceiveMessageWithVariousPropertyTypes() throws InterruptedException, ServiceBusException
-    {
+    public void testSendReceiveMessageWithVariousPropertyTypes() throws InterruptedException, ServiceBusException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
         TestCommons.testSendReceiveMessageWithVariousPropertyTypes(this.sender, this.sessionId, this.receiver);
     }
 
-    private void drainAllMessages() throws InterruptedException, ServiceBusException
-    {
-        if(this.receiver != null)
-        {
+    private void drainAllMessages() throws InterruptedException, ServiceBusException {
+        if(this.receiver != null) {
             TestCommons.drainAllMessagesFromReceiver(this.receiver);
         }
     }

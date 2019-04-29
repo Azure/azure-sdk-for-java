@@ -14,8 +14,7 @@ import org.junit.Assert;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
-public class ClientValidationTests extends ConfigValidateTestBase
-{
+public class ClientValidationTests extends ConfigValidateTestBase {
 
     private static final String ENTITY_NAME_PREFIX = "ClientValidationTests";
 
@@ -69,19 +68,14 @@ public class ClientValidationTests extends ConfigValidateTestBase
     }
 
     @Test
-    public void testTopicClientCreationToQueue() throws InterruptedException, ServiceBusException
-    {
-        try
-        {
+    public void testTopicClientCreationToQueue() throws InterruptedException, ServiceBusException {
+        try {
             TopicClient tc = new TopicClient(TestUtils.getNamespaceEndpointURI(), queuePath, TestUtils.getManagementClientSettings());
-            try
-            {
+            try {
                 Message msg = new Message("test message");
                 tc.send(msg);
                 Assert.fail("TopicClient created to a queue which shouldn't be allowed.");
-            }
-            finally
-            {
+            } finally {
                 tc.close();
             }
         } catch (UnsupportedOperationException e) {
@@ -90,16 +84,14 @@ public class ClientValidationTests extends ConfigValidateTestBase
     }
 
     @Test
-    public void testQueueClientCreationToTopic() throws InterruptedException, ServiceBusException
-    {
+    public void testQueueClientCreationToTopic() throws InterruptedException, ServiceBusException {
         try {
             QueueClient qc = new QueueClient(TestUtils.getNamespaceEndpointURI(), topicPath, TestUtils.getManagementClientSettings(), ReceiveMode.PEEKLOCK);
             try {
                 Message msg = new Message("test message");
                 qc.send(msg);
                 Assert.fail("QueueClient created to a topic which shouldn't be allowed.");
-            }
-            finally {
+            } finally {
                 qc.close();
             }
         } catch (UnsupportedOperationException e) {
@@ -108,12 +100,10 @@ public class ClientValidationTests extends ConfigValidateTestBase
     }
 
     @Test
-    public void testQueueClientCreationToSubscription() throws InterruptedException, ServiceBusException
-    {
+    public void testQueueClientCreationToSubscription() throws InterruptedException, ServiceBusException {
         try {
             QueueClient qc = new QueueClient(TestUtils.getNamespaceEndpointURI(), subscriptionPath, TestUtils.getManagementClientSettings(), ReceiveMode.PEEKLOCK);
-            try
-            {
+            try {
                 qc.registerMessageHandler(new IMessageHandler() {
                     @Override
                     public CompletableFuture<Void> onMessageAsync(IMessage message) {
@@ -125,9 +115,7 @@ public class ClientValidationTests extends ConfigValidateTestBase
                     }
                 }, MessageAndSessionPumpTests.EXECUTOR_SERVICE);
                 Assert.fail("QueueClient created to a subscription which shouldn't be allowed.");
-            }
-            finally
-            {
+            } finally {
                 qc.close();
             }
         } catch (UnsupportedOperationException e) {
@@ -136,8 +124,7 @@ public class ClientValidationTests extends ConfigValidateTestBase
     }
 
     @Test
-    public void testSubscriptionClientCreationToQueue() throws InterruptedException, ServiceBusException
-    {
+    public void testSubscriptionClientCreationToQueue() throws InterruptedException, ServiceBusException {
         try {
             SubscriptionClient sc = new SubscriptionClient(TestUtils.getNamespaceEndpointURI(), queuePath, TestUtils.getManagementClientSettings(), ReceiveMode.PEEKLOCK);
             try {
@@ -161,8 +148,7 @@ public class ClientValidationTests extends ConfigValidateTestBase
     }
 
     @Test
-    public void testQueueClientCreationToSessionfulSubscription() throws InterruptedException, ServiceBusException
-    {
+    public void testQueueClientCreationToSessionfulSubscription() throws InterruptedException, ServiceBusException {
         try {
             QueueClient qc = new QueueClient(TestUtils.getNamespaceEndpointURI(), sessionfulSubscriptionPath, TestUtils.getManagementClientSettings(), ReceiveMode.PEEKLOCK);
             try {
@@ -199,8 +185,7 @@ public class ClientValidationTests extends ConfigValidateTestBase
     }
 
     @Test
-    public void testSubscriptionClientCreationToSessionfulQueue() throws InterruptedException, ServiceBusException
-    {
+    public void testSubscriptionClientCreationToSessionfulQueue() throws InterruptedException, ServiceBusException {
         try {
             SubscriptionClient sc = new SubscriptionClient(TestUtils.getNamespaceEndpointURI(), sessionfulQueuePath, TestUtils.getManagementClientSettings(), ReceiveMode.PEEKLOCK);
             try {

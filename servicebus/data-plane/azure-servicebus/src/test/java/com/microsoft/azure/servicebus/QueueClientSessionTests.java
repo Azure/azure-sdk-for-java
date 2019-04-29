@@ -1,5 +1,5 @@
 package com.microsoft.azure.servicebus;
-public class QueueClientSessionTests extends ClientSessionTests{
+public class QueueClientSessionTests extends ClientSessionTests {
     @Override
     public String getEntityNamePrefix() {
        return "QueueClientSessionTests";

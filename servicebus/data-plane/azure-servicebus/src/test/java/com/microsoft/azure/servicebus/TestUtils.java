@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.Util;
-import org.junit.Assume;
 
 public class TestUtils extends ConfigValidateTestBase {
 
@@ -26,12 +25,10 @@ public class TestUtils extends ConfigValidateTestBase {
     private static String proxyHostName;
     private static int proxyPort;
 
-    static
-    {
+    static {
         // Read connection string
         namespaceConnectionString = System.getenv(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME);
-        if(namespaceConnectionString == null || namespaceConnectionString.isEmpty())
-        {
+        if (namespaceConnectionString == null || namespaceConnectionString.isEmpty()) {
             System.err.println(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME + " environment variable not set. Tests will not be able to connect to to any service bus entity.");
         }
         namespaceConnectionStringBuilder = new ConnectionStringBuilder(namespaceConnectionString);
@@ -58,8 +55,7 @@ public class TestUtils extends ConfigValidateTestBase {
     }
     
     // AADTokens cannot yet be used for management operations, sent directly to gateway
-    public static ClientSettings getManagementClientSettings()
-    {
+    public static ClientSettings getManagementClientSettings() {
         return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
     }
 

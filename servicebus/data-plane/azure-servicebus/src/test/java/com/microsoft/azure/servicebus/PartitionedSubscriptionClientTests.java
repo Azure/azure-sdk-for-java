@@ -1,6 +1,6 @@
 package com.microsoft.azure.servicebus;
 
-public class PartitionedSubscriptionClientTests extends SubscriptionClientTests{	
+public class PartitionedSubscriptionClientTests extends SubscriptionClientTests {
     @Override
     public String getEntityNamePrefix() {
         return "PartitionedSubscriptionClientTests";
