@@ -6,6 +6,8 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 /**
  * Represents an active servicebus transaction.
  * A transaction is initiated by calling {@link MessagingFactory#startTransactionAsync()}.
@@ -33,7 +35,7 @@ public class TransactionContext {
 
     @Override
     public String toString() {
-        return new String(txnId.array(), txnId.position(), txnId.limit());
+        return new String(txnId.array(), txnId.position(), txnId.limit(), UTF_8);
     }
 
     /**
