@@ -20,7 +20,6 @@ import org.junit.Test;
 
 import java.time.Instant;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 public class SendLargeMessageTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
