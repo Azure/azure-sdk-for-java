@@ -19,6 +19,7 @@
         <azure-batch.version>5.0.1</azure-batch.version>
         <azure-eventhubs.version>2.0.0</azure-eventhubs.version>
         <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
+        <azure-servicebus.version>2.0.0</azure-servicebus.version>
     </properties>
 
     <distributionManagement>
@@ -102,6 +103,11 @@
           <artifactId>azure-common-test</artifactId>
           <version>${azure-common-test.version}</version>
         </dependency>
+        <dependency>
+          <groupId>com.microsoft.azure</groupId>
+          <artifactId>azure-servicebus</artifactId>
+          <version>${azure-servicebus.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -135,6 +141,7 @@
                                 <source>..\..\keyvault\data-plane\azure-keyvault-core\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-extensions\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-webkey\src\main\java</source>
+                                <source>..\..\servicebus\data-plane\azure-servicebus\src\main\java</source>
                             </sources>
                         </configuration>
                     </execution>
