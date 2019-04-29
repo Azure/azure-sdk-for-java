@@ -6,8 +6,6 @@ package com.azure.common.implementation.logging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-
 /**
  * This helper class that wraps a {@link Logger} and contains convenience methods for logging.
  */
@@ -92,56 +90,21 @@ public class ServiceLogger implements ServiceLoggerAPI {
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(String format, Object... args) {
-        Throwable throwable = getPotentialThrowable(args);
-        boolean canLogDebug = canLogAtLevel(DEBUG_LEVEL);
-        boolean canLogThrow = canLogDebug && throwable != null;
-
-        // Found a throwable, strip the last element in the args for formatting the message.
-        if (throwable != null) {
-            args = Arrays.copyOfRange(args, 0, args.length - 1);
-
-            if (!canLogDebug) {
-                throwable = null;
-            }
-        }
-
-        String message = (args == null || args.length == 0) ? format : String.format(format, args);
-
         switch (level) {
             case TRACE_LEVEL:
-                if (canLogThrow) {
-                    logger.trace(message, throwable);
-                } else {
-                    logger.trace(message);
-                }
+                logger.trace(format, args);
                 break;
             case DEBUG_LEVEL:
-                if (canLogThrow) {
-                    logger.debug(message, throwable);
-                } else {
-                    logger.debug(message);
-                }
+                logger.debug(format, args);
                 break;
             case INFO_LEVEL:
-                if (canLogThrow) {
-                    logger.info(message, throwable);
-                } else {
-                    logger.info(message);
-                }
+                logger.info(format, args);
                 break;
             case WARN_LEVEL:
-                if (canLogThrow) {
-                    logger.warn(message, throwable);
-                } else {
-                    logger.warn(message);
-                }
+                logger.warn(format, args);
                 break;
             case ERROR_LEVEL:
-                if (canLogThrow) {
-                    logger.error(message, throwable);
-                } else {
-                    logger.error(message);
-                }
+                logger.error(format, args);
                 break;
             default:
                 // Don't do anything, this state shouldn't be possible.
@@ -183,19 +146,5 @@ public class ServiceLogger implements ServiceLoggerAPI {
             default:
                 return false;
         }
-    }
-
-    /**
-     * Retrieves the potential throwable from the arguments.
-     * @param args Arguments
-     * @return Throwable if the last element in the argument array is a throwable, null otherwise.
-     */
-    private Throwable getPotentialThrowable(Object... args) {
-        if (args == null || args.length == 0) {
-            return null;
-        }
-
-        Object potentialThrowable = args[args.length - 1];
-        return (potentialThrowable instanceof Throwable) ? (Throwable) potentialThrowable : null;
     }
 }
