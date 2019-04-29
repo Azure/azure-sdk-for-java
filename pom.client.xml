@@ -647,6 +647,10 @@
                 <packages>com.microsoft.azure.servicebus*</packages>
               </group>
               <group>
+                <title>Azure Service Bus</title>
+                <packages>com.microsoft.azure.servicebus*</packages>
+              </group>
+              <group>
                 <title>Azure Storage</title>
                 <packages>com.microsoft.azure.storage*</packages>
               </group>
