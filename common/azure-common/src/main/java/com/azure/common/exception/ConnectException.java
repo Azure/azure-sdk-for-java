@@ -10,6 +10,8 @@ import com.azure.common.http.HttpResponse;
  * Typically, the connection was refused remotely (e.g., no process is listening on the azure service address/port).
  *
  * These errors are safe to retry.
+ *
+ * @see ServiceRequestException
  */
 public class ConnectException extends ServiceRequestException {
 

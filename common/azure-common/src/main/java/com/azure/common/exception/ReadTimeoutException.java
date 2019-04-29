@@ -6,6 +6,8 @@ package com.azure.common.exception;
 /**
  *  The server did not send any data in the allotted amount of time.
  *  These errors may not be safe to retry.
+ *
+ * @see ServiceResponseException
  */
 public class ReadTimeoutException extends ServiceResponseException {
 

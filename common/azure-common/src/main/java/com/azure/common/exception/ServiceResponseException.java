@@ -9,6 +9,8 @@ package com.azure.common.exception;
  * OR The request was sent, but the client failed to understand the response.
  *
  * These errors may not be safe to retry.
+ *
+ * @see AzureException
  */
 public class ServiceResponseException extends AzureException {
 
@@ -26,7 +28,7 @@ public class ServiceResponseException extends AzureException {
      * Initializes a new instance of the ServiceResponseException class.
      *
      * @param message the exception message or the response content if a message is not available
-     * @param cause the Throwable which caused the creation of this ServiceRequestException
+     * @param cause the Throwable which caused the creation of this HttpRequestException
      */
     public ServiceResponseException(final String message, final Throwable cause) {
         super(message, cause);

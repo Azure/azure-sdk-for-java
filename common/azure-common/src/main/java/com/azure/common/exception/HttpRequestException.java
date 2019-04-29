@@ -6,14 +6,10 @@ package com.azure.common.exception;
 import com.azure.common.http.HttpResponse;
 
 /**
- * The exception thrown when received unsuccessful response with http status code (e.g. 3XX, 4XX, 5XX) from the service request.
+ * The exception thrown when an unsuccessful response is received
+ *  with http status code (e.g. 3XX, 4XX, 5XX) from the service request.
  *
- * @see ResourceModifiedException
- * @see ResourceExistsException
- * @see ClientAuthenticationException
- * @see ResourceNotFoundException
- * @see ServerException
- * @see TooManyRedirectsException
+ * @see ServiceRequestException
  */
 public class HttpRequestException extends ServiceRequestException {
 

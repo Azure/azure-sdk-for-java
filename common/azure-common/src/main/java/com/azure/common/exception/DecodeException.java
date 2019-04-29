@@ -5,6 +5,8 @@ package com.azure.common.exception;
 
 /**
  * Error raised during response deserialization.
+ *
+ * @see ServiceResponseException
  */
 public class DecodeException extends ServiceResponseException {
 
@@ -21,7 +23,7 @@ public class DecodeException extends ServiceResponseException {
      * Initializes a new instance of the DecodeException class.
      *
      * @param message the exception message or the response content if a message is not available
-     * @param cause the Throwable which caused the creation of this ServiceRequestException
+     * @param cause the Throwable which caused the creation of this HttpRequestException
      */
     public DecodeException(final String message, final Throwable cause) {
         super(message, cause);

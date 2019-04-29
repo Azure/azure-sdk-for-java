@@ -6,8 +6,7 @@ package com.azure.common.exception;
 /**
  * An exception thrown for an invalid response with custom error information.
  *
- * @see ConnectException
- * @see HttpRequestException
+ * @see AzureException
  */
 public class ServiceRequestException extends AzureException {
 
