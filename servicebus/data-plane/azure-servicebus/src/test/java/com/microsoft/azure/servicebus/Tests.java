@@ -1,6 +1,6 @@
 package com.microsoft.azure.servicebus;
 
-public abstract class Tests extends ConfigValidateTestBase {
+public abstract class Tests extends TestBase {
     public abstract String getEntityNamePrefix();
     
     public abstract boolean isEntityQueue();

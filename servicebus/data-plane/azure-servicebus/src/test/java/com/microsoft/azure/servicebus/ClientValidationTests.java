@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
@@ -14,7 +16,7 @@ import org.junit.Assert;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
-public class ClientValidationTests extends ConfigValidateTestBase {
+public class ClientValidationTests extends TestBase {
 
     private static final String ENTITY_NAME_PREFIX = "ClientValidationTests";
 
