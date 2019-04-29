@@ -265,7 +265,7 @@ class SubscriptionDescriptionSerializer {
 
     private static String normalizeForwardToAddress(String forwardTo, URI baseAddress) {
         try {
-            URI url = new URI(forwardTo);
+            new URI(forwardTo);
             return forwardTo;
         } catch (URISyntaxException e) {
             return baseAddress.resolve(forwardTo).toString();
