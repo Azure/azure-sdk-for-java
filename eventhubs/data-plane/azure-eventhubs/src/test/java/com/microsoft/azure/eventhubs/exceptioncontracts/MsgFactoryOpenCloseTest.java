@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
+import com.microsoft.azure.eventhubs.CommunicationException;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
@@ -20,6 +21,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -115,7 +117,6 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
         }
     }
 
-    @Ignore("TODO: Investigate testcase failure.")
     @Test()
     public void verifyThreadReleaseOnMsgFactoryOpenError() throws Exception {
 
@@ -133,12 +134,14 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
                 openFuture.get();
                 Assert.fail();
             } catch (ExecutionException error) {
-                Assert.assertEquals(EventHubException.class, error.getCause().getClass());
+                Assert.assertEquals(CommunicationException.class, error.getCause().getClass());
             }
 
-            Thread.sleep(1000); // for reactor to transition from cleanup to complete-stop
+            // Waiting for reactor to transition from cleanup to complete-stop, this requires at least 60 seconds until
+            // the items are emptied.
+            Thread.sleep(Duration.ofSeconds(90).toMillis());
 
-            Assert.assertEquals(((ScheduledThreadPoolExecutor) executor).getQueue().size(), 0);
+            Assert.assertEquals(0, ((ScheduledThreadPoolExecutor) executor).getQueue().size());
         } finally {
             executor.shutdown();
         }
