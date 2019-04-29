@@ -50,6 +50,8 @@ import com.microsoft.azure.servicebus.amqp.IAmqpSender;
 import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
 import com.microsoft.azure.servicebus.amqp.SessionHandler;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 /*
  * Abstracts all amqp related details
  * translates event-driven reactor model into async send Api
@@ -463,7 +465,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
     @Override
     public void onSendComplete(final Delivery delivery) {
         DeliveryState outcome = delivery.getRemoteState();
-        final String deliveryTag = new String(delivery.getTag());
+        final String deliveryTag = new String(delivery.getTag(), UTF_8);
 
         TRACE_LOGGER.debug("Received ack for delivery. path:{}, linkName:{}, deliveryTag:{}, outcome:{}", CoreMessageSender.this.sendPath, this.sendLink.getName(), deliveryTag, outcome);
         final SendWorkItem<DeliveryState> pendingSendWorkItem = this.pendingSendsData.remove(deliveryTag);
@@ -771,7 +773,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                 Exception sendException = null;
 
                 try {
-                    delivery = sendLinkCurrent.delivery(deliveryTag.getDeliveryTag().getBytes());
+                    delivery = sendLinkCurrent.delivery(deliveryTag.getDeliveryTag().getBytes(UTF_8));
                     delivery.setMessageFormat(sendData.getMessageFormat());
 
                     TransactionContext transaction = sendData.getTransaction();
