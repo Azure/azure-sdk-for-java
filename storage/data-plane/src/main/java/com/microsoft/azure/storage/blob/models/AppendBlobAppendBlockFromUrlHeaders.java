@@ -11,10 +11,10 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * Defines headers for AppendBlock operation.
+ * Defines headers for AppendBlockFromUrl operation.
  */
-@JacksonXmlRootElement(localName = "AppendBlob-AppendBlock-Headers")
-public final class AppendBlobAppendBlockHeaders {
+@JacksonXmlRootElement(localName = "AppendBlob-AppendBlockFromUrl-Headers")
+public final class AppendBlobAppendBlockFromUrlHeaders {
     /**
      * The ETag contains a value that you can use to perform operations
      * conditionally. If the request version is 2011-08-18 or newer, the ETag
@@ -76,14 +76,6 @@ public final class AppendBlobAppendBlockHeaders {
     private Integer blobCommittedBlockCount;
 
     /**
-     * The value of this header is set to true if the contents of the request
-     * are successfully encrypted using the specified algorithm, and false
-     * otherwise.
-     */
-    @JsonProperty(value = "x-ms-request-server-encrypted")
-    private Boolean isServerEncrypted;
-
-    /**
      * Get the eTag value.
      *
      * @return the eTag value.
@@ -96,9 +88,9 @@ public final class AppendBlobAppendBlockHeaders {
      * Set the eTag value.
      *
      * @param eTag the eTag value to set.
-     * @return the AppendBlobAppendBlockHeaders object itself.
+     * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders withETag(String eTag) {
+    public AppendBlobAppendBlockFromUrlHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -119,9 +111,9 @@ public final class AppendBlobAppendBlockHeaders {
      * Set the lastModified value.
      *
      * @param lastModified the lastModified value to set.
-     * @return the AppendBlobAppendBlockHeaders object itself.
+     * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders withLastModified(OffsetDateTime lastModified) {
+    public AppendBlobAppendBlockFromUrlHeaders withLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -143,9 +135,9 @@ public final class AppendBlobAppendBlockHeaders {
      * Set the contentMD5 value.
      *
      * @param contentMD5 the contentMD5 value to set.
-     * @return the AppendBlobAppendBlockHeaders object itself.
+     * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders withContentMD5(byte[] contentMD5) {
+    public AppendBlobAppendBlockFromUrlHeaders withContentMD5(byte[] contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }
@@ -163,9 +155,9 @@ public final class AppendBlobAppendBlockHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set.
-     * @return the AppendBlobAppendBlockHeaders object itself.
+     * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders withRequestId(String requestId) {
+    public AppendBlobAppendBlockFromUrlHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -183,9 +175,9 @@ public final class AppendBlobAppendBlockHeaders {
      * Set the version value.
      *
      * @param version the version value to set.
-     * @return the AppendBlobAppendBlockHeaders object itself.
+     * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders withVersion(String version) {
+    public AppendBlobAppendBlockFromUrlHeaders withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -206,9 +198,9 @@ public final class AppendBlobAppendBlockHeaders {
      * Set the date value.
      *
      * @param date the date value to set.
-     * @return the AppendBlobAppendBlockHeaders object itself.
+     * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders withDate(OffsetDateTime date) {
+    public AppendBlobAppendBlockFromUrlHeaders withDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
         } else {
@@ -230,9 +222,9 @@ public final class AppendBlobAppendBlockHeaders {
      * Set the blobAppendOffset value.
      *
      * @param blobAppendOffset the blobAppendOffset value to set.
-     * @return the AppendBlobAppendBlockHeaders object itself.
+     * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders withBlobAppendOffset(String blobAppendOffset) {
+    public AppendBlobAppendBlockFromUrlHeaders withBlobAppendOffset(String blobAppendOffset) {
         this.blobAppendOffset = blobAppendOffset;
         return this;
     }
@@ -250,30 +242,10 @@ public final class AppendBlobAppendBlockHeaders {
      * Set the blobCommittedBlockCount value.
      *
      * @param blobCommittedBlockCount the blobCommittedBlockCount value to set.
-     * @return the AppendBlobAppendBlockHeaders object itself.
+     * @return the AppendBlobAppendBlockFromUrlHeaders object itself.
      */
-    public AppendBlobAppendBlockHeaders withBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
+    public AppendBlobAppendBlockFromUrlHeaders withBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
         this.blobCommittedBlockCount = blobCommittedBlockCount;
-        return this;
-    }
-
-    /**
-     * Get the isServerEncrypted value.
-     *
-     * @return the isServerEncrypted value.
-     */
-    public Boolean isServerEncrypted() {
-        return this.isServerEncrypted;
-    }
-
-    /**
-     * Set the isServerEncrypted value.
-     *
-     * @param isServerEncrypted the isServerEncrypted value to set.
-     * @return the AppendBlobAppendBlockHeaders object itself.
-     */
-    public AppendBlobAppendBlockHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
-        this.isServerEncrypted = isServerEncrypted;
         return this;
     }
 }

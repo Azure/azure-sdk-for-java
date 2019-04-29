@@ -48,9 +48,9 @@ public class ConcurrentReceiversTest extends ApiTestBase {
     }
 
     @AfterClass()
-    public static void cleanup() {
+    public static void cleanup() throws EventHubException {
         if (sender != null) {
-            sender.close();
+            sender.closeSync();
         }
     }
 
@@ -90,15 +90,15 @@ public class ConcurrentReceiversTest extends ApiTestBase {
     }
 
     @After
-    public void cleanupTest() {
+    public void cleanupTest() throws EventHubException {
         for (int i = 0; i < partitionCount; i++) {
             if (receivers[i] != null) {
-                receivers[i].close();
+                receivers[i].closeSync();
             }
         }
 
         if (ehClient != null) {
-            ehClient.close();
+            ehClient.closeSync();
         }
     }
 

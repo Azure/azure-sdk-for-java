@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import java.net.Inet4Address;
@@ -10,8 +11,6 @@ import java.net.Inet4Address;
  * {@link AccountSASSignatureValues} or {@link ServiceSASSignatureValues} for more information.
  */
 public final class IPRange {
-
-    public static final IPRange DEFAULT = new IPRange();
 
     private String ipMin;
 
