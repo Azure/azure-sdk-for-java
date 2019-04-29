@@ -44,7 +44,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
         message.setMessageId(messageId);
         if(this.isEntityPartitioned())
         {
-        	message.setPartitionKey(messageId);
+            message.setPartitionKey(messageId);
         }
         this.sender.send(message, transaction);
 
@@ -69,7 +69,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
         message.setMessageId(messageId);
         if(this.isEntityPartitioned())
         {
-        	message.setPartitionKey(messageId);
+            message.setPartitionKey(messageId);
         }
         this.sender.send(message, transaction);
 
@@ -218,7 +218,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
         this.receiver.complete(receivedMessage.getLockToken(), transaction);
         if(this.isEntityPartitioned())
         {
-        	message2.setPartitionKey(receivedMessage.getPartitionKey());
+            message2.setPartitionKey(receivedMessage.getPartitionKey());
         }
         this.sender.send(message2, transaction);
         this.factory.endTransactionAsync(transaction, true).get();

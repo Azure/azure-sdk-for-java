@@ -11,39 +11,39 @@ import com.microsoft.azure.servicebus.primitives.Util;
 import org.junit.Assume;
 
 public class TestUtils extends ConfigValidateTestBase {
-	
-	private static final String NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME = "AZURE_SERVICEBUS_CONNECTION_STRING";
+
+    private static final String NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME = "AZURE_SERVICEBUS_CONNECTION_STRING";
     public static final String FIRST_SUBSCRIPTION_NAME = "subscription1";
 
     private static final String RUN_WITH_PROXY_ENV_VAR = "RUN_WITH_PROXY";
     private static final String PROXY_HOSTNAME_ENV_VAR = "PROXY_HOSTNAME";
     private static final String PROXY_PORT_ENV_VAR = "PROXY_PORT";
 
-	private static String namespaceConnectionString;
-	private static ConnectionStringBuilder namespaceConnectionStringBuilder;
+    private static String namespaceConnectionString;
+    private static ConnectionStringBuilder namespaceConnectionStringBuilder;
 
-	private static Boolean runWithProxy;
-	private static String proxyHostName;
-	private static int proxyPort;
-	
-	static
-	{
-		// Read connection string
+    private static Boolean runWithProxy;
+    private static String proxyHostName;
+    private static int proxyPort;
+
+    static
+    {
+        // Read connection string
         namespaceConnectionString = System.getenv(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME);
-		if(namespaceConnectionString == null || namespaceConnectionString.isEmpty())
-		{			
-			System.err.println(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME + " environment variable not set. Tests will not be able to connect to to any service bus entity.");
-		}
-		namespaceConnectionStringBuilder = new ConnectionStringBuilder(namespaceConnectionString);
+        if(namespaceConnectionString == null || namespaceConnectionString.isEmpty())
+        {
+            System.err.println(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME + " environment variable not set. Tests will not be able to connect to to any service bus entity.");
+        }
+        namespaceConnectionStringBuilder = new ConnectionStringBuilder(namespaceConnectionString);
 
-		// Read proxy settings only if transport type is WebSockets
+        // Read proxy settings only if transport type is WebSockets
         runWithProxy = Boolean.valueOf(System.getenv(RUN_WITH_PROXY_ENV_VAR));
         proxyHostName = System.getenv(PROXY_HOSTNAME_ENV_VAR);
         proxyPort = System.getenv(PROXY_PORT_ENV_VAR) == null ?
                         0 : Integer.valueOf(System.getenv(PROXY_PORT_ENV_VAR));
-	}
-	
-	public static URI getNamespaceEndpointURI()
+    }
+
+    public static URI getNamespaceEndpointURI()
     {
         return namespaceConnectionStringBuilder.getEndpoint();
     }
@@ -79,14 +79,14 @@ public class TestUtils extends ConfigValidateTestBase {
         });
     }
 
-	public static String randomizeEntityName(String entityName)
-	{
-	    return entityName + getRandomString();
-	}
+    public static String randomizeEntityName(String entityName)
+    {
+        return entityName + getRandomString();
+    }
 
     public static String getRandomString()
     {
-    	return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString();
     }
     
     /**
