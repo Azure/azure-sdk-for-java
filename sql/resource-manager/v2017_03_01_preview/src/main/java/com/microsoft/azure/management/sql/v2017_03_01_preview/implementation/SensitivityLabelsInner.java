@@ -65,7 +65,7 @@ public class SensitivityLabelsInner {
     interface SensitivityLabelsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabels listCurrentByDatabase" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/currentSensitivityLabels")
-        Observable<Response<ResponseBody>> listCurrentByDatabase(@Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listCurrentByDatabase(@Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Query("$skipToken") String skipToken, @Query("$count") Boolean count, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabels enableRecommendation" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/enable")
@@ -203,8 +203,10 @@ public class SensitivityLabelsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+        final String skipToken = null;
+        final Boolean count = null;
         final String filter = null;
-        return service.listCurrentByDatabase(resourceGroupName, serverName, databaseName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listCurrentByDatabase(resourceGroupName, serverName, databaseName, this.client.subscriptionId(), skipToken, count, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(Response<ResponseBody> response) {
@@ -224,14 +226,16 @@ public class SensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param skipToken the String value
+     * @param count the Boolean value
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SensitivityLabelInner&gt; object if successful.
      */
-    public PagedList<SensitivityLabelInner> listCurrentByDatabase(final String resourceGroupName, final String serverName, final String databaseName, final String filter) {
-        ServiceResponse<Page<SensitivityLabelInner>> response = listCurrentByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, filter).toBlocking().single();
+    public PagedList<SensitivityLabelInner> listCurrentByDatabase(final String resourceGroupName, final String serverName, final String databaseName, final String skipToken, final Boolean count, final String filter) {
+        ServiceResponse<Page<SensitivityLabelInner>> response = listCurrentByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, skipToken, count, filter).toBlocking().single();
         return new PagedList<SensitivityLabelInner>(response.body()) {
             @Override
             public Page<SensitivityLabelInner> nextPage(String nextPageLink) {
@@ -246,14 +250,16 @@ public class SensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param skipToken the String value
+     * @param count the Boolean value
      * @param filter An OData filter expression that filters elements in the collection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SensitivityLabelInner>> listCurrentByDatabaseAsync(final String resourceGroupName, final String serverName, final String databaseName, final String filter, final ListOperationCallback<SensitivityLabelInner> serviceCallback) {
+    public ServiceFuture<List<SensitivityLabelInner>> listCurrentByDatabaseAsync(final String resourceGroupName, final String serverName, final String databaseName, final String skipToken, final Boolean count, final String filter, final ListOperationCallback<SensitivityLabelInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listCurrentByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, filter),
+            listCurrentByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, skipToken, count, filter),
             new Func1<String, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(String nextPageLink) {
@@ -269,12 +275,14 @@ public class SensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param skipToken the String value
+     * @param count the Boolean value
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SensitivityLabelInner&gt; object
      */
-    public Observable<Page<SensitivityLabelInner>> listCurrentByDatabaseAsync(final String resourceGroupName, final String serverName, final String databaseName, final String filter) {
-        return listCurrentByDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName, filter)
+    public Observable<Page<SensitivityLabelInner>> listCurrentByDatabaseAsync(final String resourceGroupName, final String serverName, final String databaseName, final String skipToken, final Boolean count, final String filter) {
+        return listCurrentByDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName, skipToken, count, filter)
             .map(new Func1<ServiceResponse<Page<SensitivityLabelInner>>, Page<SensitivityLabelInner>>() {
                 @Override
                 public Page<SensitivityLabelInner> call(ServiceResponse<Page<SensitivityLabelInner>> response) {
@@ -289,12 +297,14 @@ public class SensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param skipToken the String value
+     * @param count the Boolean value
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SensitivityLabelInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listCurrentByDatabaseWithServiceResponseAsync(final String resourceGroupName, final String serverName, final String databaseName, final String filter) {
-        return listCurrentByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, filter)
+    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listCurrentByDatabaseWithServiceResponseAsync(final String resourceGroupName, final String serverName, final String databaseName, final String skipToken, final Boolean count, final String filter) {
+        return listCurrentByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, skipToken, count, filter)
             .concatMap(new Func1<ServiceResponse<Page<SensitivityLabelInner>>, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(ServiceResponse<Page<SensitivityLabelInner>> page) {
@@ -313,11 +323,13 @@ public class SensitivityLabelsInner {
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param serverName The name of the server.
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param databaseName The name of the database.
+    ServiceResponse<PageImpl<SensitivityLabelInner>> * @param skipToken the String value
+    ServiceResponse<PageImpl<SensitivityLabelInner>> * @param count the Boolean value
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SensitivityLabelInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listCurrentByDatabaseSinglePageAsync(final String resourceGroupName, final String serverName, final String databaseName, final String filter) {
+    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listCurrentByDatabaseSinglePageAsync(final String resourceGroupName, final String serverName, final String databaseName, final String skipToken, final Boolean count, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -333,7 +345,7 @@ public class SensitivityLabelsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listCurrentByDatabase(resourceGroupName, serverName, databaseName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listCurrentByDatabase(resourceGroupName, serverName, databaseName, this.client.subscriptionId(), skipToken, count, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(Response<ResponseBody> response) {
