@@ -13,19 +13,21 @@ import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.DeletedCertificateBundle;
 import com.microsoft.azure.keyvault.models.DeletedKeyBundle;
 import com.microsoft.azure.keyvault.models.DeletedSecretBundle;
-import com.microsoft.azure.management.resources.core.AzureTestCredentials;
 import com.microsoft.azure.management.resources.core.InterceptorManager;
 import com.microsoft.azure.management.resources.core.TestBase;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.interceptors.LoggingInterceptor;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.rules.TestName;
 
 import java.io.IOException;
@@ -36,7 +38,6 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 public class KeyVaultClientIntegrationTestBase {
 
