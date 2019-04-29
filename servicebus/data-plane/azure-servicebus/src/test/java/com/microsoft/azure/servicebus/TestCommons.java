@@ -128,7 +128,7 @@ public class TestCommons {
             List<Message> messages = new ArrayList<Message>();
             for (int i=0; i<numMessages; i++) {
                 Message message = new Message("AMQP message");
-                if(sessionId != null) {
+                if (sessionId != null) {
                     message.setSessionId(sessionId);
                 }
                 messages.add(message);
@@ -394,7 +394,7 @@ public class TestCommons {
         if (sessionId != null) {
             message.setSessionId(sessionId);
         } else {
-            if(isEntityPartitioned) {
+            if (isEntityPartitioned) {
                 message.setPartitionKey(partitionKey);
             }
         }
@@ -403,7 +403,7 @@ public class TestCommons {
         if (sessionId != null) {
             message.setSessionId(sessionId);
         } else {
-            if(isEntityPartitioned) {
+            if (isEntityPartitioned) {
                 message.setPartitionKey(partitionKey);
             }
         }
@@ -447,14 +447,14 @@ public class TestCommons {
         try {
             receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
             Assert.fail("Message recieved by sequnce number was not properly completed.");
-        } catch(MessageNotFoundException e) {
+        } catch (MessageNotFoundException e) {
             // Expected
         }
     }
 
     public static void testReceiveBySequenceNumberAndAbandon(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
         Message message = new Message("AMQP Scheduled message");
-        if(sessionId != null) {
+        if (sessionId != null) {
             message.setSessionId(sessionId);
         }
         sender.send(message);
@@ -592,7 +592,7 @@ public class TestCommons {
     public static void testGetMessageSessions(IMessageSender sender, Object sessionsClient) throws InterruptedException, ServiceBusException {
         int numSessions = 110; // More than default page size
         String[] sessionIds = new String[numSessions];
-        for(int i=0; i<numSessions; i++) {
+        for (int i=0; i<numSessions; i++) {
             sessionIds[i] = StringUtil.getRandomString();
             Message message = new Message("AMQP message");
             message.setSessionId(sessionIds[i]);
@@ -643,7 +643,7 @@ public class TestCommons {
         Collection<IMessage> messages = receiver.receiveBatch(batchSize, DRAIN_MESSAGES_WAIT_TIME);
         while (messages !=null && messages.size() > 0) {
             if(receiver.getReceiveMode() == ReceiveMode.PEEKLOCK) {
-                for(IMessage message: messages) {
+                for (IMessage message: messages) {
                     receiver.complete(message.getLockToken());
                 }
             }

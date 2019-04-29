@@ -3,7 +3,6 @@
 package com.microsoft.azure.servicebus;
 
 public class PartitionedTopicSessionTests extends TopicSessionTests {
-
     @Override
     public String getEntityNamePrefix() {
         return "PartitionedTopicSessionTests";

@@ -28,13 +28,13 @@ public class MessageAndSessionPumpTests {
 
     public static void testMessagePumpAutoComplete(IMessageSender sender, IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException {
         int numMessages = 10;
-        for(int i=0; i<numMessages; i++) {
+        for (int i=0; i<numMessages; i++) {
             sender.send(new Message("AMQPMessage"));
         }
         boolean autoComplete = true;
         CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, false);
         messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
-        if(!messageHandler.getMessageCountDownLatch().await(2, TimeUnit.MINUTES)) {
+        if (!messageHandler.getMessageCountDownLatch().await(2, TimeUnit.MINUTES)) {
             Assert.assertEquals("All messages not pumped even after waiting for 2 minutes.", numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount());
         }
 
@@ -47,13 +47,13 @@ public class MessageAndSessionPumpTests {
 
     public static void testMessagePumpClientComplete(IMessageSender sender, IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException {
         int numMessages = 10;
-        for(int i=0; i<numMessages; i++) {
+        for (int i=0; i<numMessages; i++) {
             sender.send(new Message("AMQPMessage"));
         }
         boolean autoComplete = false;
         CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, false);
         messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
-        if(!messageHandler.getMessageCountDownLatch().await(2, TimeUnit.MINUTES)) {
+        if (!messageHandler.getMessageCountDownLatch().await(2, TimeUnit.MINUTES)) {
             Assert.assertEquals("All messages not pumped even after waiting for 2 minutes.", numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount());
         }
         Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
@@ -62,13 +62,13 @@ public class MessageAndSessionPumpTests {
 
     public static void testMessagePumpAbandonOnException(IMessageSender sender, IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException {
         int numMessages = 10;
-        for(int i=0; i<numMessages; i++) {
+        for (int i=0; i<numMessages; i++) {
             sender.send(new Message("AMQPMessage"));
         }
         boolean autoComplete = false;
         CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, true);
         messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
-        if(!messageHandler.getMessageCountDownLatch().await(4, TimeUnit.MINUTES)) {
+        if (!messageHandler.getMessageCountDownLatch().await(4, TimeUnit.MINUTES)) {
             Assert.assertEquals("All messages not pumped even after waiting for 4 minutes.", numMessages * 2, numMessages * 2 - messageHandler.getMessageCountDownLatch().getCount());
         }
         Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
@@ -77,7 +77,7 @@ public class MessageAndSessionPumpTests {
 
     public static void testMessagePumpRenewLock(IMessageSender sender, IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException {
         int numMessages = 5;
-        for(int i=0; i<numMessages; i++) {
+        for (int i=0; i<numMessages; i++) {
             sender.send(new Message("AMQPMessage"));
         }
         boolean autoComplete = true;
@@ -85,7 +85,7 @@ public class MessageAndSessionPumpTests {
         CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, false, Duration.ofMinutes(sleepMinutes));
         messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(numMessages, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
         int waitMinutes = 2 * sleepMinutes;
-        if(!messageHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES)) {
+        if (!messageHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES)) {
             Assert.assertEquals("All messages not pumped even after waiting for " + waitMinutes + " minutes.", numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount());
         }
         Assert.assertTrue("OnMessage called by maximum of one concurrent thread.", messageHandler.getMaxConcurrencyCounter().getMaxConcurrencyCount() > 1);
@@ -144,10 +144,10 @@ public class MessageAndSessionPumpTests {
         int numSessions = 10;
         int numMessagePerSession = 10;
         ArrayList<String> sessionIds = new ArrayList<>();
-        for(int i=0; i<numSessions; i++) {
+        for (int i=0; i<numSessions; i++) {
             String sessionId = StringUtil.getRandomString();
             sessionIds.add(sessionId);
-            for(int j=0; j<numMessagePerSession; j++) {
+            for (int j=0; j<numMessagePerSession; j++) {
                 Message message = new Message("AMQPMessage");
                 message.setSessionId(sessionId);
                 sender.send(message);
@@ -157,7 +157,7 @@ public class MessageAndSessionPumpTests {
         boolean autoComplete = true;
         CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, false);
         sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, maxConcurrentCallsPerSession, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
-        if(!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES)) {
+        if (!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES)) {
             Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
         }
 
@@ -173,10 +173,10 @@ public class MessageAndSessionPumpTests {
         int numSessions = 10;
         int numMessagePerSession = 10;
         ArrayList<String> sessionIds = new ArrayList<>();
-        for(int i=0; i<numSessions; i++) {
+        for (int i=0; i<numSessions; i++) {
             String sessionId = StringUtil.getRandomString();
             sessionIds.add(sessionId);
-            for(int j=0; j<numMessagePerSession; j++) {
+            for (int j=0; j<numMessagePerSession; j++) {
                 Message message = new Message("AMQPMessage");
                 message.setSessionId(sessionId);
                 sender.send(message);
@@ -186,7 +186,7 @@ public class MessageAndSessionPumpTests {
         boolean autoComplete = false;
         CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, false);
         sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
-        if(!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES)) {
+        if (!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES)) {
             Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
         }
 
@@ -200,10 +200,10 @@ public class MessageAndSessionPumpTests {
         int numSessions = 10;
         int numMessagePerSession = 10;
         ArrayList<String> sessionIds = new ArrayList<>();
-        for(int i=0; i<numSessions; i++) {
+        for (int i=0; i<numSessions; i++) {
             String sessionId = StringUtil.getRandomString();
             sessionIds.add(sessionId);
-            for(int j=0; j<numMessagePerSession; j++) {
+            for (int j=0; j<numMessagePerSession; j++) {
                 Message message = new Message("AMQPMessage");
                 message.setSessionId(sessionId);
                 sender.send(message);
@@ -213,7 +213,7 @@ public class MessageAndSessionPumpTests {
         boolean autoComplete = true;
         CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, true);
         sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
-        if(!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES)) {
+        if (!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES)) {
             Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", 2 * numSessions * numMessagePerSession, 2 * numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
         }
 
@@ -229,10 +229,10 @@ public class MessageAndSessionPumpTests {
         int numSessions = 5;
         int numMessagePerSession = 2;
         ArrayList<String> sessionIds = new ArrayList<>();
-        for(int i=0; i<numSessions; i++) {
+        for (int i=0; i<numSessions; i++) {
             String sessionId = StringUtil.getRandomString();
             sessionIds.add(sessionId);
-            for(int j=0; j<numMessagePerSession; j++) {
+            for (int j=0; j<numMessagePerSession; j++) {
                 Message message = new Message("AMQPMessage");
                 message.setSessionId(sessionId);
                 sender.send(message);
@@ -244,7 +244,7 @@ public class MessageAndSessionPumpTests {
         CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, false, Duration.ofMinutes(sleepMinutes));
         sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, 1, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
         int waitMinutes = 5 * sleepMinutes;
-        if(!sessionHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES)) {
+        if (!sessionHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES)) {
             Assert.assertEquals("All messages not pumped even after waiting for" + waitMinutes + " minutes.", numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
         }
 
@@ -276,7 +276,7 @@ public class MessageAndSessionPumpTests {
             this.firstThrowException = firstThrowException;
             this.sleepDuration = sleepDuration;
 
-            if(firstThrowException) {
+            if (firstThrowException) {
                 this.messageCountDownLatch = new CountDownLatch(messageCount * 2);
             } else {
                 this.messageCountDownLatch = new CountDownLatch(messageCount);
@@ -288,13 +288,13 @@ public class MessageAndSessionPumpTests {
             CompletableFuture<Void> countingFuture = CompletableFuture.runAsync(() -> {
                 this.maxConcurrencyCounter.incrementCount();
                 //System.out.println("Message Received - " + message.getMessageId() + " - delivery count:" + message.getDeliveryCount() + " - Thread:" + Thread.currentThread());
-                if(this.firstThrowException && message.getDeliveryCount() == 0) {
+                if (this.firstThrowException && message.getDeliveryCount() == 0) {
                     this.messageCountDownLatch.countDown();
                     this.maxConcurrencyCounter.decrementCount();
                     throw new RuntimeException("Dummy exception to cause abandon");
                 }
 
-                if(!this.sleepDuration.isZero()) {
+                if (!this.sleepDuration.isZero()) {
                     try {
                         Thread.sleep(this.sleepDuration.toMillis());
                     } catch (InterruptedException e) {
@@ -304,7 +304,7 @@ public class MessageAndSessionPumpTests {
             });
 
             CompletableFuture<Void> completeFuture = countingFuture;
-            if(this.completeMessage) {
+            if (this.completeMessage) {
                 completeFuture = countingFuture.thenComposeAsync((v) -> this.messagePump.completeAsync(message.getLockToken()), EXECUTOR_SERVICE);
             } else {
                 completeFuture = countingFuture;
@@ -348,7 +348,7 @@ public class MessageAndSessionPumpTests {
             this.firstThrowException = firstThrowException;
             this.sleepDuration = sleepDuration;
             this.receivedSeesions = Collections.synchronizedSet(new HashSet<String>());
-            if(firstThrowException) {
+            if (firstThrowException) {
                 this.messageCountDownLatch = new CountDownLatch(totalMessageCount * 2);
             } else {
                 this.messageCountDownLatch = new CountDownLatch(totalMessageCount);
@@ -361,13 +361,13 @@ public class MessageAndSessionPumpTests {
                 this.maxConcurrencyCounter.incrementCount();
                 this.receivedSeesions.add(session.getSessionId());
                 //System.out.println("SessionID:" + session.getSessionId() + " - Message Received - " + message.getMessageId() + " - delivery count:" + message.getDeliveryCount() + " - Thread:" + Thread.currentThread() + ":" + Instant.now());
-                if(this.firstThrowException && message.getDeliveryCount() == 0) {
+                if (this.firstThrowException && message.getDeliveryCount() == 0) {
                     this.messageCountDownLatch.countDown();
                     this.maxConcurrencyCounter.decrementCount();
                     throw new RuntimeException("Dummy exception to cause abandon");
                 }
 
-                if(!this.sleepDuration.isZero()) {
+                if (!this.sleepDuration.isZero()) {
                     try {
                         Thread.sleep(this.sleepDuration.toMillis());
                     } catch (InterruptedException e) {
@@ -377,7 +377,7 @@ public class MessageAndSessionPumpTests {
             });
 
             CompletableFuture<Void> completeFuture = countingFuture;
-            if(this.completeMessage) {
+            if (this.completeMessage) {
                 completeFuture = countingFuture.thenComposeAsync((v) -> session.completeAsync(message.getLockToken()), EXECUTOR_SERVICE);
             } else {
                 completeFuture = countingFuture;

@@ -3,7 +3,6 @@
 package com.microsoft.azure.servicebus;
 
 public class TopicSessionTests extends SessionTests {
-
     @Override
     public String getEntityNamePrefix() {
         return "TopicSessionTests";

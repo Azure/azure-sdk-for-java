@@ -8,7 +8,7 @@ public class MaxConcurrencyCounter {
 
     public synchronized void incrementCount() {
         this.concurrencyCount++;
-        if(this.concurrencyCount > this.maxConcurrencyCount) {
+        if (this.concurrencyCount > this.maxConcurrencyCount) {
             this.maxConcurrencyCount = this.concurrencyCount;
         }
     }

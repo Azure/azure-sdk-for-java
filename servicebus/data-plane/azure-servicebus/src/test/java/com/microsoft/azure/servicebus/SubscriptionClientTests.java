@@ -17,7 +17,7 @@ import com.microsoft.azure.servicebus.rules.SqlFilter;
 import com.microsoft.azure.servicebus.rules.SqlRuleAction;
 import com.microsoft.azure.servicebus.rules.TrueFilter;
 
-public class SubscriptionClientTests extends ClientTests{
+public class SubscriptionClientTests extends ClientTests {
     @Override
     public String getEntityNamePrefix() {
         return "SubscriptionClientTests";

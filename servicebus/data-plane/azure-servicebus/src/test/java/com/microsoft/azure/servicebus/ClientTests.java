@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
-public abstract class ClientTests extends Tests{
+public abstract class ClientTests extends Tests {
     private static String entityNameCreatedForAllTests = null;
     private static String receiveEntityPathForAllTest = null;
     protected static ManagementClientAsync managementClientAsync;
@@ -36,15 +36,15 @@ public abstract class ClientTests extends Tests{
     
     @Before
     public void setup() throws ExecutionException, InterruptedException {
-        if(this.shouldCreateEntityForEveryTest() || ClientTests.entityNameCreatedForAllTests == null) {
+        if (this.shouldCreateEntityForEveryTest() || ClientTests.entityNameCreatedForAllTests == null) {
              // Create entity
             this.entityName = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
-            if(this.isEntityQueue()) {
+            if (this.isEntityQueue()) {
                 this.receiveEntityPath = this.entityName;
                 QueueDescription queueDescription = new QueueDescription(this.entityName);
                 queueDescription.setEnablePartitioning(this.isEntityPartitioned());
                 managementClientAsync.createQueueAsync(queueDescription).get();
-                if(!this.shouldCreateEntityForEveryTest()) {
+                if (!this.shouldCreateEntityForEveryTest()) {
                     ClientTests.entityNameCreatedForAllTests = entityName;
                     ClientTests.receiveEntityPathForAllTest = entityName;
                 }
@@ -55,7 +55,7 @@ public abstract class ClientTests extends Tests{
                 SubscriptionDescription subDescription = new SubscriptionDescription(this.entityName, TestUtils.FIRST_SUBSCRIPTION_NAME);
                 managementClientAsync.createSubscriptionAsync(subDescription).get();
                 this.receiveEntityPath = EntityNameHelper.formatSubscriptionPath(subDescription.getTopicPath(), subDescription.getSubscriptionName());
-                if(!this.shouldCreateEntityForEveryTest()) {
+                if (!this.shouldCreateEntityForEveryTest()) {
                     ClientTests.entityNameCreatedForAllTests = entityName;
                     ClientTests.receiveEntityPathForAllTest = this.receiveEntityPath;
                 }
@@ -68,18 +68,18 @@ public abstract class ClientTests extends Tests{
     
     @After
     public void tearDown() throws ServiceBusException, InterruptedException, ExecutionException {
-        if(this.sendClient != null) {
+        if (this.sendClient != null) {
             this.sendClient.close();
         }
-        if(this.receiveClient != null) {
-            if(this.receiveClient instanceof SubscriptionClient) {
+        if (this.receiveClient != null) {
+            if (this.receiveClient instanceof SubscriptionClient) {
                 ((SubscriptionClient)this.receiveClient).close();
             } else {
                 ((QueueClient)this.receiveClient).close();
             }
         }
         
-        if(this.shouldCreateEntityForEveryTest()) {
+        if (this.shouldCreateEntityForEveryTest()) {
             managementClientAsync.deleteQueueAsync(this.entityName).get();
         } else {
             TestCommons.drainAllMessages(this.receiveEntityPath);
@@ -91,7 +91,7 @@ public abstract class ClientTests extends Tests{
         if (managementClientAsync == null) {
             return;
         }
-        if(ClientTests.entityNameCreatedForAllTests != null) {
+        if (ClientTests.entityNameCreatedForAllTests != null) {
             managementClientAsync.deleteQueueAsync(ClientTests.entityNameCreatedForAllTests).get();
         }
 
@@ -100,7 +100,7 @@ public abstract class ClientTests extends Tests{
     
     protected void createClients(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
     {
-        if(this.isEntityQueue()) {
+        if (this.isEntityQueue()) {
             this.sendClient = new QueueClient(TestUtils.getNamespaceEndpointURI(), this.entityName, TestUtils.getClientSettings(), receiveMode);
             this.receiveClient = (QueueClient)this.sendClient;
         } else {

@@ -36,15 +36,15 @@ public abstract class SendReceiveTests extends Tests {
 
     @Before
     public void setup() throws InterruptedException, ExecutionException, ServiceBusException {
-        if(this.shouldCreateEntityForEveryTest() || SendReceiveTests.entityNameCreatedForAllTests == null) {
+        if (this.shouldCreateEntityForEveryTest() || SendReceiveTests.entityNameCreatedForAllTests == null) {
              // Create entity
             this.entityName = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
-            if(this.isEntityQueue()) {
+            if (this.isEntityQueue()) {
                 this.receiveEntityPath = this.entityName;
                 QueueDescription queueDescription = new QueueDescription(this.entityName);
                 queueDescription.setEnablePartitioning(this.isEntityPartitioned());
                 managementClient.createQueueAsync(queueDescription).get();
-                if(!this.shouldCreateEntityForEveryTest()) {
+                if (!this.shouldCreateEntityForEveryTest()) {
                     SendReceiveTests.entityNameCreatedForAllTests = entityName;
                     SendReceiveTests.receiveEntityPathForAllTest = entityName;
                 }
@@ -55,7 +55,7 @@ public abstract class SendReceiveTests extends Tests {
                 SubscriptionDescription subDescription = new SubscriptionDescription(this.entityName, TestUtils.FIRST_SUBSCRIPTION_NAME);
                 managementClient.createSubscriptionAsync(subDescription).get();
                 this.receiveEntityPath = subDescription.getPath();
-                if(!this.shouldCreateEntityForEveryTest()) {
+                if (!this.shouldCreateEntityForEveryTest()) {
                     SendReceiveTests.entityNameCreatedForAllTests = entityName;
                     SendReceiveTests.receiveEntityPathForAllTest = subDescription.getPath();
                 }
@@ -218,7 +218,7 @@ public abstract class SendReceiveTests extends Tests {
     }
 
     private void drainAllMessages() throws InterruptedException, ServiceBusException {
-        if(this.receiver != null) {
+        if (this.receiver != null) {
             TestCommons.drainAllMessagesFromReceiver(this.receiver);
         }
     }

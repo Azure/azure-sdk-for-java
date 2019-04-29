@@ -36,10 +36,10 @@ public abstract class ClientSessionTests extends Tests {
     
     @Before
     public void setup() throws InterruptedException, ExecutionException {
-        if(this.shouldCreateEntityForEveryTest() || ClientSessionTests.entityNameCreatedForAllTests == null) {
+        if (this.shouldCreateEntityForEveryTest() || ClientSessionTests.entityNameCreatedForAllTests == null) {
              // Create entity
             this.entityName = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
-            if(this.isEntityQueue()) {
+            if (this.isEntityQueue()) {
                 this.receiveEntityPath = this.entityName;
                 QueueDescription queueDescription = new QueueDescription(this.entityName);
                 queueDescription.setEnablePartitioning(this.isEntityPartitioned());
@@ -49,8 +49,7 @@ public abstract class ClientSessionTests extends Tests {
                     ClientSessionTests.entityNameCreatedForAllTests = entityName;
                     ClientSessionTests.receiveEntityPathForAllTest = entityName;
                 }
-            }
-            else {
+            } else {
                 TopicDescription topicDescription = new TopicDescription(this.entityName);
                 topicDescription.setEnablePartitioning(this.isEntityPartitioned());
                 managementClient.createTopicAsync(topicDescription).get();
@@ -58,13 +57,12 @@ public abstract class ClientSessionTests extends Tests {
                 subDescription.setRequiresSession(true);
                 managementClient.createSubscriptionAsync(subDescription).get();
                 this.receiveEntityPath = EntityNameHelper.formatSubscriptionPath(subDescription.getTopicPath(), subDescription.getSubscriptionName());
-                if(!this.shouldCreateEntityForEveryTest()) {
+                if (!this.shouldCreateEntityForEveryTest()) {
                     ClientSessionTests.entityNameCreatedForAllTests = entityName;
                     ClientSessionTests.receiveEntityPathForAllTest = this.receiveEntityPath;
                 }
             }
-        }
-        else {
+        } else {
             this.entityName = ClientSessionTests.entityNameCreatedForAllTests;
             this.receiveEntityPath = ClientSessionTests.receiveEntityPathForAllTest;
         }
@@ -72,19 +70,18 @@ public abstract class ClientSessionTests extends Tests {
     
     @After
     public void tearDown() throws ServiceBusException, InterruptedException, ExecutionException {
-        if(this.sendClient != null) {
+        if (this.sendClient != null) {
             this.sendClient.close();
         }
-        if(this.receiveClient != null) {
-            if(this.receiveClient instanceof SubscriptionClient) {
+        if (this.receiveClient != null) {
+            if (this.receiveClient instanceof SubscriptionClient) {
                 ((SubscriptionClient)this.receiveClient).close();
-            }
-            else {
+            } else {
                 ((QueueClient)this.receiveClient).close();
             }
         }
         
-        if(this.shouldCreateEntityForEveryTest()) {
+        if (this.shouldCreateEntityForEveryTest()) {
             managementClient.deleteQueueAsync(this.entityName).get();
         } else {
             TestCommons.drainAllSessions(this.receiveEntityPath, this.isEntityQueue());
@@ -96,7 +93,7 @@ public abstract class ClientSessionTests extends Tests {
         if (managementClient == null) {
             return;
         }
-        if(ClientSessionTests.entityNameCreatedForAllTests != null) {
+        if (ClientSessionTests.entityNameCreatedForAllTests != null) {
             managementClient.deleteQueueAsync(ClientSessionTests.entityNameCreatedForAllTests).get();
         }
 
@@ -104,7 +101,7 @@ public abstract class ClientSessionTests extends Tests {
     }
     
     private void createClients(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
-        if(this.isEntityQueue()) {
+        if (this.isEntityQueue()) {
             this.sendClient = new QueueClient(TestUtils.getNamespaceEndpointURI(), this.entityName, TestUtils.getClientSettings(), receiveMode);
             this.receiveClient = (QueueClient)this.sendClient;
         } else {

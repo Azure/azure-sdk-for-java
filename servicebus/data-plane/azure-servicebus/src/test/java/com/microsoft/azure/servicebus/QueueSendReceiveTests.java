@@ -43,7 +43,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(this.isEntityPartitioned()) {
+        if (this.isEntityPartitioned()) {
             message.setPartitionKey(messageId);
         }
         this.sender.send(message, transaction);
@@ -67,7 +67,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
         message.setMessageId(messageId);
-        if(this.isEntityPartitioned()) {
+        if (this.isEntityPartitioned()) {
             message.setPartitionKey(messageId);
         }
         this.sender.send(message, transaction);
@@ -214,7 +214,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
 
         TransactionContext transaction = this.factory.startTransactionAsync().get();
         this.receiver.complete(receivedMessage.getLockToken(), transaction);
-        if(this.isEntityPartitioned()) {
+        if (this.isEntityPartitioned()) {
             message2.setPartitionKey(receivedMessage.getPartitionKey());
         }
         this.sender.send(message2, transaction);
