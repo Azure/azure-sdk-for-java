@@ -3,7 +3,7 @@
 
 package com.azure.common.implementation;
 
-import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.exception.HttpRequestException;
 
 import java.lang.reflect.Method;
 
@@ -13,14 +13,14 @@ import java.lang.reflect.Method;
  */
 public class UnexpectedExceptionInformation {
     private static final String EXCEPTION_BODY_METHOD = "value";
-    private Class<? extends ServiceRequestException> exceptionType;
+    private Class<? extends HttpRequestException> exceptionType;
     private Class<?> exceptionBodyType;
 
     /**
      * Creates an UnexpectedExceptionInformation object with the given exception type and expected response body.
      * @param exceptionType Exception type to be thrown.
      */
-    public UnexpectedExceptionInformation(Class<? extends ServiceRequestException> exceptionType) {
+    public UnexpectedExceptionInformation(Class<? extends HttpRequestException> exceptionType) {
         this.exceptionType = exceptionType;
 
         try {
@@ -35,7 +35,7 @@ public class UnexpectedExceptionInformation {
     /**
      * @return the exception type.
      */
-    public Class<? extends ServiceRequestException> exceptionType() {
+    public Class<? extends HttpRequestException> exceptionType() {
         return exceptionType;
     }
 

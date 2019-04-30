@@ -6,7 +6,7 @@ package com.azure.common.implementation;
 import com.azure.common.ServiceClient;
 import com.azure.common.annotations.ResumeOperation;
 import com.azure.common.credentials.ServiceClientCredentials;
-import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.exception.HttpRequestException;
 import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpHeader;
 import com.azure.common.http.HttpHeaders;
@@ -287,7 +287,7 @@ public class RestProxy implements InvocationHandler {
 
         Exception result;
         try {
-            final Constructor<? extends ServiceRequestException> exceptionConstructor = exception.exceptionType().getConstructor(String.class, HttpResponse.class, exception.exceptionBodyType());
+            final Constructor<? extends HttpRequestException> exceptionConstructor = exception.exceptionType().getConstructor(String.class, HttpResponse.class, exception.exceptionBodyType());
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
                     httpResponse,
                     responseDecodedContent);
