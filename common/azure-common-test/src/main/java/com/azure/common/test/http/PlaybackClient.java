@@ -139,7 +139,7 @@ public final class PlaybackClient implements HttpClient {
         return text;
     }
 
-    private String removeHost(String url) {
+    private static String removeHost(String url) {
         URI uri = URI.create(url);
         return String.format("%s?%s", uri.getPath(), uri.getQuery());
     }
