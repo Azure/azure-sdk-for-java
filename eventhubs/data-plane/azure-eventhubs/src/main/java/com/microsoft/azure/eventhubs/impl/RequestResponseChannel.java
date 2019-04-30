@@ -57,7 +57,7 @@ public class RequestResponseChannel implements IOObject {
         this.sendLink.setTarget(target);
         sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(SenderSettleMode.SETTLED);
-        BaseHandler.setHandler(this.sendLink, new SendLinkHandler(new RequestHandler()));
+        BaseHandler.setHandler(this.sendLink, new SendLinkHandler(new RequestHandler(), linkName));
 
         this.receiveLink = session.receiver(linkName + ":receiver");
         final Source source = new Source();
@@ -68,7 +68,7 @@ public class RequestResponseChannel implements IOObject {
         this.receiveLink.setTarget(receiverTarget);
         this.receiveLink.setSenderSettleMode(SenderSettleMode.SETTLED);
         this.receiveLink.setReceiverSettleMode(ReceiverSettleMode.SECOND);
-        BaseHandler.setHandler(this.receiveLink, new ReceiveLinkHandler(new ResponseHandler()));
+        BaseHandler.setHandler(this.receiveLink, new ReceiveLinkHandler(new ResponseHandler(), linkName));
     }
 
     // open should be called only once - we use FaultTolerantObject for that

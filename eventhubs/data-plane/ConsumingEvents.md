@@ -23,10 +23,10 @@ This library is available for use in Maven projects from the Maven Central Repos
 following dependency declaration inside of your Maven project file:    
 
 ```XML
-    <dependency> 
-   		<groupId>com.microsoft.azure</groupId> 
-   		<artifactId>azure-eventhubs</artifactId>
-   		<version>2.0.0</version>
+    <dependency>
+        <groupId>com.microsoft.azure</groupId> 
+        <artifactId>azure-eventhubs</artifactId>
+        <version>2.3.0</version>
     </dependency>
 ```
  

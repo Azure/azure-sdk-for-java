@@ -4,6 +4,7 @@
 package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.AuthorizationFailedException;
+import com.microsoft.azure.eventhubs.CommunicationException;
 import com.microsoft.azure.eventhubs.ErrorContext;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.IllegalEntityException;
@@ -62,6 +63,12 @@ public final class ExceptionUtil {
             return new EventHubException(true, new AmqpException(errorCondition));
         } else if (errorCondition.getCondition() == AmqpErrorCode.ResourceLimitExceeded) {
             return new QuotaExceededException(new AmqpException(errorCondition));
+        } else if (errorCondition.getCondition() == ClientConstants.PROTON_IO_ERROR) {
+            String message = ClientConstants.COMMUNICATION_EXCEPTION_GENERIC_MESSAGE;
+            if (errorCondition.getDescription() != null) {
+                message = errorCondition.getDescription();
+            }
+            return new CommunicationException(message, null);
         }
 
         return new EventHubException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.getDescription());
@@ -137,7 +144,7 @@ public final class ExceptionUtil {
 
         final Throwable innerException = exception.getCause();
         if (innerException != null) {
-            builder.append("Cause: " + innerException.getMessage());
+            builder.append("Cause: ").append(innerException.getMessage());
             final StackTraceElement[] innerStackTraceElements = innerException.getStackTrace();
             for (final StackTraceElement ste : innerStackTraceElements) {
                 builder.append(System.lineSeparator());
