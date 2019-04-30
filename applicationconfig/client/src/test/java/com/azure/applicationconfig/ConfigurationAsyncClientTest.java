@@ -4,13 +4,14 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
+import com.azure.applicationconfig.models.Range;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.test.TestBase;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
+import com.azure.common.test.TestBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -616,6 +617,34 @@ public class ConfigurationAsyncClientTest extends TestBase {
                     assertNull(response.lastModified());
                 })
                 .verifyComplete();
+    }
+
+    /**
+     * Verifies that the range header for revision selections returns the expected values.
+     */
+    @Test
+    public void listRevisionsWithRange() {
+        final String key = getKey();
+        final ConfigurationSetting original = new ConfigurationSetting().key(key).value("myValue");
+        final ConfigurationSetting updated = new ConfigurationSetting().key(original.key()).value("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
+
+        StepVerifier.create(client.addSetting(original))
+            .assertNext(response -> assertConfigurationEquals(original, response.value()))
+            .verifyComplete();
+
+        StepVerifier.create(client.updateSetting(updated))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.updateSetting(updated2))
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().key(key).range(new Range(1, 2))))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
     }
 
     /**
