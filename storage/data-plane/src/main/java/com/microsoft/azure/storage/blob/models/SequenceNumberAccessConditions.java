@@ -10,7 +10,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * Additional parameters for a set of operations, such as:
- * PageBlob_uploadPages, PageBlob_clearPages.
+ * PageBlob_uploadPages, PageBlob_clearPages, PageBlob_uploadPagesFromURL.
  */
 @JacksonXmlRootElement(localName = "sequence-number-access-conditions")
 public final class SequenceNumberAccessConditions {

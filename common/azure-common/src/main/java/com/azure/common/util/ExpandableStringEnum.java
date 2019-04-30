@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -16,30 +17,34 @@ import java.util.concurrent.ConcurrentMap;
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
-    private static ConcurrentMap<String, ? extends ExpandableStringEnum<?>> valuesByName = null;
+    private static ConcurrentMap<String, ? extends ExpandableStringEnum<?>> valuesByName = new ConcurrentHashMap<>();
 
     private String name;
     private Class<T> clazz;
 
     private static String uniqueKey(Class<?> clazz, String name) {
         if (clazz != null) {
-            return (clazz.getName() + "#" + name).toLowerCase();
+            return (clazz.getName() + "#" + name).toLowerCase(Locale.ROOT);
         } else {
             throw new IllegalArgumentException();
         }
     }
 
     @SuppressWarnings("unchecked")
-    protected T withNameValue(String name, T value, Class<T> clazz) {
-        if (valuesByName == null) {
-            valuesByName = new ConcurrentHashMap<String, T>();
-        }
+    T withNameValue(String name, T value, Class<T> clazz) {
         this.name = name;
         this.clazz = clazz;
         ((ConcurrentMap<String, T>) valuesByName).put(uniqueKey(clazz, name), value);
         return (T) this;
     }
 
+    /**
+     * Creates an instance of the specific expandable string enum from a String.
+     * @param name the value to create the instance from
+     * @param clazz the class of the expandable string enum
+     * @param <T> the class of the expandable string enum
+     * @return the expandable string enum instance
+     */
     @SuppressWarnings("unchecked")
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
         if (name == null) {
@@ -54,13 +59,17 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         try {
             T value = clazz.newInstance();
             return value.withNameValue(name, value, clazz);
-        } catch (InstantiationException e) {
-            return null;
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             return null;
         }
     }
 
+    /**
+     * Gets a collection of all known values to an expandable string enum type.
+     * @param clazz the class of the expandable string enum
+     * @param <T> the class of the expandable string enum
+     * @return a collection of all known values
+     */
     @SuppressWarnings("unchecked")
     protected static <T extends ExpandableStringEnum<T>> Collection<T> values(Class<T> clazz) {
         // Make a copy of all values
@@ -90,7 +99,9 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object obj) {
-        if (!clazz.isAssignableFrom(obj.getClass())) {
+        if (obj == null) {
+            return false;
+        } else if (clazz == null || !clazz.isAssignableFrom(obj.getClass())) {
             return false;
         } else if (obj == this) {
             return true;

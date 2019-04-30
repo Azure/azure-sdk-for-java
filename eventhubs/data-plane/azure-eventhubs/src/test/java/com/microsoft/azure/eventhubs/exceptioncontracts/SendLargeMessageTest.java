@@ -3,7 +3,14 @@
 
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.PartitionSender;
+import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.AfterClass;
@@ -11,18 +18,17 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.time.Instant;
-import java.util.concurrent.ExecutionException;
+import java.util.Locale;
 
 public class SendLargeMessageTest extends ApiTestBase {
-    static String partitionId = "0";
+    private static final String PARTITION_ID = "0";
 
-    static EventHubClient ehClient;
-    static PartitionSender sender;
+    private static EventHubClient ehClient;
+    private static PartitionSender sender;
 
-    static EventHubClient receiverHub;
-    static PartitionReceiver receiver;
+    private static EventHubClient receiverHub;
+    private static PartitionReceiver receiver;
 
     @BeforeClass
     public static void initialize() throws Exception {
@@ -30,32 +36,39 @@ public class SendLargeMessageTest extends ApiTestBase {
     }
 
     public static void initializeEventHubClients(ConnectionStringBuilder connStr) throws Exception {
-
         ehClient = EventHubClient.createSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
-        sender = ehClient.createPartitionSender(partitionId).get();
+        sender = ehClient.createPartitionSender(PARTITION_ID).get();
 
         receiverHub = EventHubClient.createSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
-        receiver = receiverHub.createReceiver(TestContext.getConsumerGroupName(), partitionId, EventPosition.fromEnqueuedTime(Instant.now())).get();
+        receiver = receiverHub.createReceiver(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now())).get();
     }
 
     @AfterClass()
     public static void cleanup() throws EventHubException {
+        if (receiver != null) {
+            receiver.closeSync();
+        }
+
         if (receiverHub != null) {
-            receiverHub.close();
+            receiverHub.closeSync();
+        }
+
+        if (sender != null) {
+            sender.closeSync();
         }
 
         if (ehClient != null) {
-            ehClient.close();
+            ehClient.closeSync();
         }
     }
 
     @Test()
-    public void sendMsgLargerThan64k() throws EventHubException, InterruptedException, ExecutionException, IOException {
+    public void sendMsgLargerThan64k() throws EventHubException {
         this.sendLargeMessageTest(100 * 1024);
     }
 
     @Test(expected = PayloadSizeExceededException.class)
-    public void sendMsgLargerThan1024K() throws EventHubException, InterruptedException, ExecutionException, IOException {
+    public void sendMsgLargerThan1024K() throws EventHubException {
         int msgSize = 1024 * 1024 * 2;
         byte[] body = new byte[msgSize];
         for (int i = 0; i < msgSize; i++) {
@@ -67,11 +80,11 @@ public class SendLargeMessageTest extends ApiTestBase {
     }
 
     @Test()
-    public void sendMsgLargerThan128k() throws EventHubException, InterruptedException, ExecutionException, IOException {
+    public void sendMsgLargerThan128k() throws EventHubException {
         this.sendLargeMessageTest(129 * 1024);
     }
 
-    public void sendLargeMessageTest(int msgSize) throws InterruptedException, ExecutionException, EventHubException {
+    private void sendLargeMessageTest(int msgSize) throws EventHubException {
         byte[] body = new byte[msgSize];
         for (int i = 0; i < msgSize; i++) {
             body[i] = 1;
@@ -85,8 +98,6 @@ public class SendLargeMessageTest extends ApiTestBase {
 
         EventData recdMessage = messages.iterator().next();
 
-        Assert.assertTrue(
-                String.format("sent msg size: %s, recvd msg size: %s", msgSize, recdMessage.getBytes().length),
-                recdMessage.getBytes().length == msgSize);
+        Assert.assertEquals(String.format(Locale.US, "sent msg size: %s, recvd msg size: %s", msgSize, recdMessage.getBytes().length), recdMessage.getBytes().length, msgSize);
     }
 }

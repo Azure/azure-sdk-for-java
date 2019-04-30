@@ -165,6 +165,10 @@ public final class EventDataImpl implements EventData {
         return this.systemProperties;
     }
 
+    public void setSystemProperties(EventData.SystemProperties props) {
+        this.systemProperties = props;
+    }
+
     // This is intended to be used while sending EventData - so EventData.SystemProperties will not be copied over to the AmqpMessage
     Message toAmqpMessage() {
         final Message amqpMessage = Proton.message();

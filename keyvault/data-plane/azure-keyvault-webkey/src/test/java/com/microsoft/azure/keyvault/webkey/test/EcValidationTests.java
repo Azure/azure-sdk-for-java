@@ -67,7 +67,7 @@ public class EcValidationTests {
         PublicKey publicKey = keyPair2.getPublic();
         PrivateKey privateKey = keyPair2.getPrivate();
 
-        if(includePrivateKey) {
+        if (includePrivateKey) {
 
             // set the missing properties to compare the keys
             jsonWebKey.withKid(new String(key.kid()));
@@ -86,11 +86,11 @@ public class EcValidationTests {
         new Random().nextBytes(plaintext);
         byte[] hash = digest.digest(plaintext);
         signature.update(hash);
-        byte[] signed_hash = signature.sign();
+        byte[] signedHash = signature.sign();
 
         signature.initVerify(publicKey);
         signature.update(hash);
-        Assert.assertTrue(signature.verify(signed_hash));
+        Assert.assertTrue(signature.verify(signedHash));
 
     }
 

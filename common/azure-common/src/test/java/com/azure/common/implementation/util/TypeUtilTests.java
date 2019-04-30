@@ -89,7 +89,7 @@ public class TypeUtilTests {
         Assert.assertArrayEquals(TypeUtil.getTypeArguments(petType), TypeUtil.getTypeArguments(createdType));
     }
 
-    private static abstract class Pet<T extends Human, V> {
+    private abstract static class Pet<T extends Human, V> {
         abstract T owner();
     }
 
