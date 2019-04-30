@@ -90,11 +90,13 @@ public abstract class ClientSessionTests extends Tests {
     
     @AfterClass
     public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
-        if (ClientSessionTests.entityNameCreatedForAllTests != null) {
-            managementClient.deleteQueueAsync(ClientSessionTests.entityNameCreatedForAllTests).get();
-        }
+        if (managementClient != null ) {
+            if (ClientSessionTests.entityNameCreatedForAllTests != null) {
+                managementClient.deleteQueueAsync(ClientSessionTests.entityNameCreatedForAllTests).get();
+            }
 
-        managementClient.close();
+            managementClient.close();
+        }
     }
     
     private void createClients(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {

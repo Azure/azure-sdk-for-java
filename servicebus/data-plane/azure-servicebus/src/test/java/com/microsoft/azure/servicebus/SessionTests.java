@@ -96,11 +96,13 @@ public abstract class SessionTests extends Tests {
 
     @AfterClass
     public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
-        if (SessionTests.entityNameCreatedForAllTests != null) {
-            managementClient.deleteQueueAsync(SessionTests.entityNameCreatedForAllTests).get();
-        }
+        if (managementClient != null) {
+            if (SessionTests.entityNameCreatedForAllTests != null) {
+                managementClient.deleteQueueAsync(SessionTests.entityNameCreatedForAllTests).get();
+            }
 
-        managementClient.close();
+            managementClient.close();
+        }
     }
 
     @Test

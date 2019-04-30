@@ -20,11 +20,6 @@ public class TestBase {
         Assume.assumeTrue("The test only runs in Live mode.", TestBase.getTestMode() == TestMode.RECORD);
     }
 
-    @AfterClass
-    public static void skipIfNotConfiguredAfter(){
-        Assume.assumeTrue("The test only runs in Live mode.", TestBase.getTestMode() == TestMode.RECORD);
-    }
-
     public static TestMode getTestMode() {
 
         final Logger logger = LoggerFactory.getLogger(com.microsoft.azure.servicebus.TestBase.class);
