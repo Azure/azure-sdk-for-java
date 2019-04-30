@@ -7,9 +7,9 @@ import com.azure.common.http.HttpPipelineCallContext;
 import com.azure.common.http.HttpPipelineNextPolicy;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Mono;
 
-import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -20,6 +20,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_MAX_RETRIES = 3;
     private static final int DEFAULT_DELAY = 0;
     private static final ChronoUnit DEFAULT_TIME_UNIT = ChronoUnit.MILLIS;
+    private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
     private final int maxRetries;
     private final Duration delayDuration;
 
@@ -52,7 +53,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return next.clone().process()
                 .flatMap(httpResponse -> {
                     if (shouldRetry(httpResponse, tryCount)) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(this.delayDuration);
+                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(determineDelayDuration(httpResponse));
                     } else {
                         return Mono.just(httpResponse);
                     }
@@ -69,9 +70,35 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private boolean shouldRetry(HttpResponse response, int tryCount) {
         int code = response.statusCode();
         return tryCount < maxRetries
-                && (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
-                || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
-                && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
-                && code != HttpURLConnection.HTTP_VERSION));
+                && (code == HttpResponseStatus.REQUEST_TIMEOUT.code()
+                || (code >= HttpResponseStatus.INTERNAL_SERVER_ERROR.code()
+                && code != HttpResponseStatus.NOT_IMPLEMENTED.code()
+                && code != HttpResponseStatus.HTTP_VERSION_NOT_SUPPORTED.code()));
+    }
+
+    /**
+     * Determines the delay duration that should be waited before retrying.
+     * @param response HTTP response
+     * @return If the HTTP response has a retry-after-ms header that will be returned,
+     * otherwise the duration used during the construction of the policy.
+     */
+    private Duration determineDelayDuration(HttpResponse response) {
+        int code = response.statusCode();
+
+        // Response will not have a retry-after-ms header.
+        if (code != HttpResponseStatus.TOO_MANY_REQUESTS.code()
+            && code != HttpResponseStatus.SERVICE_UNAVAILABLE.code()) {
+            return this.delayDuration;
+        }
+
+        String retryHeader = response.headerValue(RETRY_AFTER_MS_HEADER);
+
+        // Retry header is missing or empty, return the default delay duration.
+        if (retryHeader == null || retryHeader.isEmpty()) {
+            return this.delayDuration;
+        }
+
+        // Use the response delay duration, the server returned it for a reason.
+        return Duration.ofMillis(Integer.parseInt(retryHeader));
     }
 }

@@ -16,6 +16,7 @@ import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -363,19 +364,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         }
     }
 
-    static void validateSelectionWithFields(ConfigurationSetting setting, String keyPrefix, Map<String, String> tags) {
-        // These are the fields we chose in our filter.
-        assertNotNull(setting.etag());
-        assertNotNull(setting.key());
-        assertTrue(setting.key().contains(keyPrefix));
-        assertNotNull(setting.tags());
-        assertEquals(tags.size(), setting.tags().size());
-
-        assertNull(setting.lastModified());
-        assertNull(setting.contentType());
-        assertNull(setting.label());
-    }
-
     @Test
     public abstract void listSettingsAcceptDateTime();
 
@@ -493,9 +481,15 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             .value(actual.value())
             .tags(actual.tags())
             .contentType(actual.contentType())
-            .lastModified(expected.lastModified())
-            .isLocked(expected.isLocked())
             .etag(expected.etag());
+
+        try {
+            Field lastModified = ConfigurationSetting.class.getDeclaredField("lastModified");
+            lastModified.setAccessible(true);
+            lastModified.set(actual, expected.lastModified());
+        } catch (NoSuchFieldException | IllegalAccessException ex) {
+            // Shouldn't happen.
+        }
 
         if (ConfigurationSetting.NO_LABEL.equals(expected.label()) && actual.label() == null) {
             cleanedActual.label(ConfigurationSetting.NO_LABEL);

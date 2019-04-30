@@ -13,19 +13,21 @@ import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.DeletedCertificateBundle;
 import com.microsoft.azure.keyvault.models.DeletedKeyBundle;
 import com.microsoft.azure.keyvault.models.DeletedSecretBundle;
-import com.microsoft.azure.management.resources.core.AzureTestCredentials;
 import com.microsoft.azure.management.resources.core.InterceptorManager;
 import com.microsoft.azure.management.resources.core.TestBase;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.interceptors.LoggingInterceptor;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.rules.TestName;
 
 import java.io.IOException;
@@ -36,7 +38,6 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 public class KeyVaultClientIntegrationTestBase {
 
@@ -49,8 +50,8 @@ public class KeyVaultClientIntegrationTestBase {
 
     protected static KeyVaultClient keyVaultClient;
 
-    protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    protected static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    protected static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     protected static String playbackUri = null;
 
@@ -191,12 +192,12 @@ public class KeyVaultClientIntegrationTestBase {
         // Determine whether to run the test based on the condition the test has been
         // configured with
         switch (this.runCondition) {
-        case MOCK_ONLY:
-            return (!isPlaybackMode) ? "Test configured to run only as mocked, not live." : null;
-        case LIVE_ONLY:
-            return (isPlaybackMode) ? "Test configured to run only as live, not mocked." : null;
-        default:
-            return null;
+            case MOCK_ONLY:
+                return (!isPlaybackMode) ? "Test configured to run only as mocked, not live." : null;
+            case LIVE_ONLY:
+                return (isPlaybackMode) ? "Test configured to run only as live, not mocked." : null;
+            default:
+                return null;
         }
     }
 
@@ -234,13 +235,15 @@ public class KeyVaultClientIntegrationTestBase {
     }
 
     public static boolean isPlaybackMode() {
-        if (testMode == null)
+        if (testMode == null) {
             try {
                 initTestMode();
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException("Can't init test mode.");
             }
+        }
+
         return testMode == TestBase.TestMode.PLAYBACK;
     }
 

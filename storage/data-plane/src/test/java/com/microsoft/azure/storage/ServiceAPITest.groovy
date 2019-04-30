@@ -3,8 +3,6 @@
 
 package com.microsoft.azure.storage
 
-import com.microsoft.aad.adal4j.AuthenticationContext
-import com.microsoft.aad.adal4j.ClientCredential
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.Context
@@ -12,7 +10,6 @@ import com.microsoft.rest.v2.http.HttpPipeline
 import org.junit.Assume
 
 import java.time.OffsetDateTime
-import java.util.concurrent.Executors
 
 class ServiceAPITest extends APISpec {
     def setup() {
@@ -455,5 +452,21 @@ class ServiceAPITest extends APISpec {
 
         then:
         notThrown(RuntimeException)
+    }
+
+
+    // This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
+    def "Invalid account name"() {
+        setup:
+        def badURL = new URL("http://fake.blobfake.core.windows.net")
+        def po = new PipelineOptions().withRequestRetryOptions(new RequestRetryOptions(null, 2, null, null, null, null))
+        def sURL = new ServiceURL(badURL, StorageURL.createPipeline(primaryCreds, po))
+
+        when:
+        sURL.getProperties().blockingGet()
+
+        then:
+        def e = thrown(RuntimeException)
+        e.getCause() instanceof UnknownHostException
     }
 }
