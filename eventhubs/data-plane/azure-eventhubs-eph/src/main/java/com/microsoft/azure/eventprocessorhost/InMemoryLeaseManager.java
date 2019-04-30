@@ -14,7 +14,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
 
 /***
- * An ILeaseManager implementation based on an in-memory store. 
+ * An ILeaseManager implementation based on an in-memory store.
  *
  * THIS CLASS IS PROVIDED AS A CONVENIENCE FOR TESTING ONLY. All data stored via this class is in memory
  * only and not persisted in any way. In addition, it is only visible within the same process: multiple
@@ -46,11 +46,11 @@ public class InMemoryLeaseManager implements ILeaseManager {
     public void initialize(HostContext hostContext) {
         this.hostContext = hostContext;
     }
-    
+
     public void setLatency(long milliseconds) {
         this.millisecondsLatency = milliseconds;
     }
-    
+
     private void latency(String caller) {
         if (this.millisecondsLatency > 0) {
             try {
@@ -91,7 +91,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
         latency("deleteLeaseStore");
         return CompletableFuture.completedFuture(null);
     }
-    
+
     @Override
     public CompletableFuture<CompleteLease> getLease(String partitionId) {
         TRACE_LOGGER.debug(this.hostContext.withHost("getLease()"));
@@ -110,7 +110,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
         latency("getAllLeasesStateInfo");
         return CompletableFuture.completedFuture(infos);
     }
-    
+
     @Override
     public CompletableFuture<Void> createAllLeasesIfNotExists(List<String> partitionIds) {
         ArrayList<CompletableFuture<BaseLease>> createFutures = new ArrayList<CompletableFuture<BaseLease>>();

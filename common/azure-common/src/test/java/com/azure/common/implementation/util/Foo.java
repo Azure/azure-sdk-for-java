@@ -23,15 +23,63 @@ import java.util.Map;
 })
 public class Foo {
     @JsonProperty(value = "properties.bar")
-    public String bar;
+    private String bar;
     @JsonProperty(value = "properties.props.baz")
-    public List<String> baz;
+    private List<String>  baz;
     @JsonProperty(value = "properties.props.q.qux")
-    public Map<String, String> qux;
+    private Map<String, String> qux;
     @JsonProperty(value = "properties.more\\.props")
-    public String moreProps;
+    private String moreProps;
     @JsonProperty(value = "props.empty")
-    public Integer empty;
+    private Integer empty;
     @JsonProperty(value = "")
-    public Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
+
+    public String bar() {
+        return bar;
+    }
+
+    public void bar(String bar) {
+        this.bar = bar;
+    }
+
+    public List<String> baz() {
+        return baz;
+    }
+
+    public void baz(List<String> baz) {
+        this.baz = baz;
+    }
+
+    public Map<String, String> qux() {
+        return qux;
+    }
+
+    public void qux(Map<String, String> qux) {
+        this.qux = qux;
+    }
+
+    public String moreProps() {
+        return moreProps;
+    }
+
+    public void moreProps(String moreProps) {
+        this.moreProps = moreProps;
+    }
+
+    public Integer empty() {
+        return empty;
+    }
+
+    public void empty(Integer empty) {
+        this.empty = empty;
+    }
+
+    public Map<String, Object> additionalProperties() {
+        return additionalProperties;
+    }
+
+    public void additionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
 }

@@ -47,7 +47,7 @@ public class FaultTolerantObject<T extends IOObject> {
                 public void onEvent() {
                     if (!creatingNewInnerObject
                             && (innerObject == null || innerObject.getState() == IOObject.IOObjectState.CLOSED
-                                || innerObject.getState() == IOObject.IOObjectState.CLOSING)) {
+                        || innerObject.getState() == IOObject.IOObjectState.CLOSING)) {
                         creatingNewInnerObject = true;
 
                         try {
@@ -59,6 +59,7 @@ public class FaultTolerantObject<T extends IOObject> {
                                     for (OperationResult<T, Exception> callback : openCallbacks) {
                                         callback.onComplete(result);
                                     }
+
                                     openCallbacks.clear();
                                 }
 
@@ -67,6 +68,7 @@ public class FaultTolerantObject<T extends IOObject> {
                                     for (OperationResult<T, Exception> callback : openCallbacks) {
                                         callback.onError(error);
                                     }
+
                                     openCallbacks.clear();
                                 }
                             });

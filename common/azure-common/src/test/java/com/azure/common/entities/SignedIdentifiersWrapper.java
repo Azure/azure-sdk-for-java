@@ -14,10 +14,17 @@ import java.util.List;
 public class SignedIdentifiersWrapper {
     @JacksonXmlProperty(localName = "SignedIdentifier")
     private final List<SignedIdentifierInner> signedIdentifiers;
+
+    /**
+     * Creates a wrapper for {@code signedIdentifiers}.
+     *
+     * @param signedIdentifiers Identifiers to wrap.
+     */
     @JsonCreator
     public SignedIdentifiersWrapper(@JsonProperty("signedIdentifiers") List<SignedIdentifierInner> signedIdentifiers) {
         this.signedIdentifiers = signedIdentifiers;
     }
+
     /**
      * Get the SignedIdentifiers value.
      *

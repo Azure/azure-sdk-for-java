@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
+import com.azure.common.exception.HttpRequestException;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
@@ -85,21 +88,9 @@ public class ConfigurationClientTest extends TestBase {
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
 
-        // TODO (alzimmer): Remove the try/catch sleep when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
         for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().key(keyPrefix + "*"))) {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
-            try {
-                client.deleteSetting(configurationSetting);
-            } catch (Throwable e) {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException ex) {
-
-                }
-
-                client.deleteSetting(configurationSetting);
-            }
-
+            client.deleteSetting(configurationSetting);
         }
 
         logger.info("Finished cleaning up values.");
@@ -586,7 +577,7 @@ public class ConfigurationClientTest extends TestBase {
     @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test
     public void deleteAllSettings() {
-        for(ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().key("*"))) {
+        for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().key("*"))) {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
             client.deleteSetting(configurationSetting);
         }
@@ -668,7 +659,7 @@ public class ConfigurationClientTest extends TestBase {
      */
     private static void assertRestException(Throwable ex, int expectedStatusCode) {
         assertTrue(ex instanceof ServiceRequestException);
-        assertEquals(expectedStatusCode, ((ServiceRequestException) ex).response().statusCode());
+        assertEquals(expectedStatusCode, ((HttpRequestException) ex).response().statusCode());
     }
 
     /**
