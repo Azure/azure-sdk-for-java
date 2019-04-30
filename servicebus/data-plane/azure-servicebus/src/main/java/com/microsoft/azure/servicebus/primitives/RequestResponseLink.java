@@ -204,7 +204,7 @@ class RequestResponseLink extends ClientEntity{
                     if (exception != null && exception instanceof ServiceBusException && ((ServiceBusException) exception).getIsTransient()) {
                         Duration nextRetryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(this.getClientId(), exception, this.underlyingFactory.getOperationTimeout());
                         if (nextRetryInterval != null) {
-                            Timer.schedule(() -> {RequestResponseLink.this.ensureUniqueLinkRecreation();}, nextRetryInterval, TimerType.OneTimeRun);
+                            Timer.schedule(() -> RequestResponseLink.this.ensureUniqueLinkRecreation(), nextRetryInterval, TimerType.OneTimeRun);
                         } else {
                             this.completeAllPendingRequestsWithException(exception);
                         }
