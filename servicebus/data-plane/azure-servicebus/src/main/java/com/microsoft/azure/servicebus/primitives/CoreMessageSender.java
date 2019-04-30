@@ -763,7 +763,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                 if (sendData.getWork() != null && sendData.getWork().isDone()) {
                     // CoreSend could enqueue Sends into PendingSends Queue and can fail the SendCompletableFuture
                     // (when It fails to schedule the ProcessSendWork on reactor Thread)
-                    this.pendingSendsData.remove(sendData);
+                    this.pendingSendsData.remove(deliveryTag.getDeliveryTag());
                     continue;
                 }
 
