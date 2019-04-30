@@ -9,11 +9,15 @@ import com.microsoft.azure.eventhubs.ServerBusyException;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.logging.Level;
 
 public class RetryPolicyTest extends TestBase {
+    public RetryPolicyTest() {
+        super(LoggerFactory.getLogger(RetryPolicyTest.class));
+    }
+
     @Test
     public void testRetryPolicy() {
         String clientId = "someClientEntity";
@@ -21,12 +25,12 @@ public class RetryPolicyTest extends TestBase {
 
         retry.incrementRetryCount(clientId);
         Duration firstRetryInterval = retry.getNextRetryInterval(clientId, new ServerBusyException(), Duration.ofSeconds(60));
-        TestBase.TEST_LOGGER.log(Level.FINE, "firstRetryInterval: " + firstRetryInterval.toString());
+        logger.trace("firstRetryInterval: " + firstRetryInterval.toString());
         Assert.assertNotNull(firstRetryInterval);
 
         retry.incrementRetryCount(clientId);
         Duration secondRetryInterval = retry.getNextRetryInterval(clientId, new ServerBusyException(), Duration.ofSeconds(60));
-        TestBase.TEST_LOGGER.log(Level.FINE, "secondRetryInterval: " + secondRetryInterval.toString());
+        logger.trace("secondRetryInterval: " + secondRetryInterval.toString());
 
         Assert.assertNotNull(secondRetryInterval);
         Assert.assertTrue(secondRetryInterval.getSeconds() > firstRetryInterval.getSeconds()
@@ -34,7 +38,7 @@ public class RetryPolicyTest extends TestBase {
 
         retry.incrementRetryCount(clientId);
         Duration thirdRetryInterval = retry.getNextRetryInterval(clientId, new ServerBusyException(), Duration.ofSeconds(60));
-        TestBase.TEST_LOGGER.log(Level.FINE, "thirdRetryInterval: " + thirdRetryInterval.toString());
+        logger.trace("thirdRetryInterval: " + thirdRetryInterval.toString());
 
         Assert.assertNotNull(thirdRetryInterval);
         Assert.assertTrue(thirdRetryInterval.getSeconds() > secondRetryInterval.getSeconds()
@@ -42,7 +46,7 @@ public class RetryPolicyTest extends TestBase {
 
         retry.incrementRetryCount(clientId);
         Duration fourthRetryInterval = retry.getNextRetryInterval(clientId, new ServerBusyException(), Duration.ofSeconds(60));
-        TestBase.TEST_LOGGER.log(Level.FINE, "fourthRetryInterval: " + fourthRetryInterval.toString());
+        logger.trace("fourthRetryInterval: " + fourthRetryInterval.toString());
 
         Assert.assertNotNull(fourthRetryInterval);
         Assert.assertTrue(fourthRetryInterval.getSeconds() > thirdRetryInterval.getSeconds()
@@ -50,7 +54,7 @@ public class RetryPolicyTest extends TestBase {
 
         retry.incrementRetryCount(clientId);
         Duration fifthRetryInterval = retry.getNextRetryInterval(clientId, new ServerBusyException(), Duration.ofSeconds(60));
-        TestBase.TEST_LOGGER.log(Level.FINE, "fifthRetryInterval: " + fifthRetryInterval.toString());
+        logger.trace("fifthRetryInterval: " + fifthRetryInterval.toString());
 
         Assert.assertNotNull(fifthRetryInterval);
         Assert.assertTrue(fifthRetryInterval.getSeconds() > fourthRetryInterval.getSeconds()
@@ -58,7 +62,7 @@ public class RetryPolicyTest extends TestBase {
 
         retry.incrementRetryCount(clientId);
         Duration sixthRetryInterval = retry.getNextRetryInterval(clientId, new ServerBusyException(), Duration.ofSeconds(60));
-        TestBase.TEST_LOGGER.log(Level.FINE, "sixthRetryInterval: " + sixthRetryInterval.toString());
+        logger.trace("sixthRetryInterval: " + sixthRetryInterval.toString());
 
         Assert.assertNotNull(sixthRetryInterval);
         Assert.assertTrue(sixthRetryInterval.getSeconds() > fifthRetryInterval.getSeconds()
@@ -66,7 +70,7 @@ public class RetryPolicyTest extends TestBase {
 
         retry.incrementRetryCount(clientId);
         Duration seventhRetryInterval = retry.getNextRetryInterval(clientId, new ServerBusyException(), Duration.ofSeconds(60));
-        TestBase.TEST_LOGGER.log(Level.FINE, "seventhRetryInterval: " + seventhRetryInterval.toString());
+        logger.trace("seventhRetryInterval: " + seventhRetryInterval.toString());
 
         Assert.assertNotNull(seventhRetryInterval);
         Assert.assertTrue(seventhRetryInterval.getSeconds() > sixthRetryInterval.getSeconds()

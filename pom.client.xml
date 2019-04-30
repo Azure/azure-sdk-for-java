@@ -109,7 +109,7 @@
     <commons-codec.version>1.10</commons-codec.version>
     <spotbugs.version>3.1.11</spotbugs.version>
     <proton-j-version>0.31.0</proton-j-version>
-    <qpid-proton-j-extensions-version>1.1.0</qpid-proton-j-extensions-version>
+    <qpid-proton-j-extensions-version>1.2.0</qpid-proton-j-extensions-version>
     <log4j-api.version>2.11.1</log4j-api.version>
     <groovy-eclipse-compiler.version>2.9.3-01</groovy-eclipse-compiler.version>
     <groovy-eclipse-batch.version>2.4.16-03</groovy-eclipse-batch.version>
@@ -249,13 +249,13 @@
         <artifactId>log4j-api</artifactId>
         <version>${log4j-api.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>com.microsoft.rest.v2</groupId>
         <artifactId>client-runtime</artifactId>
         <version>${client-runtime.version.v2}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
@@ -362,7 +362,7 @@
         <version>${cglib-nodep.version}</version>
         <scope>test</scope>
       </dependency>
-      
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
