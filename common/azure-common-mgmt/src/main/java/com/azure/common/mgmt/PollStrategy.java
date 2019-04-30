@@ -3,7 +3,7 @@
 
 package com.azure.common.mgmt;
 
-import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.exception.HttpRequestException;
 import com.azure.common.http.ContextData;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
@@ -170,7 +170,7 @@ abstract class PollStrategy {
             try {
                 final Object resultObject = restProxy.handleRestReturnType(new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser), methodParser, operationStatusResultType);
                 operationStatus = new OperationStatus<>(resultObject, status());
-            } catch (ServiceRequestException e) {
+            } catch (HttpRequestException e) {
                 operationStatus = new OperationStatus<>(e, OperationState.FAILED);
             }
         }
