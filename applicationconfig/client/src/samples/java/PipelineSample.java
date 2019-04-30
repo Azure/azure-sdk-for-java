@@ -5,12 +5,12 @@ import com.azure.applicationconfig.ConfigurationAsyncClient;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.http.HttpMethod;
-import com.azure.common.http.HttpPipelineCallContext;
-import com.azure.common.http.HttpPipelineNextPolicy;
-import com.azure.common.http.HttpResponse;
-import com.azure.common.http.policy.HttpLogDetailLevel;
-import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

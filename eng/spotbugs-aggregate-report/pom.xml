@@ -85,23 +85,23 @@
         </dependency-->
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-common</artifactId>
-          <version>${azure-common.version}</version>
+          <artifactId>azure-core</artifactId>
+          <version>${azure-core.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-common-auth</artifactId>
-          <version>${azure-common-auth.version}</version>
+          <artifactId>azure-core-auth</artifactId>
+          <version>${azure-core-auth.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-common-mgmt</artifactId>
-          <version>${azure-common-mgmt.version}</version>
+          <artifactId>azure-core-mgmt</artifactId>
+          <version>${azure-core-mgmt.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-common-test</artifactId>
-          <version>${azure-common-test.version}</version>
+          <artifactId>azure-core-test</artifactId>
+          <version>${azure-core-test.version}</version>
         </dependency>
     </dependencies>
 
@@ -121,10 +121,10 @@
                             <sources>
                                 <source>..\..\applicationconfig\client\src\main\java</source>
                                 <source>..\..\batch\data-plane\src\main\java</source>
-                                <source>..\..\common\azure-common\src\main\java</source>
-                                <source>..\..\common\azure-common-auth\src\main\java</source>
-                                <source>..\..\common\azure-common-mgmt\src\main\java</source>
-                                <source>..\..\common\azure-common-test\src\main\java</source>
+                                <source>..\..\core\azure-core\src\main\java</source>
+                                <source>..\..\core\azure-core-auth\src\main\java</source>
+                                <source>..\..\core\azure-core-mgmt\src\main\java</source>
+                                <source>..\..\core\azure-core-test\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>

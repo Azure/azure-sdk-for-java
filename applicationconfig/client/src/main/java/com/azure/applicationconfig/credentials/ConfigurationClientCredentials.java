@@ -4,9 +4,9 @@ package com.azure.applicationconfig.credentials;
 
 import com.azure.applicationconfig.ConfigurationAsyncClientBuilder;
 import com.azure.applicationconfig.policy.ConfigurationCredentialsPolicy;
-import com.azure.common.credentials.AsyncServiceClientCredentials;
-import com.azure.common.http.HttpHeaders;
-import com.azure.common.http.HttpRequest;
+import com.azure.core.credentials.AsyncServiceClientCredentials;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
