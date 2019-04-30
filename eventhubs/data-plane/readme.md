@@ -41,11 +41,11 @@ the required versions of Apache Qpid Proton-J, and the cryptography library BCPK
 |azure-eventhubs|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-eventhubs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-eventhubs)
 
 ```XML
-   	<dependency> 
-   		<groupId>com.microsoft.azure</groupId> 
-   		<artifactId>azure-eventhubs</artifactId> 
-   		<version>2.0.0</version>
-   	</dependency>
+    <dependency>
+        <groupId>com.microsoft.azure</groupId> 
+        <artifactId>azure-eventhubs</artifactId> 
+        <version>2.3.0</version>
+    </dependency>
 ```
 
 #### Microsoft Azure EventHubs Java Event Processor Host library
@@ -58,12 +58,12 @@ It pulls the required versions of Event Hubs, Azure Storage and GSon libraries.
 |azure-eventhubs-eph|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-eventhubs-eph/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-eventhubs-eph)
 
 ```XML
-   	<dependency> 
-   		<groupId>com.microsoft.azure</groupId> 
-   		<artifactId>azure-eventhubs-eph</artifactId> 
-   		<version>2.2.0</version>
-   	</dependency>
-```  
+    <dependency>
+        <groupId>com.microsoft.azure</groupId> 
+        <artifactId>azure-eventhubs-eph</artifactId> 
+        <version>2.5.0</version>
+    </dependency>
+```
 
 ## How to provide feedback
 
