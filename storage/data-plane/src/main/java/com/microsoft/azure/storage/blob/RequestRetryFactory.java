@@ -3,7 +3,13 @@
 
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.rest.v2.http.*;
+import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpMethod;
+import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.http.UnexpectedLengthException;
+import com.microsoft.rest.v2.http.UrlBuilder;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
@@ -44,7 +50,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
         return new RequestRetryPolicy(next, this.requestRetryOptions);
     }
 
-    private final class RequestRetryPolicy implements RequestPolicy {
+    private final static class RequestRetryPolicy implements RequestPolicy {
 
         private final RequestPolicy nextPolicy;
 
@@ -97,7 +103,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
             logf("\n=====> Try=%d\n", attempt);
 
             // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
-            final boolean tryingPrimary = !considerSecondary || (attempt % 2 == 1);
+            final boolean tryingPrimary = !considerSecondary || (attempt % 2 != 0);
 
             // Select the correct host and delay.
             long delayMs;

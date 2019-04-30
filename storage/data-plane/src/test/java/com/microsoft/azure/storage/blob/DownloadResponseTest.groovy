@@ -34,7 +34,7 @@ class DownloadResponseTest extends APISpec {
         def info = new HTTPGetterInfo()
         info.withOffset(0)
                 .withCount(flowable.getScenarioData().remaining())
-                .withETag("etag")
+                .withETag("getEtag")
 
         def options = new ReliableDownloadOptions()
         options.withMaxRetryRequests(5)
@@ -66,7 +66,7 @@ class DownloadResponseTest extends APISpec {
         def options = new ReliableDownloadOptions()
                 .withMaxRetryRequests(5)
 
-        def info = new HTTPGetterInfo().withETag("etag")
+        def info = new HTTPGetterInfo().withETag("getEtag")
         def mockRawResponse = flowable.getter(info).blockingGet().rawResponse()
 
         when:
@@ -131,7 +131,7 @@ class DownloadResponseTest extends APISpec {
 
         when:
         def response = new DownloadResponse(flowable.getter(new HTTPGetterInfo()).blockingGet()
-                .rawResponse(), new HTTPGetterInfo().withETag("etag"), null)
+                .rawResponse(), new HTTPGetterInfo().withETag("getEtag"), null)
         response.body(null).blockingSubscribe()
 
         then:
@@ -144,7 +144,7 @@ class DownloadResponseTest extends APISpec {
         def info = new HTTPGetterInfo()
         info.withOffset(20)
         info.withCount(10)
-        info.withETag("etag")
+        info.withETag("getEtag")
         def options = new ReliableDownloadOptions()
         options.withMaxRetryRequests(5)
 

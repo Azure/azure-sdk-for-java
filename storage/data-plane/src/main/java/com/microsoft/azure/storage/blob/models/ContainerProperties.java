@@ -5,9 +5,9 @@
 package com.microsoft.azure.storage.blob.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.microsoft.rest.v2.DateTimeRfc1123;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -22,7 +22,7 @@ public final class ContainerProperties {
     private DateTimeRfc1123 lastModified;
 
     /**
-     * The etag property.
+     * The eTag property.
      */
     @JsonProperty(value = "Etag", required = true)
     private String etag;
@@ -92,18 +92,18 @@ public final class ContainerProperties {
     }
 
     /**
-     * Get the etag value.
+     * Get the eTag value.
      *
-     * @return the etag value.
+     * @return the eTag value.
      */
-    public String etag() {
+    public String getEtag() {
         return this.etag;
     }
 
     /**
-     * Set the etag value.
+     * Set the eTag value.
      *
-     * @param etag the etag value to set.
+     * @param etag the eTag value to set.
      * @return the ContainerProperties object itself.
      */
     public ContainerProperties withEtag(String etag) {

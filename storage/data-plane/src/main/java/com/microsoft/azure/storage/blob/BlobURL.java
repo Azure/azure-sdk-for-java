@@ -3,7 +3,29 @@
 
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.azure.storage.blob.models.AccessTier;
+import com.microsoft.azure.storage.blob.models.BlobAbortCopyFromURLResponse;
+import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobBreakLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobChangeLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobCopyFromURLResponse;
+import com.microsoft.azure.storage.blob.models.BlobCreateSnapshotResponse;
+import com.microsoft.azure.storage.blob.models.BlobDeleteResponse;
+import com.microsoft.azure.storage.blob.models.BlobGetAccountInfoResponse;
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse;
+import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
+import com.microsoft.azure.storage.blob.models.BlobReleaseLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobRenewLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobSetHTTPHeadersResponse;
+import com.microsoft.azure.storage.blob.models.BlobSetMetadataResponse;
+import com.microsoft.azure.storage.blob.models.BlobSetTierResponse;
+import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLResponse;
+import com.microsoft.azure.storage.blob.models.BlobUndeleteResponse;
+import com.microsoft.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+import com.microsoft.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Single;
@@ -353,7 +375,7 @@ public class BlobURL extends StorageURL {
                 accessConditions.modifiedAccessConditions()))
                 // Convert the autorest response to a DownloadResponse, which enable reliable download.
                 .map(response -> {
-                    // If there wasn't an etag originally specified, lock on the one returned.
+                    // If there wasn't an eTag originally specified, lock on the one returned.
                     info.withETag(response.headers().eTag());
                     return new DownloadResponse(response, info,
                             // In the event of a stream failure, make a new request to pick up where we left off.
@@ -361,7 +383,7 @@ public class BlobURL extends StorageURL {
                                     this.download(new BlobRange().withOffset(newInfo.offset())
                                                     .withCount(newInfo.count()),
                                             new BlobAccessConditions().withModifiedAccessConditions(
-                                                    new ModifiedAccessConditions().withIfMatch(info.eTag())), false,
+                                                    new ModifiedAccessConditions().withIfMatch(info.getEtag())), false,
                                             context == null ? Context.NONE : context));
                 });
     }
@@ -594,7 +616,7 @@ public class BlobURL extends StorageURL {
     /**
      * Sets the tier on a blob. The operation is allowed on a page blob in a premium storage account or a block blob in
      * a blob storage or GPV2 account. A premium page blob's tier determines the allowed size, IOPS, and bandwidth of
-     * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's etag.
+     * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's eTag.
      * <p>
      * For detailed information about block blob level tiering see the <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.">Azure Docs</a>.
      *
@@ -614,7 +636,7 @@ public class BlobURL extends StorageURL {
     /**
      * Sets the tier on a blob. The operation is allowed on a page blob in a premium storage account or a block blob in
      * a blob storage or GPV2 account. A premium page blob's tier determines the allowed size, IOPS, and bandwidth of
-     * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's etag.
+     * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's eTag.
      * <p>
      * For detailed information about block blob level tiering see the <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.">Azure Docs</a>.
      *

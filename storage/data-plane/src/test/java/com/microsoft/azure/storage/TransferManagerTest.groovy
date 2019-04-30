@@ -649,7 +649,7 @@ class TransferManagerTest extends APISpec {
         when:
         /*
          Set up a large download in small chunks so it makes a lot of requests. This will give us time to cut in an
-         operation that will change the etag.
+         operation that will change the getEtag.
          */
         def success = false
         TransferManager.downloadBlobToFile(outChannel, bu, null,

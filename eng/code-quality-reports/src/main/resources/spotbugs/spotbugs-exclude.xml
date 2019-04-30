@@ -331,4 +331,23 @@
     <Class name="com.azure.common.mgmt.AzureProxy"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
+
+  <!-- It is an encoded version of all SAS query parameters, which will further be appended to a request URL.
+  a default case wouldn't make sense in this case. -->
+  <Match>
+    <Class name="com.microsoft.azure.storage.blob.SASQueryParameters"/>
+    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+  </Match>
+
+  <!-- The field to designed to be here. -->
+  <Match>
+    <Class name="com.microsoft.azure.storage.blob.RequestIDFactory$RequestIDPolicy"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- The method to designed to be here. -->
+  <Match>
+    <Class name="com.microsoft.azure.storage.blob.SharedKeyCredentials"/>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
 </FindBugsFilter>

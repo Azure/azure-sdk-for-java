@@ -5,10 +5,10 @@
 package com.microsoft.azure.storage.blob.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.microsoft.rest.v2.DateTimeRfc1123;
 import com.microsoft.rest.v2.annotations.HeaderCollection;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -133,7 +133,7 @@ public final class ContainerGetPropertiesHeaders {
     /**
      * Set the eTag value.
      *
-     * @param eTag the eTag value to set.
+     * @param eTag the eTag va lue to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
     public ContainerGetPropertiesHeaders withETag(String eTag) {

@@ -259,17 +259,17 @@ final class Utility {
     }
 
     /*
-    The service is inconsistent in whether or not the etag header value has quotes. This method will check if the
-    response returns an etag value, and if it does, remove any quotes that may be present to give the user a more
+    The service is inconsistent in whether or not the eTag header value has quotes. This method will check if the
+    response returns an eTag value, and if it does, remove any quotes that may be present to give the user a more
     predictable format to work with.
      */
     private static <T> Single<T> scrubEtagHeaderInResponse(Single<T> s) {
         return s.map(response -> {
             try {
                 Object headers = response.getClass().getMethod("headers").invoke(response);
-                Method etagGetterMethod = headers.getClass().getMethod("eTag");
+                Method etagGetterMethod = headers.getClass().getMethod("getEtag");
                 String etag = (String) etagGetterMethod.invoke(headers);
-                // CommitBlockListHeaders has an etag property, but it's only set if the blob has committed blocks.
+                // CommitBlockListHeaders has an eTag property, but it's only set if the blob has committed blocks.
                 if (etag == null) {
                     return response;
                 }

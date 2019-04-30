@@ -16,7 +16,7 @@ public final class TransferManagerDownloadFromBlobOptions {
 
     private final ReliableDownloadOptions reliableDownloadOptionsPerBlock;
 
-    // Cannot be final because we may have to set this property in order to lock on the etag.
+    // Cannot be final because we may have to set this property in order to lock on the eTag.
     private BlobAccessConditions accessConditions;
 
     public TransferManagerDownloadFromBlobOptions() {

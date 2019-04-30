@@ -8,6 +8,7 @@ import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpRequest;
 import io.reactivex.Flowable;
 import io.reactivex.internal.functions.Functions;
+
 import java.io.Closeable;
 import java.nio.ByteBuffer;
 import java.util.Map;

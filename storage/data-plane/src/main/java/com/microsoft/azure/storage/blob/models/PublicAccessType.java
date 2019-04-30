@@ -6,6 +6,7 @@ package com.microsoft.azure.storage.blob.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.microsoft.rest.v2.ExpandableStringEnum;
+
 import java.util.Collection;
 
 /**

@@ -20,7 +20,7 @@ import java.util.Map;
  * appropriate. If the download is interrupted, the {@code DownloadResponse} will make a request to resume the download
  * from where it left off, allowing the user to consume the data as one continuous stream, for any interruptions are
  * hidden. The retry behavior is defined by the options passed to the {@link #body(ReliableDownloadOptions)}. The
- * download will also lock on the blob's etag to ensure consistency.
+ * download will also lock on the blob's eTag to ensure consistency.
  * <p>
  * Note that the retries performed as a part of this reader are composed with those of any retries in an {@link
  * HttpPipeline} used in conjunction with this reader. That is, if this object issues a request to resume a download,
@@ -41,7 +41,7 @@ public final class DownloadResponse {
             HTTPGetterInfo info, Function<HTTPGetterInfo, Single<DownloadResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
-        Utility.assertNotNull("info.eTag", info.eTag());
+        Utility.assertNotNull("info.eTag", info.getEtag());
         this.rawResponse = response;
         this.info = info;
         this.getter = getter;

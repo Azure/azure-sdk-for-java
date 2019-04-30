@@ -99,7 +99,7 @@ public final class LoggingFactory implements RequestPolicyFactory {
         return new LoggingPolicy(this, next, options);
     }
 
-    private final class LoggingPolicy implements RequestPolicy {
+    private final static class LoggingPolicy implements RequestPolicy {
 
         private final LoggingFactory factory;
 

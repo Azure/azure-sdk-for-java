@@ -13,7 +13,6 @@ import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.security.MessageDigest
-import java.sql.Blob
 
 class PageBlobAPITest extends APISpec {
     PageBlobURL bu

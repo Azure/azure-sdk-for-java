@@ -3,8 +3,61 @@
 
 package com.microsoft.azure.storage;
 
-import com.microsoft.azure.storage.blob.*;
-import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.azure.storage.blob.AccountSASPermission;
+import com.microsoft.azure.storage.blob.AccountSASResourceType;
+import com.microsoft.azure.storage.blob.AccountSASService;
+import com.microsoft.azure.storage.blob.AccountSASSignatureValues;
+import com.microsoft.azure.storage.blob.AnonymousCredentials;
+import com.microsoft.azure.storage.blob.AppendBlobURL;
+import com.microsoft.azure.storage.blob.BlobAccessConditions;
+import com.microsoft.azure.storage.blob.BlobRange;
+import com.microsoft.azure.storage.blob.BlobSASPermission;
+import com.microsoft.azure.storage.blob.BlobURL;
+import com.microsoft.azure.storage.blob.BlobURLParts;
+import com.microsoft.azure.storage.blob.BlockBlobURL;
+import com.microsoft.azure.storage.blob.ContainerURL;
+import com.microsoft.azure.storage.blob.DownloadResponse;
+import com.microsoft.azure.storage.blob.ListBlobsOptions;
+import com.microsoft.azure.storage.blob.ListContainersOptions;
+import com.microsoft.azure.storage.blob.LoggingOptions;
+import com.microsoft.azure.storage.blob.Metadata;
+import com.microsoft.azure.storage.blob.PageBlobURL;
+import com.microsoft.azure.storage.blob.PipelineOptions;
+import com.microsoft.azure.storage.blob.ProgressReporter;
+import com.microsoft.azure.storage.blob.ReliableDownloadOptions;
+import com.microsoft.azure.storage.blob.RequestRetryOptions;
+import com.microsoft.azure.storage.blob.RetryPolicyType;
+import com.microsoft.azure.storage.blob.SASProtocol;
+import com.microsoft.azure.storage.blob.SASQueryParameters;
+import com.microsoft.azure.storage.blob.ServiceSASSignatureValues;
+import com.microsoft.azure.storage.blob.ServiceURL;
+import com.microsoft.azure.storage.blob.SharedKeyCredentials;
+import com.microsoft.azure.storage.blob.StorageException;
+import com.microsoft.azure.storage.blob.StorageURL;
+import com.microsoft.azure.storage.blob.TransferManager;
+import com.microsoft.azure.storage.blob.TransferManagerUploadToBlockBlobOptions;
+import com.microsoft.azure.storage.blob.URLParser;
+import com.microsoft.azure.storage.blob.models.AccessPolicy;
+import com.microsoft.azure.storage.blob.models.AccessTier;
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse;
+import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
+import com.microsoft.azure.storage.blob.models.BlobItem;
+import com.microsoft.azure.storage.blob.models.BlobPrefix;
+import com.microsoft.azure.storage.blob.models.BlockListType;
+import com.microsoft.azure.storage.blob.models.ContainerCreateResponse;
+import com.microsoft.azure.storage.blob.models.ContainerItem;
+import com.microsoft.azure.storage.blob.models.ContainerListBlobFlatSegmentResponse;
+import com.microsoft.azure.storage.blob.models.ContainerListBlobHierarchySegmentResponse;
+import com.microsoft.azure.storage.blob.models.CopyStatusType;
+import com.microsoft.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+import com.microsoft.azure.storage.blob.models.PageRange;
+import com.microsoft.azure.storage.blob.models.PublicAccessType;
+import com.microsoft.azure.storage.blob.models.SequenceNumberActionType;
+import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentResponse;
+import com.microsoft.azure.storage.blob.models.SignedIdentifier;
+import com.microsoft.azure.storage.blob.models.StorageErrorCode;
+import com.microsoft.azure.storage.blob.models.StorageServiceProperties;
 import com.microsoft.rest.v2.RestException;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
@@ -30,7 +83,11 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -794,7 +851,7 @@ public class Samples {
                 // Delete the blob if it exists (succeeds).
                 blobURL.delete(DeleteSnapshotsOptionType.INCLUDE,
                         new BlobAccessConditions().withModifiedAccessConditions(
-                                // Wildcard will match any etag.
+                                // Wildcard will match any eTag.
                                 new ModifiedAccessConditions().withIfMatch("*")), null))
                 .flatMap(blobDeleteResponse -> {
                     System.out.println("Success: " + blobDeleteResponse.statusCode());

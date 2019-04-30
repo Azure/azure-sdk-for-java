@@ -50,8 +50,6 @@ import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

@@ -5,9 +5,9 @@
 package com.microsoft.azure.storage.blob.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.microsoft.rest.v2.DateTimeRfc1123;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -61,18 +61,18 @@ public final class PageBlobUpdateSequenceNumberHeaders {
     private DateTimeRfc1123 date;
 
     /**
-     * Get the eTag value.
+     * Get the getEtag value.
      *
-     * @return the eTag value.
+     * @return the getEtag value.
      */
     public String eTag() {
         return this.eTag;
     }
 
     /**
-     * Set the eTag value.
+     * Set the getEtag value.
      *
-     * @param eTag the eTag value to set.
+     * @param eTag the getEtag value to set.
      * @return the PageBlobUpdateSequenceNumberHeaders object itself.
      */
     public PageBlobUpdateSequenceNumberHeaders withETag(String eTag) {

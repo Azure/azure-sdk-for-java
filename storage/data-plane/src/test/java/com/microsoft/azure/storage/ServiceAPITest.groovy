@@ -3,8 +3,7 @@
 
 package com.microsoft.azure.storage
 
-import com.microsoft.aad.adal4j.AuthenticationContext
-import com.microsoft.aad.adal4j.ClientCredential
+
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.Context
@@ -12,7 +11,6 @@ import com.microsoft.rest.v2.http.HttpPipeline
 import org.junit.Assume
 
 import java.time.OffsetDateTime
-import java.util.concurrent.Executors
 
 class ServiceAPITest extends APISpec {
     def setup() {
@@ -56,7 +54,7 @@ class ServiceAPITest extends APISpec {
         for (ContainerItem c : response.body().containerItems()) {
             assert c.name().startsWith(containerPrefix)
             assert c.properties().lastModified() != null
-            assert c.properties().etag() != null
+            assert c.properties().getEtag() != null
             assert c.properties().leaseStatus() != null
             assert c.properties().leaseState() != null
             assert c.properties().leaseDuration() == null

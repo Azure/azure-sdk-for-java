@@ -15,7 +15,11 @@ import io.reactivex.Single;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -117,7 +121,7 @@ public final class TransferManager {
                                 progressLock, totalProgress);
 
                     final String blockId = Base64.getEncoder().encodeToString(
-                            UUID.randomUUID().toString().getBytes());
+                            UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
 
                     /*
                     Make a call to stageBlock. Instead of emitting the response, which we don't care about other
@@ -197,7 +201,7 @@ public final class TransferManager {
         Lock progressLock = new ReentrantLock();
         AtomicLong totalProgress = new AtomicLong(0);
 
-        // Get the size of the data and etag if not specified by the user.
+        // Get the size of the data and eTag if not specified by the user.
         Single<DownloadHelper> setupSingle = getSetupSingle(blobURL, rangeReal, optionsReal);
 
         return setupSingle.flatMap(helper -> {
@@ -237,7 +241,7 @@ public final class TransferManager {
 
     /*
     Construct a Single which will emit the total count for calculating the number of chunks, access conditions
-    containing the etag to lock on, and the response from downloading the first chunk.
+    containing the eTag to lock on, and the response from downloading the first chunk.
      */
     private static Single<DownloadHelper> getSetupSingle(BlobURL blobURL, BlobRange r,
             TransferManagerDownloadFromBlobOptions o) {
@@ -248,8 +252,8 @@ public final class TransferManager {
                 o.accessConditions(), false, null)
                 .map(response -> {
                     /*
-                    Either the etag was set and it matches because the download succeed, so this is a no-op, or there
-                    was no etag, so we set it here.
+                    Either the eTag was set and it matches because the download succeed, so this is a no-op, or there
+                    was no eTag, so we set it here.
                      */
                     BlobAccessConditions newConditions = setEtag(o.accessConditions(), response.headers().eTag());
 
@@ -301,7 +305,7 @@ public final class TransferManager {
     private static BlobAccessConditions setEtag(BlobAccessConditions accessConditions, String etag) {
         /*
         We don't want to modify the user's object, so we'll create a duplicate and set the
-        retrieved etag.
+        retrieved eTag.
          */
         return new BlobAccessConditions()
                 .withModifiedAccessConditions(new ModifiedAccessConditions()
@@ -445,7 +449,7 @@ public final class TransferManager {
                             optionsReal.progressReceiver(), progressLock, totalProgress);
 
                     final String blockId = Base64.getEncoder().encodeToString(
-                            UUID.randomUUID().toString().getBytes());
+                            UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
 
                     /*
                     Make a call to stageBlock. Instead of emitting the response, which we don't care about other

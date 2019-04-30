@@ -12,7 +12,6 @@ import io.reactivex.Flowable
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousFileChannel
 import java.security.MessageDigest
 
 class AppendBlobAPITest extends APISpec {

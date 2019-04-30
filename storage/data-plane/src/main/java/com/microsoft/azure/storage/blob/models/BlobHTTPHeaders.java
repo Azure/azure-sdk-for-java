@@ -4,8 +4,8 @@
 
 package com.microsoft.azure.storage.blob.models;
 
+import com.azure.common.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
@@ -101,7 +101,7 @@ public final class BlobHTTPHeaders {
      * @return the blobContentMD5 value.
      */
     public byte[] blobContentMD5() {
-        return this.blobContentMD5;
+        return ImplUtils.clone(this.blobContentMD5);
     }
 
     /**
@@ -111,7 +111,7 @@ public final class BlobHTTPHeaders {
      * @return the BlobHTTPHeaders object itself.
      */
     public BlobHTTPHeaders withBlobContentMD5(byte[] blobContentMD5) {
-        this.blobContentMD5 = blobContentMD5;
+        this.blobContentMD5 = ImplUtils.clone(blobContentMD5);
         return this;
     }
 

@@ -48,6 +48,11 @@
 
     <dependencies>
         <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-common</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.microsoft.rest.v2</groupId>
             <artifactId>client-runtime</artifactId>
         </dependency>

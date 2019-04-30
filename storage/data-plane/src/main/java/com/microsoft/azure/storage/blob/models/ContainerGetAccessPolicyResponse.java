@@ -6,7 +6,7 @@ package com.microsoft.azure.storage.blob.models;
 
 import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpRequest;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 

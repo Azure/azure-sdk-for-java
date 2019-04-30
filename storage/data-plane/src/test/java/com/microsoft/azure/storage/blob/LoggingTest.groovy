@@ -5,19 +5,13 @@ package com.microsoft.azure.storage.blob
 
 import com.microsoft.azure.storage.APISpec
 import com.microsoft.rest.v2.http.HttpHeaders
-import com.microsoft.rest.v2.http.HttpMethod
 import com.microsoft.rest.v2.http.HttpPipelineLogLevel
-import com.microsoft.rest.v2.http.HttpPipelineLogger
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Single
-import org.slf4j.LoggerFactory
 import spock.lang.Unroll
-import uk.org.lidalia.slf4jtest.TestLogger
 import uk.org.lidalia.slf4jtest.TestLoggerFactory
-
-import java.util.logging.Logger
 
 class LoggingTest extends APISpec {
     /*

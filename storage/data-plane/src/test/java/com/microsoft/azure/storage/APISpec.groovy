@@ -18,7 +18,6 @@ import org.spockframework.lang.ISpecificationContext
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.lang.reflect.Method
 import java.nio.ByteBuffer
 import java.time.OffsetDateTime
 import java.util.concurrent.Executors
@@ -59,7 +58,7 @@ class APISpec extends Specification {
     static final OffsetDateTime newDate = OffsetDateTime.now().plusDays(1)
 
     /*
-    Note that this value is only used to check if we are depending on the received etag. This value will not actually
+    Note that this value is only used to check if we are depending on the received eTag. This value will not actually
     be used.
      */
     static final String receivedEtag = "received"
@@ -67,7 +66,7 @@ class APISpec extends Specification {
     static final String garbageEtag = "garbage"
 
     /*
-    Note that this value is only used to check if we are depending on the received etag. This value will not actually
+    Note that this value is only used to check if we are depending on the received eTag. This value will not actually
     be used.
      */
     static final String receivedLeaseID = "received"
@@ -313,16 +312,16 @@ class APISpec extends Specification {
     }
 
     /**
-     * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
+     * This will retrieve the eTag to be used in testing match conditions. The result will typically be assigned to
      * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
      *
      * @param bu
-     *      The URL to the blob to get the etag on.
+     *      The URL to the blob to get the eTag on.
      * @param match
      *      The ETag value for this test. If {@code receivedEtag} is passed, that will signal that the test is expecting
-     *      the blob's actual etag for this test, so it is retrieved.
+     *      the blob's actual eTag for this test, so it is retrieved.
      * @return
-     * The appropriate etag value to run the current test.
+     * The appropriate eTag value to run the current test.
      */
     def setupBlobMatchCondition(BlobURL bu, String match) {
         if (match == receivedEtag) {
@@ -407,9 +406,9 @@ class APISpec extends Specification {
      * Whether or not the header values are appropriate.
      */
     def validateBasicHeaders(Object headers) {
-        return headers.class.getMethod("eTag").invoke(headers) != null &&
-                // Quotes should be scrubbed from etag header values
-                !((String)(headers.class.getMethod("eTag").invoke(headers))).contains("\"") &&
+        return headers.class.getMethod("getEtag").invoke(headers) != null &&
+                // Quotes should be scrubbed from eTag header values
+                !((String)(headers.class.getMethod("getEtag").invoke(headers))).contains("\"") &&
                 headers.class.getMethod("lastModified").invoke(headers) != null &&
                 headers.class.getMethod("requestId").invoke(headers) != null &&
                 headers.class.getMethod("version").invoke(headers) != null &&
@@ -497,9 +496,9 @@ class APISpec extends Specification {
             Object deserializedHeaders() {
                 def headers = responseHeadersType.getConstructor().newInstance()
 
-                // If the headers have an etag method, we need to set it to prevent postProcessResponse from breaking.
+                // If the headers have an eTag method, we need to set it to prevent postProcessResponse from breaking.
                 try {
-                    headers.getClass().getMethod("withETag", String.class).invoke(headers, "etag");
+                    headers.getClass().getMethod("withETag", String.class).invoke(headers, "getEtag");
                 }
                 catch (NoSuchMethodException e) {
                     // No op

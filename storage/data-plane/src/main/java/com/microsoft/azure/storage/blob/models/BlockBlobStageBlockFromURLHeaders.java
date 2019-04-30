@@ -4,10 +4,11 @@
 
 package com.microsoft.azure.storage.blob.models;
 
+import com.azure.common.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.microsoft.rest.v2.DateTimeRfc1123;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -59,7 +60,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @return the contentMD5 value.
      */
     public byte[] contentMD5() {
-        return this.contentMD5;
+        return ImplUtils.clone(this.contentMD5);
     }
 
     /**
@@ -69,7 +70,7 @@ public final class BlockBlobStageBlockFromURLHeaders {
      * @return the BlockBlobStageBlockFromURLHeaders object itself.
      */
     public BlockBlobStageBlockFromURLHeaders withContentMD5(byte[] contentMD5) {
-        this.contentMD5 = contentMD5;
+        this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
 

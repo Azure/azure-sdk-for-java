@@ -95,7 +95,7 @@ class BlobAPITest extends APISpec {
                 }
                 else {
                     // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
-                    return Single.just(getStubResponseForBlobDownload(206, Flowable.error(new IOException()), "etag"))
+                    return Single.just(getStubResponseForBlobDownload(206, Flowable.error(new IOException()), "eTag"))
                 }
             }
         }

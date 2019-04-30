@@ -4,10 +4,11 @@
 
 package com.microsoft.azure.storage.blob.models;
 
+import com.azure.common.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.microsoft.rest.v2.DateTimeRfc1123;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -28,7 +29,7 @@ public final class BlobProperties {
     private DateTimeRfc1123 lastModified;
 
     /**
-     * The etag property.
+     * The eTag property.
      */
     @JsonProperty(value = "Etag", required = true)
     private String etag;
@@ -253,18 +254,18 @@ public final class BlobProperties {
     }
 
     /**
-     * Get the etag value.
+     * Get the eTag value.
      *
-     * @return the etag value.
+     * @return the eTag value.
      */
-    public String etag() {
+    public String getEtag() {
         return this.etag;
     }
 
     /**
-     * Set the etag value.
+     * Set the eTag value.
      *
-     * @param etag the etag value to set.
+     * @param etag the eTag value to set.
      * @return the BlobProperties object itself.
      */
     public BlobProperties withEtag(String etag) {
@@ -358,7 +359,7 @@ public final class BlobProperties {
      * @return the contentMD5 value.
      */
     public byte[] contentMD5() {
-        return this.contentMD5;
+        return ImplUtils.clone(this.contentMD5);
     }
 
     /**
@@ -368,7 +369,7 @@ public final class BlobProperties {
      * @return the BlobProperties object itself.
      */
     public BlobProperties withContentMD5(byte[] contentMD5) {
-        this.contentMD5 = contentMD5;
+        this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
 
