@@ -183,7 +183,7 @@ public class SettingSelector {
      * @return The {@link Range} used to select a range of revisions.
      */
     public Range range() {
-        return (range == null) ? null : new Range(range.start(), range.end());
+        return range;
     }
 
     /**

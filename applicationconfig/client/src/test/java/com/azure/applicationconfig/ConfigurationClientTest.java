@@ -524,6 +524,19 @@ public class ConfigurationClientTest extends TestBase {
     }
 
     /**
+     * Verifies that an exception will be thrown from the service if it cannot satisfy the range request.
+     */
+    @Test
+    public void listRevisionsInvalidRange() {
+        final String key = getKey();
+        final ConfigurationSetting original = new ConfigurationSetting().key(key).value("myValue");
+
+        assertConfigurationEquals(original, client.addSetting(original));
+        assertRestException(() -> client.listSettingRevisions(new SettingSelector().key(key).range(new Range(0, 10))),
+            HttpResponseStatus.REQUESTED_RANGE_NOT_SATISFIABLE.code());
+    }
+
+    /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
     @Test

@@ -648,6 +648,22 @@ public class ConfigurationAsyncClientTest extends TestBase {
     }
 
     /**
+     * Verifies that an exception will be thrown from the service if it cannot satisfy the range request.
+     */
+    @Test
+    public void listRevisionsInvalidRange() {
+        final String key = getKey();
+        final ConfigurationSetting original = new ConfigurationSetting().key(key).value("myValue");
+
+        StepVerifier.create(client.addSetting(original))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.listSettingRevisions(new SettingSelector().key(key).range(new Range(0, 10))))
+            .verifyErrorSatisfies(exception -> assertRestException(exception, HttpResponseStatus.REQUESTED_RANGE_NOT_SATISFIABLE.code()));
+    }
+
+    /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
     @Test
