@@ -124,7 +124,8 @@ class ChangeFeedQueryImpl<T extends Resource> {
                 OperationType.ReadFeed,
                 resourceType,
                 documentsLink,
-                headers);
+                headers,
+                options);
 
         if (options.getPartitionKeyRangeId() != null) {
             req.routeTo(new PartitionKeyRangeIdentity(this.options.getPartitionKeyRangeId()));

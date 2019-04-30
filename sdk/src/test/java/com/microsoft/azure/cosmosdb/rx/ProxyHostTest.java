@@ -101,7 +101,7 @@ public class ProxyHostTest extends TestSuiteBase {
         try {
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
             connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
-            clientWithRightProxy = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
+            clientWithRightProxy = new Builder().withServiceEndpoint(TestConfigurations.HOST)
                     .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.Session).build();
@@ -134,7 +134,7 @@ public class ProxyHostTest extends TestSuiteBase {
 
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
             connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
-            clientWithRightProxy = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
+            clientWithRightProxy = new Builder().withServiceEndpoint(TestConfigurations.HOST)
                     .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.Session).build();

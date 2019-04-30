@@ -26,6 +26,7 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxClientCollectionCache;
 
@@ -49,18 +50,21 @@ public class PartitionKeyMismatchRetryPolicy implements IDocumentClientRetryPoli
     private IDocumentClientRetryPolicy nextRetryPolicy;
     private AtomicInteger retriesAttempted = new AtomicInteger(0);
     private String collectionLink;
+    private RequestOptions options;
     private final static int MaxRetries = 1;
 
 
     public PartitionKeyMismatchRetryPolicy(
-            RxClientCollectionCache clientCollectionCache, 
-            IDocumentClientRetryPolicy nextRetryPolicy, 
-            String resourceFullName) {
+            RxClientCollectionCache clientCollectionCache,
+            IDocumentClientRetryPolicy nextRetryPolicy,
+            String resourceFullName,
+            RequestOptions requestOptions) {
         this.clientCollectionCache = clientCollectionCache;
         this.nextRetryPolicy = nextRetryPolicy;
 
         // TODO: this should be retrievable from document client exception.
         collectionLink = com.microsoft.azure.cosmosdb.internal.Utils.getCollectionName(resourceFullName);
+        this.options = options;
     }
 
 
@@ -81,7 +85,11 @@ public class PartitionKeyMismatchRetryPolicy implements IDocumentClientRetryPoli
 
             // TODO:
             //this.clientCollectionCache.refresh(clientException.ResourceAddress);
-            this.clientCollectionCache.refresh(collectionLink);
+            if (this.options != null) {
+                this.clientCollectionCache.refresh(collectionLink, this.options.getProperties());
+            } else {
+                this.clientCollectionCache.refresh(collectionLink, null);
+            }
 
             this.retriesAttempted.incrementAndGet();
 

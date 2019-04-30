@@ -41,12 +41,12 @@ import com.microsoft.azure.cosmosdb.internal.query.orderbyquery.OrderbyRowCompar
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyRangeIdentity;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
 import com.microsoft.azure.cosmosdb.rx.internal.GlobalEndpointManager;
-import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
 import com.microsoft.azure.cosmosdb.rx.internal.IRetryPolicyFactory;
 import com.microsoft.azure.cosmosdb.rx.internal.RetryPolicy;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxPartitionKeyRangeCache;
 import org.apache.commons.lang3.RandomUtils;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +58,7 @@ import rx.functions.Func1;
 import rx.functions.Func3;
 import rx.observers.TestSubscriber;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -81,8 +82,9 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
-public class DocumentProducerTest extends TestSuiteBase {
+public class DocumentProducerTest {
     private final static Logger logger = LoggerFactory.getLogger(DocumentProducerTest.class);
+    private static final long TIMEOUT = 10000;
     private final static String OrderByPayloadFieldName = "payload";
     private final static String OrderByItemsFieldName = "orderByItems";
 
@@ -113,12 +115,20 @@ public class DocumentProducerTest extends TestSuiteBase {
     }
 
     private IRetryPolicyFactory mockDocumentClientIRetryPolicyFactory() {
-        GlobalEndpointManager endpointManager = mock(GlobalEndpointManager.class);
-        doReturn(false).when(endpointManager).isClosed();
-        return new RetryPolicy(endpointManager, ConnectionPolicy.GetDefault());
+        URL url;
+        try {
+            url = new URL("http://localhost");
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(url).when(globalEndpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        doReturn(false).when(globalEndpointManager).isClosed();
+        return new RetryPolicy(globalEndpointManager, ConnectionPolicy.GetDefault());
     }
 
-    @Test(groups = { "simple" }, dataProvider = "splitParamProvider",  timeOut = TIMEOUT)
+    @Test(groups = { "unit" }, dataProvider = "splitParamProvider",  timeOut = TIMEOUT)
     public void partitionSplit(String initialContinuationToken,
                                int numberOfResultPagesFromParentBeforeSplit,
                                int numberOfResultPagesFromLeftChildAfterSplit,
@@ -163,6 +173,7 @@ public class DocumentProducerTest extends TestSuiteBase {
         DocumentProducer<Document> documentProducer = new DocumentProducer<Document>(
                 queryClient,
                 collectionRid,
+                null,
                 requestCreator,
                 requestExecutor,
                 parentPartitionKeyRange,
@@ -203,7 +214,7 @@ public class DocumentProducerTest extends TestSuiteBase {
         Mockito.verify(queryClient, times(1)).getPartitionKeyRangeCache();
     }
 
-    @Test(groups = { "simple" }, dataProvider = "splitParamProvider",  timeOut = TIMEOUT)
+    @Test(groups = { "unit" }, dataProvider = "splitParamProvider",  timeOut = TIMEOUT)
     public void orderByPartitionSplit(String initialContinuationToken,
                                       int numberOfResultPagesFromParentBeforeSplit,
                                       int numberOfResultPagesFromLeftChildAfterSplit,
@@ -259,6 +270,7 @@ public class DocumentProducerTest extends TestSuiteBase {
                 new OrderbyRowComparer<>(ImmutableList.of(SortOrder.Ascending)),
                 queryCl,
                 collectionRid,
+                null,
                 requestCreator,
                 requestExecutor,
                 parentPartitionKeyRange,
@@ -268,7 +280,8 @@ public class DocumentProducerTest extends TestSuiteBase {
                 null,
                 initialPageSize,
                 initialContinuationToken,
-                top);
+                top,
+                /*targetRangeToOrderByContinuationTokenMap*/new HashMap<>());
 
         TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -303,7 +316,7 @@ public class DocumentProducerTest extends TestSuiteBase {
         Mockito.verify(queryCl, times(1)).getPartitionKeyRangeCache();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void simple() {
         int initialPageSize = 7;
         int top = -1;
@@ -328,6 +341,7 @@ public class DocumentProducerTest extends TestSuiteBase {
         DocumentProducer<Document> documentProducer = new DocumentProducer<>(
                 queryClient,
                 collectionRid,
+                null,
                 requestCreator,
                 requestExecutor,
                 targetRange,
@@ -368,7 +382,7 @@ public class DocumentProducerTest extends TestSuiteBase {
                 .collect(Collectors.toList())).containsExactlyElementsOf(Collections.singletonList(targetRange));
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void retries() {
         int initialPageSize = 7;
         int top = -1;
@@ -394,6 +408,7 @@ public class DocumentProducerTest extends TestSuiteBase {
         DocumentProducer<Document> documentProducer = new DocumentProducer<>(
                 queryClient,
                 collectionRid,
+                null,
                 requestCreator,
                 requestExecutor,
                 targetRange,
@@ -452,7 +467,7 @@ public class DocumentProducerTest extends TestSuiteBase {
                         Iterables.limit(afterExceptionContinuationTokens, afterExceptionContinuationTokens.size()-1)));
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void retriesExhausted() {
         int initialPageSize = 7;
         int top = -1;
@@ -476,6 +491,7 @@ public class DocumentProducerTest extends TestSuiteBase {
         DocumentProducer<Document> documentProducer = new DocumentProducer<>(
                 queryClient,
                 collectionRid,
+                null,
                 requestCreator,
                 requestExecutor,
                 targetRange,
@@ -597,7 +613,7 @@ public class DocumentProducerTest extends TestSuiteBase {
         RxPartitionKeyRangeCache cache = Mockito.mock(RxPartitionKeyRangeCache.class);
         doReturn(cache).when(client).getPartitionKeyRangeCache();
         doReturn(Single.just(replacementRanges)).when(cache).
-                tryGetOverlappingRangesAsync(anyString(), any(Range.class), anyBoolean());
+                tryGetOverlappingRangesAsync(anyString(), any(Range.class), anyBoolean(), Matchers.anyMap());
         return client;
     }
 

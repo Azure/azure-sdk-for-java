@@ -59,7 +59,7 @@ public class OfferQueryTest extends TestSuiteBase {
     }
 
     @Factory(dataProvider = "clientBuilders")
-    public OfferQueryTest(AsyncDocumentClient.Builder clientBuilder) {
+    public OfferQueryTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

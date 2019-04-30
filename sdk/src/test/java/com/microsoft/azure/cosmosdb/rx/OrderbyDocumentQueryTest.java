@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -55,7 +54,6 @@ import com.microsoft.azure.cosmosdb.PartitionKey;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.internal.query.QueryItem;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.internal.Utils.ValueHolder;
 import com.microsoft.azure.cosmosdb.rx.internal.query.CompositeContinuationToken;
 import com.microsoft.azure.cosmosdb.rx.internal.query.OrderByContinuationToken;
@@ -338,8 +336,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             OrderByContinuationToken orderByContinuationToken = new OrderByContinuationToken(
                     new CompositeContinuationToken(
                             "asdf",
-                            new Range<String>("A", "D", false, true)), 
-                    new QueryItem[] {new QueryItem("{\"item\" : 42}")}, 
+                            new Range<String>("A", "D", false, true)),
+                    new QueryItem[] {new QueryItem("{\"item\" : 42}")},
                     "rid",
                     false);
             String serialized = orderByContinuationToken.toString();
@@ -375,24 +373,44 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         }
 	}
     
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
-    public void queryDocumentsWithOrderByContinuationTokensInteger() throws Exception {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
+    public void queryDocumentsWithOrderByContinuationTokensInteger(String sortOrder) throws Exception {
         // Get Actual
-        String query = "SELECT * FROM c ORDER BY c.propInt";
-        
+        String query = String.format("SELECT * FROM c ORDER BY c.propInt %s", sortOrder);
+
         // Get Expected
-        Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
+        Comparator<Integer> order = sortOrder.equals("ASC")?Comparator.naturalOrder():Comparator.reverseOrder();
+        Comparator<Integer> validatorComparator = Comparator.nullsFirst(order);
+        
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator);
-        this.assertInvalidContinuationToken(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
+        this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10, 100}, expectedResourceIds);
     }
     
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
-    public void queryDocumentsWithOrderByContinuationTokensString() throws Exception {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
+    public void queryDocumentsWithOrderByContinuationTokensString(String sortOrder) throws Exception {
         // Get Actual
-        String query = "SELECT * FROM c ORDER BY c.id";
+        String query = String.format("SELECT * FROM c ORDER BY c.id %s", sortOrder);
         
         // Get Expected
-        Comparator<String> validatorComparator = Comparator.nullsFirst(Comparator.<String>naturalOrder());
+        Comparator<String> order = sortOrder.equals("ASC")?Comparator.naturalOrder():Comparator.reverseOrder();
+        Comparator<String> validatorComparator = Comparator.nullsFirst(order);
+            
+        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("id", d -> d.getString("id"), validatorComparator);
+        this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
+    public void queryDocumentsWithInvalidOrderByContinuationTokensString(String sortOrder) throws Exception {
+        // Get Actual
+        String query = String.format("SELECT * FROM c ORDER BY c.id %s", sortOrder);
+
+        // Get Expected
+        Comparator<String> validatorComparator;
+        if(sortOrder.equals("ASC")) {
+            validatorComparator = Comparator.nullsFirst(Comparator.<String>naturalOrder());
+        }else{
+            validatorComparator = Comparator.nullsFirst(Comparator.<String>reverseOrder());
+        }
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("id", d -> d.getString("id"), validatorComparator);
         this.assertInvalidContinuationToken(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
     }
@@ -472,8 +490,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             OrderByContinuationToken orderByContinuationToken = new OrderByContinuationToken(
                     new CompositeContinuationToken(
                             "asdf",
-                            new Range<String>("A", "D", false, true)), 
-                    new QueryItem[] {new QueryItem("{\"item\" : 42}")}, 
+                            new Range<String>("A", "D", false, true)),
+                    new QueryItem[] {new QueryItem("{\"item\" : 42}")},
                     "rid",
                     false);
             options.setRequestContinuation(orderByContinuationToken.toString());
@@ -484,7 +502,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             TestSubscriber<FeedResponse<Document>> testSubscriber = new VerboseTestSubscriber<>();
             firstPageObservable.subscribe(testSubscriber);
             testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-            testSubscriber.assertError(NotImplementedException.class);
+            testSubscriber.assertError(DocumentClientException.class);
         } while (requestContinuation != null);
     }
     
@@ -496,7 +514,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 actualIds.add(document.getResourceId());
             }
 
-            assertThat(actualIds).containsOnlyElementsOf(expectedIds);
+            assertThat(actualIds).containsExactlyElementsOf(expectedIds);
         }
     }
 

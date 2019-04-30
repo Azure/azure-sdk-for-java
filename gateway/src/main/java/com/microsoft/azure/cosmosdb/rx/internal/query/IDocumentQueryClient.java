@@ -52,7 +52,7 @@ public interface IDocumentQueryClient {
     /**
      * @return
      */
-    IRetryPolicyFactory getRetryPolicyFactory();
+    IRetryPolicyFactory getResetSessionTokenRetryPolicy();
 
     /**
      * TODO: this should be async returning observable

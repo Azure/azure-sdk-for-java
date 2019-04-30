@@ -80,7 +80,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         return new Object[][] { { createDCBuilder(Protocol.Https) }, { createDCBuilder(Protocol.Tcp) } };
     }
 
-    static AsyncDocumentClient.Builder createDCBuilder(Protocol protocol) {
+    static Builder createDCBuilder(Protocol protocol) {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.Direct);
@@ -88,7 +88,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>) invocation -> protocol).when(configs).getProtocol();
 
-        return new AsyncDocumentClient.Builder()
+        return new Builder()
             .withServiceEndpoint(TestConfigurations.HOST)
             .withConfigs(configs)
             .withConnectionPolicy(connectionPolicy)

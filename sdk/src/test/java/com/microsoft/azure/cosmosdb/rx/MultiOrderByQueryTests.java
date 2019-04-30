@@ -127,7 +127,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     }
 
     @Factory(dataProvider = "clientBuilders")
-    public MultiOrderByQueryTests(AsyncDocumentClient.Builder clientBuilder) {
+    public MultiOrderByQueryTests(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

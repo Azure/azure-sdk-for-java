@@ -24,6 +24,7 @@
 package com.microsoft.azure.cosmosdb.internal.query;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,7 +36,7 @@ import com.microsoft.azure.cosmosdb.internal.query.aggregation.AggregateOperator
  */
 public final class QueryInfo extends JsonSerializable {
     private Integer top;
-    private Collection<SortOrder> orderBy;
+    private List<SortOrder> orderBy;
     private Collection<AggregateOperator> aggregates;
     private Collection<String> orderByExpressions;
     private String rewrittenQuery;
@@ -50,8 +51,8 @@ public final class QueryInfo extends JsonSerializable {
         return this.top != null ? this.top : (this.top = super.getInt("top"));
     }
 
-    public Collection<SortOrder> getOrderBy() {
-        return this.orderBy != null ? this.orderBy : (this.orderBy = super.getCollection("orderBy", SortOrder.class));
+    public List<SortOrder> getOrderBy() {
+        return this.orderBy != null ? this.orderBy : (this.orderBy = super.getList("orderBy", SortOrder.class));
     }
 
     public String getRewrittenQuery() {

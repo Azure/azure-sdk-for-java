@@ -33,6 +33,7 @@ import rx.Completable;
 import rx.Single;
 import rx.observers.TestSubscriber;
 
+import java.net.URL;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
@@ -40,10 +41,10 @@ public class ClientRetryPolicyTest {
     private final static int TIMEOUT = 10000;
 
     @Test(groups = "unit")
-    public void networkFailureOnRead() {
+    public void networkFailureOnRead() throws Exception {
         RetryOptions retryOptions = new RetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-
+        Mockito.doReturn(new URL("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Completable.complete()).when(endpointManager).refreshLocationAsync(Mockito.eq(null));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
 
@@ -70,10 +71,10 @@ public class ClientRetryPolicyTest {
     }
 
     @Test(groups = "unit")
-    public void networkFailureOnWrite() {
+    public void networkFailureOnWrite() throws Exception {
         RetryOptions retryOptions = new RetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-
+        Mockito.doReturn(new URL("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Completable.complete()).when(endpointManager).refreshLocationAsync(Mockito.eq(null));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
 
@@ -95,6 +96,29 @@ public class ClientRetryPolicyTest {
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
             Mockito.verify(endpointManager, Mockito.times(i + 1)).markEndpointUnavailableForWrite(Mockito.any());
         }
+    }
+
+    @Test(groups = "unit")
+    public void onBeforeSendRequestNotInvoked() {
+        RetryOptions retryOptions = new RetryOptions();
+        GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito.doReturn(Completable.complete()).when(endpointManager).refreshLocationAsync(Mockito.eq(null));
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
+
+        Exception exception = ReadTimeoutException.INSTANCE;
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+                OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+
+        Single<IRetryPolicy.ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(exception);
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                .withException(exception)
+                .shouldRetry(false)
+                .build());
+
+        Mockito.verifyZeroInteractions(endpointManager);
     }
 
     public static void validateSuccess(Single<IRetryPolicy.ShouldRetryResult> single,

@@ -61,7 +61,7 @@ public class TriggerQueryTest extends TestSuiteBase {
     }
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public TriggerQueryTest(AsyncDocumentClient.Builder clientBuilder) {
+    public TriggerQueryTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

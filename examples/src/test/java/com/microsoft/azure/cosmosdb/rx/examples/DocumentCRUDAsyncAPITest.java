@@ -22,6 +22,10 @@
  */
 package com.microsoft.azure.cosmosdb.rx.examples;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
@@ -30,10 +34,15 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
+import com.microsoft.azure.cosmosdb.PartitionKey;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
+import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import org.apache.commons.lang3.RandomUtils;
+import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -79,6 +88,7 @@ import static org.hamcrest.Matchers.is;
  * {@link #transformObservableToGoogleGuavaListenableFuture()}
  */
 public class DocumentCRUDAsyncAPITest {
+    private final static String PARTITION_KEY_PATH = "/mypk";
     private final static int TIMEOUT = 60000;
     private AsyncDocumentClient asyncClient;
     private Database createdDatabase;
@@ -98,6 +108,12 @@ public class DocumentCRUDAsyncAPITest {
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
+
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        ArrayList<String> partitionKeyPaths = new ArrayList<String>();
+        partitionKeyPaths.add(PARTITION_KEY_PATH);
+        partitionKeyDefinition.setPaths(partitionKeyPaths);
+        collectionDefinition.setPartitionKey(partitionKeyDefinition);
 
         // Create database
         createdDatabase = Utils.createDatabaseForTest(asyncClient);
@@ -385,13 +401,16 @@ public class DocumentCRUDAsyncAPITest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void documentDelete_Async() throws Exception {
         // Create a document
-        Document createdDocument = new Document(String.format("{ 'id': 'doc%s', 'counter': '%d'}", UUID.randomUUID().toString(), 1));
+        Document createdDocument = new Document(String.format("{ 'id': 'doc%s', 'counter': '%d', 'mypk' : '%s'}", UUID.randomUUID().toString(), 1, UUID.randomUUID().toString()));
         createdDocument = asyncClient.createDocument(getCollectionLink(), createdDocument, null, false).toBlocking()
                 .single().getResource();
 
+        RequestOptions options = new RequestOptions();
+        options.setPartitionKey(new PartitionKey(createdDocument.getString("mypk")));
+
         // Delete the existing document
         Observable<ResourceResponse<Document>> deleteDocumentObservable = asyncClient
-                .deleteDocument(getDocumentLink(createdDocument), null);
+                .deleteDocument(getDocumentLink(createdDocument), options);
 
         List<ResourceResponse<Document>> capturedResponse = Collections
                 .synchronizedList(new ArrayList<>());
@@ -405,8 +424,10 @@ public class DocumentCRUDAsyncAPITest {
         assertThat(capturedResponse, hasSize(1));
 
         // Assert document is deleted
+        FeedOptions queryOptions = new FeedOptions();
+        queryOptions.setEnableCrossPartitionQuery(true);
         List<Document> listOfDocuments = asyncClient
-                .queryDocuments(getCollectionLink(), String.format("SELECT * FROM r where r.id = '%s'", createdDocument.getId()), null)
+                .queryDocuments(getCollectionLink(), String.format("SELECT * FROM r where r.id = '%s'", createdDocument.getId()), queryOptions)
                 .map(FeedResponse::getResults) // Map page to its list of documents
                 .concatMap(Observable::from) // Flatten the observable
                 .toList() // Transform to a observable
@@ -423,13 +444,15 @@ public class DocumentCRUDAsyncAPITest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void documentRead_Async() throws Exception {
         // Create a document
-        Document createdDocument = new Document(String.format("{ 'id': 'doc%s', 'counter': '%d'}", UUID.randomUUID().toString(), 1));
+        Document createdDocument = new Document(String.format("{ 'id': 'doc%s', 'counter': '%d', 'mypk' : '%s'}", UUID.randomUUID().toString(), 1, UUID.randomUUID().toString()));
         createdDocument = asyncClient.createDocument(getCollectionLink(), createdDocument, null, false).toBlocking()
                 .single().getResource();
 
         // Read the document
+        RequestOptions options = new RequestOptions();
+        options.setPartitionKey(new PartitionKey(createdDocument.getString("mypk")));
         Observable<ResourceResponse<Document>> readDocumentObservable = asyncClient
-                .readDocument(getDocumentLink(createdDocument), null);
+                .readDocument(getDocumentLink(createdDocument), options);
 
         List<ResourceResponse<Document>> capturedResponse = Collections
                 .synchronizedList(new ArrayList<>());
@@ -442,6 +465,49 @@ public class DocumentCRUDAsyncAPITest {
 
         // Assert document is retrieved
         assertThat(capturedResponse, hasSize(1));
+    }
+
+    private static class TestObject {
+        @JsonProperty("mypk")
+        private String mypk;
+
+        @JsonProperty("id")
+        private String id;
+
+        @JsonProperty("prop")
+        private String prop;
+    }
+
+    @Test(groups = {"samples"}, timeOut = TIMEOUT)
+    public void customSerialization() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
+
+        TestObject testObject = new TestObject();
+        testObject.id = UUID.randomUUID().toString();
+        testObject.mypk = UUID.randomUUID().toString();
+        testObject.prop = UUID.randomUUID().toString();
+        String itemAsJsonString = mapper.writeValueAsString(testObject);
+        Document doc = new Document(itemAsJsonString);
+
+        Document createdDocument = asyncClient
+                .createDocument(getCollectionLink(), doc, null, false)
+                .toBlocking()
+                .single()
+                .getResource();
+
+        RequestOptions options = new RequestOptions();
+        options.setPartitionKey(new PartitionKey(testObject.mypk));
+
+        Document readDocument = asyncClient
+                .readDocument(createdDocument.getSelfLink(), options)
+                .toBlocking()
+                .single()
+                .getResource();
+
+        TestObject readObject = mapper.readValue(readDocument.toJson(), TestObject.class);
+        assertThat(readObject.prop, equalTo(testObject.prop));
     }
 
     /**

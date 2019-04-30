@@ -309,7 +309,8 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     	}
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
+    //  TODO: This test has been timing out on build, related work item - https://msdata.visualstudio.com/CosmosDB/_workitems/edit/402438/
+    @Test(groups = { "non-emulator" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithCompositeContinuationTokens() throws Exception {
         String query = "SELECT * FROM c";
         
@@ -331,7 +332,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     // what I'm seeing could be the result of a public emulator performance issue. Of course, it might also be the
     // result of a Tcp protocol performance problem.
 
-    @BeforeClass(groups = { "simple" }, timeOut = 2 * SETUP_TIMEOUT)
+    @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 2 * SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
         createdDatabase = SHARED_DATABASE;
@@ -351,7 +352,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "simple", "non-emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

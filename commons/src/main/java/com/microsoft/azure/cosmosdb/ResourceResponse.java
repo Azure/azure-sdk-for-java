@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -335,6 +336,42 @@ public final class ResourceResponse<T extends Resource> {
             return -1;
         }
         return Long.parseLong(value);
+    }
+
+    /**
+     * Gets the request statistics for the current request to Azure Cosmos DB service.
+     *
+     * @return request statistics for the current request to Azure Cosmos DB service.
+     */
+    public ClientSideRequestStatistics getClientSideRequestStatistics() {
+        return this.response.getClientSideRequestStatistics();
+    }
+
+    /**
+     * Gets the end-to-end request latency for the current request to Azure Cosmos DB service.
+     *
+     * @return end-to-end request latency for the current request to Azure Cosmos DB service.
+     */
+    public Duration getRequestLatency() {
+        ClientSideRequestStatistics clientSideRequestStatistics = this.response.getClientSideRequestStatistics();
+        if (clientSideRequestStatistics == null) {
+            return Duration.ZERO;
+        }
+
+        return clientSideRequestStatistics.getRequestLatency();
+    }
+
+    /**
+     * Gets the diagnostics information for the current request to Azure Cosmos DB service.
+     *
+     * @return diagnostics information for the current request to Azure Cosmos DB service.
+     */
+    public String getRequestDiagnosticsString() {
+        ClientSideRequestStatistics clientSideRequestStatistics = this.response.getClientSideRequestStatistics();
+        if (clientSideRequestStatistics == null) {
+            return StringUtils.EMPTY;
+        }
+        return clientSideRequestStatistics.toString();
     }
 
     long getCurrentQuotaHeader(String headerName) {

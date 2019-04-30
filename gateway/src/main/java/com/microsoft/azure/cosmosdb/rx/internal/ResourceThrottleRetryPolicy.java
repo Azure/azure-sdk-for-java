@@ -77,7 +77,7 @@ public class ResourceThrottleRetryPolicy implements IDocumentClientRetryPolicy{
                 (retryDelay = checkIfRetryNeeded(exception)) != null) {
             this.currentAttemptCount++;
             logger.warn(
-                    "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {} Exception: {}", 
+                    "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {}",
                     retryDelay.toMillis(), 
                     this.currentAttemptCount,
                     this.cumulativeRetryDelay,
@@ -85,7 +85,7 @@ public class ResourceThrottleRetryPolicy implements IDocumentClientRetryPolicy{
             return Single.just(ShouldRetryResult.retryAfter(retryDelay));
         } else {
             logger.debug(
-                    "Operation will NOT be retried. Current attempt {}, Exception: {} ", 
+                    "Operation will NOT be retried. Current attempt {}",
                     this.currentAttemptCount, 
                     exception);
             return Single.just(ShouldRetryResult.noRetry());
@@ -122,7 +122,7 @@ public class ResourceThrottleRetryPolicy implements IDocumentClientRetryPolicy{
                 {
                     if (retryDelay == Duration.ZERO){
                         // we should never reach here as BE should turn non-zero of retryDelay
-                        logger.trace("Received retryDelay of 0 with Http 429: {}", exception);
+                        logger.trace("Received retryDelay of 0 with Http 429", exception);
                         retryDelay = Duration.ofSeconds(DefaultRetryInSeconds);
                     }
 

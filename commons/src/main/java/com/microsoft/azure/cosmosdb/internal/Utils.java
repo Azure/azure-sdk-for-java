@@ -55,8 +55,8 @@ import com.microsoft.azure.cosmosdb.DocumentCollection;
  */
 public final class Utils {
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
-    public static final Base64.Encoder Base64Encoder = java.util.Base64.getEncoder();
-    public static final Base64.Decoder Base64Decoder = java.util.Base64.getDecoder();
+    public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
+    public static final Base64.Decoder Base64Decoder = Base64.getDecoder();
 
     private static final ObjectMapper simpleObjectMapper = new ObjectMapper();
     private static final TimeBasedGenerator TimeUUIDGegerator = 
@@ -152,7 +152,7 @@ public final class Utils {
         }
 
         // trimming the leading and trailing "/" from the input string
-        link = trimBeginingAndEndingSlashes(link);
+        link = trimBeginningAndEndingSlashes(link);
 
         // Splitting the link(separated by "/") into parts
         String[] parts = StringUtils.split(link, "/");
@@ -213,11 +213,11 @@ public final class Utils {
      * @return the concatenated path with '/'
      */
     public static String joinPath(String path1, String path2) {
-        path1 = trimBeginingAndEndingSlashes(path1);
+        path1 = trimBeginningAndEndingSlashes(path1);
         String result = "/" + path1 + "/";
 
         if (!StringUtils.isEmpty(path2)) {
-            path2 = trimBeginingAndEndingSlashes(path2);
+            path2 = trimBeginningAndEndingSlashes(path2);
             result += path2 + "/";
         }
 
@@ -230,7 +230,7 @@ public final class Utils {
      * @param path the path to trim for beginning and ending slashes
      * @return the path without beginning and ending '/'
      */
-    public static String trimBeginingAndEndingSlashes(String path) {
+    public static String trimBeginningAndEndingSlashes(String path) {
         if(path == null) {
             return null;
         }
@@ -307,7 +307,7 @@ public final class Utils {
      */
     public static String getCollectionName(String resourceFullName) {
         if (resourceFullName != null) {
-            resourceFullName = Utils.trimBeginingAndEndingSlashes(resourceFullName);
+            resourceFullName = Utils.trimBeginningAndEndingSlashes(resourceFullName);
 
             int slashCount = 0;
             for (int i = 0; i < resourceFullName.length(); i++) {

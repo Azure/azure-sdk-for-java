@@ -30,7 +30,6 @@ import java.util.List;
 import com.microsoft.azure.cosmosdb.Attachment;
 import com.microsoft.azure.cosmosdb.ChangeFeedOptions;
 import com.microsoft.azure.cosmosdb.Conflict;
-import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
@@ -49,6 +48,7 @@ import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.SqlQuerySpec;
 import com.microsoft.azure.cosmosdb.StoredProcedure;
 import com.microsoft.azure.cosmosdb.StoredProcedureResponse;
+import com.microsoft.azure.cosmosdb.TokenResolver;
 import com.microsoft.azure.cosmosdb.Trigger;
 import com.microsoft.azure.cosmosdb.User;
 import com.microsoft.azure.cosmosdb.UserDefinedFunction;
@@ -113,6 +113,7 @@ public interface AsyncDocumentClient {
         List<Permission> permissionFeed;
         String masterKeyOrResourceToken;
         URI serviceEndpoint;
+        TokenResolver tokenResolver;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -166,13 +167,42 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        Builder withConfigs(Configs configs) {
+        public Builder withConfigs(Configs configs) {
             this.configs = configs;
             return this;
         }
 
         public Builder withConnectionPolicy(ConnectionPolicy connectionPolicy) {
             this.connectionPolicy = connectionPolicy;
+            return this;
+        }
+
+        /**
+         * This method will accept tokenResolver which is rx function, it takes arguments<br>
+         * T1 requestVerb(String),<br>
+         * T2 resourceIdOrFullName(String),<br>
+         * T3 resourceType(com.microsoft.azure.cosmosdb.internal.ResourceType),<br>
+         * T4 request headers(Map<String, String>)<br>
+         *<br>
+         * and return<br>
+         * R authenticationToken(String)<br>
+         *
+         * @param tokenResolver tokenResolver function for authentication.
+         * @return current Builder.
+         */
+        /*public Builder withTokenResolver(Func4<String, String, ResourceType, Map<String, String>, String> tokenResolver) {
+            this.tokenResolver = tokenResolver;
+            return this;
+        }*/
+
+        /**
+         * This method will accept functional interface TokenResolver which helps in generation authorization
+         * token per request. AsyncDocumentClient can be successfully initialized with this API without passing any MasterKey, ResourceToken or PermissionFeed.
+         * @param tokenResolver The tokenResolver
+         * @return current Builder.
+         */
+        public Builder withTokenResolver(TokenResolver tokenResolver) {
+            this.tokenResolver = tokenResolver;
             return this;
         }
 
@@ -186,18 +216,74 @@ public interface AsyncDocumentClient {
 
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot build client without service endpoint");
             ifThrowIllegalArgException(
-                    this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty()),
-                    "cannot build client without masterKey or resource token");
+                    this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty()) && this.tokenResolver == null,
+                    "cannot build client without any one of masterKey, resource token, permissionFeed and tokenResolver");
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
                                                                    masterKeyOrResourceToken,
                                                                    permissionFeed,
                                                                    connectionPolicy,
                                                                    desiredConsistencyLevel,
-                                                                   configs
-            );
+                                                                   configs,
+                                                                   tokenResolver);
             client.init();
             return client;
+        }
+
+        public Configs getConfigs() {
+            return configs;
+        }
+
+        public void setConfigs(Configs configs) {
+            this.configs = configs;
+        }
+
+        public ConnectionPolicy getConnectionPolicy() {
+            return connectionPolicy;
+        }
+
+        public void setConnectionPolicy(ConnectionPolicy connectionPolicy) {
+            this.connectionPolicy = connectionPolicy;
+        }
+
+        public ConsistencyLevel getDesiredConsistencyLevel() {
+            return desiredConsistencyLevel;
+        }
+
+        public void setDesiredConsistencyLevel(ConsistencyLevel desiredConsistencyLevel) {
+            this.desiredConsistencyLevel = desiredConsistencyLevel;
+        }
+
+        public List<Permission> getPermissionFeed() {
+            return permissionFeed;
+        }
+
+        public void setPermissionFeed(List<Permission> permissionFeed) {
+            this.permissionFeed = permissionFeed;
+        }
+
+        public String getMasterKeyOrResourceToken() {
+            return masterKeyOrResourceToken;
+        }
+
+        public void setMasterKeyOrResourceToken(String masterKeyOrResourceToken) {
+            this.masterKeyOrResourceToken = masterKeyOrResourceToken;
+        }
+
+        public URI getServiceEndpoint() {
+            return serviceEndpoint;
+        }
+
+        public void setServiceEndpoint(URI serviceEndpoint) {
+            this.serviceEndpoint = serviceEndpoint;
+        }
+
+        public TokenResolver getTokenResolver() {
+            return tokenResolver;
+        }
+
+        public void setTokenResolver(TokenResolver tokenResolver) {
+            this.tokenResolver = tokenResolver;
         }
     }
 

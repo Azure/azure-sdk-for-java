@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
@@ -40,7 +38,6 @@ import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
 import com.microsoft.azure.cosmosdb.rx.internal.IDocumentClientRetryPolicy;
-import com.microsoft.azure.cosmosdb.rx.internal.IRetryPolicyFactory;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 
@@ -100,9 +97,9 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             };
 
             DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
-                    partitionKeyRangeToContinuationTokenMap.get(targetRange), initialPageSize, querySpecForInit,
-                    commonRequestHeaders, createRequestFunc, executeFunc,
-                    () -> client.getRetryPolicyFactory().getRequestPolicy());
+                    partitionKeyRangeToContinuationTokenMap.get(targetRange), initialPageSize, feedOptions,
+                    querySpecForInit, commonRequestHeaders, createRequestFunc, executeFunc,
+                    () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy());
 
             documentProducers.add(dp);
         }
@@ -142,7 +139,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
     }
 
     abstract protected DocumentProducer<T> createDocumentProducer(String collectionRid, PartitionKeyRange targetRange,
-            String initialContinuationToken, int initialPageSize, SqlQuerySpec querySpecForInit,
+            String initialContinuationToken, int initialPageSize, FeedOptions feedOptions, SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
             Func3<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc,

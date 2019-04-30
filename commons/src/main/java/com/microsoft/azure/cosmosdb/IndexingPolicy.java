@@ -23,16 +23,13 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.microsoft.azure.cosmosdb.internal.Constants;
+import org.apache.commons.text.WordUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-
-import com.microsoft.azure.cosmosdb.internal.Constants;
-import org.apache.commons.lang3.text.WordUtils;
-
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.microsoft.azure.cosmosdb.CompositePath;
-import com.microsoft.azure.cosmosdb.SpatialSpec;
 
 /**
  * Represents the indexing policy configuration for a collection in the Azure Cosmos DB database service.

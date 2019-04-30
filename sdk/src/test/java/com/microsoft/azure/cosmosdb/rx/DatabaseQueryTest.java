@@ -52,7 +52,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
     private AsyncDocumentClient client;
     
     @Factory(dataProvider = "clientBuilders")
-    public DatabaseQueryTest(AsyncDocumentClient.Builder clientBuilder) {
+    public DatabaseQueryTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
     

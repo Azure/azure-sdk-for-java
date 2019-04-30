@@ -65,7 +65,7 @@ public class AttachmentQueryTest extends TestSuiteBase {
     }
 
     @Factory(dataProvider = "clientBuilders")
-    public AttachmentQueryTest(AsyncDocumentClient.Builder clientBuilder) {
+    public AttachmentQueryTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

@@ -269,7 +269,7 @@ public class HttpConstants {
 
         // TODO: FIXME we can use maven plugin for generating a version file
         // @see https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
-        public static final String SDK_VERSION = "2.4.3";
+        public static final String SDK_VERSION = "2.4.5-SNAPSHOT";
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }
 
@@ -296,6 +296,9 @@ public class HttpConstants {
     }
 
     public static class SubStatusCodes {
+        //  Unknown SubStatus Code
+        public static final int UNKNOWN = 0;
+
         // 400: Bad Request substatus
         public static final int PARTITION_KEY_MISMATCH = 1001;
         public static final int CROSS_PARTITION_QUERY_NOT_SERVABLE = 1004;

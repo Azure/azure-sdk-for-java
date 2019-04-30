@@ -25,6 +25,7 @@ package com.microsoft.azure.cosmosdb.rx;
 import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.Error;
+import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.WFConstants;
 import com.microsoft.azure.cosmosdb.rx.internal.RMResources;
 
@@ -35,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public interface FailureValidator {
 
-    static FailureValidator.Builder builder() {
+    static Builder builder() {
         return new Builder();
     }
 
@@ -114,20 +115,7 @@ public interface FailureValidator {
                 @Override
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
-                    assertThat(t).isInstanceOf(DocumentClientException.class);
-                    assertThat(((DocumentClientException) t).getMessage()).contains(errorMsg);
-                }
-            });
-            return this;
-        }
-
-        public <T extends Throwable> Builder errorMessageContain(int statusCode) {
-            validators.add(new FailureValidator() {
-                @Override
-                public void validate(Throwable t) {
-                    assertThat(t).isNotNull();
-                    assertThat(t).isInstanceOf(DocumentClientException.class);
-                    assertThat(((DocumentClientException) t).getStatusCode()).isEqualTo(statusCode);
+                    assertThat(t.getMessage()).contains(errorMsg);
                 }
             });
             return this;
@@ -169,13 +157,13 @@ public interface FailureValidator {
             return this;
         }
 
-        public <T extends Throwable> Builder nullSubStatusCode() {
+        public <T extends Throwable> Builder unknownSubStatusCode() {
             validators.add(new FailureValidator() {
                 @Override
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(DocumentClientException.class);
-                    assertThat(((DocumentClientException) t).getSubStatusCode()).isNull();
+                    assertThat(((DocumentClientException) t).getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
                 }
             });
             return this;
@@ -308,6 +296,19 @@ public interface FailureValidator {
             return this;
         }
 
+        public <T extends Throwable> Builder causeOfCauseInstanceOf(Class<T> cls) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t.getCause()).isNotNull();
+                    assertThat(t.getCause().getCause()).isNotNull();
+                    assertThat(t.getCause().getCause()).isInstanceOf(cls);
+                }
+            });
+            return this;
+        }
+
         public <T extends Throwable> Builder documentClientExceptionHeaderRequestContainsEntry(String key, String value) {
             validators.add(new FailureValidator() {
                 @Override
@@ -316,6 +317,30 @@ public interface FailureValidator {
                     assertThat(t).isInstanceOf(DocumentClientException.class);
                     DocumentClientException ex = (DocumentClientException) t;
                     assertThat(BridgeInternal.getRequestHeaders(ex)).containsEntry(key, value);
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder withRuntimeExceptionMessage(String message) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(RuntimeException.class);
+                    assertThat(t.getMessage()).isEqualTo(message);
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder withRuntimeExceptionClass(Class k) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(RuntimeException.class);
+                    assertThat(t).isInstanceOf(k);
                 }
             });
             return this;

@@ -26,6 +26,7 @@ import java.time.Duration;
 
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.OperationType;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
@@ -47,17 +48,20 @@ public class PartitionKeyRangeGoneRetryPolicy implements IDocumentClientRetryPol
     private final IDocumentClientRetryPolicy nextRetryPolicy;
     private final IPartitionKeyRangeCache partitionKeyRangeCache;
     private final String collectionLink;
+    private final FeedOptions feedOptions;
     private volatile boolean retried;
 
     public PartitionKeyRangeGoneRetryPolicy(
             RxCollectionCache collectionCache,
             IPartitionKeyRangeCache partitionKeyRangeCache,
             String collectionLink,
-            IDocumentClientRetryPolicy nextRetryPolicy) {
+            IDocumentClientRetryPolicy nextRetryPolicy,
+            FeedOptions feedOptions) {
         this.collectionCache = collectionCache;
         this.partitionKeyRangeCache = partitionKeyRangeCache;
         this.collectionLink = collectionLink;
         this.nextRetryPolicy = nextRetryPolicy;
+        this.feedOptions = feedOptions;
     }
 
     /// <summary> 
@@ -83,19 +87,22 @@ public class PartitionKeyRangeGoneRetryPolicy implements IDocumentClientRetryPol
                     null
                     // AuthorizationTokenType.PrimaryMasterKey)
                     );
-
+            if (this.feedOptions != null) {
+                request.properties = this.feedOptions.getProperties();
+            }
             Single<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
 
             Single<ShouldRetryResult> retryTimeObservable = collectionObs.flatMap(collection -> {
 
-                Single<CollectionRoutingMap> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(collection.getResourceId(), null);
+                Single<CollectionRoutingMap> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(collection.getResourceId(), null, request.properties);
 
                 Single<CollectionRoutingMap> refreshedRoutingMapObs = routingMapObs.flatMap(routingMap -> {
                     if (routingMap != null) {
                         // Force refresh.
                         return this.partitionKeyRangeCache.tryLookupAsync(
                                 collection.getResourceId(),
-                                routingMap);
+                                routingMap,
+                                request.properties);
                     } else {
                         return Observable.just((CollectionRoutingMap) null).toSingle();
                     }

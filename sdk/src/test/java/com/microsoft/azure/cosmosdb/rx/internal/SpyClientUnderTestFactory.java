@@ -22,23 +22,20 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
-import com.google.common.reflect.Reflection;
 import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.ISessionContainer;
 import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
 import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
-import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyAndResourceTokenPair;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.SpyClientBuilder;
+import com.microsoft.azure.cosmosdb.rx.internal.directconnectivity.ReflectionUtils;
+
 import io.netty.buffer.ByteBuf;
-import io.netty.util.internal.ReflectionUtil;
 import io.reactivex.netty.client.RxClient;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
-import io.reactivex.netty.protocol.http.client.HttpClientResponse;
-import io.reactivex.netty.protocol.http.client.HttpRequestHeaders;
 import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -50,7 +47,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -59,7 +55,18 @@ import static org.mockito.Mockito.doAnswer;
 
 public class SpyClientUnderTestFactory {
 
-    public static class ClientWithGatewaySpy extends RxDocumentClientImpl {
+    public static abstract class SpyBaseClass<T> extends RxDocumentClientImpl {
+
+        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs) {
+            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs);
+        }
+        
+        public abstract List<T> getCapturedRequests();
+        
+        public abstract void clearCapturedRequests();
+    }
+    
+    public static class ClientWithGatewaySpy extends SpyBaseClass<RxDocumentServiceRequest> {
 
         private RxGatewayStoreModel origRxGatewayStoreModel;
         private RxGatewayStoreModel spyRxGatewayStoreModel;
@@ -72,6 +79,7 @@ public class SpyClientUnderTestFactory {
             init();
         }
 
+        @Override
         public List<RxDocumentServiceRequest> getCapturedRequests() {
             return requests;
         }
@@ -96,7 +104,7 @@ public class SpyClientUnderTestFactory {
             return this.spyRxGatewayStoreModel;
         }
 
-        private void initRequestCapture() {
+        protected void initRequestCapture() {
             doAnswer(new Answer() {
                 @Override
                 public Object answer(InvocationOnMock invocationOnMock)  {
@@ -107,6 +115,7 @@ public class SpyClientUnderTestFactory {
             }).when(ClientWithGatewaySpy.this.spyRxGatewayStoreModel).processMessage(Mockito.any(RxDocumentServiceRequest.class));
         }
 
+        @Override
         public void clearCapturedRequests() {
             requests.clear();
         }
@@ -120,7 +129,7 @@ public class SpyClientUnderTestFactory {
         }
     }
 
-    public static class ClientUnderTest extends RxDocumentClientImpl {
+    public static class ClientUnderTest extends SpyBaseClass<HttpClientRequest<ByteBuf>> {
 
         CompositeHttpClient<ByteBuf, ByteBuf> origHttpClient;
         CompositeHttpClient<ByteBuf, ByteBuf> spyHttpClient;
@@ -136,6 +145,7 @@ public class SpyClientUnderTestFactory {
             return requestsResponsePairs;
         }
 
+        @Override
         public List<HttpClientRequest<ByteBuf>> getCapturedRequests() {
             return requestsResponsePairs.stream().map(pair -> pair.getLeft()).collect(Collectors.toList());
         }
@@ -162,6 +172,7 @@ public class SpyClientUnderTestFactory {
             }).when(spyClient).submit(Mockito.any(RxClient.ServerInfo.class), Mockito.any(HttpClientRequest.class));
         }
 
+        @Override
         public void clearCapturedRequests() {
             requestsResponsePairs.clear();
         }
@@ -179,7 +190,7 @@ public class SpyClientUnderTestFactory {
         }
     }
 
-    public static class DirectHttpsClientUnderTest extends RxDocumentClientImpl {
+    public static class DirectHttpsClientUnderTest extends SpyBaseClass<HttpClientRequest<ByteBuf>> {
 
         CompositeHttpClient<ByteBuf, ByteBuf> origHttpClient;
         CompositeHttpClient<ByteBuf, ByteBuf> spyHttpClient;
@@ -191,12 +202,17 @@ public class SpyClientUnderTestFactory {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, new Configs());
             assert connectionPolicy.getConnectionMode() == ConnectionMode.Direct;
             init();
+            this.origHttpClient = ReflectionUtils.getDirectHttpsHttpClient(this);
+            this.spyHttpClient = Mockito.spy(this.origHttpClient);
+            ReflectionUtils.setDirectHttpsHttpClient(this, this.spyHttpClient);
+            this.initRequestCapture(this.spyHttpClient);
         }
 
         public List<Pair<HttpClientRequest<ByteBuf>, Future<HttpResponseHeaders>>> capturedRequestResponseHeaderPairs() {
             return requestsResponsePairs;
         }
 
+        @Override
         public List<HttpClientRequest<ByteBuf>> getCapturedRequests() {
             return requestsResponsePairs.stream().map(pair -> pair.getLeft()).collect(Collectors.toList());
         }
@@ -223,6 +239,7 @@ public class SpyClientUnderTestFactory {
             }).when(spyClient).submit(Mockito.any(RxClient.ServerInfo.class), Mockito.any(HttpClientRequest.class));
         }
 
+        @Override
         public void clearCapturedRequests() {
             requestsResponsePairs.clear();
         }
@@ -239,8 +256,7 @@ public class SpyClientUnderTestFactory {
             return spyHttpClient;
         }
     }
-
-
+    
     public static ClientWithGatewaySpy createClientWithGatewaySpy(AsyncDocumentClient.Builder builder) {
         return new SpyClientBuilder(builder).buildWithGatewaySpy();
     }
@@ -255,6 +271,10 @@ public class SpyClientUnderTestFactory {
 
     public static ClientUnderTest createClientUnderTest(AsyncDocumentClient.Builder builder) {
         return new SpyClientBuilder(builder).build();
+    }
+    
+    public static DirectHttpsClientUnderTest createDirectHttpsClientUnderTest(AsyncDocumentClient.Builder builder) {
+        return new SpyClientBuilder(builder).buildWithDirectHttps();
     }
 
     public static ClientUnderTest createClientUnderTest(URI serviceEndpoint,
@@ -288,5 +308,10 @@ public class SpyClientUnderTestFactory {
                         spyClient);
             }
         };
+    }
+
+    public static DirectHttpsClientUnderTest createDirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey,
+            ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel) {
+        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel);
     }
 }

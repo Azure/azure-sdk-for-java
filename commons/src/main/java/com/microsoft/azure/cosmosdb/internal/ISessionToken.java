@@ -27,6 +27,9 @@ import com.microsoft.azure.cosmosdb.DocumentClientException;
 
 /**
  * Models session token.
+ *
+ * We make assumption that instances of this interface are immutable (read only after they are constructed), so if you want to change
+ * this behaviour please review all of its uses and make sure that mutability doesn't break anything.
  */
 public interface ISessionToken {
 
@@ -34,7 +37,7 @@ public interface ISessionToken {
 
     /**
      * Returns true if this instance of session token is valid with respect to <code>other</code> session token.
-     * This is used to decide if the the client can accept server's response (based on comparison between client's
+     * This is used to decide if the client can accept server's response (based on comparison between client's
      * and server's session token)
      *
      * @param other Session token to validate
@@ -46,6 +49,8 @@ public interface ISessionToken {
     /**
      * Returns a new instance of session token obtained by merging this session token with
      * the given session token <code>other</code>.
+     *
+     * Merge is commutative operation, so a.Merge(b).Equals(b.Merge(a))
      *
      * @param other Other session token to merge
      * @return Instance of merged session token

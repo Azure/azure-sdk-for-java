@@ -52,4 +52,12 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
                 desiredConsistencyLevel,
                 configs);
     }
+
+    public SpyClientUnderTestFactory.DirectHttpsClientUnderTest buildWithDirectHttps() {
+        return SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(
+                serviceEndpoint,
+                masterKeyOrResourceToken,
+                connectionPolicy,
+                desiredConsistencyLevel);
+    }
 }

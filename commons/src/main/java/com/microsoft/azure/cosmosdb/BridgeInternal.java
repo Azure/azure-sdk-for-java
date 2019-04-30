@@ -275,4 +275,11 @@ public class BridgeInternal {
     public static ClientSideMetrics getClientSideMetrics(QueryMetrics queryMetrics){
         return queryMetrics.getClientSideMetrics();
     }
+
+    public static String getInnerErrorMessage(DocumentClientException documentClientException) {
+        if (documentClientException == null) {
+            return null;
+        }
+        return documentClientException.getInnerErrorMessage();
+    }
 }

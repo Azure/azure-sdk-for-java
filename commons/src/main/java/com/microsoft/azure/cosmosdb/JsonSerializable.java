@@ -437,7 +437,7 @@ public class JsonSerializable {
     /**
      * Gets the value of a property identified by an array of property names that forms the path.
      * 
-     * @param propertyNames that form the path to the the property to get.
+     * @param propertyNames that form the path to the property to get.
      * @return the value of the property.
      */
     public Object getObjectByPath(List<String> propertyNames) {

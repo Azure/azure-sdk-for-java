@@ -36,6 +36,8 @@ import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import rx.Completable;
 import rx.Single;
 
+import java.util.Map;
+
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
@@ -65,8 +67,8 @@ public abstract class RxCollectionCache {
                 init = completable.andThen(Completable.fromAction(() -> request.setForceNameCacheRefresh(false)));
             }
 
-            Single<DocumentCollection> collectionInfoObs = this.ResolveByPartitionKeyRangeIdentityAsync(
-                    request.getPartitionKeyRangeIdentity());
+            Single<DocumentCollection> collectionInfoObs = this.resolveByPartitionKeyRangeIdentityAsync(
+                    request.getPartitionKeyRangeIdentity(), request.properties);
 
             if (init != null) {
                 collectionInfoObs = init.andThen(collectionInfoObs);
@@ -79,7 +81,7 @@ public abstract class RxCollectionCache {
 
                 if (request.requestContext.resolvedCollectionRid == null) {
 
-                    Single<DocumentCollection> collectionInfoRes = this.resolveByNameAsync(request.getResourceAddress());
+                    Single<DocumentCollection> collectionInfoRes = this.resolveByNameAsync(request.getResourceAddress(), request.properties);
 
                     return collectionInfoRes.flatMap(collection -> {
                         // TODO: how to async log this?
@@ -94,18 +96,18 @@ public abstract class RxCollectionCache {
 
                     });
                 } else {
-                    return this.resolveByRidAsync(request.requestContext.resolvedCollectionRid);
+                    return this.resolveByRidAsync(request.requestContext.resolvedCollectionRid, request.properties);
                 }                
             });
         } else {
-            return ResolveByPartitionKeyRangeIdentityAsync(request.getPartitionKeyRangeIdentity())
+            return resolveByPartitionKeyRangeIdentityAsync(request.getPartitionKeyRangeIdentity(),request.properties)
                     .flatMap(collection -> {
 
                         if (collection != null) {
                             return Single.just(collection);
                         }
 
-                        return this.resolveByRidAsync(request.getResourceAddress());
+                        return this.resolveByRidAsync(request.getResourceAddress(), request.properties);
                     });
         }
     }
@@ -114,14 +116,14 @@ public abstract class RxCollectionCache {
      * This method is only used in retry policy as it doesn't have request handy.
      * @param resourceAddress
      */
-    public void refresh(String resourceAddress) {
+    public void refresh(String resourceAddress, Map<String, Object> properties) {
         if (PathsHelper.isNameBased(resourceAddress)) {
             String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
 
             this.collectionInfoByNameCache.refresh(
                     resourceFullName,
                     () -> {
-                        Single<DocumentCollection> collectionObs = this.getByNameAsync(resourceFullName);
+                        Single<DocumentCollection> collectionObs = this.getByNameAsync(resourceFullName, properties);
                         return collectionObs.doOnSuccess(collection -> {
                             this.collectionInfoByIdCache.set(collection.getResourceId(), collection);
                         });                
@@ -129,15 +131,15 @@ public abstract class RxCollectionCache {
         }
     }
 
-    protected abstract Single<DocumentCollection> getByRidAsync(String collectionRid);
+    protected abstract Single<DocumentCollection> getByRidAsync(String collectionRid, Map<String, Object> properties);
 
-    protected abstract Single<DocumentCollection> getByNameAsync(String resourceAddress);
+    protected abstract Single<DocumentCollection> getByNameAsync(String resourceAddress, Map<String, Object> properties);
 
-    private Single<DocumentCollection> ResolveByPartitionKeyRangeIdentityAsync(PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
+    private Single<DocumentCollection> resolveByPartitionKeyRangeIdentityAsync(PartitionKeyRangeIdentity partitionKeyRangeIdentity, Map<String, Object> properties) {
         // if request is targeted at specific partition using x-ms-documentd-partitionkeyrangeid header,
         // which contains value "<collectionrid>,<partitionkeyrangeid>", then resolve to collection rid in this header.
         if (partitionKeyRangeIdentity != null && partitionKeyRangeIdentity.getCollectionRid() != null) {
-            return this.resolveByRidAsync(partitionKeyRangeIdentity.getCollectionRid())
+            return this.resolveByRidAsync(partitionKeyRangeIdentity.getCollectionRid(), properties)
                     .onErrorResumeNext(e -> { 
                         if (e instanceof NotFoundException) {
                             // This is signal to the upper logic either to refresh
@@ -152,7 +154,7 @@ public abstract class RxCollectionCache {
     }
 
     private Single<DocumentCollection> resolveByRidAsync(
-            String resourceId) {
+            String resourceId, Map<String, Object> properties) {
 
         ResourceId resourceIdParsed = ResourceId.parse(resourceId);
         String collectionResourceId = resourceIdParsed.getDocumentCollectionId().toString();
@@ -160,11 +162,11 @@ public abstract class RxCollectionCache {
         return this.collectionInfoByIdCache.getAsync(
                 collectionResourceId,
                 null,
-                () -> this.getByRidAsync(collectionResourceId));
+                () -> this.getByRidAsync(collectionResourceId, properties));
     }
 
     private Single<DocumentCollection> resolveByNameAsync(
-            String resourceAddress) {
+            String resourceAddress, Map<String, Object> properties) {
 
         String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
 
@@ -172,7 +174,7 @@ public abstract class RxCollectionCache {
                 resourceFullName,
                 null,
                 () -> {
-                    Single<DocumentCollection> collectionObs = this.getByNameAsync(resourceFullName);
+                    Single<DocumentCollection> collectionObs = this.getByNameAsync(resourceFullName, properties);
                     return collectionObs.doOnSuccess(collection -> {
                         this.collectionInfoByIdCache.set(collection.getResourceId(), collection);
                     });
@@ -194,7 +196,7 @@ public abstract class RxCollectionCache {
                     resourceFullName,
                     obsoleteValue,
                     () -> {
-                        Single<DocumentCollection> collectionObs = this.getByNameAsync(resourceFullName);
+                        Single<DocumentCollection> collectionObs = this.getByNameAsync(resourceFullName, request.properties);
                         return collectionObs.doOnSuccess(collection -> {
                             this.collectionInfoByIdCache.set(collection.getResourceId(), collection);
                         });
@@ -202,7 +204,7 @@ public abstract class RxCollectionCache {
         } else {
             // In case of ForceRefresh directive coming from client, there will be no ResolvedCollectionRid, so we 
             // need to refresh unconditionally.
-            completable = Completable.fromAction(() -> this.refresh(request.getResourceAddress()));
+            completable = Completable.fromAction(() -> this.refresh(request.getResourceAddress(), request.properties));
         }
 
         return completable.doOnCompleted(() -> request.requestContext.resolvedCollectionRid = null);

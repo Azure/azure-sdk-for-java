@@ -80,7 +80,7 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
     private DatabaseAccount expectedDatabaseAccount;
 
     @Factory(dataProvider = "clientBuilders")
-    public GatewayServiceConfigurationReaderTest(AsyncDocumentClient.Builder clientBuilder) {
+    public GatewayServiceConfigurationReaderTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

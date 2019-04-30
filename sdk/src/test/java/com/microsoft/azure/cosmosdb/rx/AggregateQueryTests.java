@@ -83,7 +83,7 @@ public class AggregateQueryTests extends TestSuiteBase {
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public AggregateQueryTests(AsyncDocumentClient.Builder clientBuilder) {
+    public AggregateQueryTests(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

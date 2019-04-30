@@ -123,6 +123,7 @@ class DocumentProducer<T extends Resource> {
     public DocumentProducer(
             IDocumentQueryClient client,
             String collectionResourceId,
+            FeedOptions feedOptions,
             Func3<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
@@ -161,7 +162,7 @@ class DocumentProducer<T extends Resource> {
 
         this.correlatedActivityId = correlatedActivityId;
 
-        this.feedOptions = new FeedOptions();
+        this.feedOptions = feedOptions != null ? feedOptions : new FeedOptions();
         this.feedOptions.setRequestContinuation(initialContinuationToken);
         this.lastResponseContinuationToken = initialContinuationToken;
         this.resourceType = resourceType;
@@ -246,6 +247,7 @@ class DocumentProducer<T extends Resource> {
         return new DocumentProducer<T>(
                 client,
                 collectionRid,
+                feedOptions,
                 createRequestFunc,
                 executeRequestFuncWithRetries,
                 targetRange,
@@ -259,7 +261,7 @@ class DocumentProducer<T extends Resource> {
     }
 
     private Single<List<PartitionKeyRange>> getReplacementRanges(Range<String> range) {
-        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(collectionRid, range, true);
+        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(collectionRid, range, true, feedOptions.getProperties());
     }
 
     private boolean isSplit(DocumentClientException e) {

@@ -48,7 +48,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuilders")
-    public DatabaseCrudTest(AsyncDocumentClient.Builder clientBuilder) {
+    public DatabaseCrudTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

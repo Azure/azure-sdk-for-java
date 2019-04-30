@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
+import com.microsoft.azure.cosmosdb.internal.Constants.UrlEncodingInfo;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 import io.reactivex.netty.protocol.http.client.HttpRequestHeaders;
@@ -33,9 +34,14 @@ import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class HttpUtils {
 
@@ -43,10 +49,19 @@ public class HttpUtils {
 
     public static String urlEncode(String url) {
         try {
-            return URLEncoder.encode(url, "UTF-8");
+            return URLEncoder.encode(url, UrlEncodingInfo.UTF_8).replaceAll(UrlEncodingInfo.PLUS_SYMBOL_ESCAPED, UrlEncodingInfo.SINGLE_SPACE_URI_ENCODING);
         } catch (UnsupportedEncodingException e) {
             log.error("failed to encode {}", url, e);
             throw new IllegalArgumentException("failed to encode url " + url, e);
+        }
+    }
+
+    public static String urlDecode(String url) {
+        try {
+            return URLDecoder.decode(url.replaceAll(UrlEncodingInfo.PLUS_SYMBOL_ESCAPED, UrlEncodingInfo.PLUS_SYMBOL_URI_ENCODING), UrlEncodingInfo.UTF_8);
+        } catch (UnsupportedEncodingException e) {
+            log.error("failed to decode {}", url, e);
+            throw new IllegalArgumentException("failed to decode url " + url, e);
         }
     }
 
@@ -65,8 +80,12 @@ public class HttpUtils {
         }
 
         HashMap<String, String> map = new HashMap<>(headers.names().size());
-        for (Map.Entry<String, String> entry : headers.entries()) {
-            map.put(entry.getKey(), entry.getValue());
+        for (Entry<String, String> entry : headers.entries()) {
+            if (entry.getKey().equals(HttpConstants.HttpHeaders.OWNER_FULL_NAME)) {
+                map.put(entry.getKey(), HttpUtils.urlDecode(entry.getValue()));
+            } else {
+                map.put(entry.getKey(), entry.getValue());
+            }
         }
         return map;
     }
@@ -76,7 +95,7 @@ public class HttpUtils {
         if (headers == null) {
             return map;
         }
-        for (Map.Entry<String, String> entry : headers.entries()) {
+        for (Entry<String, String> entry : headers.entries()) {
             map.put(entry.getKey(), entry.getValue());
         }
         return map;
@@ -95,5 +114,17 @@ public class HttpUtils {
         }
 
         return date != null ? date : StringUtils.EMPTY;
+    }
+
+    public static List<Entry<String, String>> unescape(List<Entry<String, String>> headers) {
+        List<Entry<String, String>> result = new ArrayList<Entry<String, String>>();
+        for (Entry<String, String> entry : headers) {
+            if (entry.getKey().equals(HttpConstants.HttpHeaders.OWNER_FULL_NAME)) {
+                String unescapedUrl = HttpUtils.urlDecode(entry.getValue());
+                entry = new AbstractMap.SimpleEntry<String, String>(entry.getKey(), unescapedUrl);
+            }
+            result.add(entry);
+        }
+        return result;
     }
 }

@@ -206,6 +206,13 @@ public final class Constants {
         public static final String LOGGING_HANDLER_NAME = "logging-handler";
     }
 
+    public static final class UrlEncodingInfo {
+        public static final String PLUS_SYMBOL_ESCAPED = "\\+";
+        public static final String PLUS_SYMBOL_URI_ENCODING = "%2b";
+        public static final String SINGLE_SPACE_URI_ENCODING = "%20";
+        public static final String UTF_8 = "UTF-8";
+    }
+    
     public static final class PartitionedQueryExecutionInfo {
         public static final int VERSION_1 = 1;
     }

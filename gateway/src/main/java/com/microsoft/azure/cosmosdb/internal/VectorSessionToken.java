@@ -34,7 +34,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.print.Doc;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -49,6 +48,9 @@ import static com.microsoft.azure.cosmosdb.rx.internal.Utils.ValueHolder;
  * * The choice of separators '#' and '=' is important. Separators ';' and ',' are used to delimit
  * per-partitionKeyRange session token
  * session
+ *
+ * We make assumption that instances of this class are immutable (read only after they are constructed), so if you want to change
+ * this behaviour please review all of its uses and make sure that mutability doesn't break anything.
  */
 public class VectorSessionToken implements ISessionToken {
     private final static Logger logger = LoggerFactory.getLogger(VectorSessionToken.class);
@@ -58,8 +60,7 @@ public class VectorSessionToken implements ISessionToken {
     private final long version;
     private final long globalLsn;
     private final UnmodifiableMap<Integer, Long> localLsnByRegion;
-
-    private String sessionToken;
+    private final String sessionToken;
 
     private VectorSessionToken(long version, long globalLsn, UnmodifiableMap<Integer, Long> localLsnByRegion) {
         this(version, globalLsn, localLsnByRegion, null);
@@ -69,8 +70,7 @@ public class VectorSessionToken implements ISessionToken {
         this.version = version;
         this.globalLsn = globalLsn;
         this.localLsnByRegion = localLsnByRegion;
-        this.sessionToken = sessionToken;
-        if (this.sessionToken == null) {
+        if (sessionToken == null) {
             String regionProgress = String.join(
                     Character.toString(VectorSessionToken.SegmentSeparator),
                     localLsnByRegion.
@@ -94,6 +94,8 @@ public class VectorSessionToken implements ISessionToken {
                         .append(regionProgress);
                 this.sessionToken = sb.toString();
             }
+        } else {
+            this.sessionToken = sessionToken;
         }
     }
 
@@ -174,6 +176,7 @@ public class VectorSessionToken implements ISessionToken {
         return true;
     }
 
+    // Merge is commutative operation, so a.Merge(b).Equals(b.Merge(a))
     public ISessionToken merge(ISessionToken obj) throws DocumentClientException {
         VectorSessionToken other = Utils.as(obj, VectorSessionToken.class);
 

@@ -119,11 +119,11 @@ public class GlobalEndpointManager implements AutoCloseable {
                         return Single.error(e);
                     }
 
-                    rx.Observable<rx.Observable<DatabaseAccount>> obs = rx.Observable.range(0, locations.size())
+                    Observable<Observable<DatabaseAccount>> obs = Observable.range(0, locations.size())
                             .map(index -> getDatabaseAccountFn.call(LocationHelper.getLocationEndpoint(defaultEndpoint, locations.get(index))).toObservable());
 
                     // iterate and get the database account from the first non failure, otherwise get the last error.
-                    rx.Observable<DatabaseAccount> res = rx.Observable.concatDelayError(obs).first().single();
+                    Observable<DatabaseAccount> res = Observable.concatDelayError(obs).first().single();
                     return res.toSingle().doOnError(
                             innerE -> {
                                 logger.error("Fail to reach location any of locations", String.join(",", locations), innerE.getMessage());

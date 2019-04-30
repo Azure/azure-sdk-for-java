@@ -61,7 +61,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     }
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public StoredProcedureQueryTest(AsyncDocumentClient.Builder clientBuilder) {
+    public StoredProcedureQueryTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

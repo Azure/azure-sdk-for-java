@@ -22,28 +22,33 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
+import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
+
 import org.apache.commons.lang3.StringUtils;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import javax.net.ssl.SSLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,101 +57,151 @@ public class SessionTest extends TestSuiteBase {
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
+    private String collectionId = "+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~";
+    private SpyClientUnderTestFactory.SpyBaseClass<HttpClientRequest<ByteBuf>> spyClient;
+    private AsyncDocumentClient houseKeepingClient;
+    private ConnectionMode connectionMode;
 
-    private SpyClientUnderTestFactory.ClientUnderTest client;
-
-    private String getCollectionLink() {
-        return createdCollection.getSelfLink();
-    }
-
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirectSession")
     public SessionTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
+    @DataProvider(name = "sessionTestArgProvider")
+    public Object[] sessionTestArgProvider() {
+        return new Object[] {
+                // boolean indicating whether requests should be name based or not
+                true,
+                false
+        };
+    }
+
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
-        client = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder);
+        
+        DocumentCollection collection = new DocumentCollection();
+        collection.setId(collectionId);
+        createdCollection = createCollection(createGatewayHouseKeepingDocumentClient().build(), createdDatabase.getId(),
+                collection, null);
+        houseKeepingClient = clientBuilder.build();
+        connectionMode = houseKeepingClient.getConnectionPolicy().getConnectionMode();
+
+        if (connectionMode == ConnectionMode.Direct) {
+            spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder);
+        } else {
+            spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder);
+        }
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeClose(client);
+        safeDeleteCollection(houseKeepingClient, createdCollection);
+        safeClose(houseKeepingClient);
+        safeClose(spyClient);
+        
     }
 
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeTest(Method method) {
         super.beforeMethod(method);
-        client.clearCapturedRequests();
+        spyClient.clearCapturedRequests();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void sessionConsistency_ReadYourWrites() {
-        client.readCollection(getCollectionLink(), null).toBlocking().single();
-        client.createDocument(getCollectionLink(), new Document(), null, false).toBlocking().single();
+    private List<String> getSessionTokensInRequests() {
+        return spyClient.getCapturedRequests().stream()
+                .map(r -> r.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).collect(Collectors.toList());
+    }
+    
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    public void sessionConsistency_ReadYourWrites(boolean isNameBased) {
+        spyClient.readCollection(getCollectionLink(isNameBased), null).toBlocking().single();
+        spyClient.createDocument(getCollectionLink(isNameBased), new Document(), null, false).toBlocking().single();
 
-        client.clearCapturedRequests();
-
+        spyClient.clearCapturedRequests();
+        
         for (int i = 0; i < 10; i++) {
-
-            Document documentCreated = client.createDocument(getCollectionLink(), new Document(), null, false)
+            Document documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), new Document(), null, false)
                     .toBlocking().single().getResource();
 
-            assertThat(getSessionTokensInRequests()).hasSize(3 * i + 1);
-            assertThat(getSessionTokensInRequests().get(3 * i + 0)).isNotEmpty();
+            // We send session tokens on Writes in Gateway mode
+            if (connectionMode == ConnectionMode.Gateway) {
+                assertThat(getSessionTokensInRequests()).hasSize(3 * i + 1);
+                assertThat(getSessionTokensInRequests().get(3 * i + 0)).isNotEmpty();
+            }
 
-            client.readDocument(documentCreated.getSelfLink(), null).toBlocking().single();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null).toBlocking().single();
 
             assertThat(getSessionTokensInRequests()).hasSize(3 * i + 2);
             assertThat(getSessionTokensInRequests().get(3 * i + 1)).isNotEmpty();
 
-            client.readDocument(documentCreated.getSelfLink(), null).toBlocking().single();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null).toBlocking().single();
 
             assertThat(getSessionTokensInRequests()).hasSize(3 * i + 3);
             assertThat(getSessionTokensInRequests().get(3 * i + 2)).isNotEmpty();
         }
     }
 
-    private List<String> getSessionTokensInRequests() {
-        return client.getCapturedRequests().stream()
-                .map(r -> r.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
-                .collect(Collectors.toList());
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void sessionTokenInDocumentRead() {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    public void sessionTokenInDocumentRead(boolean isNameBased) throws UnsupportedEncodingException {
         Document document = new Document();
         document.setId(UUID.randomUUID().toString());
         document.set("pk", "pk");
-        document = client.createDocument(getCollectionLink(), document, null, false).toBlocking().single()
+        document = spyClient.createDocument(getCollectionLink(isNameBased), document, null, false).toBlocking().single()
                 .getResource();
 
-        final String documentLink = document.getSelfLink();
-        client.readDocument(documentLink, null).toBlocking().single()
+        final String documentLink = getDocumentLink(document, isNameBased);
+        spyClient.readDocument(documentLink, null).toBlocking().single()
                 .getResource();
 
-        List<HttpClientRequest<ByteBuf>> documentReadHttpRequests = client.getCapturedRequests().stream()
+        List<HttpClientRequest<ByteBuf>> documentReadHttpRequests = spyClient.getCapturedRequests().stream()
                 .filter(r -> r.getMethod() == HttpMethod.GET)
-                .filter(r -> r.getUri().contains(StringUtils.removeEnd(documentLink,"/")))
-                .collect(Collectors.toList());
+                .filter(r -> {
+                    try {
+                        return URLDecoder.decode(r.getUri().replaceAll("\\+", "%2b"), "UTF-8").contains(
+                                StringUtils.removeEnd(documentLink, "/"));
+                    } catch (UnsupportedEncodingException e) {
+                        return false;
+                    }
+                }).collect(Collectors.toList());
 
-        assertThat(documentReadHttpRequests).hasSize(1);
+        // Direct mode may make more than one call (multiple replicas)
+        assertThat(documentReadHttpRequests.size() >= 1).isTrue();
         assertThat(documentReadHttpRequests.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNotEmpty();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void sessionTokenRemovedForMasterResource() {
-        client.readCollection(getCollectionLink(), null).toBlocking().single();
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    public void sessionTokenRemovedForMasterResource(boolean isNameBased) throws UnsupportedEncodingException {
+        if (connectionMode == ConnectionMode.Direct) {
+            throw new SkipException("Master resource access is only through gateway");
+        }
+        String collectionLink = getCollectionLink(isNameBased);
+        spyClient.readCollection(collectionLink, null).toBlocking().single();
 
-        List<HttpClientRequest<ByteBuf>> collectionReadHttpRequests = client.getCapturedRequests().stream()
+        List<HttpClientRequest<ByteBuf>> collectionReadHttpRequests = spyClient.getCapturedRequests().stream()
                 .filter(r -> r.getMethod() == HttpMethod.GET)
-                .filter(r -> r.getUri().contains(StringUtils.removeEnd(getCollectionLink(),"/")))
+                .filter(r -> {
+                    try {
+                        return URLDecoder.decode(r.getUri().replaceAll("\\+", "%2b"), "UTF-8").contains(
+                                StringUtils.removeEnd(collectionLink, "/"));
+                    } catch (UnsupportedEncodingException e) {
+                        return false;
+                    }
+                })
                 .collect(Collectors.toList());
 
         assertThat(collectionReadHttpRequests).hasSize(1);
         assertThat(collectionReadHttpRequests.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
+    }
+
+    private String getCollectionLink(boolean isNameBased) {
+        return isNameBased ? "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId():
+            createdCollection.getSelfLink();
+    }
+    
+    private String getDocumentLink(Document doc, boolean isNameBased) {
+        return isNameBased ? "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/docs/" + doc.getId() :
+            "dbs/" + createdDatabase.getResourceId() + "/colls/" + createdCollection.getResourceId() + "/docs/" + doc.getResourceId() + "/";
     }
 }

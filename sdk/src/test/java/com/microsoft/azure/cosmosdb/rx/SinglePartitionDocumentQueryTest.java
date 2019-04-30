@@ -67,7 +67,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     }
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public SinglePartitionDocumentQueryTest(AsyncDocumentClient.Builder clientBuilder) {
+    public SinglePartitionDocumentQueryTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

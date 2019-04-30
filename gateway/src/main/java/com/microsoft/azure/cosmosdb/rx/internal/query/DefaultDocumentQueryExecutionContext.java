@@ -125,7 +125,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         Func2<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> this.createRequestAsync(continuationToken, pageSize);
 
         // TODO: clean up if we want to use single vs observable.
-        Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc = executeInternalAyncFunc();
+        Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc = executeInternalAsyncFunc();
 
         return Paginator
     			.getPaginatedQueryResultAsObservable(newFeedOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
@@ -135,21 +135,22 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         // TODO: FIXME this needs to be revisited
 
         Range<String> r = new Range<>("", "FF", true, false);
-        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(resourceId, r, false);
+        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(resourceId, r, false, null);
     }
 
-    protected Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeInternalAyncFunc() {
+    protected Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeInternalAsyncFunc() {
         RxCollectionCache collectionCache = this.client.getCollectionCache();
         IPartitionKeyRangeCache partitionKeyRangeCache =  this.client.getPartitionKeyRangeCache();
-        IDocumentClientRetryPolicy retryPolicyInstance = this.client.getRetryPolicyFactory().getRequestPolicy();
+        IDocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy();
 
-        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(collectionCache, retryPolicyInstance, resourceLink);
+        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(collectionCache, retryPolicyInstance, resourceLink, feedOptions);
         if (super.resourceTypeEnum.isPartitioned()) {
             retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(
                     collectionCache,
                     partitionKeyRangeCache,
                     PathsHelper.getCollectionPath(super.resourceLink),
-                    retryPolicyInstance);
+                    retryPolicyInstance,
+                    feedOptions);
         }
 
         final IDocumentClientRetryPolicy finalRetryPolicyInstance = retryPolicyInstance;

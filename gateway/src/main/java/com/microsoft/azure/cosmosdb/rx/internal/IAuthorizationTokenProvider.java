@@ -28,8 +28,9 @@ import com.microsoft.azure.cosmosdb.internal.ResourceType;
 
 public interface IAuthorizationTokenProvider {
     String getUserAuthorizationToken(String resourceAddress,
-            ResourceType resourceType,
-            String requestVerb,
-            Map<String, String> headers,
-            AuthorizationTokenType tokenType);
+                                     ResourceType resourceType,
+                                     String get,
+                                     Map<String, String> headers,
+                                     AuthorizationTokenType primarymasterkey,
+                                     Map<String, Object> properties);
 }

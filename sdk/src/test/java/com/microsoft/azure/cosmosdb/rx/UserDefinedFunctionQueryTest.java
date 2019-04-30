@@ -59,7 +59,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
     }
 
     @Factory(dataProvider = "clientBuildersWithDirect")
-    public UserDefinedFunctionQueryTest(AsyncDocumentClient.Builder clientBuilder) {
+    public UserDefinedFunctionQueryTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

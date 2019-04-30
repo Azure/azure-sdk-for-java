@@ -30,6 +30,8 @@ import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.net.URL;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConnectionPoolExhaustedRetryTest {
@@ -44,22 +46,28 @@ public class ConnectionPoolExhaustedRetryTest {
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT, dataProvider = "exceptionProvider")
-    public void retryOnConnectionPoolExhausted(Exception exception) {
+    public void retryOnConnectionPoolExhausted(Exception exception) throws Exception {
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(new URL("http://localhost")).when(globalEndpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(globalEndpointManager, false, Mockito.mock(RetryOptions.class));
 
+        clientRetryPolicy.onBeforeSendRequest(Mockito.mock(RxDocumentServiceRequest.class));
         IRetryPolicy.ShouldRetryResult shouldRetryResult = clientRetryPolicy.shouldRetry(exception).toBlocking().value();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.backOffTime).isGreaterThanOrEqualTo(ConnectionPoolExhaustedRetry.RETRY_WAIT_TIME);
 
+        Mockito.verify(globalEndpointManager, Mockito.times(1)).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.verify(globalEndpointManager, Mockito.times(1)).CanUseMultipleWriteLocations(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.verifyNoMoreInteractions(globalEndpointManager);
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT, dataProvider = "exceptionProvider")
-    public void retryOnConnectionPoolExhausted_Exhausted(Exception exception) {
+    public void retryOnConnectionPoolExhausted_Exhausted(Exception exception) throws Exception {
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(new URL("http://localhost")).when(globalEndpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(globalEndpointManager, false, Mockito.mock(RetryOptions.class));
 
+        clientRetryPolicy.onBeforeSendRequest(Mockito.mock(RxDocumentServiceRequest.class));
         for (int i = 0; i < ConnectionPoolExhaustedRetry.MAX_RETRY_COUNT; i++) {
             IRetryPolicy.ShouldRetryResult shouldRetryResult = clientRetryPolicy.shouldRetry(exception).toBlocking().value();
             assertThat(shouldRetryResult.shouldRetry).isTrue();
@@ -70,6 +78,8 @@ public class ConnectionPoolExhaustedRetryTest {
         assertThat(shouldRetryResult.shouldRetry).isFalse();
         assertThat(shouldRetryResult.backOffTime).isNull();
         // no interaction with global endpoint manager
+        Mockito.verify(globalEndpointManager, Mockito.times(1)).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.verify(globalEndpointManager, Mockito.times(1)).CanUseMultipleWriteLocations(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.verifyNoMoreInteractions(globalEndpointManager);
     }
 }

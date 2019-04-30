@@ -24,33 +24,30 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
 import com.microsoft.azure.cosmosdb.DatabaseForTest;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.ConnectionPolicy;
-import com.microsoft.azure.cosmosdb.ConsistencyLevel;
+import com.microsoft.azure.cosmosdb.CompositePath;
+import com.microsoft.azure.cosmosdb.CompositePathSortOrder;
 import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.IndexingMode;
 import com.microsoft.azure.cosmosdb.IndexingPolicy;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
-import com.microsoft.azure.cosmosdb.CompositePath;
-import com.microsoft.azure.cosmosdb.CompositePathSortOrder;
 import com.microsoft.azure.cosmosdb.SpatialSpec;
 import com.microsoft.azure.cosmosdb.SpatialType;
 
 import rx.Observable;
-
-import javax.net.ssl.SSLException;
 
 public class CollectionCrudTest extends TestSuiteBase {
     private static final int TIMEOUT = 30000;
@@ -67,21 +64,47 @@ public class CollectionCrudTest extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createCollection() throws Exception {
-        DocumentCollection collectionDefinition = getCollectionDefinition();
+    @DataProvider(name = "collectionCrudArgProvider")
+    public Object[][] collectionCrudArgProvider() {
+        return new Object[][] {
+                // collection name, is name base
+                {UUID.randomUUID().toString(), false } ,
+                {UUID.randomUUID().toString(), true  } ,
+
+                // with special characters in the name.
+                {"+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~", true  } ,
+        };
+    }
+
+    private DocumentCollection getCollectionDefinition(String collectionName) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        DocumentCollection collectionDefinition = new DocumentCollection();
+        collectionDefinition.setId(collectionName);
+        collectionDefinition.setPartitionKey(partitionKeyDef);
+
+        return collectionDefinition;
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void createCollection(String collectionName, boolean isNameBased) {
+        DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
         
         Observable<ResourceResponse<DocumentCollection>> createObservable = client
-                .createCollection(database.getSelfLink(), collectionDefinition, null);
+                .createCollection(getDatabaseLink(database, isNameBased), collectionDefinition, null);
 
         ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                 .withId(collectionDefinition.getId()).build();
         
         validateSuccess(createObservable, validator);
+        safeDeleteAllCollections(client, database);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createCollectionWithCompositeIndexAndSpatialSpec() throws Exception {
+    public void createCollectionWithCompositeIndexAndSpatialSpec() {
         DocumentCollection collection = new DocumentCollection();
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
@@ -152,41 +175,44 @@ public class CollectionCrudTest extends TestSuiteBase {
                 .build();
         
         validateSuccess(createObservable, validator);
+        safeDeleteAllCollections(client, database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void readCollection() throws Exception {
-        DocumentCollection collectionDefinition = getCollectionDefinition();
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void readCollection(String collectionName, boolean isNameBased) {
+        DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
         
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(database.getSelfLink(), collectionDefinition,
+        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(getDatabaseLink(database, isNameBased), collectionDefinition,
                 null);
         DocumentCollection collection = createObservable.toBlocking().single().getResource();
 
-        Observable<ResourceResponse<DocumentCollection>> readObservable = client.readCollection(collection.getSelfLink(), null);
+        Observable<ResourceResponse<DocumentCollection>> readObservable = client.readCollection(getCollectionLink(database, collection, isNameBased), null);
 
         ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                 .withId(collection.getId()).build();
         validateSuccess(readObservable, validator);
+        safeDeleteAllCollections(client, database);
     }
-    
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void readCollection_NameBase() throws Exception {
-        DocumentCollection collectionDefinition = getCollectionDefinition();
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void readCollection_NameBase(String collectionName, boolean isNameBased) {
+        DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
         
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(database.getSelfLink(), collectionDefinition,
+        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(getDatabaseLink(database, isNameBased), collectionDefinition,
                 null);
         DocumentCollection collection = createObservable.toBlocking().single().getResource();
         
         Observable<ResourceResponse<DocumentCollection>> readObservable = client.readCollection(
-                Utils.getCollectionNameLink(database.getId(), collection.getId()), null);
+                getCollectionLink(database, collection, isNameBased), null);
 
         ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                 .withId(collection.getId()).build();
         validateSuccess(readObservable, validator);
+        safeDeleteAllCollections(client, database);
     }
-    
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void readCollection_DoesntExist() throws Exception {
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void readCollection_DoesntExist(String collectionName, boolean isNameBased) throws Exception {
 
         Observable<ResourceResponse<DocumentCollection>> readObservable = client
                 .readCollection(Utils.getCollectionNameLink(database.getId(), "I don't exist"), null);
@@ -194,27 +220,27 @@ public class CollectionCrudTest extends TestSuiteBase {
         FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, validator);
     }
-    
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void deleteCollection() throws Exception {
-        DocumentCollection collectionDefinition = getCollectionDefinition();
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void deleteCollection(String collectionName, boolean isNameBased) {
+        DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
         
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(database.getSelfLink(), collectionDefinition, null);
+        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(getDatabaseLink(database, isNameBased), collectionDefinition, null);
         DocumentCollection collection = createObservable.toBlocking().single().getResource();
 
-        Observable<ResourceResponse<DocumentCollection>> deleteObservable = client.deleteCollection(collection.getSelfLink(),
+        Observable<ResourceResponse<DocumentCollection>> deleteObservable = client.deleteCollection(getCollectionLink(database, collection, isNameBased),
                 null);
 
         ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                 .nullResource().build();
         validateSuccess(deleteObservable, validator);
     }
-    
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void replaceCollection()  {
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    public void replaceCollection(String collectionName, boolean isNameBased)  {
         // create a collection
-        DocumentCollection collectionDefinition = getCollectionDefinition();
-        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(database.getSelfLink(), collectionDefinition, null);
+        DocumentCollection collectionDefinition = getCollectionDefinition(collectionName);
+        Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(getDatabaseLink(database, isNameBased), collectionDefinition, null);
         DocumentCollection collection = createObservable.toBlocking().single().getResource();
         // sanity check
         assertThat(collection.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.Consistent);
@@ -229,6 +255,62 @@ public class CollectionCrudTest extends TestSuiteBase {
         ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                 .indexingMode(IndexingMode.Lazy).build();
         validateSuccess(readObservable, validator);
+        safeDeleteAllCollections(client, database);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void sessionTokenConsistencyCollectionDeleteCreateSameName() {
+        AsyncDocumentClient client1 = clientBuilder.build();
+        AsyncDocumentClient client2 = clientBuilder.build();
+
+        String dbId = "db";
+        String collectionId = "coll";
+        try {
+            Database databaseDefinition = new Database();
+            databaseDefinition.setId(dbId);
+            createDatabase(client1, dbId);
+
+            DocumentCollection collectionDefinition = new DocumentCollection();
+            collectionDefinition.setId(collectionId);
+            DocumentCollection collection = createCollection(client1, dbId, collectionDefinition);
+
+            Document document = new Document();
+            document.setId("doc");
+            document.set("name", "New Document");
+            createDocument(client1, dbId, collectionId, document);
+            ResourceResponse<Document> readDocumentResponse = client1.readDocument(Utils.getDocumentNameLink(dbId, collectionId, document.getId()), null).toBlocking().single();
+            logger.info("Client 1 Read Document Client Side Request Statistics {}", readDocumentResponse.getRequestDiagnosticsString());
+            logger.info("Client 1 Read Document Latency {}", readDocumentResponse.getRequestLatency());
+
+            document.set("name", "New Updated Document");
+            ResourceResponse<Document> upsertDocumentResponse = client1.upsertDocument(collection.getSelfLink(), document, null,
+                    true).toBlocking().single();
+            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getRequestDiagnosticsString());
+            logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
+
+            //  Delete the existing collection
+            deleteCollection(client2, Utils.getCollectionNameLink(dbId, collectionId));
+            //  Recreate the collection with the same name but with different client
+            createCollection(client2, dbId, collectionDefinition);
+
+            Document newDocument = new Document();
+            newDocument.setId("doc");
+            newDocument.set("name", "New Created Document");
+            createDocument(client2, dbId, collectionId, newDocument);
+
+            readDocumentResponse = client1.readDocument(Utils.getDocumentNameLink(dbId, collectionId, newDocument.getId()), null).toBlocking().single();
+            logger.info("Client 2 Read Document Client Side Request Statistics {}", readDocumentResponse.getRequestDiagnosticsString());
+            logger.info("Client 2 Read Document Latency {}", readDocumentResponse.getRequestLatency());
+
+            Document readDocument = readDocumentResponse.getResource();
+
+            assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
+            assertThat(readDocument.get("name").equals(newDocument.get("name"))).isTrue();
+        } finally {
+            safeDeleteDatabase(client1, dbId);
+            safeClose(client1);
+            safeClose(client2);
+        }
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
@@ -241,5 +323,13 @@ public class CollectionCrudTest extends TestSuiteBase {
     public void afterClass() {
         safeDeleteDatabase(client, databaseId);
         safeClose(client);
+    }
+
+    private static String getDatabaseLink(Database db, boolean isNameLink) {
+        return isNameLink ? "dbs/" + db.getId() : db.getSelfLink();
+    }
+
+    private static String getCollectionLink(Database db, DocumentCollection documentCollection, boolean isNameLink) {
+        return isNameLink ? "dbs/" + db.getId() + "/colls/" + documentCollection.getId() : documentCollection.getSelfLink();
     }
 }

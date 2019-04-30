@@ -55,7 +55,7 @@ public class CollectionQueryTest extends TestSuiteBase {
     }
     
     @Factory(dataProvider = "clientBuilders")
-    public CollectionQueryTest(AsyncDocumentClient.Builder clientBuilder) {
+    public CollectionQueryTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
         this.subscriberValidationTimeout = TIMEOUT;
     }

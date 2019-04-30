@@ -23,6 +23,8 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import java.util.Map;
+
 /**
  * Specifies the common options associated with feed methods (enumeration operations) in the Azure Cosmos DB database service.
  */
@@ -31,6 +33,7 @@ public abstract class FeedOptionsBase {
     private String requestContinuation;
     private PartitionKey partitionkey;
     private boolean populateQueryMetrics;
+    private Map<String, Object> properties;
 
     protected FeedOptionsBase() {}
 
@@ -115,5 +118,23 @@ public abstract class FeedOptionsBase {
      */
     public void setPopulateQueryMetrics(boolean populateQueryMetrics) {
         this.populateQueryMetrics = populateQueryMetrics;
+    }
+
+    /**
+     * Gets the properties
+     *
+     * @return Map of request options properties
+     */
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    /**
+     * Sets the properties used to identify the request token.
+     *
+     * @param properties the properties.
+     */
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
     }
 }

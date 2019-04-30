@@ -31,11 +31,12 @@ import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.Undefined;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import rx.Observable;
@@ -60,12 +61,24 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createDocument() {
-        Document docDefinition = getDocumentDefinition();
+    @DataProvider(name = "documentCrudArgProvider")
+    public Object[][] documentCrudArgProvider() {
+        return new Object[][] {
+                // collection name, is name base
+                {UUID.randomUUID().toString(), false } ,
+                {UUID.randomUUID().toString(), true  } ,
+
+                // with special characters in the name.
+                {"+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~", true  } ,
+        };
+    }
+    
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void createDocument(String documentId, boolean isNameBased) {
+        Document docDefinition = getDocumentDefinition(documentId);
 
         Observable<ResourceResponse<Document>> createObservable = client
-                .createDocument(getCollectionLink(), docDefinition, null, false);
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false);
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                 .withId(docDefinition.getId())
@@ -74,16 +87,16 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createLargeDocument() {
-        Document docDefinition = getDocumentDefinition();
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void createLargeDocument(String documentId, boolean isNameBased) {
+        Document docDefinition = getDocumentDefinition(documentId);
 
         //Keep size as ~ 1.5MB to account for size of other props
         int size = (int) (ONE_MB * 1.5);
         docDefinition.set("largeString", StringUtils.repeat("x", size));
 
         Observable<ResourceResponse<Document>> createObservable = client
-                .createDocument(getCollectionLink(), docDefinition, null, false);
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false);
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                 .withId(docDefinition.getId())
@@ -92,9 +105,9 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createDocumentWithVeryLargePartitionKey() {
-        Document docDefinition = getDocumentDefinition();
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void createDocumentWithVeryLargePartitionKey(String documentId, boolean isNameBased) {
+        Document docDefinition = getDocumentDefinition(documentId);
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < 100; i++) {
             sb.append(i).append("x");
@@ -102,7 +115,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         docDefinition.set("mypk", sb.toString());
 
         Observable<ResourceResponse<Document>> createObservable = client
-                .createDocument(getCollectionLink(), docDefinition, null, false);
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false);
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                 .withId(docDefinition.getId())
@@ -111,9 +124,9 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentWithVeryLargePartitionKey() {
-        Document docDefinition = getDocumentDefinition();
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void readDocumentWithVeryLargePartitionKey(String documentId, boolean isNameBased) {
+        Document docDefinition = getDocumentDefinition(documentId);
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < 100; i++) {
             sb.append(i).append("x");
@@ -126,7 +139,7 @@ public class DocumentCrudTest extends TestSuiteBase {
 
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(sb.toString()));
-        Observable<ResourceResponse<Document>> readObservable = client.readDocument(createdDocument.getSelfLink(), options);
+        Observable<ResourceResponse<Document>> readObservable = client.readDocument(getDocumentLink(createdDocument, isNameBased), options);
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                 .withId(docDefinition.getId())
@@ -135,25 +148,25 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createDocument_AlreadyExists() {
-        Document docDefinition = getDocumentDefinition();
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void createDocument_AlreadyExists(String documentId, boolean isNameBased) {
+        Document docDefinition = getDocumentDefinition(documentId);
 
-        client.createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+        client.createDocument(getCollectionLink(isNameBased), docDefinition, null, false).toBlocking().single().getResource();
 
         Observable<ResourceResponse<Document>> createObservable = client
-                .createDocument(getCollectionLink(), docDefinition, null, false);
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false);
 
         FailureValidator validator = new FailureValidator.Builder().resourceAlreadyExists().build();
         validateFailure(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createDocumentTimeout() {
-        Document docDefinition = getDocumentDefinition();
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void createDocumentTimeout(String documentId, boolean isNameBased) {
+        Document docDefinition = getDocumentDefinition(documentId);
 
         Observable<ResourceResponse<Document>> createObservable = client
-                .createDocument(getCollectionLink(), docDefinition, null, false)
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false)
                 .timeout(1, TimeUnit.MILLISECONDS);
 
         FailureValidator validator = new FailureValidator.Builder().instanceOf(TimeoutException.class).build();
@@ -161,18 +174,18 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateFailure(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocument() {
-        Document docDefinition = getDocumentDefinition();
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void readDocument(String documentId, boolean isNameBased) {
+        Document docDefinition = getDocumentDefinition(documentId);
 
         Document document = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false).toBlocking().single().getResource();
 
         waitIfNeededForReplicasToCatchUp(clientBuilder);
 
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(document.get("mypk")));
-        Observable<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), options);
+        Observable<ResourceResponse<Document>> readObservable = client.readDocument(getDocumentLink(document, isNameBased), options);
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                 .withId(document.getId())
@@ -180,19 +193,19 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void timestamp() throws Exception {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void timestamp(String documentId, boolean isNameBased) throws Exception {
         Date before = new Date();
-        Document docDefinition = getDocumentDefinition();
+        Document docDefinition = getDocumentDefinition(documentId);
         Thread.sleep(1000);
         Document document = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false).toBlocking().single().getResource();
 
         waitIfNeededForReplicasToCatchUp(clientBuilder);
 
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(document.get("mypk")));
-        Observable<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), options);
+        Observable<ResourceResponse<Document>> readObservable = client.readDocument(getDocumentLink(document, isNameBased), options);
         Document readDocument = readObservable.toBlocking().single().getResource();
         Thread.sleep(1000);
         Date after = new Date();
@@ -201,37 +214,37 @@ public class DocumentCrudTest extends TestSuiteBase {
         assertThat(readDocument.getTimestamp()).isBeforeOrEqualsTo(after);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocument_DoesntExist() {
-        Document docDefinition = getDocumentDefinition();
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void readDocument_DoesntExist(String documentId, boolean isNameBased) {
+        Document docDefinition = getDocumentDefinition(documentId);
 
         Document document = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false).toBlocking().single().getResource();
 
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(document.get("mypk")));
-        client.deleteDocument(document.getSelfLink(), options).toBlocking().first();
+        client.deleteDocument(getDocumentLink(document, isNameBased), options).toBlocking().first();
 
         waitIfNeededForReplicasToCatchUp(clientBuilder);
 
         options.setPartitionKey(new PartitionKey("looloo"));
-        Observable<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), options);
+        Observable<ResourceResponse<Document>> readObservable = client.readDocument(getDocumentLink(document, isNameBased), options);
 
         FailureValidator validator = new FailureValidator.Builder().instanceOf(DocumentClientException.class)
                 .statusCode(404).build();
         validateFailure(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void deleteDocument() {
-        Document docDefinition = getDocumentDefinition();
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void deleteDocument(String documentId, boolean isNameBased) {
+        Document docDefinition = getDocumentDefinition(documentId);
 
         Document document = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false).toBlocking().single().getResource();
 
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(document.get("mypk")));
-        Observable<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.getSelfLink(), options);
+        Observable<ResourceResponse<Document>> deleteObservable = client.deleteDocument(getDocumentLink(document, isNameBased), options);
 
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
@@ -241,22 +254,22 @@ public class DocumentCrudTest extends TestSuiteBase {
         // attempt to read document which was deleted
         waitIfNeededForReplicasToCatchUp(clientBuilder);
 
-        Observable<ResourceResponse<Document>> readObservable = client.readDocument(getDocumentLink(docDefinition.getId()), options);
+        Observable<ResourceResponse<Document>> readObservable = client.readDocument(getDocumentLink(document, isNameBased), options);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, notFoundValidator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void deleteDocument_undefinedPK() {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void deleteDocument_undefinedPK(String documentId, boolean isNameBased) {
         Document docDefinition = new Document();
-        docDefinition.setId(UUID.randomUUID().toString());
+        docDefinition.setId(documentId);
 
         Document document = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false).toBlocking().single().getResource();
 
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(Undefined.Value()));
-        Observable<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.getSelfLink(), options);
+        Observable<ResourceResponse<Document>> deleteObservable = client.deleteDocument(getDocumentLink(document, isNameBased), options);
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                 .nullResource().build();
@@ -265,36 +278,36 @@ public class DocumentCrudTest extends TestSuiteBase {
         // attempt to read document which was deleted
         waitIfNeededForReplicasToCatchUp(clientBuilder);
 
-        Observable<ResourceResponse<Document>> readObservable = client.readDocument(getDocumentLink(docDefinition.getId()), options);
+        Observable<ResourceResponse<Document>> readObservable = client.readDocument(getDocumentLink(document, isNameBased), options);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, notFoundValidator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void deleteDocument_DoesntExist() {
-        Document docDefinition = getDocumentDefinition();
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void deleteDocument_DoesntExist(String documentId, boolean isNameBased) {
+        Document docDefinition = getDocumentDefinition(documentId);
 
         Document document = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false).toBlocking().single().getResource();
 
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(document.get("mypk")));
-        client.deleteDocument(document.getSelfLink(), options).toBlocking().single();
+        client.deleteDocument(getDocumentLink(document, isNameBased), options).toBlocking().single();
 
         // delete again
-        Observable<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.getSelfLink(), options);
+        Observable<ResourceResponse<Document>> deleteObservable = client.deleteDocument(getDocumentLink(document, isNameBased), options);
 
         FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(deleteObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void replaceDocument() {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void replaceDocument(String documentId, boolean isNameBased) {
         // create a document
-        Document docDefinition = getDocumentDefinition();
+        Document docDefinition = getDocumentDefinition(documentId);
 
         Document document = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false).toBlocking().single().getResource();
 
         String newPropValue = UUID.randomUUID().toString();
         document.set("newProp", newPropValue);
@@ -308,19 +321,19 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void replaceDocument_UsingDocumentLink() {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void replaceDocument_UsingDocumentLink(String documentId, boolean isNameBased) {
         // create a document
-        Document docDefinition = getDocumentDefinition();
+        Document docDefinition = getDocumentDefinition(documentId);
 
         Document document = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false).toBlocking().single().getResource();
 
         String newPropValue = UUID.randomUUID().toString();
         document.set("newProp", newPropValue);
 
         // replace document
-        Observable<ResourceResponse<Document>> readObservable = client.replaceDocument(document.getSelfLink(), document, null);
+        Observable<ResourceResponse<Document>> readObservable = client.replaceDocument(getDocumentLink(document, isNameBased), document, null);
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
@@ -328,14 +341,14 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void upsertDocument_CreateDocument() {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void upsertDocument_CreateDocument(String documentId, boolean isNameBased) {
         // create a document
-        Document docDefinition = getDocumentDefinition();
+        Document docDefinition = getDocumentDefinition(documentId);
 
 
         // replace document
-        Observable<ResourceResponse<Document>> upsertObservable = client.upsertDocument(getCollectionLink(),
+        Observable<ResourceResponse<Document>> upsertObservable = client.upsertDocument(getCollectionLink(isNameBased),
                 docDefinition, null, false);
 
         // validate
@@ -353,20 +366,20 @@ public class DocumentCrudTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void upsertDocument_ReplaceDocument() {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void upsertDocument_ReplaceDocument(String documentId, boolean isNameBased) {
         // create a document
-        Document docDefinition = getDocumentDefinition();
+        Document docDefinition = getDocumentDefinition(documentId);
 
         Document document = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+                .createDocument(getCollectionLink(isNameBased), docDefinition, null, false).toBlocking().single().getResource();
 
         String newPropValue = UUID.randomUUID().toString();
         document.set("newProp", newPropValue);
 
         // replace document
         Observable<ResourceResponse<Document>> readObservable = client.upsertDocument
-                (getCollectionLink(), document, null, true);
+                (getCollectionLink(isNameBased), document, null, true);
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
@@ -387,7 +400,6 @@ public class DocumentCrudTest extends TestSuiteBase {
     public void beforeClass() {
         createdDatabase = SHARED_DATABASE;
         createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
-        client = clientBuilder.build();
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -395,22 +407,29 @@ public class DocumentCrudTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    private String getCollectionLink() {
-        return createdCollection.getSelfLink();
+    @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    public void beforeMethod() {
+        safeClose(client);
+        client = clientBuilder.build();
+    }
+    
+    private String getCollectionLink(boolean isNameBased) {
+        return isNameBased ? "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() : createdCollection.getSelfLink();
     }
 
-    private String getDocumentLink(String docId) {
-        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/docs/" + docId;
+    private String getDocumentLink(Document doc, boolean isNameBased) {
+        return isNameBased ? "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/docs/" + doc.getId() :
+            "dbs/" + createdDatabase.getResourceId() + "/colls/" + createdCollection.getResourceId() + "/docs/" + doc.getResourceId();
     }
 
-    private Document getDocumentDefinition() {
+    private Document getDocumentDefinition(String documentId) {
         String uuid = UUID.randomUUID().toString();
         Document doc = new Document(String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"mypk\": \"%s\", "
                 + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
                 + "}"
-                , uuid, uuid));
+                , documentId, uuid));
         return doc;
     }
 }

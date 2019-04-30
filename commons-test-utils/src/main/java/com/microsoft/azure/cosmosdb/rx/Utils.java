@@ -47,9 +47,9 @@ public class Utils {
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + COLLECTIONS_PATH_SEGMENT + "/" + collectionId;
     }
 
-    public static String getDocumentNameLink(String databaseId, String collectionLink, String docId) {
+    public static String getDocumentNameLink(String databaseId, String collectionId, String docId) {
 
-        return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + COLLECTIONS_PATH_SEGMENT + "/" +collectionLink + "/" + DOCUMENTS_PATH_SEGMENT + "/" + docId;
+        return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + COLLECTIONS_PATH_SEGMENT + "/" +collectionId + "/" + DOCUMENTS_PATH_SEGMENT + "/" + docId;
     }
 
     public static String getUserNameLink(String databaseId, String userId) {

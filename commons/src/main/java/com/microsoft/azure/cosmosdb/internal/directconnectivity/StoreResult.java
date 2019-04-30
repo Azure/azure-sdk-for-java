@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
+import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.ISessionToken;
@@ -36,8 +37,8 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 
-public class StoreReadResult {
-    private final static Logger logger = LoggerFactory.getLogger(StoreReadResult.class);
+public class StoreResult {
+    private final static Logger logger = LoggerFactory.getLogger(StoreResult.class);
 
     private final StoreResponse storeResponse;
     private final DocumentClientException exception;
@@ -58,7 +59,7 @@ public class StoreReadResult {
     final public boolean isInvalidPartitionException;
     final public URI storePhysicalAddress;
 
-    public StoreReadResult(
+    public StoreResult(
             StoreResponse storeResponse,
             DocumentClientException exception,
             String partitionKeyRangeId,
@@ -119,7 +120,7 @@ public class StoreReadResult {
         }
 
         if (requestChargeTracker != null && this.isValid) {
-            StoreReadResult.setRequestCharge(this.storeResponse, this.exception, requestChargeTracker.getTotalRequestCharge());
+            StoreResult.setRequestCharge(this.storeResponse, this.exception, requestChargeTracker.getTotalRequestCharge());
         }
 
         if (this.exception != null) {
@@ -149,21 +150,30 @@ public class StoreReadResult {
 
     @Override
     public String toString() {
-        int statusCode = this.storeResponse != null ? this.storeResponse.getStatus() :
-                ((this.exception != null) ? this.exception.getStatusCode() : 0);
+        int statusCode = 0;
+        int subStatusCode = HttpConstants.SubStatusCodes.UNKNOWN;
 
-        return String.format(
-                "storePhysicalAddress: %s, lsn: %d, globalCommittedLsn: %d, partitionKeyRangeId: %s, isValid: %b, statusCode: %d, isGone: %b, " +
-                        "isNotFound: %b, isInvalidPartition: %b, requestCharge: %f, itemLSN: %d, sessionToken: %s",
-                this.storePhysicalAddress, this.lsn, this.globalCommittedLSN, this.partitionKeyRangeId,
-                this.isValid,
-                statusCode,
-                this.isGoneException,
-                this.isNotFoundException,
-                this.isInvalidPartitionException,
-                this.requestCharge,
-                this.itemLSN,
-                this.sessionToken != null ? this.sessionToken.convertToString() : null);
+        if (this.storeResponse != null) {
+            statusCode = this.storeResponse.getStatus();
+            subStatusCode = this.storeResponse.getSubStatusCode();
+        } else if (this.exception != null) {
+            statusCode = this.exception.getStatusCode();
+            subStatusCode = this.exception.getSubStatusCode();
+        }
 
+        return "storePhysicalAddress: " + this.storePhysicalAddress +
+                ", lsn: " + this.lsn +
+                ", globalCommittedLsn: " + this.globalCommittedLSN +
+                ", partitionKeyRangeId: " + this.partitionKeyRangeId +
+                ", isValid: " + this.isValid +
+                ", statusCode: " + statusCode +
+                ", subStatusCode: " + subStatusCode +
+                ", isGone: " + this.isGoneException +
+                ", isNotFound: " + this.isNotFoundException +
+                ", isInvalidPartition: " + this.isInvalidPartitionException +
+                ", requestCharge: " + this.requestCharge +
+                ", itemLSN: " + this.itemLSN +
+                ", sessionToken: " + (this.sessionToken != null ? this.sessionToken.convertToString() : null) +
+                ", exception: " + BridgeInternal.getInnerErrorMessage(this.exception);
     }
 }

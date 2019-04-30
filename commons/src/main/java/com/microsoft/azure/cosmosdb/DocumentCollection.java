@@ -119,7 +119,7 @@ public final class DocumentCollection extends Resource {
     /**
      * Gets the collection's default time-to-live value.
      *
-     * @return the the default time-to-live value in seconds.
+     * @return the default time-to-live value in seconds.
      */
     public Integer getDefaultTimeToLive() {
         if (super.has(Constants.Properties.DEFAULT_TTL)) {

@@ -27,11 +27,12 @@ package com.microsoft.azure.cosmosdb.rx.internal;
 import java.net.URL;
 import java.util.List;
 
+import com.microsoft.azure.cosmosdb.ClientSideRequestStatistics;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.PartitionKeyRange;
 import com.microsoft.azure.cosmosdb.internal.ISessionToken;
 import com.microsoft.azure.cosmosdb.internal.RequestChargeTracker;
-import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreReadResult;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreResult;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreResponse;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.TimeoutHelper;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
@@ -55,11 +56,9 @@ public class DocumentServiceRequestContext implements Cloneable{
     public volatile boolean performedBackgroundAddressRefresh;
     public volatile boolean performLocalRefreshOnGoneException;
     public volatile List<String> storeResponses;
-    public volatile StoreReadResult quorumSelectedStoreResponse;
+    public volatile StoreResult quorumSelectedStoreResponse;
     public volatile PartitionKeyInternal effectivePartitionKey;
-
-    // TODO PRODUCT BACKLOG ITEM 258624
-    // public volatile ClientSideRequestStatistics ClientRequestStatistics;
+    public volatile ClientSideRequestStatistics clientSideRequestStatistics;
 
     /**
      * Sets routing directive for GlobalEndpointManager to resolve the request
@@ -116,6 +115,7 @@ public class DocumentServiceRequestContext implements Cloneable{
         context.performLocalRefreshOnGoneException = this.performLocalRefreshOnGoneException;
         context.effectivePartitionKey = this.effectivePartitionKey;
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
+        context.clientSideRequestStatistics = this.clientSideRequestStatistics;
 
         return context;
     }

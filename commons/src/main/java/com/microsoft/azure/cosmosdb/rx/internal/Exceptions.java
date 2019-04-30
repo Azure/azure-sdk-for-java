@@ -36,8 +36,7 @@ public class Exceptions {
     }
 
     public static boolean isSubStatusCode(DocumentClientException e, int subStatus) {
-        Integer actualSubStatusCode = e.getSubStatusCode();
-        return actualSubStatusCode != null && actualSubStatusCode == subStatus;
+        return subStatus == e.getSubStatusCode();
     }
 
     public static boolean isPartitionSplit(DocumentClientException e) {

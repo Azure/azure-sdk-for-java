@@ -153,4 +153,13 @@ public final class StoredProcedureResponse {
     public String getScriptLog() {
         return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.SCRIPT_LOG_RESULTS);
     }
+
+    /**
+     * Gets the client side request statics for execution of stored procedure.
+     *
+     * @return client side request statistics for execution of stored procedure.
+     */
+    public ClientSideRequestStatistics getClientSideRequestStatistics() {
+        return this.response.getClientSideRequestStatistics();
+    }
 }

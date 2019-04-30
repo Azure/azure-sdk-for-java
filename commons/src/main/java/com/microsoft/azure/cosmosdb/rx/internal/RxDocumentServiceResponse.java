@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.microsoft.azure.cosmosdb.Attachment;
 import com.microsoft.azure.cosmosdb.BridgeInternal;
+import com.microsoft.azure.cosmosdb.ClientSideRequestStatistics;
 import com.microsoft.azure.cosmosdb.Conflict;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
@@ -94,8 +95,6 @@ public class RxDocumentServiceResponse {
             return InternalConstants.ResourceKeys.DOCUMENT_COLLECTIONS;
         } else if (c.equals(Offer.class)) {
             return InternalConstants.ResourceKeys.OFFERS;
-        } else if (c.equals(PartitionKeyRange.class)) {
-            return InternalConstants.ResourceKeys.PARTITION_KEY_RANGES;
         } else if (c.equals(Permission.class)) {
             return InternalConstants.ResourceKeys.PERMISSIONS;
         } else if (c.equals(Trigger.class)) {
@@ -220,5 +219,12 @@ public class RxDocumentServiceResponse {
 
     public InputStream getContentStream() {
         return this.storeResponse.getResponseStream();
+    }
+
+    public ClientSideRequestStatistics getClientSideRequestStatistics() {
+        if (this.storeResponse == null) {
+            return null;
+        }
+        return this.storeResponse.getClientSideRequestStatistics();
     }
 }

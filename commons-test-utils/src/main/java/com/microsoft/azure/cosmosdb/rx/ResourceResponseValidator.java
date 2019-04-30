@@ -54,7 +54,7 @@ import com.microsoft.azure.cosmosdb.SpatialType;
 
 public interface ResourceResponseValidator<T extends Resource> {
 
-    static <T extends Resource> ResourceResponseValidator.Builder builder() {
+    static <T extends Resource> Builder builder() {
         return new Builder();
     }
 

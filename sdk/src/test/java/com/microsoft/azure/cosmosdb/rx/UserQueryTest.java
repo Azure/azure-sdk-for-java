@@ -57,7 +57,7 @@ public class UserQueryTest extends TestSuiteBase {
     }
     
     @Factory(dataProvider = "clientBuilders")
-    public UserQueryTest(AsyncDocumentClient.Builder clientBuilder) {
+    public UserQueryTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 

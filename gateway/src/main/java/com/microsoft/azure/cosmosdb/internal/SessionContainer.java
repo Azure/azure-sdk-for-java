@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static com.microsoft.azure.cosmosdb.rx.internal.Utils.ValueHolder;
 
@@ -48,27 +49,22 @@ public final class SessionContainer implements ISessionContainer {
     /**
      * Session token cache that maps collection ResourceID to session tokens
      */
-    private final ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> collectionResourceIdToSessionTokens;
+    private final ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> collectionResourceIdToSessionTokens = new ConcurrentHashMap<>();
     /**
      * Collection ResourceID cache that maps collection name to collection ResourceID
      * When collection name is provided instead of self-link, this is used in combination with
      * collectionResourceIdToSessionTokens to retrieve the session token for the collection by name
      */
-    private final ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId;
+    private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
+    private final ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
+
+    private final ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, String> collectionResourceIdToCollectionName = new ConcurrentHashMap<>();
     private final String hostName;
 
     public SessionContainer(final String hostName) {
-        this(hostName,
-                new ConcurrentHashMap<>(),
-                new ConcurrentHashMap<>());
-    }
-
-    public SessionContainer(final String hostName,
-                            ConcurrentHashMap<String, Long> nameToRidMap,
-                            ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> ridToTokensMap) {
         this.hostName = hostName;
-        this.collectionResourceIdToSessionTokens = ridToTokensMap;
-        this.collectionNameToCollectionResourceId = nameToRidMap;
     }
 
     public String getHostName() {
@@ -145,66 +141,40 @@ public final class SessionContainer implements ISessionContainer {
     }
 
     @Override
-    public void clearToken(String collectionRid, String collectionFullname, Map<String, String> responseHeader) {
-        if (!Strings.isNullOrEmpty(collectionFullname)) {
-            String collectionName = PathsHelper.getCollectionPath(collectionFullname);
-            Long collectionIdAsLong = this.collectionNameToCollectionResourceId.remove(collectionName);
-            if (collectionIdAsLong != null) {
-                this.collectionResourceIdToSessionTokens.remove(collectionIdAsLong);
-            }
-        }
-
-        if (!Strings.isNullOrEmpty(collectionRid)) {
-            ResourceId resourceId = ResourceId.parse(collectionRid);
-            long uniqueCollectionId = resourceId.getUniqueDocumentCollectionId();
-            this.collectionResourceIdToSessionTokens.remove(uniqueCollectionId);
-
-            collectionFullname = this.collectionNameToCollectionResourceId.entrySet().stream()
-                    .filter(entry -> entry.getValue() == uniqueCollectionId).map(Entry::getKey)
-                    .findFirst()
-                    .orElse(null);
-
-            if (collectionFullname != null) {
-                this.collectionNameToCollectionResourceId.remove(collectionFullname);
+    public void clearTokenByCollectionFullName(String collectionFullName) {
+        if (!Strings.isNullOrEmpty(collectionFullName)) {
+            String collectionName = PathsHelper.getCollectionPath(collectionFullName);
+            this.writeLock.lock();
+            try {
+                if (this.collectionNameToCollectionResourceId.containsKey(collectionName)) {
+                    Long rid = this.collectionNameToCollectionResourceId.get(collectionName);
+                    this.collectionResourceIdToSessionTokens.remove(rid);
+                    this.collectionResourceIdToCollectionName.remove(rid);
+                    this.collectionNameToCollectionResourceId.remove(collectionName);
+                }
+            } finally {
+                this.writeLock.unlock();
             }
         }
     }
 
     @Override
-    public void clearToken(final RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
-        if (request.getResourceType() == ResourceType.DocumentCollection
-                && request.getOperationType() == OperationType.Delete) {
-            // NOTE: this is additional to .Net and handles collection delete
-            if (request.getIsNameBased()) {
-                clearToken(null, request.getResourceAddress(), responseHeaders);
-            } else {
-                clearToken(request.getResourceId(), request.getResourceAddress(), responseHeaders);
-            }
-            return;
-        }
-
-        String ownerFullName = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
-        String collectionName = PathsHelper.getCollectionPath(ownerFullName);
-        String resourceIdString;
-
-        if (!request.getIsNameBased()) {
-            resourceIdString = request.getResourceId();
-        } else {
-            resourceIdString = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
-        }
-
-        if (!Strings.isNullOrEmpty(resourceIdString)) {
-            ResourceId resourceId = ResourceId.parse(resourceIdString);
-            if (resourceId.getDocumentCollection() != 0) {
-                this.collectionResourceIdToSessionTokens.remove(resourceId.getUniqueDocumentCollectionId());
-            }
-        }
-
-        if (!StringUtils.isEmpty(collectionName)) {
-            Long collectionResourceId = this.collectionNameToCollectionResourceId.get(collectionName);
-            this.collectionNameToCollectionResourceId.remove(collectionName);
-            if (collectionResourceId != null) {
-                this.collectionResourceIdToSessionTokens.remove(collectionResourceId);
+    public void clearTokenByResourceId(String resourceId) {
+        if (!StringUtils.isEmpty(resourceId)) {
+            ResourceId resource = ResourceId.parse(resourceId);
+            if (resource.getDocumentCollection() != 0) {
+                Long rid = resource.getUniqueDocumentCollectionId();
+                this.writeLock.lock();
+                try {
+                    if (this.collectionResourceIdToCollectionName.containsKey(rid)) {
+                        String collectionName = this.collectionResourceIdToCollectionName.get(rid);
+                        this.collectionResourceIdToSessionTokens.remove(rid);
+                        this.collectionResourceIdToCollectionName.remove(rid);
+                        this.collectionNameToCollectionResourceId.remove(collectionName);
+                    }
+                } finally {
+                    this.writeLock.unlock();
+                }
             }
         }
     }
@@ -224,9 +194,9 @@ public final class SessionContainer implements ISessionContainer {
     }
 
     @Override
-    public void setSessionToken(String collectionRid, String collectionFullname, Map<String, String> responseHeaders) {
+    public void setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders) {
         ResourceId resourceId = ResourceId.parse(collectionRid);
-        String collectionName = PathsHelper.getCollectionPath(collectionFullname);
+        String collectionName = PathsHelper.getCollectionPath(collectionFullName);
         String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         if (!Strings.isNullOrEmpty(token)) {
             this.setSessionToken(resourceId, collectionName, token);
@@ -243,6 +213,36 @@ public final class SessionContainer implements ISessionContainer {
 
         logger.trace("Update Session token {} {} {}", resourceId.getUniqueDocumentCollectionId(), collectionName, parsedSessionToken);
 
+        boolean isKnownCollection;
+
+        this.readLock.lock();
+        try {
+            isKnownCollection = this.collectionNameToCollectionResourceId.containsKey(collectionName) &&
+                    this.collectionResourceIdToCollectionName.containsKey(resourceId.getUniqueDocumentCollectionId()) &&
+                    this.collectionNameToCollectionResourceId.get(collectionName) == resourceId.getUniqueDocumentCollectionId() &&
+                    this.collectionResourceIdToCollectionName.get(resourceId.getUniqueDocumentCollectionId()).equals(collectionName);
+            if (isKnownCollection) {
+                this.addSessionToken(resourceId, partitionKeyRangeId, parsedSessionToken);
+            }
+        } finally {
+            this.readLock.unlock();
+        }
+
+        if (!isKnownCollection) {
+            this.writeLock.lock();
+            try {
+                if (collectionName != null && resourceId.getUniqueDocumentCollectionId() != 0) {
+                    this.collectionNameToCollectionResourceId.compute(collectionName, (k, v) -> resourceId.getUniqueDocumentCollectionId());
+                    this.collectionResourceIdToCollectionName.compute(resourceId.getUniqueDocumentCollectionId(), (k, v) -> collectionName);
+                }
+                addSessionToken(resourceId, partitionKeyRangeId, parsedSessionToken);
+            } finally {
+                this.writeLock.unlock();
+            }
+        }
+    }
+
+    private void addSessionToken(ResourceId resourceId, String partitionKeyRangeId, ISessionToken parsedSessionToken) {
         this.collectionResourceIdToSessionTokens.compute(
                 resourceId.getUniqueDocumentCollectionId(), (k, existingTokens) -> {
                     if (existingTokens == null) {
@@ -266,10 +266,6 @@ public final class SessionContainer implements ISessionContainer {
                     return existingTokens;
                 }
         );
-
-        if (collectionName != null && resourceId != null && resourceId.getUniqueDocumentCollectionId() != 0) {
-            this.collectionNameToCollectionResourceId.compute(collectionName, (k, v) -> resourceId.getUniqueDocumentCollectionId());
-        }
     }
 
     private static String getCombinedSessionToken(ConcurrentHashMap<String, ISessionToken> tokens) {

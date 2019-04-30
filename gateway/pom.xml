@@ -27,7 +27,7 @@ SOFTWARE.
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmosdb-parent</artifactId>
-    <version>2.4.3</version>
+    <version>2.4.5-SNAPSHOT</version>
   </parent>
   <artifactId>azure-cosmosdb-gateway</artifactId>
   <name>Common Gateway Components for Async SDK for SQL API of Azure Cosmos DB Service</name>

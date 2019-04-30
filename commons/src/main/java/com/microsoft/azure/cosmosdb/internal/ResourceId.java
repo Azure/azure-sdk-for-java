@@ -23,7 +23,6 @@
 
 package com.microsoft.azure.cosmosdb.internal;
 
-import com.microsoft.azure.cosmosdb.DocumentClientException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -105,8 +104,12 @@ public class ResourceId {
     public static ResourceId newDocumentCollectionId(String databaseId, int collectionId) {
         ResourceId dbId = ResourceId.parse(databaseId);
 
+        return newDocumentCollectionId(dbId.database, collectionId);
+    }
+
+    static ResourceId newDocumentCollectionId(int dbId, int collectionId) {
         ResourceId collectionResourceId = new ResourceId();
-        collectionResourceId.database = dbId.database;
+        collectionResourceId.database = dbId;
         collectionResourceId.documentCollection = collectionId;
 
         return collectionResourceId;

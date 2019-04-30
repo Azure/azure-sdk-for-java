@@ -72,7 +72,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
             this.currentBackoffSeconds *= WebExceptionRetryPolicy.backoffMultiplier;
         }
 
-        logger.warn("Received retriable web exception, will retry, {}", exception);
+        logger.warn("Received retriable web exception, will retry", exception);
 
         return Single.just(ShouldRetryResult.retryAfter(backoffTime));
     }

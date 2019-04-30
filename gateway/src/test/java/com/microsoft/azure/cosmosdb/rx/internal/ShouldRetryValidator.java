@@ -102,6 +102,18 @@ public interface ShouldRetryValidator {
             return this;
         }
 
+        public Builder withException(Exception exception) {
+            validators.add(new ShouldRetryValidator() {
+
+                @Override
+                public void validate(IRetryPolicy.ShouldRetryResult shouldRetryResult) {
+                    assertThat(shouldRetryResult.exception).isNotNull();
+                    assertThat(shouldRetryResult.exception).isEqualTo(exception);
+                }
+            });
+            return this;
+        }
+
         public Builder shouldRetry(boolean value) {
             validators.add(new ShouldRetryValidator() {
 

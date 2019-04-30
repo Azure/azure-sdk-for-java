@@ -23,19 +23,15 @@
 
 package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
+import com.microsoft.azure.cosmosdb.ClientSideRequestStatistics;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 /**
  * Used internally to represents a response from the store.
@@ -48,8 +44,10 @@ public class StoreResponse {
     final private InputStream httpEntityStream;
     final private String content;
 
+    private ClientSideRequestStatistics clientSideRequestStatistics;
+
     public StoreResponse(int status, List<Entry<String, String>> headerEntries, InputStream inputStream) {
-        this(status, headerEntries,null, inputStream);
+        this(status, headerEntries, null, inputStream);
     }
 
     public StoreResponse(int status, List<Entry<String, String>> headerEntries, String content) {
@@ -128,5 +126,26 @@ public class StoreResponse {
         }
 
         return null;
+    }
+
+    public ClientSideRequestStatistics getClientSideRequestStatistics() {
+        return clientSideRequestStatistics;
+    }
+
+    public void setClientSideRequestStatistics(ClientSideRequestStatistics clientSideRequestStatistics) {
+        this.clientSideRequestStatistics = clientSideRequestStatistics;
+    }
+
+    int getSubStatusCode() {
+        int subStatusCode = HttpConstants.SubStatusCodes.UNKNOWN;
+        String subStatusCodeString = this.getHeaderValue(WFConstants.BackendHeaders.SUB_STATUS);
+        if (StringUtils.isNotEmpty(subStatusCodeString)) {
+            try {
+                subStatusCode = Integer.parseInt(subStatusCodeString);
+            } catch (NumberFormatException e) {
+                // If value cannot be parsed as Integer, return Unknown.
+            }
+        }
+        return subStatusCode;
     }
 }

@@ -52,6 +52,7 @@ public class DocumentClientException extends Exception {
     private Error error;
     private final int statusCode;
     private final Map<String, String> responseHeaders;
+    private ClientSideRequestStatistics clientSideRequestStatistics;
     String resourceAddress;
     String partitionKeyRangeId;
     URI requestUri;
@@ -140,6 +141,14 @@ public class DocumentClientException extends Exception {
         this.statusCode = statusCode;
     }
 
+    @Override
+    public String getMessage() {
+        if (clientSideRequestStatistics == null) {
+            return getInnerErrorMessage();
+        }
+        return getInnerErrorMessage() + ", " + clientSideRequestStatistics.toString();
+    }
+
     /**
      * Gets the activity ID associated with the request.
      *
@@ -167,15 +176,15 @@ public class DocumentClientException extends Exception {
      *
      * @return the status code.
      */
-    public Integer getSubStatusCode() {
-        Integer code = null;
+    public int getSubStatusCode() {
+        int code = HttpConstants.SubStatusCodes.UNKNOWN;
         if (this.responseHeaders != null) {
             String subStatusString = this.responseHeaders.get(HttpConstants.HttpHeaders.SUB_STATUS);
             if (StringUtils.isNotEmpty(subStatusString)) {
                 try {
-                    code = Integer.valueOf(subStatusString);
+                    code = Integer.parseInt(subStatusString);
                 } catch (NumberFormatException e) {
-                    // If value cannot be parsed as Integer, return null.
+                    // If value cannot be parsed as Integer, return Unknown.
                 }
             }
         }
@@ -238,6 +247,19 @@ public class DocumentClientException extends Exception {
         return this.resourceAddress;
     }
 
+    /**
+     * Gets the Client side request statistics associated with this exception.
+     *
+     * @return Client side request statistics associated with this exception.
+     */
+    public ClientSideRequestStatistics getClientSideRequestStatistics() {
+        return clientSideRequestStatistics;
+    }
+
+    public void setClientSideRequestStatistics(ClientSideRequestStatistics clientSideRequestStatistics) {
+        this.clientSideRequestStatistics = clientSideRequestStatistics;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
@@ -249,6 +271,17 @@ public class DocumentClientException extends Exception {
                 ", responseHeaders=" + responseHeaders +
                 ", requestHeaders=" + requestHeaders +
                 '}';
+    }
+
+    String getInnerErrorMessage() {
+        String innerErrorMessage = super.getMessage();
+        if (error != null) {
+            innerErrorMessage = error.getMessage();
+            if (innerErrorMessage == null) {
+                innerErrorMessage = String.valueOf(error.get("Errors"));
+            }
+        }
+        return innerErrorMessage;
     }
 
     private String getCauseInfo() {

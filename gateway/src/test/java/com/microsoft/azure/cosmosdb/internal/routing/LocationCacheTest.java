@@ -187,7 +187,7 @@ public class LocationCacheTest {
 
         @Override
         public Observable<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
-            return rx.Observable.just(LocationCacheTest.this.databaseAccount);
+            return Observable.just(LocationCacheTest.this.databaseAccount);
         }
 
         @Override
@@ -333,7 +333,7 @@ public class LocationCacheTest {
                 .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
                 .collect(Collectors.toList());
 
-        rx.Completable.merge(list).await();
+        Completable.merge(list).await();
 
         assertThat(mockedClient.getInvocationCounter()).isLessThanOrEqualTo(1);
         mockedClient.reset();

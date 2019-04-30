@@ -111,4 +111,8 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
             }
         }
     }
+
+    public List<SortOrder> getSortOrders() {
+        return this.sortOrders;
+    }
 }

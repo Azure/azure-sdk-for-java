@@ -559,7 +559,7 @@ public class PathsHelper {
 
     public static String getCollectionPath(String resourceFullName) {
         if (resourceFullName != null) {
-            String trimmedResourceFullName = Utils.trimBeginingAndEndingSlashes(resourceFullName);
+            String trimmedResourceFullName = Utils.trimBeginningAndEndingSlashes(resourceFullName);
             int index = indexOfNth(trimmedResourceFullName, '/', 4);
             if (index > 0)
                 return trimmedResourceFullName.substring(0, index);

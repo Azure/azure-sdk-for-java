@@ -35,6 +35,7 @@ import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.RuntimeConstants;
 import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.HttpUtils;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -61,6 +62,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -200,7 +202,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private void fillHttpRequestBaseWithHeaders(Map<String, String> headers, HttpClientRequest<ByteBuf> req) {
         // Add default headers.
-        for (Map.Entry<String, String> entry : this.defaultHeaders.entrySet()) {
+        for (Entry<String, String> entry : this.defaultHeaders.entrySet()) {
             if (!headers.containsKey(entry.getKey())) {
                 // populate default header only if there is no overwrite by the request header
                 req.withHeader(entry.getKey(), entry.getValue());
@@ -209,7 +211,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         
         // Add override headers.
         if (headers != null) {
-            for (Map.Entry<String, String> entry : headers.entrySet()) {
+            for (Entry<String, String> entry : headers.entrySet()) {
                 if (entry.getValue() == null) {
                     // netty doesn't allow setting null value in header
                     req.withHeader(entry.getKey(), "");
@@ -276,7 +278,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                 bb.readBytes(out, bb.readableBytes());
                                 return out;
                             }
-                            catch (java.io.IOException e) {
+                            catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         })
@@ -294,7 +296,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                 bb.readBytes(out, bb.readableBytes());
                                 return out;
                             }
-                            catch (java.io.IOException e) {
+                            catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         })
@@ -307,7 +309,7 @@ class RxGatewayStoreModel implements RxStoreModel {
      * Transforms the rxNetty's client response Observable to RxDocumentServiceResponse Observable.
      * 
      * 
-     * Once the the customer code subscribes to the observable returned by the CRUD APIs,
+     * Once the customer code subscribes to the observable returned by the CRUD APIs,
      * the subscription goes up till it reaches the source rxNetty's observable, and at that point the HTTP invocation will be made.
      * 
      * @param clientResponseObservable
@@ -342,7 +344,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                 validateOrThrow(request, httpResponseStatus, httpResponseHeaders, null, contentInputStream);
 
                                 // transforms to Observable<StoreResponse>
-                                StoreResponse rsp = new StoreResponse(httpResponseStatus.code(), httpResponseHeaders.entries(), contentInputStream);
+                                StoreResponse rsp = new StoreResponse(httpResponseStatus.code(), HttpUtils.unescape(httpResponseHeaders.entries()), contentInputStream);
                                 return Observable.just(rsp);
                             } catch (Exception e) {
                                 return Observable.error(e);
@@ -378,7 +380,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                 validateOrThrow(request, httpResponseStatus, httpResponseHeaders, content, null);
 
                                 // transforms to Observable<StoreResponse>
-                                StoreResponse rsp = new StoreResponse(httpResponseStatus.code(), httpResponseHeaders.entries(), content);
+                                StoreResponse rsp = new StoreResponse(httpResponseStatus.code(), HttpUtils.unescape(httpResponseHeaders.entries()), content);
                                 return Observable.just(rsp);
                             } catch (Exception e) {
                                 return Observable.error(e);
@@ -428,11 +430,6 @@ class RxGatewayStoreModel implements RxStoreModel {
                 }
             }
 
-            Map<String, String> responseHeaders = new HashMap<String, String>();
-            for (Entry<String, String> header : headers.entries()) {
-                responseHeaders.put(header.getKey(), header.getValue());
-            }
-
             String statusCodeString = status.reasonPhrase() != null
                     ? status.reasonPhrase().replace(" ", "")
                     : "";
@@ -442,7 +439,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                               String.format("%s, StatusCode: %s", error.getMessage(), statusCodeString),
                               error.getPartitionedQueryExecutionInfo());
 
-            DocumentClientException dce = new DocumentClientException(statusCode, error, responseHeaders);
+            DocumentClientException dce = new DocumentClientException(statusCode, error, HttpUtils.asMap(headers));
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }
@@ -492,23 +489,14 @@ class RxGatewayStoreModel implements RxStoreModel {
                         return Observable.error(e);
                     }
 
-                    if (request.getIsNameBased() && dce.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND &&
-                            Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE) &&
-                            request.clearSessionTokenOnSessionReadFailure) {
-                        // Clear the session token, because the collection name might be reused.
-                        logger.warn("Clear the the token for named base request {}", request.getResourceAddress());
-
-                        this.sessionContainer.clearToken(null, request.getResourceAddress(), dce.getResponseHeaders());
-                    } else {
-                        if ((!ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) &&
-                                (dce.getStatusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED ||
-                                        dce.getStatusCode() == HttpConstants.StatusCodes.CONFLICT ||
-                                        (
-                                                dce.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND &&
-                                                        !Exceptions.isSubStatusCode(dce,
-                                                                                    HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)))) {
-                            this.captureSessionToken(request, dce.getResponseHeaders());
-                        }
+                    if ((!ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) &&
+                            (dce.getStatusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED ||
+                                    dce.getStatusCode() == HttpConstants.StatusCodes.CONFLICT ||
+                                    (
+                                            dce.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND &&
+                                                    !Exceptions.isSubStatusCode(dce,
+                                                            HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)))) {
+                        this.captureSessionToken(request, dce.getResponseHeaders());
                     }
 
                     return Observable.error(dce);
@@ -523,7 +511,13 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
         if (request.getResourceType() == ResourceType.DocumentCollection && request.getOperationType() == OperationType.Delete) {
-            this.sessionContainer.clearToken(request, responseHeaders);
+            String resourceId;
+            if (request.getIsNameBased()) {
+                resourceId = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
+            } else {
+                resourceId = request.getResourceId();
+            }
+            this.sessionContainer.clearTokenByResourceId(resourceId);
         } else {
             this.sessionContainer.setSessionToken(request, responseHeaders);
         }
@@ -557,5 +551,5 @@ class RxGatewayStoreModel implements RxStoreModel {
         if (!Strings.isNullOrEmpty(sessionToken)) {
             headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
         }
-    }
+    }    
 }

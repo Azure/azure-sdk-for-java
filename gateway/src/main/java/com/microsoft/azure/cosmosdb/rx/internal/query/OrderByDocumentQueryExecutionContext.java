@@ -76,7 +76,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
     private Observable<OrderByRowResult<T>> orderByObservable;
-    private static boolean blockOrderByTokens = true;
+    private final Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
     private OrderByDocumentQueryExecutionContext(
             IDocumentQueryClient client,
@@ -98,6 +98,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
+        targetRangeToOrderByContinuationTokenMap = new HashMap<>();
     }
 
     public static <T extends Resource> Observable<IDocumentQueryExecutionComponent<T>> createAsync(
@@ -144,7 +145,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
     private void initialize(
             List<PartitionKeyRange> partitionKeyRanges,
-            Collection<SortOrder> sortOrders,
+            List<SortOrder> sortOrders,
             Collection<String> orderByExpressions,
             int initialPageSize,
             String continuationToken) throws DocumentClientException {
@@ -163,11 +164,6 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                             True),
                             querySpec.getParameters()));
         } else {
-            if (blockOrderByTokens) {
-                throw new NotImplementedException(
-                        "Resuming an order by query from a continuation token is not supported yet.");
-            }
-
             // Check to see if order by continuation token is a valid JSON.
             OrderByContinuationToken orderByContinuationToken;
             ValueHolder<OrderByContinuationToken> outOrderByContinuationToken = new ValueHolder<OrderByContinuationToken>();
@@ -199,6 +195,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     orderByExpressions);
 
             int targetIndex = targetIndexAndFilters.left;
+            targetRangeToOrderByContinuationTokenMap.put(String.valueOf(targetIndex), orderByContinuationToken);
             FormattedFilterInfo formattedFilterInfo = targetIndexAndFilters.right;
 
             // Left
@@ -233,7 +230,8 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 consumeComparer,
                 tracker,
                 documentProducers,
-                queryMetricMap);
+                queryMetricMap,
+                targetRangeToOrderByContinuationTokenMap);
     }
 
     private void initializeRangeWithContinuationTokenAndFilter(
@@ -261,7 +259,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private ImmutablePair<Integer, FormattedFilterInfo> GetFiltersForPartitions(
             OrderByContinuationToken orderByContinuationToken,
             List<PartitionKeyRange> partitionKeyRanges,
-            Collection<SortOrder> sortOrders,
+            List<SortOrder> sortOrders,
             Collection<String> orderByExpressions) throws DocumentClientException {
         // Find the partition key range we left off on
         int startIndex = this.FindTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
@@ -389,6 +387,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             PartitionKeyRange targetRange,
             String continuationToken,
             int initialPageSize,
+            FeedOptions feedOptions,
             SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
             Func3<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
@@ -397,16 +396,18 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         return new OrderByDocumentProducer<T>(consumeComparer,
                 client,
                 collectionRid,
+                feedOptions,
                 createRequestFunc,
                 executeFunc,
                 targetRange,
                 collectionRid,
-                () -> client.getRetryPolicyFactory().getRequestPolicy(),
+                () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(),
                 resourceType,
                 correlatedActivityId,
                 initialPageSize,
                 continuationToken,
-                top);
+                top,
+                this.targetRangeToOrderByContinuationTokenMap);
     }
 
     private static class ItemToPageTransformer<T extends Resource>

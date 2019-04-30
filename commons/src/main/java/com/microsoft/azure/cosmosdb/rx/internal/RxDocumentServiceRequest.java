@@ -32,6 +32,10 @@ import java.util.Map;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.WFConstants;
 import org.apache.commons.lang3.StringUtils;
 
+import com.microsoft.azure.cosmosdb.ChangeFeedOptions;
+import com.microsoft.azure.cosmosdb.FeedOptions;
+import com.microsoft.azure.cosmosdb.FeedOptionsBase;
+import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.Resource;
 import com.microsoft.azure.cosmosdb.SqlQuerySpec;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
@@ -83,13 +87,13 @@ public class RxDocumentServiceRequest {
     // so it means most likely the corresponding features are also missing from the main sdk
     // we need to wire this up.
     public boolean UseGatewayMode;
-    public boolean clearSessionTokenOnSessionReadFailure;
 
     private volatile boolean isDisposed = false;
     public volatile String entityId;
     public volatile String queryString;
     public volatile boolean isFeed;
     public volatile AuthorizationTokenType authorizationTokenType;
+    public volatile Map<String, Object> properties;
 
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
@@ -133,12 +137,10 @@ public class RxDocumentServiceRequest {
         this.activityId = Utils.randomUUID().toString();
         this.isFeed = false;
         this.isNameBased = isNameBased;
-        if (isNameBased) {
-            this.resourceAddress = resourceIdOrFullName;
-        } else {
+        if (!isNameBased) {
             this.resourceId = resourceIdOrFullName;
-            this.resourceAddress = resourceIdOrFullName;
         }
+        this.resourceAddress = resourceIdOrFullName;
         this.authorizationTokenType = authorizationTokenType;
         this.requestContext = new DocumentServiceRequestContext();
         if (StringUtils.isNotEmpty(this.headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID)))
@@ -382,10 +384,32 @@ public class RxDocumentServiceRequest {
             String relativePath,
             Resource resource,
             Map<String, String> headers) {
+        return RxDocumentServiceRequest.create(operation, resourceType, relativePath, resource, headers, (RequestOptions)null);
+    }
+    
+    /**
+     * Creates a DocumentServiceRequest with a resource.
+     *
+     * @param operation    the operation type.
+     * @param resourceType the resource type.
+     * @param relativePath the relative URI path.
+     * @param resource     the resource of the request.
+     * @param headers      the request headers.
+     * @param options      the request/feed/changeFeed options.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+            ResourceType resourceType,
+            String relativePath,
+            Resource resource,
+            Map<String, String> headers,
+            Object options) {
 
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath,
+        RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
                 // TODO: this re-encodes, can we improve performance here?
                 resource.toJson().getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
+        request.properties = getProperties(options);
+        return request;
     }
 
     /**
@@ -396,15 +420,19 @@ public class RxDocumentServiceRequest {
      * @param relativePath the relative URI path.
      * @param query        the query.
      * @param headers      the request headers.
+     * @param options      the request/feed/changeFeed options.
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
             ResourceType resourceType,
             String relativePath,
             String query,
-            Map<String, String> headers) {
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath,
+            Map<String, String> headers,
+            Object options) {
+        RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
                 query.getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
+        request.properties = getProperties(options);
+        return request;
     }
 
     /**
@@ -482,7 +510,27 @@ public class RxDocumentServiceRequest {
             ResourceType resourceType,
             String relativePath,
             Map<String, String> headers) {
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, headers, AuthorizationTokenType.PrimaryMasterKey);
+        return RxDocumentServiceRequest.create(operation, resourceType, relativePath, headers, (RequestOptions)null);
+    }
+
+    /**
+     * Creates a DocumentServiceRequest without body.
+     *
+     * @param operation    the operation type.
+     * @param resourceType the resource type.
+     * @param relativePath the relative URI path.
+     * @param headers      the request headers.
+     * @param options      the request/feed/changeFeed options.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+            ResourceType resourceType,
+            String relativePath,
+            Map<String, String> headers,
+            Object options) {
+        RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath, headers, AuthorizationTokenType.PrimaryMasterKey);
+        request.properties = getProperties(options);
+        return request;
     }
 
     /**
@@ -709,7 +757,7 @@ public class RxDocumentServiceRequest {
         // The result of split will be in the form of
         // [[[resourceType], [resourceId] ... ,[resourceType], ""]
         // In the first case, to extract the resourceId it will the element
-        // before last ( at length -2 ) and the the type will before it
+        // before last ( at length -2 ) and the type will before it
         // ( at length -3 )
         // In the second case, to extract the resource type it will the element
         // before last ( at length -2 )
@@ -982,7 +1030,6 @@ public class RxDocumentServiceRequest {
         rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
         rxDocumentServiceRequest.UseGatewayMode = this.UseGatewayMode;
         rxDocumentServiceRequest.queryString = this.queryString;
-        rxDocumentServiceRequest.clearSessionTokenOnSessionReadFailure = this.clearSessionTokenOnSessionReadFailure;
         rxDocumentServiceRequest.requestContext = this.requestContext;
         return rxDocumentServiceRequest;
     }
@@ -997,5 +1044,17 @@ public class RxDocumentServiceRequest {
         }
 
         this.isDisposed = true;
+    }
+
+    private static Map<String, Object> getProperties(Object options) {
+        if (options == null) {
+            return null;
+        } else if (options instanceof RequestOptions) {
+            return ((RequestOptions) options).getProperties();
+        } else if (options instanceof FeedOptionsBase) {
+            return ((FeedOptionsBase) options).getProperties();
+        } else {
+            return null;
+        }
     }
 }

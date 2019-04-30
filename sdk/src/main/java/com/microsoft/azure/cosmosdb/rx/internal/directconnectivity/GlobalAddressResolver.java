@@ -105,7 +105,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     Completable openAsync(DocumentCollection collection) {
-        Single<CollectionRoutingMap> routingMap = this.routingMapProvider.tryLookupAsync(collection.getId(), null);
+        Single<CollectionRoutingMap> routingMap = this.routingMapProvider.tryLookupAsync(collection.getId(), null, null);
         return routingMap.flatMapCompletable(collectionRoutingMap -> {
             if (collectionRoutingMap == null) {
                 return Completable.complete();

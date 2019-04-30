@@ -26,7 +26,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmosdb-parent</artifactId>
-  <version>2.4.3</version>
+  <version>2.4.5-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Azure Cosmos DB SQL API</name>
   <description>Java Async SDK (with Reactive Extension RX support) for Azure Cosmos DB SQL API</description>
@@ -38,6 +38,7 @@
     <module>benchmark</module>
     <module>commons-test-utils</module>
     <module>sdk</module>
+    <module>direct-impl</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -61,7 +62,7 @@
     <guava.version>27.0.1-jre</guava.version>
     <commons-validator-version>1.6</commons-validator-version>
     <test.groups>unit</test.groups>
-    <cosmosdb-sdk-direct-impl.version>2.4.3</cosmosdb-sdk-direct-impl.version>
+    <cosmosdb-sdk-direct-impl.version>2.4.5-SNAPSHOT</cosmosdb-sdk-direct-impl.version>
     <javadoc.opts/>
   </properties>
   <profiles>
@@ -187,6 +188,21 @@
          </plugins>
        </build>
      </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>non-emulator</id>
+      <properties>
+        <test.groups>non-emulator</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
   <build>
     <pluginManagement>

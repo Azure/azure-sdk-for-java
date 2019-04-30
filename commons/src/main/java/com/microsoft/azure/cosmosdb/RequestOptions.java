@@ -45,6 +45,7 @@ public class RequestOptions {
     private String partitionKeyRangeId;
     private boolean scriptLoggingEnabled;
     private boolean populateQuotaInfo;
+    private Map<String, Object> properties;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -307,4 +308,22 @@ public class RequestOptions {
     public Map<String, String> getHeaders() {
         return this.customOptions;
     }
+    /**
+     * Gets the properties
+     *
+     * @return Map of request options properties
+     */
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    /**
+     * Sets the properties used to identify the request token.
+     *
+     * @param properties the properties.
+     */
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
+
 }

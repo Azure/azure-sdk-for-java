@@ -25,6 +25,7 @@ package com.microsoft.azure.cosmosdb.rx.internal;
 import java.time.Duration;
 
 import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxCollectionCache;
 
@@ -39,18 +40,21 @@ public class InvalidPartitionExceptionRetryPolicy implements IDocumentClientRetr
     private final RxCollectionCache clientCollectionCache;
     private final IDocumentClientRetryPolicy nextPolicy;
     private final String collectionLink;
+    private final FeedOptions feedOptions;
 
     private volatile boolean retried = false;
 
     public InvalidPartitionExceptionRetryPolicy(RxCollectionCache collectionCache,
             IDocumentClientRetryPolicy nextPolicy,
-            String resourceFullName) {
+            String resourceFullName,
+            FeedOptions feedOptions) {
 
         this.clientCollectionCache = collectionCache;
         this.nextPolicy = nextPolicy;
 
         // TODO the resource address should be inferred from exception
         this.collectionLink = com.microsoft.azure.cosmosdb.internal.Utils.getCollectionName(resourceFullName);
+        this.feedOptions = feedOptions;
     }
 
     @Override
@@ -68,7 +72,12 @@ public class InvalidPartitionExceptionRetryPolicy implements IDocumentClientRetr
                 // TODO: resource address should be accessible from the exception
                 //this.clientCollectionCache.Refresh(clientException.ResourceAddress);
                 // TODO: this is blocking. is that fine?
-                this.clientCollectionCache.refresh(collectionLink);
+                if(this.feedOptions != null) {
+                    this.clientCollectionCache.refresh(collectionLink,this.feedOptions.getProperties());
+                } else {
+                    this.clientCollectionCache.refresh(collectionLink,null);
+                }
+
                 this.retried = true;
                 return Single.just(ShouldRetryResult.retryAfter(Duration.ZERO));
             } else {

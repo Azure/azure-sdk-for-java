@@ -172,7 +172,7 @@ public class GlobalAddressResolverTest {
         partitionKeyRanges.add(range);
         Mockito.when(collectionRoutingMap.getOrderedPartitionKeyRanges()).thenReturn(partitionKeyRanges);
         Single<CollectionRoutingMap> collectionRoutingMapSingle = Single.just(collectionRoutingMap);
-        Mockito.when(routingMapProvider.tryLookupAsync(Mockito.any(), Mockito.any())).thenReturn(collectionRoutingMapSingle);
+        Mockito.when(routingMapProvider.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(collectionRoutingMapSingle);
 
         List<PartitionKeyRangeIdentity> ranges = new ArrayList<>();
         for (PartitionKeyRange partitionKeyRange : (List<PartitionKeyRange>) collectionRoutingMap.getOrderedPartitionKeyRanges()) {
