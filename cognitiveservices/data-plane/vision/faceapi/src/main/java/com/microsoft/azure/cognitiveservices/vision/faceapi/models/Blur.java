@@ -28,7 +28,7 @@ public class Blur {
     private double value;
 
     /**
-     * Get the blurLevel value.
+     * Get an enum value indicating level of blurriness. Possible values include: 'Low', 'Medium', 'High'.
      *
      * @return the blurLevel value
      */
@@ -37,7 +37,7 @@ public class Blur {
     }
 
     /**
-     * Set the blurLevel value.
+     * Set an enum value indicating level of blurriness. Possible values include: 'Low', 'Medium', 'High'.
      *
      * @param blurLevel the blurLevel value to set
      * @return the Blur object itself.
@@ -48,7 +48,7 @@ public class Blur {
     }
 
     /**
-     * Get the value value.
+     * Get a number indicating level of blurriness ranging from 0 to 1.
      *
      * @return the value value
      */
@@ -57,7 +57,7 @@ public class Blur {
     }
 
     /**
-     * Set the value value.
+     * Set a number indicating level of blurriness ranging from 0 to 1.
      *
      * @param value the value value to set
      * @return the Blur object itself.

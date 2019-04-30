@@ -8,13 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreateFaceListsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceListsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromUrlOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.FaceList;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersistedFace;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -25,101 +26,150 @@ import rx.Observable;
  */
 public interface FaceLists {
     /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    
-    void create(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter);
+    void create(String faceListId);
 
     /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @return the {@link ServiceFuture} object
      */
-    
-    Observable<Void> createAsync(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter);
+    ServiceFuture<Void> createAsync(String faceListId, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
      *
-     * @return the first stage of the create call
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    FaceListsCreateDefinitionStages.WithFaceListId create();
+    Observable<Void> createAsync(String faceListId);
 
     /**
-     * Grouping of create definition stages.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    interface FaceListsCreateDefinitionStages {
-        /**
-         * The stage of the definition to be specify faceListId.
-         */
-        interface WithFaceListId {
-            /**
-             * Id referencing a particular face list.
-             *
-             * @return next definition stage
-             */
-            FaceListsCreateDefinitionStages.WithExecute withFaceListId(String faceListId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * User defined name, maximum length is 128.
-             *
-             * @return next definition stage
-             */
-            FaceListsCreateDefinitionStages.WithExecute withName(String name);
-
-            /**
-             * User specified data. Length should not exceed 16KB.
-             *
-             * @return next definition stage
-             */
-            FaceListsCreateDefinitionStages.WithExecute withUserData(String userData);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends FaceListsCreateDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             */
-            void execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return a representation of the deferred computation of this call if successful.
-             */
-            Observable<Void> executeAsync();
-        }
-    }
+    Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String faceListId);
+    /**
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void create(String faceListId, String name, String userData, RecognitionModel recognitionModel);
 
     /**
-     * The entirety of create definition.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    interface FaceListsCreateDefinition extends
-        FaceListsCreateDefinitionStages.WithFaceListId,
-        FaceListsCreateDefinitionStages.WithExecute {
-    }
-
+    ServiceFuture<Void> createAsync(String faceListId, String name, String userData, RecognitionModel recognitionModel, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Retrieve a face list's information.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<Void> createAsync(String faceListId, String name, String userData, RecognitionModel recognitionModel);
+
+    /**
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) / [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face - Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+     &lt;br /&gt; Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524b). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String faceListId, String name, String userData, RecognitionModel recognitionModel);
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
      *
      * @param faceListId Id referencing a particular face list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -130,7 +180,17 @@ public interface FaceLists {
     FaceList get(String faceListId);
 
     /**
-     * Retrieve a face list's information.
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<FaceList> getAsync(String faceListId, final ServiceCallback<FaceList> serviceCallback);
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
      *
      * @param faceListId Id referencing a particular face list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -138,104 +198,142 @@ public interface FaceLists {
      */
     Observable<FaceList> getAsync(String faceListId);
 
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FaceList object
+     */
+    Observable<ServiceResponse<FaceList>> getWithServiceResponseAsync(String faceListId);
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the FaceList object if successful.
+     */
+    FaceList get(String faceListId, Boolean returnRecognitionModel);
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<FaceList> getAsync(String faceListId, Boolean returnRecognitionModel, final ServiceCallback<FaceList> serviceCallback);
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FaceList object
+     */
+    Observable<FaceList> getAsync(String faceListId, Boolean returnRecognitionModel);
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FaceList object
+     */
+    Observable<ServiceResponse<FaceList>> getWithServiceResponseAsync(String faceListId, Boolean returnRecognitionModel);
 
     /**
      * Update information of a face list.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    
-    void update(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter);
+    void update(String faceListId);
 
     /**
      * Update information of a face list.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @return the {@link ServiceFuture} object
      */
-    
-    Observable<Void> updateAsync(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter);
+    ServiceFuture<Void> updateAsync(String faceListId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Update information of a face list.
      *
-     * @return the first stage of the update call
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    FaceListsUpdateDefinitionStages.WithFaceListId update();
+    Observable<Void> updateAsync(String faceListId);
 
     /**
-     * Grouping of update definition stages.
+     * Update information of a face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    interface FaceListsUpdateDefinitionStages {
-        /**
-         * The stage of the definition to be specify faceListId.
-         */
-        interface WithFaceListId {
-            /**
-             * Id referencing a particular face list.
-             *
-             * @return next definition stage
-             */
-            FaceListsUpdateDefinitionStages.WithExecute withFaceListId(String faceListId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * User defined name, maximum length is 128.
-             *
-             * @return next definition stage
-             */
-            FaceListsUpdateDefinitionStages.WithExecute withName(String name);
-
-            /**
-             * User specified data. Length should not exceed 16KB.
-             *
-             * @return next definition stage
-             */
-            FaceListsUpdateDefinitionStages.WithExecute withUserData(String userData);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends FaceListsUpdateDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             */
-            void execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return a representation of the deferred computation of this call if successful.
-             */
-            Observable<Void> executeAsync();
-        }
-    }
+    Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String faceListId);
+    /**
+     * Update information of a face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void update(String faceListId, String name, String userData);
 
     /**
-     * The entirety of update definition.
+     * Update information of a face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    interface FaceListsUpdateDefinition extends
-        FaceListsUpdateDefinitionStages.WithFaceListId,
-        FaceListsUpdateDefinitionStages.WithExecute {
-    }
-
+    ServiceFuture<Void> updateAsync(String faceListId, String name, String userData, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Delete an existing face list according to faceListId. Persisted face images in the face list will
-      *  also be deleted.
+     * Update information of a face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<Void> updateAsync(String faceListId, String name, String userData);
+
+    /**
+     * Update information of a face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String faceListId, String name, String userData);
+
+    /**
+     * Delete a specified face list.
      *
      * @param faceListId Id referencing a particular face list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -245,20 +343,36 @@ public interface FaceLists {
     void delete(String faceListId);
 
     /**
-     * Delete an existing face list according to faceListId. Persisted face images in the face list will
-      *  also be deleted.
+     * Delete a specified face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> deleteAsync(String faceListId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Delete a specified face list.
      *
      * @param faceListId Id referencing a particular face list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @return the {@link ServiceResponse} object if successful.
      */
     Observable<Void> deleteAsync(String faceListId);
 
-
+    /**
+     * Delete a specified face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String faceListId);
 
     /**
-     * Retrieve information about all existing face lists. Only faceListId, name and userData will be
-      *  returned.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
@@ -268,19 +382,78 @@ public interface FaceLists {
     List<FaceList> list();
 
     /**
-     * Retrieve information about all existing face lists. Only faceListId, name and userData will be
-      *  returned.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<FaceList>> listAsync(final ServiceCallback<List<FaceList>> serviceCallback);
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;FaceList&gt; object
      */
     Observable<List<FaceList>> listAsync();
 
-
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FaceList&gt; object
+     */
+    Observable<ServiceResponse<List<FaceList>>> listWithServiceResponseAsync();
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;FaceList&gt; object if successful.
+     */
+    List<FaceList> list(Boolean returnRecognitionModel);
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted
-      *  image related to the face will also be deleted.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<FaceList>> listAsync(Boolean returnRecognitionModel, final ServiceCallback<List<FaceList>> serviceCallback);
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FaceList&gt; object
+     */
+    Observable<List<FaceList>> listAsync(Boolean returnRecognitionModel);
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FaceList&gt; object
+     */
+    Observable<ServiceResponse<List<FaceList>>> listWithServiceResponseAsync(Boolean returnRecognitionModel);
+
+    /**
+     * Delete a face from a face list by specified faceListId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
      *
      * @param faceListId Id referencing a particular face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
@@ -291,245 +464,279 @@ public interface FaceLists {
     void deleteFace(String faceListId, UUID persistedFaceId);
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted
-      *  image related to the face will also be deleted.
+     * Delete a face from a face list by specified faceListId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> deleteFaceAsync(String faceListId, UUID persistedFaceId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Delete a face from a face list by specified faceListId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
      *
      * @param faceListId Id referencing a particular face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @return the {@link ServiceResponse} object if successful.
      */
     Observable<Void> deleteFaceAsync(String faceListId, UUID persistedFaceId);
 
-
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a
-     *   persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Delete a face from a face list by specified faceListId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url Publicly reachable URL of an image.
-     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> deleteFaceWithServiceResponseAsync(String faceListId, UUID persistedFaceId);
+
+    /**
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395251) or [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param url Publicly reachable URL of an image
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    
-    PersistedFace addFaceFromUrl(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter);
+    PersistedFace addFaceFromUrl(String faceListId, String url);
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a
-     *   persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395251) or [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url Publicly reachable URL of an image.
-     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param url Publicly reachable URL of an image
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<PersistedFace> addFaceFromUrlAsync(String faceListId, String url, final ServiceCallback<PersistedFace> serviceCallback);
+
+    /**
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395251) or [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param url Publicly reachable URL of an image
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    
-    Observable<PersistedFace> addFaceFromUrlAsync(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter);
+    Observable<PersistedFace> addFaceFromUrlAsync(String faceListId, String url);
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a
-     *   persistedFaceId representing the added face, and persistedFaceId will not expire.
-     *
-     * @return the first stage of the addFaceFromUrl call
-     */
-    FaceListsAddFaceFromUrlDefinitionStages.WithFaceListId addFaceFromUrl();
-
-    /**
-     * Grouping of addFaceFromUrl definition stages.
-     */
-    interface FaceListsAddFaceFromUrlDefinitionStages {
-        /**
-         * The stage of the definition to be specify faceListId.
-         */
-        interface WithFaceListId {
-            /**
-             * Id referencing a particular face list.
-             *
-             * @return next definition stage
-             */
-            WithUrl withFaceListId(String faceListId);
-        }
-        /**
-         * The stage of the definition to be specify url.
-         */
-        interface WithUrl {
-            /**
-             * Publicly reachable URL of an image.
-             *
-             * @return next definition stage
-             */
-            FaceListsAddFaceFromUrlDefinitionStages.WithExecute withUrl(String url);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * User-specified data about the face for any purpose. The maximum length is 1KB.
-             *
-             * @return next definition stage
-             */
-            FaceListsAddFaceFromUrlDefinitionStages.WithExecute withUserData(String userData);
-
-            /**
-             * A face rectangle to specify the target face to be added to a person in the format of
-             *   "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
-             *   image, targetFace is required to specify which face to add. No targetFace means there is only one face
-             *   detected in the entire image.
-             *
-             * @return next definition stage
-             */
-            FaceListsAddFaceFromUrlDefinitionStages.WithExecute withTargetFace(List<Integer> targetFace);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends FaceListsAddFaceFromUrlDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the PersistedFace object if successful.
-             */
-            PersistedFace execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the PersistedFace object
-             */
-            Observable<PersistedFace> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of addFaceFromUrl definition.
-     */
-    interface FaceListsAddFaceFromUrlDefinition extends
-        FaceListsAddFaceFromUrlDefinitionStages.WithFaceListId,
-        FaceListsAddFaceFromUrlDefinitionStages.WithUrl,
-        FaceListsAddFaceFromUrlDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a
-     *   persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395251) or [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param image An image stream.
-     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param url Publicly reachable URL of an image
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersistedFace object
+     */
+    Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String faceListId, String url);
+    /**
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395251) or [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param url Publicly reachable URL of an image
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    
-    PersistedFace addFaceFromStream(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter);
+    PersistedFace addFaceFromUrl(String faceListId, String url, String userData, List<Integer> targetFace);
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a
-     *   persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395251) or [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param image An image stream.
-     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param url Publicly reachable URL of an image
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<PersistedFace> addFaceFromUrlAsync(String faceListId, String url, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback);
+
+    /**
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395251) or [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param url Publicly reachable URL of an image
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    
-    Observable<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter);
+    Observable<PersistedFace> addFaceFromUrlAsync(String faceListId, String url, String userData, List<Integer> targetFace);
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a
-     *   persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395251) or [FaceList - Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395236), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
      *
-     * @return the first stage of the addFaceFromStream call
+     * @param faceListId Id referencing a particular face list.
+     * @param url Publicly reachable URL of an image
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersistedFace object
      */
-    FaceListsAddFaceFromStreamDefinitionStages.WithFaceListId addFaceFromStream();
+    Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String faceListId, String url, String userData, List<Integer> targetFace);
 
     /**
-     * Grouping of addFaceFromStream definition stages.
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PersistedFace object if successful.
      */
-    interface FaceListsAddFaceFromStreamDefinitionStages {
-        /**
-         * The stage of the definition to be specify faceListId.
-         */
-        interface WithFaceListId {
-            /**
-             * Id referencing a particular face list.
-             *
-             * @return next definition stage
-             */
-            WithImage withFaceListId(String faceListId);
-        }
-        /**
-         * The stage of the definition to be specify image.
-         */
-        interface WithImage {
-            /**
-             * An image stream.
-             *
-             * @return next definition stage
-             */
-            FaceListsAddFaceFromStreamDefinitionStages.WithExecute withImage(byte[] image);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * User-specified data about the face for any purpose. The maximum length is 1KB.
-             *
-             * @return next definition stage
-             */
-            FaceListsAddFaceFromStreamDefinitionStages.WithExecute withUserData(String userData);
-
-            /**
-             * A face rectangle to specify the target face to be added to a person in the format of
-             *   "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
-             *   image, targetFace is required to specify which face to add. No targetFace means there is only one face
-             *   detected in the entire image.
-             *
-             * @return next definition stage
-             */
-            FaceListsAddFaceFromStreamDefinitionStages.WithExecute withTargetFace(List<Integer> targetFace);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends FaceListsAddFaceFromStreamDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the PersistedFace object if successful.
-             */
-            PersistedFace execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the PersistedFace object
-             */
-            Observable<PersistedFace> executeAsync();
-        }
-    }
+    PersistedFace addFaceFromStream(String faceListId, byte[] image);
 
     /**
-     * The entirety of addFaceFromStream definition.
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param image An image stream.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    interface FaceListsAddFaceFromStreamDefinition extends
-        FaceListsAddFaceFromStreamDefinitionStages.WithFaceListId,
-        FaceListsAddFaceFromStreamDefinitionStages.WithImage,
-        FaceListsAddFaceFromStreamDefinitionStages.WithExecute {
-    }
+    ServiceFuture<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image, final ServiceCallback<PersistedFace> serviceCallback);
+
+    /**
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersistedFace object
+     */
+    Observable<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image);
+
+    /**
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersistedFace object
+     */
+    Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String faceListId, byte[] image);
+    /**
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param image An image stream.
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PersistedFace object if successful.
+     */
+    PersistedFace addFaceFromStream(String faceListId, byte[] image, String userData, List<Integer> targetFace);
+
+    /**
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param image An image stream.
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback);
+
+    /**
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param image An image stream.
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersistedFace object
+     */
+    Observable<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image, String userData, List<Integer> targetFace);
+
+    /**
+     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param image An image stream.
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersistedFace object
+     */
+    Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String faceListId, byte[] image, String userData, List<Integer> targetFace);
 
 }

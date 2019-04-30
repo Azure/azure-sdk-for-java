@@ -30,7 +30,7 @@ public class PersistedFace {
     private String userData;
 
     /**
-     * Get the persistedFaceId value.
+     * Get the persistedFaceId of the target face, which is persisted and will not expire. Different from faceId created by Face - Detect and will expire in 24 hours after the detection call.
      *
      * @return the persistedFaceId value
      */
@@ -39,7 +39,7 @@ public class PersistedFace {
     }
 
     /**
-     * Set the persistedFaceId value.
+     * Set the persistedFaceId of the target face, which is persisted and will not expire. Different from faceId created by Face - Detect and will expire in 24 hours after the detection call.
      *
      * @param persistedFaceId the persistedFaceId value to set
      * @return the PersistedFace object itself.
@@ -50,7 +50,7 @@ public class PersistedFace {
     }
 
     /**
-     * Get the userData value.
+     * Get user-provided data attached to the face. The size limit is 1KB.
      *
      * @return the userData value
      */
@@ -59,7 +59,7 @@ public class PersistedFace {
     }
 
     /**
-     * Set the userData value.
+     * Set user-provided data attached to the face. The size limit is 1KB.
      *
      * @param userData the userData value to set
      * @return the PersistedFace object itself.
