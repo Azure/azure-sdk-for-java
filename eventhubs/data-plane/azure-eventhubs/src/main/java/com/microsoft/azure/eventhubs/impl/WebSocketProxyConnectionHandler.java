@@ -6,7 +6,6 @@ package com.microsoft.azure.eventhubs.impl;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyHandlerImpl;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
-
 import org.apache.qpid.proton.amqp.transport.ConnectionError;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
@@ -17,18 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.Authenticator;
 import java.net.InetSocketAddress;
-import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketProxyConnectionHandler.class);
@@ -59,8 +51,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         // after creating the socket to proxy
         final String hostName = event.getConnection().getHostname();
         final ProxyHandler proxyHandler = new ProxyHandlerImpl();
-        final Map<String, String> proxyHeader = getAuthorizationHeader();
-        proxy.configure(hostName, proxyHeader, proxyHandler, transport);
+        proxy.configure(hostName, null, proxyHandler, transport);
 
         transport.addTransportLayer(proxy);
 
@@ -118,38 +109,6 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
     public int getRemotePort() {
         final InetSocketAddress socketAddress = getProxyAddress();
         return socketAddress.getPort();
-    }
-
-    private Map<String, String> getAuthorizationHeader() {
-        final PasswordAuthentication authentication = Authenticator.requestPasswordAuthentication(
-                getRemoteHostName(),
-                null,
-                getRemotePort(),
-                null,
-                null,
-                "http",
-                null,
-                Authenticator.RequestorType.PROXY);
-        if (authentication == null) {
-            return null;
-        }
-
-        final String proxyUserName = authentication.getUserName();
-        final String proxyPassword = authentication.getPassword() != null
-                ? new String(authentication.getPassword())
-                : null;
-        if (StringUtil.isNullOrEmpty(proxyUserName)
-                || StringUtil.isNullOrEmpty(proxyPassword)) {
-            return null;
-        }
-
-        final HashMap<String, String> proxyAuthorizationHeader = new HashMap<>();
-        // https://tools.ietf.org/html/rfc7617
-        final String usernamePasswordPair = proxyUserName + ":" + proxyPassword;
-        proxyAuthorizationHeader.put(
-                "Proxy-Authorization",
-                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes(UTF_8)));
-        return proxyAuthorizationHeader;
     }
 
     private InetSocketAddress getProxyAddress() {

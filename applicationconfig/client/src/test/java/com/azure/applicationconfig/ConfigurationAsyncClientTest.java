@@ -7,6 +7,7 @@ import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.Range;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
+import com.azure.common.exception.HttpRequestException;
 import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
@@ -97,7 +98,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
         client.listSettings(new SettingSelector().key(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
-                    return client.deleteSetting(configurationSetting).retryBackoff(3, Duration.ofSeconds(10));
+                    return client.deleteSetting(configurationSetting);
                 })
                 .blockLast();
 
@@ -702,8 +703,6 @@ public class ConfigurationAsyncClientTest extends TestBase {
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
-     *
-     * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
     @Test
     public void listRevisionsWithPagination() {
@@ -715,11 +714,14 @@ public class ConfigurationAsyncClientTest extends TestBase {
                         .label(labelPrefix))
                 .collect(Collectors.toList());
 
+        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)).block();
+            results.add(client.setSetting(setting));
         }
 
         SettingSelector filter = new SettingSelector().key(keyPrefix).label(labelPrefix);
+
+        Flux.merge(results).blockLast();
         StepVerifier.create(client.listSettingRevisions(filter))
                 .expectNextCount(numberExpected)
                 .verifyComplete();
@@ -728,8 +730,6 @@ public class ConfigurationAsyncClientTest extends TestBase {
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
-     *
-     * TODO (conniey): Remove the manual retry when issue is fixed: https://github.com/azure/azure-sdk-for-java/issues/3183
      */
     @Test
     public void listSettingsWithPagination() {
@@ -743,7 +743,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
 
         List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setSetting(setting).retryBackoff(3, Duration.ofSeconds(30)));
+            results.add(client.setSetting(setting));
         }
 
         SettingSelector filter = new SettingSelector().key(keyPrefix + "-*").label(labelPrefix);
@@ -851,7 +851,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
      */
     private static void assertRestException(Throwable ex, int expectedStatusCode) {
         assertTrue(ex instanceof ServiceRequestException);
-        assertEquals(expectedStatusCode, ((ServiceRequestException) ex).response().statusCode());
+        assertEquals(expectedStatusCode, ((HttpRequestException) ex).response().statusCode());
     }
 
     /**

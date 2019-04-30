@@ -4,7 +4,7 @@
 package com.azure.common.implementation.serializer;
 
 import com.azure.common.annotations.ReturnValueWireType;
-import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.exception.HttpRequestException;
 import com.azure.common.http.HttpMethod;
 import com.azure.common.http.HttpResponse;
 import com.azure.common.http.rest.Page;
@@ -81,9 +81,9 @@ final class HttpResponseBodyDecoder {
                                         SerializerEncoding.fromHeaders(httpResponse.headers()));
                                 return decodedSuccessEntity == null ? Mono.empty() : Mono.just(decodedSuccessEntity);
                             } catch (MalformedValueException e) {
-                                return Mono.error(new ServiceRequestException("HTTP response has a malformed body.", httpResponse, e));
+                                return Mono.error(new HttpRequestException("HTTP response has a malformed body.", httpResponse, e));
                             } catch (IOException e) {
-                                return Mono.error(new ServiceRequestException("Deserialization Failed.", httpResponse, e));
+                                return Mono.error(new HttpRequestException("Deserialization Failed.", httpResponse, e));
                             }
                         });
             }

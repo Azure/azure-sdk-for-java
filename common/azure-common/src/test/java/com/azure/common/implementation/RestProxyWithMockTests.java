@@ -11,7 +11,7 @@ import com.azure.common.annotations.Host;
 import com.azure.common.annotations.POST;
 import com.azure.common.annotations.ReturnValueWireType;
 import com.azure.common.entities.HttpBinJSON;
-import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.exception.HttpRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpPipeline;
@@ -214,7 +214,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         try {
             service.get();
             fail();
-        } catch (ServiceRequestException ex) {
+        } catch (HttpRequestException ex) {
             assertContains(ex.getMessage(), "Status code 200");
             assertContains(ex.getMessage(), "\"BAD JSON\"");
         }
@@ -262,7 +262,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         try {
             service.get();
             fail();
-        } catch (ServiceRequestException ex) {
+        } catch (HttpRequestException ex) {
             assertContains(ex.getMessage(), "Status code 200");
             assertContains(ex.getMessage(), "\"BAD JSON\"");
         }
