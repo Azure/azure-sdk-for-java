@@ -10,7 +10,7 @@ import com.azure.common.annotations.Host;
 import com.azure.common.annotations.PUT;
 import com.azure.common.annotations.PathParam;
 import com.azure.common.annotations.ResumeOperation;
-import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.exception.HttpRequestException;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.HttpRequest;
 import com.azure.common.http.HttpResponse;
@@ -491,7 +491,7 @@ public class AzureProxyTests {
                             @Override
                             public void accept(Throwable throwable) {
                                 assertEquals("Status code 294, (empty body)", throwable.getMessage());
-                                assertEquals(ServiceRequestException.class, throwable.getClass());
+                                assertEquals(HttpRequestException.class, throwable.getClass());
                             }
                         });
 
@@ -843,7 +843,7 @@ public class AzureProxyTests {
         try {
             service.deleteAsyncWithForbiddenResponse().block();
             fail("Expected RestException to be thrown.");
-        } catch (ServiceRequestException e) {
+        } catch (HttpRequestException e) {
             assertEquals(403, e.response().statusCode());
             assertEquals("Status code 403, (empty body)", e.getMessage());
         }

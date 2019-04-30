@@ -3,10 +3,10 @@
 
 package com.azure.common.mgmt;
 
-import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.exception.HttpRequestException;
 import com.azure.common.http.HttpResponse;
 
-public class MyAzureException extends ServiceRequestException {
+public class MyAzureException extends HttpRequestException {
     /**
      * Creates an exception with the {@code message}, {@code response}, and {@code body}.
      *
