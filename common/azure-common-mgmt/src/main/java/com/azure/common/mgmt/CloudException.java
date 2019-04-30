@@ -3,13 +3,13 @@
 
 package com.azure.common.mgmt;
 
-import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.exception.HttpRequestException;
 import com.azure.common.http.HttpResponse;
 
 /**
  * Exception thrown for an invalid response with custom error information.
  */
-public final class CloudException extends ServiceRequestException {
+public final class CloudException extends HttpRequestException {
     /**
      * Initializes a new instance of the CloudException class.
      *
