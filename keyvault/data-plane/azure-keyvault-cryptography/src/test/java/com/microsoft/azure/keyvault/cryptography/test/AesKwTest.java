@@ -41,7 +41,7 @@ public class AesKwTest {
 
     // Always null for the default provider
     private Provider provider = null;
-    
+
     private static boolean hasUnlimitedCrypto() {
         try {
             return Cipher.getMaxAllowedKeyLength("RC5") >= 256;
@@ -137,23 +137,27 @@ public class AesKwTest {
 
         try {
             encryptor = kw.CreateEncryptor(kek, provider);
-            
-            if (!unlimited) fail("Expected InvalidKeyException");
+
+            if (!unlimited) {
+                fail("Expected InvalidKeyException");
+            }
         } catch (InvalidKeyException e) {
-            if (unlimited) fail("InvalidKeyException");
+            if (unlimited) {
+                fail("InvalidKeyException");
+            }
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
         if (unlimited) {
             byte[] encrypted = null;
-    
+
             try {
                 encrypted = encryptor.doFinal(cek);
             } catch (Exception e) {
                 fail(e.getMessage());
             }
-    
+
             // Assert
             assertArrayEquals(ek, encrypted);
         }
@@ -162,22 +166,26 @@ public class AesKwTest {
 
         try {
             decryptor = kw.CreateDecryptor(kek, provider);
-            if (!unlimited) fail("Expected InvalidKeyException");
+            if (!unlimited) {
+                fail("Expected InvalidKeyException");
+            }
         } catch (InvalidKeyException e) {
-            if (unlimited) fail("InvalidKeyException");
+            if (unlimited) {
+                fail("InvalidKeyException");
+            }
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
         if (unlimited) {
             byte[] decrypted = null;
-    
+
             try {
                 decrypted = decryptor.doFinal(ek);
             } catch (Exception e) {
                 fail(e.getMessage());
             }
-    
+
             // Assert
             assertArrayEquals(cek, decrypted);
         }
@@ -202,22 +210,26 @@ public class AesKwTest {
 
         try {
             encryptor = kw.CreateEncryptor(kek, provider);
-            if (!unlimited) fail("Expected InvalidKeyException");
+            if (!unlimited) {
+                fail("Expected InvalidKeyException");
+            }
         } catch (InvalidKeyException e) {
-            if (unlimited) fail("InvalidKeyException");
+            if (unlimited) {
+                fail("InvalidKeyException");
+            }
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
         if (unlimited) {
             byte[] encrypted = null;
-    
+
             try {
                 encrypted = encryptor.doFinal(cek);
             } catch (Exception e) {
                 fail(e.getMessage());
             }
-    
+
             // Assert
             assertArrayEquals(ek, encrypted);
         }
@@ -226,23 +238,27 @@ public class AesKwTest {
 
         try {
             decryptor = kw.CreateDecryptor(kek, provider);
-            
-            if (!unlimited) fail("Expected InvalidKeyException");
+
+            if (!unlimited) {
+                fail("Expected InvalidKeyException");
+            }
         } catch (InvalidKeyException e) {
-            if (unlimited) fail("InvalidKeyException");
+            if (unlimited) {
+                fail("InvalidKeyException");
+            }
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
         if (unlimited) {
             byte[] decrypted = null;
-    
+
             try {
                 decrypted = decryptor.doFinal(ek);
             } catch (Exception e) {
                 fail(e.getMessage());
             }
-    
+
             // Assert
             assertArrayEquals(cek, decrypted);
         }
@@ -315,23 +331,27 @@ public class AesKwTest {
 
         try {
             encryptor = kw.CreateEncryptor(kek, provider);
-            
-            if (!unlimited) fail("Expected InvalidKeyException");
+
+            if (!unlimited) {
+                fail("Expected InvalidKeyException");
+            }
         } catch (InvalidKeyException e) {
-            if (unlimited) fail("InvalidKeyException");
+            if (unlimited) {
+                fail("InvalidKeyException");
+            }
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
         if (unlimited) {
             byte[] encrypted = null;
-    
+
             try {
                 encrypted = encryptor.doFinal(cek);
             } catch (Exception e) {
                 fail(e.getMessage());
             }
-    
+
             // Assert
             assertArrayEquals(ek, encrypted);
         }
@@ -340,22 +360,26 @@ public class AesKwTest {
 
         try {
             decryptor = kw.CreateDecryptor(kek, provider);
-            if (!unlimited) fail("Expected InvalidKeyException");
+            if (!unlimited) {
+                fail("Expected InvalidKeyException");
+            }
         } catch (InvalidKeyException e) {
-            if (unlimited) fail("InvalidKeyException");
+            if (unlimited) {
+                fail("InvalidKeyException");
+            }
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
         if (unlimited) {
             byte[] decrypted = null;
-    
+
             try {
                 decrypted = decryptor.doFinal(ek);
             } catch (Exception e) {
                 fail(e.getMessage());
             }
-    
+
             // Assert
             assertArrayEquals(cek, decrypted);
         }
@@ -380,22 +404,26 @@ public class AesKwTest {
 
         try {
             encryptor = kw.CreateEncryptor(kek, provider);
-            if (!unlimited) fail("Expected InvalidKeyException");
+            if (!unlimited) {
+                fail("Expected InvalidKeyException");
+            }
         } catch (InvalidKeyException e) {
-            if (unlimited) fail("InvalidKeyException");
+            if (unlimited) {
+                fail("InvalidKeyException");
+            }
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
         if (unlimited) {
             byte[] encrypted = null;
-    
+
             try {
                 encrypted = encryptor.doFinal(cek);
             } catch (Exception e) {
                 fail(e.getMessage());
             }
-    
+
             // Assert
             assertArrayEquals(ek, encrypted);
         }
@@ -404,23 +432,27 @@ public class AesKwTest {
 
         try {
             decryptor = kw.CreateDecryptor(kek, provider);
-            
-            if (!unlimited) fail("Expected InvalidKeyException");
+
+            if (!unlimited) {
+                fail("Expected InvalidKeyException");
+            }
         } catch (InvalidKeyException e) {
-            if (unlimited) fail("InvalidKeyException");
+            if (unlimited) {
+                fail("InvalidKeyException");
+            }
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
         if (unlimited) {
             byte[] decrypted = null;
-    
+
             try {
                 decrypted = decryptor.doFinal(ek);
             } catch (Exception e) {
                 fail(e.getMessage());
             }
-    
+
             // Assert
             assertArrayEquals(cek, decrypted);
         }
