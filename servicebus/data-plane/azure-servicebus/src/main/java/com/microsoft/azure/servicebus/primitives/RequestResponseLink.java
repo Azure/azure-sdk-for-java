@@ -41,6 +41,8 @@ import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
 import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
 import com.microsoft.azure.servicebus.amqp.SessionHandler;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 class RequestResponseLink extends ClientEntity{
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RequestResponseLink.class);
 
@@ -844,7 +846,7 @@ class RequestResponseLink extends ClientEntity{
 
                     RequestResponseWorkItem requestToBeSent = this.parent.pendingRequests.get(requestIdToBeSent);
                     if (requestToBeSent != null) {
-                        Delivery delivery = this.sendLink.delivery(UUID.randomUUID().toString().getBytes());
+                        Delivery delivery = this.sendLink.delivery(UUID.randomUUID().toString().getBytes(UTF_8));
                         delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
                         TransactionContext transaction = requestToBeSent.getTransaction();
                         if (transaction != TransactionContext.NULL_TXN) {
