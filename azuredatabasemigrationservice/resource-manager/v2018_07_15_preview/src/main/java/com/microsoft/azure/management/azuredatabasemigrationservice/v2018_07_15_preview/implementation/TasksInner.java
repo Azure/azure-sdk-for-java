@@ -26,8 +26,11 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
@@ -63,6 +66,22 @@ public class TasksInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview.Tasks list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("groupName") String groupName, @Path("serviceName") String serviceName, @Path("projectName") String projectName, @Query("api-version") String apiVersion, @Query("taskType") String taskType, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview.Tasks createOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks/{taskName}")
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("groupName") String groupName, @Path("serviceName") String serviceName, @Path("projectName") String projectName, @Path("taskName") String taskName, @Body ProjectTaskInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview.Tasks get" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks/{taskName}")
+        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("groupName") String groupName, @Path("serviceName") String serviceName, @Path("projectName") String projectName, @Path("taskName") String taskName, @Query("$expand") String expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview.Tasks delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks/{taskName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("groupName") String groupName, @Path("serviceName") String serviceName, @Path("projectName") String projectName, @Path("taskName") String taskName, @Query("deleteRunningTasks") Boolean deleteRunningTasks, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview.Tasks update" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks/{taskName}")
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("groupName") String groupName, @Path("serviceName") String serviceName, @Path("projectName") String projectName, @Path("taskName") String taskName, @Body ProjectTaskInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview.Tasks cancel" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/tasks/{taskName}/cancel")
@@ -345,6 +364,642 @@ public class TasksInner {
     private ServiceResponse<PageImpl<ProjectTaskInner>> listDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ProjectTaskInner>, ApiErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProjectTaskInner>>() { }.getType())
+                .registerError(ApiErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an existing one.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param parameters Information about the task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProjectTaskInner object if successful.
+     */
+    public ProjectTaskInner createOrUpdate(String groupName, String serviceName, String projectName, String taskName, ProjectTaskInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(groupName, serviceName, projectName, taskName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an existing one.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param parameters Information about the task
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProjectTaskInner> createOrUpdateAsync(String groupName, String serviceName, String projectName, String taskName, ProjectTaskInner parameters, final ServiceCallback<ProjectTaskInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(groupName, serviceName, projectName, taskName, parameters), serviceCallback);
+    }
+
+    /**
+     * Create or update task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an existing one.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param parameters Information about the task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectTaskInner object
+     */
+    public Observable<ProjectTaskInner> createOrUpdateAsync(String groupName, String serviceName, String projectName, String taskName, ProjectTaskInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(groupName, serviceName, projectName, taskName, parameters).map(new Func1<ServiceResponse<ProjectTaskInner>, ProjectTaskInner>() {
+            @Override
+            public ProjectTaskInner call(ServiceResponse<ProjectTaskInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an existing one.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param parameters Information about the task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectTaskInner object
+     */
+    public Observable<ServiceResponse<ProjectTaskInner>> createOrUpdateWithServiceResponseAsync(String groupName, String serviceName, String projectName, String taskName, ProjectTaskInner parameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (groupName == null) {
+            throw new IllegalArgumentException("Parameter groupName is required and cannot be null.");
+        }
+        if (serviceName == null) {
+            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
+        }
+        if (projectName == null) {
+            throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
+        }
+        if (taskName == null) {
+            throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.createOrUpdate(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectTaskInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ProjectTaskInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ProjectTaskInner> clientResponse = createOrUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ProjectTaskInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ProjectTaskInner, ApiErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ProjectTaskInner>() { }.getType())
+                .register(201, new TypeToken<ProjectTaskInner>() { }.getType())
+                .registerError(ApiErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Get task information.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method retrieves information about a task.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProjectTaskInner object if successful.
+     */
+    public ProjectTaskInner get(String groupName, String serviceName, String projectName, String taskName) {
+        return getWithServiceResponseAsync(groupName, serviceName, projectName, taskName).toBlocking().single().body();
+    }
+
+    /**
+     * Get task information.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method retrieves information about a task.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProjectTaskInner> getAsync(String groupName, String serviceName, String projectName, String taskName, final ServiceCallback<ProjectTaskInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(groupName, serviceName, projectName, taskName), serviceCallback);
+    }
+
+    /**
+     * Get task information.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method retrieves information about a task.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectTaskInner object
+     */
+    public Observable<ProjectTaskInner> getAsync(String groupName, String serviceName, String projectName, String taskName) {
+        return getWithServiceResponseAsync(groupName, serviceName, projectName, taskName).map(new Func1<ServiceResponse<ProjectTaskInner>, ProjectTaskInner>() {
+            @Override
+            public ProjectTaskInner call(ServiceResponse<ProjectTaskInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get task information.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method retrieves information about a task.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectTaskInner object
+     */
+    public Observable<ServiceResponse<ProjectTaskInner>> getWithServiceResponseAsync(String groupName, String serviceName, String projectName, String taskName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (groupName == null) {
+            throw new IllegalArgumentException("Parameter groupName is required and cannot be null.");
+        }
+        if (serviceName == null) {
+            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
+        }
+        if (projectName == null) {
+            throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
+        }
+        if (taskName == null) {
+            throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String expand = null;
+        return service.get(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectTaskInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ProjectTaskInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ProjectTaskInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Get task information.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method retrieves information about a task.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param expand Expand the response
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProjectTaskInner object if successful.
+     */
+    public ProjectTaskInner get(String groupName, String serviceName, String projectName, String taskName, String expand) {
+        return getWithServiceResponseAsync(groupName, serviceName, projectName, taskName, expand).toBlocking().single().body();
+    }
+
+    /**
+     * Get task information.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method retrieves information about a task.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param expand Expand the response
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProjectTaskInner> getAsync(String groupName, String serviceName, String projectName, String taskName, String expand, final ServiceCallback<ProjectTaskInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(groupName, serviceName, projectName, taskName, expand), serviceCallback);
+    }
+
+    /**
+     * Get task information.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method retrieves information about a task.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param expand Expand the response
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectTaskInner object
+     */
+    public Observable<ProjectTaskInner> getAsync(String groupName, String serviceName, String projectName, String taskName, String expand) {
+        return getWithServiceResponseAsync(groupName, serviceName, projectName, taskName, expand).map(new Func1<ServiceResponse<ProjectTaskInner>, ProjectTaskInner>() {
+            @Override
+            public ProjectTaskInner call(ServiceResponse<ProjectTaskInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get task information.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method retrieves information about a task.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param expand Expand the response
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectTaskInner object
+     */
+    public Observable<ServiceResponse<ProjectTaskInner>> getWithServiceResponseAsync(String groupName, String serviceName, String projectName, String taskName, String expand) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (groupName == null) {
+            throw new IllegalArgumentException("Parameter groupName is required and cannot be null.");
+        }
+        if (serviceName == null) {
+            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
+        }
+        if (projectName == null) {
+            throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
+        }
+        if (taskName == null) {
+            throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectTaskInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ProjectTaskInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ProjectTaskInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ProjectTaskInner> getDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ProjectTaskInner, ApiErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ProjectTaskInner>() { }.getType())
+                .registerError(ApiErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE method deletes a task, canceling it first if it's running.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String groupName, String serviceName, String projectName, String taskName) {
+        deleteWithServiceResponseAsync(groupName, serviceName, projectName, taskName).toBlocking().single().body();
+    }
+
+    /**
+     * Delete task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE method deletes a task, canceling it first if it's running.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String groupName, String serviceName, String projectName, String taskName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(groupName, serviceName, projectName, taskName), serviceCallback);
+    }
+
+    /**
+     * Delete task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE method deletes a task, canceling it first if it's running.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteAsync(String groupName, String serviceName, String projectName, String taskName) {
+        return deleteWithServiceResponseAsync(groupName, serviceName, projectName, taskName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Delete task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE method deletes a task, canceling it first if it's running.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String groupName, String serviceName, String projectName, String taskName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (groupName == null) {
+            throw new IllegalArgumentException("Parameter groupName is required and cannot be null.");
+        }
+        if (serviceName == null) {
+            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
+        }
+        if (projectName == null) {
+            throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
+        }
+        if (taskName == null) {
+            throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Boolean deleteRunningTasks = null;
+        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, deleteRunningTasks, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Delete task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE method deletes a task, canceling it first if it's running.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param deleteRunningTasks Delete the resource even if it contains running tasks
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String groupName, String serviceName, String projectName, String taskName, Boolean deleteRunningTasks) {
+        deleteWithServiceResponseAsync(groupName, serviceName, projectName, taskName, deleteRunningTasks).toBlocking().single().body();
+    }
+
+    /**
+     * Delete task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE method deletes a task, canceling it first if it's running.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param deleteRunningTasks Delete the resource even if it contains running tasks
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String groupName, String serviceName, String projectName, String taskName, Boolean deleteRunningTasks, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(groupName, serviceName, projectName, taskName, deleteRunningTasks), serviceCallback);
+    }
+
+    /**
+     * Delete task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE method deletes a task, canceling it first if it's running.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param deleteRunningTasks Delete the resource even if it contains running tasks
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteAsync(String groupName, String serviceName, String projectName, String taskName, Boolean deleteRunningTasks) {
+        return deleteWithServiceResponseAsync(groupName, serviceName, projectName, taskName, deleteRunningTasks).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Delete task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE method deletes a task, canceling it first if it's running.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param deleteRunningTasks Delete the resource even if it contains running tasks
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String groupName, String serviceName, String projectName, String taskName, Boolean deleteRunningTasks) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (groupName == null) {
+            throw new IllegalArgumentException("Parameter groupName is required and cannot be null.");
+        }
+        if (serviceName == null) {
+            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
+        }
+        if (projectName == null) {
+            throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
+        }
+        if (taskName == null) {
+            throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, deleteRunningTasks, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ApiErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(ApiErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PATCH method updates an existing task, but since tasks have no mutable custom properties, there is little reason to do so.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param parameters Information about the task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProjectTaskInner object if successful.
+     */
+    public ProjectTaskInner update(String groupName, String serviceName, String projectName, String taskName, ProjectTaskInner parameters) {
+        return updateWithServiceResponseAsync(groupName, serviceName, projectName, taskName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PATCH method updates an existing task, but since tasks have no mutable custom properties, there is little reason to do so.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param parameters Information about the task
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProjectTaskInner> updateAsync(String groupName, String serviceName, String projectName, String taskName, ProjectTaskInner parameters, final ServiceCallback<ProjectTaskInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(groupName, serviceName, projectName, taskName, parameters), serviceCallback);
+    }
+
+    /**
+     * Create or update task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PATCH method updates an existing task, but since tasks have no mutable custom properties, there is little reason to do so.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param parameters Information about the task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectTaskInner object
+     */
+    public Observable<ProjectTaskInner> updateAsync(String groupName, String serviceName, String projectName, String taskName, ProjectTaskInner parameters) {
+        return updateWithServiceResponseAsync(groupName, serviceName, projectName, taskName, parameters).map(new Func1<ServiceResponse<ProjectTaskInner>, ProjectTaskInner>() {
+            @Override
+            public ProjectTaskInner call(ServiceResponse<ProjectTaskInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PATCH method updates an existing task, but since tasks have no mutable custom properties, there is little reason to do so.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @param parameters Information about the task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectTaskInner object
+     */
+    public Observable<ServiceResponse<ProjectTaskInner>> updateWithServiceResponseAsync(String groupName, String serviceName, String projectName, String taskName, ProjectTaskInner parameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (groupName == null) {
+            throw new IllegalArgumentException("Parameter groupName is required and cannot be null.");
+        }
+        if (serviceName == null) {
+            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
+        }
+        if (projectName == null) {
+            throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
+        }
+        if (taskName == null) {
+            throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.update(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectTaskInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ProjectTaskInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ProjectTaskInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ProjectTaskInner> updateDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ProjectTaskInner, ApiErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ProjectTaskInner>() { }.getType())
                 .registerError(ApiErrorException.class)
                 .build(response);
     }

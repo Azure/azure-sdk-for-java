@@ -11,6 +11,7 @@ package com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview.Tasks;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
@@ -29,8 +30,17 @@ class TasksImpl extends WrapperImpl<TasksInner> implements Tasks {
         return this.manager;
     }
 
+    @Override
+    public ProjectServiceProjectTaskImpl define(String name) {
+        return wrapModel(name);
+    }
+
     private ProjectServiceProjectTaskImpl wrapModel(ProjectTaskInner inner) {
         return  new ProjectServiceProjectTaskImpl(inner, manager());
+    }
+
+    private ProjectServiceProjectTaskImpl wrapModel(String name) {
+        return new ProjectServiceProjectTaskImpl(name, this.manager());
     }
 
     @Override
@@ -73,6 +83,24 @@ class TasksImpl extends WrapperImpl<TasksInner> implements Tasks {
                 return wrapModel(inner);
             }
         });
+    }
+
+    @Override
+    public Observable<ProjectServiceProjectTask> getAsync(String groupName, String serviceName, String projectName, String taskName) {
+        TasksInner client = this.inner();
+        return client.getAsync(groupName, serviceName, projectName, taskName)
+        .map(new Func1<ProjectTaskInner, ProjectServiceProjectTask>() {
+            @Override
+            public ProjectServiceProjectTask call(ProjectTaskInner inner) {
+                return wrapModel(inner);
+            }
+       });
+    }
+
+    @Override
+    public Completable deleteAsync(String groupName, String serviceName, String projectName, String taskName) {
+        TasksInner client = this.inner();
+        return client.deleteAsync(groupName, serviceName, projectName, taskName).toCompletable();
     }
 
 }

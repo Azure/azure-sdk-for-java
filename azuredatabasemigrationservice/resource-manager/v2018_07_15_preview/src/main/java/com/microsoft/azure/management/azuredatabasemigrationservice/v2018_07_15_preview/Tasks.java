@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview;
 
+import com.microsoft.azure.arm.collection.SupportsCreating;
+import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview.implementation.CommandPropertiesInner;
 import com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview.implementation.TasksInner;
@@ -16,7 +18,7 @@ import com.microsoft.azure.arm.model.HasInner;
 /**
  * Type representing Tasks.
  */
-public interface Tasks extends HasInner<TasksInner> {
+public interface Tasks extends SupportsCreating<ProjectServiceProjectTask.DefinitionStages.Blank>, HasInner<TasksInner> {
     /**
      * Cancel a task.
      * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method cancels a task if it's currently queued or running.
@@ -45,6 +47,19 @@ public interface Tasks extends HasInner<TasksInner> {
     Observable<CommandProperties> commandAsync(String groupName, String serviceName, String projectName, String taskName, CommandPropertiesInner parameters);
 
     /**
+     * Get task information.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method retrieves information about a task.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ProjectServiceProjectTask> getAsync(String groupName, String serviceName, String projectName, String taskName);
+
+    /**
      * Get tasks in a service.
      * The services resource is the top-level resource that represents the Database Migration Service. This method returns a list of tasks owned by a service resource. Some tasks may have a status of Unknown, which indicates that an error occurred while querying the status of that task.
      *
@@ -55,5 +70,18 @@ public interface Tasks extends HasInner<TasksInner> {
      * @return the observable for the request
      */
     Observable<ProjectServiceProjectTask> listAsync(final String groupName, final String serviceName, final String projectName);
+
+    /**
+     * Delete task.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE method deletes a task, canceling it first if it's running.
+     *
+     * @param groupName Name of the resource group
+     * @param serviceName Name of the service
+     * @param projectName Name of the project
+     * @param taskName Name of the Task
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String groupName, String serviceName, String projectName, String taskName);
 
 }
