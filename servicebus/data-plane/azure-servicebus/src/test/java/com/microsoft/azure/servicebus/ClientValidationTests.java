@@ -60,9 +60,6 @@ public class ClientValidationTests extends TestBase {
 
     @AfterClass
     public static void deleteEntities() throws ExecutionException, InterruptedException, IOException {
-        if (managementClient == null) {
-            return;
-        }
         managementClient.deleteQueueAsync(queuePath).get();
         managementClient.deleteQueueAsync(sessionfulQueuePath).get();
         managementClient.deleteTopicAsync(topicPath).get();
