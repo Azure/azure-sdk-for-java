@@ -12,28 +12,28 @@ package com.microsoft.azure.servicebus.primitives;
  */
 public class TimeoutException extends ServiceBusException
 {
-	private static final long serialVersionUID = -3505469991851121512L;
+    private static final long serialVersionUID = -3505469991851121512L;
 
-	/**
-	 * Default constructor for exception type.
-	 */
-	public TimeoutException()
-	{
-		super(true);
-	}
+    /**
+     * Default constructor for exception type.
+     */
+    public TimeoutException()
+    {
+        super(true);
+    }
 
-	public TimeoutException(final String message)
-	{
-		super(true, message);
-	}
+    public TimeoutException(final String message)
+    {
+        super(true, message);
+    }
 
-	public TimeoutException(final Throwable cause)
-	{
-		super(true, cause);
-	}
+    public TimeoutException(final Throwable cause)
+    {
+        super(true, cause);
+    }
 
-	public TimeoutException(final String message, final Throwable cause)
-	{
-		super(true, message, cause);
-	}
+    public TimeoutException(final String message, final Throwable cause)
+    {
+        super(true, message, cause);
+    }
 }

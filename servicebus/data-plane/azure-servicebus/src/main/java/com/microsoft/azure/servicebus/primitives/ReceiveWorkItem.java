@@ -6,16 +6,16 @@ import java.util.concurrent.CompletableFuture;
 
 class ReceiveWorkItem extends WorkItem<Collection<MessageWithDeliveryTag>>
 {
-	private final int maxMessageCount;
+    private final int maxMessageCount;
 
-	public ReceiveWorkItem(CompletableFuture<Collection<MessageWithDeliveryTag>> completableFuture, Duration timeout, final int maxMessageCount)
-	{
-		super(completableFuture, timeout);
-		this.maxMessageCount = maxMessageCount;
-	}
-	
-	public int getMaxMessageCount()
-	{
-		return this.maxMessageCount;
-	}
+    public ReceiveWorkItem(CompletableFuture<Collection<MessageWithDeliveryTag>> completableFuture, Duration timeout, final int maxMessageCount)
+    {
+        super(completableFuture, timeout);
+        this.maxMessageCount = maxMessageCount;
+    }
+
+    public int getMaxMessageCount()
+    {
+        return this.maxMessageCount;
+    }
 }

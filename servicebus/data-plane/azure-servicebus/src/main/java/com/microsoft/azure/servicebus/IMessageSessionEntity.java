@@ -13,9 +13,9 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
  * Represents a session full client entity.
  */
 public interface IMessageSessionEntity {
-//	int getSessionPrefetchCount();
-//	
-//	void setSessionPrefetchCount(int prefetchCount);
+//    int getSessionPrefetchCount();
+//
+//    void setSessionPrefetchCount(int prefetchCount);
 //
 //    IMessageSession acceptMessageSession() throws InterruptedException, ServiceBusException;
 //

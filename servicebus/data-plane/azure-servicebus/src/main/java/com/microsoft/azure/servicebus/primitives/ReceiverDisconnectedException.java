@@ -18,25 +18,25 @@ package com.microsoft.azure.servicebus.primitives;
  */
 public class ReceiverDisconnectedException extends ServiceBusException
 {
-	private static final long serialVersionUID = 3385140843418138213L;
+    private static final long serialVersionUID = 3385140843418138213L;
 
-	ReceiverDisconnectedException()
-	{
-		super(false);
-	}
+    ReceiverDisconnectedException()
+    {
+        super(false);
+    }
 
-	ReceiverDisconnectedException(final String message)
-	{
-		super(false, message);
-	}
+    ReceiverDisconnectedException(final String message)
+    {
+        super(false, message);
+    }
 
-	ReceiverDisconnectedException(final Throwable cause)
-	{
-		super(false, cause);
-	}
+    ReceiverDisconnectedException(final Throwable cause)
+    {
+        super(false, cause);
+    }
 
-	ReceiverDisconnectedException(final String message, final Throwable cause)
-	{
-		super(false, message, cause);
-	}
+    ReceiverDisconnectedException(final String message, final Throwable cause)
+    {
+        super(false, message, cause);
+    }
 }

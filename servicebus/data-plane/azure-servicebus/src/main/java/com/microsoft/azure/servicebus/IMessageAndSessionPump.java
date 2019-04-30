@@ -26,7 +26,7 @@ interface IMessageAndSessionPump {
      * @throws ServiceBusException  if register failed
      * @deprecated Use {@link #registerMessageHandler(IMessageHandler, ExecutorService)}
      */
-	@Deprecated
+    @Deprecated
     public void registerMessageHandler(IMessageHandler handler) throws InterruptedException, ServiceBusException;
     
     /**

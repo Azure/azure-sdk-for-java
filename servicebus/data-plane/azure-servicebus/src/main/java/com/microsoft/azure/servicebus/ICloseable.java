@@ -18,11 +18,11 @@ public interface ICloseable {
      * This object is completely closed when the returned CompletableFuture is completed.
      * @return a CompletableFuture representing the closing of this object.
      */
-	CompletableFuture<Void> closeAsync();
-	
-	/**
-	 * Synchronously closes and disposes any resources associated with this object. Calling this method is equivalent of calling <code>closeAsync().get()</code>. This method blocks until this object is closed.
-	 * @throws ServiceBusException If this object cannot be properly closed. 
-	 */
-	void close() throws ServiceBusException;
+    CompletableFuture<Void> closeAsync();
+
+    /**
+     * Synchronously closes and disposes any resources associated with this object. Calling this method is equivalent of calling <code>closeAsync().get()</code>. This method blocks until this object is closed.
+     * @throws ServiceBusException If this object cannot be properly closed.
+     */
+    void close() throws ServiceBusException;
 }

@@ -12,28 +12,28 @@ package com.microsoft.azure.servicebus.primitives;
  */
 public class ServerBusyException extends ServiceBusException 
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Default constructor for the exception
-	 */
-	public ServerBusyException()
-	{
-		super(true);
-	}
+    /**
+     * Default constructor for the exception
+     */
+    public ServerBusyException()
+    {
+        super(true);
+    }
 
-	public ServerBusyException(final String message)
-	{
-		super(true, message);
-	}
+    public ServerBusyException(final String message)
+    {
+        super(true, message);
+    }
 
-	ServerBusyException(final Throwable cause)
-	{
-		super(true, cause);
-	}
+    ServerBusyException(final Throwable cause)
+    {
+        super(true, cause);
+    }
 
-	ServerBusyException(final String message, final Throwable cause)
-	{
-		super(true, message, cause);
-	}
+    ServerBusyException(final String message, final Throwable cause)
+    {
+        super(true, message, cause);
+    }
 }

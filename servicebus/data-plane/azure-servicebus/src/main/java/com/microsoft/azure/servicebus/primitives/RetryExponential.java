@@ -14,53 +14,53 @@ import java.time.Duration;
  */
 public final class RetryExponential extends RetryPolicy
 {
-	private final Duration minimumBackoff;
-	private final Duration maximumBackoff;
-	private final int maximumRetryCount;
-	private final double retryFactor;
+    private final Duration minimumBackoff;
+    private final Duration maximumBackoff;
+    private final int maximumRetryCount;
+    private final double retryFactor;
 
-	public RetryExponential(final Duration minimumBackoff, final Duration maximumBackoff, final int maximumRetryCount, final String name)
-	{
-		super(name);
+    public RetryExponential(final Duration minimumBackoff, final Duration maximumBackoff, final int maximumRetryCount, final String name)
+    {
+        super(name);
 
-		this.minimumBackoff = minimumBackoff;
-		this.maximumBackoff = maximumBackoff;
-		this.maximumRetryCount = maximumRetryCount;
-		this.retryFactor = this.computeRetryFactor();
-	}
+        this.minimumBackoff = minimumBackoff;
+        this.maximumBackoff = maximumBackoff;
+        this.maximumRetryCount = maximumRetryCount;
+        this.retryFactor = this.computeRetryFactor();
+    }
 
-	@Override
-	protected Duration onGetNextRetryInterval(final String clientId, final Exception lastException, final Duration remainingTime, final int baseWaitTimeSecs)
-	{
-		int currentRetryCount = this.getRetryCount(clientId);
+    @Override
+    protected Duration onGetNextRetryInterval(final String clientId, final Exception lastException, final Duration remainingTime, final int baseWaitTimeSecs)
+    {
+        int currentRetryCount = this.getRetryCount(clientId);
 
-		if (currentRetryCount >= this.maximumRetryCount)
-		{
-			return null;
-		}	
+        if (currentRetryCount >= this.maximumRetryCount)
+        {
+            return null;
+        }
 
-		double nextRetryInterval = Math.pow(this.retryFactor, (double)currentRetryCount);
-		long nextRetryIntervalSeconds = (long) nextRetryInterval ;
-		long nextRetryIntervalNano = (long)((nextRetryInterval - (double)nextRetryIntervalSeconds) * 1000000000);
-		if (remainingTime.getSeconds() < Math.max(nextRetryInterval, ClientConstants.TIMER_TOLERANCE.getSeconds()))
-		{
-			return null;
-		}
+        double nextRetryInterval = Math.pow(this.retryFactor, (double)currentRetryCount);
+        long nextRetryIntervalSeconds = (long) nextRetryInterval ;
+        long nextRetryIntervalNano = (long)((nextRetryInterval - (double)nextRetryIntervalSeconds) * 1000000000);
+        if (remainingTime.getSeconds() < Math.max(nextRetryInterval, ClientConstants.TIMER_TOLERANCE.getSeconds()))
+        {
+            return null;
+        }
 
-		Duration retryAfter = this.minimumBackoff.plus(Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano));
-		retryAfter = retryAfter.plus(Duration.ofSeconds(baseWaitTimeSecs));
+        Duration retryAfter = this.minimumBackoff.plus(Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano));
+        retryAfter = retryAfter.plus(Duration.ofSeconds(baseWaitTimeSecs));
 
-		return retryAfter;
-	}
+        return retryAfter;
+    }
 
-	private double computeRetryFactor()
-	{
-		long deltaBackoff = this.maximumBackoff.minus(this.minimumBackoff).getSeconds();
-		if (deltaBackoff <= 0 || this.maximumRetryCount <= 0)
-		{
-			return 0;
-		}
+    private double computeRetryFactor()
+    {
+        long deltaBackoff = this.maximumBackoff.minus(this.minimumBackoff).getSeconds();
+        if (deltaBackoff <= 0 || this.maximumRetryCount <= 0)
+        {
+            return 0;
+        }
 
-		return (Math.log(deltaBackoff) / Math.log(this.maximumRetryCount));
-	}
+        return (Math.log(deltaBackoff) / Math.log(this.maximumRetryCount));
+    }
 }

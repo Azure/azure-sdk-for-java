@@ -10,25 +10,25 @@ package com.microsoft.azure.servicebus.primitives;
  */
 public class OperationCancelledException extends ServiceBusException
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	OperationCancelledException()
-	{
-		super(false);
-	}
+    OperationCancelledException()
+    {
+        super(false);
+    }
 
-	public OperationCancelledException(final String message)
-	{
-		super(false, message);
-	}
+    public OperationCancelledException(final String message)
+    {
+        super(false, message);
+    }
 
-	OperationCancelledException(final Throwable cause)
-	{
-		super(false, cause);
-	}
+    OperationCancelledException(final Throwable cause)
+    {
+        super(false, cause);
+    }
 
-	OperationCancelledException(final String message, final Throwable cause)
-	{
-		super(false, message, cause);
-	}
+    OperationCancelledException(final String message, final Throwable cause)
+    {
+        super(false, message, cause);
+    }
 }

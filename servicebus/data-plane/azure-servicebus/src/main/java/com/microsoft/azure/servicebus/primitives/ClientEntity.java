@@ -16,128 +16,128 @@ import java.util.concurrent.ExecutionException;
  */
 public abstract class ClientEntity
 {
-	private final String clientId;
-	private final Object syncClose;
+    private final String clientId;
+    private final Object syncClose;
 
-	private boolean isClosing;
-	private boolean isClosed;
+    private boolean isClosing;
+    private boolean isClosed;
 
-	protected ClientEntity(final String clientId)
-	{
-		this.clientId = clientId;
-		this.syncClose = new Object();
-	}
+    protected ClientEntity(final String clientId)
+    {
+        this.clientId = clientId;
+        this.syncClose = new Object();
+    }
 
-	protected abstract CompletableFuture<Void> onClose();
+    protected abstract CompletableFuture<Void> onClose();
 
-	public String getClientId()
-	{
-		return this.clientId;
-	}
+    public String getClientId()
+    {
+        return this.clientId;
+    }
 
-	protected boolean getIsClosed()
-	{		
-		synchronized (this.syncClose)
-		{
-			return this.isClosed;
-		}
-	}
-	
-	protected boolean getIsClosingOrClosed()
-	{
-		
-		synchronized (this.syncClose)
-		{
-			return this.isClosing || this.isClosed;
-		}
-	}
+    protected boolean getIsClosed()
+    {
+        synchronized (this.syncClose)
+        {
+            return this.isClosed;
+        }
+    }
 
-	// used to force close when entity is faulted
-	protected final void setClosed()
-	{
-		synchronized (this.syncClose)
-		{
-			this.isClosed = true;
-		}
-	}
+    protected boolean getIsClosingOrClosed()
+    {
 
-	public final CompletableFuture<Void> closeAsync()
-	{
-		if(this.getIsClosingOrClosed())
-		{
-			return CompletableFuture.completedFuture(null);
-		}
-		
-		synchronized (this.syncClose)
-		{
-			this.isClosing = true;
-		}
+        synchronized (this.syncClose)
+        {
+            return this.isClosing || this.isClosed;
+        }
+    }
 
-		return this.onClose().thenRunAsync(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				synchronized (ClientEntity.this.syncClose)
-				{
-					ClientEntity.this.isClosing = false;
-					ClientEntity.this.isClosed = true;
-				}
-			}}, MessagingFactory.INTERNAL_THREAD_POOL);
-	}
+    // used to force close when entity is faulted
+    protected final void setClosed()
+    {
+        synchronized (this.syncClose)
+        {
+            this.isClosed = true;
+        }
+    }
 
-	public final void close() throws ServiceBusException
-	{
-		try
-		{
-			this.closeAsync().get();
-		}
-		catch (InterruptedException|ExecutionException exception)
-		{
-			if (exception instanceof InterruptedException)
-			{
-				// Re-assert the thread's interrupted status
-				Thread.currentThread().interrupt();
-			}
+    public final CompletableFuture<Void> closeAsync()
+    {
+        if(this.getIsClosingOrClosed())
+        {
+            return CompletableFuture.completedFuture(null);
+        }
 
-			Throwable throwable = exception.getCause();
-			if (throwable != null)
-			{
-				if (throwable instanceof RuntimeException)
-				{
-					throw (RuntimeException)throwable;
-				}
+        synchronized (this.syncClose)
+        {
+            this.isClosing = true;
+        }
 
-				if (throwable instanceof ServiceBusException)
-				{
-					throw (ServiceBusException)throwable;
-				}
+        return this.onClose().thenRunAsync(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                synchronized (ClientEntity.this.syncClose)
+                {
+                    ClientEntity.this.isClosing = false;
+                    ClientEntity.this.isClosed = true;
+                }
+            }}, MessagingFactory.INTERNAL_THREAD_POOL);
+    }
 
-				throw new ServiceBusException(true, throwable);
-			}
-		}
-	}
+    public final void close() throws ServiceBusException
+    {
+        try
+        {
+            this.closeAsync().get();
+        }
+        catch (InterruptedException|ExecutionException exception)
+        {
+            if (exception instanceof InterruptedException)
+            {
+                // Re-assert the thread's interrupted status
+                Thread.currentThread().interrupt();
+            }
 
-	protected final void throwIfClosed(Throwable cause)
-	{
-		if (this.getIsClosingOrClosed())
-		{
-			throw new IllegalStateException(String.format(Locale.US, "Operation not allowed after the %s instance is closed.", this.getClass().getName()), cause);
-		}
-	}
-	
-	@Override
-	protected void finalize()
-	{
-		try {
-			if(!this.isClosed)
-			{
-				this.close();	
-			}
-			
-			super.finalize();
-		} catch (Throwable e) {
-			//Ignore
-		}		
-	}
+            Throwable throwable = exception.getCause();
+            if (throwable != null)
+            {
+                if (throwable instanceof RuntimeException)
+                {
+                    throw (RuntimeException)throwable;
+                }
+
+                if (throwable instanceof ServiceBusException)
+                {
+                    throw (ServiceBusException)throwable;
+                }
+
+                throw new ServiceBusException(true, throwable);
+            }
+        }
+    }
+
+    protected final void throwIfClosed(Throwable cause)
+    {
+        if (this.getIsClosingOrClosed())
+        {
+            throw new IllegalStateException(String.format(Locale.US, "Operation not allowed after the %s instance is closed.", this.getClass().getName()), cause);
+        }
+    }
+
+    @Override
+    protected void finalize()
+    {
+        try {
+            if(!this.isClosed)
+            {
+                this.close();
+            }
+
+            super.finalize();
+        } catch (Throwable e) {
+            //Ignore
+        }
+    }
 }

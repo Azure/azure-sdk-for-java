@@ -14,20 +14,20 @@ import com.microsoft.azure.servicebus.primitives.ClientConstants;
 
 public class ReactorHandler extends BaseHandler
 {
-	private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReactorHandler.class);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReactorHandler.class);
 
-	@Override
-	public void onReactorInit(Event e)
-	{		
-		TRACE_LOGGER.debug("reactor.onReactorInit");
+    @Override
+    public void onReactorInit(Event e)
+    {
+        TRACE_LOGGER.debug("reactor.onReactorInit");
 
-		final Reactor reactor = e.getReactor();
-		reactor.setTimeout(ClientConstants.REACTOR_IO_POLL_TIMEOUT);
-	}
+        final Reactor reactor = e.getReactor();
+        reactor.setTimeout(ClientConstants.REACTOR_IO_POLL_TIMEOUT);
+    }
 
-	@Override 
-	public void onReactorFinal(Event e)
-	{		
-		TRACE_LOGGER.debug("reactor.onReactorFinal");
-	}
+    @Override
+    public void onReactorFinal(Event e)
+    {
+        TRACE_LOGGER.debug("reactor.onReactorFinal");
+    }
 }

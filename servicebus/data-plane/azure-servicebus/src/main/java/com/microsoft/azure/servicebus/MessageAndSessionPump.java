@@ -75,13 +75,13 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     @Deprecated
     @Override
     public void registerMessageHandler(IMessageHandler handler, MessageHandlerOptions handlerOptions) throws InterruptedException, ServiceBusException {
-    	this.registerMessageHandler(handler, handlerOptions, ForkJoinPool.commonPool());
+        this.registerMessageHandler(handler, handlerOptions, ForkJoinPool.commonPool());
     }
     
     @Override
     public void registerMessageHandler(IMessageHandler handler, MessageHandlerOptions handlerOptions, ExecutorService executorService) throws InterruptedException, ServiceBusException {
-    	assertNonNulls(handler, handlerOptions, executorService);
-    	TRACE_LOGGER.info("Registering message handler on entity '{}' with '{}'", this.entityPath, handlerOptions);
+        assertNonNulls(handler, handlerOptions, executorService);
+        TRACE_LOGGER.info("Registering message handler on entity '{}' with '{}'", this.entityPath, handlerOptions);
         this.setHandlerRegistered();
         this.messageHandler = handler;
         this.messageHandlerOptions = handlerOptions;
@@ -112,13 +112,13 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     @Deprecated
     @Override
     public void registerSessionHandler(ISessionHandler handler, SessionHandlerOptions handlerOptions) throws InterruptedException, ServiceBusException {
-    	this.registerSessionHandler(handler, handlerOptions, ForkJoinPool.commonPool());
+        this.registerSessionHandler(handler, handlerOptions, ForkJoinPool.commonPool());
     }
     
     @Override
     public void registerSessionHandler(ISessionHandler handler, SessionHandlerOptions handlerOptions, ExecutorService executorService) throws InterruptedException, ServiceBusException {
-    	assertNonNulls(handler, handlerOptions, executorService);
-    	TRACE_LOGGER.info("Registering session handler on entity '{}' with '{}'", this.entityPath, handlerOptions);
+        assertNonNulls(handler, handlerOptions, executorService);
+        TRACE_LOGGER.info("Registering session handler on entity '{}' with '{}'", this.entityPath, handlerOptions);
         this.setHandlerRegistered();
         this.sessionHandler = handler;
         this.sessionHandlerOptions = handlerOptions;
@@ -131,10 +131,10 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     
     private static void assertNonNulls(Object handler, Object options, ExecutorService executorService)
     {
-    	if(handler == null || options == null || executorService == null)
-    	{
-    		throw new IllegalArgumentException("None of the arguments can be null.");
-    	}
+        if(handler == null || options == null || executorService == null)
+        {
+            throw new IllegalArgumentException("None of the arguments can be null.");
+        }
     }
 
     private synchronized void setHandlerRegistered() {
@@ -726,13 +726,13 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
         return this.innerReceiver.completeAsync(lockToken, transaction);
     }
 
-    //	@Override
+    //    @Override
     void defer(UUID lockToken) throws InterruptedException, ServiceBusException {
         this.checkInnerReceiveCreated();
         this.innerReceiver.defer(lockToken);
     }
 
-    //	@Override
+    //    @Override
     void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
         this.checkInnerReceiveCreated();
         this.innerReceiver.defer(lockToken, propertiesToModify);
@@ -853,7 +853,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
     private void notifyExceptionToMessageHandler(Throwable ex, ExceptionPhase phase) {
         if (!(ex instanceof IllegalStateException && this.getIsClosingOrClosed())) {
-        	this.customCodeExecutor.execute(() -> {this.messageHandler.notifyException(ex, phase);});            
+            this.customCodeExecutor.execute(() -> {this.messageHandler.notifyException(ex, phase);});
         }
     }
 

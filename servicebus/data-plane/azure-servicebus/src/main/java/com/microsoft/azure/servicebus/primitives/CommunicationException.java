@@ -18,25 +18,25 @@ package com.microsoft.azure.servicebus.primitives;
  */
 public class CommunicationException extends ServiceBusException
 {
-	private static final long serialVersionUID = 7968596830506494332L;
+    private static final long serialVersionUID = 7968596830506494332L;
 
-	CommunicationException()
-	{
-		super(true);
-	}
+    CommunicationException()
+    {
+        super(true);
+    }
 
-	CommunicationException(final String message)
-	{
-		super(true, message);
-	}
+    CommunicationException(final String message)
+    {
+        super(true, message);
+    }
 
-	CommunicationException(final Throwable cause)
-	{
-		super(true, cause);
-	}
+    CommunicationException(final Throwable cause)
+    {
+        super(true, cause);
+    }
 
-	CommunicationException(final String message, final Throwable cause)
-	{
-		super(true, message, cause);
-	}
+    CommunicationException(final String message, final Throwable cause)
+    {
+        super(true, message, cause);
+    }
 }

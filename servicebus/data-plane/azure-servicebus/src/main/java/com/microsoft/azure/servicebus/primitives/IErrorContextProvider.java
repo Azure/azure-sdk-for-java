@@ -6,5 +6,5 @@ package com.microsoft.azure.servicebus.primitives;
 
 interface IErrorContextProvider
 {
-	ErrorContext getContext();
+    ErrorContext getContext();
 }

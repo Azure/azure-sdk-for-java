@@ -10,13 +10,13 @@ import org.apache.qpid.proton.engine.Link;
 
 public interface IAmqpConnection
 {
-	String getHostName();
-	
-	void onConnectionOpen();
+    String getHostName();
 
-	void onConnectionError(ErrorCondition error);
+    void onConnectionOpen();
 
-	void registerForConnectionError(Link link);
+    void onConnectionError(ErrorCondition error);
 
-	void deregisterForConnectionError(Link link);
+    void registerForConnectionError(Link link);
+
+    void deregisterForConnectionError(Link link);
 }

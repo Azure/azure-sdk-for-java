@@ -290,22 +290,22 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
         return this.messageAndSessionPump.closeAsync().thenCompose((v) -> this.closeSenderAsync().thenCompose((u) -> this.miscRequestResponseHandler.closeAsync().thenCompose((w) -> this.factory.closeAsync())));
     }
 
-    //	@Override
+    //    @Override
     Collection<IMessageSession> getMessageSessions() throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(this.getMessageSessionsAsync());
     }
 
-    //	@Override
+    //    @Override
     Collection<IMessageSession> getMessageSessions(Instant lastUpdatedTime) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(this.getMessageSessionsAsync(lastUpdatedTime));
     }
 
-    //	@Override
+    //    @Override
     CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync() {
         return this.sessionBrowser.getMessageSessionsAsync();
     }
 
-    //	@Override
+    //    @Override
     CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync(Instant lastUpdatedTime) {
         return this.sessionBrowser.getMessageSessionsAsync(Date.from(lastUpdatedTime));
     }
@@ -370,12 +370,12 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
         return this.messageAndSessionPump.completeAsync(lockToken, transaction);
     }
 
-    //	@Override
+    //    @Override
     void defer(UUID lockToken) throws InterruptedException, ServiceBusException {
         this.messageAndSessionPump.defer(lockToken);
     }
 
-    //	@Override
+    //    @Override
     void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
         this.messageAndSessionPump.defer(lockToken, propertiesToModify);
     }

@@ -22,11 +22,11 @@ final class BrowsableMessageSession extends MessageSession {
 
     BrowsableMessageSession(String sessionId, MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType) {
         super(messagingFactory, entityPath, entityType, sessionId, ReceiveMode.PEEKLOCK);
-//		try {
-//			this.initializeAsync().get();
-//		} catch (InterruptedException | ExecutionException e) {
-//			
-//		}
+//        try {
+//            this.initializeAsync().get();
+//        } catch (InterruptedException | ExecutionException e) {
+//
+//        }
     }
 
     @Override

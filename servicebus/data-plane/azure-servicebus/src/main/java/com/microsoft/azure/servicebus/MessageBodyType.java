@@ -5,9 +5,9 @@ package com.microsoft.azure.servicebus;
  * 
  */
 public enum MessageBodyType {
-	/**
-	 * Message content is byte array, equivalent to AMQP Data.
-	 */
+    /**
+     * Message content is byte array, equivalent to AMQP Data.
+     */
     BINARY,
     /**
      * Message content is a list of objects, equivalent to AMQP Sequence. Each object must be of a type supported by AMQP.

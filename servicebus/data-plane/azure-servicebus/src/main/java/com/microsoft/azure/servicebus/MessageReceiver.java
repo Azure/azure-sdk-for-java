@@ -244,15 +244,15 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         Utils.completeFuture(this.completeAsync(lockToken, transaction));
     }
 
-	/*
+    /*
     @Override
-	public void completeBatch(Collection<? extends IMessage> messages) {
-	}
-	*/
+    public void completeBatch(Collection<? extends IMessage> messages) {
+    }
+    */
 
-	@Override
+    @Override
     public CompletableFuture<Void> completeAsync(UUID lockToken) {
-	    return this.completeAsync(lockToken, TransactionContext.NULL_TXN);
+        return this.completeAsync(lockToken, TransactionContext.NULL_TXN);
     }
 
     @Override
@@ -269,13 +269,13 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         });
     }
 
-	/*
+    /*
     @Override
-	public CompletableFuture<Void> completeBatchAsync(Collection<? extends IMessage> messages) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	*/
+    public CompletableFuture<Void> completeBatchAsync(Collection<? extends IMessage> messages) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    */
 
     @Override
     public void defer(UUID lockToken) throws InterruptedException, ServiceBusException {

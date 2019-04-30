@@ -17,80 +17,80 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReceiveLinkHandler.class);
     
-	private final IAmqpReceiver amqpReceiver;
-	private final Object firstResponse;
-	private boolean isFirstResponse;
+    private final IAmqpReceiver amqpReceiver;
+    private final Object firstResponse;
+    private boolean isFirstResponse;
 
-	public ReceiveLinkHandler(final IAmqpReceiver receiver)
-	{
-		super(receiver);
+    public ReceiveLinkHandler(final IAmqpReceiver receiver)
+    {
+        super(receiver);
 
-		this.amqpReceiver = receiver;
-		this.firstResponse = new Object();
-		this.isFirstResponse = true;
-	}
+        this.amqpReceiver = receiver;
+        this.firstResponse = new Object();
+        this.isFirstResponse = true;
+    }
 
-	@Override
-	public void onLinkLocalOpen(Event evt)
-	{
-		Link link = evt.getLink();
-		if (link instanceof Receiver)
-		{
-			Receiver receiver = (Receiver) link;			
-			TRACE_LOGGER.debug("onLinkLocalOpen: linkName:{}, localSource:{}", receiver.getName(), receiver.getSource());
-		}
-	}
+    @Override
+    public void onLinkLocalOpen(Event evt)
+    {
+        Link link = evt.getLink();
+        if (link instanceof Receiver)
+        {
+            Receiver receiver = (Receiver) link;
+            TRACE_LOGGER.debug("onLinkLocalOpen: linkName:{}, localSource:{}", receiver.getName(), receiver.getSource());
+        }
+    }
 
-	@Override
-	public void onLinkRemoteOpen(Event event)
-	{
-		Link link = event.getLink();
-		if (link != null && link instanceof Receiver)
-		{
-			Receiver receiver = (Receiver) link;
-			if (link.getRemoteSource() != null)
-			{				
-				TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteSource:{}", receiver.getName(), receiver.getRemoteSource());
+    @Override
+    public void onLinkRemoteOpen(Event event)
+    {
+        Link link = event.getLink();
+        if (link != null && link instanceof Receiver)
+        {
+            Receiver receiver = (Receiver) link;
+            if (link.getRemoteSource() != null)
+            {
+                TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteSource:{}", receiver.getName(), receiver.getRemoteSource());
 
-				synchronized (this.firstResponse)
-				{
-					this.isFirstResponse = false;
-					this.amqpReceiver.onOpenComplete(null);
-				}
-			}
-			else
-			{				
-				TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarget:{}, remoteTarget:{}, action:{}", receiver.getName(), null, null, "waitingForError");
-			}
-		}
-	}
+                synchronized (this.firstResponse)
+                {
+                    this.isFirstResponse = false;
+                    this.amqpReceiver.onOpenComplete(null);
+                }
+            }
+            else
+            {
+                TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarget:{}, remoteTarget:{}, action:{}", receiver.getName(), null, null, "waitingForError");
+            }
+        }
+    }
 
-	@Override
-	public void onDelivery(Event event)
-	{
-		synchronized (this.firstResponse)
-		{
-			if (this.isFirstResponse)
-			{
-				this.isFirstResponse = false;
-				this.amqpReceiver.onOpenComplete(null);
-			}
-		}
+    @Override
+    public void onDelivery(Event event)
+    {
+        synchronized (this.firstResponse)
+        {
+            if (this.isFirstResponse)
+            {
+                this.isFirstResponse = false;
+                this.amqpReceiver.onOpenComplete(null);
+            }
+        }
 
-		Delivery delivery = event.getDelivery();
-		Receiver receiveLink = (Receiver) delivery.getLink();
+        Delivery delivery = event.getDelivery();
+        Receiver receiveLink = (Receiver) delivery.getLink();
 
-		TRACE_LOGGER.debug("onDelivery: linkName:{}, updatedLinkCredit:{}, remoteCredit:{}, remoteCondition:{}, delivery.isPartial:{}", 
+        TRACE_LOGGER.debug("onDelivery: linkName:{}, updatedLinkCredit:{}, remoteCredit:{}, remoteCondition:{}, delivery.isPartial:{}",
                 receiveLink.getName(), receiveLink.getCredit(), receiveLink.getRemoteCredit(), receiveLink.getRemoteCondition(), delivery.isPartial());
-		
-		//TODO: What happens when a delivery has no message, but only disposition from the remote link? Like when ServiceBus service sends just a disposition to the receiver?"
-		
-		// If a message spans across deliveries (for ex: 200k message will be 4 frames (deliveries) 64k 64k 64k 8k), 
-		// all until "last-1" deliveries will be partial
-		// reactor will raise onDelivery event for all of these - we only need the last one
-		if (!delivery.isPartial())
-		{	
-			this.amqpReceiver.onReceiveComplete(delivery);
-		}
-	}
+
+        //TODO: What happens when a delivery has no message, but only disposition from the remote link? Like when ServiceBus service sends just a disposition to the receiver?"
+
+        // If a message spans across deliveries (for ex: 200k message will be 4 frames (deliveries) 64k 64k 64k 8k),
+        // all until "last-1" deliveries will be partial
+        // reactor will raise onDelivery event for all of these - we only need the last one
+        if (!delivery.isPartial())
+        {
+            this.amqpReceiver.onReceiveComplete(delivery);
+        }
+    }
 }

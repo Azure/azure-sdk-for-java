@@ -6,6 +6,6 @@ package com.microsoft.azure.servicebus.primitives;
 
 public enum TimerType
 {
-	OneTimeRun,
-	RepeatRun
+    OneTimeRun,
+    RepeatRun
 }

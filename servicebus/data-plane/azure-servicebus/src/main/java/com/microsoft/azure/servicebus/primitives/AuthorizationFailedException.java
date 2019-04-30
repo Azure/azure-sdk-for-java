@@ -13,29 +13,29 @@ package com.microsoft.azure.servicebus.primitives;
  */
 public class AuthorizationFailedException extends ServiceBusException
 {
-	private static final long serialVersionUID = 5384872132102860710L;
+    private static final long serialVersionUID = 5384872132102860710L;
 
-	AuthorizationFailedException()
-	{
-		super(false);
-	}
+    AuthorizationFailedException()
+    {
+        super(false);
+    }
 
-	/**
-	 * Constructor for the exception class
-	 * @param message the actual error message detailing the reason for the failure
-	 */
-	public AuthorizationFailedException(final String message)
-	{
-		super(false, message);
-	}
+    /**
+     * Constructor for the exception class
+     * @param message the actual error message detailing the reason for the failure
+     */
+    public AuthorizationFailedException(final String message)
+    {
+        super(false, message);
+    }
 
-	AuthorizationFailedException(final Throwable cause)
-	{
-		super(false, cause);
-	}
+    AuthorizationFailedException(final Throwable cause)
+    {
+        super(false, cause);
+    }
 
-	AuthorizationFailedException(final String message, final Throwable cause)
-	{
-		super(false, message, cause);
-	}
+    AuthorizationFailedException(final String message, final Throwable cause)
+    {
+        super(false, message, cause);
+    }
 }

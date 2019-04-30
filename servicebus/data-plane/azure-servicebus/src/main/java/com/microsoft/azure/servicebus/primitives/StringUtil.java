@@ -10,47 +10,47 @@ import java.util.UUID;
 
 public final class StringUtil
 {
-	public final static String EMPTY = "";
-	private final static Charset UTF8CharSet = StandardCharsets.UTF_8;
+    public final static String EMPTY = "";
+    private final static Charset UTF8CharSet = StandardCharsets.UTF_8;
 
-	public static boolean isNullOrEmpty(String string)
-	{
-		return (string == null || string.isEmpty());
-	}
+    public static boolean isNullOrEmpty(String string)
+    {
+        return (string == null || string.isEmpty());
+    }
 
-	public static boolean isNullOrWhiteSpace(String string)
-	{
-		if (string == null)
-			return true;
+    public static boolean isNullOrWhiteSpace(String string)
+    {
+        if (string == null)
+            return true;
 
-		for (int index=0; index < string.length(); index++)
-		{
-			if (!Character.isWhitespace(string.charAt(index)))
-			{
-				return false;
-			}
-		}
+        for (int index=0; index < string.length(); index++)
+        {
+            if (!Character.isWhitespace(string.charAt(index)))
+            {
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public static String getShortRandomString()
-	{
-		return getRandomString().substring(0, 6);
-	}
-	
-	public static String getRandomString()
-	{
-		return UUID.randomUUID().toString();
-	}
-	
-	static String convertBytesToString(byte[] bytes)
-	{
-		return new String(bytes, UTF8CharSet);
-	}
-	
-	static byte[] convertStringToBytes(String string)
-	{
-		return string.getBytes(UTF8CharSet);
-	}	
+    public static String getShortRandomString()
+    {
+        return getRandomString().substring(0, 6);
+    }
+
+    public static String getRandomString()
+    {
+        return UUID.randomUUID().toString();
+    }
+
+    static String convertBytesToString(byte[] bytes)
+    {
+        return new String(bytes, UTF8CharSet);
+    }
+
+    static byte[] convertStringToBytes(String string)
+    {
+        return string.getBytes(UTF8CharSet);
+    }
 }

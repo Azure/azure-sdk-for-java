@@ -243,7 +243,7 @@ public interface IMessage {
      * @see #getMessageBody()
      */
     public void setMessageBody(MessageBody body);
-	
+
     
     /**
      * Gets the map of user application properties of this message. Client 
