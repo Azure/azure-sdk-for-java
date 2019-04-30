@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType")
 @JsonTypeName("StaticThresholdCriterion")
-public class MetricCriteria extends MultiMetricCriteria {
+public class StaticMetricCriteria extends MultiMetricCriteria {
     /**
      * the criteria operator.
      */
@@ -43,9 +43,9 @@ public class MetricCriteria extends MultiMetricCriteria {
      * Set the criteria operator.
      *
      * @param operator the operator value to set
-     * @return the MetricCriteria object itself.
+     * @return the StaticMetricCriteria object itself.
      */
-    public MetricCriteria withOperator(Object operator) {
+    public StaticMetricCriteria withOperator(Object operator) {
         this.operator = operator;
         return this;
     }
@@ -63,9 +63,9 @@ public class MetricCriteria extends MultiMetricCriteria {
      * Set the criteria threshold value that activates the alert.
      *
      * @param threshold the threshold value to set
-     * @return the MetricCriteria object itself.
+     * @return the StaticMetricCriteria object itself.
      */
-    public MetricCriteria withThreshold(double threshold) {
+    public StaticMetricCriteria withThreshold(double threshold) {
         this.threshold = threshold;
         return this;
     }
