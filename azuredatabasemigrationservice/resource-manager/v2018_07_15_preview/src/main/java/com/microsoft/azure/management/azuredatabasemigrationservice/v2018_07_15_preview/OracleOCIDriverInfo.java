@@ -18,38 +18,38 @@ public class OracleOCIDriverInfo {
     /**
      * The name of the driver package.
      */
-    @JsonProperty(value = "driverName")
+    @JsonProperty(value = "driverName", access = JsonProperty.Access.WRITE_ONLY)
     private String driverName;
 
     /**
      * The size in bytes of the driver package.
      */
-    @JsonProperty(value = "driverSize")
+    @JsonProperty(value = "driverSize", access = JsonProperty.Access.WRITE_ONLY)
     private String driverSize;
 
     /**
      * The MD5 Base64 encoded checksum for the driver package.
      */
-    @JsonProperty(value = "archiveChecksum")
+    @JsonProperty(value = "archiveChecksum", access = JsonProperty.Access.WRITE_ONLY)
     private String archiveChecksum;
 
     /**
      * The checksum for the driver package provided by Oracle.
      */
-    @JsonProperty(value = "oracleChecksum")
+    @JsonProperty(value = "oracleChecksum", access = JsonProperty.Access.WRITE_ONLY)
     private String oracleChecksum;
 
     /**
      * Version listed in the OCI assembly 'oci.dll'.
      */
-    @JsonProperty(value = "assemblyVersion")
+    @JsonProperty(value = "assemblyVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String assemblyVersion;
 
     /**
      * List of Oracle database versions supported by this driver. Only major
      * minor of the version is listed.
      */
-    @JsonProperty(value = "supportedOracleVersions")
+    @JsonProperty(value = "supportedOracleVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> supportedOracleVersions;
 
     /**
@@ -62,34 +62,12 @@ public class OracleOCIDriverInfo {
     }
 
     /**
-     * Set the name of the driver package.
-     *
-     * @param driverName the driverName value to set
-     * @return the OracleOCIDriverInfo object itself.
-     */
-    public OracleOCIDriverInfo withDriverName(String driverName) {
-        this.driverName = driverName;
-        return this;
-    }
-
-    /**
      * Get the size in bytes of the driver package.
      *
      * @return the driverSize value
      */
     public String driverSize() {
         return this.driverSize;
-    }
-
-    /**
-     * Set the size in bytes of the driver package.
-     *
-     * @param driverSize the driverSize value to set
-     * @return the OracleOCIDriverInfo object itself.
-     */
-    public OracleOCIDriverInfo withDriverSize(String driverSize) {
-        this.driverSize = driverSize;
-        return this;
     }
 
     /**
@@ -102,34 +80,12 @@ public class OracleOCIDriverInfo {
     }
 
     /**
-     * Set the MD5 Base64 encoded checksum for the driver package.
-     *
-     * @param archiveChecksum the archiveChecksum value to set
-     * @return the OracleOCIDriverInfo object itself.
-     */
-    public OracleOCIDriverInfo withArchiveChecksum(String archiveChecksum) {
-        this.archiveChecksum = archiveChecksum;
-        return this;
-    }
-
-    /**
      * Get the checksum for the driver package provided by Oracle.
      *
      * @return the oracleChecksum value
      */
     public String oracleChecksum() {
         return this.oracleChecksum;
-    }
-
-    /**
-     * Set the checksum for the driver package provided by Oracle.
-     *
-     * @param oracleChecksum the oracleChecksum value to set
-     * @return the OracleOCIDriverInfo object itself.
-     */
-    public OracleOCIDriverInfo withOracleChecksum(String oracleChecksum) {
-        this.oracleChecksum = oracleChecksum;
-        return this;
     }
 
     /**
@@ -142,34 +98,12 @@ public class OracleOCIDriverInfo {
     }
 
     /**
-     * Set version listed in the OCI assembly 'oci.dll'.
-     *
-     * @param assemblyVersion the assemblyVersion value to set
-     * @return the OracleOCIDriverInfo object itself.
-     */
-    public OracleOCIDriverInfo withAssemblyVersion(String assemblyVersion) {
-        this.assemblyVersion = assemblyVersion;
-        return this;
-    }
-
-    /**
      * Get list of Oracle database versions supported by this driver. Only major minor of the version is listed.
      *
      * @return the supportedOracleVersions value
      */
     public List<String> supportedOracleVersions() {
         return this.supportedOracleVersions;
-    }
-
-    /**
-     * Set list of Oracle database versions supported by this driver. Only major minor of the version is listed.
-     *
-     * @param supportedOracleVersions the supportedOracleVersions value to set
-     * @return the OracleOCIDriverInfo object itself.
-     */
-    public OracleOCIDriverInfo withSupportedOracleVersions(List<String> supportedOracleVersions) {
-        this.supportedOracleVersions = supportedOracleVersions;
-        return this;
     }
 
 }
