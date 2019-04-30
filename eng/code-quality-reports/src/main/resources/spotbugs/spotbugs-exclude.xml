@@ -339,15 +339,10 @@
     <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
   </Match>
 
-  <!-- The field to designed to be here. -->
+  <!-- The field is used to build public Constructor. -->
   <Match>
     <Class name="com.microsoft.azure.storage.blob.RequestIDFactory$RequestIDPolicy"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
-  <!-- The method to designed to be here. -->
-  <Match>
-    <Class name="com.microsoft.azure.storage.blob.SharedKeyCredentials"/>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
 </FindBugsFilter>
