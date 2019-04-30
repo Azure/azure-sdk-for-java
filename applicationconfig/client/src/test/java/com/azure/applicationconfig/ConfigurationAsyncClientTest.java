@@ -7,11 +7,13 @@ import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.exception.HttpRequestException;
-import com.azure.common.test.TestBase;
-import com.azure.common.exception.ServiceRequestException;
+import com.azure.common.exception.ResourceModifiedException;
+import com.azure.common.exception.ResourceNotFoundException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
+import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.rest.Response;
+import com.azure.common.test.TestBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -84,6 +86,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
                     .httpClient(HttpClient.createDefault().wiretap(true))
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .addPolicy(interceptorManager.getRecordPolicy())
+                    .addPolicy(new RetryPolicy())
                     .build();
         }
 
@@ -165,7 +168,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
     public void addExistingSetting() {
         ConfigurationClientTestBase.addExistingSetting(getKey(), getLabel(), (expected) -> {
             StepVerifier.create(client.addSetting(expected).then(client.addSetting(expected)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
         });
     }
 
@@ -192,7 +195,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
         ConfigurationClientTestBase.setSettingIfEtag(getKey(), getLabel(), (initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setSetting(initial.etag("badEtag")))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
             final String etag = client.addSetting(initial).block().value().etag();
 
@@ -201,7 +204,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
                     .verifyComplete();
 
             StepVerifier.create(client.setSetting(initial))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
             StepVerifier.create(client.getSetting(update))
                     .assertNext(response -> assertConfigurationEquals(update, response))
@@ -252,7 +255,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
     public void updateNoExistingSetting() {
         ConfigurationClientTestBase.updateNoExistingSetting(getKey(), getLabel(), (expected) -> {
             StepVerifier.create(client.updateSetting(expected))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
         });
     }
 
@@ -317,7 +320,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
 
         // The setting does not exist in the service yet, so we cannot update it.
         StepVerifier.create(client.updateSetting(new ConfigurationSetting(last).etag(initialEtag)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
         StepVerifier.create(client.getSetting(update))
                 .assertNext(response -> assertConfigurationEquals(update, response))
@@ -332,7 +335,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .verifyComplete();
 
         StepVerifier.create(client.updateSetting(new ConfigurationSetting(initial).etag(updateEtag)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
     }
 
     /**
@@ -361,11 +364,11 @@ public class ConfigurationAsyncClientTest extends TestBase {
                 .verifyComplete();
 
         StepVerifier.create(client.getSetting("myNonExistentKey"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
 
 
         StepVerifier.create(client.getSetting(nonExistentLabel))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
     }
 
     /**
@@ -385,7 +388,7 @@ public class ConfigurationAsyncClientTest extends TestBase {
                     .verifyComplete();
 
             StepVerifier.create(client.getSetting(expected))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
         });
     }
 
@@ -429,14 +432,14 @@ public class ConfigurationAsyncClientTest extends TestBase {
                     .verifyComplete();
 
             StepVerifier.create(client.deleteSetting(initiallyAddedConfig))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
             StepVerifier.create(client.deleteSetting(updatedConfig))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
 
             StepVerifier.create(client.getSetting(initial))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.NOT_FOUND.code()));
+                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
         });
     }
 
@@ -799,13 +802,24 @@ public class ConfigurationAsyncClientTest extends TestBase {
     }
 
     /**
-     * Helper method to verify the error was a RestException and it has a specific HTTP response code.
+     * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
      *
      * @param ex Expected error thrown during the test
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
     private static void assertRestException(Throwable ex, int expectedStatusCode) {
-        assertTrue(ex instanceof ServiceRequestException);
+        assertRestException(ex, HttpRequestException.class, expectedStatusCode);
+    }
+
+    /**
+     * Helper method to verify the error matches the expected exception type and it has a specific HTTP response code.
+     *
+     * @param ex Expected error thrown during the test
+     * @param expectedExceptionType Expected exception type returned.
+     * @param expectedStatusCode Expected HTTP status code contained in the error response
+     */
+    private static void assertRestException(Throwable ex, Class expectedExceptionType, int expectedStatusCode) {
+        assertEquals(ex.getClass(), expectedExceptionType);
         assertEquals(expectedStatusCode, ((HttpRequestException) ex).response().statusCode());
     }
 
