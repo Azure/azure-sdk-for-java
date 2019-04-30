@@ -9,7 +9,6 @@ import com.azure.applicationconfig.models.SettingSelector;
 import com.azure.common.exception.HttpRequestException;
 import com.azure.common.exception.ResourceModifiedException;
 import com.azure.common.exception.ResourceNotFoundException;
-import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
