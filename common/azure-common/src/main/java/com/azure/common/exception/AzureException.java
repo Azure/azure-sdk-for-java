@@ -5,8 +5,6 @@ package com.azure.common.exception;
 
 /**
  * The base exception type for all Azure-related exceptions.
- *
- * @see ServiceRequestException
  */
 public class AzureException extends RuntimeException {
 
@@ -15,7 +13,7 @@ public class AzureException extends RuntimeException {
      *
      * @param message the exception message.
      */
-    public AzureException(String message) {
+    public AzureException(final String message) {
         super(message);
     }
 
@@ -25,7 +23,7 @@ public class AzureException extends RuntimeException {
      * @param message the exception message.
      * @param cause the Throwable which caused the creation of this AzureException.
      */
-    public AzureException(String message, Throwable cause) {
+    public AzureException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
