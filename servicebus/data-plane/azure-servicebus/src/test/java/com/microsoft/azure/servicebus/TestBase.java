@@ -3,7 +3,6 @@
 package com.microsoft.azure.servicebus;
 
 import com.azure.common.test.TestMode;
-import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
