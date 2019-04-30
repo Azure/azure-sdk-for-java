@@ -43,7 +43,7 @@ known_presence_issues:
   - ['core/build-tools', '#2847']
   - ['core/azure-core', '#2847']
   - ['core/azure-core-auth', '#2847']
-  - ['core/azure-cor-mgmt', '#2847']
+  - ['core/azure-core-mgmt', '#2847']
 known_content_issues:
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['README.md', '#3113']
