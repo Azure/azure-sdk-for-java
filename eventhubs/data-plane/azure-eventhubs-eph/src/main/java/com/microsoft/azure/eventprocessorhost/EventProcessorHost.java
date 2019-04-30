@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /***
- * The main class of event processor host.  
+ * The main class of event processor host.
  */
 public final class EventProcessorHost {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(EventProcessorHost.class);
@@ -268,14 +269,13 @@ public final class EventProcessorHost {
         if (leaseManager == null) {
             throw new IllegalArgumentException("Must provide an object which implements ILeaseManager");
         }
-        // executorService argument is allowed to be null, that is the indication to use an internal threadpool.
 
+        // executorService argument is allowed to be null, that is the indication to use an internal threadpool.
 
         // Normally will not be null because we're using the AzureStorage implementation.
         // If it is null, we're using user-supplied implementation. Establish generic defaults
         // in case the user doesn't provide an options object.
         this.partitionManagerOptions = new PartitionManagerOptions();
-
 
         if (executorService != null) {
             // User has supplied an ExecutorService, so use that.
@@ -560,7 +560,7 @@ public final class EventProcessorHost {
         }
 
         private String getNamePrefix() {
-            return String.format("[%s|%s|%s]-%s-",
+            return String.format(Locale.US, "[%s|%s|%s]-%s-",
                     this.entityName, this.consumerGroupName, this.hostName, POOL_NUMBER.getAndIncrement());
         }
 
