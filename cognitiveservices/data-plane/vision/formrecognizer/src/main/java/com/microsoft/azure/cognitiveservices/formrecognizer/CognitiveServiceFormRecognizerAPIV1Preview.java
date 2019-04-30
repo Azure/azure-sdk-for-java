@@ -120,7 +120,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TrainResult object if successful.
      */
-    TrainResult trainModel(String source);
+    TrainResult trainCustomModel(String source);
 
     /**
      * Train Model.
@@ -133,7 +133,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<TrainResult> trainModelAsync(String source, final ServiceCallback<TrainResult> serviceCallback);
+    ServiceFuture<TrainResult> trainCustomModelAsync(String source, final ServiceCallback<TrainResult> serviceCallback);
 
     /**
      * Train Model.
@@ -145,7 +145,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainResult object
      */
-    Observable<TrainResult> trainModelAsync(String source);
+    Observable<TrainResult> trainCustomModelAsync(String source);
 
     /**
      * Train Model.
@@ -157,7 +157,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainResult object
      */
-    Observable<ServiceResponse<TrainResult>> trainModelWithServiceResponseAsync(String source);
+    Observable<ServiceResponse<TrainResult>> trainCustomModelWithServiceResponseAsync(String source);
 
     /**
      * Get Keys.
@@ -215,7 +215,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ModelsResult object if successful.
      */
-    ModelsResult getModels();
+    ModelsResult getCustomModels();
 
     /**
      * Get Models.
@@ -225,7 +225,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ModelsResult> getModelsAsync(final ServiceCallback<ModelsResult> serviceCallback);
+    ServiceFuture<ModelsResult> getCustomModelsAsync(final ServiceCallback<ModelsResult> serviceCallback);
 
     /**
      * Get Models.
@@ -234,7 +234,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelsResult object
      */
-    Observable<ModelsResult> getModelsAsync();
+    Observable<ModelsResult> getCustomModelsAsync();
 
     /**
      * Get Models.
@@ -243,7 +243,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelsResult object
      */
-    Observable<ServiceResponse<ModelsResult>> getModelsWithServiceResponseAsync();
+    Observable<ServiceResponse<ModelsResult>> getCustomModelsWithServiceResponseAsync();
 
     /**
      * Get Model.
@@ -255,7 +255,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ModelResult object if successful.
      */
-    ModelResult getModel(UUID id);
+    ModelResult getCustomModel(UUID id);
 
     /**
      * Get Model.
@@ -266,7 +266,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ModelResult> getModelAsync(UUID id, final ServiceCallback<ModelResult> serviceCallback);
+    ServiceFuture<ModelResult> getCustomModelAsync(UUID id, final ServiceCallback<ModelResult> serviceCallback);
 
     /**
      * Get Model.
@@ -276,7 +276,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelResult object
      */
-    Observable<ModelResult> getModelAsync(UUID id);
+    Observable<ModelResult> getCustomModelAsync(UUID id);
 
     /**
      * Get Model.
@@ -286,7 +286,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelResult object
      */
-    Observable<ServiceResponse<ModelResult>> getModelWithServiceResponseAsync(UUID id);
+    Observable<ServiceResponse<ModelResult>> getCustomModelWithServiceResponseAsync(UUID id);
 
     /**
      * Delete Model.
@@ -297,7 +297,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void deleteModel(UUID id);
+    void deleteCustomModel(UUID id);
 
     /**
      * Delete Model.
@@ -308,7 +308,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> deleteModelAsync(UUID id, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteCustomModelAsync(UUID id, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Delete Model.
@@ -318,7 +318,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> deleteModelAsync(UUID id);
+    Observable<Void> deleteCustomModelAsync(UUID id);
 
     /**
      * Delete Model.
@@ -328,7 +328,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deleteModelWithServiceResponseAsync(UUID id);
+    Observable<ServiceResponse<Void>> deleteCustomModelWithServiceResponseAsync(UUID id);
 
     /**
      * Analyze Form.
@@ -341,7 +341,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AnalyzeResult object if successful.
      */
-    AnalyzeResult analyzeWithModel(UUID id, byte[] formStream);
+    AnalyzeResult analyzeWithCustomModel(UUID id, byte[] formStream);
 
     /**
      * Analyze Form.
@@ -353,7 +353,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream, final ServiceCallback<AnalyzeResult> serviceCallback);
+    ServiceFuture<AnalyzeResult> analyzeWithCustomModelAsync(UUID id, byte[] formStream, final ServiceCallback<AnalyzeResult> serviceCallback);
 
     /**
      * Analyze Form.
@@ -364,7 +364,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    Observable<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream);
+    Observable<AnalyzeResult> analyzeWithCustomModelAsync(UUID id, byte[] formStream);
 
     /**
      * Analyze Form.
@@ -375,7 +375,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    Observable<ServiceResponse<AnalyzeResult>> analyzeWithModelWithServiceResponseAsync(UUID id, byte[] formStream);
+    Observable<ServiceResponse<AnalyzeResult>> analyzeWithCustomModelWithServiceResponseAsync(UUID id, byte[] formStream);
     /**
      * Analyze Form.
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
@@ -388,7 +388,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AnalyzeResult object if successful.
      */
-    AnalyzeResult analyzeWithModel(UUID id, byte[] formStream, List<String> keys);
+    AnalyzeResult analyzeWithCustomModel(UUID id, byte[] formStream, List<String> keys);
 
     /**
      * Analyze Form.
@@ -401,7 +401,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream, List<String> keys, final ServiceCallback<AnalyzeResult> serviceCallback);
+    ServiceFuture<AnalyzeResult> analyzeWithCustomModelAsync(UUID id, byte[] formStream, List<String> keys, final ServiceCallback<AnalyzeResult> serviceCallback);
 
     /**
      * Analyze Form.
@@ -413,7 +413,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    Observable<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream, List<String> keys);
+    Observable<AnalyzeResult> analyzeWithCustomModelAsync(UUID id, byte[] formStream, List<String> keys);
 
     /**
      * Analyze Form.
@@ -425,6 +425,6 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    Observable<ServiceResponse<AnalyzeResult>> analyzeWithModelWithServiceResponseAsync(UUID id, byte[] formStream, List<String> keys);
+    Observable<ServiceResponse<AnalyzeResult>> analyzeWithCustomModelWithServiceResponseAsync(UUID id, byte[] formStream, List<String> keys);
 
 }
