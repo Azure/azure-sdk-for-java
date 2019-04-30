@@ -120,7 +120,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TrainResult object if successful.
      */
-    TrainResult trainCustomModel(String source);
+    TrainResult trainModel(String source);
 
     /**
      * Train Model.
@@ -133,7 +133,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<TrainResult> trainCustomModelAsync(String source, final ServiceCallback<TrainResult> serviceCallback);
+    ServiceFuture<TrainResult> trainModelAsync(String source, final ServiceCallback<TrainResult> serviceCallback);
 
     /**
      * Train Model.
@@ -145,7 +145,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainResult object
      */
-    Observable<TrainResult> trainCustomModelAsync(String source);
+    Observable<TrainResult> trainModelAsync(String source);
 
     /**
      * Train Model.
@@ -157,7 +157,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainResult object
      */
-    Observable<ServiceResponse<TrainResult>> trainCustomModelWithServiceResponseAsync(String source);
+    Observable<ServiceResponse<TrainResult>> trainModelWithServiceResponseAsync(String source);
 
     /**
      * Get Keys.
@@ -170,7 +170,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the KeysResult object if successful.
      */
-    KeysResult getExtractedKeysByCustomModelId(UUID id);
+    KeysResult getExtractedKeys(UUID id);
 
     /**
      * Get Keys.
@@ -182,7 +182,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<KeysResult> getExtractedKeysByCustomModelIdAsync(UUID id, final ServiceCallback<KeysResult> serviceCallback);
+    ServiceFuture<KeysResult> getExtractedKeysAsync(UUID id, final ServiceCallback<KeysResult> serviceCallback);
 
     /**
      * Get Keys.
@@ -193,7 +193,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KeysResult object
      */
-    Observable<KeysResult> getExtractedKeysByCustomModelIdAsync(UUID id);
+    Observable<KeysResult> getExtractedKeysAsync(UUID id);
 
     /**
      * Get Keys.
@@ -204,7 +204,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KeysResult object
      */
-    Observable<ServiceResponse<KeysResult>> getExtractedKeysByCustomModelIdWithServiceResponseAsync(UUID id);
+    Observable<ServiceResponse<KeysResult>> getExtractedKeysWithServiceResponseAsync(UUID id);
 
     /**
      * Get Models.
@@ -215,7 +215,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ModelsResult object if successful.
      */
-    ModelsResult getListOfCustomModels();
+    ModelsResult getModels();
 
     /**
      * Get Models.
@@ -225,7 +225,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ModelsResult> getListOfCustomModelsAsync(final ServiceCallback<ModelsResult> serviceCallback);
+    ServiceFuture<ModelsResult> getModelsAsync(final ServiceCallback<ModelsResult> serviceCallback);
 
     /**
      * Get Models.
@@ -234,7 +234,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelsResult object
      */
-    Observable<ModelsResult> getListOfCustomModelsAsync();
+    Observable<ModelsResult> getModelsAsync();
 
     /**
      * Get Models.
@@ -243,7 +243,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelsResult object
      */
-    Observable<ServiceResponse<ModelsResult>> getListOfCustomModelsWithServiceResponseAsync();
+    Observable<ServiceResponse<ModelsResult>> getModelsWithServiceResponseAsync();
 
     /**
      * Get Model.
@@ -255,7 +255,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ModelResult object if successful.
      */
-    ModelResult getCustomModelById(UUID id);
+    ModelResult getModel(UUID id);
 
     /**
      * Get Model.
@@ -266,17 +266,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ModelResult> getCustomModelByIdAsync(UUID id, final ServiceCallback<ModelResult> serviceCallback);
-
-    /**
-     * Get Model.
-     * Get information about a model.
-     *
-     * @param id Model identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ModelResult object
-     */
-    Observable<ModelResult> getCustomModelByIdAsync(UUID id);
+    ServiceFuture<ModelResult> getModelAsync(UUID id, final ServiceCallback<ModelResult> serviceCallback);
 
     /**
      * Get Model.
@@ -286,7 +276,17 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelResult object
      */
-    Observable<ServiceResponse<ModelResult>> getCustomModelByIdWithServiceResponseAsync(UUID id);
+    Observable<ModelResult> getModelAsync(UUID id);
+
+    /**
+     * Get Model.
+     * Get information about a model.
+     *
+     * @param id Model identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ModelResult object
+     */
+    Observable<ServiceResponse<ModelResult>> getModelWithServiceResponseAsync(UUID id);
 
     /**
      * Delete Model.
@@ -297,7 +297,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void deleteCustomModelById(UUID id);
+    void deleteModel(UUID id);
 
     /**
      * Delete Model.
@@ -308,7 +308,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> deleteCustomModelByIdAsync(UUID id, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteModelAsync(UUID id, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Delete Model.
@@ -318,7 +318,7 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> deleteCustomModelByIdAsync(UUID id);
+    Observable<Void> deleteModelAsync(UUID id);
 
     /**
      * Delete Model.
@@ -328,103 +328,103 @@ public interface CognitiveServiceFormRecognizerAPIV1Preview {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deleteCustomModelByIdWithServiceResponseAsync(UUID id);
+    Observable<ServiceResponse<Void>> deleteModelWithServiceResponseAsync(UUID id);
 
     /**
      * Analyze Form.
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AnalyzeResult object if successful.
      */
-    AnalyzeResult analyzeCustomModel(UUID id, byte[] formStream);
+    AnalyzeResult analyzeWithModel(UUID id, byte[] formStream);
 
     /**
      * Analyze Form.
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<AnalyzeResult> analyzeCustomModelAsync(UUID id, byte[] formStream, final ServiceCallback<AnalyzeResult> serviceCallback);
+    ServiceFuture<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream, final ServiceCallback<AnalyzeResult> serviceCallback);
 
     /**
      * Analyze Form.
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    Observable<AnalyzeResult> analyzeCustomModelAsync(UUID id, byte[] formStream);
+    Observable<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream);
 
     /**
      * Analyze Form.
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    Observable<ServiceResponse<AnalyzeResult>> analyzeCustomModelWithServiceResponseAsync(UUID id, byte[] formStream);
+    Observable<ServiceResponse<AnalyzeResult>> analyzeWithModelWithServiceResponseAsync(UUID id, byte[] formStream);
     /**
      * Analyze Form.
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @param keys An optional list of known keys to extract the values for.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AnalyzeResult object if successful.
      */
-    AnalyzeResult analyzeCustomModel(UUID id, byte[] formStream, List<String> keys);
+    AnalyzeResult analyzeWithModel(UUID id, byte[] formStream, List<String> keys);
 
     /**
      * Analyze Form.
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @param keys An optional list of known keys to extract the values for.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<AnalyzeResult> analyzeCustomModelAsync(UUID id, byte[] formStream, List<String> keys, final ServiceCallback<AnalyzeResult> serviceCallback);
+    ServiceFuture<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream, List<String> keys, final ServiceCallback<AnalyzeResult> serviceCallback);
 
     /**
      * Analyze Form.
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @param keys An optional list of known keys to extract the values for.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    Observable<AnalyzeResult> analyzeCustomModelAsync(UUID id, byte[] formStream, List<String> keys);
+    Observable<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream, List<String> keys);
 
     /**
      * Analyze Form.
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @param keys An optional list of known keys to extract the values for.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    Observable<ServiceResponse<AnalyzeResult>> analyzeCustomModelWithServiceResponseAsync(UUID id, byte[] formStream, List<String> keys);
+    Observable<ServiceResponse<AnalyzeResult>> analyzeWithModelWithServiceResponseAsync(UUID id, byte[] formStream, List<String> keys);
 
 }

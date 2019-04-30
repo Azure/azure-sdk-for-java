@@ -161,7 +161,7 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @param credentials the management credentials for Azure
      */
     public CognitiveServiceFormRecognizerAPIV1PreviewImpl(ServiceClientCredentials credentials) {
-        this("https://{Endpoint}/formrecognizer/v1.0-preview/custom", credentials);
+        this("https://{Endpoint}/formrecognizer/v1.0-preview", credentials);
     }
 
     /**
@@ -212,29 +212,29 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * used by Retrofit to perform actually REST calls.
      */
     interface CognitiveServiceFormRecognizerAPIV1PreviewService {
-        @Headers({ "Content-Type: application/json-patch+json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.CognitiveServiceFormRecognizerAPIV1Preview trainCustomModel" })
-        @POST("train")
-        Observable<Response<ResponseBody>> trainCustomModel(@Header("accept-language") String acceptLanguage, @Body TrainRequest trainRequest, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json-patch+json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.CognitiveServiceFormRecognizerAPIV1Preview trainModel" })
+        @POST("custom/train")
+        Observable<Response<ResponseBody>> trainModel(@Header("accept-language") String acceptLanguage, @Body TrainRequest trainRequest, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.CognitiveServiceFormRecognizerAPIV1Preview getExtractedKeysByCustomModelId" })
-        @GET("models/{id}/keys")
-        Observable<Response<ResponseBody>> getExtractedKeysByCustomModelId(@Path("id") UUID id, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.CognitiveServiceFormRecognizerAPIV1Preview getExtractedKeys" })
+        @GET("custom/models/{id}/keys")
+        Observable<Response<ResponseBody>> getExtractedKeys(@Path("id") UUID id, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.CognitiveServiceFormRecognizerAPIV1Preview getListOfCustomModels" })
-        @GET("models")
-        Observable<Response<ResponseBody>> getListOfCustomModels(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.CognitiveServiceFormRecognizerAPIV1Preview getModels" })
+        @GET("custom/models")
+        Observable<Response<ResponseBody>> getModels(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.CognitiveServiceFormRecognizerAPIV1Preview getCustomModelById" })
-        @GET("models/{id}/")
-        Observable<Response<ResponseBody>> getCustomModelById(@Path("id") UUID id, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.CognitiveServiceFormRecognizerAPIV1Preview getModel" })
+        @GET("custom/models/{id}")
+        Observable<Response<ResponseBody>> getModel(@Path("id") UUID id, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.CognitiveServiceFormRecognizerAPIV1Preview deleteCustomModelById" })
-        @HTTP(path = "models/{id}/", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteCustomModelById(@Path("id") UUID id, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.CognitiveServiceFormRecognizerAPIV1Preview deleteModel" })
+        @HTTP(path = "custom/models/{id}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteModel(@Path("id") UUID id, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Multipart
-        @POST("models/{id}/analyze")
-        Observable<Response<ResponseBody>> analyzeCustomModel(@Path("id") UUID id, @Query("keys") String keys, @Part("form_stream") RequestBody formStream, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @POST("custom/models/{id}/analyze")
+        Observable<Response<ResponseBody>> analyzeWithModel(@Path("id") UUID id, @Query("keys") String keys, @Part("form_stream") RequestBody formStream, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -250,8 +250,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TrainResult object if successful.
      */
-    public TrainResult trainCustomModel(String source) {
-        return trainCustomModelWithServiceResponseAsync(source).toBlocking().single().body();
+    public TrainResult trainModel(String source) {
+        return trainModelWithServiceResponseAsync(source).toBlocking().single().body();
     }
 
     /**
@@ -265,8 +265,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TrainResult> trainCustomModelAsync(String source, final ServiceCallback<TrainResult> serviceCallback) {
-        return ServiceFuture.fromResponse(trainCustomModelWithServiceResponseAsync(source), serviceCallback);
+    public ServiceFuture<TrainResult> trainModelAsync(String source, final ServiceCallback<TrainResult> serviceCallback) {
+        return ServiceFuture.fromResponse(trainModelWithServiceResponseAsync(source), serviceCallback);
     }
 
     /**
@@ -279,8 +279,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainResult object
      */
-    public Observable<TrainResult> trainCustomModelAsync(String source) {
-        return trainCustomModelWithServiceResponseAsync(source).map(new Func1<ServiceResponse<TrainResult>, TrainResult>() {
+    public Observable<TrainResult> trainModelAsync(String source) {
+        return trainModelWithServiceResponseAsync(source).map(new Func1<ServiceResponse<TrainResult>, TrainResult>() {
             @Override
             public TrainResult call(ServiceResponse<TrainResult> response) {
                 return response.body();
@@ -298,7 +298,7 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainResult object
      */
-    public Observable<ServiceResponse<TrainResult>> trainCustomModelWithServiceResponseAsync(String source) {
+    public Observable<ServiceResponse<TrainResult>> trainModelWithServiceResponseAsync(String source) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -308,12 +308,12 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
         TrainRequest trainRequest = new TrainRequest();
         trainRequest.withSource(source);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.trainCustomModel(this.acceptLanguage(), trainRequest, parameterizedHost, this.userAgent())
+        return service.trainModel(this.acceptLanguage(), trainRequest, parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TrainResult>>>() {
                 @Override
                 public Observable<ServiceResponse<TrainResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TrainResult> clientResponse = trainCustomModelDelegate(response);
+                        ServiceResponse<TrainResult> clientResponse = trainModelDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -322,7 +322,7 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
             });
     }
 
-    private ServiceResponse<TrainResult> trainCustomModelDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<TrainResult> trainModelDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<TrainResult, ErrorResponseException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<TrainResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -340,8 +340,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the KeysResult object if successful.
      */
-    public KeysResult getExtractedKeysByCustomModelId(UUID id) {
-        return getExtractedKeysByCustomModelIdWithServiceResponseAsync(id).toBlocking().single().body();
+    public KeysResult getExtractedKeys(UUID id) {
+        return getExtractedKeysWithServiceResponseAsync(id).toBlocking().single().body();
     }
 
     /**
@@ -354,8 +354,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<KeysResult> getExtractedKeysByCustomModelIdAsync(UUID id, final ServiceCallback<KeysResult> serviceCallback) {
-        return ServiceFuture.fromResponse(getExtractedKeysByCustomModelIdWithServiceResponseAsync(id), serviceCallback);
+    public ServiceFuture<KeysResult> getExtractedKeysAsync(UUID id, final ServiceCallback<KeysResult> serviceCallback) {
+        return ServiceFuture.fromResponse(getExtractedKeysWithServiceResponseAsync(id), serviceCallback);
     }
 
     /**
@@ -367,8 +367,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KeysResult object
      */
-    public Observable<KeysResult> getExtractedKeysByCustomModelIdAsync(UUID id) {
-        return getExtractedKeysByCustomModelIdWithServiceResponseAsync(id).map(new Func1<ServiceResponse<KeysResult>, KeysResult>() {
+    public Observable<KeysResult> getExtractedKeysAsync(UUID id) {
+        return getExtractedKeysWithServiceResponseAsync(id).map(new Func1<ServiceResponse<KeysResult>, KeysResult>() {
             @Override
             public KeysResult call(ServiceResponse<KeysResult> response) {
                 return response.body();
@@ -385,7 +385,7 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KeysResult object
      */
-    public Observable<ServiceResponse<KeysResult>> getExtractedKeysByCustomModelIdWithServiceResponseAsync(UUID id) {
+    public Observable<ServiceResponse<KeysResult>> getExtractedKeysWithServiceResponseAsync(UUID id) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -393,12 +393,12 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
             throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.getExtractedKeysByCustomModelId(id, this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.getExtractedKeys(id, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeysResult>>>() {
                 @Override
                 public Observable<ServiceResponse<KeysResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<KeysResult> clientResponse = getExtractedKeysByCustomModelIdDelegate(response);
+                        ServiceResponse<KeysResult> clientResponse = getExtractedKeysDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -407,7 +407,7 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
             });
     }
 
-    private ServiceResponse<KeysResult> getExtractedKeysByCustomModelIdDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<KeysResult> getExtractedKeysDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<KeysResult, ErrorResponseException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<KeysResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -423,8 +423,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ModelsResult object if successful.
      */
-    public ModelsResult getListOfCustomModels() {
-        return getListOfCustomModelsWithServiceResponseAsync().toBlocking().single().body();
+    public ModelsResult getModels() {
+        return getModelsWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -435,8 +435,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ModelsResult> getListOfCustomModelsAsync(final ServiceCallback<ModelsResult> serviceCallback) {
-        return ServiceFuture.fromResponse(getListOfCustomModelsWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<ModelsResult> getModelsAsync(final ServiceCallback<ModelsResult> serviceCallback) {
+        return ServiceFuture.fromResponse(getModelsWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -446,8 +446,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelsResult object
      */
-    public Observable<ModelsResult> getListOfCustomModelsAsync() {
-        return getListOfCustomModelsWithServiceResponseAsync().map(new Func1<ServiceResponse<ModelsResult>, ModelsResult>() {
+    public Observable<ModelsResult> getModelsAsync() {
+        return getModelsWithServiceResponseAsync().map(new Func1<ServiceResponse<ModelsResult>, ModelsResult>() {
             @Override
             public ModelsResult call(ServiceResponse<ModelsResult> response) {
                 return response.body();
@@ -462,17 +462,17 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelsResult object
      */
-    public Observable<ServiceResponse<ModelsResult>> getListOfCustomModelsWithServiceResponseAsync() {
+    public Observable<ServiceResponse<ModelsResult>> getModelsWithServiceResponseAsync() {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.getListOfCustomModels(this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.getModels(this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ModelsResult>>>() {
                 @Override
                 public Observable<ServiceResponse<ModelsResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ModelsResult> clientResponse = getListOfCustomModelsDelegate(response);
+                        ServiceResponse<ModelsResult> clientResponse = getModelsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -481,7 +481,7 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
             });
     }
 
-    private ServiceResponse<ModelsResult> getListOfCustomModelsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<ModelsResult> getModelsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<ModelsResult, ErrorResponseException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<ModelsResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -498,8 +498,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ModelResult object if successful.
      */
-    public ModelResult getCustomModelById(UUID id) {
-        return getCustomModelByIdWithServiceResponseAsync(id).toBlocking().single().body();
+    public ModelResult getModel(UUID id) {
+        return getModelWithServiceResponseAsync(id).toBlocking().single().body();
     }
 
     /**
@@ -511,8 +511,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ModelResult> getCustomModelByIdAsync(UUID id, final ServiceCallback<ModelResult> serviceCallback) {
-        return ServiceFuture.fromResponse(getCustomModelByIdWithServiceResponseAsync(id), serviceCallback);
+    public ServiceFuture<ModelResult> getModelAsync(UUID id, final ServiceCallback<ModelResult> serviceCallback) {
+        return ServiceFuture.fromResponse(getModelWithServiceResponseAsync(id), serviceCallback);
     }
 
     /**
@@ -523,8 +523,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelResult object
      */
-    public Observable<ModelResult> getCustomModelByIdAsync(UUID id) {
-        return getCustomModelByIdWithServiceResponseAsync(id).map(new Func1<ServiceResponse<ModelResult>, ModelResult>() {
+    public Observable<ModelResult> getModelAsync(UUID id) {
+        return getModelWithServiceResponseAsync(id).map(new Func1<ServiceResponse<ModelResult>, ModelResult>() {
             @Override
             public ModelResult call(ServiceResponse<ModelResult> response) {
                 return response.body();
@@ -540,7 +540,7 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ModelResult object
      */
-    public Observable<ServiceResponse<ModelResult>> getCustomModelByIdWithServiceResponseAsync(UUID id) {
+    public Observable<ServiceResponse<ModelResult>> getModelWithServiceResponseAsync(UUID id) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -548,12 +548,12 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
             throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.getCustomModelById(id, this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.getModel(id, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ModelResult>>>() {
                 @Override
                 public Observable<ServiceResponse<ModelResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ModelResult> clientResponse = getCustomModelByIdDelegate(response);
+                        ServiceResponse<ModelResult> clientResponse = getModelDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -562,7 +562,7 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
             });
     }
 
-    private ServiceResponse<ModelResult> getCustomModelByIdDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<ModelResult> getModelDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<ModelResult, ErrorResponseException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<ModelResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -578,8 +578,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteCustomModelById(UUID id) {
-        deleteCustomModelByIdWithServiceResponseAsync(id).toBlocking().single().body();
+    public void deleteModel(UUID id) {
+        deleteModelWithServiceResponseAsync(id).toBlocking().single().body();
     }
 
     /**
@@ -591,8 +591,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteCustomModelByIdAsync(UUID id, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteCustomModelByIdWithServiceResponseAsync(id), serviceCallback);
+    public ServiceFuture<Void> deleteModelAsync(UUID id, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteModelWithServiceResponseAsync(id), serviceCallback);
     }
 
     /**
@@ -603,8 +603,8 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteCustomModelByIdAsync(UUID id) {
-        return deleteCustomModelByIdWithServiceResponseAsync(id).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteModelAsync(UUID id) {
+        return deleteModelWithServiceResponseAsync(id).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -620,7 +620,7 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteCustomModelByIdWithServiceResponseAsync(UUID id) {
+    public Observable<ServiceResponse<Void>> deleteModelWithServiceResponseAsync(UUID id) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -628,12 +628,12 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
             throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.deleteCustomModelById(id, this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.deleteModel(id, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = deleteCustomModelByIdDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteModelDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -642,7 +642,7 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
             });
     }
 
-    private ServiceResponse<Void> deleteCustomModelByIdDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> deleteModelDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -654,14 +654,14 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AnalyzeResult object if successful.
      */
-    public AnalyzeResult analyzeCustomModel(UUID id, byte[] formStream) {
-        return analyzeCustomModelWithServiceResponseAsync(id, formStream).toBlocking().single().body();
+    public AnalyzeResult analyzeWithModel(UUID id, byte[] formStream) {
+        return analyzeWithModelWithServiceResponseAsync(id, formStream).toBlocking().single().body();
     }
 
     /**
@@ -669,13 +669,13 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AnalyzeResult> analyzeCustomModelAsync(UUID id, byte[] formStream, final ServiceCallback<AnalyzeResult> serviceCallback) {
-        return ServiceFuture.fromResponse(analyzeCustomModelWithServiceResponseAsync(id, formStream), serviceCallback);
+    public ServiceFuture<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream, final ServiceCallback<AnalyzeResult> serviceCallback) {
+        return ServiceFuture.fromResponse(analyzeWithModelWithServiceResponseAsync(id, formStream), serviceCallback);
     }
 
     /**
@@ -683,12 +683,12 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    public Observable<AnalyzeResult> analyzeCustomModelAsync(UUID id, byte[] formStream) {
-        return analyzeCustomModelWithServiceResponseAsync(id, formStream).map(new Func1<ServiceResponse<AnalyzeResult>, AnalyzeResult>() {
+    public Observable<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream) {
+        return analyzeWithModelWithServiceResponseAsync(id, formStream).map(new Func1<ServiceResponse<AnalyzeResult>, AnalyzeResult>() {
             @Override
             public AnalyzeResult call(ServiceResponse<AnalyzeResult> response) {
                 return response.body();
@@ -701,11 +701,11 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    public Observable<ServiceResponse<AnalyzeResult>> analyzeCustomModelWithServiceResponseAsync(UUID id, byte[] formStream) {
+    public Observable<ServiceResponse<AnalyzeResult>> analyzeWithModelWithServiceResponseAsync(UUID id, byte[] formStream) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -717,13 +717,13 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
         }
         final List<String> keys = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        String keysConverted = this.serializerAdapter().serializeList(keys, CollectionFormat.MULTI);RequestBody formStreamConverted = RequestBody.create(MediaType.parse("multipart/form-data"), formStream);
-        return service.analyzeCustomModel(id, keysConverted, formStreamConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
+        String keysConverted = this.serializerAdapter().serializeList(keys, CollectionFormat.CSV);RequestBody formStreamConverted = RequestBody.create(MediaType.parse("multipart/form-data"), formStream);
+        return service.analyzeWithModel(id, keysConverted, formStreamConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AnalyzeResult>>>() {
                 @Override
                 public Observable<ServiceResponse<AnalyzeResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AnalyzeResult> clientResponse = analyzeCustomModelDelegate(response);
+                        ServiceResponse<AnalyzeResult> clientResponse = analyzeWithModelDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -737,15 +737,15 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @param keys An optional list of known keys to extract the values for.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AnalyzeResult object if successful.
      */
-    public AnalyzeResult analyzeCustomModel(UUID id, byte[] formStream, List<String> keys) {
-        return analyzeCustomModelWithServiceResponseAsync(id, formStream, keys).toBlocking().single().body();
+    public AnalyzeResult analyzeWithModel(UUID id, byte[] formStream, List<String> keys) {
+        return analyzeWithModelWithServiceResponseAsync(id, formStream, keys).toBlocking().single().body();
     }
 
     /**
@@ -753,14 +753,14 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @param keys An optional list of known keys to extract the values for.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AnalyzeResult> analyzeCustomModelAsync(UUID id, byte[] formStream, List<String> keys, final ServiceCallback<AnalyzeResult> serviceCallback) {
-        return ServiceFuture.fromResponse(analyzeCustomModelWithServiceResponseAsync(id, formStream, keys), serviceCallback);
+    public ServiceFuture<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream, List<String> keys, final ServiceCallback<AnalyzeResult> serviceCallback) {
+        return ServiceFuture.fromResponse(analyzeWithModelWithServiceResponseAsync(id, formStream, keys), serviceCallback);
     }
 
     /**
@@ -768,13 +768,13 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @param keys An optional list of known keys to extract the values for.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    public Observable<AnalyzeResult> analyzeCustomModelAsync(UUID id, byte[] formStream, List<String> keys) {
-        return analyzeCustomModelWithServiceResponseAsync(id, formStream, keys).map(new Func1<ServiceResponse<AnalyzeResult>, AnalyzeResult>() {
+    public Observable<AnalyzeResult> analyzeWithModelAsync(UUID id, byte[] formStream, List<String> keys) {
+        return analyzeWithModelWithServiceResponseAsync(id, formStream, keys).map(new Func1<ServiceResponse<AnalyzeResult>, AnalyzeResult>() {
             @Override
             public AnalyzeResult call(ServiceResponse<AnalyzeResult> response) {
                 return response.body();
@@ -787,12 +787,12 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
      * The document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or 'image/png'. The response contains not just the extracted information of the analyzed form but also information about content that was not extracted along with a reason.
      *
      * @param id Model Identifier to analyze the document with.
-     * @param formStream Upload content of type 'application/pdf', 'image/jpeg' or 'image/png' for processing.
+     * @param formStream A pdf document or image (jpg,png) file to analyze.
      * @param keys An optional list of known keys to extract the values for.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AnalyzeResult object
      */
-    public Observable<ServiceResponse<AnalyzeResult>> analyzeCustomModelWithServiceResponseAsync(UUID id, byte[] formStream, List<String> keys) {
+    public Observable<ServiceResponse<AnalyzeResult>> analyzeWithModelWithServiceResponseAsync(UUID id, byte[] formStream, List<String> keys) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -804,13 +804,13 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
         }
         Validator.validate(keys);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        String keysConverted = this.serializerAdapter().serializeList(keys, CollectionFormat.MULTI);RequestBody formStreamConverted = RequestBody.create(MediaType.parse("multipart/form-data"), formStream);
-        return service.analyzeCustomModel(id, keysConverted, formStreamConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
+        String keysConverted = this.serializerAdapter().serializeList(keys, CollectionFormat.CSV);RequestBody formStreamConverted = RequestBody.create(MediaType.parse("multipart/form-data"), formStream);
+        return service.analyzeWithModel(id, keysConverted, formStreamConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AnalyzeResult>>>() {
                 @Override
                 public Observable<ServiceResponse<AnalyzeResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AnalyzeResult> clientResponse = analyzeCustomModelDelegate(response);
+                        ServiceResponse<AnalyzeResult> clientResponse = analyzeWithModelDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -819,7 +819,7 @@ public class CognitiveServiceFormRecognizerAPIV1PreviewImpl extends AzureService
             });
     }
 
-    private ServiceResponse<AnalyzeResult> analyzeCustomModelDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<AnalyzeResult> analyzeWithModelDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<AnalyzeResult, ErrorResponseException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<AnalyzeResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
