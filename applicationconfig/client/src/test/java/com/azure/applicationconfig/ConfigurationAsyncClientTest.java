@@ -12,7 +12,6 @@ import com.azure.common.exception.ServiceRequestException;
 import com.azure.common.http.HttpClient;
 import com.azure.common.http.policy.HttpLogDetailLevel;
 import com.azure.common.http.rest.Response;
-import com.azure.common.test.TestBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Ignore;
 import org.junit.Rule;
