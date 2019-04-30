@@ -88,13 +88,4 @@ public class RecordedData {
             return variables.remove();
         }
     }
-
-    /**
-     * Getter method for {@link RecordedData#networkCallRecords}
-     *
-     * @return network call records in session record.
-     */
-    public LinkedList<NetworkCallRecord> getNetworkCallRecords() {
-        return this.networkCallRecords;
-    }
 }

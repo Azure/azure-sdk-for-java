@@ -10,11 +10,11 @@ import com.azure.common.http.HttpResponse;
 import com.azure.common.http.ProxyOptions;
 import com.azure.common.test.models.NetworkCallRecord;
 import com.azure.common.test.models.RecordedData;
-import com.azure.common.test.utils.SdkContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,13 +78,13 @@ public final class PlaybackClient implements HttpClient {
     }
 
     private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) {
-        final String incomingUrl = SdkContext.applyReplacementRule(request.url().toString(), textReplacementRules);
+        final String incomingUrl = applyReplacementRule(request.url().toString());
         final String incomingMethod = request.httpMethod().toString();
 
-        final String matchingUrl = SdkContext.removeHost(incomingUrl);
+        final String matchingUrl = removeHost(incomingUrl);
 
         NetworkCallRecord networkCallRecord = recordedData.findFirstAndRemoveNetworkCall(record ->
-            record.method().equalsIgnoreCase(incomingMethod) && SdkContext.removeHost(record.uri()).equalsIgnoreCase(matchingUrl));
+            record.method().equalsIgnoreCase(incomingMethod) && removeHost(record.uri()).equalsIgnoreCase(matchingUrl));
 
         count.incrementAndGet();
 
@@ -128,5 +128,19 @@ public final class PlaybackClient implements HttpClient {
 
         HttpResponse response = new MockHttpResponse(request, recordStatusCode, headers, bytes);
         return Mono.just(response);
+    }
+
+    private String applyReplacementRule(String text) {
+        for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
+            if (rule.getValue() != null) {
+                text = text.replaceAll(rule.getKey(), rule.getValue());
+            }
+        }
+        return text;
+    }
+
+    private String removeHost(String url) {
+        URI uri = URI.create(url);
+        return String.format("%s?%s", uri.getPath(), uri.getQuery());
     }
 }
