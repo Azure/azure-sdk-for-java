@@ -4,7 +4,7 @@
 package com.azure.applicationconfig.models;
 
 import com.azure.applicationconfig.ConfigurationAsyncClient;
-import com.azure.common.implementation.util.ImplUtils;
+import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;

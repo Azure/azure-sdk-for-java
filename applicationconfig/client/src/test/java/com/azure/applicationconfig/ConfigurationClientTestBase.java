@@ -6,10 +6,9 @@ import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingFields;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.exception.HttpRequestException;
-import com.azure.common.exception.ServiceRequestException;
-import com.azure.common.http.rest.Response;
-import com.azure.common.test.TestBase;
+import com.azure.core.exception.HttpRequestException;
+import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestBase;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -506,23 +505,31 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
+        assertRestException(exceptionThrower, HttpRequestException.class, expectedStatusCode);
+    }
+
+    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpRequestException> expectedExceptionType, int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();
         } catch (Throwable ex) {
-            assertRestException(ex, expectedStatusCode);
+            assertRestException(ex, expectedExceptionType, expectedStatusCode);
         }
     }
 
     /**
      * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
      *
-     * @param ex Expected error thrown during the test
+     * @param exception Expected error thrown during the test
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
-    static void assertRestException(Throwable ex, int expectedStatusCode) {
-        assertTrue(ex instanceof ServiceRequestException);
-        assertEquals(expectedStatusCode, ((HttpRequestException) ex).response().statusCode());
+    static void assertRestException(Throwable exception, int expectedStatusCode) {
+        assertRestException(exception, HttpRequestException.class, expectedStatusCode);
+    }
+
+    static void assertRestException(Throwable exception, Class<? extends HttpRequestException> expectedExceptionType, int expectedStatusCode) {
+        assertEquals(expectedExceptionType, exception.getClass());
+        assertEquals(expectedStatusCode, ((HttpRequestException) exception).response().statusCode());
     }
 
     /**
