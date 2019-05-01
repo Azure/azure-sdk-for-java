@@ -6,10 +6,10 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.credentials.ConfigurationClientCredentials;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.SettingSelector;
-import com.azure.common.exception.HttpRequestException;
-import com.azure.common.exception.ResourceModifiedException;
-import com.azure.common.exception.ResourceNotFoundException;
-import com.azure.common.http.rest.Response;
+import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.Response;
 
 import java.util.List;
 
