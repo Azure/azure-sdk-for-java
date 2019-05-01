@@ -146,8 +146,6 @@ public final class SecretAsyncClient extends ServiceClient {
      * if {@code secretAttributes.version} is not set. The get operation is applicable to any secret stored in Azure Key Vault.
      * This operation requires the {@code secrets/get} permission.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
      * @param secretAttributes the {@link SecretAttributes} attributes of the secret being requested.
      * @return A {@link Response} whose {@link Response#value()} contains the requested {@link Secret}.
      * @throws com.azure.common.exception.ServiceRequestException when a secret with {@code secretAttributes.name} and {@code secretAttributes.version} doesn't exist in the key vault.

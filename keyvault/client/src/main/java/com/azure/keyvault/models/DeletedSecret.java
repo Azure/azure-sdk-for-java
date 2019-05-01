@@ -8,6 +8,10 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
+/**
+ *  Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes inherited from {@link SecretAttributes}.
+ *  It is managed by Secret Service.
+ */
 public class DeletedSecret extends SecretAttributes {
 
     /**
