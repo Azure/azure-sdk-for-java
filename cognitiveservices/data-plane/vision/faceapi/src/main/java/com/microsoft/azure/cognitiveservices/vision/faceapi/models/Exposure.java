@@ -30,7 +30,7 @@ public class Exposure {
     private double value;
 
     /**
-     * Get the exposureLevel value.
+     * Get an enum value indicating level of exposure. Possible values include: 'UnderExposure', 'GoodExposure', 'OverExposure'.
      *
      * @return the exposureLevel value
      */
@@ -39,7 +39,7 @@ public class Exposure {
     }
 
     /**
-     * Set the exposureLevel value.
+     * Set an enum value indicating level of exposure. Possible values include: 'UnderExposure', 'GoodExposure', 'OverExposure'.
      *
      * @param exposureLevel the exposureLevel value to set
      * @return the Exposure object itself.
@@ -50,7 +50,7 @@ public class Exposure {
     }
 
     /**
-     * Get the value value.
+     * Get a number indicating level of exposure level ranging from 0 to 1. [0, 0.25) is under exposure. [0.25, 0.75) is good exposure. [0.75, 1] is over exposure.
      *
      * @return the value value
      */
@@ -59,7 +59,7 @@ public class Exposure {
     }
 
     /**
-     * Set the value value.
+     * Set a number indicating level of exposure level ranging from 0 to 1. [0, 0.25) is under exposure. [0.25, 0.75) is good exposure. [0.75, 1] is over exposure.
      *
      * @param value the value value to set
      * @return the Exposure object itself.

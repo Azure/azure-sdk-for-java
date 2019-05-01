@@ -27,7 +27,7 @@ public class Coordinate {
     private double y;
 
     /**
-     * Get the x value.
+     * Get the horizontal component, in pixels.
      *
      * @return the x value
      */
@@ -36,7 +36,7 @@ public class Coordinate {
     }
 
     /**
-     * Set the x value.
+     * Set the horizontal component, in pixels.
      *
      * @param x the x value to set
      * @return the Coordinate object itself.
@@ -47,7 +47,7 @@ public class Coordinate {
     }
 
     /**
-     * Get the y value.
+     * Get the vertical component, in pixels.
      *
      * @return the y value
      */
@@ -56,7 +56,7 @@ public class Coordinate {
     }
 
     /**
-     * Set the y value.
+     * Set the vertical component, in pixels.
      *
      * @param y the y value to set
      * @return the Coordinate object itself.

@@ -30,7 +30,7 @@ public class IdentifyCandidate {
     private double confidence;
 
     /**
-     * Get the personId value.
+     * Get id of candidate.
      *
      * @return the personId value
      */
@@ -39,7 +39,7 @@ public class IdentifyCandidate {
     }
 
     /**
-     * Set the personId value.
+     * Set id of candidate.
      *
      * @param personId the personId value to set
      * @return the IdentifyCandidate object itself.
@@ -50,7 +50,7 @@ public class IdentifyCandidate {
     }
 
     /**
-     * Get the confidence value.
+     * Get confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
      *
      * @return the confidence value
      */
@@ -59,7 +59,7 @@ public class IdentifyCandidate {
     }
 
     /**
-     * Set the confidence value.
+     * Set confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
      *
      * @param confidence the confidence value to set
      * @return the IdentifyCandidate object itself.
